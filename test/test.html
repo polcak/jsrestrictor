@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Simple examples for implemented browser extension</title>
+	<meta charset="UTF-8" />
+	<script type="text/javascript" src="date.js"></script>
+	<script type="text/javascript" src="performance.now.js"></script>
+	<script type="text/javascript" src="canvas.js"></script>
+	<script type="text/javascript" src="gps.js"></script>
+	<script type="text/javascript" src="xmlhttprequest.js"></script>
+	<link rel="stylesheet" type="text/css" href="global.css">
+</head>
+<body onload="initClock(); updatePerformanceLabelEvery(200);">
+	<h1>Simple examples for implemented browser extension</h1>
+	<hr>
+	<h2>window.Date example</h2>
+	<div id="content-wrapper">
+		<span id="hours">00</span>:
+		<span id="minutes">00</span>:
+		<span id="seconds">00</span>:
+		<span id="milliseconds">000</span>
+	</div>
+	<br><br><br><hr>
+
+
+	<h2>window.performance example</h2>
+	<div id="content-wrapper">
+		<span>Current performance is: <span id="current-performance">-</span></span>
+	</div>
+	<br><br><br><hr>
+
+
+	<h2>window.HTMLCanvasElement example</h2>
+	<img id="demo-image" src="demo_image.png">
+	<div id="canvas-wrap-1">
+		<h3>Canvas 1</h3>
+		<div id="canvas1-buttons-wrap">
+			<button onclick="writeLineToCanvas('canvas1');">Add line to canvas</button>
+			<button onclick="writeCircleToCanvas('canvas1');">Add circle to canvas</button>
+			<button onclick="writeTextToCanvas('canvas1');">Add text to canvas</button>
+			<button onclick="writeOutlineTextToCanvas('canvas1');">Add outline text to canvas</button>
+			<button onclick="writeGradientToCanvas('canvas1');">Add gradient to canvas</button>
+			<button onclick="writeImageToCanvas('canvas1');">Add image to canvas</button>
+		</div>
+		<canvas id="canvas1" width="800px" height="200px"></canvas>
+	</div>
+	<div id="canvas-wrap-2">
+		<h3>Canvas 2</h3>
+		<div id="canvas2-buttons-wrap">
+			<button onclick="writeLineToCanvas('canvas2');">Add line to canvas</button>
+			<button onclick="writeCircleToCanvas('canvas2');">Add circle to canvas</button>
+			<button onclick="writeTextToCanvas('canvas2');">Add text to canvas</button>
+			<button onclick="writeOutlineTextToCanvas('canvas2');">Add outline text to canvas</button>
+			<button onclick="writeGradientToCanvas('canvas2');">Add gradient to canvas</button>
+			<button onclick="writeImageToCanvas('canvas2');">Add image to canvas</button>
+		</div>
+		<canvas id="canvas2" width="800px" height="200px"></canvas>
+	</div>
+	<br><br><br><hr>
+
+
+	<h2>navigator.geolocation example</h2>
+
+	<div id="map"></div>
+<!-- 	<iframe width="600" height="450" allowfullscreen="" class="maps" frameborder="0" id="mapnavi" name="mapnavi" src="https://www.google.com/maps/embed/v1/place?zoom=11&q=49.1951%2C16.6068&key=AIzaSyC-5CY9mOCeg5Y3IhPqi_Yd0-DZtWrJl-E" /> -->
+
+	<button onclick="showGPSData();">Show GPS data</button><br><br>
+	<div id="placeToWriteGPSDetails"></div>
+
+	<br><br><br><hr>
+
+
+	<h2>window.XMLHttpRequest example</h2>
+	<button onclick="runRequest();">Run XMLHttpRequest on a test URL</button>
+	<p id="placeToOutput" type="text/x-frozen-html"></p>
+</body>
+</html>
