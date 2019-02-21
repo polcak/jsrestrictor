@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="options.css">
+</head>
+<body>
+
+<h2>Help & About</h2>
+
+<p><b>JavaScript Restrictor</b> or <b>JSR</b> is a browser extension which increases level of security, anonymity and privacy of the user while he's browsing the internet. Various websites can collect information about users without their awareness of it, which can lead to identification of the users. Also, an attacker can use malicious websites to collect data about the user or fingerprint user’s device. This extension aims to protect the user by rounding or modifying values which are websites collecting. Inaccurate values of data - given by this extension - mislead websites which are collecting such data. This leads to a higher level of anonymity and security for the user. JavaScript Restrictor can modify following values:
+	<ul>
+		<li><b>window.Date object:</b> this high-resolution timestamp can be used to idenfity the user or can be used for microarchitectural attacks</li>
+		<li><b>window.performance.now() function:</b> this high-resolution timestamp can be used to idenfity the user or can be used for microarchitectural attacks,</li>
+		<li><b>Canvas element*:</b> this element is used to draw graphics in browser, however it can be also used to fingerprint the user’s device,</li>
+		<li><b>Geolocation data:</b> this can be used to identify an electronic device’s physical location,</li>
+		<li><b><i>XMLHttpRequest (experimental only):</b> these requests can carry the user’s private data.</i></li>
+	</ul>
+</p>
+
+
+<p>There are five levels of protection ready to use:
+	<ul>
+		<li><b>0</b> - the functionality of the extension is turned off. No actions are taken. You are browsing the web as usual, with no ptotection from JSR.</li>
+		<li><b>1</b> - first level of protection. This increases your level of protection. It means that websites collect a modified timestamp values. Canvas elements are not blocked.</li>
+		<li><b>2</b> - second level of protection. On this level websites collect even more modified timestamp values, all canvas elements are blocked*.</li>
+		<li><b>3</b> - maximum level of protection. Websites collect highly modified timestamp values, all canvas elements are blocked* and geolocation data is nulled.</li>
+		<li><b>Custom</b> - your level of protection. If you want, you can set your own level of protection and use it.</li>
+	</ul>
+	* blocking canvas element can sometimes lead to malfunction of the site (e.g. Google Maps). Please report to us any malfunction sites and bugs.
+</p>
+
+<p>Default level of protection can be set by a popup (clicking on JSR icon) or through options of the extension. Specific level of protection for specific domains/websites can be set in options by adding them to the list of websites with specific level. This can be done also by a popup when the user visits the website.</p>
+
+
+<h2>Support</h2>
+
+<p>If you have any questions or you’ve spotted a bug, please let us know.</p>
+<p>If you would like to give us feedback, we would really appreciate it.</p>
+<p>...GITHUB...</p>
+
+</p>
+
+</body>

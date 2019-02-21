@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="options.css">
+</head>
+<body>
+
+  <div id="help">
+    <a id="help-link" href="help.html" target="_blank">Help & About</a>
+    <a id="test-link" href="https://www.stud.fit.vutbr.cz/~xtimko00/test.html" target="_blank">Test site</a>
+  </div>
+
+  <div id="first-row">
+    <h2 id="set-default-level">Set default level of protection to:</h2> 
+    <div id="levels-default">
+      <span class="level" id="level-0" title="No protection at all">0</span>
+      <span class="level" id="level-1" title="Increases your anonymity and security a little">1</span>
+      <span class="level" id="level-2" title="Normal level (recomended for most sites)">2</span>
+      <span class="level" id="level-3" title="Maximum anonymity as possible (tinfoil hat)">3</span>
+      <span class="level" id="level-4" title="Your level of protection (your settings)">Custom</span>
+    </div>
+  </div>
+
+
+  <div id="second-row">
+    <h2 id="set-domain-level">Set level of protection for website:</h2> 
+    <form id="domain-form">
+      <input id="domain-text" type="text" placeholder="example.com or en.example.com">
+      <select id="domain-level">
+        <option value="0">level 0</option>
+        <option value="1">level 1</option>
+        <option value="2" selected>level 2</option>
+        <option value="3">level 3</option>
+        <option value="4">custom level</option>
+      </select>
+      <button id="add-domain" type="submit" data-action="add-domain-level" class="save-button">Add to list</button>
+    </form>
+    <h2 id="domain-show-hide" class="show-hide">Show/Hide list</h2>
+    <table id="domain-list-table" class="tg">
+<!--       <thead id="domain-list-head">
+        <th class="">Domain</th>
+        <th class="">Level</th>
+      </thead>
+      <tr>
+        <td class="td-domain">www.keke.sk</td>
+        <td class="td-level">2</td>
+        <td class="td-delete" id="www.keke.sk">X</td>
+      </tr> -->
+    </table>
+    <h3 id="delete-list" class="show-hide-2">Delete all</h2>
+  </div>
+
+
+
+  <div id="third-row">
+    <div id="custom-title-div">
+      <h2 id="custom-title">Custom level settings:</h2>
+      <h2 id="custom-show-hide" class="show-hide">Show/Hide settings</h2>
+      <!-- <button id="button-show-hide-custom">Show / hide custom level settings</button> -->
+    </div>
+    <form id="custom-form">
+      <!-- DATE -->
+      <div class="main-section">
+        <input type="checkbox" id="window_date_main_checkbox">
+        <span class="section-header">Reduce the time accuracy of "Date.now()" function:</span>
+      </div>
+      <div class="subsection">
+        <div class="row">
+          <span class="table-left-column">Round time to:</span>
+          <select id="window_date_time_round_precision">
+            <option value="-1">hundredths of a second (1.230)</option>
+            <option value="-2" selected>tenths of a second (1.200)</option>
+            <option value="-3">full seconds (1.000)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- PERFORMANCE -->
+      <div class="main-section">
+        <input type="checkbox" id="performance_now_main_checkbox">
+        <span class="section-header">Reduce the "performance.now()" accuracy:</span>
+      </div>
+      <div class="subsection">
+        <div class="row">
+          <span class="table-left-column">Round "performance.now()" value to:</span>
+          <select id="performance_now_value_round_precision">
+            <option value="0">ones (1234)</option>
+            <option value="-1">tens (1230)</option>
+            <option value="-2" selected>hundreds (1200)</option>
+            <option value="-3">thousands (1000)</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- CANVAS -->
+      <div class="main-section">
+        <input type="checkbox" id="htmlcanvaselement_main_checkbox">
+        <span class="section-header">Filter drawing to the "Canvas" element:</span>
+        <!-- <span class="section-header">To filter the draw to the "Canvas" element:</span> -->
+      </div>
+      <div class="subsection">
+        <div class="row">
+          <select id="htmlcanvaselement_type_of_restriction" class="long-select">
+            <option value="a" selected>Always ask user to allow every draw</option>
+            <option value="b">Block all attempts to draw</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- GPS -->
+      <div class="main-section">
+        <input type="checkbox" id="navigator_geolocation_main_checkbox">
+        <span class="section-header">Reduce accuracy of geolocation data:</span>
+      </div>
+      <div class="subsection">
+        <div class="row">
+          <select id="navigator_geolocation_type_of_restriction" class="long-select">
+            <option value="a" selected>Round location data to:</option>
+            <option value="b">Null all location data (all set to zero)</option>
+          </select>
+        </div>
+        <div class="row gps">
+          <span class="table-left-column">Latitude value in decimal degrees:</span>
+          <select id="navigator_geolocation_rounding_precision_of_item_a">
+            <option value="0">round to ones (12.00000)</option>
+            <option value="1">round to 1 decimal place (12.30000)</option>
+            <option value="2">round to 2 decimals (12.34000)</option>
+            <option value="3">round to 3 decimals (12.34500)</option>
+            <option value="4" selected>round to 4 decimals (12.34560)</option>
+            <option value="5">round to 5 decimals (12.34567)</option>
+          </select>
+        </div>
+        <div class="row gps">
+          <span class="table-left-column">Longitude value in decimal degrees:</span>
+          <select id="navigator_geolocation_rounding_precision_of_item_b">
+            <option value="0">round to ones (12.00000)</option>
+            <option value="1">round to 1 decimal place (12.30000)</option>
+            <option value="2">round to 2 decimals (12.34000)</option>
+            <option value="3">round to 3 decimals (12.34500)</option>
+            <option value="4" selected>round to 4 decimals (12.34560)</option>
+            <option value="5">round to 5 decimals (12.34567)</option>
+          </select>
+        </div>
+        <div class="row gps">
+          <span class="table-left-column">Altitude value in meters:</span>
+          <select id="navigator_geolocation_rounding_precision_of_item_c">
+            <option value="0">round to ones (1234)</option>
+            <option value="-1">round to tens (1230)</option>
+            <option value="-2" selected>round to hundreds (1200)</option>
+            <option value="-3">round to thousands (1000)</option>
+          </select>
+        </div>
+        <div class="row gps">
+          <span class="table-left-column">Latitude and longitude accuracy in meters:</span>
+          <select id="navigator_geolocation_rounding_precision_of_item_d">
+            <option value="-1">round to tens (1230)</option>
+            <option value="-2" selected>round to hundreds (1200)</option>
+            <option value="-3">round to thousands (1000)</option>
+          </select>
+        </div>
+        <div class="row gps">
+          <span class="table-left-column">Altitude accuracy in meters:</span>
+          <select id="navigator_geolocation_rounding_precision_of_item_e">
+            <option value="-1">round to tens (1230)</option>
+            <option value="-2" selected>round to hundreds (1200)</option>
+            <option value="-3">round to thousands (1000)</option>
+          </select>
+        </div>
+        <div class="row gps">
+          <span class="table-left-column">Heading (direction of device) in degrees:</span>
+          <select id="navigator_geolocation_rounding_precision_of_item_f">
+            <option value="-1">round to tens (1230)</option>
+            <option value="-2" selected>round to hundreds (1200)</option>
+            <option value="-3">round to thousands (1000)</option>
+          </select>
+        </div>
+        <div class="row gps">
+          <span class="table-left-column">Velocity of the device in meters per second:</span>
+          <select id="navigator_geolocation_rounding_precision_of_item_g">
+            <option value="-1">round to tens (1230)</option>
+            <option value="-2" selected>round to hundreds (1200)</option>
+            <option value="-3">round to thousands (1000)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- XMLHTTPREQUEST -->
+      <div class="main-section">
+        <input type="checkbox" id="xmlhttprequest_main_checkbox">
+        <span class="section-header"><i>Filtrovat požadavky typu XMLHttpRequest dle následujícího parametru:</i></span> <span id="experimental">(experimental only)</span>
+      </div>
+      <div class="subsection">
+        <div class="row">
+          <select id="xmlhttprequest_type_of_restriction" class="long-select">
+            <option value="a" selected>Always ask user to allow every XMLHttpRequest request</option>
+            <option value="b">Block all XMLHttpRequest requests</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" id="save" class="save-button">Save settings</button>
+    </form>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>
