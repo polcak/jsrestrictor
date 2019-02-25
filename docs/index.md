@@ -1,4 +1,7 @@
-# JS Restrictor
+---
+---
+
+# {{ page.project }}
 
 See [help](help.html) for more information about this extension.
 
