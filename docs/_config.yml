@@ -3,4 +3,5 @@ defaults:
     scope:
        path: ""
     values:
-      project: JavaScript Restrictor
+      title: JavaScript Restrictor
+      layout: default

@@ -1,7 +1,7 @@
 ---
 ---
 
-# {{ page.project }}
+# {{ page.title }}
 
 See [help](help.html) for more information about this extension.
 
