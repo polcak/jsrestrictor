@@ -1,10 +1,10 @@
-if ((typeof browser) !== "undefined") {
-  var chrome = browser;
+if ((typeof chrome) !== "undefined") {
+  var browser = chrome;
 }
 
 // set default level to 2 after install
 function installUpdate() {
-  var myStorage = chrome.storage.sync.get(null, function (item) {
+  browser.storage.sync.get(null, function (item) {
     var setDef = true;
     var setExtData = true;
     for (var domain in item) {
@@ -19,34 +19,34 @@ function installUpdate() {
       }
     }
     if (setDef) {
-      chrome.storage.sync.set({
+      browser.storage.sync.set({
         ["__default__"]: 2
       });
     }
     if (setExtData) {
-      chrome.storage.sync.set({
+      browser.storage.sync.set({
         extension_settings_data       
       });      
     }
   });
 }
-chrome.runtime.onInstalled.addListener(installUpdate);
+browser.runtime.onInstalled.addListener(installUpdate);
 
 // open options
 function handleClick() {
-  chrome.runtime.openOptionsPage();
+  browser.runtime.openOptionsPage();
 }
-chrome.browserAction.onClicked.addListener(handleClick);
+browser.browserAction.onClicked.addListener(handleClick);
 
 // set badge color
-chrome.browserAction.setBadgeBackgroundColor({color: "#4a4a4a"});
+browser.browserAction.setBadgeBackgroundColor({color: "#4a4a4a"});
 
 var url; // domain "fit.vutbr.com"
 var rootDomain; // domain "vutbr.com"
 
 // on tab reload or tab change, update badge
-chrome.tabs.onUpdated.addListener(tabEvent);  // reload tab
-chrome.tabs.onActivated.addListener(tabEvent);  // change tab
+browser.tabs.onUpdated.addListener(tabEvent);  // reload tab
+browser.tabs.onActivated.addListener(tabEvent);  // change tab
 
 // get active tab and pass it 
 var queryInfo = {
@@ -56,7 +56,7 @@ var queryInfo = {
 
 // get url of active tab
 function tabEvent(tabinfo) {  
-  chrome.tabs.query(queryInfo, function(tabs) {
+  browser.tabs.query(queryInfo, function(tabs) {
     for (let tab of tabs) {
       url = tab.url;
     }
@@ -78,14 +78,14 @@ function updateBadge() {
   url = getLocation(url);
   url.hostname = url.hostname.replace(/^www\./,'');
   rootDomain = extractRootDomain(url.hostname);
-  var myAddon = new URL(chrome.extension.getURL ('./'));
+  var myAddon = new URL(browser.extension.getURL ('./'));
 
   // get storage data
-  var data = chrome.storage.sync.get(null, function(res) {
+  browser.storage.sync.get(null, function(res) {
 
-  if (isJavaScriptObjectEmpty(res)) {
-    return Promise.reject();
-  }
+    if (isJavaScriptObjectEmpty(res)) {
+      return Promise.reject();
+    }
 
     // find level for this site to use
     var activeLevel;
@@ -105,11 +105,11 @@ function updateBadge() {
     }
     // set badge text or blank
     if (activeLevel == "4" && url.hostname != "" ) {
-      chrome.browserAction.setBadgeText({text: "C"});
+      browser.browserAction.setBadgeText({text: "C"});
     } else if (url.hostname != "" && url.hostname != myAddon.hostname && url.hostname != "newtab") {
-      chrome.browserAction.setBadgeText({text: "" + activeLevel});
+      browser.browserAction.setBadgeText({text: "" + activeLevel});
     } else {
-      chrome.browserAction.setBadgeText({text: ""});
+      browser.browserAction.setBadgeText({text: ""});
     }
   });
 }

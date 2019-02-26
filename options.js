@@ -1,7 +1,10 @@
-// JSR Custom settings JSR //
+if ((typeof chrome) !== "undefined") {
+  var browser = chrome;
+}
 
+// JSR Custom settings JSR //
 function saveOptions(e) {
-  chrome.storage.sync.set({
+  browser.storage.sync.set({
     extension_settings_data: {
       window_date: {
         main_checkbox: document.querySelector("#window_date_main_checkbox").checked,
@@ -39,7 +42,7 @@ function saveOptions(e) {
 
 function restoreOptions() {
 
-  chrome.storage.sync.get('extension_settings_data', function(res) {
+  browser.storage.sync.get('extension_settings_data', function(res) {
 
     document.querySelector("#window_date_main_checkbox").checked = res.extension_settings_data.window_date.main_checkbox;
     document.querySelector("#window_date_time_round_precision").value = res.extension_settings_data.window_date.time_round_precision;
@@ -80,7 +83,7 @@ document.getElementById('custom-show-hide').addEventListener('click', function (
 });
 
 // change save settings button text to "Saved"
-// chrome.storage.onChanged.addListener(savedText);
+// browser.storage.onChanged.addListener(savedText);
 function savedText(){
   document.getElementById("save").innerHTML="Saved";
   document.getElementById("save").style.paddingLeft = "43px";
@@ -117,14 +120,14 @@ function savedTextBack () {
 
 document.querySelector("#domain-form").addEventListener("submit", addDomain);
 document.addEventListener('DOMContentLoaded', loadSettings);
-chrome.storage.onChanged.addListener(loadSettings);
+browser.storage.onChanged.addListener(loadSettings);
 
 
 
 function addDomain (e) {
       var removeWWW = document.querySelector("#domain-text").value;
       removeWWW = removeWWW.replace(/^www\./,'');
-    chrome.storage.sync.set({
+    browser.storage.sync.set({
       [removeWWW]: document.querySelector("#domain-level").value
     });
     document.querySelector("#domain-form").reset();
@@ -134,7 +137,7 @@ function addDomain (e) {
 // go through storage JSON and generate table - list of domains
 //item[domain] == level
 function loadSettings() {
-  chrome.storage.sync.get(null, function(item) {
+  browser.storage.sync.get(null, function(item) {
 
   var fullTable = "<thead id=\"domain-list-head\"><th class=\"table-head\">Domain</th><th class=\"table-head\">Level</th></thead>";
   for (var domain in item) {
@@ -170,11 +173,11 @@ function gpsOpacity () {
   var x = document.getElementsByClassName("gps");
   if(document.getElementById('navigator_geolocation_type_of_restriction').selectedIndex == 1){
     for (var i = 0; i < x.length; i++) {
-      x[i].style.opacity = chrome.extension.getBackgroundPage().fadeOut;
+      x[i].style.opacity = browser.extension.getBackgroundPage().fadeOut;
     }
   } else {
     for (var i = 0; i < x.length; i++) {
-      x[i].style.opacity = chrome.extension.getBackgroundPage().fadeIn;
+      x[i].style.opacity = browser.extension.getBackgroundPage().fadeIn;
     }
   }
 }
@@ -195,12 +198,6 @@ document.getElementById('domain-show-hide').addEventListener('click', function (
   }
 });
       
-      // <td onclick=\"kek('"+ domain +"')\" class=\"td-delete\">X</td>
-      // <tr>
-      //   <td class="td-domain">www.keke.sk</td>
-      //   <td class="td-level">2</td>
-      //   <td class="td-delete" id="www.keke.sk">X</td>
-      // </tr>
 
 document.querySelector("#delete-list").addEventListener('click', function (e) {
     document.getElementById('domain-show-hide').click();
@@ -208,16 +205,16 @@ document.querySelector("#delete-list").addEventListener('click', function (e) {
 });
 // remove domain from list
 function removeDomain(domain) {
-  chrome.storage.sync.remove(domain, function(){});
+  browser.storage.sync.remove(domain, function(){});
 }
 
   // go through storage JSON and remove list of domains
 function removeList() {
-  chrome.storage.sync.get(null, function(item) {
+  browser.storage.sync.get(null, function(item) {
     for (var domain in item) {
       if (item.hasOwnProperty(domain)) {
         if ((domain != "extension_settings_data") && (domain != "__default__")) {
-            var removeIt = chrome.storage.sync.remove(domain);
+            var removeIt = browser.storage.sync.remove(domain);
         }
       }
     }
@@ -228,13 +225,13 @@ function removeList() {
 
 // clear all storage -- debug only --
 // function clearStorage() {
-//   chrome.storage.sync.clear(function(){
+//   browser.storage.sync.clear(function(){
 //   });
 // }
 
 // print storage -- debug only --
 // function printStorageConsole() {
-//   chrome.storage.sync.get(null, function(item) {
+//   browser.storage.sync.get(null, function(item) {
 //     console.log(item);
 //   });
 // }
@@ -256,7 +253,7 @@ document.querySelector("#levels-default #level-3").addEventListener("click", fun
 document.querySelector("#levels-default #level-4").addEventListener("click", function() {setDefaultLevelTo(LC);});
 
 function setDefaultLevelTo(level) {
-  chrome.storage.sync.set({
+  browser.storage.sync.set({
       __default__: level
   });
   clearAllLevels();

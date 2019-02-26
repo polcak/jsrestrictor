@@ -1,8 +1,8 @@
-if ((typeof browser) !== "undefined") {
-  var chrome = browser;
+if ((typeof chrome) !== "undefined") {
+  var browser = chrome;
 }
 
-// var bkgp = chrome.extension.getBackgroundPage();
+// var bkgp = browser.extension.getBackgroundPage();
 const L0 = 0;
 const L1 = 1;
 const L2 = 2;
@@ -13,7 +13,7 @@ const LD = 5;	// default
 const fadeOut = "0.3";
 const fadeIn = "1.0";
 
-var myAddon = new URL(chrome.runtime.getURL ('./'));
+var myAddon = new URL(browser.runtime.getURL ('./'));
 var url; // povodne domain "www.example.com"
 var activeClass = "level active";
 var activeLevel;
@@ -26,15 +26,15 @@ window.addEventListener('load', function() {
 
 // go to settings on click
 document.getElementById('settings-icon').addEventListener('click', function (e) {
-	chrome.runtime.openOptionsPage();
+	browser.runtime.openOptionsPage();
 	window.close();
 });
 
 
-// "SET LEVEL ON:" PART
+// "SET LEVEL ON:" part
 // go through storage and set active class to active levels // item[domain] == level
 function checkCurrentLevelOfDomain() {
-	chrome.storage.sync.get(null, function(item) {
+	browser.storage.sync.get(null, function(item) {
 
 		// clear active class for UI
 		clearAllLevels(false);
@@ -86,7 +86,7 @@ function setLevelForDomain(level) {
 		return;
 	}
 	if (level < 5) {
-		chrome.storage.sync.set({
+		browser.storage.sync.set({
       		[url.hostname]: level
     	});
   		document.querySelector("#third-row").style.opacity = fadeOut;
@@ -94,7 +94,7 @@ function setLevelForDomain(level) {
 
 	// clicked on "Defaut" ==> remove domain from domain list
 	else {
-	 	chrome.storage.sync.remove(url.hostname, function() {
+	 	browser.storage.sync.remove(url.hostname, function() {
 	 		document.querySelector("#third-row").style.opacity = fadeIn;
 	 	});
 	}
@@ -103,13 +103,13 @@ function setLevelForDomain(level) {
     document.querySelector("#levels-site #level-"+ level).classList.add("active");
     document.getElementById('set-level-on').innerHTML = "<a href=\"\" id=\"refresh-page\">Refresh page</a>";
     document.getElementById('refresh-page').addEventListener('click', function (e) {
-		chrome.tabs.reload();
+		browser.tabs.reload();
 		window.close();
 	});
 }
 
 
-// "SET DEFAULT LEVEL TO:" PART
+// "SET DEFAULT LEVEL TO:" part
 // set events for default level buttons
 document.querySelector("#levels-default #level-0").addEventListener("click", function() {setDefaultLevelTo(L0);});
 document.querySelector("#levels-default #level-1").addEventListener("click", function() {setDefaultLevelTo(L1);});
@@ -119,7 +119,7 @@ document.querySelector("#levels-default #level-4").addEventListener("click", fun
 
 // change / default level to storage
 function setDefaultLevelTo(level) {
-	chrome.storage.sync.set({
+	browser.storage.sync.set({
     	__default__: level
 	});
 
@@ -128,7 +128,7 @@ function setDefaultLevelTo(level) {
    	document.querySelector("#levels-default #level-"+ level).classList.add("active");
 	document.getElementById('set-default-level').innerHTML = "<a href=\"\" id=\"refresh-page\">Refresh page</a>";
 	document.getElementById('refresh-page').addEventListener('click', function (e) {
-		chrome.tabs.reload();
+		browser.tabs.reload();
 		window.close();
 	});
 }
@@ -137,7 +137,6 @@ function setDefaultLevelTo(level) {
 
 
 // COMMON FUNCTIONS
-
 // remove active class from elements // def - True for "Set level on:" part, False for "Set default level to:" 
 function clearAllLevels(def) {
 	if (def) {
@@ -160,7 +159,7 @@ var queryInfo = {
   currentWindow: true
 };
 //find url of current tab where popup showed
-chrome.tabs.query(queryInfo, function(tabs) {
+browser.tabs.query(queryInfo, function(tabs) {
 
     let tab = tabs[0];
     url = new URL(tab.url);

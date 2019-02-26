@@ -1,9 +1,9 @@
-if ((typeof browser) !== "undefined") {
-  var chrome = browser;
+if ((typeof chrome) !== "undefined") {
+  var browser = chrome;
 }
 
 // get storage data
-chrome.storage.sync.get(null, function (res) {
+browser.storage.sync.get(null, function (res) {
  
   if (isJavaScriptObjectEmpty(res)) {
     return Promise.reject();
@@ -30,7 +30,6 @@ chrome.storage.sync.get(null, function (res) {
       }
     }
   }
-
 
   // what settings are going to be used
   var currentLevel;
@@ -502,5 +501,5 @@ var level_3 = {
 //   console.log("JSON:");
 //   console.log(json);
 // }
-// const path = chrome.runtime.getURL("levels/level_0.json");
+// const path = browser.runtime.getURL("levels/level_0.json");
 // fetch(path).then((response) => response.json()).then((json) => convertJSONtoLevel(json));
