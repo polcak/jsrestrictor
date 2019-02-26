@@ -1,3 +1,7 @@
+if ((typeof browser) !== "undefined") {
+  var chrome = browser;
+}
+
 // set default level to 2 after install
 function installUpdate() {
   var myStorage = chrome.storage.sync.get(null, function (item) {
@@ -37,12 +41,12 @@ chrome.browserAction.onClicked.addListener(handleClick);
 // set badge color
 chrome.browserAction.setBadgeBackgroundColor({color: "#4a4a4a"});
 
-var urlcko; // domain ako "fit.vutbr.com"
-var rootDomain; // domain ako "vutbr.com"
+var url; // domain "fit.vutbr.com"
+var rootDomain; // domain "vutbr.com"
 
 // on tab reload or tab change, update badge
-chrome.tabs.onUpdated.addListener(tabEvent);	// reload tab
-chrome.tabs.onActivated.addListener(tabEvent);	// change tab
+chrome.tabs.onUpdated.addListener(tabEvent);  // reload tab
+chrome.tabs.onActivated.addListener(tabEvent);  // change tab
 
 // get active tab and pass it 
 var queryInfo = {
@@ -51,10 +55,10 @@ var queryInfo = {
 };
 
 // get url of active tab
-function tabEvent(tabinfo) {	
-	chrome.tabs.query(queryInfo, function(tabs) {
+function tabEvent(tabinfo) {  
+  chrome.tabs.query(queryInfo, function(tabs) {
     for (let tab of tabs) {
-      urlcko = tab.url;
+      url = tab.url;
     }
     updateBadge();
   });
@@ -70,14 +74,14 @@ var getLocation = function(href) {
 
 // update badge text 
 function updateBadge() {
-  	
-	urlcko = getLocation(urlcko);
-  urlcko.hostname = urlcko.hostname.replace(/^www\./,'');
-  rootDomain = extractRootDomain(urlcko.hostname);
+    
+  url = getLocation(url);
+  url.hostname = url.hostname.replace(/^www\./,'');
+  rootDomain = extractRootDomain(url.hostname);
   var myAddon = new URL(chrome.extension.getURL ('./'));
 
-	// get storage data
-	var data = chrome.storage.sync.get(null, function(res) {
+  // get storage data
+  var data = chrome.storage.sync.get(null, function(res) {
 
   if (isJavaScriptObjectEmpty(res)) {
     return Promise.reject();
@@ -90,7 +94,7 @@ function updateBadge() {
           if (domain == "__default__") {
             activeLevel = res[domain];
           }
-          if (domain != "extension_settings_data" && domain == urlcko.hostname) {
+          if (domain != "extension_settings_data" && domain == url.hostname) {
             activeLevel = res[domain];
             break;
           }
@@ -100,9 +104,9 @@ function updateBadge() {
       }
     }
     // set badge text or blank
-    if (activeLevel == "4" && urlcko.hostname != "" ) {
+    if (activeLevel == "4" && url.hostname != "" ) {
       chrome.browserAction.setBadgeText({text: "C"});
-    } else if (urlcko.hostname != "" && urlcko.hostname != myAddon.hostname && urlcko.hostname != "newtab") {
+    } else if (url.hostname != "" && url.hostname != myAddon.hostname && url.hostname != "newtab") {
       chrome.browserAction.setBadgeText({text: "" + activeLevel});
     } else {
       chrome.browserAction.setBadgeText({text: ""});

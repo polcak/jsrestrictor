@@ -1,6 +1,9 @@
+if ((typeof browser) !== "undefined") {
+  var chrome = browser;
+}
 
 // get storage data
-var data = chrome.storage.sync.get(null, function (res) {
+chrome.storage.sync.get(null, function (res) {
  
   if (isJavaScriptObjectEmpty(res)) {
     return Promise.reject();
