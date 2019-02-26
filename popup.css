@@ -1,6 +1,6 @@
 body {
 	width: 355px;
-	height: 390px;
+	height: 385px;
 	margin-left: 20px;
 	margin-right: 20px;
 }
@@ -12,7 +12,8 @@ p {
 }
 
 #first-row {
-	display: flex;
+	display: -webkit-box;
+	display: -moz-box;
 	border-bottom: 1px solid black;
 }
 
@@ -21,11 +22,8 @@ p {
 }
 
 #titletext {
-	margin-top: 20px;
+	margin-top: 18px;
 	margin-bottom: 20px;
-	margin-left: 10px;
-
-
 }
 
 #settings-icon {

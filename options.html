@@ -6,10 +6,17 @@
 </head>
 <body>
 
-  <div id="help">
-    <a id="help-link" href="help.html" target="_blank">Help & About</a>
-    <a id="test-link" href="https://www.stud.fit.vutbr.cz/~xtimko00/test.html" target="_blank">Test site</a>
+<div id="content">
+  <div id="title">
+    <img src="/img/icon-64.png">
+    <h2>JavaScript Restrictor</h2>
+    <div id="help">
+      <a id="test-link" class="links" href="https://polcak.github.io/jsrestrictor/test/test.html" target="_blank">Test page</a>
+      <a id="help-link" class="links" href="https://polcak.github.io/jsrestrictor" target="_blank">Help & About</a>
+    </div>
   </div>
+  
+
 
   <div id="first-row">
     <h2 id="set-default-level">Set default level of protection to:</h2> 
@@ -28,9 +35,9 @@
     <form id="domain-form">
       <input id="domain-text" type="text" placeholder="example.com or en.example.com">
       <select id="domain-level">
-        <option value="0">level 0</option>
+        <option value="0" selected>level 0</option>
         <option value="1">level 1</option>
-        <option value="2" selected>level 2</option>
+        <option value="2">level 2</option>
         <option value="3">level 3</option>
         <option value="4">custom level</option>
       </select>
@@ -63,7 +70,7 @@
       <!-- DATE -->
       <div class="main-section">
         <input type="checkbox" id="window_date_main_checkbox">
-        <span class="section-header">Reduce the time accuracy of "Date.now()" function:</span>
+        <span class="section-header">Reduce the time accuracy of "Date" object:</span>
       </div>
       <div class="subsection">
         <div class="row">
@@ -188,7 +195,7 @@
       <!-- XMLHTTPREQUEST -->
       <div class="main-section">
         <input type="checkbox" id="xmlhttprequest_main_checkbox">
-        <span class="section-header"><i>Filtrovat požadavky typu XMLHttpRequest dle následujícího parametru:</i></span> <span id="experimental">(experimental only)</span>
+        <span class="section-header"><i>Filter XMLHttpRequest requests:</i></span> <span id="experimental">(experimental only)</span>
       </div>
       <div class="subsection">
         <div class="row">
@@ -201,6 +208,7 @@
       <button type="submit" id="save" class="save-button">Save settings</button>
     </form>
   </div>
+</div>
   <script src="options.js"></script>
 </body>
 </html>
