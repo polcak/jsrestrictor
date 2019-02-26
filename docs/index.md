@@ -7,14 +7,14 @@ JavaScript Restrictor or JSR is a browser extension which increases level of sec
 * **window.performance.now() function**: this high-resolution timestamp can be used to idenfity the user or can be used for microarchitectural attacks,
 * **Canvas element**: this element is used to draw graphics in browser, however it can be also used to fingerprint the user’s device,
 * **Geolocation data**: this can be used to identify an electronic device’s physical location,
-* **XMLHttpRequest (XHR), experimental only**: XHR issues additional requests to the server even
+* **XMLHttpRequest (XHR), experimental only**: available only for "Custom level", XHR issues additional requests to the server even
 	after the page is displayed, such information might carry identification data.
 
 There are five levels of protection ready to use:
 
 * 0 - the functionality of the extension is turned off. No actions are taken. All web pages are displayed as intended without any interaction from JavaScritpt Restrictor.
-* 1 - first level of protection. This increases your level of protection. It means that websites collect a modified timestamp values. Canvas elements are not blocked.
-* 2 - second level of protection. On this level websites collect even more modified timestamp values, all canvas elements are blocked.
+* 1 - first level of protection. This increases your level of protection. It means that websites collect a modified timestamp values and geolocation data. Canvas elements are not blocked.
+* 2 - second level of protection. On this level websites collect even more modified timestamp values and geolocation data, all canvas elements are blocked.
 * 3 - maximum level of protection. Websites collect highly modified timestamp values, all canvas elements are blocked and geolocation data is nulled.
 * Custom - your level of protection. If you want, you can set your own level of protection and use it.
 

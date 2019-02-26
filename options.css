@@ -1,6 +1,19 @@
 body {
-	padding-top: 12px;
 	font-family: Arial;
+	max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    background-color: #c9c9c9;
+}
+
+#content {
+	background-color: white;
+	padding: 20px;
+	border-radius: 10px;
+	-webkit-box-shadow: 10px 10px 50px 0px rgba(0,0,0,0.75);
+	box-shadow: 10px 10px 50px 0px rgba(0,0,0,0.75);
 }
 
 .main-section .section-header {
@@ -16,6 +29,7 @@ body {
 	margin-left: 27px;
 	margin-top: 5px;
 	margin-bottom: 20px;
+	font-size: 12px;
 }
 
 /* text color in sunsection*/
@@ -80,7 +94,7 @@ body {
 	border: 2px solid grey;
 	border-radius: 5px;
 	display: inline-block;
-	margin-top: 11px;
+	margin-top: 8px;
 	margin-left: 20px;
 }
 .show-hide:hover {
@@ -119,7 +133,7 @@ body {
 }
 
 
-#first-row, #second-row, #third-row {
+#first-row, #second-row {
 	border-bottom: 2px solid black;
 	margin-bottom: 20px;
 	padding-bottom: 20px;
@@ -158,7 +172,7 @@ body {
 
 input[type=text] {
 	min-width: 210px;
-	height: 32px;
+	height: 18px;
 	padding: 6px;
 	border: 1px solid #c9c9c9;
 }
@@ -207,22 +221,35 @@ td{
 	height: 30px;
 }
 
-#help-link {
-	float: right;
-	font-size: 17px;
-}
 
-#test-link {
-	float: right;
-	margin-right: 20px;
-	font-size: 17px;
-}
+
 
 a { 
     color: blue;
 }
 
 #experimental {
-	margin-left: 30px;
+	margin-left: 5px;
 	font-size: 13px;
+}
+
+.links {
+	float: right;
+	margin-right: 20px;
+	font-size: 17px;
+}
+
+#title {
+	border-bottom: 2px solid black;
+	padding-bottom: 15px;
+}
+
+#title img {
+	width: 50px;
+	float: left;
+	margin-right: 15px;
+}
+
+#title h2 {
+	padding-top: 15px;
 }
