@@ -1,1 +1,4 @@
 .*.sw[pno]
+*.zip
+chrome_JSR/
+firefox_JSR/
