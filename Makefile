@@ -1,27 +1,26 @@
 all: firefox chrome
 
 firefox:
-	@mkdir firefox_JSR_extension
-	@cp -r firefox_files/* firefox_JSR_extension/
-	@cp -r img/ firefox_JSR_extension/
-	@cp options.css firefox_JSR_extension/
-	@cp options.html firefox_JSR_extension/
-	@cp popup.css firefox_JSR_extension/
-	@cp popup.html firefox_JSR_extension/
-	@echo "Firefox exported -> firefox_JSR_extension"
+	@cp firefox_manifest/manifest.json .
+	@zip -q -r firefox_JSR.zip img/ LICENSE manifest.json background.js document_start.js options.js options.css options.html popup.js popup.css popup.html
+	@rm -f manifest.json
+	@echo "Firefox zip extension exported -> firefox_JSR.zip"
+	@unzip -q firefox_JSR.zip -d firefox_JSR
+	@echo "Firefox dir extension exported -> Firefox_JSR/"
 
 chrome:
-	@mkdir chrome_JSR_extension
-	@cp -r chrome_files/* chrome_JSR_extension/
-	@cp -r img/ chrome_JSR_extension/
-	@cp options.css chrome_JSR_extension/
-	@cp options.html chrome_JSR_extension/
-	@cp popup.css chrome_JSR_extension/
-	@cp popup.html chrome_JSR_extension/
-	@echo "Chrome exported  -> chrome_JSR_extension"
+	@cp chrome_manifest/manifest.json .
+	@zip -q -r chrome_JSR.zip img/ LICENSE manifest.json background.js document_start.js options.js options.css options.html popup.js popup.css popup.html
+	@rm -f manifest.json
+	@echo "Chrome zip extension exported  -> chrome_JSR.zip"
+	@unzip -q chrome_JSR.zip -d chrome_JSR 
+	@echo "Chrome dir extension exported  -> chrome_JSR/"
 
-clear:
-	rm -rf firefox_JSR_extension
-	rm -rf chrome_JSR_extension
+
+clean:
+	rm -rf firefox_JSR.zip
+	rm -rf firefox_JSR
+	rm -rf chrome_JSR.zip
+	rm -rf chrome_JSR
 
 
