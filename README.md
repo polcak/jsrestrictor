@@ -1,2 +1,1 @@
-# jsrestrictor
-JavaScript Restrictor web extension
+docs/index.md
