@@ -1,4 +1,4 @@
-> **Disclaimer**: This is a research project under development, see the [issue page](https://github.com/polcak/jsrestrictor/issues) for more details about the current status.
+> **Disclaimer**: This is a research project under development, see the [issue page](https://github.com/polcak/jsrestrictor/issues) and the [webextension home page](https://polcak.github.io/jsrestrictor/) for more details about the current status.
 
 JavaScript Restrictor or JSR is a browser extension which increases level of security, anonymity and privacy of the user while browsing the internet. Various websites can collect information about users without their awareness of it, which can lead to identification of the users. Also, an attacker can use malicious websites to collect data about the user or fingerprint user’s device. This extension aims to protect the user by rounding or modifying values which are websites collecting. Inaccurate values of data - given by this extension - mislead websites which are collecting such data. This leads to a higher level of anonymity and security for the user. JavaScript Restrictor can modify following values:
 
