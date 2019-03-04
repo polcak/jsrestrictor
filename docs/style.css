@@ -1,0 +1,82 @@
+body {
+	color: black;
+	background-color: white;
+	display: grid;
+	grid-template-areas: 
+	      "logo empty"
+	      "menu content"
+	      "none footer";
+	grid-gap: 3em;
+}
+
+section.logo {
+	grid-area: logo;
+}
+nav.menu {
+	grid-area: menu;
+}
+section.content {
+	grid-area: content;
+}
+footer {
+	grid-area: footer;
+}
+
+@media (max-width: 600px) {
+	body {
+		/*  Redefine the grid into a single column layout. */
+		grid-template-columns: 1fr;
+		grid-template-areas: 
+			"content"
+			"menu"
+			"logo"
+			"footer";
+	}
+}
+
+section.logo img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+nav.menu {
+	font-family: sans-serif;
+}
+
+nav.menu ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	background-color: #f7e032;
+	color: navy;
+}
+
+nav.menu ul ul {
+	padding-left: 1em;
+}
+@media (min-width: 601px) {
+	nav.menu ul ul {
+		display: none;
+	}
+}
+
+nav.menu ul p:hover + ul, nav.menu ul p + ul:hover {
+	display: block;
+}
+
+nav.menu ul a:visited, nav.menu ul a, nav.menu ul p {
+	color: black;
+	display: block;
+	text-decoration: none;
+	padding-top: 1ex;
+	padding-bottom: 1ex;
+	padding-right: 1em;
+	padding-left: 1em;
+	margin: 0;
+}
+
+nav.menu ul a:hover, nav.menu ul p:hover {
+	color: #f7e032;
+	background-color: #6c6216;
+}
