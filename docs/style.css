@@ -34,6 +34,18 @@ footer {
 	}
 }
 
+@media (min-width: 1500px) {
+	body {
+		/*  Redefine the grid into a three column layout. */
+		grid-template-areas: 
+			"menu content logo"
+			"none footer empty"
+	}
+	section.content {
+		max-width: 1000px;
+	}
+}
+
 section.logo img {
 	display: block;
 	margin-left: auto;
