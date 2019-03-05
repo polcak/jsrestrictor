@@ -70,7 +70,7 @@ nav.menu {
 nav.menu ul ul {
 	padding-left: 1em;
 }
-@media (min-width: 601px) {
+@media ((min-width: 601px) and (hover: hover)) {
 	nav.menu ul ul {
 		display: none;
 	}
