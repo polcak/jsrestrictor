@@ -2,11 +2,28 @@
 
 A JS-enabled web page has a full control of the APIs that a web browser provides. The customization is only minimal and some APIs cannot be restricted by the user without modifying the web browser source code. JavaScript Restrictor aims to improve the user control of the web browser. Similarly to a firewall that controls the network traffic, JavaScript Restrictor controls the APIs provided by the browser. The goal is to improve the privacy and security of the user running the extension.
 
+<<<<<<< HEAD
 JavaScript Restrictor or JSR is a browser extension with support for multiple browsers: [Firefox](https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/), [Google Chrome](https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb), and [Opera](https://addons.opera.com/en/extensions/details/javascript-restrictor/).
+=======
+* **window.Date object**: this high-resolution timestamp can be used to idenfity the user or can be used for microarchitectural attacks
+* **window.performance.now() function**: this high-resolution timestamp can be used to idenfity the user or can be used for microarchitectural attacks,
+* **Canvas element**: this element is used to draw graphics in browser, however it can be also used to fingerprint the user’s device,
+* **Geolocation data**: this can be used to identify an electronic device’s physical location,
+* **XMLHttpRequest (XHR), experimental only**: available only for "Custom level", XHR issues additional requests to the server even
+>>>>>>> 7dac7ae6c0af1aa1732ff598858cfe4fb44f6b86
 
 Various websites collect information about users without their awareness. The collected information is used to track users. Malicious websites can fingerprint user browsers or computers. JavaScript Restrictor protects the user by restricting or modifying several web browser APIs used to create side-channels and identify the user, the browser or the computer. JavaScript Restrictor can block access to JavaScript objects, functions and properties or provide a less precise implementation of their functionality, for example, by rounding or modifying values returned by the JS calls. The goal is to mislead websites by providing false data or no data at all.
 
+<<<<<<< HEAD
 Another goal of the extension is not to break the visited websites. As the deployment of JavaScript only websites rise, it is necessary to fine-tune the API available to the websites to prevent unsolicited tracking and protect against data thefts.
+=======
+* 0 - the functionality of the extension is turned off. No actions are taken. All web pages are displayed as intended without any interaction from JavaScritpt Restrictor.
+
+* 1 - first level of protection. This increases your level of protection. It means that websites collect a modified timestamp values and geolocation data. Canvas elements are not blocked.
+* 2 - second level of protection. On this level websites collect even more modified timestamp values and geolocation data, all canvas elements are blocked.
+* 3 - maximum level of protection. Websites collect highly modified timestamp values, all canvas elements are blocked and geolocation data is nulled.
+* Custom - your level of protection. If you want, you can set your own level of protection and use it.
+>>>>>>> 7dac7ae6c0af1aa1732ff598858cfe4fb44f6b86
 
 JavaScript Restrictor currently supports modifying and restricting the following APIs:
 
