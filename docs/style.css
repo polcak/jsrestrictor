@@ -3,9 +3,9 @@ body {
 	background-color: white;
 	display: grid;
 	grid-template-areas: 
-	      "logo empty"
+	      "logo content"
 	      "menu content"
-	      "none footer";
+	      "menu footer";
 	grid-gap: 3em;
 }
 
@@ -39,7 +39,7 @@ footer {
 		/*  Redefine the grid into a three column layout. */
 		grid-template-areas: 
 			"menu content logo"
-			"none footer empty"
+			"menu footer logo"
 	}
 	section.content {
 		max-width: 1000px;
@@ -60,8 +60,11 @@ nav.menu ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
+}
+
+nav.menu {
 	background-color: #f7e032;
-	color: navy;
+	color: #f7e032;
 }
 
 nav.menu ul ul {
