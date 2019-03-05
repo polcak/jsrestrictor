@@ -44,6 +44,9 @@ footer {
 	section.content {
 		max-width: 1000px;
 	}
+	section.logo {
+		padding-top: 3em;
+	}
 }
 
 section.logo img {
@@ -54,6 +57,12 @@ section.logo img {
 
 nav.menu {
 	font-family: sans-serif;
+}
+
+@media (min-width: 601px) {
+	nav.menu {
+		padding-top: 3em;
+	}
 }
 
 nav.menu ul {
