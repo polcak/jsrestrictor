@@ -77,14 +77,9 @@ nav.menu {
 nav.menu ul ul {
 	padding-left: 1em;
 }
-@media ((min-width: 601px) and (hover: hover)) {
-	nav.menu ul ul {
-		display: none;
-	}
-}
 
-nav.menu ul p:hover + ul, nav.menu ul p + ul:hover {
-	display: block;
+nav.menu ul p:after {
+	content: "  »";
 }
 
 nav.menu ul a:visited, nav.menu ul a, nav.menu ul p {
@@ -98,7 +93,7 @@ nav.menu ul a:visited, nav.menu ul a, nav.menu ul p {
 	margin: 0;
 }
 
-nav.menu ul a:hover, nav.menu ul p:hover {
+nav.menu ul a:hover {
 	color: #f7e032;
 	background-color: #6c6216;
 }
