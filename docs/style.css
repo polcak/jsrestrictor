@@ -34,15 +34,13 @@ footer {
 	}
 }
 
-@media (min-width: 1500px) {
+@media (min-width: 1300px) {
 	body {
-		/*  Redefine the grid into a three column layout. */
+		/*  Redefine the grid into a three column layout with empty space on the left and right. */
+		grid-template-columns: 1fr 10em 1000px 10% 1fr;
 		grid-template-areas: 
-			"menu content logo"
-			"menu footer logo"
-	}
-	section.content {
-		max-width: 1000px;
+			"left-empty menu content logo right-empty"
+			"left-empty menu footer  logo right-empty"
 	}
 	section.logo {
 		padding-top: 3em;
