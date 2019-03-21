@@ -376,34 +376,34 @@ function createXMLHttpRequestWrappingFunctionString(selectOption) {
     blockEveryXMLHttpRequest = true;
   }
 
-  var javaScriptCodeString = "\
-  (function() {\
-    var blockEveryXMLHttpRequest = " + blockEveryXMLHttpRequest + ";\
-    var originalXMLHttpRequest = window.XMLHttpRequest;\
-    window.XMLHttpRequest = function() {\
-      var currentXMLHttpRequestObject = new originalXMLHttpRequest();\
-      var originalXMLHttpRequestOpenFunction = currentXMLHttpRequestObject.open;\
-      currentXMLHttpRequestObject.open = function(requestMethod, requestURL, requestParameterAsync, requestUsername, requestPassword) {\
-        if (blockEveryXMLHttpRequest || !confirm('There is a XMLHttpRequest on URL \"' + requestURL + '\". Do you want to continue?')) {\
-          return undefined;\
-        }\
-        if (requestParameterAsync == undefined) {\
-          return originalXMLHttpRequestOpenFunction.call(currentXMLHttpRequestObject, requestMethod, requestURL);\
-        }\
-        else if (requestUsername == undefined) {\
-          return originalXMLHttpRequestOpenFunction.call(currentXMLHttpRequestObject, requestMethod, requestURL, requestParameterAsync);\
-        }\
-        else if (requestPassword == undefined) {\
-          return originalXMLHttpRequestOpenFunction.call(currentXMLHttpRequestObject, requestMethod, requestURL, requestParameterAsync, requestUsername);\
-        }\
-        else {\
-          return originalXMLHttpRequestOpenFunction.call(currentXMLHttpRequestObject, requestMethod, requestURL, requestParameterAsync, requestUsername, requestPassword);\
-        }\
-      };\
-      return currentXMLHttpRequestObject;\
-    };\
-  }) ();\
-  ";
+  var javaScriptCodeString = `
+  (function() {
+    var blockEveryXMLHttpRequest = ${blockEveryXMLHttpRequest};
+    var originalXMLHttpRequest = window.XMLHttpRequest;
+    window.XMLHttpRequest = function() {
+      var currentXMLHttpRequestObject = new originalXMLHttpRequest();
+      var originalXMLHttpRequestOpenFunction = currentXMLHttpRequestObject.open;
+      currentXMLHttpRequestObject.open = function(requestMethod, requestURL, requestParameterAsync, requestUsername, requestPassword) {
+        if (blockEveryXMLHttpRequest || !confirm('There is a XMLHttpRequest on URL ${requestURL}. Do you want to continue?')) {
+          return undefined;
+        }
+        if (requestParameterAsync == undefined) {
+          return originalXMLHttpRequestOpenFunction.call(currentXMLHttpRequestObject, requestMethod, requestURL);
+        }
+        else if (requestUsername == undefined) {
+          return originalXMLHttpRequestOpenFunction.call(currentXMLHttpRequestObject, requestMethod, requestURL, requestParameterAsync);
+        }
+        else if (requestPassword == undefined) {
+          return originalXMLHttpRequestOpenFunction.call(currentXMLHttpRequestObject, requestMethod, requestURL, requestParameterAsync, requestUsername);
+        }
+        else {
+          return originalXMLHttpRequestOpenFunction.call(currentXMLHttpRequestObject, requestMethod, requestURL, requestParameterAsync, requestUsername, requestPassword);
+        }
+      };
+      return currentXMLHttpRequestObject;
+    };
+  }) ();
+  `;
 
   return javaScriptCodeString;
 }
