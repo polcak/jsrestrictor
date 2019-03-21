@@ -372,32 +372,26 @@ function createGeolocationGetCurrentPositionWrappingFunctionString(selectOption,
 
 function createXMLHttpRequestWrappingFunctionString(selectOption) {
   var blockEveryXMLHttpRequest = false;
-  if (selectOption == "b") {
-    blockEveryXMLHttpRequest = true;
+  if (selectOption === "b") {
+    blockEveryXMLHttpRequest = "true";
+  }
+  var confirmEveryXMLHttpRequest = false;
+  if (selectOption === "a") {
+    confirmEveryXMLHttpRequest = "true";
   }
 
   var javaScriptCodeString = `
   (function() {
-    var blockEveryXMLHttpRequest = ${blockEveryXMLHttpRequest};
     var originalXMLHttpRequest = window.XMLHttpRequest;
     window.XMLHttpRequest = function() {
       var currentXMLHttpRequestObject = new originalXMLHttpRequest();
       var originalXMLHttpRequestOpenFunction = currentXMLHttpRequestObject.open;
-      currentXMLHttpRequestObject.open = function(requestMethod, requestURL, requestParameterAsync, requestUsername, requestPassword) {
-        if (blockEveryXMLHttpRequest || !confirm('There is a XMLHttpRequest on URL ${requestURL}. Do you want to continue?')) {
+      currentXMLHttpRequestObject.open = function(...args) {
+        if (${blockEveryXMLHttpRequest} || (${confirmEveryXMLHttpRequest} && !confirm('There is a XMLHttpRequest on URL ' + args[1] + '. Do you want to continue?'))) {
           return undefined;
         }
-        if (requestParameterAsync == undefined) {
-          return originalXMLHttpRequestOpenFunction.call(currentXMLHttpRequestObject, requestMethod, requestURL);
-        }
-        else if (requestUsername == undefined) {
-          return originalXMLHttpRequestOpenFunction.call(currentXMLHttpRequestObject, requestMethod, requestURL, requestParameterAsync);
-        }
-        else if (requestPassword == undefined) {
-          return originalXMLHttpRequestOpenFunction.call(currentXMLHttpRequestObject, requestMethod, requestURL, requestParameterAsync, requestUsername);
-        }
         else {
-          return originalXMLHttpRequestOpenFunction.call(currentXMLHttpRequestObject, requestMethod, requestURL, requestParameterAsync, requestUsername, requestPassword);
+          return originalXMLHttpRequestOpenFunction.call(this, ...args);
         }
       };
       return currentXMLHttpRequestObject;
