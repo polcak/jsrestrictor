@@ -1,6 +1,7 @@
 //
-//  Facebook Chat Left is a browser extension which changes Facebook
-//  chat position to the left.
+//  JavaScript Restrictor is a browser extension which increases level
+//  of security, anonymity and privacy of the user while browsing the
+//  internet.
 //
 //  Copyright (C) 2019  Martin Timko
 //
