@@ -1,4 +1,6 @@
 function updatePerformanceLabel() {
+  // getHW();
+  // getUserAgent();
   var curPerValue = window.performance.now();
   document.getElementById("current-performance").innerHTML = curPerValue;
 }

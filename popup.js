@@ -21,6 +21,7 @@
 //
 
 
+// set browser var as chrome
 if ((typeof chrome) !== "undefined") {
   var browser = chrome;
 }
@@ -35,7 +36,7 @@ const LD = 5;	// default
 const fadeOut = "0.3";
 const fadeIn = "1.0";
 
-var myAddon = new URL(browser.runtime.getURL ('./'));
+var myAddon = new URL(browser.runtime.getURL ('./')); // get my extension / addon url
 var url; // "www.example.com"
 var activeClass = "level active";
 var activeLevel;
@@ -53,7 +54,8 @@ document.getElementById('settings-icon').addEventListener('click', function (e) 
 });
 
 
-// "SET LEVEL ON:" part
+
+//// "SET LEVEL ON:" part ////
 // go through storage and set active class to active levels // item[domain] == level
 function checkCurrentLevelOfDomain() {
 	browser.storage.sync.get(null, function(item) {
@@ -66,8 +68,8 @@ function checkCurrentLevelOfDomain() {
 
 		for (var domain in item) {
 			if (item.hasOwnProperty(domain)) {
-				// if site is in domain list, change active class from default to domain setting
-				if (domain != "extension_settings_data" && domain == url.hostname) {
+		        // found sub domain e.g. fit.vutbr.cz in storage, break
+				if (domain == url.hostname) {
 					elm.classList.remove("active");
 					document.querySelector("#levels-site #level-"+ item[domain]).classList.add("active");
 					document.querySelector("#third-row").style.opacity = fadeOut;
@@ -80,14 +82,17 @@ function checkCurrentLevelOfDomain() {
 					document.querySelector("#levels-default #level-"+ item[domain]).classList.add("active");
 					activeLevel = item[domain];
 				}
-				if (domain != "extension_settings_data" && domain == extractRootDomain(url.hostname)) {
+          		// get level for domain but keep looking for possible sub domain
+				if (domain == extractRootDomain(url.hostname)) {
         			activeLevel = item[domain];
         			activeDomain = domain;
         			subDomain = true;
       			}
 			}
 		}
+		// set "Active level" level 
 		document.getElementById('active-level').innerHTML = (activeLevel == LC ? "Custom" : activeLevel);
+		// if root domain has specific level but subdomain doesnt, inform user that this subdoain has level based on root domain 
 		if (subDomain) {
 			document.getElementById('active-domain').innerHTML = "based on <span id=\"active-domain-text\">"+ activeDomain + " </span>";
 		}
@@ -104,17 +109,19 @@ document.querySelector("#levels-site #level-5").addEventListener("click", functi
 
 // add domain to domain list with level
 function setLevelForDomain(level) {
+	// if newtab or extension url or empty site... do not set spedific level on that domain
 	if (url.hostname == "" || url.hostname == myAddon.hostname || url.hostname == "newtab") {
 		return;
 	}
-	if (level < 5) {
+	// if clicked on 0 1 2 3 or custom add domain to domain list
+	if (level < LD) {
 		browser.storage.sync.set({
       		[url.hostname]: level
     	});
   		document.querySelector("#third-row").style.opacity = fadeOut;
 	}
 
-	// clicked on "Defaut" ==> remove domain from domain list
+	// clicked on "Defaut" --> remove domain from domain list
 	else {
 	 	browser.storage.sync.remove(url.hostname, function() {
 	 		document.querySelector("#third-row").style.opacity = fadeIn;
@@ -131,7 +138,7 @@ function setLevelForDomain(level) {
 }
 
 
-// "SET DEFAULT LEVEL TO:" part
+//// "SET DEFAULT LEVEL TO:" part ////
 // set events for default level buttons
 document.querySelector("#levels-default #level-0").addEventListener("click", function() {setDefaultLevelTo(L0);});
 document.querySelector("#levels-default #level-1").addEventListener("click", function() {setDefaultLevelTo(L1);});
@@ -139,13 +146,13 @@ document.querySelector("#levels-default #level-2").addEventListener("click", fun
 document.querySelector("#levels-default #level-3").addEventListener("click", function() {setDefaultLevelTo(L3);});
 document.querySelector("#levels-default #level-4").addEventListener("click", function() {setDefaultLevelTo(LC);});
 
-// change / default level to storage
+// change default level in  storage
 function setDefaultLevelTo(level) {
 	browser.storage.sync.set({
     	__default__: level
 	});
 
-	// set new active level for default level and add "Refresh page", if write to storage successful
+	// set new active level for default level and add "Refresh page"
 	clearAllLevels(true);
    	document.querySelector("#levels-default #level-"+ level).classList.add("active");
 	document.getElementById('set-default-level').innerHTML = "<a href=\"\" id=\"refresh-page\">Refresh page</a>";
@@ -158,7 +165,6 @@ function setDefaultLevelTo(level) {
 
 
 
-// COMMON FUNCTIONS
 // remove active class from elements // def - True for "Set level on:" part, False for "Set default level to:" 
 function clearAllLevels(def) {
 	if (def) {

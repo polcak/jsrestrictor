@@ -8,11 +8,21 @@
 	<script type="text/javascript" src="canvas.js"></script>
 	<script type="text/javascript" src="gps.js"></script>
 	<script type="text/javascript" src="xmlhttprequest.js"></script>
+	<script type="text/javascript" src="userAgent.js"></script>
+	<script type="text/javascript" src="hw.js"></script>
 	<link rel="stylesheet" type="text/css" href="global.css">
 </head>
-<body onload="initClock(); updatePerformanceLabelEvery(200);">
+<body onload="initClock(); updatePerformanceLabelEvery(200); getUserAgent(); getHW();">
+	<p><a href="https://polcak.github.io/jsrestrictor/">Home Page</a></p>
+	<p>You can try <a href="https://amiunique.org/">Am I Unique</a> or <a href="https://panopticlick.eff.org/">Panopticlick</a> to learn how identifiable you are on the Internet and test JavaScript Restrictor Extension</p>
+	<hr>
+	
 	<h1>Simple examples for implemented browser extension</h1>
 	<hr>
+	<h2>User agent / Browser information</h2>
+	<div id="user-agent"></div>
+	<br><br><br><hr>
+
 	<h2>window.Date example</h2>
 	<div id="content-wrapper">
 		<span id="hours">00</span>:
@@ -29,11 +39,13 @@
 	</div>
 	<br><br><br><hr>
 
+	<h2>Canvas fingerprinting</h2>
 
-	<h2>window.HTMLCanvasElement example</h2>
+	<br><br><br><hr>
+	<h2>window.HTMLCanvasElement.toDataURL() example</h2>
 	<img id="demo-image" src="demo_image.png">
 	<div id="canvas-wrap-1">
-		<h3>Canvas 1</h3>
+		<h3 id="canvasUp">Canvas frame</h3>
 		<div id="canvas1-buttons-wrap">
 			<button onclick="writeLineToCanvas('canvas1');">Add line to canvas</button>
 			<button onclick="writeCircleToCanvas('canvas1');">Add circle to canvas</button>
@@ -44,7 +56,9 @@
 		</div>
 		<canvas id="canvas1" width="800px" height="200px"></canvas>
 	</div>
-	<div id="canvas-wrap-2">
+	<button id="getData" onclick="getData('canvas1');">Get data and show image in canvas frame</button>
+	<div id="getDataDiv"></div>
+<!-- 	<div id="canvas-wrap-2">
 		<h3>Canvas 2</h3>
 		<div id="canvas2-buttons-wrap">
 			<button onclick="writeLineToCanvas('canvas2');">Add line to canvas</button>
@@ -55,10 +69,17 @@
 			<button onclick="writeImageToCanvas('canvas2');">Add image to canvas</button>
 		</div>
 		<canvas id="canvas2" width="800px" height="200px"></canvas>
-	</div>
+	</div> -->
 	<br><br><br><hr>
 
 
+ 	<h2>Hardware information</h2>
+ 	<div id="hw">
+ 	</div>
+ 	<br><br><br><hr>
+
+
+ 	
 	<h2>navigator.geolocation example</h2>
 
 	<div id="map"></div>
