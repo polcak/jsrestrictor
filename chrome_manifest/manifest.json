@@ -1,8 +1,8 @@
 {
-  "author": "Martin Timko, Libor Polcak",
+  "author": "Martin Timko",
   "background": {
       "scripts": ["background.js"],
-      "persistent": false
+      "persistent": true
   },
   "browser_action": {
     "default_icon": {
@@ -40,7 +40,7 @@
   "manifest_version": 2,
   "name": "JavaScript Restrictor",
   "options_page": "options.html",
-  "permissions": ["storage", "tabs"],
+  "permissions": ["storage", "tabs", "webRequest", "webRequestBlocking", "<all_urls>"],
   "short_name": "JSR",
-  "version": "0.1"
+  "version": "0.2"
 }

@@ -20,6 +20,10 @@ button {
 	clear: both;
 }
 
+#getData {
+	height: 28px;
+}
+
 .bottom-buttons-wrap button {
 	width: 400px;
 	height: 50px;
