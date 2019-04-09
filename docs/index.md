@@ -8,7 +8,7 @@ Various websites collect information about users without their awareness. The co
 
 Another goal of the extension is not to break the visited websites. As the deployment of JavaScript only websites rise, it is necessary to fine-tune the API available to the websites to prevent unsolicited tracking and protect against data thefts.
 
-JavaScript Restrictor currently supports modifying and restricting the following APIs (for full details visit [levels of protection page](https://github.com/polcak/jsrestrictor/levels.html):
+JavaScript Restrictor currently supports modifying and restricting the following APIs (for full details visit [levels of protection page](https://polcak.github.io/jsrestrictor/levels.html):
 
 * **Various Navigator object data** and **HTTP web requests,** which can be queried for information about the user's User Agent, platform, browser version etc.,
 * **document.referrer** and **Referrer HTTP web request** gives the URI of the page that linked to the current page,
@@ -29,7 +29,7 @@ JavaScript Restrictor provides five levels of protection:
 * 3 - maximal level of protection. User Agent, platrofm, hardware and also browser's language is spoofed. Protection against canvas fingerprinting is enabled. Timestamp values are even more restricted and geolocation data is nullified.
 * Custom - your level of protection. If desired, you can set your own level of protection.
 
-For more accurate description of the restrictions see [levels of protection page](https://github.com/polcak/jsrestrictor/levels.html).
+For more accurate description of the restrictions see [levels of protection page](https://polcak.github.io/jsrestrictor/levels.html).
 
 Note that the spoofing and rounding actions performed by the extension can break the functionality of a website (e.g. Facebook or Instagram). Please [report to us](https://github.com/polcak/jsrestrictor/issues) any malfunction websites that do not track users.
 
