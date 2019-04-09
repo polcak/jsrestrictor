@@ -22,7 +22,7 @@
 
 
 // check if firefox or chrome for fake user agent setting
-var isFirefox = window.chrome;
+var isFirefox;
 if ((typeof browser) !== "undefined") {
   isFirefox = true;
 } else {
@@ -38,8 +38,8 @@ if ((typeof chrome) !== "undefined") {
 var fakeUserAgent = false;
 var fakeLanguage = false;
 var fakeReferer = false;
-var ffAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0";
-var chromeAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36";
+var ffAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0";
+var chromeAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729 Safari/537.36";
 
 var globalActiveLevel;
 
