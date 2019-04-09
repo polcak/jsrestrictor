@@ -22,21 +22,33 @@
 //
 
 
+// check if firefox or chrome for fake user agent setting
+var isFirefox;
+if ((typeof browser) !== "undefined") {
+  isFirefox = true;
+} else {
+  isFirefox = false;
+}
+
+// either way, set browser var as chrome
 if ((typeof chrome) !== "undefined") {
   var browser = chrome;
 }
 
-// get storage data
+// fake user agent and vendor settings
+var ffAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0";
+var ffVendor = ""
+var chromeAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729 Safari/537.36";
+var chromeVendor = "Google Inc.";
+
+
+// get all storage data
 browser.storage.sync.get(null, function (res) {
- 
-  if (isJavaScriptObjectEmpty(res)) {
-    return Promise.reject();
-  }
 
   // find url / domain of current site
   var url = new URL(window.location.href);
-  var rootDomain = extractRootDomain(url.hostname); // domain ako "example.com"
-  url.hostname = url.hostname.replace(/^www\./,'');
+  var rootDomain = extractRootDomain(url.hostname); // domain "example.com"
+  url.hostname = url.hostname.replace(/^www\./,''); // remove www
 
   // find level for this site to use
   var activeLevel;
@@ -45,11 +57,13 @@ browser.storage.sync.get(null, function (res) {
       if (domain == "__default__") {
         activeLevel = res[domain];
       }
-      if (domain != "extension_settings_data" && domain == url.hostname) {
+      // found sub domain e.g. fit.vutbr.cz in storage, break
+      if (domain == url.hostname) {
         activeLevel = res[domain];
         break;
       }
-      if (domain != "extension_settings_data" && domain == rootDomain) {
+      // get level for domain but keep looking for possible sub domain
+      if (domain == rootDomain) {
         activeLevel = res[domain];
       }
     }
@@ -65,24 +79,19 @@ browser.storage.sync.get(null, function (res) {
     currentLevel = level_2;
   if (activeLevel == 3)
     currentLevel = level_3;
+  // custom
   if (activeLevel == 4)
     currentLevel = res.extension_settings_data;
 
-  // do magic
-
+  // do magic - wrap object / functions
   // window.Date
   if (currentLevel.window_date.main_checkbox) {
     var digitPlacesToRoundCount = currentLevel.window_date.time_round_precision;
-    
     var scriptTag = document.createElement('script');
     scriptTag.type = 'text/javascript';
     scriptTag.text = createDateWrappingFunctionString(digitPlacesToRoundCount);
     document.getElementsByTagName('html')[0].appendChild(scriptTag);
   
-    // var scriptTag2 = document.createElement('script');
-    // scriptTag2.type = 'text/javascript';
-    // scriptTag2.text = createDateNowWrappingFunctionString(digitPlacesToRoundCount);
-    // document.getElementsByTagName('html')[0].appendChild(scriptTag2);
   }
 
   // window.performance
@@ -96,10 +105,9 @@ browser.storage.sync.get(null, function (res) {
 
   // window.HTMLCanvasElement
   if (currentLevel.window_html_canvas_element.main_checkbox) {
-    var selectOption = currentLevel.window_html_canvas_element.type_of_restriction;
     var scriptTag = document.createElement('script');
     scriptTag.type = 'text/javascript';
-    scriptTag.text = createHTMLCanvasElementPrototypeWrappingFunctionString(selectOption);
+    scriptTag.text = createHTMLCanvasElementPrototypeWrappingFunctionString();
     document.getElementsByTagName('html')[0].appendChild(scriptTag);
   }
 
@@ -136,6 +144,63 @@ browser.storage.sync.get(null, function (res) {
     document.getElementsByTagName('html')[0].appendChild(scriptTag);
   }
 
+  // User Agent info, platform, vendor....
+  if (currentLevel.user_agent.main_checkbox) {
+    var selectOption = currentLevel.user_agent.type_of_restriction;
+    if (activeLevel == 4) {
+      var isCustomLevel = true;
+    }
+    else {
+      var isCustomLevel = false;
+    }
+    var scriptTag = document.createElement('script');
+    scriptTag.type = 'text/javascript';
+    scriptTag.text = createUserAgentWrappingFunctionString(selectOption, isCustomLevel);
+    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+  }
+
+  // document.referrer
+  if (currentLevel.referer.main_checkbox) {
+    var scriptTag = document.createElement('script');
+    scriptTag.type = 'text/javascript';
+    scriptTag.text = createRefererWrappingFunctionString();
+    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+  }
+
+  // navigator.language
+  if (currentLevel.language.main_checkbox) {
+    var scriptTag = document.createElement('script');
+    scriptTag.type = 'text/javascript';
+    scriptTag.text = createLanguageWrappingFunctionString();
+    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+  }
+
+  // navigator.deviceMemory, navigator.hardwareConcurrency
+  if (currentLevel.hardware.main_checkbox) {
+    var scriptTag = document.createElement('script');
+    scriptTag.type = 'text/javascript';
+    scriptTag.text = createHardwareWrappingFunctionString();
+    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+  }
+
+  // navigator.cookieEnabled
+  if (currentLevel.cookie_enabled.main_checkbox) {
+    var selectOption = currentLevel.cookie_enabled.type_of_restriction;
+    var scriptTag = document.createElement('script');
+    scriptTag.type = 'text/javascript';
+    scriptTag.text = createCookieEnabledWrappingFunctionString(selectOption);
+    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+  }
+
+  // navigator.doNotTrack
+  if (currentLevel.DNT_enabled.main_checkbox) {
+    var selectOption = currentLevel.DNT_enabled.type_of_restriction;
+    var scriptTag = document.createElement('script');
+    scriptTag.type = 'text/javascript';
+    scriptTag.text = createDNTWrappingFunctionString(selectOption);
+    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+  }
+
 });
 
 // functions for generating wrapping JavaScript code -- NOT USED
@@ -168,28 +233,9 @@ function createDateWrappingFunctionString(timePrecisionIndecimalPlaces) {
     }\
   }) ();\
   ";
+
   return javaScriptCodeString;
 }
-
-// function createDateNowWrappingFunctionString(timePrecisionIndecimalPlaces) {
-//   var javaScriptCodeString = "\
-// (\
-//   function() {\
-//     var timeInMillisecondsPrecisionInDecimalPlaces = " + timePrecisionIndecimalPlaces + ";\
-//     var original = window.Date.now;\
-//     window.Date.now = function() {\
-//       return roundToPrecision(original.call(Date), timeInMillisecondsPrecisionInDecimalPlaces);\
-//     };\
-//     function roundToPrecision(numberToRound, precision) {\
-//       var moveDecimalDot = Math.pow(10, precision);\
-//       return Math.round(numberToRound * moveDecimalDot) / moveDecimalDot;\
-//     }\
-//   }\
-// ) ();\
-// ";
-//   return javaScriptCodeString;
-// }
-
 
 function createPerformanceNowWrappingFunctionString(performanceNowPrecisionIndecimalPlaces) {
   var javaScriptCodeString = "\
@@ -212,26 +258,20 @@ function createPerformanceNowWrappingFunctionString(performanceNowPrecisionIndec
   return javaScriptCodeString;
 }
 
-function createHTMLCanvasElementPrototypeWrappingFunctionString(selectOption) {
-  var blockWritingToCanvasesEntirely = false;
-  if (selectOption == "b") {
-    blockWritingToCanvasesEntirely = true;
-  }
 
-  var javaScriptCodeString = "\
-  (function() {\
-    var blockWritingToCanvasesEntirely = " + blockWritingToCanvasesEntirely + ";\
-    var originalHTMLCanvasElementPrototype = window.HTMLCanvasElement.prototype.getContext;\
-    window.HTMLCanvasElement.prototype.getContext = function(contextType, contextAttributes) {\
-      if (!blockWritingToCanvasesEntirely && confirm('Enable drawing to canvas?')) {\
-        return originalHTMLCanvasElementPrototype.call(this, contextType, contextAttributes);\
-      }\
-      else {\
-        return null;\
-      }\
-    };\
-  }) ();\
-  ";
+function createHTMLCanvasElementPrototypeWrappingFunctionString() {
+  var javaScriptCodeString = `
+    (function(){
+      var origToDataURL = HTMLCanvasElement.prototype.toDataURL;
+
+      HTMLCanvasElement.prototype.toDataURL = function(type, encoderOptions) {
+        var ctx = this.getContext("2d");
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, this.width, this.height);
+        return origToDataURL.call(this, type, encoderOptions);
+      };
+    })();
+  `;
 
   return javaScriptCodeString;
 }
@@ -374,14 +414,184 @@ function createXMLHttpRequestWrappingFunctionString(selectOption) {
   return javaScriptCodeString;
 }
 
-// other functions
-function isJavaScriptObjectEmpty(object) {
-  for(var property in object) {
-    if(object.hasOwnProperty(property))
-      return false;
-  }
-  return true;
+function createUserAgentWrappingFunctionString(selectOption, customLevel) {
+    var fakeAgent;
+    var fakeVendor;
+    // if not custom and level 2 then set fakeAgent based on real browser (level 2 has "a" as default)
+    if (customLevel == false && selectOption == "a") {
+      if (isFirefox == true) {
+        fakeAgent = ffAgent;
+        fakeVendor = ffVendor;
+      }
+      else {
+        fakeAgent = chromeAgent;
+        fakeVendor = chromeVendor;
+      }
+    }
+    // if not custom and level 3 then always chrome (level 3 has "b" as default)
+    else if (customLevel == false && selectOption == "b") {
+      fakeAgent = chromeAgent;
+      fakeVendor = chromeVendor;
+    }
+
+    // if custom ignore real browser and set custom setting
+    else if (customLevel == true && selectOption == "a") {
+      fakeAgent = ffAgent;
+      fakeVendor = ffVendor;
+    }
+    else if (customLevel == true && selectOption == "b") {
+      fakeAgent = chromeAgent;
+      fakeVendor = chromeVendor;
+    }
+
+    javaScriptCodeString = `
+    (function() {
+      Object.defineProperty(navigator,"userAgent", {
+        get: function () { return "${fakeAgent}"; },
+        set: function (a) {},
+        configurable: false
+      });
+      Object.defineProperty(navigator,"vendor", {
+        get: function () { return "${fakeVendor}"; },
+        set: function (a) {},
+        configurable: false
+      });
+      Object.defineProperty(navigator,"platform", {
+        get: function () { return "Win32"; },
+        set: function (a) {},
+        configurable: false
+      });
+      Object.defineProperty(navigator,"appVersion", {
+        get: function () { return "5.0 (Windows)"; },
+        set: function (a) {},
+        configurable: false
+      });
+      Object.defineProperty(navigator,"oscpu", {
+        get: function () { return undefined; },
+        set: function (a) {},
+        configurable: false
+      });
+    }) ();
+    `;
+
+  return javaScriptCodeString;
 }
+
+function createRefererWrappingFunctionString() {
+    javaScriptCodeString = `
+    (function() {
+        Object.defineProperty(document,"referrer", {
+        get: function () { return ""; },
+        set: function (a) {},
+        configurable: false
+      });
+    }) ();
+    `;
+
+    return javaScriptCodeString;
+}
+
+function createLanguageWrappingFunctionString() {
+  javaScriptCodeString = `
+    (function() {
+      Object.defineProperty(navigator,"language", {
+        get: function () { return "en-US"; },
+        set: function (a) {},
+        configurable: false
+      });
+      Object.defineProperty(navigator,"languages", {
+        get: function () { return ["en-US", "en"]; },
+        set: function (a) {},
+        configurable: false
+      });
+    }) ();
+    `;
+
+  return javaScriptCodeString;
+}
+
+function createHardwareWrappingFunctionString() {
+  javaScriptCodeString = `
+    (function() {
+      Object.defineProperty(navigator,"deviceMemory", {
+        get: function () { return 4; },
+        set: function (a) {},
+        configurable: false
+      });
+      Object.defineProperty(navigator,"hardwareConcurrency", {
+        get: function () { return 2; },
+        set: function (a) {},
+        configurable: false
+      });
+    }) ();
+    `;
+
+  return javaScriptCodeString;
+}
+
+function createCookieEnabledWrappingFunctionString(selectOption) {
+  var setTrue = true;
+  if (selectOption == "b") {
+    setTrue = false;
+  }
+
+  if (setTrue) {
+    javaScriptCodeString = `
+    (function() {
+      Object.defineProperty(navigator,"cookieEnabled", {
+        get: function () { return true; },
+        set: function (a) {},
+        configurable: false
+      });
+    }) ();
+    `;
+  } else {
+    javaScriptCodeString = `
+    (function() {
+      Object.defineProperty(navigator,"cookieEnabled", {
+        get: function () { return false; },
+        set: function (a) {},
+        configurable: false
+      });
+    }) ();
+    `;
+  }
+
+  return javaScriptCodeString;
+}
+
+function createDNTWrappingFunctionString(selectOption) {
+  var setYes = true;
+  if (selectOption == "b") {
+    setYes = false;
+  }
+
+  if (setYes) {
+    javaScriptCodeString = `
+    (function() {
+      Object.defineProperty(navigator,"doNotTrack", {
+        get: function () { return "1"; },
+        set: function (a) {},
+        configurable: false
+      });
+    }) ();
+    `;
+  } else {
+    javaScriptCodeString = `
+    (function() {
+      Object.defineProperty(navigator,"doNotTrack", {
+        get: function () { return "0"; },
+        set: function (a) {},
+        configurable: false
+      });
+    }) ();
+    `;
+  }
+
+  return javaScriptCodeString;
+}
+
+
 
 function extractRootDomain(thisDomain) {
     // var thisDomain = extractHostname(thisUrl);
@@ -391,7 +601,7 @@ function extractRootDomain(thisDomain) {
     //if there is a subdomain 
     if (arrLen > 2) {
         thisDomain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
-        //check to see if it's using a Country Code Top Level Domain (ccTLD) (i.e. ".me.uk")
+        //check to see if it's using a Country Code Top Level Domain (ccTLD) (e.g. ".co.uk")
         if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
             //this is using a ccTLD
             thisDomain = splitArr[arrLen - 3] + '.' + thisDomain;
@@ -413,8 +623,7 @@ var level_0 = {
       "value_round_precision": "-1"
   },
   "window_html_canvas_element": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
+      "main_checkbox": false
   },
   "navigator_geolocation": {
       "main_checkbox": false,
@@ -430,6 +639,27 @@ var level_0 = {
   "window_xmlhttprequest": {
       "main_checkbox": false,
       "type_of_restriction": "a"
+  },
+  "user_agent": {
+      "main_checkbox": false,
+      "type_of_restriction": "a"
+  },
+  "referer": {
+      "main_checkbox": false
+  },
+  "language": {
+      "main_checkbox": false
+  },
+  "hardware": {
+      "main_checkbox": false
+  },
+  "cookie_enabled": {
+      "main_checkbox": false,
+      "type_of_restriction": "a"
+  },
+  "DNT_enabled": {
+      "main_checkbox": false,
+      "type_of_restriction": "a"
   }
 }
 var level_1 = {
@@ -442,8 +672,7 @@ var level_1 = {
       "value_round_precision": "-1"
   },
   "window_html_canvas_element": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
+      "main_checkbox": false
   },
   "navigator_geolocation": {
       "main_checkbox": true,
@@ -459,6 +688,27 @@ var level_1 = {
   "window_xmlhttprequest": {
       "main_checkbox": false,
       "type_of_restriction": "a"
+  },
+  "user_agent": {
+      "main_checkbox": false,
+      "type_of_restriction": "a"
+  },
+  "referer": {
+      "main_checkbox": false
+  },
+  "language": {
+      "main_checkbox": false
+  },
+  "hardware": {
+      "main_checkbox": true
+  },
+  "cookie_enabled": {
+      "main_checkbox": false,
+      "type_of_restriction": "a"
+  },
+  "DNT_enabled": {
+      "main_checkbox": true,
+      "type_of_restriction": "a"
   }
 }
 var level_2 = {
@@ -471,22 +721,42 @@ var level_2 = {
       "value_round_precision": "-2"
   },
   "window_html_canvas_element": {
-      "main_checkbox": true,
-      "type_of_restriction": "b"
+      "main_checkbox": true
   },
   "navigator_geolocation": {
       "main_checkbox": true,
       "type_of_restriction": "a",
       "gps_a": "1",
       "gps_b": "1",
-      "gps_c": "-1",
-      "gps_d": "-1",
-      "gps_e": "-1",
-      "gps_f": "-1",
-      "gps_g": "-1"
+      "gps_c": "-2",
+      "gps_d": "-2",
+      "gps_e": "-2",
+      "gps_f": "-2",
+      "gps_g": "-2"
   },
   "window_xmlhttprequest": {
       "main_checkbox": false,
+      "type_of_restriction": "a"
+  },
+  "user_agent": {
+      "main_checkbox": true,
+      "type_of_restriction": "a"
+  },
+  "referer": {
+      "main_checkbox": true
+  },
+  "language": {
+      "main_checkbox": false
+  },
+  "hardware": {
+      "main_checkbox": true
+  },
+  "cookie_enabled": {
+      "main_checkbox": false,
+      "type_of_restriction": "a"
+  },
+  "DNT_enabled": {
+      "main_checkbox": true,
       "type_of_restriction": "a"
   }
 }
@@ -500,8 +770,7 @@ var level_3 = {
       "value_round_precision": "-3"
   },
   "window_html_canvas_element": {
-      "main_checkbox": true,
-      "type_of_restriction": "b"
+      "main_checkbox": true
   },
   "navigator_geolocation": {
       "main_checkbox": true,
@@ -517,13 +786,28 @@ var level_3 = {
   "window_xmlhttprequest": {
       "main_checkbox": false,
       "type_of_restriction": "b"
+  },
+  "user_agent": {
+      "main_checkbox": true,
+      "type_of_restriction": "b"
+  },
+  "referer": {
+      "main_checkbox": true
+  },
+  "language": {
+      "main_checkbox": true
+  },
+  "hardware": {
+      "main_checkbox": true
+  },
+  "cookie_enabled": {
+      "main_checkbox": false,
+      "type_of_restriction": "a"
+  },
+  "DNT_enabled": {
+      "main_checkbox": true,
+      "type_of_restriction": "a"
   }
 }
 
-// // TODO
-// function convertJSONtoLevel(json) {
-//   console.log("JSON:");
-//   console.log(json);
-// }
-// const path = browser.runtime.getURL("levels/level_0.json");
-// fetch(path).then((response) => response.json()).then((json) => convertJSONtoLevel(json));
+// any questions? just email me: timko.martin at hotmail dot com 

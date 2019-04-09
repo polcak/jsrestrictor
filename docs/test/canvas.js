@@ -86,3 +86,14 @@ function writeImageToCanvas(canvasId) {
 	var img = document.getElementById("demo-image");
 	context.drawImage(img, x, y);
 }
+
+function getData(canvasId) {
+	var myCanvas = document.getElementById(canvasId);
+
+	canvasData = myCanvas.toDataURL();
+
+	document.getElementById("canvasUp").innerHTML = "Canvas frame";
+	setTimeout(function(){ document.getElementById("canvasUp").innerHTML = "Canvas frame updated"; }, 300);
+
+	
+}

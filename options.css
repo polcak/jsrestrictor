@@ -1,6 +1,6 @@
 body {
 	font-family: Arial;
-	max-width: 550px;
+	max-width: 555px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 50px;
@@ -135,8 +135,8 @@ body {
 
 #first-row, #second-row {
 	border-bottom: 2px solid black;
-	margin-bottom: 20px;
 	padding-bottom: 20px;
+	margin-bottom: 5px;
 }
 
 #set-default-level {
@@ -241,7 +241,7 @@ a {
 
 #title {
 	border-bottom: 2px solid black;
-	padding-bottom: 15px;
+	padding-bottom: 10px;
 }
 
 #title img {
@@ -252,4 +252,12 @@ a {
 
 #title h2 {
 	padding-top: 15px;
+}
+
+#first-row {
+	padding-bottom: 35px!important;
+}
+
+#levels-link {
+	margin-top: 0px;
 }
