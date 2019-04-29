@@ -208,24 +208,19 @@ function createDateWrappingFunctionString(timePrecisionIndecimalPlaces) {
   var javaScriptCodeString = `
   (function() {
     var timeInMillisecondsPrecisionInDecimalPlaces = ${timePrecisionIndecimalPlaces};
-    var originalNow = window.Date.now;
-    var originalDateObject = window.Date;
-    originalDateObject.prototype = Date.prototype;
-    var originalParse = window.Date.parse;
-    var originalUTC = window.Date.UTC;
-    var originalLength = window.Date.length;
+    var originalDateConstructor = window.Date;
     window.Date = function() {
-      var currentDateObject = new originalDateObject(...arguments);
+      var currentDateObject = new originalDateConstructor(...arguments);
       var roundedValue = roundToPrecision(currentDateObject.getMilliseconds(), timeInMillisecondsPrecisionInDecimalPlaces);
       currentDateObject.setMilliseconds(roundedValue);
       return currentDateObject;
     };
     window.Date.now = function() {
-      return roundToPrecision(originalNow.call(Date), timeInMillisecondsPrecisionInDecimalPlaces);
+      return roundToPrecision(originalDateConstructor.now.call(Date), timeInMillisecondsPrecisionInDecimalPlaces);
     };
-    window.Date.parse = originalParse;
-    window.Date.UTC = originalUTC;
-    window.Date.length = originalLength;
+    window.Date.parse = originalDateConstructor.parse;
+    window.Date.UTC = originalDateConstructor.UTC;
+    window.Date.length = originalDateConstructor.Length;
 
     function roundToPrecision(numberToRound, precision) {
       var moveDecimalDot = Math.pow(10, precision);
