@@ -83,7 +83,7 @@ browser.storage.sync.get(null, function (res) {
   if (activeLevel == 4)
     currentLevel = res.extension_settings_data;
 
-  // do magic - wrap object / functions
+  // wrap object / functions
   // window.Date
   if (currentLevel.window_date.main_checkbox) {
     var digitPlacesToRoundCount = currentLevel.window_date.time_round_precision;
