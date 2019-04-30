@@ -1,5 +1,5 @@
 {
-  "author": "Martin Timko",
+  "author": "Libor Polčák, Martin Timko",
   "background": {
       "scripts": ["background.js"]
   },
