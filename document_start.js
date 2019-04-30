@@ -218,6 +218,7 @@ function createDateWrappingFunctionString(timePrecisionIndecimalPlaces) {
     window.Date.now = function() {
       return roundToPrecision(originalDateConstructor.now.call(Date), timeInMillisecondsPrecisionInDecimalPlaces);
     };
+    window.Date.prototype = originalDateConstructor.prototype;
     Object.setPrototypeOf(window.Date, originalDateConstructor);
 
     function roundToPrecision(numberToRound, precision) {
