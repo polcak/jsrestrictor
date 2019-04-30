@@ -803,5 +803,3 @@ var level_3 = {
       "type_of_restriction": "a"
   }
 }
-
-// any questions? just email me: timko.martin at hotmail dot com 
