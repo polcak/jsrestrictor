@@ -83,7 +83,7 @@ browser.storage.sync.get(null, function (res) {
   if (activeLevel == 4)
     currentLevel = res.extension_settings_data;
 
-  // do magic - wrap object / functions
+  // wrap object / functions
   // window.Date
   if (currentLevel.window_date.main_checkbox) {
     var digitPlacesToRoundCount = currentLevel.window_date.time_round_precision;
@@ -205,34 +205,28 @@ browser.storage.sync.get(null, function (res) {
 
 // functions for generating wrapping JavaScript code -- NOT USED
 function createDateWrappingFunctionString(timePrecisionIndecimalPlaces) {
-  var javaScriptCodeString = "\
-  (function() {\
-    var timeInMillisecondsPrecisionInDecimalPlaces = " + timePrecisionIndecimalPlaces + ";\
-    var originalNow = window.Date.now;\
-    var originalDateObject = window.Date;\
-    originalDateObject.prototype = Date.prototype;\
-    var originalParse = window.Date.parse;\
-    var originalUTC = window.Date.UTC;\
-    var originalLength = window.Date.length;\
-    window.Date = function() {\
-      var currentDateObject = new originalDateObject(...arguments);\
-      var roundedValue = roundToPrecision(currentDateObject.getMilliseconds(), timeInMillisecondsPrecisionInDecimalPlaces);\
-      currentDateObject.setMilliseconds(roundedValue);\
-      return currentDateObject;\
-    };\
-    window.Date.now = function() {\
-      return roundToPrecision(originalNow.call(Date), timeInMillisecondsPrecisionInDecimalPlaces);\
-    };\
-    window.Date.parse = originalParse;\
-    window.Date.UTC = originalUTC;\
-    window.Date.length = originalLength;\
-  \
-    function roundToPrecision(numberToRound, precision) {\
-      var moveDecimalDot = Math.pow(10, precision);\
-      return Math.round(numberToRound * moveDecimalDot) / moveDecimalDot;\
-    }\
-  }) ();\
-  ";
+  var javaScriptCodeString = `
+  (function() {
+    var timeInMillisecondsPrecisionInDecimalPlaces = ${timePrecisionIndecimalPlaces};
+    var originalDateConstructor = window.Date;
+    window.Date = function() {
+      var currentDateObject = new originalDateConstructor(...arguments);
+      var roundedValue = roundToPrecision(currentDateObject.getMilliseconds(), timeInMillisecondsPrecisionInDecimalPlaces);
+      currentDateObject.setMilliseconds(roundedValue);
+      return currentDateObject;
+    };
+    window.Date.now = function() {
+      return roundToPrecision(originalDateConstructor.now.call(Date), timeInMillisecondsPrecisionInDecimalPlaces);
+    };
+    window.Date.prototype = originalDateConstructor.prototype;
+    Object.setPrototypeOf(window.Date, originalDateConstructor);
+
+    function roundToPrecision(numberToRound, precision) {
+      var moveDecimalDot = Math.pow(10, precision);
+      return Math.round(numberToRound * moveDecimalDot) / moveDecimalDot;
+    }
+  }) ();
+  `;
 
   return javaScriptCodeString;
 }
@@ -809,5 +803,3 @@ var level_3 = {
       "type_of_restriction": "a"
   }
 }
-
-// any questions? just email me: timko.martin at hotmail dot com 
