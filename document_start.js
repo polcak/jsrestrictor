@@ -382,6 +382,7 @@ function createXMLHttpRequestWrappingFunctionString(selectOption) {
       var originalXMLHttpRequestOpenFunction = currentXMLHttpRequestObject.open;
       currentXMLHttpRequestObject.open = function(...args) {
         if (${blockEveryXMLHttpRequest} || (${confirmEveryXMLHttpRequest} && !confirm('There is a XMLHttpRequest on URL ' + args[1] + '. Do you want to continue?'))) {
+          currentXMLHttpRequestObject.send = function () {}; // Prevents throwing an exception
           return undefined;
         }
         else {
