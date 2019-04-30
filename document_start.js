@@ -371,14 +371,8 @@ function createGeolocationGetCurrentPositionWrappingFunctionString(selectOption,
 }
 
 function createXMLHttpRequestWrappingFunctionString(selectOption) {
-  var blockEveryXMLHttpRequest = false;
-  if (selectOption === "b") {
-    blockEveryXMLHttpRequest = "true";
-  }
-  var confirmEveryXMLHttpRequest = false;
-  if (selectOption === "a") {
-    confirmEveryXMLHttpRequest = "true";
-  }
+  var blockEveryXMLHttpRequest = String(selectOption === "b");
+  var confirmEveryXMLHttpRequest = String(selectOption === "a");
 
   var javaScriptCodeString = `
   (function() {
