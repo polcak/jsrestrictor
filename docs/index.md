@@ -31,7 +31,7 @@ JavaScript Restrictor provides five levels of protection:
 
 For more accurate description of the restrictions see [levels of protection page](https://polcak.github.io/jsrestrictor/levels.html).
 
-Note that the spoofing and rounding actions performed by the extension can break the functionality of a website (e.g. Facebook or Instagram). Please [report to us](https://github.com/polcak/jsrestrictor/issues) any malfunction websites that do not track users.
+Note that the spoofing and rounding actions performed by the extension can break the functionality of a website (e.g. Netflix). Please [report to us](https://github.com/polcak/jsrestrictor/issues) any malfunction websites that do not track users.
 
 The default level of protection can be set by a popup (clicking on JSR icon) or through options of the extension. Specific level of protection for specific domains can be set in options by adding them to the list of websites with specific level of protection. This can be done also by a popup during a visit of the website.
 
