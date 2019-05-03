@@ -1,7 +1,24 @@
 {% include head.html %}
 
+	<section class="content">
+
     <h1>{{ page.title }}</h1>
 
     {{ content }}
+
+	</section>
+
+	<section class="versions">
+		{% comment %}
+			See https://github.com/jekyll/jekyll/issues/6166#issuecomment-322771527
+			and for comments
+			https://stackoverflow.com/questions/27975757/comment-out-an-include-statement-inside-an-html-file-using-jekyll
+			and https://help.shopify.com/en/themes/liquid
+		{% endcomment %}
+		{% capture md %}
+		{% include versions.md %}
+		{% endcapture %}
+		{{ md | markdownify }}
+	</section>
 
 {% include footer.html %}

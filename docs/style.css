@@ -2,10 +2,12 @@ body {
 	color: black;
 	background-color: white;
 	display: grid;
+	grid-template-columns: 10em 1fr;
 	grid-template-areas: 
-	      "logo content"
-	      "menu content"
-	      "menu footer";
+	      "logo     content"
+	      "menu     content"
+	      "versions content"
+	      "footer   footer";
 	grid-gap: 3em;
 }
 
@@ -17,6 +19,9 @@ nav.menu {
 }
 section.content {
 	grid-area: content;
+}
+section.versions {
+	grid-area: versions;
 }
 footer {
 	grid-area: footer;
@@ -30,6 +35,7 @@ footer {
 			"content"
 			"menu"
 			"logo"
+			"versions"
 			"footer";
 	}
 }
@@ -39,8 +45,9 @@ footer {
 		/*  Redefine the grid into a three column layout with empty space on the left and right. */
 		grid-template-columns: 1fr 10em 1000px 10% 1fr;
 		grid-template-areas: 
-			"left-empty menu content logo right-empty"
-			"left-empty menu footer  logo right-empty"
+			"left-empty menu content logo     right-empty"
+			"left-empty menu content versions right-empty"
+			"left-empty menu footer  footer   right-empty"
 	}
 	section.logo {
 		padding-top: 3em;
@@ -71,7 +78,6 @@ nav.menu ul {
 
 nav.menu {
 	background-color: #f7e032;
-	color: #f7e032;
 }
 
 nav.menu ul ul {
@@ -96,4 +102,14 @@ nav.menu ul a:visited, nav.menu ul a, nav.menu ul p {
 nav.menu ul a:hover {
 	color: #f7e032;
 	background-color: #6c6216;
+}
+
+.versions {
+	background-color: #f7e032;
+	padding: 1em;
+}
+
+.versions ul {
+	margin: 0.3em;
+	padding: 0;
 }
