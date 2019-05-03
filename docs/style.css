@@ -113,3 +113,7 @@ nav.menu ul a:hover {
 	margin: 0.3em;
 	padding: 0;
 }
+
+section.content {
+	text-align: justify;
+}
