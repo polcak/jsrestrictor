@@ -45,7 +45,7 @@
   },
   "permissions": ["storage", "tabs", "webRequest", "webRequestBlocking", "<all_urls>"],
   "short_name": "JSR",
-  "version": "0.2",
+  "version": "0.2.1",
   "browser_specific_settings": {
     "gecko": {
         "id": "jsr@javascriptrestrictor",
