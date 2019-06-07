@@ -726,7 +726,7 @@ var level_2 = {
       "type_of_restriction": "a"
   },
   "referer": {
-      "main_checkbox": true
+      "main_checkbox": false
   },
   "language": {
       "main_checkbox": false

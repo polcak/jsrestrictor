@@ -49,7 +49,7 @@
     * JS navigator.platform: *Win32*
     * JS navigator.appVersion: *5.0 (Windows)*
     * JS navigator.oscpu: *undefined*
-* **Empty Referer HTTP webRequest & JS document.referrer --** *ON*
+* **Empty Referer HTTP webRequest & JS document.referrer --** *OFF*
     * "Referrer" HTTP web request & JS document.referrer: *empty string (make websites think we always go to them directly rather than being referred)*
 * **Spoof browser language to: English only --** *OFF*
 * **Set Do-Not-Track setting (navigator.doNotTrack) --** *ON*
