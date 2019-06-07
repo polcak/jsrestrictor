@@ -87,28 +87,18 @@ browser.storage.sync.get(null, function (res) {
   // window.Date
   if (currentLevel.window_date.main_checkbox) {
     var digitPlacesToRoundCount = currentLevel.window_date.time_round_precision;
-    var scriptTag = document.createElement('script');
-    scriptTag.type = 'text/javascript';
-    scriptTag.text = createDateWrappingFunctionString(digitPlacesToRoundCount);
-    document.getElementsByTagName('html')[0].appendChild(scriptTag);
-  
+    injectScript(createDateWrappingFunctionString(digitPlacesToRoundCount));
   }
 
   // window.performance
   if (currentLevel.window_performance_now.main_checkbox) {
     var digitPlacesToRoundCount = currentLevel.window_performance_now.value_round_precision;
-    var scriptTag = document.createElement('script');
-    scriptTag.type = 'text/javascript';
-    scriptTag.text = createPerformanceNowWrappingFunctionString(digitPlacesToRoundCount);
-    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+    injectScript(createPerformanceNowWrappingFunctionString(digitPlacesToRoundCount));
   }
 
   // window.HTMLCanvasElement
   if (currentLevel.window_html_canvas_element.main_checkbox) {
-    var scriptTag = document.createElement('script');
-    scriptTag.type = 'text/javascript';
-    scriptTag.text = createHTMLCanvasElementPrototypeWrappingFunctionString();
-    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+    injectScript(createHTMLCanvasElementPrototypeWrappingFunctionString());
   }
 
   // navigator.geolocation
@@ -119,9 +109,7 @@ browser.storage.sync.get(null, function (res) {
         timestampPrecision = currentLevel.window_date.time_round_precision;
       }
 
-      var scriptTag = document.createElement('script');
-      scriptTag.type = 'text/javascript';
-      scriptTag.text = createGeolocationGetCurrentPositionWrappingFunctionString(
+      injectScript(createGeolocationGetCurrentPositionWrappingFunctionString(
           currentLevel.navigator_geolocation.type_of_restriction,
           currentLevel.navigator_geolocation.gps_a,
           currentLevel.navigator_geolocation.gps_b,
@@ -131,17 +119,13 @@ browser.storage.sync.get(null, function (res) {
           currentLevel.navigator_geolocation.gps_f,
           currentLevel.navigator_geolocation.gps_g,
           timestampPrecision
-        );
-      document.getElementsByTagName('html')[0].appendChild(scriptTag);
+        ));
   }
 
   // window.XMLHttpRequest
   if (currentLevel.window_xmlhttprequest.main_checkbox) {
     var selectOption = currentLevel.window_xmlhttprequest.type_of_restriction;
-    var scriptTag = document.createElement('script');
-    scriptTag.type = 'text/javascript';
-    scriptTag.text = createXMLHttpRequestWrappingFunctionString(selectOption);
-    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+    injectScript(createXMLHttpRequestWrappingFunctionString(selectOption));
   }
 
   // User Agent info, platform, vendor....
@@ -153,52 +137,34 @@ browser.storage.sync.get(null, function (res) {
     else {
       var isCustomLevel = false;
     }
-    var scriptTag = document.createElement('script');
-    scriptTag.type = 'text/javascript';
-    scriptTag.text = createUserAgentWrappingFunctionString(selectOption, isCustomLevel);
-    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+    injectScript(createUserAgentWrappingFunctionString(selectOption, isCustomLevel));
   }
 
   // document.referrer
   if (currentLevel.referer.main_checkbox) {
-    var scriptTag = document.createElement('script');
-    scriptTag.type = 'text/javascript';
-    scriptTag.text = createRefererWrappingFunctionString();
-    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+    injectScript(createRefererWrappingFunctionString());
   }
 
   // navigator.language
   if (currentLevel.language.main_checkbox) {
-    var scriptTag = document.createElement('script');
-    scriptTag.type = 'text/javascript';
-    scriptTag.text = createLanguageWrappingFunctionString();
-    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+    injectScript(createLanguageWrappingFunctionString());
   }
 
   // navigator.deviceMemory, navigator.hardwareConcurrency
   if (currentLevel.hardware.main_checkbox) {
-    var scriptTag = document.createElement('script');
-    scriptTag.type = 'text/javascript';
-    scriptTag.text = createHardwareWrappingFunctionString();
-    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+    injectScript(createHardwareWrappingFunctionString());
   }
 
   // navigator.cookieEnabled
   if (currentLevel.cookie_enabled.main_checkbox) {
     var selectOption = currentLevel.cookie_enabled.type_of_restriction;
-    var scriptTag = document.createElement('script');
-    scriptTag.type = 'text/javascript';
-    scriptTag.text = createCookieEnabledWrappingFunctionString(selectOption);
-    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+    injectScript(createCookieEnabledWrappingFunctionString(selectOption));
   }
 
   // navigator.doNotTrack
   if (currentLevel.DNT_enabled.main_checkbox) {
     var selectOption = currentLevel.DNT_enabled.type_of_restriction;
-    var scriptTag = document.createElement('script');
-    scriptTag.type = 'text/javascript';
-    scriptTag.text = createDNTWrappingFunctionString(selectOption);
-    document.getElementsByTagName('html')[0].appendChild(scriptTag);
+    injectScript(createDNTWrappingFunctionString(selectOption));
   }
 
 });
