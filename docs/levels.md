@@ -1,6 +1,6 @@
 # Levels
 ### Level 0
-* **Spoof user agent (inspired by Tor browser) --** *OFF*
+* **Spoof user agent (inspired by Tor browser, experimental only) --** *OFF*
 * **Empty Referer HTTP webRequest & JS document.referrer --** *OFF*
 * **Spoof browser language to: English only --** *OFF*
 * **Set Do-Not-Track setting (navigator.doNotTrack) --** *OFF*
@@ -13,7 +13,7 @@
 * **Filter XMLHttpRequest requests: (experimental only) --** *OFF*
 
 ### Level 1
-* **Spoof user agent (inspired by Tor browser) --** *OFF*
+* **Spoof user agent (inspired by Tor browser, experimental only) --** *OFF*
 * **Empty Referer HTTP webRequest & JS document.referrer --** *OFF*
 * **Spoof browser language to: English only --** *OFF*
 * **Set Do-Not-Track setting (navigator.doNotTrack) --** *ON*
@@ -39,7 +39,7 @@
 * **Filter XMLHttpRequest requests: (experimental only) --** *OFF*
 
 ### Level 2
-* **Spoof user agent (inspired by Tor browser) --** *ON*
+* **Spoof user agent (inspired by Tor browser, experimental only) --** *OFF*
     * "User-Agent" HTTP web request & JS navigator.userAgent: *based on actual browser*
         * Firefox: *Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0*
         * Chrome, Opera: *Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729 Safari/537.36*
@@ -76,7 +76,7 @@
 * **Filter XMLHttpRequest requests: (experimental only) --** *OFF*
 
 ### Level 3
-* **Spoof user agent (inspired by Tor browser) --** *ON*
+* **Spoof user agent (inspired by Tor browser, experimental only) --** *OFF*
     * "User-Agent" HTTP web request & JS navigator.userAgent: *Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729 Safari/537.36*
     * JS navigator.vendor: *Google Inc.*
     * JS navigator.platform: *Win32*

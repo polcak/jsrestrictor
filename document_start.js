@@ -722,7 +722,7 @@ var level_2 = {
       "type_of_restriction": "a"
   },
   "user_agent": {
-      "main_checkbox": true,
+      "main_checkbox": false,
       "type_of_restriction": "a"
   },
   "referer": {
@@ -771,7 +771,7 @@ var level_3 = {
       "type_of_restriction": "b"
   },
   "user_agent": {
-      "main_checkbox": true,
+      "main_checkbox": false,
       "type_of_restriction": "b"
   },
   "referer": {

@@ -10,7 +10,6 @@ Another goal of the extension is not to break the visited websites. As the deplo
 
 JavaScript Restrictor currently supports modifying and restricting the following APIs (for full details visit [levels of protection page](https://polcak.github.io/jsrestrictor/levels.html):
 
-* **Various Navigator object data** and **HTTP web requests,** which can be queried for information about the user's User Agent, platform, browser version etc.,
 * **document.referrer** and **Referrer HTTP web request** gives the URI of the page that linked to the current page,
 * **navigator.language** and **Accept-Language HTTP web request** can reveal user's preferred language and the language of the browser UI,
 * **navigator.doNotTrack** gives browser's Do Not Track setting,
@@ -18,6 +17,7 @@ JavaScript Restrictor currently supports modifying and restricting the following
 * **HTMLCanvasElement.toDataURL()** function can be used to fingerprint user's device. Canvas element provides access to HW acceleration which may reveal the card and consequently be used as a fingerprinting source,
 * **Geolocation data** can reveal the physical location of the device,
 * **navigator.deviceMemory** or **navigator.hardwareConcurrency** can reveal hardware specification of the device, 
+* **Various Navigator object data** and **HTTP web requests, experimental only** (available only in the _Custom level_) which can be queried for information about the user's User Agent, platform, browser version etc.,
 * **navigator.cookieEnabled, experimental only** (available only in the _Custom level_) to determine if the client web browser has cookies enabled,
 * **XMLHttpRequest (XHR), experimental only** (available only in the _Custom level_) issues requests to the server after the page is displayed and gathered information available through other APIs. Such information might carry identification data,
 
