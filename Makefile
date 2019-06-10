@@ -15,7 +15,7 @@ CHROME_FILES = $(shell find chrome/)
 	@cp -r common/ $*_JSR/
 	@cp -r $*/* $*_JSR/
 	@cp LICENSE $*_JSR/
-	@cd $*_JSR/ && zip -q -r ../$@ ./*
+	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
 
 clean:
 	rm -rf firefox_JSR.zip
