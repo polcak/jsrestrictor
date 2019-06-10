@@ -1,30 +1,24 @@
-all: firefox chrome firefox_unzip chrome_unzip
+all: firefox chrome
 
-firefox:
-	@cp firefox_manifest/manifest.json .
-	@zip -q -r firefox_JSR.zip img/ LICENSE manifest.json *.js options.css options.html popup.css popup.html
-	@rm -f manifest.json
-	@echo "Firefox zip extension exported -> firefox_JSR.zip"
+.PHONY: firefox chrome clean
+firefox: firefox_JSR.zip
+chrome: chrome_JSR.zip
 
-firefox_unzip: firefox
-	@unzip -q firefox_JSR.zip -d firefox_JSR
-	@echo "Firefox dir extension exported -> Firefox_JSR/"
+COMMON_FILES = $(shell find common/) \
+			   LICENSE \
+			   Makefile
+FIREFOX_FILES = $(shell find firefox/)
+CHROME_FILES = $(shell find chrome/)
 
-chrome:
-	@cp chrome_manifest/manifest.json .
-	@zip -q -r chrome_JSR.zip img/ LICENSE manifest.json *.js options.css options.html popup.css popup.html
-	@rm -f manifest.json
-	@echo "Chrome zip extension exported  -> chrome_JSR.zip"
-
-chrome_unzip: chrome
-	@unzip -q chrome_JSR.zip -d chrome_JSR 
-	@echo "Chrome dir extension exported  -> chrome_JSR/"
-
+%_JSR.zip: $(COMMON_FILES) $(FIREFOX_FILES)
+	@rm -rf $*_JSR/ $@
+	@cp -r common/ $*_JSR/
+	@cp -r $*/* $*_JSR/
+	@cp LICENSE $*_JSR/
+	@cd $*_JSR/ && zip -q -r ../$@ ./*
 
 clean:
 	rm -rf firefox_JSR.zip
 	rm -rf firefox_JSR
 	rm -rf chrome_JSR.zip
 	rm -rf chrome_JSR
-
-
