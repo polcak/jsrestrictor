@@ -206,12 +206,10 @@ function updateBadge() {
       }
     }
     // set badge text or blank
+    var currentLevel = getCurrentLevelJSON(activeLevel);
     // if custom and url is not empty (e.g. newtab in firefox or similar)
-    if (activeLevel == LC && url.hostname != "" ) {
-      browser.browserAction.setBadgeText({text: "C"});
-      // if not some newtab or similar set level number
-    } else if (url.hostname != "" && url.hostname != myAddon.hostname && url.hostname != "newtab") {
-      browser.browserAction.setBadgeText({text: "" + activeLevel});
+    if (url.hostname != "" && url.hostname != myAddon.hostname && url.hostname != "newtab") {
+      browser.browserAction.setBadgeText({text: "" + currentLevel["level_text"]});
       // if newtab or settings or similar is not real website, do not set badge text
     } else {
       browser.browserAction.setBadgeText({text: ""});

@@ -70,18 +70,7 @@ browser.storage.sync.get(null, function (res) {
   }
 
   // what settings are going to be used
-  var currentLevel;
-  if (activeLevel == 0)
-    currentLevel = level_0;
-  if (activeLevel == 1)
-    currentLevel = level_1;
-  if (activeLevel == 2)
-    currentLevel = level_2;
-  if (activeLevel == 3)
-    currentLevel = level_3;
-  // custom
-  if (activeLevel == 4)
-    currentLevel = res.extension_settings_data;
+  var currentLevel = getCurrentLevelJSON(activeLevel);
 
   // wrap object / functions
   // window.Date

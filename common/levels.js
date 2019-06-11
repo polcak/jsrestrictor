@@ -23,6 +23,7 @@
 // levels of protection
 
 var level_0 = {
+	"level_text": "0",
   "window_date": {
       "main_checkbox": false,
       "time_round_precision": "-1"
@@ -72,6 +73,7 @@ var level_0 = {
   }
 }
 var level_1 = {
+	"level_text": "1",
   "window_date": {
       "main_checkbox": true,
       "time_round_precision": "-1"
@@ -121,6 +123,7 @@ var level_1 = {
   }
 }
 var level_2 = {
+	"level_text": "2",
   "window_date": {
       "main_checkbox": true,
       "time_round_precision": "-2"
@@ -170,6 +173,7 @@ var level_2 = {
   }
 }
 var level_3 = {
+	"level_text": "3",
   "window_date": {
       "main_checkbox": true,
       "time_round_precision": "-3"
@@ -221,6 +225,7 @@ var level_3 = {
 //
 // default extension_settings_data setting. used on install
 var extension_settings_data = {
+	"level_text": "C",
   "window_date": {
       "main_checkbox": false,
       "time_round_precision": "-3"
@@ -277,3 +282,15 @@ const L2 = 2;
 const L3 = 3;
 const LC = 4;	// custom
 const LD = 5;	// default
+
+var levels = [level_0, level_1, level_2, level_3]
+
+browser.storage.sync.get(null, function (res) {
+	var custom_level = res.extension_settings_data;
+	custom_level["level_text"] = "C";
+	levels[LC] = custom_level;
+});
+
+function getCurrentLevelJSON(level) {
+	return levels[level];
+}
