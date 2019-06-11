@@ -22,6 +22,7 @@
 //
 
 
+// get root domain. e.g. fit.vutbr.cz --> vutbr.cz
 function extractRootDomain(thisDomain) {
     // var thisDomain = extractHostname(thisUrl);
     var splitArr = thisDomain.split('.');
@@ -38,4 +39,3 @@ function extractRootDomain(thisDomain) {
     }
     return thisDomain;
 }
-
