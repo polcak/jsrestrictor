@@ -26,13 +26,6 @@ if ((typeof chrome) !== "undefined") {
   var browser = chrome;
 }
 
-const L0 = 0;
-const L1 = 1;
-const L2 = 2;
-const L3 = 3;
-const LC = 4;	// custom
-const LD = 5;	// default
-
 const fadeOut = "0.3";
 const fadeIn = "1.0";
 

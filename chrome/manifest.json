@@ -1,7 +1,7 @@
 {
   "author": "Libor Polčák, Martin Timko",
   "background": {
-      "scripts": ["background.js"],
+      "scripts": ["levels.js", "background.js"],
       "persistent": true
   },
   "browser_action": {
