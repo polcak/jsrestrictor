@@ -41,7 +41,7 @@ var fakeReferer = false;
 var ffAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0";
 var chromeAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729 Safari/537.36";
 
-var globalActiveLevel;
+var globalActiveLevelJSON = {};
 
 
 // set default level to 2 after install
@@ -113,16 +113,11 @@ function rewriteUserAgentHeader(e) {
     if (header.name.toLowerCase() === "user-agent") {
       // if real browser is firefox, set on level 2 as fake firefox, on real chrome set fake chrome, level 3 always fake chrome
       if (fakeUserAgent) {
-        if (globalActiveLevel == L2 && isFirefox == true)
+        if (globalActiveLevelJSON.user_agent.type_of_restriction === "a") {
           header.value = ffAgent;
-        if (globalActiveLevel == L2 && isFirefox == false)
+        } else {
           header.value = chromeAgent;
-        if (globalActiveLevel == L3)
-          header.value = chromeAgent;
-        if (globalActiveLevel == LC && isFirefox == true)
-          header.value = ffAgent;
-        if (globalActiveLevel == LC && isFirefox == false)
-          header.value = chromeAgent;
+        }
       }
     }
     // if faking language, change accept-language always to EN
@@ -215,56 +210,10 @@ function updateBadge() {
       browser.browserAction.setBadgeText({text: ""});
     }
 
-    // set HTTP request header, fake user agent, fake referer/referrer - for info why these IFs, see levels description in docs
-    if (activeLevel == L0 || activeLevel == L1) {
-      fakeUserAgent = false;
-      fakeReferer = false;
+    fakeUserAgent = currentLevel.user_agent.main_checkbox;
+    fakeReferer = currentLevel.referer.main_checkbox;
+    fakeLanguage = currentLevel.language.main_checkbox;
 
-    } else if ((activeLevel > L1 && activeLevel < LC)) {
-        fakeUserAgent = true;
-        fakeReferer = true;
-
-    } else if (res.extension_settings_data.user_agent.main_checkbox == true) {
-      if (res.extension_settings_data.user_agent.type_of_restriction == "a") {
-        isFirefox = true;
-      }
-      else {
-        isFirefox = false;
-      }
-      fakeUserAgent = true;
-
-      if (res.extension_settings_data.referer.main_checkbox == true) {
-        fakeReferer = true;
-      }
-      else {
-        fakeReferer = false;
-      }
-    }
-    else if (res.extension_settings_data.user_agent.main_checkbox == false) {
-      fakeUserAgent = false;
-
-      if (res.extension_settings_data.referer.main_checkbox == true) {
-        fakeReferer = true;
-      }
-      else {
-        fakeReferer = false;
-      }
-    }
-
-    // set HTTP request header fake language
-    if (activeLevel == L0 || activeLevel == L1 || activeLevel == L2) {
-      fakeLanguage = false;
-    }
-    else if (activeLevel == L3) {
-      fakeLanguage = true;
-    }
-    else if (res.extension_settings_data.language.main_checkbox == true) {
-      fakeLanguage = true;
-    }
-    else if (res.extension_settings_data.language.main_checkbox == false) {
-      fakeLanguage = false;
-    }
-
-    globalActiveLevel = activeLevel;
+    globalActiveLevelJSON = currentLevel;
   });
 }
