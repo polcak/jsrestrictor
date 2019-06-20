@@ -74,7 +74,6 @@ function installUpdate() {
       });      
     }
   });
-  browser.tabs.create({'url':"https://polcak.github.io/jsrestrictor/"});
 }
 browser.runtime.onInstalled.addListener(installUpdate);
 
