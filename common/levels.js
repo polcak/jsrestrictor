@@ -22,258 +22,29 @@
 
 // levels of protection
 
+var level_0_time_precision = 1;
 var level_0 = {
 	"level_text": "0",
-  "window_date": {
-      "main_checkbox": false,
-      "time_round_precision": "-1"
-  },
-  "window_performance_now": {
-      "main_checkbox": false,
-      "value_round_precision": "-1"
-  },
-  "window_html_canvas_element": {
-      "main_checkbox": false
-  },
-  "navigator_geolocation": {
-      "main_checkbox": false,
-      "type_of_restriction": "a",
-      "gps_a": "4",
-      "gps_b": "4",
-      "gps_c": "-1",
-      "gps_d": "-1",
-      "gps_e": "-1",
-      "gps_f": "-1",
-      "gps_g": "-1"
-  },
-  "window_xmlhttprequest": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "user_agent": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "referer": {
-      "main_checkbox": false
-  },
-  "language": {
-      "main_checkbox": false
-  },
-  "hardware": {
-      "main_checkbox": false
-  },
-  "cookie_enabled": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "DNT_enabled": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  }
+	"wrappers": [
+		["CanvasRenderingContext2D.prototype.getImageData"],
+		["HTMLCanvasElement.prototype.toBlob"],
+		["HTMLCanvasElement.prototype.toDataURL"],
+		["Performance.prototype.now", level_0_time_precision],
+		["performance.getEntries", level_0_time_precision],
+		["performance.getEntriesByName", level_0_time_precision],
+		["performance.getEntriesByType", level_0_time_precision],
+		["window.Date", level_0_time_precision],
+		["window.XMLHttpRequest", false, true],
+	]
 }
-var level_1 = {
-	"level_text": "1",
-  "window_date": {
-      "main_checkbox": true,
-      "time_round_precision": "-1"
-  },
-  "window_performance_now": {
-      "main_checkbox": true,
-      "value_round_precision": "-1"
-  },
-  "window_html_canvas_element": {
-      "main_checkbox": false
-  },
-  "navigator_geolocation": {
-      "main_checkbox": true,
-      "type_of_restriction": "a",
-      "gps_a": "2",
-      "gps_b": "2",
-      "gps_c": "-1",
-      "gps_d": "-1",
-      "gps_e": "-1",
-      "gps_f": "-1",
-      "gps_g": "-1"
-  },
-  "window_xmlhttprequest": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "user_agent": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "referer": {
-      "main_checkbox": false
-  },
-  "language": {
-      "main_checkbox": false
-  },
-  "hardware": {
-      "main_checkbox": true
-  },
-  "cookie_enabled": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "DNT_enabled": {
-      "main_checkbox": true,
-      "type_of_restriction": "a"
-  }
-}
-var level_2 = {
-	"level_text": "2",
-  "window_date": {
-      "main_checkbox": true,
-      "time_round_precision": "-2"
-  },
-  "window_performance_now": {
-      "main_checkbox": true,
-      "value_round_precision": "-2"
-  },
-  "window_html_canvas_element": {
-      "main_checkbox": true
-  },
-  "navigator_geolocation": {
-      "main_checkbox": true,
-      "type_of_restriction": "a",
-      "gps_a": "1",
-      "gps_b": "1",
-      "gps_c": "-2",
-      "gps_d": "-2",
-      "gps_e": "-2",
-      "gps_f": "-2",
-      "gps_g": "-2"
-  },
-  "window_xmlhttprequest": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "user_agent": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "referer": {
-      "main_checkbox": false
-  },
-  "language": {
-      "main_checkbox": false
-  },
-  "hardware": {
-      "main_checkbox": true
-  },
-  "cookie_enabled": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "DNT_enabled": {
-      "main_checkbox": true,
-      "type_of_restriction": "a"
-  }
-}
-var level_3 = {
-	"level_text": "3",
-  "window_date": {
-      "main_checkbox": true,
-      "time_round_precision": "-3"
-  },
-  "window_performance_now": {
-      "main_checkbox": true,
-      "value_round_precision": "-3"
-  },
-  "window_html_canvas_element": {
-      "main_checkbox": true
-  },
-  "navigator_geolocation": {
-      "main_checkbox": true,
-      "type_of_restriction": "b",
-      "gps_a": "0",
-      "gps_b": "0",
-      "gps_c": "0",
-      "gps_d": "-1",
-      "gps_e": "-1",
-      "gps_f": "-1",
-      "gps_g": "-1"
-  },
-  "window_xmlhttprequest": {
-      "main_checkbox": false,
-      "type_of_restriction": "b"
-  },
-  "user_agent": {
-      "main_checkbox": false,
-      "type_of_restriction": "b"
-  },
-  "referer": {
-      "main_checkbox": true
-  },
-  "language": {
-      "main_checkbox": true
-  },
-  "hardware": {
-      "main_checkbox": true
-  },
-  "cookie_enabled": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "DNT_enabled": {
-      "main_checkbox": true,
-      "type_of_restriction": "a"
-  }
-}
+
+var level_1 = level_0;
+var level_2 = level_0;
+var level_3 = level_0;
+
 //
 // default extension_settings_data setting. used on install
-var extension_settings_data = {
-	"level_text": "C",
-  "window_date": {
-      "main_checkbox": false,
-      "time_round_precision": "-3"
-  },
-  "window_performance_now": {
-      "main_checkbox": false,
-      "value_round_precision": "-3"
-  },
-  "window_html_canvas_element": {
-      "main_checkbox": false
-  },
-  "navigator_geolocation": {
-      "main_checkbox": false,
-      "type_of_restriction": "a",
-      "gps_a": "0",
-      "gps_b": "0",
-      "gps_c": "0",
-      "gps_d": "-1",
-      "gps_e": "-1",
-      "gps_f": "-1",
-      "gps_g": "-1"
-  },
-  "window_xmlhttprequest": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "user_agent": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "referer": {
-      "main_checkbox": false
-  },
-  "language": {
-      "main_checkbox": false
-  },
-  "hardware": {
-      "main_checkbox": false
-  },
-  "cookie_enabled": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  },
-  "DNT_enabled": {
-      "main_checkbox": false,
-      "type_of_restriction": "a"
-  }
-}
+var extension_settings_data = level_0;
 
 // Level aliases
 const L0 = 0;
@@ -291,6 +62,7 @@ browser.storage.sync.get(null, function (res) {
 	levels[LC] = custom_level;
 });
 
-function getCurrentLevelJSON(level) {
+function getCurrentLevelJSON() {
+	var level = 0; // FIXME get level
 	return levels[level];
 }

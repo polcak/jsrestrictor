@@ -21,7 +21,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["levels.js", "borrowed.js", "url.js", "document_start.js"],
+      "js": ["browser.js", "levels.js", "borrowed.js", "url.js", WRAPPING, "document_start.js"],
       "run_at": "document_start"
     }
   ],

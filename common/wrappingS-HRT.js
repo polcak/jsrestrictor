@@ -3,7 +3,6 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2019  Martin Timko
 //  Copyright (C) 2019  Libor Polcak
 //
 //  This program is free software: you can redistribute it and/or modify
@@ -20,7 +19,27 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-// either way, set browser var as chrome
-if ((typeof chrome) !== "undefined") {
-  var browser = chrome;
-}
+/*
+ * Create private namespace
+ */
+(function() {
+	var wrappers = [
+		{
+			parent_object: "Performance.prototype",
+			parent_object_property: "now",
+			wrapped_objects: [
+				{
+					original_name: "Performance.prototype.now",
+					wrapped_name: "origNow",
+				}
+			],
+			helping_code: rounding_function,
+			wrapping_function_args: "",
+			wrapping_function_body: `
+					var originalPerformanceValue = origNow.call(window.performance);
+					return rounding_function(originalPerformanceValue, args[0]);
+				`
+		},
+	]
+	add_wrappers(wrappers);
+})();

@@ -3,7 +3,6 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2019  Martin Timko
 //  Copyright (C) 2019  Libor Polcak
 //
 //  This program is free software: you can redistribute it and/or modify
@@ -20,7 +19,14 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-// either way, set browser var as chrome
-if ((typeof chrome) !== "undefined") {
-  var browser = chrome;
+
+/*
+ * Check if we are running in Firefox or not
+ */
+function running_in_firefox() {
+	if ((typeof browser) !== "undefined") {
+	  return true;
+	} else {
+	  return false;
+	}
 }
