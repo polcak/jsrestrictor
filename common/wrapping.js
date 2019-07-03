@@ -23,7 +23,7 @@
  * Create IIFE to wrap the code in closure
  */
 function enclose_wrapping(code, ...args) {
-	return `(function(...args) {${code}})(${args});`
+	return `(function(...args) {${code}})(${args});`;
 }
 
 /**
