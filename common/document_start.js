@@ -22,12 +22,4 @@
 //
 
 var currentLevel = getCurrentLevelJSON();
-
-for (tobewrapped of currentLevel.wrappers) {
-	try {
-		apply_wrapping(build_wrapping_code[tobewrapped[0]], tobewrapped.slice(1));
-	}
-	catch (e) {
-		console.log(e);
-	}
-}
+wrap_code(currentLevel.wrappers);

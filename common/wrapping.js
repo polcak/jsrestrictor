@@ -31,10 +31,14 @@ function enclose_wrapping(code, ...args) {
  * a function in the page context.
  */
 function define_page_context_function(wrapper) {
-	return `${wrapper.parent_object}.${wrapper.parent_object_property} = function(${wrapper.wrapping_function_args}) {
+	var originalF = wrapper["original_function"] || `${wrapper.parent_object}.${wrapper.parent_object_property}`;
+	return enclose_wrapping(`var originalF = ${originalF};
+			var replacementF = function(${wrapper.wrapping_function_args}) {
 				${wrapper.wrapping_function_body}
 			};
-	`
+			${wrapper.parent_object}.${wrapper.parent_object_property} = replacementF;
+			original_functions[replacementF.toString()] = originalF.toString();
+	`);
 }
 
 /**
@@ -167,11 +171,33 @@ function add_wrappers(wrappers) {
 	}
 }
 
-/**
- * Applies the wrapping code to the page context.
- */
-function apply_wrapping(wrapper, ...args) {
-	var code = build_code(wrapper, ...args);
+function wrap_code(wrappers) {
+	var code = `(function() {
+		var original_functions = {};
+		`;
+	for (tobewrapped of wrappers) {
+		try {
+			code += build_code(build_wrapping_code[tobewrapped[0]], tobewrapped.slice(1));
+		}
+		catch (e) {
+			console.log(e);
+		}
+	}
+	code += `
+			var originalToStringF = Function.prototype.toString;
+			var originalToStringStr = Function.prototype.toString();
+			Function.prototype.toString = function() {
+				var currentString = originalToStringF.call(this);
+				var originalStr = original_functions[currentString];
+				if (originalStr !== undefined) {
+					return originalStr;
+				}
+				else {
+					return currentString;
+				}
+			};
+			original_functions[Function.prototype.toString.toString()] = originalToStringStr;
+		})();`;
 	inject_code(code);
 }
 

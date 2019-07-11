@@ -45,6 +45,7 @@
 			post_wrapping_code: [
 				{
 					code_type: "function_define",
+					original_function: "originalDateConstructor.now",
 					parent_object: "window.Date",
 					parent_object_property: "now",
 					wrapping_function_args: "",
