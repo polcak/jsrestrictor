@@ -1,7 +1,7 @@
 {
   "author": "Libor Polčák, Martin Timko",
   "background": {
-      "scripts": ["levels.js", "url.js", "background.js"]
+      "scripts": ["update.js", "url.js", "levels.js", "background.js"]
   },
   "browser_action": {
     "browser_style": true,
@@ -21,7 +21,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["browser.js", "levels.js", "borrowed.js", "url.js", WRAPPING, "document_start.js"],
+      "js": ["browser.js", "url.js", "levels.js", "borrowed.js", WRAPPING, "document_start.js"],
       "run_at": "document_start"
     }
   ],
@@ -43,9 +43,9 @@
     "page": "options.html",
     "open_in_tab": true
   },
-  "permissions": ["storage", "tabs", "webRequest", "webRequestBlocking", "<all_urls>"],
+  "permissions": ["storage", "tabs"],
   "short_name": "JSR",
-  "version": "0.2.1",
+  "version": "0.3",
   "browser_specific_settings": {
     "gecko": {
         "id": "jsr@javascriptrestrictor",

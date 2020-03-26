@@ -5,7 +5,7 @@
   <link rel="stylesheet" type="text/css" href="options.css">
   <script src="levels.js" type="text/javascript"></script>
   <script src="helpers.js" type="text/javascript" defer></script>
-  <script src="options.js" type="text/javascript" defer></script>
+  <script src="options_domains.js" type="text/javascript" defer></script>
 </head>
 <body>
 			<section class="logo">
@@ -37,14 +37,24 @@
     <h1>JavaScript Restrictor</h1>
 
 <section id="configuration_area">
-  <div id="levels-config">
-    <h2 id="set-default-level">Configured levels and default level:</h2> 
-    <ul id="levels-list">
-    </ul>
-    <p id="levels-link" class="links">For more info about levels visit: <a href="https://polcak.github.io/jsrestrictor/levels.html" target="_blank">Levels description</a></p>
-    <button id="new_level" class="jsr-button">Add custom level</button>
-  </div>
 
+  <div id="second-row">
+    <h2 id="set-domain-level">Set level of protection for website:</h2> 
+    <form id="domain-form">
+      <input id="domain-text" type="text" placeholder="example.com or en.example.com">
+      <select id="domain-level">
+        <option value="0" selected>level 0</option>
+        <option value="1">level 1</option>
+        <option value="2">level 2</option>
+        <option value="3">level 3</option>
+      </select>
+      <button id="add_domain" type="submit" class="jsr-button">Add to list</button>
+    </form>
+    <ul id="domain-level-list">
+    </ul>
+    <button id="save-all-domain-levels">Save all</h2>
+    <button id="delete-all-domain-levels">Delete all</h2>
+  </div>
 </section>
 
 	</section>

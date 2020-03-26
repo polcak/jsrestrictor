@@ -3,9 +3,8 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2019  Martin Timko
 //  Copyright (C) 2019  Libor Polcak
-//  Copyright (C) 2018  Zbynek Cervinka
+//  Copyright (C) 2019  Martin Timko
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,302 +25,295 @@ if ((typeof chrome) !== "undefined") {
   var browser = chrome;
 }
 
-//// JSR Custom settings ////
-// save JSR Custom settings
-function saveOptions(e) {
-  browser.storage.sync.set({
-    extension_settings_data: {
-      window_date: {
-        main_checkbox: document.querySelector("#window_date_main_checkbox").checked,
-        time_round_precision: document.querySelector("#window_date_time_round_precision").value
-      },
-      window_performance_now: {
-        main_checkbox: document.querySelector("#performance_now_main_checkbox").checked,
-        value_round_precision: document.querySelector("#performance_now_value_round_precision").value
-      },
-      window_html_canvas_element: {
-        main_checkbox: document.querySelector("#htmlcanvaselement_main_checkbox").checked
-      },
-      navigator_geolocation: {
-        main_checkbox: document.querySelector("#navigator_geolocation_main_checkbox").checked,
-        type_of_restriction: document.querySelector("#navigator_geolocation_type_of_restriction").value,
-        gps_a: document.querySelector("#navigator_geolocation_rounding_precision_of_item_a").value,
-        gps_b: document.querySelector("#navigator_geolocation_rounding_precision_of_item_b").value,
-        gps_c: document.querySelector("#navigator_geolocation_rounding_precision_of_item_c").value,
-        gps_d: document.querySelector("#navigator_geolocation_rounding_precision_of_item_d").value,
-        gps_e: document.querySelector("#navigator_geolocation_rounding_precision_of_item_e").value,
-        gps_f: document.querySelector("#navigator_geolocation_rounding_precision_of_item_f").value,
-        gps_g: document.querySelector("#navigator_geolocation_rounding_precision_of_item_g").value
-      },
-      window_xmlhttprequest: {
-        main_checkbox: document.querySelector("#xmlhttprequest_main_checkbox").checked,
-        type_of_restriction: document.querySelector("#xmlhttprequest_type_of_restriction").value
-      },
-      user_agent: {
-        main_checkbox: document.querySelector("#useragent_main_checkbox").checked,
-        type_of_restriction: document.querySelector("#useragent_type_of_restriction").value
-      },
-      referer: {
-        main_checkbox: document.querySelector("#referer_main_checkbox").checked
-      },
-      language: {
-        main_checkbox: document.querySelector("#language_main_checkbox").checked
-      },
-      hardware: {
-        main_checkbox: document.querySelector("#hardware_main_checkbox").checked
-      },
-      cookie_enabled: {
-        main_checkbox: document.querySelector("#cookie_enabled_main_checkbox").checked,
-        type_of_restriction: document.querySelector("#cookie_enabled_type_of_restriction").value
-      },
-      DNT_enabled: {
-        main_checkbox: document.querySelector("#DNT_enabled_main_checkbox").checked,
-        type_of_restriction: document.querySelector("#DNT_enabled_type_of_restriction").value
-      }
-    }
-  });
-  // change button text
-  savedText();
-  e.preventDefault();
+function prepare_level_config(action_descr, params = {
+			level_name: "",
+			short_id: "",
+			description: "",
+			time_precision_checked: false,
+			time_precision_round: 1,
+			htmlcanvas_checked: false,
+			hardware_checked: false,
+			xhr_checked: false,
+			xhr_block_checked: false,
+			xhr_ask_checked: false,
+		}) {
+	var configuration_area_el = document.getElementById("configuration_area");
+	configuration_area_el.textContent = "";
+	var fragment = document.createRange().createContextualFragment(`
+<div>
+	<div>
+	  <h2>${action_descr}</h2>
+	</div>
+	<form>
+	
+		<!-- Metadata -->
+		<div class="main-section">
+			<span class="section-header">Name:</span>
+			<input id="level_text" value="${escape(params.level_name)}"></input>
+		</div>
+		<div class="main-section">
+			<span class="section-header">Short ID:</span>
+			<input id="level_id" ${params.short_id != "" ? "disabled" : ""} value="${escape(params.short_id)}"></input>
+		</div>
+		<div>
+			<span class="table-left-column">This ID is displayed above the JSR icon. If you use an
+					already existing ID, this custom level will replace the original level.</span>
+		</div>
+		<div class="main-section">
+			<span class="section-header">Description:</span>
+			<input id="level_description" value="${escape(params.description)}"></input>
+		</div>
+		
+		<!-- DATE and performance -->
+		<div class="main-section">
+			<input type="checkbox" id="time_precision_main_checkbox" ${params.time_precision_checked ? "checked" : ""}>
+			<span class="section-header">Manipulate the time precision provided by Date and
+				performance:</span>
+		</div>
+		<div>
+			<div class="row">
+				<span class="table-left-column">Round time to:</span>
+				<select id="time_precision_round_precision" ${params.time_precision_checked ? "": "disabled"}>
+					<option value="2" ${params.time_precision_round == 2 ? "selected" : ""}>hundredths of a second (1.230)</option>
+					<option value="1" ${params.time_precision_round == 1 ? "selected" : ""}>tenths of a second (1.200)</option>
+					<option value="0" ${params.time_precision_round == 0 ? "selected" : ""}>full seconds (1.000)</option>
+				</select>
+			</div>
+		</div>
+		
+		<!-- CANVAS -->
+		<div class="main-section">
+			<input type="checkbox" id="htmlcanvaselement_main_checkbox" ${params.htmlcanvas_checked ? "checked" : ""}>
+			<span class="section-header">Protect against canvas fingerprinting:</span>
+		</div>
+		<div>
+			<span class="table-left-column">Canvas return white image data by modifiing
+					canvas.toDataURL(), canvas.toBlob() and CanvasRenderingContext2D.getImageData functions</span>
+		</div>
+		
+		<!-- HARDWARE -->
+		<div class="main-section">
+			<input type="checkbox" id="hardware_main_checkbox" ${params.hardware_checked ? "checked" : ""}>
+			<span class="section-header">Spoof hardware information to the most popular HW:</span>
+		</div>
+		<div>
+			<span class="table-left-column"><strong>JS navigator.deviceMemory:</strong> 4</span>
+			<br>
+			<span class="table-left-column"><strong>JS navigator.hardwareConcurrency:</strong> 2</span>
+		</div>
+		
+		<!-- XMLHTTPREQUEST -->
+		<div class="main-section">
+			<input type="checkbox" id="xhr_main_checkbox" ${params.xhr_checked ? "checked" : ""}>
+			<span class="section-header"><i>Filter XMLHttpRequest requests:</i></span>
+		</div>
+		<div id="xhr_options" class="${params.xhr_checked ? "" : "hidden"}">
+			<div class="row">
+				<input type="radio" id="xmlhttprequest_block_checkbox" name="xhroptions"  ${params.xhr_block_checked ? "checked" : ""}></input>
+				<span class="section-header">Block all XMLHttpRequest.</span>
+				<input type="radio" id="xmlhttprequest_ask_checkbox" name="xhroptions"  ${params.xhr_ask_checked ? "checked" : ""}></input>
+				<span class="section-header">Ask before executing an XHR request.</span>
+			</div>
+		</div>
+		<button id="save" class="jsr-button">Save custom level</button>
+	</form>
+</div>`);
+	configuration_area_el.appendChild(fragment);
+	document.getElementById("time_precision_main_checkbox").addEventListener("click", function(e) {
+		time_precision_round_precision.disabled = !this.checked;
+	});
+	document.getElementById("xhr_main_checkbox").addEventListener("click", function(e) {
+		var xhr_options_el = document.getElementById("xhr_options");
+		if (this.checked) {
+			xhr_options_el.classList.remove("hidden");
+		}
+		else {
+			xhr_options_el.classList.add("hidden");
+		}
+	});
+	document.getElementById("save").addEventListener("click", function(e) {
+		e.preventDefault();
+		new_level = {
+			level_id: document.getElementById("level_id").value,
+			level_text: document.getElementById("level_text").value,
+			level_description: document.getElementById("level_description").value,
+			wrappers: []
+		}
+		if (document.getElementById("htmlcanvaselement_main_checkbox").checked) {
+			new_level.wrappers.push(
+				// H-C
+				["CanvasRenderingContext2D.prototype.getImageData"],
+				["HTMLCanvasElement.prototype.toBlob"],
+				["HTMLCanvasElement.prototype.toDataURL"],
+			);
+		}
+		if (document.getElementById("time_precision_main_checkbox").checked) {
+			var precision = document.getElementById("time_precision_round_precision").value;
+			new_level.wrappers.push(
+				// HRT
+				["Performance.prototype.now", precision],
+				// PT2
+				["performance.getEntries", precision],
+				["performance.getEntriesByName", precision],
+				["performance.getEntriesByType", precision],
+				// ECMA
+				["window.Date", precision],
+			);
+		}
+		if (document.getElementById("xhr_main_checkbox").checked) {
+			new_level.wrappers.push(
+				// AJAX
+				["window.XMLHttpRequest", document.getElementById("xmlhttprequest_block_checkbox").checked, document.getElementById("xmlhttprequest_ask_checkbox").checked],
+			);
+		}
+		if (document.getElementById("hardware_main_checkbox").checked) {
+			new_level.wrappers.push(
+				// DM
+				["navigator.deviceMemory"],
+				// HTML-LS
+				["navigator.hardwareConcurrency"],
+			);
+		}
+		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
+			if (new_level.level_id.length > 3) {
+				alert("Level ID too long, provide 3 characters or less");
+				return;
+			}
+			async function updateLevels(new_level, stored_levels) {
+				let ok = false;
+				if (new_level.level_id in stored_levels) {
+					ok = window.confirm("Custom level " + new_level.level_id + " already exists. It will be overriden.");
+				}
+				else {
+					ok = true;
+				}
+				if (ok) {
+					stored_levels[new_level.level_id] = new_level;
+					try {
+						await browser.storage.sync.set({custom_levels: stored_levels});
+						location = "";
+					}
+					catch (err) {
+						alert("Custom level were not updated, please try again later.");
+					}
+				}
+			}
+			browser.storage.sync.get(custom_levels, updateLevels.bind(null, new_level));
+		}
+		else {
+			alert("Please provide all required fields: ID, Name, and Decription");
+		}
+	});
 }
 
-// get custom settings 
-function restoreOptions() {
-  browser.storage.sync.get('extension_settings_data', function(res) {
-    document.querySelector("#window_date_main_checkbox").checked = res.extension_settings_data.window_date.main_checkbox;
-    document.querySelector("#window_date_time_round_precision").value = res.extension_settings_data.window_date.time_round_precision;
-    document.querySelector("#performance_now_main_checkbox").checked = res.extension_settings_data.window_performance_now.main_checkbox;
-    document.querySelector("#performance_now_value_round_precision").value = res.extension_settings_data.window_performance_now.value_round_precision;
-    document.querySelector("#htmlcanvaselement_main_checkbox").checked = res.extension_settings_data.window_html_canvas_element.main_checkbox;
-    document.querySelector("#navigator_geolocation_main_checkbox").checked = res.extension_settings_data.navigator_geolocation.main_checkbox;
-    document.querySelector("#navigator_geolocation_type_of_restriction").value = res.extension_settings_data.navigator_geolocation.type_of_restriction;
-    if (document.querySelector("#navigator_geolocation_type_of_restriction").value == "b") {  // if GSP is to null everything -> change options opacity
-      gpsOpacity();
-    }
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_a").value = res.extension_settings_data.navigator_geolocation.gps_a;
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_b").value = res.extension_settings_data.navigator_geolocation.gps_b;
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_c").value = res.extension_settings_data.navigator_geolocation.gps_c;
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_d").value = res.extension_settings_data.navigator_geolocation.gps_d;
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_e").value = res.extension_settings_data.navigator_geolocation.gps_e;
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_f").value = res.extension_settings_data.navigator_geolocation.gps_f;
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_g").value = res.extension_settings_data.navigator_geolocation.gps_g;
-    document.querySelector("#xmlhttprequest_main_checkbox").checked = res.extension_settings_data.window_xmlhttprequest.main_checkbox;
-    document.querySelector("#xmlhttprequest_type_of_restriction").value = res.extension_settings_data.window_xmlhttprequest.type_of_restriction;
-    document.querySelector("#useragent_main_checkbox").checked = res.extension_settings_data.user_agent.main_checkbox;
-    document.querySelector("#useragent_type_of_restriction").value = res.extension_settings_data.user_agent.type_of_restriction;
-    document.querySelector("#referer_main_checkbox").checked = res.extension_settings_data.referer.main_checkbox;
-    document.querySelector("#language_main_checkbox").checked = res.extension_settings_data.language.main_checkbox;
-    document.querySelector("#hardware_main_checkbox").checked = res.extension_settings_data.hardware.main_checkbox;
-    document.querySelector("#cookie_enabled_main_checkbox").checked = res.extension_settings_data.cookie_enabled.main_checkbox;
-    document.querySelector("#cookie_enabled_type_of_restriction").value = res.extension_settings_data.cookie_enabled.type_of_restriction;
-    document.querySelector("#DNT_enabled_main_checkbox").checked = res.extension_settings_data.DNT_enabled.main_checkbox;
-    document.querySelector("#DNT_enabled_type_of_restriction").value = res.extension_settings_data.DNT_enabled.type_of_restriction;
-  });
-}
-document.addEventListener('DOMContentLoaded', restoreOptions);
-document.querySelector("#custom-form").addEventListener("submit", saveOptions);
-
-// show / hide custom level settings -- no need 
-// document.getElementById('custom-form').style.display = "none"; ////////////////////////// NA KONCI ODKOMENTUJ nech je defaultne skryte
-// document.getElementById('custom-show-hide').addEventListener('click', function (e) {
-//   var x = document.getElementById("custom-form");
-//   if (x.style.display === "none") {
-//     x.style.display = "block";
-//   } else {
-//     x.style.display = "none";
-//   }
-// });
-
-// change save settings button text to "Saved"
-function savedText(){
-  document.getElementById("save").innerHTML="Saved ";
-  document.getElementById("save").style.paddingLeft = "59px";
-  document.getElementById("save").style.paddingRight = "60px";
+function edit_level(id) {
+	lev = {};
+	for (wrapper of levels[id].wrappers) {
+		lev[wrapper[0]] = wrapper.slice(1);
+	}
+	prepare_level_config("Edit level " + escape(id), {
+			level_name: levels[id].level_text,
+			short_id: levels[id].level_id,
+			description: levels[id].level_description,
+			time_precision_checked: "Performance.prototype.now" in lev &&
+					"performance.getEntries" in lev &&
+					"performance.getEntriesByName" in lev &&
+					"performance.getEntriesByType" in lev &&
+					"window.Date" in lev,
+			time_precision_round: "Performance.prototype.now" in lev ? lev["Performance.prototype.now"][0] : 100,
+			htmlcanvas_checked: "CanvasRenderingContext2D.prototype.getImageData" in lev &&
+					"HTMLCanvasElement.prototype.toBlob" in lev &&
+					"HTMLCanvasElement.prototype.toDataURL" in lev,
+			hardware_checked: "navigator.deviceMemory" in lev &&
+					"navigator.hardwareConcurrency" in lev,
+			xhr_checked: "window.XMLHttpRequest" in lev,
+			xhr_block_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : false,
+			xhr_ask_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
+		});
 }
 
-// change seve settings button text to "Save custom level" on change
-document.getElementById("window_date_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("window_date_time_round_precision").addEventListener("change", savedTextBack);
-document.getElementById("performance_now_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("performance_now_value_round_precision").addEventListener("change", savedTextBack);
-document.getElementById("htmlcanvaselement_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_type_of_restriction").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_a").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_b").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_c").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_d").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_e").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_f").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_g").addEventListener("change", savedTextBack);
-document.getElementById("xmlhttprequest_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("xmlhttprequest_type_of_restriction").addEventListener("change", savedTextBack);
-document.getElementById("useragent_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("useragent_type_of_restriction").addEventListener("change", savedTextBack);
-document.getElementById("referer_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("language_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("hardware_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("cookie_enabled_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("cookie_enabled_type_of_restriction").addEventListener("change", savedTextBack);
-document.getElementById("DNT_enabled_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("DNT_enabled_type_of_restriction").addEventListener("change", savedTextBack);
-
-// change text back
-function savedTextBack () {
-  document.getElementById("save").innerHTML="Save custom level";
-  document.getElementById("save").style.paddingLeft = "";
-  document.getElementById("save").style.paddingRight = "";
+function restore_level(id, settings) {
+	levels[id] = settings;
+	browser.storage.sync.set({"custom_levels": levels});
+	var existPref = document.getElementById(`li-exist-group-${escape(id)}`);
+	existPref.classList.remove("hidden");
+	var removedPref = document.getElementById(`li-removed-group-${escape(id)}`);
+	removedPref.classList.add("hidden");
+	var lielem = document.getElementById(`li-${id}`);
+	lielem.classList.remove("undo");
 }
 
-
-//// JSR Domain List ////
-
-// on submit add domain to list
-document.querySelector("#domain-form").addEventListener("submit", addDomain);
-// on load or update generate list
-document.addEventListener('DOMContentLoaded', loadSettings);
-browser.storage.onChanged.addListener(loadSettings);
-
-// add domain to list, remove useless www first
-function addDomain (e) {
-      var removeWWW = document.querySelector("#domain-text").value;
-      removeWWW = removeWWW.replace(/^www\./,'');
-    browser.storage.sync.set({
-      [removeWWW]: document.querySelector("#domain-level").value
-    });
-    document.querySelector("#domain-form").reset();
-  e.preventDefault();
+function show_existing_level(levelsEl, level) {
+	let currentId = `level-${level}`;
+	var fragment = document.createRange().createContextualFragment(`<li id="li-${escape(level)}">
+		<span class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
+			${escape(level)}: ${escape(levels[level].level_text)}
+		</span>
+		<span>${escape(levels[level].level_description)}</span>
+		</li>`);
+	levelsEl.appendChild(fragment);
+	if (!([L0, L1, L2, L3].includes(level))) {
+		var lielem = document.getElementById(`li-${level}`); // Note that FF here requires unescaped ID
+		var existPref = document.createElement("span");
+		existPref.setAttribute("id", `li-exist-group-${escape(level)}`);
+		lielem.appendChild(existPref);
+		var edit = document.createElement("button");
+		existPref.appendChild(edit);
+		edit.addEventListener("click", edit_level.bind(edit, level));
+		edit.appendChild(document.createTextNode("Edit"));
+		var remove = document.createElement("button");
+		existPref.appendChild(remove);
+		remove.addEventListener("click", remove_level.bind(remove, level));
+		remove.appendChild(document.createTextNode("Remove"));
+		var removedPref = document.createElement("span");
+		removedPref.setAttribute("id", `li-removed-group-${escape(level)}`);
+		removedPref.classList.add("hidden");
+		lielem.appendChild(removedPref);
+		var restore = document.createElement("button");
+		removedPref.appendChild(restore);
+		restore.addEventListener("click", restore_level.bind(restore, level, levels[level]));
+		restore.appendChild(document.createTextNode("Restore"));
+	}
+	var current = document.getElementById(currentId)
+	current.addEventListener("click", function() {
+		for (let child of levelsEl.children) {
+			child.children[0].classList.remove("active");
+		}
+		this.classList.add("active");
+		setDefaultLevel(level);
+	});
 }
 
-// go through storage JSON and generate table - list of domains
-//item[domain] == level
-function loadSettings() {
-  browser.storage.sync.get(null, function(item) {
-  // create table
-  var fullTable = "<thead id=\"domain-list-head\"><th class=\"table-head\">Domain</th><th class=\"table-head\">Level</th></thead>";
-  for (var domain in item) {
-    if (item.hasOwnProperty(domain)) {
-      if ((domain != "extension_settings_data") && (domain != "__default__")) {
-        var lvl;
-        if (item[domain] == LC) {
-          lvl = "Custom";
-        } else {
-          lvl = item[domain];
-        }
-        var row = "<tr><td class=\"td-domain\">"+ domain +"</td><td class=\"td-level\">"+ lvl +"</td><td class=\"td-delete\" id=\""+ domain +"\"></td>";
-        fullTable += row;
-      }
-      if (domain == "__default__") {
-        document.querySelector("#levels-default #level-"+ item[domain]).classList.add("active");
-      }
-    }
-  }
-  document.getElementById("domain-list-table").innerHTML = fullTable;
-  setEventOnClick();
-  });
+function remove_level(id) {
+	// See https://alistapart.com/article/neveruseawarning/
+	var existPref = document.getElementById(`li-exist-group-${escape(id)}`);
+	existPref.classList.add("hidden");
+	var removedPref = document.getElementById(`li-removed-group-${escape(id)}`);
+	removedPref.classList.remove("hidden");
+	var lielem = document.getElementById(`li-${id}`);
+	lielem.classList.add("undo");
+	delete levels[id];
+	browser.storage.sync.set({"custom_levels": levels});
 }
 
-// set trash icon event for removing some domain from list
-function setEventOnClick() {
-  document.querySelectorAll('td').forEach(e => e.addEventListener("click", function() {
-    removeDomain(e.id);
-  }));
+function insert_levels() {
+	// Insert all known levels to GUI
+	var allLevelsElement = document.getElementById("levels-list");
+	for (let level in levels) {
+		show_existing_level(allLevelsElement, level);
+	}
+	// Select default level
+	document.getElementById("level-" + default_level.level_id).classList.add("active");
 }
 
-// if GPS is set to "Null location data..." fade out rest of the GPS options 
-document.getElementById('navigator_geolocation_type_of_restriction').addEventListener('click', gpsOpacity);
-function gpsOpacity () {
-  var x = document.getElementsByClassName("gps");
-  if(document.getElementById('navigator_geolocation_type_of_restriction').selectedIndex == 1){
-    for (var i = 0; i < x.length; i++) {
-      x[i].style.opacity = fadeOut;
-    }
-  } else {
-    for (var i = 0; i < x.length; i++) {
-      x[i].style.opacity = fadeIn;
-    }
-  }
-}
-
-
-// show hide domain list
-document.getElementById('domain-show-hide').addEventListener('click', function (e) {
-  var x = document.getElementById("domain-list-table");
-  var y = document.getElementById("delete-list");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-    y.style.display = "table";
-  } else {
-    x.style.display = "none";
-    y.style.display = "none";
-  }
+window.addEventListener("load", function() {
+	if (!levels_initialised) {
+		levels_updated_callbacks.push(insert_levels);
+	}
+	else {
+		insert_levels();
+	}
 });
-      
-// set event for "Delete all"
-document.querySelector("#delete-list").addEventListener('click', function (e) {
-    document.getElementById('domain-show-hide').click();
-    removeList();
-});
-// remove domain from list
-function removeDomain(domain) {
-  browser.storage.sync.remove(domain, function(){});
-}
 
-  // go through storage JSON and remove all list of domains
-function removeList() {
-  browser.storage.sync.get(null, function(item) {
-    for (var domain in item) {
-      if (item.hasOwnProperty(domain)) {
-        if ((domain != "extension_settings_data") && (domain != "__default__")) {
-            var removeIt = browser.storage.sync.remove(domain);
-        }
-      }
-    }
-  });
-}
-
-// -- debug only -- clear all storage -- debug only --
-function clearStorage() {
-  browser.storage.sync.clear(function(){
-  });
-}
-
-// -- debug only -- print storage -- debug only --
-function printStorageConsole() {
-  browser.storage.sync.get(null, function(item) {
-    console.log(item);
-  });
-}
-var timoerr = true; // historical meaning for author, do NOT remove
-
-
-//// JSR Default level ////
-
-const fadeOut = "0.3";
-const fadeIn = "1.0";
-
-// set event for changing default level
-document.querySelector("#levels-default #level-0").addEventListener("click", function() {setDefaultLevelTo(L0);});
-document.querySelector("#levels-default #level-1").addEventListener("click", function() {setDefaultLevelTo(L1);});
-document.querySelector("#levels-default #level-2").addEventListener("click", function() {setDefaultLevelTo(L2);});
-document.querySelector("#levels-default #level-3").addEventListener("click", function() {setDefaultLevelTo(L3);});
-document.querySelector("#levels-default #level-4").addEventListener("click", function() {setDefaultLevelTo(LC);});
-
-// set default level to the selected level
-function setDefaultLevelTo(level) {
-  browser.storage.sync.set({
-      __default__: level
-  });
-  clearAllLevels();
-  // add active class to new default level
-  document.querySelector("#levels-default #level-"+ level).classList.add("active");
-}
-
-// remove active class for all levels
-function clearAllLevels() {
-  for (var i = 0; i <= 4; i++) {
-      var elm = document.querySelector("#levels-default #level-"+ i);
-      elm.classList.remove("active");
-  }
-}
-
+document.getElementById("new_level").addEventListener("click",
+	() => prepare_level_config("Add new level"));

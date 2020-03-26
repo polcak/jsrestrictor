@@ -1,90 +1,62 @@
 body {
-	width: 360px;
-	height: 385px;
-	margin-left: 20px;
-	margin-right: 20px;
+	display: grid;
+	grid-template-columns: 32px 1fr 25px;
+	grid-template-areas:
+		"logo   jsr    controls"
+		"levels levels levels  ";
+	grid-gap: 3em;
+	padding: 1em;
+	margin: 1em;
 }
+
 h3 {
-	font-size: 17px;
-}
-p {
-	font-size: 15px;
+	font-size: 3ex;
 }
 
-#first-row {
-	display: -webkit-box;
-	display: -moz-box;
-	border-bottom: 1px solid black;
-}
-
-.logo {
-	margin: 14px;
+#logo {
+	grid-area: logo;
+	width: 32px;
 }
 
 #titletext {
-	margin-top: 18px;
-	margin-bottom: 20px;
+	grid-area: jsr;
+	display: block;
+	font-size: large;
 }
 
-#settings-icon {
-	margin-top: 18px;
-	margin-right: 14px;
-	margin-left: 72px;
-	margin-bottom: 18px;
-}
-#settings-icon:hover {
-	cursor: pointer;
-	opacity: 0.5;
+#controls {
+	grid-area: controls;
+	width: 25px;
 }
 
-#second-row {
-	border-bottom: 1px solid black;
-	padding-bottom: 10px;
-}
-
-#second-row-without-border {
-	opacity: 1.0;
-}
-
-#set-level-on {
-
+#level_controls {
+	grid-area: levels;
 }
 
 #current-site {
-	margin-bottom: 20px;
-	margin-top: -10px;
+	font-size: large;
 }
 
-#levels-site {
-	margin-bottom: 20px;
+#level-select {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
 }
-
-#third-row {
-	padding-bottom: 10px;
-	opacity: 1.0;
-	transition: opacity .25s ease-in-out;
-  	-moz-transition: opacity .25s ease-in-out;
-}
-
-#levels-default {
-	margin-bottom: 20px;
-}
-
 
 .level {
 	font-weight: bold;
-	font-size: 15px;
+	font-size: large;
 	color: #4a4a4a;
-	margin: 7px;
-	padding: 7px;
+	margin: 0.7ex;
+	padding: 0.7ex;
 	border: 2px solid grey;
-	border-radius: 5px;
+	border-radius: 0.5ex;
 }
 
 .level:hover {
 	cursor: pointer;
 	background-color: #c9c9c9;
-	color: black;	
+	color: black;
 }
 
 .active {
@@ -93,52 +65,22 @@ p {
 	color:  black;
 }
 
-#fourth-row {
-	padding-top: 10px;
-	border-top: 1px solid black;
-}
-
-#set-custom-level {
-	float: left;
-	margin-top: 20px;
-}
-
-#settings-button {
+#controls {
 	font-weight: bold;
-	font-size: 15px;
+	font-size: 1.5ex;
 	color: #4a4a4a;
-	margin: 7px;
-	padding: 7px;
+	margin: 0.7ex;
+	padding: 0.7ex;
 	border: 2px solid grey;
-	border-radius: 5px;
-	display: inline-block;
-	margin-top: 13px;
-	margin-left: 20px;
+	border-radius: 0.5ex;
+	//display: inline-block;
+	margin-top: 1.3ex;
+	margin-left: 2ex;
 }
 
-#settings-button:hover {
+#controls:hover {
 	cursor: pointer;
 	border: 2px solid black;
 	background-color: #c9c9c9;
 	color:  black;
-}
-
-#active-title {
-	float: left;
-}
-
-#active-level {
-	position: relative;
-	top: 19px;
-	margin-left: 10px;
-	cursor: default;
-}
-#active-domain {
-	position: relative;
-	top: 19px;
-	font-size: 15px;
-}
-
-#active-domain-text {
-	font-weight: bold;
 }
