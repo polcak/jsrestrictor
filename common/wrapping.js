@@ -56,13 +56,13 @@ var build_code = function(wrapper, ...args) {
 	var post_wrapping_functions = {
 		function_define: define_page_context_function,
 		function_export: generate_assign_function_code,
-	}
+	};
 	var code = "";
 	for (wrapped of wrapper.wrapped_objects) {
 		code += `var ${wrapped.wrapped_name} = ${wrapped.original_name};`;
 	}
 	code += `${wrapper.helping_code}
-		${define_page_context_function(wrapper)}`
+		${define_page_context_function(wrapper)}`;
 	if (wrapper["post_wrapping_code"] !== undefined) {
 		for (code_spec of wrapper["post_wrapping_code"]) {
 			code += post_wrapping_functions[code_spec.code_type](code_spec);
@@ -74,7 +74,7 @@ var build_code = function(wrapper, ...args) {
 		`
 	}
 	return enclose_wrapping(code, ...args);
-}
+};
 var inject_code = injectScript;
 
 /**
@@ -136,7 +136,7 @@ if ((running_in_firefox() === true) && (firefox_blocks_scripts() === true)) {
 		var post_wrapping_functions = {
 			function_define: define_page_context_function_ffbug,
 			function_export: generate_assign_function_code_ffbug,
-		}
+		};
 		var code = "";
 		for (wrapped of wrapper.wrapped_objects) {
 			code += `var ${wrapped.wrapped_name} = window.wrappedJSObject.${wrapped.original_name};`;
@@ -145,20 +145,20 @@ if ((running_in_firefox() === true) && (firefox_blocks_scripts() === true)) {
 			function tobeexported(${wrapper.wrapping_function_args}) {
 					${wrapper.wrapping_function_body}
 				}
-		`
+		`;
 		if (wrapper["wrapper_prototype"] !== undefined) {
 			code += `Object.setPrototypeOf(tobeexported, ${wrapper.wrapper_prototype});
 			`;
 		}
 		code += `exportFunction(tobeexported, ${wrapper.parent_object}, {defineAs: '${wrapper.parent_object_property}'});
-		`
+		`;
 		if (wrapper["post_wrapping_code"] !== undefined) {
 			for (code_spec of wrapper["post_wrapping_code"]) {
 				code += post_wrapping_functions[code_spec.code_type](code_spec);
 			}
 		}
 		return enclose_wrapping(code, ...args);
-	}
+	};
 	var inject_code = eval;
 }
 
@@ -212,4 +212,16 @@ var build_wrapping_code = {};
  */
 var rounding_function = `function rounding_function(numberToRound, precision) {
 	return numberToRound - (numberToRound % Math.pow(10, Math.max(3 - precision)));
+}`;
+
+/**
+ * Function to be used by wrapped code for adding randomized noise
+ */
+var noise_function = `function noise_function(numberToChange, precision) {
+	const noise = Math.floor(Math.random() * Math.pow(10, 3 - precision));
+	var value = numberToChange - (numberToChange % noise);
+	if (lastValue < value) {
+		lastValue = value;
+	}
+	return lastValue
 }`;

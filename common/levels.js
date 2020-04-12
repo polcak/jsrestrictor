@@ -42,7 +42,7 @@ var level_1 = {
         ["performance.getEntriesByName", level_1_time_precision],
         ["performance.getEntriesByType", level_1_time_precision],
         // ECMA
-        ["window.Date", level_1_time_precision],
+        ["window.Date", level_1_time_precision, false],
         // DM
         ["navigator.deviceMemory"],
         // HTML-LS
@@ -67,7 +67,7 @@ var level_2 = {
         ["performance.getEntriesByName", level_2_time_precision],
         ["performance.getEntriesByType", level_2_time_precision],
         // ECMA
-        ["window.Date", level_2_time_precision],
+        ["window.Date", level_2_time_precision, false],
         // DM
         ["navigator.deviceMemory"],
         // HTML-LS
@@ -92,7 +92,7 @@ var level_3 = {
         ["performance.getEntriesByName", level_3_time_precision],
         ["performance.getEntriesByType", level_3_time_precision],
         // ECMA
-        ["window.Date", level_3_time_precision],
+        ["window.Date", level_3_time_precision, false],
         // AJAX
         ["window.XMLHttpRequest", false, true],
         // DM
@@ -102,11 +102,15 @@ var level_3 = {
     ]
 };
 
+var level_4_time_precision = 0;
 var level_4 = {
-    "level_id": "4",
+    "level_id": "0",
     "level_text": "Built-in 4",
     "level_description": "Chrome Zero porting",
-    "wrappers": []
+    "wrappers": [
+        // CHRZ
+        ["window.Date", level_4_time_precision, true],
+    ]
 };
 
 // default extension_settings_data setting. used on install
@@ -125,13 +129,13 @@ var domains = {};
 
 function init_levels() {
     levels = {
-        [level_0.level_id]: level_0,
+        [level_0.level_id]: level_4,
         [level_1.level_id]: level_1,
         [level_2.level_id]: level_2,
         [level_3.level_id]: level_3,
         [level_4.level_id]: level_4
     };
-    default_level = Object.create(levels[L4]);
+    default_level = Object.create(levels[L2]);
     default_level.level_text = "Default";
     domains = {};
 }
