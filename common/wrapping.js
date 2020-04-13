@@ -73,6 +73,7 @@ var build_code = function(wrapper, ...args) {
 				${wrapper.wrapper_prototype});
 		`
 	}
+	code += `Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});`;
 	return enclose_wrapping(code, ...args);
 };
 var inject_code = injectScript;
@@ -157,6 +158,7 @@ if ((running_in_firefox() === true) && (firefox_blocks_scripts() === true)) {
 				code += post_wrapping_functions[code_spec.code_type](code_spec);
 			}
 		}
+		code += `Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});`;
 		return enclose_wrapping(code, ...args);
 	};
 	var inject_code = eval;
