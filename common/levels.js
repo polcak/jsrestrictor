@@ -20,6 +20,10 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+if ((typeof browser) === "undefined") {
+    var browser = chrome;
+}
+
 // levels of protection
 
 var level_0 = {
@@ -36,7 +40,7 @@ var level_1 = {
     "level_description": "Minimal level of protection",
     "wrappers": [
         // HRT
-        ["Performance.prototype.now", level_1_time_precision],
+        ["Performance.prototype.now", level_1_time_precision, false],
         // PT2
         ["performance.getEntries", level_1_time_precision],
         ["performance.getEntriesByName", level_1_time_precision],
@@ -61,7 +65,7 @@ var level_2 = {
         ["HTMLCanvasElement.prototype.toBlob"],
         ["HTMLCanvasElement.prototype.toDataURL"],
         // HRT
-        ["Performance.prototype.now", level_2_time_precision],
+        ["Performance.prototype.now", level_2_time_precision, false],
         // PT2
         ["performance.getEntries", level_2_time_precision],
         ["performance.getEntriesByName", level_2_time_precision],
@@ -86,7 +90,7 @@ var level_3 = {
         ["HTMLCanvasElement.prototype.toBlob"],
         ["HTMLCanvasElement.prototype.toDataURL"],
         // HRT
-        ["Performance.prototype.now", level_3_time_precision],
+        ["Performance.prototype.now", level_3_time_precision, false],
         // PT2
         ["performance.getEntries", level_3_time_precision],
         ["performance.getEntriesByName", level_3_time_precision],
@@ -110,6 +114,7 @@ var level_4 = {
     "wrappers": [
         // CHRZ
         ["window.Date", level_4_time_precision, true],
+        ["Performance.prototype.now", level_4_time_precision, true]
     ]
 };
 
@@ -135,9 +140,8 @@ function init_levels() {
         [level_3.level_id]: level_3,
         [level_4.level_id]: level_4
     };
-    default_level = Object.create(levels[L2]);
+    default_level = Object.create(levels[L0]);
     default_level.level_text = "Default";
-    domains = {};
 }
 
 init_levels();

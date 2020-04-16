@@ -33,11 +33,19 @@
 					wrapped_name: "origNow",
 				}
 			],
-			helping_code: rounding_function,
+			helping_code: rounding_function + noise_function + `
+				let precision = args[0];
+				let doNoise = args[1];
+				let lastValue = 0;
+			`,
 			wrapping_function_args: "",
 			wrapping_function_body: `
 					var originalPerformanceValue = origNow.call(window.performance);
-					return rounding_function(originalPerformanceValue, args[0]);
+					var func = rounding_function;
+					if (doNoise === true){
+						func = noise_function
+					}
+					return func(originalPerformanceValue, precision);
 				`
 		},
 	]

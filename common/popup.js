@@ -21,7 +21,7 @@
 //
 
 // set browser var as chrome
-if ((typeof browser) !== "undefined") {
+if ((typeof browser) === "undefined") {
 	var browser = chrome;
 }
 

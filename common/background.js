@@ -32,7 +32,7 @@ function updateBadge(level) {
 	browser.browserAction.setBadgeText({text: "" + level["level_id"]});
 }
 
-// get active tab and pass it 
+// get active tab and pass it
 var queryInfo = {
 	active: true,
 	currentWindow: true

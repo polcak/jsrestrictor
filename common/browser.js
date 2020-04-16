@@ -24,9 +24,5 @@
  * Check if we are running in Firefox or not
  */
 function running_in_firefox() {
-	if ((typeof browser) !== "undefined") {
-	  return true;
-	} else {
-	  return false;
-	}
+	return navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 }
