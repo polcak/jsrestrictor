@@ -142,7 +142,7 @@ if ((running_in_firefox() === true) && (firefox_blocks_scripts() === true)) {
 		for (wrapped of wrapper.wrapped_objects) {
 			code += `var ${wrapped.wrapped_name} = window.wrappedJSObject.${wrapped.original_name};`;
 		}
-		code += `${wrapper.helping_code}
+		code += `${wrapper.helping_code || ''}
 			function tobeexported(${wrapper.wrapping_function_args}) {
 					${wrapper.wrapping_function_body}
 				}

@@ -112,9 +112,9 @@ var level_4 = {
     "level_text": "Built-in 4",
     "level_description": "Chrome Zero porting",
     "wrappers": [
-        // CHRZ
-        ["window.Date", level_4_time_precision, true],
-        ["Performance.prototype.now", level_4_time_precision, true]
+        // ["window.Date", level_4_time_precision, true],
+        // ["Performance.prototype.now", level_4_time_precision, true]
+        ["window.Uint8Array"]
     ]
 };
 
