@@ -38,6 +38,7 @@ function define_page_context_function(wrapper) {
 			};
 			${wrapper.parent_object}.${wrapper.parent_object_property} = replacementF;
 			original_functions[replacementF.toString()] = originalF.toString();
+			${wrapper.post_replacement_code || ''}
 	`);
 }
 
@@ -49,6 +50,10 @@ function generate_assign_function_code(code_spec_obj) {
 	`
 }
 
+function plain_text_function(code_spec_obj) {
+	return code_spec_obj.wrapping_function_body;
+}
+
 /**
  * This function builds the wrapping code.
  */
@@ -56,12 +61,13 @@ var build_code = function(wrapper, ...args) {
 	var post_wrapping_functions = {
 		function_define: define_page_context_function,
 		function_export: generate_assign_function_code,
+		plain_text: plain_text_function,
 	};
 	var code = "";
 	for (wrapped of wrapper.wrapped_objects) {
 		code += `var ${wrapped.wrapped_name} = ${wrapped.original_name};`;
 	}
-	code += `${wrapper.helping_code}
+	code += `${wrapper.helping_code || ''}
 		${define_page_context_function(wrapper)}`;
 	if (wrapper["post_wrapping_code"] !== undefined) {
 		for (code_spec of wrapper["post_wrapping_code"]) {

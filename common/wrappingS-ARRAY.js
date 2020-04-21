@@ -23,20 +23,83 @@
  * Create private namespace
  */
 
-(function () {
-    var common_function = function () {
-        var arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
-        for (arr in arrays) {
+function copyFunctionPointer(target, source) {
+    if (source === null || target === null || target === source) {
+        return;
+    }
 
+    if (source === undefined || target === undefined) {
+        return;
+    }
+
+    var keys = Reflect.ownKeys(source);
+    for (var k in keys) {
+        if (!keys.hasOwnProperty(k)) continue;
+        var name = keys[k];
+        if (typeof (source[name]) === "function") {
+            target[name] = source[name];
+        } else if (typeof (source[name]) === "object") {
+            target[name] = source[name];
+            copyFunctionPointer(target[name], source[name]);
         }
     }
+}
+
+(function () {
+    function common_function () {
+        var arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+        for (arr in arrays) {
+            let _old = window[arrays[arr]];
+
+            window[arrays[arr]] = function (target) {
+                let offset = Math.floor(Math.random() * 4096);
+                let _data = new _old(...arguments);
+                let _target = target;
+                var proxy = new Proxy(_data, {
+                    get(target, name) {
+                        console.log(`OFFSET: ${offset}`);
+                        console.log(`_target: ${_target}, target: ${target}`);
+                        return _data[name];
+                    }
+                });
+                copyFunctionPointer(proxy, _old);
+                return proxy;
+            };
+            copyFunctionPointer(window[arrays[arr]], _old);
+        }
+    }
+
+    var arrayz = `
+    var arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+        for (arr in arrays) {
+            
+        }`;
+
+    var common_function_body = `
+    let offset = Math.floor(Math.random() * 4096);
+    let _data = new originalF(...arguments);
+    let _target = target;
+    var proxy = new Proxy(_data, {
+        get(target, name) {
+            console.log(\`OFFSET: \${offset}\`);
+            console.log(\`_target: \${_target}, target: \${target}\`);
+            return _data[name];
+        }
+    });
+    copyFunctionPointer(proxy, originalF);
+    return proxy;
+    `;
 
     var wrappers = [
         {
             parent_object: "window",
             parent_object_property: "Uint8Array",
-            wrapped_objects: [
-            ]
+            original_function: "window.Uint8Array",
+            wrapped_objects: [],
+            helping_code: copyFunctionPointer,
+            wrapping_function_args: `target`,
+            wrapping_function_body: common_function_body,
+            post_replacement_code: `copyFunctionPointer(window.Uint8Array, originalF)`
         }
     ];
     add_wrappers(wrappers);

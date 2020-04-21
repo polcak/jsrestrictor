@@ -61,6 +61,6 @@ window.injectScript = function (text, data) {
   }
 
   parent.insertBefore(script, parent.firstChild);
-  // console.log(text);
+  console.log(text);
   parent.removeChild(script);
 };
