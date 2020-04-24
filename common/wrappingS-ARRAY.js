@@ -80,11 +80,15 @@ function copyFunctionPointer(target, source) {
     let _data = new originalF(...arguments);
     let _target = target;
     var proxy = new Proxy(_data, {
-        get(target, name) {
+        get(target, key, receiver) {
             console.log(\`OFFSET: \${offset}\`);
             console.log(\`_target: \${_target}, target: \${target}\`);
-            return _data[name];
-        }
+            if (key === "length") {
+                return target["length"];
+            }
+            let value = Reflect.get(...arguments);
+            return typeof value == 'function' ? value.bind(target) : value;
+        },
     });
     copyFunctionPointer(proxy, originalF);
     return proxy;
