@@ -46,65 +46,64 @@ function copyFunctionPointer(target, source) {
 }
 
 (function () {
-    function common_function () {
-        var arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
-        for (arr in arrays) {
-            let _old = window[arrays[arr]];
-
-            window[arrays[arr]] = function (target) {
-                let offset = Math.floor(Math.random() * 4096);
-                let _data = new _old(...arguments);
-                let _target = target;
-                var proxy = new Proxy(_data, {
-                    get(target, name) {
-                        console.log(`OFFSET: ${offset}`);
-                        console.log(`_target: ${_target}, target: ${target}`);
-                        return _data[name];
-                    }
-                });
-                copyFunctionPointer(proxy, _old);
-                return proxy;
-            };
-            copyFunctionPointer(window[arrays[arr]], _old);
-        }
-    }
-
-    var arrayz = `
-    var arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
-        for (arr in arrays) {
-            
-        }`;
-
     var common_function_body = `
     let offset = Math.floor(Math.random() * 4096);
     let _data = new originalF(...arguments);
     let _target = target;
     var proxy = new Proxy(_data, {
         get(target, key, receiver) {
-            console.log(\`OFFSET: \${offset}\`);
-            console.log(\`_target: \${_target}, target: \${target}\`);
-            if (key === "length") {
-                return target["length"];
+            let random_idx = Math.floor(Math.random() * (target["length"] - 1));
+            let rand_val = target[random_idx];
+            let proto_keys = ["buffer", "byteLength", "byteOffset", "length"];
+            if (proto_keys.indexOf(key) >= 0) {
+                return target[key];
             }
             let value = Reflect.get(...arguments);
             return typeof value == 'function' ? value.bind(target) : value;
         },
     });
     copyFunctionPointer(proxy, originalF);
+    
+    proxy.prototype.subarray = function(){
+        console.log('subarray');
+        return proxy;
+    }
+    proxy.prototype.slice = function(){
+        console.log('slice');
+        return proxy;
+    }
+    
+    let j;
+    for (let i = 0; i < _data['length']; i++) {
+        j = _data[i];
+    }
     return proxy;
     `;
 
-    var wrappers = [
-        {
-            parent_object: "window",
-            parent_object_property: "Uint8Array",
-            original_function: "window.Uint8Array",
-            wrapped_objects: [],
-            helping_code: copyFunctionPointer,
-            wrapping_function_args: `target`,
-            wrapping_function_body: common_function_body,
-            post_replacement_code: `copyFunctionPointer(window.Uint8Array, originalF)`
-        }
-    ];
+
+    let DEFAULT_WRAPPER = {
+        parent_object: "window",
+        parent_object_property: "_PROPERTY_",
+        original_function: "window._PROPERTY_",
+        wrapped_objects: [],
+        helping_code: copyFunctionPointer,
+        wrapping_function_args: `target`,
+        wrapping_function_body: common_function_body,
+        post_replacement_code: `copyFunctionPointer(window._PROPERTY_, originalF)`
+    };
+
+    var wrappers = [];
+
+    var arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+
+    for (let p of arrays) {
+        let wrapper = {...DEFAULT_WRAPPER};
+        wrapper.parent_object_property = wrapper.parent_object_property.replace("_PROPERTY_", p);
+        wrapper.original_function = wrapper.original_function.replace("_PROPERTY_", p);
+        wrapper.post_replacement_code = wrapper.post_replacement_code.replace("_PROPERTY_", p);
+        wrapper.wrapping_function_body += `${p};`;
+        wrappers.push(wrapper);
+    }
+
     add_wrappers(wrappers);
 })();

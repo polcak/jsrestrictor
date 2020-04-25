@@ -114,9 +114,10 @@ var level_4 = {
     "wrappers": [
         // ["window.Date", level_4_time_precision, true],
         // ["Performance.prototype.now", level_4_time_precision, true]
-        ["window.Uint8Array"]
     ]
 };
+var typedArrays = [["window.Uint8Array"], ["window.Int8Array"], ["window.Uint8ClampedArray"], ["window.Int16Array"], ["window.Uint16Array"], ["window.Int32Array"], ["window.Uint32Array"], ["window.Float32Array"], ["window.Float64Array"]];
+level_4.wrappers = level_4.wrappers.concat(typedArrays);
 
 // default extension_settings_data setting. used on install
 var extension_settings_data = level_0;
