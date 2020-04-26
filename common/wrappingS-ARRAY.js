@@ -45,33 +45,53 @@ function copyFunctionPointer(target, source) {
     }
 }
 
+var proxyHandler = `{
+    get(target, key, receiver) {
+        let random_idx = Math.floor(Math.random() * (target["length"] - 1));
+        let rand_val = target[random_idx];
+        rand_val = rand_val;
+        let proto_keys = ["buffer", "byteLength", "byteOffset", "length"];
+        if (proto_keys.indexOf(key) >= 0) {
+            return target[key];
+        }
+        if (Number(key) >= 0) {
+            key = target._f(key)
+        }
+        let value = Reflect.get(...arguments);
+        return typeof value == 'function' ? value.bind(target) : value;
+    },
+}`;
+
+function subArrayDecorator(wrapped) {
+    return function() {
+        const result = wrapped.apply(this, arguments);
+        return new Proxy(result, eval(proxyHandler));
+    }
+}
+
+function redefineNewArrayFunctions(target, replacementF) {
+    target.prototype['slice'] = function (begin, end) {
+        return replacementF(Array.prototype.slice.call(this, this._f(begin), this._f(end)));
+    };
+    target.prototype['subarray'] = subArrayDecorator(target.prototype['subarray'])
+}
+
 (function () {
     var common_function_body = `
-    let offset = Math.floor(Math.random() * 4096);
     let _data = new originalF(...arguments);
+    let n = _data.length;
+    let a = Math.floor(Math.random() * 4096) * n + 1;
+    let b = 2 * a + 1;
+    _data['_f'] = function(x) {
+        if (x === undefined){
+            return x;
+        }  
+        x = x < 0 ? n + x : x;
+        return (a*x + b) % n ;
+    };
     let _target = target;
-    var proxy = new Proxy(_data, {
-        get(target, key, receiver) {
-            let random_idx = Math.floor(Math.random() * (target["length"] - 1));
-            let rand_val = target[random_idx];
-            let proto_keys = ["buffer", "byteLength", "byteOffset", "length"];
-            if (proto_keys.indexOf(key) >= 0) {
-                return target[key];
-            }
-            let value = Reflect.get(...arguments);
-            return typeof value == 'function' ? value.bind(target) : value;
-        },
-    });
+    var proxy = new Proxy(_data, ${proxyHandler});
     copyFunctionPointer(proxy, originalF);
-    
-    proxy.prototype.subarray = function(){
-        console.log('subarray');
-        return proxy;
-    }
-    proxy.prototype.slice = function(){
-        console.log('slice');
-        return proxy;
-    }
     
     let j;
     for (let i = 0; i < _data['length']; i++) {
@@ -86,10 +106,13 @@ function copyFunctionPointer(target, source) {
         parent_object_property: "_PROPERTY_",
         original_function: "window._PROPERTY_",
         wrapped_objects: [],
-        helping_code: copyFunctionPointer,
+        helping_code: copyFunctionPointer + redefineNewArrayFunctions + subArrayDecorator + `var proxyHandler = ${proxyHandler};`,
         wrapping_function_args: `target`,
         wrapping_function_body: common_function_body,
-        post_replacement_code: `copyFunctionPointer(window._PROPERTY_, originalF)`
+        post_replacement_code: `
+        copyFunctionPointer(window._PROPERTY_, originalF);
+        redefineNewArrayFunctions(window._PROPERTY_, replacementF);
+        `
     };
 
     var wrappers = [];
@@ -100,7 +123,7 @@ function copyFunctionPointer(target, source) {
         let wrapper = {...DEFAULT_WRAPPER};
         wrapper.parent_object_property = wrapper.parent_object_property.replace("_PROPERTY_", p);
         wrapper.original_function = wrapper.original_function.replace("_PROPERTY_", p);
-        wrapper.post_replacement_code = wrapper.post_replacement_code.replace("_PROPERTY_", p);
+        wrapper.post_replacement_code = wrapper.post_replacement_code.split("_PROPERTY_").join(p);
         wrapper.wrapping_function_body += `${p};`;
         wrappers.push(wrapper);
     }
