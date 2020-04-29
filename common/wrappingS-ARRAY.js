@@ -47,48 +47,132 @@ function copyFunctionPointer(target, source) {
 
 var proxyHandler = `{
     get(target, key, receiver) {
-        let random_idx = Math.floor(Math.random() * (target["length"] - 1));
-        let rand_val = target[random_idx];
+        var random_idx = Math.floor(Math.random() * (target["length"] - 1));
+        var rand_val = target[random_idx];
         rand_val = rand_val;
         let proto_keys = ["buffer", "byteLength", "byteOffset", "length"];
         if (proto_keys.indexOf(key) >= 0) {
             return target[key];
         }
-        if (Number(key) >= 0) {
+        if (Number(key) >= 0 && Number(key) < target.length) {
             key = target._f(key)
         }
         let value = Reflect.get(...arguments);
         return typeof value == 'function' ? value.bind(target) : value;
     },
+    set(target, key, value) {
+        var random_idx = Math.floor(Math.random() * (target["length"] - 1));
+        var rand_val = target[random_idx];
+        rand_val = rand_val;
+        if (Number(key) >= 0) {
+            key = target._f(key)
+        }
+        return Reflect.set(...arguments);
+    }
 }`;
 
-function subArrayDecorator(wrapped) {
-    return function() {
-        const result = wrapped.apply(this, arguments);
-        return new Proxy(result, eval(proxyHandler));
+function constructDecorator(wrapped) {
+    return function () {
+        const res = wrapped.apply(originalF, arguments);
+        return replacementF(res);
     }
 }
 
-function redefineNewArrayFunctions(target, replacementF) {
-    target.prototype['slice'] = function (begin, end) {
-        return replacementF(Array.prototype.slice.call(this, this._f(begin), this._f(end)));
-    };
-    target.prototype['subarray'] = subArrayDecorator(target.prototype['subarray'])
+function offsetDecorator(wrapped, type) {
+    return function () {
+        let newArr = [];
+        // Create a copy of array
+        for (let i = 0; i < this.length; i++) {
+            newArr[i] = this[this['_f'](i)]
+        }
+        // Shift to original
+        for (let i = 0; i  < this.length; i++) {
+            this[i] = newArr[i];
+        }
+        // Do func
+        let res;
+        if (type === 3){
+            res = wrapped.apply(new this.prototype.constructor(this), arguments);
+        }  else {
+            res = wrapped.apply(this, arguments);
+        }
+        // Create copy of new arr
+        let secArr = [];
+        for (let i = 0; i  < this.length; i++) {
+            secArr[i] = this[i];
+        }
+        for (let i = 0; i  < this.length; i++) {
+            this[this['_f'](i)] = secArr[i];
+        }
+        switch (type) {
+            case 0:
+                return replacementF({'__ref': res});
+            case 1:
+                return replacementF(res);
+            case 2:
+                return res;
+            default:
+                return res
+        }
+    }
+}
+
+
+function redefineNewArrayFunctions(target) {
+    target.prototype['slice'] = offsetDecorator(target.prototype['slice'], 1);
+    // target.prototype['subarray'] = offsetDecorator(target.prototype['subarray']);
+    target.prototype['sort'] = offsetDecorator(target.prototype['sort'], 0);
+    target.prototype['reverse'] = offsetDecorator(target.prototype['reverse'], 0);
+    target.prototype['set'] = offsetDecorator(target.prototype['set'], 2);
+    target.prototype['reduce'] = offsetDecorator(target.prototype['reduce'], 2);
+    target.prototype['reduceRight'] = offsetDecorator(target.prototype['reduceRight'], 2);
+    target.prototype['map'] = offsetDecorator(target.prototype['map'],1);
+    target.prototype['values'] = offsetDecorator(target.prototype['values'],3);
+    target.prototype['lastIndexOf'] = offsetDecorator(target.prototype['lastIndexOf'],2);
+    target.prototype['indexOf'] = offsetDecorator(target.prototype['indexOf'],2);
+    target.prototype['keys'] = offsetDecorator(target.prototype['keys'],3);
+    target.prototype['entries'] = offsetDecorator(target.prototype['entries'],3);
+    target.prototype['join'] = offsetDecorator(target.prototype['join'],2);
+    target.prototype['find'] = offsetDecorator(target.prototype['find'],2);
+    target.prototype['fill'] = offsetDecorator(target.prototype['fill'],0);
+    target.prototype['forEach'] = offsetDecorator(target.prototype['forEach'],2);
+    target.prototype['filter'] = offsetDecorator(target.prototype['filter'],1);
+    target.prototype['copyWithin'] = offsetDecorator(target.prototype['copyWithin'],0);
+    target['from'] = constructDecorator(originalF['from']);
+    target['of'] = constructDecorator(originalF['of']);
 }
 
 (function () {
     var common_function_body = `
-    let _data = new originalF(...arguments);
-    let n = _data.length;
-    let a = Math.floor(Math.random() * 4096) * n + 1;
-    let b = 2 * a + 1;
-    _data['_f'] = function(x) {
-        if (x === undefined){
-            return x;
-        }  
-        x = x < 0 ? n + x : x;
-        return (a*x + b) % n ;
-    };
+    let _data;
+    if (target['__ref'] !== undefined) {
+        target = target['__ref'];
+        _data = target;           
+    } else {
+        _data = new originalF(...arguments);
+    }
+    if (target['_f'] !== undefined) {
+        _data['_f'] = target['_f'];
+    } else {
+        let n = _data.length;
+        let a = Math.floor(Math.random() * 4096) * n + 1;
+        let b = Math.floor(Math.random() * 4096) * a + 1;
+        _data['_f'] = function(x) {
+            if (x === undefined){
+                return x;
+            }  
+            x = x < 0 ? n + x : x;
+            return (a*x + b) % n ;
+        };
+        let arr = []
+        for (let i = 0; i < _data.length; i++) {
+            arr[i] = _data[i];
+        }
+        
+        for (let i = 0; i < _data.length; i++) {
+            _data[_data['_f'](i)] = arr[i];
+        }
+    }
     let _target = target;
     var proxy = new Proxy(_data, ${proxyHandler});
     copyFunctionPointer(proxy, originalF);
@@ -106,12 +190,15 @@ function redefineNewArrayFunctions(target, replacementF) {
         parent_object_property: "_PROPERTY_",
         original_function: "window._PROPERTY_",
         wrapped_objects: [],
-        helping_code: copyFunctionPointer + redefineNewArrayFunctions + subArrayDecorator + `var proxyHandler = ${proxyHandler};`,
+        helping_code: copyFunctionPointer + `var proxyHandler = ${proxyHandler};`,
         wrapping_function_args: `target`,
         wrapping_function_body: common_function_body,
         post_replacement_code: `
+        ${offsetDecorator}
+        ${constructDecorator}
+        ${redefineNewArrayFunctions}
         copyFunctionPointer(window._PROPERTY_, originalF);
-        redefineNewArrayFunctions(window._PROPERTY_, replacementF);
+        redefineNewArrayFunctions(window._PROPERTY_);
         `
     };
 
