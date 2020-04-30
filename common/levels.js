@@ -114,7 +114,8 @@ var level_4 = {
     "wrappers": [
         // ["window.Date", level_4_time_precision, true],
         // ["Performance.prototype.now", level_4_time_precision, true]
-        ["window.SharedArrayBuffer", false]
+        // ["window.SharedArrayBuffer", false]
+        ["window.Worker", 0]
     ]
 };
 // var typedArrays = [["window.Uint8Array"], ["window.Int8Array"], ["window.Uint8ClampedArray"], ["window.Int16Array"], ["window.Uint16Array"], ["window.Int32Array"], ["window.Uint32Array"], ["window.Float32Array"], ["window.Float64Array"]];
