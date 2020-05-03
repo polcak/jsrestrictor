@@ -113,9 +113,12 @@ var level_4 = {
     "level_description": "Chrome Zero porting",
     "wrappers": [
         // ["window.Date", level_4_time_precision, true],
-        // ["Performance.prototype.now", level_4_time_precision, true]
+        // ["Performance.prototype.now", level_4_time_precision, false],
+        // ["window.PerformanceMark", level_4_time_precision, false],
+        ["window.PerformanceEntry", level_4_time_precision, true],
+        // ["Performance.prototype.mark", level_4_time_precision, false],
         // ["window.SharedArrayBuffer", false]
-        ["window.Worker", 0]
+        // ["window.Worker", 0]
     ]
 };
 // var typedArrays = [["window.Uint8Array"], ["window.Int8Array"], ["window.Uint8ClampedArray"], ["window.Int16Array"], ["window.Uint16Array"], ["window.Int32Array"], ["window.Uint32Array"], ["window.Float32Array"], ["window.Float64Array"]];

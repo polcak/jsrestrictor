@@ -51,7 +51,7 @@ function generate_assign_function_code(code_spec_obj) {
 }
 
 function plain_text_function(code_spec_obj) {
-	return code_spec_obj.wrapping_function_body;
+	return `(${code_spec_obj.wrapping_function_body})(${code_spec_obj.wrapping_function_args});`;
 }
 
 /**
@@ -67,8 +67,10 @@ var build_code = function(wrapper, ...args) {
 	for (wrapped of wrapper.wrapped_objects) {
 		code += `var ${wrapped.wrapped_name} = ${wrapped.original_name};`;
 	}
-	code += `${wrapper.helping_code || ''}
-		${define_page_context_function(wrapper)}`;
+	code += `${wrapper.helping_code || ''}`;
+		if (wrapper.wrapping_function_body){
+			code += `${define_page_context_function(wrapper)}`;
+		}
 	if (wrapper["post_wrapping_code"] !== undefined) {
 		for (code_spec of wrapper["post_wrapping_code"]) {
 			code += post_wrapping_functions[code_spec.code_type](code_spec);
@@ -226,7 +228,7 @@ var rounding_function = `function rounding_function(numberToRound, precision) {
  * Function to be used by wrapped code for adding randomized noise
  */
 var noise_function = `function noise_function(numberToChange, precision) {
-	const noise = Math.floor(Math.random() * Math.pow(10, 3 - precision));
+	const noise = Math.random() * Math.pow(10, 3 - precision);
 	var value = numberToChange - (numberToChange % noise);
 	if (lastValue < value) {
 		lastValue = value;
