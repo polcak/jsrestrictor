@@ -184,6 +184,7 @@ function add_wrappers(wrappers) {
 function wrap_code(wrappers) {
 	var code = `(function() {
 		var original_functions = {};
+		var globalOffset = Math.floor(Math.random() * 4096);
 		`;
 	for (tobewrapped of wrappers) {
 		try {

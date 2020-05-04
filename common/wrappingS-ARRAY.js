@@ -185,7 +185,7 @@ function redefineNewArrayFunctions(target) {
     `;
 
 
-    let DEFAULT_WRAPPER = {
+    let DEFAULT_TYPED_ARRAY_WRAPPER = {
         parent_object: "window",
         parent_object_property: "_PROPERTY_",
         original_function: "window._PROPERTY_",
@@ -202,15 +202,63 @@ function redefineNewArrayFunctions(target) {
         `
     };
 
-    var wrappers = [];
+    let DEFAULT_DATA_VIEW_WRAPPER = {
+        parent_object: "DataView.prototype",
+        parent_object_property: "_PROPERTY_",
+        original_function: "DataView.prototype._PROPERTY_",
+        wrapped_objects: [],
+        wrapping_function_body: `
+            let name = "_PROPERTY_";
+            let byteOffset = (parseInt(name[name.length-2] + name[name.length-1]) || parseInt(name[name.length-1])) / 8 
+            let len = this.byteLength;
+            
+            
+        `,
+    }
 
-    var arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+    var wrappers = [
+        {
+            parent_object: "window",
+            parent_object_property: "DataView",
+            original_function: "window.DataView",
+            wrapped_objects: [],
+            wrapping_function_args: "buffer, byteOffset, byteLength",
+            helping_code: copyFunctionPointer,
+            wrapping_function_body: `
+                let _data = new originalF(buffer);
+                var proxy = new Proxy(_data, {
+                    get: function(target, key, receiver) {
+                        let value = target[key];
+                        let ret = typeof value == 'function' ? value.bind(target) : value;
+                        console.log(key, ret);
+                        return ret;
+                    }
+                })
+                copyFunctionPointer(proxy, originalF);
+                return proxy;
+            `,
+            post_replacement_code: `
+            copyFunctionPointer(window.DataView, originalF);
+            `
+        },
+    ];
 
-    for (let p of arrays) {
-        let wrapper = {...DEFAULT_WRAPPER};
+    var typedTypes = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+    for (let p of typedTypes) {
+        let wrapper = {...DEFAULT_TYPED_ARRAY_WRAPPER};
         wrapper.parent_object_property = wrapper.parent_object_property.replace("_PROPERTY_", p);
         wrapper.original_function = wrapper.original_function.replace("_PROPERTY_", p);
         wrapper.post_replacement_code = wrapper.post_replacement_code.split("_PROPERTY_").join(p);
+        wrapper.wrapping_function_body += `${p};`;
+        wrappers.push(wrapper);
+    }
+
+    var dataViewTypes = ["getInt8", "getInt16", "getInt32", "getUint8", "getUint16", "getUint32", "getFloat32", "getFloat64", "getBigInt64", "getBigUint64"];
+    for (let p of dataViewTypes) {
+        let wrapper = {...DEFAULT_DATA_VIEW_WRAPPER};
+        wrapper.parent_object_property = wrapper.parent_object_property.replace("_PROPERTY_", p);
+        wrapper.original_function = wrapper.original_function.replace("_PROPERTY_", p);
+        wrapper.wrapping_function_body = wrapper.wrapping_function_body.replace("_PROPERTY_", p);
         wrapper.wrapping_function_body += `${p};`;
         wrappers.push(wrapper);
     }
