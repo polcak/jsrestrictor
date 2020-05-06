@@ -185,6 +185,19 @@ function wrap_code(wrappers) {
 	var code = `(function() {
 		var original_functions = {};
 		var globalOffset = Math.floor(Math.random() * 4096);
+		const is_proxy = Symbol('is_proxy')
+		const old_Proxy = Proxy
+  		var handler = {
+    		has (target, key) {
+      		return (is_proxy === key) || (key in target)
+    		}
+  		}
+  		window.Proxy = new Proxy(Proxy,{
+      		construct(target, args) {
+          		return new old_Proxy(new target(...args), handler)
+      		}
+  		});
+  		
 		`;
 	for (tobewrapped of wrappers) {
 		try {
