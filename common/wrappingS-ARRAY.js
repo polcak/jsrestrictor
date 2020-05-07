@@ -23,6 +23,147 @@
  * Create private namespace
  */
 
+
+// This function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+function packIEEE754(v, ebits, fbits) {
+    var bias = (1 << (ebits - 1)) - 1;
+
+    function roundToEven(n) {
+        var w = Math.floor(n), f = n - w;
+        if (f < 0.5)
+            return w;
+        if (f > 0.5)
+            return w + 1;
+        return w % 2 ? w + 1 : w;
+    }
+
+    // Compute sign, exponent, fraction
+    var s, e, f;
+    if (v !== v) {
+        // NaN
+        // http://dev.w3.org/2006/webapi/WebIDL/#es-type-mapping
+        e = (1 << ebits) - 1;
+        f = Math.pow(2, fbits - 1);
+        s = 0;
+    } else if (v === Infinity || v === -Infinity) {
+        e = (1 << ebits) - 1;
+        f = 0;
+        s = (v < 0) ? 1 : 0;
+    } else if (v === 0) {
+        e = 0;
+        f = 0;
+        s = (1 / v === -Infinity) ? 1 : 0;
+    } else {
+        s = v < 0;
+        v = Math.abs(v);
+
+        if (v >= Math.pow(2, 1 - bias)) {
+            // Normalized
+            e = Math.min(Math.floor(Math.log(v) / Math.LN2), 1023);
+            var significand = v / Math.pow(2, e);
+            if (significand < 1) {
+                e -= 1;
+                significand *= 2;
+            }
+            if (significand >= 2) {
+                e += 1;
+                significand /= 2;
+            }
+            var d = Math.pow(2, fbits);
+            f = roundToEven(significand * d) - d;
+            e += bias;
+            if (f / d >= 1) {
+                e += 1;
+                f = 0;
+            }
+            if (e > 2 * bias) {
+                // Overflow
+                e = (1 << ebits) - 1;
+                f = 0;
+            }
+        } else {
+            // Denormalized
+            e = 0;
+            f = roundToEven(v / Math.pow(2, 1 - bias - fbits));
+        }
+    }
+
+    // Pack sign, exponent, fraction
+    var bits = [], i;
+    for (i = fbits; i; i -= 1) {
+        bits.push(f % 2 ? 1 : 0);
+        f = Math.floor(f / 2);
+    }
+    for (i = ebits; i; i -= 1) {
+        bits.push(e % 2 ? 1 : 0);
+        e = Math.floor(e / 2);
+    }
+    bits.push(s ? 1 : 0);
+    bits.reverse();
+    var str = bits.join('');
+
+    // Bits to bytes
+    var bytes = [];
+    while (str.length) {
+        bytes.unshift(parseInt(str.substring(0, 8), 2));
+        str = str.substring(8);
+    }
+    return bytes;
+}
+
+// This function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+function unpackIEEE754(bytes, ebits, fbits) {
+    // Bytes to bits
+    var bits = [], i, j, b, str,
+        bias, s, e, f;
+
+    for (i = 0; i < bytes.length; ++i) {
+        b = bytes[i];
+        for (j = 8; j; j -= 1) {
+            bits.push(b % 2 ? 1 : 0);
+            b = b >> 1;
+        }
+    }
+    bits.reverse();
+    str = bits.join('');
+
+    // Unpack sign, exponent, fraction
+    bias = (1 << (ebits - 1)) - 1;
+    s = parseInt(str.substring(0, 1), 2) ? -1 : 1;
+    e = parseInt(str.substring(1, 1 + ebits), 2);
+    f = parseInt(str.substring(1 + ebits), 2);
+
+    // Produce number
+    if (e === (1 << ebits) - 1) {
+        return f !== 0 ? NaN : s * Infinity;
+    } else if (e > 0) {
+        // Normalized
+        return s * Math.pow(2, e - bias) * (1 + f / Math.pow(2, fbits));
+    } else if (f !== 0) {
+        // Denormalized
+        return s * Math.pow(2, -(bias - 1)) * (f / Math.pow(2, fbits));
+    } else {
+        return s < 0 ? -0 : 0;
+    }
+}
+
+// Next 4 function were adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+function unpackF64(b) {
+    return unpackIEEE754(b, 11, 52);
+}
+
+function packF64(v) {
+    return packIEEE754(v, 11, 52);
+}
+
+function unpackF32(b) {
+    return unpackIEEE754(b, 8, 23);
+}
+
+function packF32(v) {
+    return packIEEE754(v, 8, 23);
+}
+
 function copyFunctionPointer(target, source) {
     // Copy function pointers to from source object to target object.
     if (source === null || target === null || target === source) {
@@ -82,7 +223,7 @@ function offsetDecorator(wrapped, type, proxyRef, offsetF) {
         }
         switch (type) {
             case 0:
-                return proxyRef;
+                return ref;
             case 1:
                 return replacementF(res);
             case 2:
@@ -172,7 +313,7 @@ function getByteDecorator(wrapped, offsetF, name) {
         }
         return res;
     }
-};
+}
 
 function setByteDecorator(wrapped, offsetF, name) {
     function to32BitBin(n) {
@@ -198,28 +339,162 @@ function setByteDecorator(wrapped, offsetF, name) {
         let numberPart;
         for (let i = 0; i < byteNumber; i++) {
             numberPart = binNumber.substr(i * 8, 8);
-            numberPart = parseInt(numberPart,2);
-            if (endian){
+            numberPart = parseInt(numberPart, 2);
+            if (endian) {
                 this.setUint8(originalIdx + byteNumber - i - 1, numberPart);
-            } else{
+            } else {
                 this.setUint8(originalIdx + i, numberPart);
             }
         }
         return undefined;
     }
-};
+}
 
+function getFloatDecorator(wrapped, name) {
+    return function () {
+        const originalIdx = arguments[0];
+        if (originalIdx === undefined) {
+            wrapped.apply(this, arguments)
+        }
+        const endian = arguments[1];
+        const byteNumber = (parseInt(name[name.length - 2] + name[name.length - 1]) || parseInt(name[name.length - 1])) / 8;
+        let binArray = [];
+        // Random access
+        this.getUint8(0);
+        for (let i = 0; i < byteNumber; i++) {
+            binArray[binArray.length] = this.getUint8(originalIdx + i);
+        }
+        if (endian) {
+            binArray = binArray.reverse()
+        }
+        if (byteNumber === 4) {
+            return unpackF32(binArray);
+        } else {
+            return unpackF64(binArray);
+        }
+    }
+}
+
+function setFloatDecorator(wrapped, name) {
+    return function () {
+        const originalIdx = arguments[0];
+        const value = arguments[1];
+        if (originalIdx === undefined || value === undefined) {
+            wrapped.apply(this, arguments)
+        }
+        const endian = arguments[2];
+        const byteNumber = (parseInt(name[name.length - 2] + name[name.length - 1]) || parseInt(name[name.length - 1])) / 8;
+        let binArray;
+
+        // Random access
+        this.getUint8(0);
+        if (byteNumber === 4) {
+            binArray = packF32(value);
+        } else {
+            binArray = packF64(value);
+        }
+        for (let i = 0; i < binArray.length; i++) {
+            if (endian) {
+                this.setUint8(originalIdx + byteNumber - i - 1, binArray[i]);
+            } else {
+                this.setUint8(originalIdx + i, binArray[i]);
+            }
+        }
+        return undefined;
+    }
+}
+
+function getBigIntDecorator(wrapped) {
+    return function () {
+        const originalIdx = arguments[0];
+        if (originalIdx === undefined) {
+            wrapped.apply(this, arguments)
+        }
+        const endian = arguments[1];
+        let hex = [];
+        let binArray = [];
+        for (let i = 0; i < 8; i++) {
+            binArray[binArray.length] = this.getUint8(originalIdx + i);
+        }
+        if (endian) {
+            binArray = binArray.reverse();
+        }
+        for (let i of binArray) {
+            let h = i.toString(16);
+            if (h.length % 2) {
+                h = '0' + h;
+            }
+            hex.push(h);
+        }
+        let result = BigInt('0x' + hex.join(''));
+        if (binArray[0] >= 128) {
+            return result - 18446744073709551615n - 1n;
+        }
+        return result
+    }
+}
+
+function setBigIntDecorator(wrapped) {
+    return function () {
+        const originalIdx = arguments[0];
+        let value = arguments[1];
+        if (originalIdx === undefined || value === undefined || typeof value !== "bigint") {
+            wrapped.apply(this, arguments)
+        }
+        const endian = arguments[2];
+        if (value < 0n) {
+            value = 18446744073709551615n + value + 1n;
+        }
+        let hex = BigInt(value).toString(16);
+        if (hex.length % 2) {
+            hex = '0' + hex;
+        }
+
+        const len = hex.length / 2;
+        let binArray = [];
+        let j = 0;
+        // Random access
+        this.getUint8(0);
+        for (let i = 0; i < 8; i++) {
+            if (i < len) {
+                binArray[binArray.length] = parseInt(hex.slice(j, j + 2), 16);
+                j += 2;
+            } else {
+                binArray[binArray.length] = 0;
+            }
+        }
+        if (endian) {
+            binArray.reverse();
+        }
+        for (let i in binArray) {
+            this.setUint8(originalIdx + i, binArray[i])
+        }
+        return undefined;
+    }
+}
 
 function redefineDataViewFunctions(target, offsetF) {
-    // Done
+    // Replace functions working with Ints
     var dataViewTypes = ["getInt8", "getInt16", "getInt32", "getUint8", "getUint16", "getUint32"];
-    // Not done
-    var dataViewTypes2= ["getFloat32", "getFloat64", "getBigInt64", "getBigUint64"];
     for (type of dataViewTypes) {
         target[type] = getByteDecorator(target[type], offsetF, type);
         type = 's' + type.substr(1);
         target[type] = setByteDecorator(target[type], offsetF, type);
     }
+
+    var dataViewTypes2 = ["getFloat32", "getFloat64"];
+    for (type of dataViewTypes2) {
+        target[type] = getFloatDecorator(target[type], type);
+        type = 's' + type.substr(1);
+        target[type] = setFloatDecorator(target[type], type);
+    }
+    var dataViewTypes3 = ["getBigInt64", "getBigUint64"];
+    for (type of dataViewTypes3) {
+        target[type] = getBigIntDecorator(target[type]);
+        type = 's' + type.substr(1);
+        target[type] = setBigIntDecorator(target[type]);
+    }
+
 };
 
 (function () {
@@ -236,7 +511,7 @@ function redefineDataViewFunctions(target, offsetF) {
     var offsetF = function(x) {
         return x;
     };
-    if (level >= 2) {
+    if (doMapping) {
         // Random numbers for offset function
         let n = _data.length;
         let a;
@@ -270,7 +545,7 @@ function redefineDataViewFunctions(target, offsetF) {
     copyFunctionPointer(proxy, originalF);
     ${offsetDecorator};
     ${redefineNewArrayFunctions};
-    if (level >= 2) {
+    if (doMapping) {
         // Methods have to work with offsets;
         redefineNewArrayFunctions(proxy, offsetF);
     }
@@ -289,7 +564,7 @@ function redefineDataViewFunctions(target, offsetF) {
             original_function: "window.DataView",
             wrapped_objects: [],
             wrapping_function_args: "buffer, byteOffset, byteLength",
-            helping_code: copyFunctionPointer + `
+            helping_code: copyFunctionPointer + packIEEE754 + unpackIEEE754 + packF32 + unpackF32 + packF64 + unpackF64 + `
             function gcd(x, y) {
                 while(y) {
                     var t = y;
@@ -298,6 +573,7 @@ function redefineDataViewFunctions(target, offsetF) {
                 }
             return x;
             }
+            var doMapping = args[0];
             `,
             wrapping_function_body: `
                 let _data = new originalF(buffer);
@@ -320,11 +596,17 @@ function redefineDataViewFunctions(target, offsetF) {
                 };
                 ${getByteDecorator}
                 ${setByteDecorator}
+                ${getFloatDecorator}
+                ${setFloatDecorator}
+                ${getBigIntDecorator}
+                ${setBigIntDecorator}
                 ${redefineDataViewFunctions}
                 for (let i = 0; i < n; i++) {
                     let random = _data.getUint8(i);
                 }
-                redefineDataViewFunctions(_data, offsetF);
+                if (doMapping){
+                    redefineDataViewFunctions(_data, offsetF);
+                }
                 return _data;
             `,
         },
@@ -337,7 +619,7 @@ function redefineDataViewFunctions(target, offsetF) {
         original_function: "window._PROPERTY_",
         wrapped_objects: [],
         helping_code: copyFunctionPointer + `
-        let level = args[0];
+        let doMapping = args[0];
         var proxyHandler = ${proxyHandler};
         function gcd(x, y) {
         while(y) {
@@ -354,9 +636,7 @@ function redefineDataViewFunctions(target, offsetF) {
         ${constructDecorator}
         ${redefineNewArrayConstructors}
         copyFunctionPointer(window._PROPERTY_, originalF);
-        if (level >= 2){
-            redefineNewArrayConstructors(window._PROPERTY_);        
-        }
+        redefineNewArrayConstructors(window._PROPERTY_);        
         `
     };
 

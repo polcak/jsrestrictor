@@ -25,6 +25,7 @@
 
 (function () {
     var polyfillBody = `
+    // Original source code can be found at https://github.com/nolanlawson/pseudo-worker
     function doEval(self, __pseudoworker_script) {
         /* jshint unused:false */
         (function () {
@@ -33,7 +34,6 @@
         }).call(window);
     }
     
-    // Original source code can be found at https://github.com/nolanlawson/pseudo-worker
     var messageListeners = [];
     var errorListeners = [];
     var workerMessageListeners = [];

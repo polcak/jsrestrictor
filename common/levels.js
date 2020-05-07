@@ -103,34 +103,19 @@ var level_3 = {
         ["navigator.deviceMemory"],
         // HTML-LS
         ["navigator.hardwareConcurrency"],
-    ]
-};
-
-var level_4_time_precision = 0;
-var level_4 = {
-    "level_id": "0",
-    "level_text": "Built-in 4",
-    "level_description": "Chrome Zero porting",
-    "wrappers": [
-        // ["window.Date", level_4_time_precision, true],
-        // ["Performance.prototype.now", level_4_time_precision, false],
-        // ["window.PerformanceMark", level_4_time_precision, false],
-        // ["window.PerformanceEntry", level_4_time_precision, true],
-        // ["Performance.prototype.mark", level_4_time_precision, false],
-        // ["window.SharedArrayBuffer", false]
-        // ["window.Worker", 0]
-        ["window.DataView"],
+        ["window.Worker", true],
+        ["window.SharedArrayBuffer", true],
+        ["window.DataView", true],
         ["WebGLRenderingContext.prototype.bufferSubData"],
         ["WebGLRenderingContext.prototype.texImage2D"],
         ["WebGLRenderingContext.prototype.texSubImage2D"],
         ["WebGLRenderingContext.prototype.readPixels"]
     ]
-
 };
-var typedArrays = [["window.Uint8Array"], ["window.Int8Array"], ["window.Uint8ClampedArray"], ["window.Int16Array"], ["window.Uint16Array"], ["window.Int32Array"], ["window.Uint32Array"], ["window.Float32Array"], ["window.Float64Array"]];
-var dataViewArrays = [["DataView.prototype.getInt8"], ["DataView.prototype.getInt16"], ["DataView.prototype.getInt32"], ["DataView.prototype.getUint8"], ["DataView.prototype.getUint16"], ["DataView.prototype.getUint32"], ["DataView.prototype.getFloat32"], ["DataView.prototype.getFloat64"], ["DataView.prototype.getBigInt64"], ["DataView.prototype.getBigUint64"]];
-// level_4.wrappers = level_4.wrappers.concat(typedArrays);
-// level_4.wrappers = level_4.wrappers.concat(dataViewArrays);
+let arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+for (let a of arrays) {
+    level_3.wrappers.push([`window.${a}`, true]);
+}
 
 // default extension_settings_data setting. used on install
 var extension_settings_data = level_0;
@@ -140,7 +125,6 @@ const L0 = "0";
 const L1 = "1";
 const L2 = "2";
 const L3 = "3";
-const L4 = "4";
 
 var levels = {};
 var default_level = {};
@@ -148,13 +132,12 @@ var domains = {};
 
 function init_levels() {
     levels = {
-        [level_0.level_id]: level_4,
+        [level_0.level_id]: level_0,
         [level_1.level_id]: level_1,
         [level_2.level_id]: level_2,
         [level_3.level_id]: level_3,
-        [level_4.level_id]: level_4
     };
-    default_level = Object.create(levels[L0]);
+    default_level = Object.create(levels[L3]);
     default_level.level_text = "Default";
 }
 

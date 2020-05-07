@@ -68,7 +68,7 @@ var proxyHandler = `{
             wrapping_function_body: wrappingFunctionBody,
             post_replacement_code: `
                 if (forbid) {
-                    delete(window.SharedArrayBuffer);
+                    delete(window.SharedArrayBuffer);   
                 }
             `,
         }
