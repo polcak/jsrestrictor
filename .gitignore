@@ -2,3 +2,5 @@
 *.zip
 chrome_JSR/
 firefox_JSR/
+*.crx
+*.xpi
