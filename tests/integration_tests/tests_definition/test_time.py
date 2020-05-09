@@ -1,8 +1,19 @@
+import pytest
 from datetime import datetime
 import time
 import random
 
 from math_operations import is_in_accuracy
+from configuration import Config
+
+
+## Setup method - it is run before time tests execution starts.
+#
+#  This setup method open testing page - it is necessary in Mozilla Firefox.
+#  In Mozilla Firefox: Time is spoofed only when page is opened.
+@pytest.fixture(scope='module', autouse=True)
+def load_test_page(browser):
+    driver.get(Config.testing_page)
 
 
 ## Test hours.
