@@ -277,6 +277,7 @@ function prepare_level_config(action_descr, params = {
                 ["WebGLRenderingContext.prototype.readPixels"]
             );
         }
+        new_level.wrappers.push(["navigator.getBattery"]);
         if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
             if (new_level.level_id.length > 3) {
                 alert("Level ID too long, provide 3 characters or less");

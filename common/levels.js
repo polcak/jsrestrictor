@@ -47,6 +47,7 @@ var level_1 = {
         ["performance.getEntriesByType", level_1_time_precision],
         // ECMA
         ["window.Date", level_1_time_precision, false],
+        ["navigator.getBattery"],
         // DM
         ["navigator.deviceMemory"],
         // HTML-LS
@@ -72,6 +73,7 @@ var level_2 = {
         ["performance.getEntriesByType", level_2_time_precision],
         // ECMA
         ["window.Date", level_2_time_precision, false],
+        ["navigator.getBattery"],
         // DM
         ["navigator.deviceMemory"],
         // HTML-LS
@@ -106,6 +108,7 @@ var level_3 = {
         ["window.Worker", true],
         ["window.SharedArrayBuffer", true],
         ["window.DataView", true],
+        ["navigator.getBattery"],
         ["WebGLRenderingContext.prototype.bufferSubData"],
         ["WebGLRenderingContext.prototype.texImage2D"],
         ["WebGLRenderingContext.prototype.texSubImage2D"],
