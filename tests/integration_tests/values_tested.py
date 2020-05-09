@@ -82,7 +82,7 @@ class TestedValues:
                  referrer,
                  time,
                  performance,
-                 canvas
+                 protect_canvas
                  ):
         self.navigator = Navigator(
             user_agent,
@@ -112,4 +112,4 @@ class TestedValues:
         self.referrer = referrer
         self.time = time
         self.performance = performance
-        self.canvas = canvas
+        self.protect_canvas = protect_canvas

@@ -34,5 +34,5 @@ def init(driver):
         referrer=values_getters.get_referrer(driver),
         time=None,
         performance=None,
-        canvas=None
+        protect_canvas=None
     )

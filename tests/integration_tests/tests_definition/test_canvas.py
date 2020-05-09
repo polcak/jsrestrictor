@@ -1,10 +1,9 @@
 from values_getters import is_canvas_spoofed
 
 
-## Test referrer - where the page was navigated from.
+## Test canvas - if canvas is spoofed: Reading from canvas returns white image.
 def test_canvas(browser, expected):
-    if expected.canvas == 'REAL VALUE':
-        assert not is_canvas_spoofed(browser.driver)
-    else:
-        # browser.real.canvas contains empty canvas
+    if expected.protect_canvas:
         assert is_canvas_spoofed(browser.driver)
+    else:
+        assert not is_canvas_spoofed(browser.driver)
