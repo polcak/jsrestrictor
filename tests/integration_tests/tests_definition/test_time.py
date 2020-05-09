@@ -13,7 +13,7 @@ from configuration import Config
 #  In Mozilla Firefox: Time is spoofed only when page is opened.
 @pytest.fixture(scope='module', autouse=True)
 def load_test_page(browser):
-    driver.get(Config.testing_page)
+    browser.driver.get(Config.testing_page)
 
 
 ## Test hours.
