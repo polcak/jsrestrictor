@@ -32,25 +32,6 @@ def test_accuracy(browser, position, expected):
         assert position['accuracy'] == expected.geolocation.accuracy['value']
 
 
-## Test accuracy of the latitude and longitude properties in meters.
-def test_accuracy(browser, position, expected):
-    if expected.geolocation.accuracy['value'] == 'REAL VALUE':
-        if position['accuracy'] == "null":
-            # If current value is null, real value has to be null too.
-            assert position['accuracy'] == browser.real.geolocation.accuracy
-        else:
-            if expected.geolocation.accuracy['accuracy'] == 'EXACTLY':
-                # Values do not have to be strictly equal.
-                # A deviation of less than 50 meters is tolerated.
-                assert abs(float(position['accuracy']) - float(browser.real.geolocation.accuracy)) < 50
-            else:
-                # Should be rounded real value in accuracy.
-                assert is_in_accuracy(position['accuracy'], expected.geolocation.accuracy['accuracy'])
-    else:
-        # Should be spoofed value.
-        assert position['accuracy'] == expected.geolocation.accuracy['value']
-
-
 ## Test position's altitude in meters, relative to sea level.
 def test_altitude(browser, position, expected):
     if expected.geolocation.altitude['value'] == 'REAL VALUE':
@@ -74,8 +55,8 @@ def test_altitude(browser, position, expected):
 def test_altitudeaccurac(browser, position, expected):
     if expected.geolocation.altitudeAccurac['value'] == 'REAL VALUE':
         if position['altitudeaccurac'] == "null":
-                # If current value is null, real value has to be null too.
-                assert position['altitudeaccurac'] == browser.real.geolocation.altitudeAccurac
+            # If current value is null, real value has to be null too.
+            assert position['altitudeaccurac'] == browser.real.geolocation.altitudeAccurac
         else:
             if expected.geolocation.altitudeAccurac['accuracy'] == 'EXACTLY':
                 # Values do not have to be strictly equal.
@@ -126,9 +107,10 @@ def test_latitude(browser, position, expected):
                 # A deviation of less than 1 degrees is tolerated.
                 assert abs(float(position['latitude']) - float(browser.real.geolocation.latitude)) < 1
             else:
+                latitude = round(float(position['latitude']), 3) * 1000
+                latitude_accuracy = expected.geolocation.latitude['accuracy'] * 1000
                 # Should be rounded real value in accuracy.
-                assert is_in_accuracy(round(float(position['latitude']), 3) * 1000,
-                                      expected.geolocation.latitude['accuracy'] * 1000)
+                assert is_in_accuracy(latitude, latitude_accuracy)
     else:
         # Should be spoofed value.
         assert position['latitude'] == expected.geolocation.latitude['value']
@@ -146,9 +128,10 @@ def test_longitude(browser, position, expected):
                 # A deviation of less than 1 degrees is tolerated.
                 assert abs(float(position['longitude']) - float(browser.real.geolocation.longitude)) < 1
             else:
+                longitude = round(float(position['longitude']), 3) * 1000
+                longitude_accuracy = expected.geolocation.longitude['accuracy'] * 1000
                 # Should be rounded real value in accuracy.
-                assert is_in_accuracy(round(float(position['longitude']), 3) * 1000,
-                                      expected.geolocation.longitude['accuracy'] * 1000)
+                assert is_in_accuracy(longitude, longitude_accuracy)
     else:
         # Should be spoofed value.
         assert position['longitude'] == expected.geolocation.longitude['value']
@@ -181,8 +164,9 @@ def test_timestamp(position, expected):
             # A deviation of less than 2 seconds is tolerated.
             assert abs(time() - int(position['timestamp'])/1000) < 2
         else:
+            timestamp_accuracy = expected.geolocation.timestamp['accuracy']*1000
             # Should be rounded real value in accuracy.
-            assert is_in_accuracy(position['timestamp'], expected.geolocation.timestamp['accuracy']*1000)
+            assert is_in_accuracy(position['timestamp'], timestamp_accuracy)
     else:
         # Should be spoofed value.
         assert position['timestamp'] == expected.geolocation.timestamp['value']
