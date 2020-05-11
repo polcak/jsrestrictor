@@ -27,7 +27,6 @@ var proxyHandler = `{
     get(target, key, receiver) {
         let j;
         let slow = Math.floor(Math.random() * 10000)
-        console.log('Slow get by ' + slow);
         for (let i = 0; i < slow;) {
             j = i;
             i = j + 1;
@@ -38,7 +37,6 @@ var proxyHandler = `{
     set(target, key, value) {
         let j;
         let slow = Math.floor(Math.random() * 10000);
-        console.log('Slow set by ' + slow);
         for (let i = 0; i < slow;) {
             j = i;
             i = j + 1;
@@ -62,6 +60,9 @@ var proxyHandler = `{
             original_function: "window.SharedArrayBuffer",
             wrapped_objects: [],
             helping_code: `
+                if (window.SharedArrayBuffer === undefined) {
+                    return;
+                }
                 let forbid = args[0];
             `,
             wrapping_function_args: `target`,

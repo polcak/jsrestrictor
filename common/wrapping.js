@@ -50,10 +50,6 @@ function generate_assign_function_code(code_spec_obj) {
 	`
 }
 
-function plain_text_function(code_spec_obj) {
-	return `(${code_spec_obj.wrapping_function_body})(${code_spec_obj.wrapping_function_args});`;
-}
-
 /**
  * This function builds the wrapping code.
  */
@@ -61,7 +57,6 @@ var build_code = function(wrapper, ...args) {
 	var post_wrapping_functions = {
 		function_define: define_page_context_function,
 		function_export: generate_assign_function_code,
-		plain_text: plain_text_function,
 	};
 	var code = "";
 	for (wrapped of wrapper.wrapped_objects) {
@@ -150,11 +145,14 @@ if ((running_in_firefox() === true) && (firefox_blocks_scripts() === true)) {
 		for (wrapped of wrapper.wrapped_objects) {
 			code += `var ${wrapped.wrapped_name} = window.wrappedJSObject.${wrapped.original_name};`;
 		}
-		code += `${wrapper.helping_code || ''}
-			function tobeexported(${wrapper.wrapping_function_args}) {
+		code += `${wrapper.helping_code || ''}`;
+		if (wrapper.wrapping_function_body) {
+			code += `function tobeexported(${wrapper.wrapping_function_args}) {
 					${wrapper.wrapping_function_body}
 				}
 		`;
+		}
+
 		if (wrapper["wrapper_prototype"] !== undefined) {
 			code += `Object.setPrototypeOf(tobeexported, ${wrapper.wrapper_prototype});
 			`;
@@ -185,16 +183,16 @@ function wrap_code(wrappers) {
 	var code = `(function() {
 		var original_functions = {};
 		var globalOffset = Math.floor(Math.random() * 4096);
-		const is_proxy = Symbol('is_proxy')
-		const old_Proxy = Proxy
+		const is_proxy = Symbol('is_proxy');
+		const old_Proxy = Proxy;
   		var handler = {
     		has (target, key) {
-      		return (is_proxy === key) || (key in target)
+      		return (is_proxy === key) || (key in target);
     		}
   		}
   		window.Proxy = new Proxy(Proxy,{
       		construct(target, args) {
-          		return new old_Proxy(new target(...args), handler)
+          		return new old_Proxy(new target(...args), handler);
       		}
   		});
   		

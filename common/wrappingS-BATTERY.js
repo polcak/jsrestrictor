@@ -28,6 +28,11 @@
 			parent_object: "navigator",
 			parent_object_property: "getBattery",
 			wrapped_objects: [],
+			helping_code: `
+				if (navigator.getBattery === undefined) {
+					return;
+				}
+			`,
 			original_function: "navigator.getBattery",
 			wrapping_function_body: `
 					return undefined; 

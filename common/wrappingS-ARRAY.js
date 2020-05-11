@@ -178,9 +178,9 @@ function copyFunctionPointer(target, source) {
     for (var k in keys) {
         if (!keys.hasOwnProperty(k)) continue;
         var name = keys[k];
-        if (typeof (source[name]) === "function") {
+        if (typeof (source[name]) === 'function') {
             target[name] = source[name];
-        } else if (typeof (source[name]) === "object") {
+        } else if (typeof (source[name]) === 'object') {
             target[name] = source[name];
             copyFunctionPointer(target[name], source[name]);
         }
@@ -264,26 +264,26 @@ function redefineNewArrayConstructors(target) {
 // Default proxy handler for Typed Arrays
 var proxyHandler = `{
     get(target, key, receiver) {
-        var random_idx = Math.floor(Math.random() * (target["length"] - 1));
+        var random_idx = Math.floor(Math.random() * (target['length'] - 1));
         // Load random index from array
         var rand_val = target[random_idx];
-        let proto_keys = ["buffer", "byteLength", "byteOffset", "length"];
+        let proto_keys = ['buffer', 'byteLength', 'byteOffset', 'length'];
         if (proto_keys.indexOf(key) >= 0) {
             return target[key];
         }
         // offsetF argument needs to be in array range
-        if (typeof key !== "symbol" && Number(key) >= 0 && Number(key) < target.length) {
+        if (typeof key !== 'symbol' && Number(key) >= 0 && Number(key) < target.length) {
             key = offsetF(key)
         }
         let value = Reflect.get(...arguments);
         return typeof value == 'function' ? value.bind(target) : value;
     },
     set(target, key, value) {
-        var random_idx = Math.floor(Math.random() * (target["length"] - 1));
+        var random_idx = Math.floor(Math.random() * (target['length'] - 1));
         // Load random index from array
         var rand_val = target[random_idx];
         rand_val = rand_val;
-        if (typeof key !== "symbol" && Number(key) >= 0 && Number(key) < target.length) {
+        if (typeof key !== 'symbol' && Number(key) >= 0 && Number(key) < target.length) {
             key = offsetF(key)
         }
         return Reflect.set(...arguments);
@@ -294,7 +294,7 @@ function getByteDecorator(wrapped, offsetF, name) {
     return function () {
         const originalIdx = arguments[0];
         const endian = arguments[1];
-        if (name === "getUint8") {
+        if (name === 'getUint8') {
             // Random access
             let ran = wrapped.apply(this, [Math.floor(Math.random() * (this.byteLength - 1))]);
             // Call original func
@@ -320,14 +320,14 @@ function setByteDecorator(wrapped, offsetF, name) {
         if (n < 0) {
             n = 0xFFFFFFFF + n + 1;
         }
-        return ("00000000000000000000000000000000" + parseInt(n, 10).toString(2)).substr(-32);
+        return ('00000000000000000000000000000000' + parseInt(n, 10).toString(2)).substr(-32);
     }
 
     return function () {
         const originalIdx = arguments[0];
         const value = arguments[1];
         const endian = arguments[2];
-        if (name === "setUint8") {
+        if (name === 'setUint8') {
             // Random access
             this.getUint8(0);
             // Call original func
@@ -438,7 +438,7 @@ function setBigIntDecorator(wrapped) {
     return function () {
         const originalIdx = arguments[0];
         let value = arguments[1];
-        if (originalIdx === undefined || value === undefined || typeof value !== "bigint") {
+        if (originalIdx === undefined || value === undefined || typeof value !== 'bigint') {
             wrapped.apply(this, arguments)
         }
         const endian = arguments[2];
@@ -475,20 +475,20 @@ function setBigIntDecorator(wrapped) {
 
 function redefineDataViewFunctions(target, offsetF) {
     // Replace functions working with Ints
-    var dataViewTypes = ["getInt8", "getInt16", "getInt32", "getUint8", "getUint16", "getUint32"];
+    var dataViewTypes = ['getInt8', 'getInt16', 'getInt32', 'getUint8', 'getUint16', 'getUint32'];
     for (type of dataViewTypes) {
         target[type] = getByteDecorator(target[type], offsetF, type);
         type = 's' + type.substr(1);
         target[type] = setByteDecorator(target[type], offsetF, type);
     }
 
-    var dataViewTypes2 = ["getFloat32", "getFloat64"];
+    var dataViewTypes2 = ['getFloat32', 'getFloat64'];
     for (type of dataViewTypes2) {
         target[type] = getFloatDecorator(target[type], type);
         type = 's' + type.substr(1);
         target[type] = setFloatDecorator(target[type], type);
     }
-    var dataViewTypes3 = ["getBigInt64", "getBigUint64"];
+    var dataViewTypes3 = ['getBigInt64', 'getBigUint64'];
     for (type of dataViewTypes3) {
         target[type] = getBigIntDecorator(target[type]);
         type = 's' + type.substr(1);
@@ -500,7 +500,7 @@ function redefineDataViewFunctions(target, offsetF) {
 (function () {
     var common_function_body = `
     let _data;
-    if (typeof target === "object" && target !== null) {
+    if (typeof target === 'object' && target !== null) {
         if (is_proxy in target){
             // If already Proxied array is passed as arg return it
             return target;
@@ -559,11 +559,11 @@ function redefineDataViewFunctions(target, offsetF) {
 
     var wrappers = [
         {
-            parent_object: "window",
-            parent_object_property: "DataView",
-            original_function: "window.DataView",
+            parent_object: 'window',
+            parent_object_property: 'DataView',
+            original_function: 'window.DataView',
             wrapped_objects: [],
-            wrapping_function_args: "buffer, byteOffset, byteLength",
+            wrapping_function_args: 'buffer, byteOffset, byteLength',
             helping_code: copyFunctionPointer + packIEEE754 + unpackIEEE754 + packF32 + unpackF32 + packF64 + unpackF64 + `
             function gcd(x, y) {
                 while(y) {
@@ -614,9 +614,9 @@ function redefineDataViewFunctions(target, offsetF) {
 
 
     let DEFAULT_TYPED_ARRAY_WRAPPER = {
-        parent_object: "window",
-        parent_object_property: "_PROPERTY_",
-        original_function: "window._PROPERTY_",
+        parent_object: 'window',
+        parent_object_property: '_PROPERTY_',
+        original_function: 'window._PROPERTY_',
         wrapped_objects: [],
         helping_code: copyFunctionPointer + `
         let doMapping = args[0];
@@ -640,13 +640,13 @@ function redefineDataViewFunctions(target, offsetF) {
         `
     };
 
-    var typedTypes = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+    var typedTypes = ['Uint8Array', 'Int8Array', 'Uint8ClampedArray', 'Int16Array', 'Uint16Array', 'Int32Array', 'Uint32Array', 'Float32Array', 'Float64Array'];
     for (let p of typedTypes) {
         let wrapper = {...DEFAULT_TYPED_ARRAY_WRAPPER};
-        wrapper.parent_object_property = wrapper.parent_object_property.replace("_PROPERTY_", p);
-        wrapper.original_function = wrapper.original_function.replace("_PROPERTY_", p);
-        wrapper.post_replacement_code = wrapper.post_replacement_code.split("_PROPERTY_").join(p);
-        wrapper.wrapping_function_body += `${p};`;
+        wrapper.parent_object_property = wrapper.parent_object_property.replace('_PROPERTY_', p);
+        wrapper.original_function = wrapper.original_function.replace('_PROPERTY_', p);
+        wrapper.post_replacement_code = wrapper.post_replacement_code.split('_PROPERTY_').join(p);
+        wrapper.wrapping_function_body += `// ${p};`;
         wrappers.push(wrapper);
     }
 

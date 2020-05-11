@@ -31,7 +31,7 @@
             original_function: "WebGLRenderingContext.prototype.bufferSubData",
             wrapped_objects: [],
             wrapping_function_body: `
-                if (arguments[2] !== null && typeof arguments[2] === "object" && is_proxy in arguments[2]){
+                if (arguments[2] !== null && typeof arguments[2] === 'object' && is_proxy in arguments[2]){
                     arguments[2] = arguments[2].subarray(0);
                 }
                 return originalF.call(this, ...arguments);
@@ -43,7 +43,7 @@
             original_function: "WebGLRenderingContext.prototype.texImage2D",
             wrapped_objects: [],
             wrapping_function_body: `
-                if (arguments[8] !== null && typeof arguments[8] === "object" && is_proxy in arguments[8]){
+                if (arguments[8] !== null && typeof arguments[8] === 'object' && is_proxy in arguments[8]){
                     arguments[8] = arguments[8].subarray(0);
                 }
                 return originalF.call(this, ...arguments);
@@ -55,7 +55,7 @@
             original_function: "WebGLRenderingContext.prototype.texSubImage2D",
             wrapped_objects: [],
             wrapping_function_body: `
-                if (arguments[8] !== null && typeof arguments[8] === "object" && is_proxy in arguments[8]){
+                if (arguments[8] !== null && typeof arguments[8] === 'object' && is_proxy in arguments[8]){
                     arguments[8] = arguments[8].subarray(0);
                 }
                 return originalF.call(this, ...arguments);
@@ -67,7 +67,7 @@
             original_function: "WebGLRenderingContext.prototype.readPixels",
             wrapped_objects: [],
             wrapping_function_body: `
-                if (arguments[6] !== null && typeof arguments[6] === "object" && is_proxy in arguments[6]){
+                if (arguments[6] !== null && typeof arguments[6] === 'object' && is_proxy in arguments[6]){
                     arguments[6] = arguments[6].subarray(0);
                 }
                 return originalF.call(this, ...arguments);
