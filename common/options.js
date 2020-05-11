@@ -271,10 +271,6 @@ function prepare_level_config(action_descr, params = {
             }
             new_level.wrappers.push(
                 ["window.DataView", doMapping],
-                ["WebGLRenderingContext.prototype.bufferSubData"],
-                ["WebGLRenderingContext.prototype.texImage2D"],
-                ["WebGLRenderingContext.prototype.texSubImage2D"],
-                ["WebGLRenderingContext.prototype.readPixels"]
             );
         }
         new_level.wrappers.push(["navigator.getBattery"]);

@@ -109,10 +109,6 @@ var level_3 = {
         ["window.SharedArrayBuffer", true],
         ["window.DataView", true],
         ["navigator.getBattery"],
-        ["WebGLRenderingContext.prototype.bufferSubData"],
-        ["WebGLRenderingContext.prototype.texImage2D"],
-        ["WebGLRenderingContext.prototype.texSubImage2D"],
-        ["WebGLRenderingContext.prototype.readPixels"]
     ]
 };
 let arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];

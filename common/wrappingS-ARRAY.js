@@ -216,10 +216,10 @@ function redefineNewArrayFunctions(target, offsetF) {
     target['reverse'] = offsetDecorator(target['reverse'], 0, target, offsetF);
     target['fill'] = offsetDecorator(target['fill'], 0, target, offsetF);
     target['copyWithin'] = offsetDecorator(target['copyWithin'], 0, target, offsetF);
+    target['subarray'] = offsetDecorator(target['subarray'], 0, target, offsetF);
     target['slice'] = offsetDecorator(target['slice'], 1, target, offsetF);
     target['map'] = offsetDecorator(target['map'], 1, target, offsetF);
     target['filter'] = offsetDecorator(target['filter'], 1, target, offsetF);
-    target['subarray'] = offsetDecorator(target['subarray'], 2, target, offsetF);
     target['set'] = offsetDecorator(target['set'], 2, target, offsetF);
     target['reduce'] = offsetDecorator(target['reduce'], 2, target, offsetF);
     target['reduceRight'] = offsetDecorator(target['reduceRight'], 2, target, offsetF);
