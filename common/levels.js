@@ -100,7 +100,7 @@ var level_3 = {
         // ECMA
         ["window.Date", level_3_time_precision, false],
         // AJAX
-        // ["window.XMLHttpRequest", false, true],
+        ["window.XMLHttpRequest", false, true],
         // DM
         ["navigator.deviceMemory"],
         // HTML-LS

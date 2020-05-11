@@ -267,7 +267,7 @@ var proxyHandler = `{
     }
 }`;
 
-function getByteDecorator(wrapped, offsetF, name) {
+function getByteDecorator(wrapped, offsetF, name, doMapping) {
     return function () {
         const originalIdx = arguments[0];
         const endian = arguments[1];
@@ -276,6 +276,10 @@ function getByteDecorator(wrapped, offsetF, name) {
             let ran = wrapped.apply(this, [Math.floor(Math.random() * (this.byteLength - 1))]);
             // Call original func
             arguments[0] = offsetF(originalIdx);
+            return wrapped.apply(this, arguments);
+        }
+        if (!doMapping){
+            this.getUint8(0);
             return wrapped.apply(this, arguments);
         }
         const byteNumber = (parseInt(name[name.length - 2] + name[name.length - 1]) || parseInt(name[name.length - 1])) / 8;
@@ -292,7 +296,7 @@ function getByteDecorator(wrapped, offsetF, name) {
     }
 }
 
-function setByteDecorator(wrapped, offsetF, name) {
+function setByteDecorator(wrapped, offsetF, name, doMapping) {
     function to32BitBin(n) {
         if (n < 0) {
             n = 0xFFFFFFFF + n + 1;
@@ -301,6 +305,10 @@ function setByteDecorator(wrapped, offsetF, name) {
     }
 
     return function () {
+        if (!doMapping){
+            this.getUint8(0);
+            return wrapped.apply(this, arguments);
+        }
         const originalIdx = arguments[0];
         const value = arguments[1];
         const endian = arguments[2];
@@ -327,8 +335,12 @@ function setByteDecorator(wrapped, offsetF, name) {
     }
 }
 
-function getFloatDecorator(wrapped, name) {
+function getFloatDecorator(wrapped, name, doMapping) {
     return function () {
+        if (!doMapping){
+            this.getUint8(0);
+            return wrapped.apply(this, arguments);
+        }
         const originalIdx = arguments[0];
         if (originalIdx === undefined) {
             wrapped.apply(this, arguments)
@@ -352,8 +364,12 @@ function getFloatDecorator(wrapped, name) {
     }
 }
 
-function setFloatDecorator(wrapped, name) {
+function setFloatDecorator(wrapped, name, doMapping) {
     return function () {
+        if (!doMapping){
+            this.getUint8(0);
+            return wrapped.apply(this, arguments);
+        }
         const originalIdx = arguments[0];
         const value = arguments[1];
         if (originalIdx === undefined || value === undefined) {
@@ -381,8 +397,12 @@ function setFloatDecorator(wrapped, name) {
     }
 }
 
-function getBigIntDecorator(wrapped) {
+function getBigIntDecorator(wrapped, doMapping) {
     return function () {
+        if (!doMapping){
+            this.getUint8(0);
+            return wrapped.apply(this, arguments);
+        }
         const originalIdx = arguments[0];
         if (originalIdx === undefined) {
             wrapped.apply(this, arguments)
@@ -411,12 +431,16 @@ function getBigIntDecorator(wrapped) {
     }
 }
 
-function setBigIntDecorator(wrapped) {
+function setBigIntDecorator(wrapped, doMapping) {
     return function () {
+        if (!doMapping){
+            this.getUint8(0);
+            return wrapped.apply(this, arguments);
+        }
         const originalIdx = arguments[0];
         let value = arguments[1];
         if (originalIdx === undefined || value === undefined || typeof value !== 'bigint') {
-            wrapped.apply(this, arguments)
+            return wrapped.apply(this, arguments)
         }
         const endian = arguments[2];
         if (value < 0n) {
@@ -450,26 +474,26 @@ function setBigIntDecorator(wrapped) {
     }
 }
 
-function redefineDataViewFunctions(target, offsetF) {
+function redefineDataViewFunctions(target, offsetF, doMapping) {
     // Replace functions working with Ints
     var dataViewTypes = ['getInt8', 'getInt16', 'getInt32', 'getUint8', 'getUint16', 'getUint32'];
     for (type of dataViewTypes) {
-        target[type] = getByteDecorator(target[type], offsetF, type);
+        target[type] = getByteDecorator(target[type], offsetF, type, doMapping);
         type = 's' + type.substr(1);
-        target[type] = setByteDecorator(target[type], offsetF, type);
+        target[type] = setByteDecorator(target[type], offsetF, type, doMapping);
     }
 
     var dataViewTypes2 = ['getFloat32', 'getFloat64'];
     for (type of dataViewTypes2) {
-        target[type] = getFloatDecorator(target[type], type);
+        target[type] = getFloatDecorator(target[type], type, doMapping);
         type = 's' + type.substr(1);
-        target[type] = setFloatDecorator(target[type], type);
+        target[type] = setFloatDecorator(target[type], type, doMapping);
     }
     var dataViewTypes3 = ['getBigInt64', 'getBigUint64'];
     for (type of dataViewTypes3) {
-        target[type] = getBigIntDecorator(target[type]);
+        target[type] = getBigIntDecorator(target[type], doMapping);
         type = 's' + type.substr(1);
-        target[type] = setBigIntDecorator(target[type]);
+        target[type] = setBigIntDecorator(target[type], doMapping);
     }
 
 };
@@ -580,9 +604,12 @@ function redefineDataViewFunctions(target, offsetF) {
                 for (let i = 0; i < n; i++) {
                     let random = _data.getUint8(i);
                 }
-                if (doMapping){
-                    redefineDataViewFunctions(_data, offsetF);
+                if (!doMapping){
+                    offsetF = function(x) {
+                        return x;
+                    }
                 }
+                redefineDataViewFunctions(_data, offsetF, doMapping);
                 return _data;
             `,
         },
