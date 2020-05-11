@@ -164,29 +164,6 @@ function packF32(v) {
     return packIEEE754(v, 8, 23);
 }
 
-function copyFunctionPointer(target, source) {
-    // Copy function pointers to from source object to target object.
-    if (source === null || target === null || target === source) {
-        return;
-    }
-
-    if (source === undefined || target === undefined) {
-        return;
-    }
-
-    var keys = Reflect.ownKeys(source);
-    for (var k in keys) {
-        if (!keys.hasOwnProperty(k)) continue;
-        var name = keys[k];
-        if (typeof (source[name]) === 'function') {
-            target[name] = source[name];
-        } else if (typeof (source[name]) === 'object') {
-            target[name] = source[name];
-            copyFunctionPointer(target[name], source[name]);
-        }
-    }
-}
-
 function constructDecorator(wrapped) {
     return function () {
         const res = wrapped.apply(originalF, arguments);
@@ -542,7 +519,6 @@ function redefineDataViewFunctions(target, offsetF) {
     let _target = target;
     var proxy = new Proxy(_data, ${proxyHandler});
     // Proxy has to support all methods, original object supports.
-    copyFunctionPointer(proxy, originalF);
     ${offsetDecorator};
     ${redefineNewArrayFunctions};
     if (doMapping) {
@@ -564,7 +540,7 @@ function redefineDataViewFunctions(target, offsetF) {
             original_function: 'window.DataView',
             wrapped_objects: [],
             wrapping_function_args: 'buffer, byteOffset, byteLength',
-            helping_code: copyFunctionPointer + packIEEE754 + unpackIEEE754 + packF32 + unpackF32 + packF64 + unpackF64 + `
+            helping_code: packIEEE754 + unpackIEEE754 + packF32 + unpackF32 + packF64 + unpackF64 + `
             function gcd(x, y) {
                 while(y) {
                     var t = y;
@@ -576,7 +552,7 @@ function redefineDataViewFunctions(target, offsetF) {
             var doMapping = args[0];
             `,
             wrapping_function_body: `
-                let _data = new originalF(buffer);
+                let _data = new originalF(...arguments);
                 let n = _data.byteLength;
                 let a;
                 while (true){
@@ -618,7 +594,7 @@ function redefineDataViewFunctions(target, offsetF) {
         parent_object_property: '_PROPERTY_',
         original_function: 'window._PROPERTY_',
         wrapped_objects: [],
-        helping_code: copyFunctionPointer + `
+        helping_code:`
         let doMapping = args[0];
         var proxyHandler = ${proxyHandler};
         function gcd(x, y) {
@@ -635,7 +611,6 @@ function redefineDataViewFunctions(target, offsetF) {
         post_replacement_code: `
         ${constructDecorator}
         ${redefineNewArrayConstructors}
-        copyFunctionPointer(window._PROPERTY_, originalF);
         redefineNewArrayConstructors(window._PROPERTY_);        
         `
     };
