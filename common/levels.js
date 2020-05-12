@@ -110,6 +110,8 @@ var level_3 = {
 		["navigator.hardwareConcurrency"],
 		// SHARED
 		["window.SharedArrayBuffer", true],
+		// WORKER
+		["window.Worker", true],
 	]
 };
 
