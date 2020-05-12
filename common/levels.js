@@ -89,13 +89,13 @@ var level_3 = {
 		["HTMLCanvasElement.prototype.toBlob"],
 		["HTMLCanvasElement.prototype.toDataURL"],
 		// HRT
-		["Performance.prototype.now", level_3_time_precision],
+		["Performance.prototype.now", level_3_time_precision, true],
 		// PT2
 		["performance.getEntries", level_3_time_precision],
 		["performance.getEntriesByName", level_3_time_precision],
 		["performance.getEntriesByType", level_3_time_precision],
 		// ECMA
-		["window.Date", level_3_time_precision],
+		["window.Date", level_3_time_precision, true],
 		// AJAX
 		["window.XMLHttpRequest", false, true],
 		// DM

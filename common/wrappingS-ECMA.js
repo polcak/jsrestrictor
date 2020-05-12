@@ -33,12 +33,21 @@
 					wrapped_name: "originalDateConstructor",
 				},
 			],
-			helping_code: rounding_function + "var precision = args[0];",
+			helping_code: rounding_function + noise_function +
+				`
+				var lastValue = 0;
+				var precision = args[0];
+				var doNoise = args[1];
+				var func = rounding_function;
+				if (doNoise) {
+					func = noise_function;
+				}
+				`,
 			wrapping_function_args: "",
 			wrapping_function_body: `
 				var wrapped = new originalDateConstructor(...arguments);
-				var roundedValue = rounding_function(wrapped.getMilliseconds(), precision);
-				wrapped.setMilliseconds(roundedValue);
+				var changedValue = func(wrapped.getTime(), precision);
+				wrapped.setTime(changedValue);
 				return wrapped;
 				`,
 			wrapper_prototype: "originalDateConstructor",
@@ -49,7 +58,7 @@
 					parent_object: "window.Date",
 					parent_object_property: "now",
 					wrapping_function_args: "",
-					wrapping_function_body: "return rounding_function(originalDateConstructor.now.call(Date), precision);",
+					wrapping_function_body: "return func(originalDateConstructor.now.call(Date), precision);",
 				},
 			]
 		},
