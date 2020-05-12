@@ -38,6 +38,7 @@ function define_page_context_function(wrapper) {
 			};
 			${wrapper.parent_object}.${wrapper.parent_object_property} = replacementF;
 			original_functions[replacementF.toString()] = originalF.toString();
+			${wrapper.post_replacement_code || ''}
 	`);
 }
 
@@ -56,13 +57,15 @@ var build_code = function(wrapper, ...args) {
 	var post_wrapping_functions = {
 		function_define: define_page_context_function,
 		function_export: generate_assign_function_code,
-	}
+	};
 	var code = "";
 	for (wrapped of wrapper.wrapped_objects) {
 		code += `var ${wrapped.wrapped_name} = ${wrapped.original_name};`;
 	}
-	code += `${wrapper.helping_code}
-		${define_page_context_function(wrapper)}`
+	code += `${wrapper.helping_code || ''}`;
+	if (wrapper.wrapping_function_body){
+		code += `${define_page_context_function(wrapper)}`;
+	}
 	if (wrapper["post_wrapping_code"] !== undefined) {
 		for (code_spec of wrapper["post_wrapping_code"]) {
 			code += post_wrapping_functions[code_spec.code_type](code_spec);
@@ -73,8 +76,9 @@ var build_code = function(wrapper, ...args) {
 				${wrapper.wrapper_prototype});
 		`
 	}
+	code += `Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});`;
 	return enclose_wrapping(code, ...args);
-}
+};
 var inject_code = injectScript;
 
 /**
@@ -136,29 +140,31 @@ if ((running_in_firefox() === true) && (firefox_blocks_scripts() === true)) {
 		var post_wrapping_functions = {
 			function_define: define_page_context_function_ffbug,
 			function_export: generate_assign_function_code_ffbug,
-		}
+		};
 		var code = "";
 		for (wrapped of wrapper.wrapped_objects) {
 			code += `var ${wrapped.wrapped_name} = window.wrappedJSObject.${wrapped.original_name};`;
 		}
-		code += `${wrapper.helping_code}
-			function tobeexported(${wrapper.wrapping_function_args}) {
+		code += `${wrapper.helping_code || ''}`;
+		if (wrapper.wrapping_function_body) {
+			code += `function tobeexported(${wrapper.wrapping_function_args}) {
 					${wrapper.wrapping_function_body}
 				}
-		`
+			`;
+		}
+
 		if (wrapper["wrapper_prototype"] !== undefined) {
 			code += `Object.setPrototypeOf(tobeexported, ${wrapper.wrapper_prototype});
 			`;
 		}
-		code += `exportFunction(tobeexported, ${wrapper.parent_object}, {defineAs: '${wrapper.parent_object_property}'});
-		`
+		code += `exportFunction(tobeexported, ${wrapper.parent_object}, {defineAs: '${wrapper.parent_object_property}'});`;
 		if (wrapper["post_wrapping_code"] !== undefined) {
 			for (code_spec of wrapper["post_wrapping_code"]) {
 				code += post_wrapping_functions[code_spec.code_type](code_spec);
 			}
 		}
 		return enclose_wrapping(code, ...args);
-	}
+	};
 	var inject_code = eval;
 }
 
@@ -174,6 +180,18 @@ function add_wrappers(wrappers) {
 function wrap_code(wrappers) {
 	var code = `(function() {
 		var original_functions = {};
+		const is_proxy = Symbol('is_proxy');
+		const old_Proxy = Proxy;
+			var handler = {
+				has (target, key) {
+					return (is_proxy === key) || (key in target);
+				}
+			}
+			window.Proxy = new Proxy(Proxy,{
+				construct(target, args) {
+					return new old_Proxy(new target(...args), handler);
+				}
+			});
 		`;
 	for (tobewrapped of wrappers) {
 		try {
