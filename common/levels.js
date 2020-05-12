@@ -20,8 +20,11 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-// levels of protection
+if ((typeof browser) === "undefined") {
+	var browser = chrome;
+}
 
+// levels of protection
 var level_0 = {
 	"level_id": "0",
 	"level_text": "Built-in 0",
