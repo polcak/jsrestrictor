@@ -71,19 +71,10 @@
 			var func = rounding_function;
 			if (doNoise === true){
 				func = noise_function
-			}`,
-			post_wrapping_code: [
-				{
-					code_type: "plain_text",
-					wrapping_function_args: '\'startTime\'',
-					wrapping_function_body: changePropertyPrototype.toString().split("__name__").join('startTime'),
-				},
-				{
-					code_type: "plain_text",
-					wrapping_function_args: '\'duration\'',
-					wrapping_function_body: changePropertyPrototype.toString().split("__name__").join('duration'),
-				},
-			],
+			}
+			(${changePropertyPrototype.toString().split("__name__").join('"startTime"')})('startTime');
+			(${changePropertyPrototype.toString().split("__name__").join('"duration"')})('duration');
+			`
 		}
 	];
 	add_wrappers(wrappers);
