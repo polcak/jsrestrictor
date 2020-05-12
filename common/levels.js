@@ -112,9 +112,16 @@ var level_3 = {
 		["window.SharedArrayBuffer", true],
 		// WORKER
 		["window.Worker", true],
+		// ARRAY
+		["window.DataView", true],
 	]
 };
 
+// ARRAY
+let arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+for (let a of arrays) {
+	level_3.wrappers.push([`window.${a}`, true]);
+}
 // default extension_settings_data setting. used on install
 var extension_settings_data = level_0;
 

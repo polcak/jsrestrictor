@@ -42,6 +42,8 @@ function prepare_level_config(action_descr, params = {
 			shared_slow_checked: false,
 			webworker_checked: false,
 			webworker_slow_checked: false,
+			arrays_checked: false,
+			mapping_checked: false,
 		}) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
@@ -155,6 +157,20 @@ function prepare_level_config(action_descr, params = {
 				<span class="section-header">Randomly slow messages to prevent high resolution timers.</span>
 			</div>
 		</div>
+		
+		<!-- ARRAYS -->
+		<div class="main-section">
+			<input type="checkbox" id="arrays_checkbox" ${params.arrays_checked ? "checked" : ""}>
+			<span class="section-header">Protect against ArrayBuffer exploitation.</span>
+		</div>
+		<div class="row">
+			<input type="checkbox" id="mapping_checkbox" ${params.mapping_checked ? "checked" : ""}${params.arrays_checked ? "" : "disabled"}>
+			<span class="section-header">Use random mapping of array indexing to memory.</span>
+		</div>
+		<br>
+		<br>
+		<br>
+		<br>
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
@@ -190,6 +206,10 @@ function prepare_level_config(action_descr, params = {
 		} else {
 			worker_el.classList.add("hidden");
 		}
+	});
+
+	document.getElementById("arrays_checkbox").addEventListener("click", function (e) {
+		mapping_checkbox.disabled = !this.checked;
 	});
 
 	document.getElementById("save").addEventListener("click", function(e) {
@@ -252,6 +272,17 @@ function prepare_level_config(action_descr, params = {
 			new_level.wrappers.push(
 				// WORKER
 				["window.Worker", polyfill],
+			);
+		}
+
+		if (document.getElementById("arrays_checkbox").checked) {
+			let doMapping = document.getElementById("mapping_checkbox").checked;
+			let arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+			for (let a of arrays) {
+				new_level.wrappers.push([`window.${a}`, doMapping]);
+			}
+			new_level.wrappers.push(
+				["window.DataView", doMapping],
 			);
 		}
 
@@ -318,6 +349,8 @@ function edit_level(id) {
 			shared_slow_checked: !(lev["window.SharedArrayBuffer"][0]),
 			webworker_checked: "window.Worker" in lev,
 			webworker_slow_checked: !(lev["window.Worker"][0]),
+			arrays_checked: "Uint8Array" in lev,
+			mapping_checked: (lev["Uint8Array"][0])
 		});
 }
 
