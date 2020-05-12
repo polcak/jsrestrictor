@@ -22,20 +22,29 @@
 //
 
 
-// get root domain. e.g. fit.vutbr.cz --> vutbr.cz
-function extractRootDomain(thisDomain) {
+// get all sub domains domain. e.g. fit.vutbr.cz --> [fit.vutbr.cz, vutbr.cz]
+function extractSubDomains(thisDomain) {
     // var thisDomain = extractHostname(thisUrl);
     var splitArr = thisDomain.split('.');
     var arrLen = splitArr.length;
     //extracting the root domain here
-    //if there is a subdomain 
+    //if there is a subdomain
     if (arrLen > 2) {
         thisDomain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
         //check to see if it's using a Country Code Top Level Domain (ccTLD) (e.g. ".co.uk")
-        if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
+        if (splitArr[arrLen - 2].length === 2 && splitArr[arrLen - 1].length === 2) {
             //this is using a ccTLD
-            thisDomain = splitArr[arrLen - 3] + '.' + thisDomain;
+            splitArr[arrLen - 2] += '.' + splitArr[arrLen - 1];
+            splitArr.pop();
+            arrLen -= 1
         }
+        let domains = [];
+        let subDomain = splitArr[arrLen - 1];
+        for (let i = arrLen - 2; i >= 0; i--) {
+            subDomain = splitArr[i] + '.' + subDomain;
+            domains.push(subDomain);
+        }
+        return domains;
     }
-    return thisDomain;
+    return [thisDomain];
 }
