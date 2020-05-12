@@ -108,6 +108,8 @@ var level_3 = {
 		["navigator.deviceMemory"],
 		// HTML-LS
 		["navigator.hardwareConcurrency"],
+		// SHARED
+		["window.SharedArrayBuffer", true],
 	]
 };
 
