@@ -27,7 +27,7 @@ var level_0 = {
 	"level_text": "Built-in 0",
 	"level_description": "No protection at all",
 	"wrappers": [],
-}
+};
 
 var level_1_time_precision = 2;
 var level_1 = {
@@ -48,7 +48,7 @@ var level_1 = {
 		// HTML-LS
 		["navigator.hardwareConcurrency"],
 	]
-}
+};
 
 var level_2_time_precision = 1;
 var level_2 = {
@@ -73,7 +73,7 @@ var level_2 = {
 		// HTML-LS
 		["navigator.hardwareConcurrency"],
 	]
-}
+};
 
 var level_3_time_precision = 0;
 var level_3 = {
@@ -100,7 +100,7 @@ var level_3 = {
 		// HTML-LS
 		["navigator.hardwareConcurrency"],
 	]
-}
+};
 
 // default extension_settings_data setting. used on install
 var extension_settings_data = level_0;
@@ -111,7 +111,7 @@ const L1 = "1";
 const L2 = "2";
 const L3 = "3";
 
-var levels = {}
+var levels = {};
 var default_level = {};
 var domains = {};
 function init_levels() {
