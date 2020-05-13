@@ -169,9 +169,11 @@ function saveDomainLevels() {
 }
 
 function getCurrentLevelJSON(url) {
-	var rootDomain = extractRootDomain(new URL(url).hostname.replace(/^www\./,''));
-	if (rootDomain in domains) {
-		return levels[domains[rootDomain].level_id];
+	var subDomains = extractSubDomains(new URL(url).hostname.replace(/^www\./, ''));
+	for (let domain of subDomains.reverse()) {
+		if (domain in domains) {
+			return levels[domains[domain].level_id];
+		}
 	}
 	return default_level;
 }
