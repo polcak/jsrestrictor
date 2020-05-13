@@ -99,7 +99,7 @@ function firefox_blocks_scripts() {
 	}
 }
 
-if ((running_in_firefox() === true) && (firefox_blocks_scripts() === true)) {
+if ((running_in_firefox === true) && (firefox_blocks_scripts() === true)) {
 	// Deal with bug https://bugzilla.mozilla.org/show_bug.cgi?id=1267027
 	// See also https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Sharing_objects_with_page_scripts
 	// See also bug #25
