@@ -241,7 +241,7 @@ function redefineNewArrayConstructors(target) {
 // Default proxy handler for Typed Arrays
 var proxyHandler = `{
     get(target, key, receiver) {
-        var random_idx = Math.floor(Math.random() * (target['length'] - 1));
+        var random_idx = Math.floor(Math.random() * target['length']);
         // Load random index from array
         var rand_val = target[random_idx];
         let proto_keys = ['buffer', 'byteLength', 'byteOffset', 'length'];
@@ -256,7 +256,7 @@ var proxyHandler = `{
         return typeof value == 'function' ? value.bind(target) : value;
     },
     set(target, key, value) {
-        var random_idx = Math.floor(Math.random() * (target['length'] - 1));
+        var random_idx = Math.floor(Math.random() * (target['length']));
         // Load random index from array
         var rand_val = target[random_idx];
         rand_val = rand_val;
@@ -273,7 +273,7 @@ function getByteDecorator(wrapped, offsetF, name, doMapping) {
         const endian = arguments[1];
         if (name === 'getUint8') {
             // Random access
-            let ran = wrapped.apply(this, [Math.floor(Math.random() * (this.byteLength - 1))]);
+            let ran = wrapped.apply(this, [Math.floor(Math.random() * (this.byteLength))]);
             // Call original func
             arguments[0] = offsetF(originalIdx);
             return wrapped.apply(this, arguments);
