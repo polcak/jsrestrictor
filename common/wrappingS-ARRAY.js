@@ -297,11 +297,18 @@ function getByteDecorator(wrapped, offsetF, name, doMapping) {
 }
 
 function setByteDecorator(wrapped, offsetF, name, doMapping) {
-    function to32BitBin(n) {
+    function toNBitBin(n, bits) {
         if (n < 0) {
             n = 0xFFFFFFFF + n + 1;
         }
-        return ('00000000000000000000000000000000' + parseInt(n, 10).toString(2)).substr(-32);
+        function makeString(n) {
+            let s = "";
+            for (let i = 0; i < n; i++) {
+                s += "0";
+            }
+            return s;
+        }
+        return (makeString(bits) + parseInt(n, 10).toString(2)).substr(-bits);
     }
 
     return function () {
@@ -320,7 +327,7 @@ function setByteDecorator(wrapped, offsetF, name, doMapping) {
             return wrapped.apply(this, arguments);
         }
         const byteNumber = (parseInt(name[name.length - 2] + name[name.length - 1]) || parseInt(name[name.length - 1])) / 8;
-        const binNumber = to32BitBin(value);
+        const binNumber = toNBitBin(value, byteNumber * 8);
         let numberPart;
         for (let i = 0; i < byteNumber; i++) {
             numberPart = binNumber.substr(i * 8, 8);
