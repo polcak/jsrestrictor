@@ -464,18 +464,18 @@ function setBigIntDecorator(wrapped, doMapping) {
         // Random access
         this.getUint8(0);
         for (let i = 0; i < 8; i++) {
-            if (i < len) {
+            if (i < 8 - len) {
+                binArray[binArray.length] = 0;
+            } else {
                 binArray[binArray.length] = parseInt(hex.slice(j, j + 2), 16);
                 j += 2;
-            } else {
-                binArray[binArray.length] = 0;
             }
         }
         if (endian) {
             binArray.reverse();
         }
         for (let i in binArray) {
-            this.setUint8(originalIdx + i, binArray[i])
+            this.setUint8(originalIdx + parseInt(i), binArray[i])
         }
         return undefined;
     }
