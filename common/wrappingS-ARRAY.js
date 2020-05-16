@@ -186,7 +186,7 @@ function offsetDecorator(wrapped, type, proxyRef, offsetF) {
         // Do func
         let res;
         if (type === 3) {
-            res = wrapped.apply(new this.prototype.constructor(this), arguments);
+            res = new this.__proto__.constructor(this)[wrapped.name.split(' ')[1]]()
         } else {
             res = wrapped.apply(this, arguments);
         }
