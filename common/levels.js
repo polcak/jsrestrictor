@@ -94,7 +94,7 @@ var level_3 = {
 		["HTMLCanvasElement.prototype.toDataURL"],
 		// HRT
 		["Performance.prototype.now", level_3_time_precision, true],
-		["window.PerformanceEntry", level_3_time_precision, true]
+		["window.PerformanceEntry", level_3_time_precision, true],
 		// PT2
 		["performance.getEntries", level_3_time_precision],
 		["performance.getEntriesByName", level_3_time_precision],
@@ -109,7 +109,6 @@ var level_3 = {
 		["navigator.deviceMemory"],
 		// HTML-LS
 		["navigator.hardwareConcurrency"],
-
 		// SHARED
 		["window.SharedArrayBuffer", true],
 		// WORKER
