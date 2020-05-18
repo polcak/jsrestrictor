@@ -46,7 +46,16 @@
 			wrapping_function_args: "",
 			wrapping_function_body: `
 				var wrapped = new originalDateConstructor(...arguments);
+				let cachedValue;
+				if (arguments[0] !== undefined) {
+					// Don't change lastValue if custom arguments are passed
+					 cachedValue = lastValue;
+				}
 				var changedValue = func(wrapped.getTime(), precision);
+				if (cachedValue) {
+					// Don't change lastValue if custom arguments are passed
+					 lastValue = cachedValue;
+				}
 				wrapped.setTime(changedValue);
 				return wrapped;
 				`,
