@@ -56,7 +56,7 @@ var build_code = function(wrapper, ...args) {
 	var post_wrapping_functions = {
 		function_define: define_page_context_function,
 		function_export: generate_assign_function_code,
-	}
+	};
 	var code = "";
 	for (wrapped of wrapper.wrapped_objects) {
 		code += `var ${wrapped.wrapped_name} = ${wrapped.original_name};`;
@@ -74,7 +74,7 @@ var build_code = function(wrapper, ...args) {
 		`
 	}
 	return enclose_wrapping(code, ...args);
-}
+};
 var inject_code = injectScript;
 
 /**
@@ -136,7 +136,7 @@ if ((running_in_firefox === true) && (firefox_blocks_scripts() === true)) {
 		var post_wrapping_functions = {
 			function_define: define_page_context_function_ffbug,
 			function_export: generate_assign_function_code_ffbug,
-		}
+		};
 		var code = "";
 		for (wrapped of wrapper.wrapped_objects) {
 			code += `var ${wrapped.wrapped_name} = window.wrappedJSObject.${wrapped.original_name};`;
@@ -145,7 +145,7 @@ if ((running_in_firefox === true) && (firefox_blocks_scripts() === true)) {
 			function tobeexported(${wrapper.wrapping_function_args}) {
 					${wrapper.wrapping_function_body}
 				}
-		`
+		`;
 		if (wrapper["wrapper_prototype"] !== undefined) {
 			code += `Object.setPrototypeOf(tobeexported, ${wrapper.wrapper_prototype});
 			`;
@@ -158,7 +158,7 @@ if ((running_in_firefox === true) && (firefox_blocks_scripts() === true)) {
 			}
 		}
 		return enclose_wrapping(code, ...args);
-	}
+	};
 	var inject_code = eval;
 }
 
