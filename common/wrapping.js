@@ -173,6 +173,9 @@ function add_wrappers(wrappers) {
 }
 
 function wrap_code(wrappers) {
+	if (wrappers.length === 0) {
+		return; // Nothing to wrap
+	}
 	var code = `(function() {
 		var original_functions = {};
 		`;
