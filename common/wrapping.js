@@ -38,6 +38,7 @@ function define_page_context_function(wrapper) {
 			};
 			${wrapper.parent_object}.${wrapper.parent_object_property} = replacementF;
 			original_functions[replacementF.toString()] = originalF.toString();
+			${wrapper.post_replacement_code || ''}
 	`);
 }
 
@@ -116,6 +117,7 @@ if ((running_in_firefox === true) && (firefox_blocks_scripts() === true)) {
 							${wrapper.wrapping_function_body}
 						}
 						exportFunction(tobeexported, ${wrapper.parent_object}, {defineAs: '${wrapper.parent_object_property}'});
+						${wrapper.post_replacement_code || ''}
 				})();
 		`
 	}
