@@ -62,8 +62,10 @@ var build_code = function(wrapper, ...args) {
 	for (wrapped of wrapper.wrapped_objects) {
 		code += `var ${wrapped.wrapped_name} = ${wrapped.original_name};`;
 	}
-	code += `${wrapper.helping_code}
-		${define_page_context_function(wrapper)}`
+	code += `${wrapper.helping_code || ''}`;
+	if (wrapper.wrapping_function_body){
+		code += `${define_page_context_function(wrapper)}`;
+	}
 	if (wrapper["post_wrapping_code"] !== undefined) {
 		for (code_spec of wrapper["post_wrapping_code"]) {
 			code += post_wrapping_functions[code_spec.code_type](code_spec);
@@ -144,11 +146,13 @@ if ((running_in_firefox === true) && (firefox_blocks_scripts() === true)) {
 		for (wrapped of wrapper.wrapped_objects) {
 			code += `var ${wrapped.wrapped_name} = window.wrappedJSObject.${wrapped.original_name};`;
 		}
-		code += `${wrapper.helping_code}
-			function tobeexported(${wrapper.wrapping_function_args}) {
+		code += `${wrapper.helping_code || ''}`;
+		if (wrapper.wrapping_function_body) {
+			code += `function tobeexported(${wrapper.wrapping_function_args}) {
 					${wrapper.wrapping_function_body}
 				}
 		`;
+		}
 		if (wrapper["wrapper_prototype"] !== undefined) {
 			code += `Object.setPrototypeOf(tobeexported, ${wrapper.wrapper_prototype});
 			`;
