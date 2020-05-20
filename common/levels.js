@@ -104,6 +104,8 @@ var level_3 = {
 		["window.DataView", true],
 		// SHARED
 		["window.SharedArrayBuffer", true],
+		// WORKER
+		["window.Worker", true],
 	]
 };
 
