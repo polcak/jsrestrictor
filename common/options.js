@@ -36,6 +36,8 @@ function prepare_level_config(action_descr, params = {
 			xhr_checked: false,
 			xhr_block_checked: false,
 			xhr_ask_checked: false,
+			shared_array_checked: false,
+			shared_slow_checked: false,
 		}) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
@@ -115,6 +117,21 @@ function prepare_level_config(action_descr, params = {
 				<span class="section-header">Ask before executing an XHR request.</span>
 			</div>
 		</div>
+
+		<!-- SHAREDARRAY -->
+		<div class="main-section">
+			<input type="checkbox" id="shared_array_checkbox" ${params.shared_array_checked ? "checked" : ""}>
+			<span class="section-header">Protect against SharedArray exploitation:</span>
+		</div>
+		<div id="shared_array_options" class="${params.shared_array_checked ? "" : "hidden"}">
+			<div class="row">
+				<input type="radio" id="shared_array_block_checkbox" name="sharedoptions"  ${params.shared_slow_checked ? "" : "checked"}/>
+				<span class="section-header">Block SharedArray.</span>
+				<input type="radio" id="shared_array_polyfill_checkbox" name="sharedoptions"  ${params.shared_slow_checked ? "checked" : ""}/>
+				<span class="section-header">Randomly slow messages to prevent high resolution timers.</span>
+			</div>
+		</div>
+
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
@@ -131,6 +148,16 @@ function prepare_level_config(action_descr, params = {
 			xhr_options_el.classList.add("hidden");
 		}
 	});
+
+	document.getElementById("shared_array_checkbox").addEventListener("click", function (e) {
+		let shared_el = document.getElementById("shared_array_options");
+		if (this.checked) {
+			shared_el.classList.remove("hidden");
+		} else {
+			shared_el.classList.add("hidden");
+		}
+	});
+
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
 		new_level = {
@@ -138,7 +165,8 @@ function prepare_level_config(action_descr, params = {
 			level_text: document.getElementById("level_text").value,
 			level_description: document.getElementById("level_description").value,
 			wrappers: []
-		}
+		};
+
 		if (document.getElementById("htmlcanvaselement_main_checkbox").checked) {
 			new_level.wrappers.push(
 				// H-C
@@ -174,6 +202,15 @@ function prepare_level_config(action_descr, params = {
 				["navigator.hardwareConcurrency"],
 			);
 		}
+
+        if (document.getElementById("shared_array_checkbox").checked) {
+            let block = document.getElementById("shared_array_block_checkbox").checked;
+            new_level.wrappers.push(
+                // SHARED
+                ["window.SharedArrayBuffer", block],
+            );
+        }
+
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
 			if (new_level.level_id.length > 3) {
 				alert("Level ID too long, provide 3 characters or less");
@@ -229,6 +266,8 @@ function edit_level(id) {
 			xhr_checked: "window.XMLHttpRequest" in lev,
 			xhr_block_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : false,
 			xhr_ask_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
+			shared_array_checked: "window.SharedArrayBuffer" in lev,
+			shared_slow_checked: !(lev["window.SharedArrayBuffer"][0]),
 		});
 }
 
