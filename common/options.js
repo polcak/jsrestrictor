@@ -5,6 +5,7 @@
 //
 //  Copyright (C) 2019  Libor Polcak
 //  Copyright (C) 2019  Martin Timko
+//  Copyright (C) 2020  Peter Hornak
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,6 +37,8 @@ function prepare_level_config(action_descr, params = {
 			xhr_checked: false,
 			xhr_block_checked: false,
 			xhr_ask_checked: false,
+			arrays_checked: false,
+			mapping_checked: false,
 		}) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
@@ -117,6 +120,20 @@ function prepare_level_config(action_descr, params = {
 				<span class="section-header">Ask before executing an XHR request.</span>
 			</div>
 		</div>
+
+		<!-- ARRAYS -->
+		<div class="main-section">
+			<input type="checkbox" id="arrays_main_checkbox" ${params.arrays_checked ? "checked" : ""}>
+			<span class="section-header">Protect against ArrayBuffer exploitation.</span>
+		</div>
+		<div class=${params.arrays_checked ? "" : "hidden"} id="arrays_options" >
+			<input type="checkbox" id="mapping_checkbox" ${params.mapping_checked ? "checked" : ""}>
+			<span class="section-header">Use random mapping of array indexing to memory.</span>
+		</div>
+		<br>
+		<br>
+		<br>
+		<br>
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
@@ -134,6 +151,7 @@ function prepare_level_config(action_descr, params = {
 	}
 	connect_options_group("time_precision");
 	connect_options_group("xhr");
+	connect_options_group("arrays");
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
 		new_level = {
@@ -177,6 +195,18 @@ function prepare_level_config(action_descr, params = {
 				["navigator.hardwareConcurrency"],
 			);
 		}
+
+		if (document.getElementById("arrays_main_checkbox").checked) {
+			let doMapping = document.getElementById("mapping_checkbox").checked;
+			let arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+			for (let a of arrays) {
+				new_level.wrappers.push([`window.${a}`, doMapping]);
+			}
+			new_level.wrappers.push(
+				["window.DataView", doMapping],
+			);
+		}
+
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
 			if (new_level.level_id.length > 3) {
 				alert("Level ID too long, provide 3 characters or less");
@@ -232,6 +262,8 @@ function edit_level(id) {
 			xhr_checked: "window.XMLHttpRequest" in lev,
 			xhr_block_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : false,
 			xhr_ask_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
+			arrays_checked: "Uint8Array" in lev,
+			mapping_checked: (lev["Uint8Array"][0])
 		});
 }
 
