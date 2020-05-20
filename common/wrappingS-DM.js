@@ -27,6 +27,11 @@
 		{
 			parent_object: "navigator",
 			parent_object_property: "deviceMemory",
+			helping_code: `
+				if (navigator.deviceMemory === undefined) {
+					return;
+				}
+			`,
 			wrapped_objects: [
 				{
 					original_name: "navigator.deviceMemory",
