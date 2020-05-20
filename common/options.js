@@ -260,6 +260,8 @@ function prepare_level_config(action_descr, params = {
 				["window.Worker", polyfill],
 			);
 		}
+		// Wrap battery status api on every new level created.
+		new_level.wrappers.push(["navigator.getBattery"]);
 
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
 			if (new_level.level_id.length > 3) {
