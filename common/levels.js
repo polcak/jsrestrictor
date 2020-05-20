@@ -99,6 +99,8 @@ var level_3 = {
 		["navigator.deviceMemory"],
 		// HTML-LS
 		["navigator.hardwareConcurrency"],
+        // WORKER
+        ["window.Worker", true],
 	]
 }
 

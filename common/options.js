@@ -36,6 +36,8 @@ function prepare_level_config(action_descr, params = {
 			xhr_checked: false,
 			xhr_block_checked: false,
 			xhr_ask_checked: false,
+            webworker_checked: false,
+            webworker_slow_checked: false,
 		}) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
@@ -115,6 +117,20 @@ function prepare_level_config(action_descr, params = {
 				<span class="section-header">Ask before executing an XHR request.</span>
 			</div>
 		</div>
+
+		<!-- WEBWORKER -->
+		<div class="main-section">
+			<input type="checkbox" id="webworker_checkbox" ${params.webworker_checked ? "checked" : ""}>
+			<span class="section-header">Protect against WebWorker exploitation:</span>
+		</div>
+		<div id="webworker_options" class="${params.webworker_checked ? "" : "hidden"}">
+			<div class="row">
+				<input type="radio" id="webworker_polyfill_checkbox" name="workeroptions"  ${params.webworker_slow_checked ? "" : "checked"}/>
+				<span class="section-header">Remove real parallelism.</span>
+				<input type="radio" id="webworker_slow_checkbox" name="workeroptions"  ${params.webworker_slow_checked ? "checked" : ""}/>
+				<span class="section-header">Randomly slow messages to prevent high resolution timers.</span>
+			</div>
+		</div>
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
@@ -131,6 +147,16 @@ function prepare_level_config(action_descr, params = {
 			xhr_options_el.classList.add("hidden");
 		}
 	});
+
+    document.getElementById("webworker_checkbox").addEventListener("click", function (e) {
+        let worker_el = document.getElementById("webworker_options");
+        if (this.checked) {
+            worker_el.classList.remove("hidden");
+        } else {
+            worker_el.classList.add("hidden");
+        }
+    });
+
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
 		new_level = {
@@ -174,7 +200,16 @@ function prepare_level_config(action_descr, params = {
 				["navigator.hardwareConcurrency"],
 			);
 		}
-		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
+
+        if (document.getElementById("webworker_checkbox").checked) {
+            let polyfill = document.getElementById("webworker_polyfill_checkbox").checked;
+            new_level.wrappers.push(
+                // WORKER
+                ["window.Worker", polyfill],
+            );
+        }
+
+        if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
 			if (new_level.level_id.length > 3) {
 				alert("Level ID too long, provide 3 characters or less");
 				return;
@@ -229,7 +264,9 @@ function edit_level(id) {
 			xhr_checked: "window.XMLHttpRequest" in lev,
 			xhr_block_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : false,
 			xhr_ask_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
-		});
+            webworker_checked: "window.Worker" in lev,
+            webworker_slow_checked: !(lev["window.Worker"][0]),
+    });
 }
 
 function restore_level(id, settings) {
