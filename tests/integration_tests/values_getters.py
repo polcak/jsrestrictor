@@ -76,7 +76,7 @@ def get_referrer(driver):
 ## Check if canvas is spoofed.
 #
 #  Draw 3 elements to canvas and then get canvas data and test if data is spoofed.
-#  Spoofed canvas means that canvas is represented by array with only 255 values.
+#  Spoofed canvas means that canvas is represented by array with only 0 values.
 def is_canvas_spoofed(driver):
     driver.get(Config.testing_page)
     driver.find_element_by_xpath("//button[text()='Add line to canvas']").click()
@@ -84,4 +84,4 @@ def is_canvas_spoofed(driver):
     driver.find_element_by_xpath("//button[text()='Add text to canvas']").click()
     driver.find_element_by_xpath("//button[text()='Get data and show image in canvas frame']").click()
     return driver.execute_script("var canvas = document.getElementById('canvas1'); return !canvas.getContext('2d')"
-                                 ".getImageData(0, 0, canvas.width, canvas.height).data.some(channel => channel !== 255)")
+                                 ".getImageData(0, 0, canvas.width, canvas.height).data.some(channel => channel !== 20)")
