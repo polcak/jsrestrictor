@@ -66,7 +66,7 @@ def get_referrer(driver):
     WebDriverWait(driver, 10).until(
         ec.presence_of_element_located((By.ID, 'res'))
     )
-    driver.find_elements_by_xpath('//a[@href="https://www.fit.vut.cz/"]')[0].click()
+    driver.find_elements_by_xpath('//a[contains(@href,"www.fit.vut.cz")]')[0].click()
     WebDriverWait(driver, 10).until(
         ec.presence_of_element_located((By.ID, 'main'))
     )
