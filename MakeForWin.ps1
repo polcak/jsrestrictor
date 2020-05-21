@@ -5,14 +5,6 @@ param (
 )
 
 
-function Clean {
-	Remove-Item "firefox_JSR.zip" -Recurse -Force -ErrorAction Ignore
-	Remove-Item "firefox_JSR" -Recurse -Force -ErrorAction Ignore
-	Remove-Item "chrome_JSR.zip" -Recurse -Force -ErrorAction Ignore
-	Remove-Item "chrome_JSR" -Recurse -Force -ErrorAction Ignore
-}
-
-
 function Firefox {
 	Copy-Item "firefox_manifest\manifest.json" -Destination "." -Force
 	$compressParams = @{
@@ -26,6 +18,7 @@ function Firefox {
 
 
 function FirefoxUnzip {
+	expand-archive -Path "firefox_JSR.zip" -destinationpath "firefox_JSR" -Force
 	Write-Output "Firefox dir extension exported -> Firefox_JSR/"
 }
 
@@ -43,7 +36,16 @@ function Chrome {
 
 
 function ChromeUnzip {
+	expand-archive -Path "chrome_JSR.zip" -destinationpath "chrome_JSR" -Force
 	Write-Output "Chrome dir extension exported  -> chrome_JSR/"
+}
+
+
+function Clean {
+	Remove-Item "firefox_JSR.zip" -Recurse -Force -ErrorAction Ignore
+	Remove-Item "firefox_JSR" -Recurse -Force -ErrorAction Ignore
+	Remove-Item "chrome_JSR.zip" -Recurse -Force -ErrorAction Ignore
+	Remove-Item "chrome_JSR" -Recurse -Force -ErrorAction Ignore
 }
 
 
