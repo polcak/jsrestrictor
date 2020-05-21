@@ -108,6 +108,10 @@ section.content {
 	text-align: justify;
 }
 
+.main-section {
+	padding: 0.5em;
+}
+
 #levels-list li, #domain-level-list li {
 	list-style-type: none;
 	margin: 7px;
