@@ -73,7 +73,7 @@ function prepare_level_config(action_descr, params = {
 		<div id="time_precision_options" class="${params.time_precision_checked ? "" : "hidden"}">
 			<div class="row">
 				<span class="table-left-column">Round time to:</span>
-				<select id="time_precision_round_precision" ${params.time_precision_checked ? "": "disabled"}>
+				<select id="time_precision_round_precision">
 					<option value="2" ${params.time_precision_round == 2 ? "selected" : ""}>hundredths of a second (1.230)</option>
 					<option value="1" ${params.time_precision_round == 1 ? "selected" : ""}>tenths of a second (1.200)</option>
 					<option value="0" ${params.time_precision_round == 0 ? "selected" : ""}>full seconds (1.000)</option>
