@@ -99,9 +99,9 @@ function prepare_level_config(action_descr, params = {
 			<span class="section-header">Spoof hardware information to the most popular HW:</span>
 		</div>
 		<div>
-			<span class="table-left-column"><strong>JS navigator.deviceMemory:</strong> 4</span>
+			<span class="table-left-column">JS navigator.deviceMemory: 4</span>
 			<br>
-			<span class="table-left-column"><strong>JS navigator.hardwareConcurrency:</strong> 2</span>
+			<span class="table-left-column">JS navigator.hardwareConcurrency: 2</span>
 		</div>
 		
 		<!-- XMLHTTPREQUEST -->
