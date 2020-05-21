@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as ec
 
 from web_browser_type import BrowserType
 import values_real
-from configuration import Config
+from configuration import get_config
 
 
 ## Browser object represents one browser in which tests run. E.g.: chrome, firefox
@@ -54,19 +54,19 @@ class Browser:
         self.__jsr_level = 2
         self._jsr_options_page = ""
         if type == BrowserType.FIREFOX:
-            self.driver = webdriver.Firefox(firefox_profile=webdriver.FirefoxProfile(Config.firefox_profile),
-                                            executable_path=Config.firefox_driver)
+            self.driver = webdriver.Firefox(firefox_profile=webdriver.FirefoxProfile(get_config("firefox_profile")),
+                                            executable_path=get_config("firefox_driver"))
             self.real = values_real.init(self.driver)
-            self.driver.install_addon(Config.firefox_jsr_extension, temporary=True)
+            self.driver.install_addon(get_config("firefox_jsr_extension"), temporary=True)
             self.find_options_jsr_page_url()
         elif type == BrowserType.CHROME:
-            driver_tmp = webdriver.Chrome(executable_path=Config.chrome_driver)
+            driver_tmp = webdriver.Chrome(executable_path=get_config("chrome_driver"))
             self.real = values_real.init(driver_tmp)
             sleep(1)
             driver_tmp.quit()
             options = Options()
-            options.add_extension(Config.chrome_jsr_extension)
-            self.driver = webdriver.Chrome(executable_path=Config.chrome_driver, options=options)
+            options.add_extension(get_config("chrome_jsr_extension"))
+            self.driver = webdriver.Chrome(executable_path=get_config("chrome_driver"), options=options)
             self.find_options_jsr_page_url()
 
     ## Get current level of JSR in browser.
@@ -85,7 +85,7 @@ class Browser:
             self.driver.get(self._jsr_options_page)
         self.driver.find_element_by_id('level-' + str(level)).click()
         self.__jsr_level = level
-        self.driver.get(Config.testing_page)
+        self.driver.get(get_config("testing_page"))
 
     ## Quit browser driver, close browser window and delete itself.
     def quit(self):

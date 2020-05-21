@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
-from configuration import Config
+from configuration import get_config
 
 
 ## Module contains getters for values from browser.
@@ -16,7 +16,7 @@ from configuration import Config
 #  We need element on page where geolocation data is shown after its loading.
 #  Function waits maximally 10 seconds for loading geolocation data.
 def get_position(driver):
-    driver.get(Config.testing_page)
+    driver.get(get_config("testing_page"))
     driver.find_element_by_xpath("//button[text()='Show GPS data']").click()
     WebDriverWait(driver, 10).until(
         ec.presence_of_element_located((By.ID, 'mapnavi'))
@@ -78,7 +78,7 @@ def get_referrer(driver):
 #  Draw 3 elements to canvas and then get canvas data and test if data is spoofed.
 #  Spoofed canvas means that canvas is represented by array with only 0 values.
 def is_canvas_spoofed(driver):
-    driver.get(Config.testing_page)
+    driver.get(get_config("testing_page"))
     driver.find_element_by_xpath("//button[text()='Add line to canvas']").click()
     driver.find_element_by_xpath("//button[text()='Add circle to canvas']").click()
     driver.find_element_by_xpath("//button[text()='Add text to canvas']").click()

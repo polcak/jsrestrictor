@@ -4,7 +4,7 @@ import time
 import random
 
 from math_operations import is_in_accuracy
-from configuration import Config
+from configuration import get_config
 
 
 ## Setup method - it is run before time tests execution starts.
@@ -13,7 +13,7 @@ from configuration import Config
 #  In Mozilla Firefox: Time is spoofed only when page is opened.
 @pytest.fixture(scope='module', autouse=True)
 def load_test_page(browser):
-    browser.driver.get(Config.testing_page)
+    browser.driver.get(get_config("testing_page"))
 
 
 ## Test hours.
