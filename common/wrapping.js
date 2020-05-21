@@ -60,7 +60,14 @@ var build_code = function(wrapper, ...args) {
 	};
 	var code = "";
 	for (wrapped of wrapper.wrapped_objects) {
-		code += `var ${wrapped.wrapped_name} = ${wrapped.original_name};`;
+		code += `
+			var ${wrapped.wrapped_name} = ${wrapped.original_name};
+			if (${wrapped.wrapped_name} === undefined) {
+				// Do not wrap an object that is not defined, e.g. because it is experimental feature.
+				// This should reduce fingerprintability.
+				return;
+			}
+		`;
 	}
 	code += `${wrapper.helping_code || ''}`;
 	if (wrapper.wrapping_function_body){

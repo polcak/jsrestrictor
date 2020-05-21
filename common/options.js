@@ -45,6 +45,8 @@ function prepare_level_config(action_descr, params = {
 	  <h2>${action_descr}</h2>
 	</div>
 	<form>
+
+		<p>Note that for fingerprintability prevention, JS Restrictor does not wrap objects that are not defined. For example, if an experimental feature like <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory"><code>navigator.deviceMemory</code></a> is not defined in your browser, JS Restrictor does not define the property even if it is shown below that the valut is defined.</p>
 	
 		<!-- Metadata -->
 		<div class="main-section">
