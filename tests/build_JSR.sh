@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ../../
+cd ../
 make clean
 make
 mkdir -p ./tests/common_files/JSR
