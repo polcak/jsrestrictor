@@ -28,6 +28,11 @@ class __Config:
     testing_page = "https://polcak.github.io/jsrestrictor/test/test.html"
 
 
+## Getter for values in Config class
+#
+#  Do not use direct access to Config from other modules. Always get values through this getter.
+#  It is because of paths. This getter guarantees uniform way of writing paths in Config class for every supported OS.
+#  Before getting a path, this path is updated in this getter according current OS.
 def get_config(item):
     if item == "tested_browsers" or item == "tested_jsr_levels" or item == "testing_page":
         return getattr(__Config, item)
