@@ -9,7 +9,7 @@ make clean
 # Build.
 make
 
-# Create directory for JSR package if not exists.
+# Create directory for JSR package if does not exists.
 mkdir -p ./tests/common_files/JSR
 
 # Create xpi package of JSR for Mozilla Firefox from zip archive created by make.
