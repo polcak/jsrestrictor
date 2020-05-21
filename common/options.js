@@ -70,7 +70,7 @@ function prepare_level_config(action_descr, params = {
 			<span class="section-header">Manipulate the time precision provided by Date and
 				performance:</span>
 		</div>
-		<div>
+		<div id="time_precision_options" class="${params.time_precision_checked ? "" : "hidden"}">
 			<div class="row">
 				<span class="table-left-column">Round time to:</span>
 				<select id="time_precision_round_precision" ${params.time_precision_checked ? "": "disabled"}>
@@ -119,18 +119,19 @@ function prepare_level_config(action_descr, params = {
 	</form>
 </div>`);
 	configuration_area_el.appendChild(fragment);
-	document.getElementById("time_precision_main_checkbox").addEventListener("click", function(e) {
-		time_precision_round_precision.disabled = !this.checked;
-	});
-	document.getElementById("xhr_main_checkbox").addEventListener("click", function(e) {
-		var xhr_options_el = document.getElementById("xhr_options");
-		if (this.checked) {
-			xhr_options_el.classList.remove("hidden");
-		}
-		else {
-			xhr_options_el.classList.add("hidden");
-		}
-	});
+	function connect_options_group(group_name) {
+		document.getElementById(group_name + "_main_checkbox").addEventListener("click", function(e) {
+			var options_el = document.getElementById(group_name + "_options");
+			if (this.checked) {
+				options_el.classList.remove("hidden");
+			}
+			else {
+				options_el.classList.add("hidden");
+			}
+		});
+	}
+	connect_options_group("time_precision");
+	connect_options_group("xhr");
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
 		new_level = {
