@@ -17,7 +17,7 @@ JSRPath=`pwd`
 cd ./tests/integration_tests
 
 #Automatically set JSR project root directory path in configuration.py.
-sed -i "s@<<JSR_project_root_directory_path>>@${JSRPath}@g" ./configuration.py
+sed -i "s@<<JSR_project_root_directory_path>>@${JSRPath}@g" ./testing/configuration.py
 
 #Remove all exe suffix of binary file names. Linux binaries will be then use.
-sed -i "s@.exe@@g" ./configuration.py
+sed -i "s@.exe@@g" ./testing/configuration.py

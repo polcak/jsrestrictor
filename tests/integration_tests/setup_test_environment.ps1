@@ -12,4 +12,4 @@ $JSRPath = Get-Location
 cd .\tests\integration_tests
 
 # Automatically set JSR project root directory path in configuration.py.
-(Get-Content .\configuration.py).replace("<<JSR_project_root_directory_path>>", $JSRPath.ToString().replace('\', '/')) | Set-Content .\configuration.py -Encoding "UTF8"
+(Get-Content .\testing\configuration.py).replace("<<JSR_project_root_directory_path>>", $JSRPath.ToString().replace('\', '/')) | Set-Content .\testing\configuration.py -Encoding "UTF8"
