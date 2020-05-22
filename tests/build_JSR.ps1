@@ -28,3 +28,6 @@ Move-Item ".\chrome_JSR.crx" -Destination .\tests\common_files\JSR\chrome_JSR.cr
 
 # Go back to test directory.
 cd .\tests\
+
+#Automatically set JSR project root directory path in configuration.py.
+(Get-Content .\integration_tests\configuration.py).replace("<<JSR_project_root_directory_path>>", $JSRPath.ToString().replace('\', '/')) | Set-Content .\integration_tests\configuration.py
