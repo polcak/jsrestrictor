@@ -20,6 +20,9 @@ $Chrome = "C:\Program Files (x86)\Google\Chrome\Application"
 if (-Not (Test-Path $Chrome\chrome.exe -PathType Leaf)) {
 	Write-Host
 	$Chrome = Read-Host -Prompt 'Enter path into directory, where is chrome.exe stored'
+	if (-Not (Test-Path $Chrome\chrome.exe -PathType Leaf)) {
+		Write-Error -Message "Entered path ${Chrome} is not valid path into directory."
+	}
 }
 cd $Chrome
 

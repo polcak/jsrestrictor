@@ -1,3 +1,5 @@
+$Error.clear()
+
 # Go to common scripts directory.
 cd ..\common_files\scripts
 
@@ -20,19 +22,21 @@ if ($FFProfilesItems.length -eq 1) {
 else {
 	Write-Host
 	$FFProfile = Read-Host -Prompt 'Enter path into Firefox ESR default profile directory. It is typically C:\Users\<username>\AppData\Roaming\Mozilla\Firefox\Profiles\<profilename>.default-esr'
+	if (-Not (Test-Path $FFProfile -PathType Container)) {
+		Write-Error -Message "Entered path ${FFProfile} is not valid."
+	}
 }
 
 # Automatically set JSR project root directory path and path to Firefox ESR default profile in configuration.py.
 (Get-Content .\testing\configuration.py).replace("<<JSR_project_root_directory_path>>", $JSRPath.ToString().replace('\', '/')).replace("<<Firefox_ESR_default_profile>>", $FFProfile.ToString().replace('\', '/')) | Set-Content .\testing\configuration.py -Encoding "UTF8"
 
 # Start testing if everything ok.
-$confirmation = Read-Host "Can you confirm that no error happened during setup? [y/n]"
 Write-Host
-if($confirmation -ne "y")
+if($Error.length -gt 0)
 {
-	Write-Host "You confirmed that an error happened. Integration testing can not be started. Look at the README file and follow instructions to run the setup again."
+	Write-Host "An error occurred during setup the test environment. Integration testing can not be started. Look at the README file and follow instructions to run the setup again."
 }
 else {
-	Write-Host "You confirmed that no error happened. Integration testing is starting..."
+	Write-Host "No error occurred during setup the test environment. Integration testing is starting..."
 	python ./testing/start.py
 }
