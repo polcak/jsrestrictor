@@ -15,7 +15,10 @@ Copy-Item ".\firefox_JSR.zip" -Destination ".\tests\common_files\JSR\firefox_JSR
 
 # Create crx package of JSR for Google Chrome from source files.
 $JSRPath = Get-Location
-cd "C:\Program Files (x86)\Google\Chrome\Application"
+# Get path to chrome.exe.
+Write-Host
+$Chrome = Read-Host -Prompt 'Input path into directory, where is chrome.exe stored'
+cd $Chrome
 #  | Out-Null force PowerShell to wait when packaging by Chorme is completed.
 .\chrome.exe --pack-extension=$JSRPath\chrome_JSR | Out-Null
 cd $JSRPath

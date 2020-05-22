@@ -4,6 +4,6 @@ chrome_JSR/
 firefox_JSR/
 *.crx
 *.xpi
-tests/integration_tests/__pycache__/
 tests/integration_tests/geckodriver.log
-tests/integration_tests/tests_definition/__pycache__/
+tests/integration_tests/testing/__pycache__/
+tests/integration_tests/testing/tests_definition/__pycache__/
