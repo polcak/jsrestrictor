@@ -1,3 +1,19 @@
+# Handle errors.
+# Function called by trap before exit caused by error.
+function beforeErrorExit {
+	echo "$confBackup" > "./testing/configuration.py"
+	echo "\"${last_command}\" command filed with exit code $?."
+	echo
+	echo "An error noticed during setup the test environment. Integration testing can not be started. Look at the README file and follow instructions to run the setup again."
+}
+# exit when any command fails
+set -euxo pipefail
+# Call function before exit caused by error.
+trap beforeErrorExit EXIT
+
+# Backup configuration.py file if error happen.
+confBackup=$(<./testing/configuration.py)
+
 # Go to common scripts directory.
 cd ../common_files/scripts
 
@@ -35,12 +51,8 @@ sed -i "s@<<Firefox_ESR_default_profile>>@${FFProfile}@g" ./testing/configuratio
 sed -i "s@.exe@@g" ./testing/configuration.py
 
 # Start testing if everything ok.
-read -p "Can you confirm that no error happened during setup? [y/n]: " -n 1 -r
+# Stop handling errors.
+set +euxo pipefail
 echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
-    echo "You confirmed that an error happened. Integration testing can not be started. Look at the README file and follow instructions to run the setup again."
-else
-	echo "You confirmed that no error happened. Integration testing is starting..."
-	python3 ./testing/start.py
-fi
+echo "No error noticed during setup the test environment. Integration testing is starting..."
+python3 ./testing/start.py
