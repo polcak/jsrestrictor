@@ -38,10 +38,10 @@ Write-Host
 # Handle errors.
 if($Error.length -gt 0)
 {
-	$confBackup | Out-File .\testing\configuration.py -Force -Encoding "UTF8"
 	Write-Host "An error noticed during setup the test environment. Integration testing can not be started. Look at the README file and follow instructions to run the setup again."
 }
 else {
 	Write-Host "No error noticed during setup the test environment. Integration testing is starting..."
 	python ./testing/start.py
 }
+$confBackup | Out-File .\testing\configuration.py -Force -Encoding "UTF8"

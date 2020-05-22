@@ -1,9 +1,9 @@
 # Handle errors.
 # Function called by trap before exit caused by error.
 function beforeExit {
+	echo "$confBackup" > "./testing/configuration.py"
 	retVal=$?
 	if [ $retVal -ne 0 ]; then
-		echo "$confBackup" > "./testing/configuration.py"
 		echo "\"${last_command}\" command failed with exit code $?."
 		echo
 		echo "An error noticed during setup the test environment. Integration testing can not be started. Look at the README file and follow instructions to run the setup again."
