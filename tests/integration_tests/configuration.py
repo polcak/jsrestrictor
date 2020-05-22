@@ -1,4 +1,4 @@
-from pathlib import Path
+﻿from pathlib import Path
 
 from web_browser_type import BrowserType
 
@@ -22,13 +22,13 @@ class __Config:
     ############## OTHER CONFIG PARAMETERS SHOULD BE SET AUTOMATICALLY BY SCRIPT build_JSR #################
     ################### IT SHOULD NOT BE NEEDED TO CHANGE THEM, BUT YOU CAN CHECK THEM #####################
     # Full path to Firefox driver.
-    firefox_driver = "<<JSR_project_root_directory_path>>/tests/common_files/webbrowser_drivers/geckodriver.exe"
+    firefox_driver = "D:/Development/jsrestrictor/tests/common_files/webbrowser_drivers/geckodriver.exe"
     # Full path to JSR package for Firefox (xpi package).
-    firefox_jsr_extension = "<<JSR_project_root_directory_path>>/tests/common_files/JSR/firefox_JSR.xpi"
+    firefox_jsr_extension = "D:/Development/jsrestrictor/tests/common_files/JSR/firefox_JSR.xpi"
     # Full path to Chrome driver.
-    chrome_driver = "<<JSR_project_root_directory_path>>/tests/common_files/webbrowser_drivers/chromedriver.exe"
+    chrome_driver = "D:/Development/jsrestrictor/tests/common_files/webbrowser_drivers/chromedriver.exe"
     # Full path to JSR package for Chrome (crx package).
-    chrome_jsr_extension = "<<JSR_project_root_directory_path>>/tests/common_files/JSR/chrome_JSR.crx"
+    chrome_jsr_extension = "D:/Development/jsrestrictor/tests/common_files/JSR/chrome_JSR.crx"
     # Support testing page - do not change without changing script values_getters.py
     # DO NOT SET CUSTOM level of protection FOR THIS SITE. DEFAULT LEVEL TO THIS SITE HAS TO BE APPLIED:
     testing_page = "https://polcak.github.io/jsrestrictor/test/test.html"

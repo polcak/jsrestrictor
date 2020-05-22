@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Go to root directory of JSR project.
-cd ../
+cd ../../../
 
 # Clean previous build.
 make clean
@@ -24,5 +24,5 @@ rm -rf ./chrome_JSR.pem
 # Move crx package of JSR to right location (same as xpi package of JSR).
 mv -f ./chrome_JSR.crx ./tests/common_files/JSR/chrome_JSR.crx
 
-#Automatically set JSR project root directory path in configuration.py.
-sed -i "s@<<JSR_project_root_directory_path>>@$(pwd)@g" ./tests/integration_tests/configuration.py
+# Go back to common scripts directory.
+cd ./tests/common_files/scripts

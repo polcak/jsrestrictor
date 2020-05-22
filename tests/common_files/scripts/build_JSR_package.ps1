@@ -1,5 +1,5 @@
 # Go to root directory of JSR project.
-cd ..\
+cd ..\..\..\
 
 # Clean previous build.
 .\MakeForWin.ps1 clean
@@ -26,8 +26,5 @@ Remove-Item ".\chrome_JSR.pem" -Recurse -Force
 # Move crx package of JSR to right location (same as xpi package of JSR).
 Move-Item ".\chrome_JSR.crx" -Destination .\tests\common_files\JSR\chrome_JSR.crx -Force
 
-# Go back to test directory.
-cd .\tests\
-
-#Automatically set JSR project root directory path in configuration.py.
-(Get-Content .\integration_tests\configuration.py).replace("<<JSR_project_root_directory_path>>", $JSRPath.ToString().replace('\', '/')) | Set-Content .\integration_tests\configuration.py -Encoding "UTF8"
+# Go back to common scripts directory.
+cd .\tests\common_files\scripts
