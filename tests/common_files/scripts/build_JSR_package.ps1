@@ -13,12 +13,17 @@ New-Item -ItemType Directory -Path ".\tests\common_files\JSR" -Force
 # Create xpi package of JSR for Mozilla Firefox from zip archive created by make.
 Copy-Item ".\firefox_JSR.zip" -Destination ".\tests\common_files\JSR\firefox_JSR.xpi" -Force
 
-# Create crx package of JSR for Google Chrome from source files.
 $JSRPath = Get-Location
+
 # Get path to chrome.exe.
-Write-Host
-$Chrome = Read-Host -Prompt 'Input path into directory, where is chrome.exe stored'
+$Chrome = "C:\Program Files (x86)\Google\Chrome\Application"
+if (-Not (Test-Path $Chrome\chrome.exe -PathType Leaf)) {
+	Write-Host
+	$Chrome = Read-Host -Prompt 'Enter path into directory, where is chrome.exe stored'
+}
 cd $Chrome
+
+# Create crx package of JSR for Google Chrome from source files.
 #  | Out-Null force PowerShell to wait when packaging by Chorme is completed.
 .\chrome.exe --pack-extension=$JSRPath\chrome_JSR | Out-Null
 cd $JSRPath
