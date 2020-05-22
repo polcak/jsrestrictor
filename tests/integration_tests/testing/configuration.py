@@ -14,17 +14,16 @@ class __Config:
     # Default levels of JSR which will be tested.
     tested_jsr_levels = [0, 1, 2, 3]
 
-    # Full path to Firefox ESR (default) profile.
-    ########### !!!!!!!!!!!! CHANGE FULL PATH TO FIREFOX ESR PROFILE DIRECTORY !!!!!!!!!!!! ################
-    firefox_profile = "C:/Users/Martin/AppData/Roaming/Mozilla/Firefox/Profiles/voxsqf3a.default-esr"
-    ########################################################################################################
 
-    ############## OTHER CONFIG PARAMETERS SHOULD BE SET AUTOMATICALLY BY SCRIPT build_JSR #################
+
+    ############ OTHER CONFIG PARAMETERS SHOULD BE SET AUTOMATICALLY BY SCRIPT setup_and_run ###############
     ################### IT SHOULD NOT BE NEEDED TO CHANGE THEM, BUT YOU CAN CHECK THEM #####################
     # Full path to Firefox driver.
     firefox_driver = "<<JSR_project_root_directory_path>>/tests/common_files/webbrowser_drivers/geckodriver.exe"
     # Full path to JSR package for Firefox (xpi package).
     firefox_jsr_extension = "<<JSR_project_root_directory_path>>/tests/common_files/JSR/firefox_JSR.xpi"
+    # Full path to Firefox ESR (default) profile.
+    firefox_profile = "<<Firefox_ESR_default_profile>>"
     # Full path to Chrome driver.
     chrome_driver = "<<JSR_project_root_directory_path>>/tests/common_files/webbrowser_drivers/chromedriver.exe"
     # Full path to JSR package for Chrome (crx package).
