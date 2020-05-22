@@ -20,10 +20,10 @@ cd ./tests/integration_tests
 sed -i "s@<<JSR_project_root_directory_path>>@${JSRPath}@g" ./testing/configuration.py
 
 # Get path to Firefox ESR default profile.
-FFProfiles=realpath ~/.mozilla/firefox
-FFProfilesItemsNumber=ls -dq *default-esr* | wc -l
+FFProfiles=$(realpath ~/.mozilla/firefox)
+FFProfilesItemsNumber=$(ls -dq ${FFProfiles}/*default-esr* | wc -l)
 if [ $FFProfilesItemsNumber == 1 ]; then
-	FFProfile={ echo $FFProfiles/; ls -dq *default-esr*; } | tr -d "\n" | tr -d " "
+	FFProfile=$(ls -dq ${FFProfiles}/*default-esr*)
 else
 	read -p 'Enter path into Firefox ESR default profile directory. It is typically /home/<username>/.mozilla/firefox/<profilename>.default-esr: ' FFProfile
 fi
