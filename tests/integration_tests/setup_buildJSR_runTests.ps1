@@ -1,7 +1,7 @@
 $Error.clear()
 
 # Backup configuration.py file if error happen.
-$confBackup = [IO.File]::ReadAllText(".\testing\configuration.py")
+$confBackup = Get-Content .\testing\configuration.py
 
 # Go to common scripts directory.
 cd ..\common_files\scripts
@@ -38,7 +38,7 @@ Write-Host
 # Handle errors.
 if($Error.length -gt 0)
 {
-	$confBackup | Out-File .\testing\configuration.py -Force
+	$confBackup | Out-File .\testing\configuration.py -Force -Encoding "UTF8"
 	Write-Host "An error noticed during setup the test environment. Integration testing can not be started. Look at the README file and follow instructions to run the setup again."
 }
 else {

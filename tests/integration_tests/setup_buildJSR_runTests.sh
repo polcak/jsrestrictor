@@ -1,15 +1,19 @@
 # Handle errors.
 # Function called by trap before exit caused by error.
-function beforeErrorExit {
-	echo "$confBackup" > "./testing/configuration.py"
-	echo "\"${last_command}\" command filed with exit code $?."
-	echo
-	echo "An error noticed during setup the test environment. Integration testing can not be started. Look at the README file and follow instructions to run the setup again."
+function beforeExit {
+	retVal=$?
+	if [ $retVal -ne 0 ]; then
+		echo "$confBackup" > "./testing/configuration.py"
+		echo "\"${last_command}\" command failed with exit code $?."
+		echo
+		echo "An error noticed during setup the test environment. Integration testing can not be started. Look at the README file and follow instructions to run the setup again."
+	fi
+	exit $retVal
 }
 # exit when any command fails
-set -euxo pipefail
+set -euo pipefail
 # Call function before exit caused by error.
-trap beforeErrorExit EXIT
+trap beforeExit EXIT
 
 # Backup configuration.py file if error happen.
 confBackup=$(<./testing/configuration.py)
@@ -37,11 +41,14 @@ sed -i "s@<<JSR_project_root_directory_path>>@${JSRPath}@g" ./testing/configurat
 
 # Get path to Firefox ESR default profile.
 FFProfiles=$(realpath ~/.mozilla/firefox)
+set +euo pipefail
 FFProfilesItemsNumber=$(ls -dq ${FFProfiles}/*default-esr* | wc -l)
+set -euo pipefail
 if [ $FFProfilesItemsNumber == 1 ]; then
 	FFProfile=$(ls -dq ${FFProfiles}/*default-esr*)
 else
 	read -p 'Enter path into Firefox ESR default profile directory. It is typically /home/<username>/.mozilla/firefox/<profilename>.default-esr: ' FFProfile
+	ls -dq ${FFProfile}
 fi
 
 # Set JSR project root directory path in configuration.py.
@@ -52,7 +59,7 @@ sed -i "s@.exe@@g" ./testing/configuration.py
 
 # Start testing if everything ok.
 # Stop handling errors.
-set +euxo pipefail
+set +euo pipefail
 echo
 echo "No error noticed during setup the test environment. Integration testing is starting..."
 python3 ./testing/start.py
