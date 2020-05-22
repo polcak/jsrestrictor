@@ -5,9 +5,9 @@ from web_browser_type import BrowserType
 
 ## Static Config class contains definition for basic variables used during testing.
 #
-#  Class Config need to be changed for every computer based on current environment.
-#  Paths below have to be written as full paths.
-#  Follow README.md to get known how to edit this Config.
+#  Class Config is automatically changed for every computer based on current environment.
+#  Variables in brackets <<>> are updated by script setup_buildJSR_runTests.ps1/sh.
+#  You can change testing browsers and JSR levels.
 class __Config:
     # Browsers in which tests will be run.
     tested_browsers = [BrowserType.CHROME, BrowserType.FIREFOX]
@@ -16,8 +16,8 @@ class __Config:
 
 
 
-    ############ OTHER CONFIG PARAMETERS SHOULD BE SET AUTOMATICALLY BY SCRIPT setup_and_run ###############
-    ################### IT SHOULD NOT BE NEEDED TO CHANGE THEM, BUT YOU CAN CHECK THEM #####################
+    ######### OTHER CONFIG PARAMETERS SHOULD BE SET AUTOMATICALLY BY SCRIPT setup_buildJSR_runTests.ps1/sh ########
+    # IT SHOULD NOT BE NEEDED TO CHANGE THEM, BUT WHEN ERROR HAPPENED, TRY TO INSERT ABSOLUTE FULL PATHS MANUALLY #
     # Full path to Firefox driver.
     firefox_driver = "<<JSR_project_root_directory_path>>/tests/common_files/webbrowser_drivers/geckodriver.exe"
     # Full path to JSR package for Firefox (xpi package).
