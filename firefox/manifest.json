@@ -1,7 +1,7 @@
 {
-  "author": "Libor Polčák, Martin Timko",
+  "author": "Libor Polčák, Martin Timko, Pavel Pohner",
   "background": {
-      "scripts": ["update.js", "url.js", "levels.js", "background.js"]
+      "scripts": ["update.js", "url.js", "levels.js", "background.js", "http_shield_common.js", "http_shield_firefox.js"]
   },
   "browser_action": {
     "browser_style": true,
@@ -43,7 +43,7 @@
     "page": "options.html",
     "open_in_tab": true
   },
-  "permissions": ["storage", "tabs"],
+  "permissions": ["storage", "tabs",  "webRequest", "webRequestBlocking", "proxy", "dns", "<all_urls>", "notifications"],
   "short_name": "JSR",
   "version": "0.3",
   "browser_specific_settings": {
