@@ -45,6 +45,28 @@
     <button id="new_level" class="jsr-button">Add custom level</button>
   </div>
 
+  <div id="proxy-protection-config">
+	<h2>HTTP webRequest protection</h2>
+  	<div>
+  		<label id="switch-label">Turn HTTP webRequest protection on/off: </label>
+	  	<label class="switch">
+			  <input id="switch-checkbox" type="checkbox" checked>
+			  <span class="slider"></span>
+		</label>
+	</div>
+  	<p>You can whitelist hosts here by simply adding hostname (eg. example.com) to stop them from being blocked by HTTP webRequest protection. Write down the hostname itself (excluding "www", but including all other domains eg. ".com"). We generally do <strong>not</strong> recommend doing that for hostnames from public internet. Please note, that these hostnames are checked with domain hierarchy, so whitelisting <strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.</p>
+  	<div>
+	  	<input id="whitelist-input" type="text" name="whitelist-hostname" placeholder="www.example.com">
+	  	<button id="whitelist-add-button" class="jsr-button">Add to whitelist</button>
+	</div>
+  	<select id="whitelist-select" name="sometext" size="5" multiple>
+
+	</select>
+	<div>
+		<button id="whitelist-remove-button" class="jsr-button">Remove selected</button>
+	</div>
+  </div>
+
 </section>
 
 	</section>
