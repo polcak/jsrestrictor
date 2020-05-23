@@ -47,7 +47,7 @@ function prepare_level_config(action_descr, params = {
 	  <h2>${action_descr}</h2>
 	</div>
 	<form>
-	
+
 		<!-- Metadata -->
 		<div class="main-section">
 			<span class="section-header">Name:</span>
@@ -120,7 +120,7 @@ function prepare_level_config(action_descr, params = {
 
 		<!-- WEBWORKER -->
 		<div class="main-section">
-			<input type="checkbox" id="webworker_checkbox" ${params.webworker_checked ? "checked" : ""}>
+			<input type="checkbox" id="webworker_main_checkbox" ${params.webworker_checked ? "checked" : ""}>
 			<span class="section-header">Protect against WebWorker exploitation:</span>
 		</div>
 		<div id="webworker_options" class="${params.webworker_checked ? "" : "hidden"}">
@@ -148,14 +148,7 @@ function prepare_level_config(action_descr, params = {
 		}
 	});
 
-    document.getElementById("webworker_checkbox").addEventListener("click", function (e) {
-        let worker_el = document.getElementById("webworker_options");
-        if (this.checked) {
-            worker_el.classList.remove("hidden");
-        } else {
-            worker_el.classList.add("hidden");
-        }
-    });
+	connect_options_group("webworker");
 
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
@@ -201,7 +194,7 @@ function prepare_level_config(action_descr, params = {
 			);
 		}
 
-        if (document.getElementById("webworker_checkbox").checked) {
+        if (document.getElementById("webworker_main_checkbox").checked) {
             let polyfill = document.getElementById("webworker_polyfill_checkbox").checked;
             new_level.wrappers.push(
                 // WORKER
