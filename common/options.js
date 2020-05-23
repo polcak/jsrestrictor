@@ -120,7 +120,7 @@ function prepare_level_config(action_descr, params = {
 
 		<!-- SHAREDARRAY -->
 		<div class="main-section">
-			<input type="checkbox" id="shared_array_checkbox" ${params.shared_array_checked ? "checked" : ""}>
+			<input type="checkbox" id="shared_array_main_checkbox" ${params.shared_array_checked ? "checked" : ""}>
 			<span class="section-header">Protect against SharedArray exploitation:</span>
 		</div>
 		<div id="shared_array_options" class="${params.shared_array_checked ? "" : "hidden"}">
@@ -149,15 +149,7 @@ function prepare_level_config(action_descr, params = {
 		}
 	});
 
-	document.getElementById("shared_array_checkbox").addEventListener("click", function (e) {
-		let shared_el = document.getElementById("shared_array_options");
-		if (this.checked) {
-			shared_el.classList.remove("hidden");
-		} else {
-			shared_el.classList.add("hidden");
-		}
-	});
-
+	connect_options_group("shared_array");
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
 		new_level = {
@@ -203,7 +195,7 @@ function prepare_level_config(action_descr, params = {
 			);
 		}
 
-        if (document.getElementById("shared_array_checkbox").checked) {
+        if (document.getElementById("shared_array_main_checkbox").checked) {
             let block = document.getElementById("shared_array_block_checkbox").checked;
             new_level.wrappers.push(
                 // SHARED
