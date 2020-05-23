@@ -297,7 +297,7 @@ function beforeSendHeadersListener(requestDetail) {
 	var isDestinationPrivate = false;
 
 	//Host found among user's trusted hosts, allow it right away
-	if (checkWhitelist(sourceUrl.hostname) != undefined)
+	if (checkWhitelist(sourceUrl.hostname))
 	{
 		return {cancel:false};
 	}

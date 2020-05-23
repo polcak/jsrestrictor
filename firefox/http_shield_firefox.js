@@ -55,9 +55,12 @@ async function beforeSendHeadersListener(requestDetail) {
 		return {cancel:false};
 	}
 	var sourceUrl = new URL(requestDetail.originUrl);
+	var fullSourceDomain = sourceUrl.hostname;
 	//Removing www. from hostname, so the hostnames are uniform
 	sourceUrl.hostname = sourceUrl.hostname.replace(/^www\./,'');
 	var targetUrl = new URL(requestDetail.url);
+	var fullTargetDomain = targetUrl.hostname;
+	//Removing www. from hostname, so the hostnames are uniform
 	targetUrl.hostname = targetUrl.hostname.replace(/^www\./,'');
 
 	var targetIP;
@@ -95,7 +98,7 @@ async function beforeSendHeadersListener(requestDetail) {
 	else //SOURCE is hostname
 	{
 		//Resoluting DNS query for source domain
-		sourceResolution = browser.dns.resolve(sourceUrl.hostname).then((val) =>
+		sourceResolution = browser.dns.resolve(fullSourceDomain).then((val) =>
 		{
 			//Assigning source IPs
 			sourceIP = val;
@@ -143,7 +146,7 @@ async function beforeSendHeadersListener(requestDetail) {
 	else //Target is hostname
 	{
 		//Resoluting DNS query for destination domain
-		destinationResolution = browser.dns.resolve(targetUrl.hostname).then((val) =>
+		destinationResolution = browser.dns.resolve(fullTargetDomain).then((val) =>
 		{
 			//Assigning source IPs
 			targetIP = val;
