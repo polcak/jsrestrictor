@@ -1,4 +1,4 @@
-all: firefox chrome
+all: get_csv firefox chrome
 
 .PHONY: firefox chrome clean
 firefox: firefox_JSR.zip
@@ -9,6 +9,11 @@ COMMON_FILES = $(shell find common/) \
 			   Makefile \
 			   $(shell find firefox/) \
 			   $(shell find chrome/)
+
+get_csv:
+	wget -q -N --directory-prefix=./common/ https://www.iana.org/assignments/locally-served-dns-zones/ipv4.csv
+	wget -q -N --directory-prefix=./common/ https://www.iana.org/assignments/locally-served-dns-zones/ipv6.csv
+
 
 %_JSR.zip: $(COMMON_FILES)
 	@rm -rf $*_JSR/ $@
