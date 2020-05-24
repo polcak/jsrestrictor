@@ -76,3 +76,8 @@ Script may ask you for the path into directory, where the files of Firefox ESR d
 Default location of directory, where the files of Firefox ESR default profile are stored, is: `/home/<username>/.mozilla/firefox/<profilename>.default-esr`
 
 If script does not find needed files into default location, it will prompts you to input path into directory, where the files are saved.
+
+
+## Integration tests configuration
+
+You can change selected browsers, which integration tests run in, and you can change JSR levels, which are tested, by modifing the file ./testing/configuration.py.
