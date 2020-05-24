@@ -4,6 +4,7 @@
 //  internet.
 //
 //  Copyright (C) 2019  Libor Polcak
+//  Copyright (C) 2020  Peter Hornak
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,12 +34,30 @@
 					wrapped_name: "originalDateConstructor",
 				},
 			],
-			helping_code: rounding_function + "var precision = args[0];",
+			helping_code: rounding_function + noise_function +
+				`
+				var lastValue = 0;
+				var precision = args[0];
+				var doNoise = args[1];
+				var func = rounding_function;
+				if (doNoise) {
+					func = noise_function;
+				}
+				`,
 			wrapping_function_args: "",
 			wrapping_function_body: `
 				var wrapped = new originalDateConstructor(...arguments);
-				var roundedValue = rounding_function(wrapped.getMilliseconds(), precision);
-				wrapped.setMilliseconds(roundedValue);
+				let cachedValue;
+				if (arguments[0] !== undefined) {
+					// Don't change lastValue if custom arguments are passed
+					 cachedValue = lastValue;
+				}
+				var changedValue = func(wrapped.getTime(), precision);
+				if (cachedValue) {
+					// Don't change lastValue if custom arguments are passed
+					 lastValue = cachedValue;
+				}
+				wrapped.setTime(changedValue);
 				return wrapped;
 				`,
 			wrapper_prototype: "originalDateConstructor",
@@ -49,7 +68,7 @@
 					parent_object: "window.Date",
 					parent_object_property: "now",
 					wrapping_function_args: "",
-					wrapping_function_body: "return rounding_function(originalDateConstructor.now.call(Date), precision);",
+					wrapping_function_body: "return func(originalDateConstructor.now.call(Date), precision);",
 				},
 			]
 		},
