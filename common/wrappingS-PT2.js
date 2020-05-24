@@ -4,6 +4,7 @@
 //  internet.
 //
 //  Copyright (C) 2019  Libor Polcak
+//  Copyright (C) 2020  Peter Hornak
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,13 +26,17 @@
 (function() {
 	var common_function_body = `
 				var measures = origFunc.call(this, ...args);
+				func = rounding_function;
+				if (doNoise === true){
+					func = noise_function
+				}
 				var ret = [];
 				for (measure of measures) {
 					ret.push({
 						entryType: measure.entryType,
 						name: measure.name,
-						startTime: rounding_function(measure.startTime, precision),
-						duration: rounding_function(measure.duration, precision),
+						startTime: func(measure.startTime, precision),
+						duration: func(measure.duration, precision),
 						toJSON: function() {return this},
 					});
 				}
@@ -47,7 +52,7 @@
 					wrapped_name: "origFunc",
 				}
 			],
-			helping_code: rounding_function + "var precision = args[0];",
+			helping_code: rounding_function + "var precision = args[0]; var doNoise = args[1];",
 			wrapping_function_args: "...args",
 			wrapping_function_body: common_function_body
 		},
@@ -60,7 +65,7 @@
 					wrapped_name: "origFunc",
 				}
 			],
-			helping_code: rounding_function + "var precision = args[0];",
+			helping_code: rounding_function + "var precision = args[0]; var doNoise = args[1];",
 			wrapping_function_args: "...args",
 			wrapping_function_body: common_function_body
 		},
@@ -73,7 +78,7 @@
 					wrapped_name: "origFunc",
 				}
 			],
-			helping_code: rounding_function + "var precision = args[0];",
+			helping_code: rounding_function + "var precision = args[0]; var doNoise = args[1];",
 			wrapping_function_args: "...args",
 			wrapping_function_body: common_function_body
 		},
