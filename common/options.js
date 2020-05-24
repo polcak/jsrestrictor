@@ -195,13 +195,13 @@ function prepare_level_config(action_descr, params = {
 			);
 		}
 
-        if (document.getElementById("shared_array_main_checkbox").checked) {
-            let block = document.getElementById("shared_array_block_checkbox").checked;
-            new_level.wrappers.push(
-                // SHARED
-                ["window.SharedArrayBuffer", block],
-            );
-        }
+		if (document.getElementById("shared_array_main_checkbox").checked) {
+			let block = document.getElementById("shared_array_block_checkbox").checked;
+			new_level.wrappers.push(
+				// SHARED
+				["window.SharedArrayBuffer", block],
+			);
+		}
 
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
 			if (new_level.level_id.length > 3) {
