@@ -33,11 +33,11 @@
 					wrapped_name: "origNow",
 				}
 			],
-			helping_code: rounding_function,
+			helping_code: rounding_function + "var precision = args[0];",
 			wrapping_function_args: "",
 			wrapping_function_body: `
 					var originalPerformanceValue = origNow.call(window.performance);
-					return rounding_function(originalPerformanceValue, args[0]);
+					return rounding_function(originalPerformanceValue, precision);
 				`
 		},
 	]

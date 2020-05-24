@@ -23,10 +23,14 @@
 /*
  * Check if we are running in Firefox or not
  */
-function running_in_firefox() {
+var running_in_firefox = (function() {
 	if ((typeof browser) !== "undefined") {
 	  return true;
 	} else {
 	  return false;
 	}
+})();
+
+if ((typeof browser) === "undefined") {
+	var browser = chrome;
 }

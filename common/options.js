@@ -5,6 +5,7 @@
 //
 //  Copyright (C) 2019  Libor Polcak
 //  Copyright (C) 2019  Martin Timko
+//  Copyright (C) 2020  Peter Hornak
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,7 +23,7 @@
 
 
 if ((typeof chrome) !== "undefined") {
-  var browser = chrome;
+	var browser = chrome;
 }
 
 function prepare_level_config(action_descr, params = {
@@ -36,6 +37,8 @@ function prepare_level_config(action_descr, params = {
 			xhr_checked: false,
 			xhr_block_checked: false,
 			xhr_ask_checked: false,
+			arrays_checked: false,
+			mapping_checked: false,
 		}) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
@@ -45,6 +48,8 @@ function prepare_level_config(action_descr, params = {
 	  <h2>${action_descr}</h2>
 	</div>
 	<form>
+
+		<p>Note that for fingerprintability prevention, JS Restrictor does not wrap objects that are not defined. For example, if an experimental feature like <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory"><code>navigator.deviceMemory</code></a> is not defined in your browser, JS Restrictor does not define the property even if it is shown below that the valut is defined.</p>
 	
 		<!-- Metadata -->
 		<div class="main-section">
@@ -70,10 +75,10 @@ function prepare_level_config(action_descr, params = {
 			<span class="section-header">Manipulate the time precision provided by Date and
 				performance:</span>
 		</div>
-		<div>
+		<div id="time_precision_options" class="${params.time_precision_checked ? "" : "hidden"}">
 			<div class="row">
 				<span class="table-left-column">Round time to:</span>
-				<select id="time_precision_round_precision" ${params.time_precision_checked ? "": "disabled"}>
+				<select id="time_precision_round_precision">
 					<option value="2" ${params.time_precision_round == 2 ? "selected" : ""}>hundredths of a second (1.230)</option>
 					<option value="1" ${params.time_precision_round == 1 ? "selected" : ""}>tenths of a second (1.200)</option>
 					<option value="0" ${params.time_precision_round == 0 ? "selected" : ""}>full seconds (1.000)</option>
@@ -97,9 +102,9 @@ function prepare_level_config(action_descr, params = {
 			<span class="section-header">Spoof hardware information to the most popular HW:</span>
 		</div>
 		<div>
-			<span class="table-left-column"><strong>JS navigator.deviceMemory:</strong> 4</span>
+			<span class="table-left-column">JS navigator.deviceMemory: 4</span>
 			<br>
-			<span class="table-left-column"><strong>JS navigator.hardwareConcurrency:</strong> 2</span>
+			<span class="table-left-column">JS navigator.hardwareConcurrency: 2</span>
 		</div>
 		
 		<!-- XMLHTTPREQUEST -->
@@ -115,22 +120,38 @@ function prepare_level_config(action_descr, params = {
 				<span class="section-header">Ask before executing an XHR request.</span>
 			</div>
 		</div>
+
+		<!-- ARRAYS -->
+		<div class="main-section">
+			<input type="checkbox" id="arrays_main_checkbox" ${params.arrays_checked ? "checked" : ""}>
+			<span class="section-header">Protect against ArrayBuffer exploitation.</span>
+		</div>
+		<div class=${params.arrays_checked ? "" : "hidden"} id="arrays_options" >
+			<input type="checkbox" id="mapping_checkbox" ${params.mapping_checked ? "checked" : ""}>
+			<span class="section-header">Use random mapping of array indexing to memory.</span>
+		</div>
+		<br>
+		<br>
+		<br>
+		<br>
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
 	configuration_area_el.appendChild(fragment);
-	document.getElementById("time_precision_main_checkbox").addEventListener("click", function(e) {
-		time_precision_round_precision.disabled = !this.checked;
-	});
-	document.getElementById("xhr_main_checkbox").addEventListener("click", function(e) {
-		var xhr_options_el = document.getElementById("xhr_options");
-		if (this.checked) {
-			xhr_options_el.classList.remove("hidden");
-		}
-		else {
-			xhr_options_el.classList.add("hidden");
-		}
-	});
+	function connect_options_group(group_name) {
+		document.getElementById(group_name + "_main_checkbox").addEventListener("click", function(e) {
+			var options_el = document.getElementById(group_name + "_options");
+			if (this.checked) {
+				options_el.classList.remove("hidden");
+			}
+			else {
+				options_el.classList.add("hidden");
+			}
+		});
+	}
+	connect_options_group("time_precision");
+	connect_options_group("xhr");
+	connect_options_group("arrays");
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
 		new_level = {
@@ -174,6 +195,18 @@ function prepare_level_config(action_descr, params = {
 				["navigator.hardwareConcurrency"],
 			);
 		}
+
+		if (document.getElementById("arrays_main_checkbox").checked) {
+			let doMapping = document.getElementById("mapping_checkbox").checked;
+			let arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+			for (let a of arrays) {
+				new_level.wrappers.push([`window.${a}`, doMapping]);
+			}
+			new_level.wrappers.push(
+				["window.DataView", doMapping],
+			);
+		}
+
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
 			if (new_level.level_id.length > 3) {
 				alert("Level ID too long, provide 3 characters or less");
@@ -229,6 +262,8 @@ function edit_level(id) {
 			xhr_checked: "window.XMLHttpRequest" in lev,
 			xhr_block_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : false,
 			xhr_ask_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
+			arrays_checked: "Uint8Array" in lev,
+			mapping_checked: (lev["Uint8Array"][0])
 		});
 }
 

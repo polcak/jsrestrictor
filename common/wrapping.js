@@ -38,6 +38,7 @@ function define_page_context_function(wrapper) {
 			};
 			${wrapper.parent_object}.${wrapper.parent_object_property} = replacementF;
 			original_functions[replacementF.toString()] = originalF.toString();
+			${wrapper.post_replacement_code || ''}
 	`);
 }
 
@@ -56,13 +57,22 @@ var build_code = function(wrapper, ...args) {
 	var post_wrapping_functions = {
 		function_define: define_page_context_function,
 		function_export: generate_assign_function_code,
-	}
+	};
 	var code = "";
 	for (wrapped of wrapper.wrapped_objects) {
-		code += `var ${wrapped.wrapped_name} = ${wrapped.original_name};`;
+		code += `
+			var ${wrapped.wrapped_name} = ${wrapped.original_name};
+			if (${wrapped.wrapped_name} === undefined) {
+				// Do not wrap an object that is not defined, e.g. because it is experimental feature.
+				// This should reduce fingerprintability.
+				return;
+			}
+		`;
 	}
-	code += `${wrapper.helping_code}
-		${define_page_context_function(wrapper)}`
+	code += `${wrapper.helping_code || ''}`;
+	if (wrapper.wrapping_function_body){
+		code += `${define_page_context_function(wrapper)}`;
+	}
 	if (wrapper["post_wrapping_code"] !== undefined) {
 		for (code_spec of wrapper["post_wrapping_code"]) {
 			code += post_wrapping_functions[code_spec.code_type](code_spec);
@@ -73,8 +83,9 @@ var build_code = function(wrapper, ...args) {
 				${wrapper.wrapper_prototype});
 		`
 	}
+	code += `Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});`;
 	return enclose_wrapping(code, ...args);
-}
+};
 var inject_code = injectScript;
 
 /**
@@ -99,7 +110,7 @@ function firefox_blocks_scripts() {
 	}
 }
 
-if ((running_in_firefox() === true) && (firefox_blocks_scripts() === true)) {
+if ((running_in_firefox === true) && (firefox_blocks_scripts() === true)) {
 	// Deal with bug https://bugzilla.mozilla.org/show_bug.cgi?id=1267027
 	// See also https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Sharing_objects_with_page_scripts
 	// See also bug #25
@@ -115,6 +126,7 @@ if ((running_in_firefox() === true) && (firefox_blocks_scripts() === true)) {
 							${wrapper.wrapping_function_body}
 						}
 						exportFunction(tobeexported, ${wrapper.parent_object}, {defineAs: '${wrapper.parent_object_property}'});
+						${wrapper.post_replacement_code || ''}
 				})();
 		`
 	}
@@ -136,16 +148,18 @@ if ((running_in_firefox() === true) && (firefox_blocks_scripts() === true)) {
 		var post_wrapping_functions = {
 			function_define: define_page_context_function_ffbug,
 			function_export: generate_assign_function_code_ffbug,
-		}
+		};
 		var code = "";
 		for (wrapped of wrapper.wrapped_objects) {
 			code += `var ${wrapped.wrapped_name} = window.wrappedJSObject.${wrapped.original_name};`;
 		}
-		code += `${wrapper.helping_code}
-			function tobeexported(${wrapper.wrapping_function_args}) {
+		code += `${wrapper.helping_code || ''}`;
+		if (wrapper.wrapping_function_body) {
+			code += `function tobeexported(${wrapper.wrapping_function_args}) {
 					${wrapper.wrapping_function_body}
 				}
-		`
+		`;
+		}
 		if (wrapper["wrapper_prototype"] !== undefined) {
 			code += `Object.setPrototypeOf(tobeexported, ${wrapper.wrapper_prototype});
 			`;
@@ -158,7 +172,7 @@ if ((running_in_firefox() === true) && (firefox_blocks_scripts() === true)) {
 			}
 		}
 		return enclose_wrapping(code, ...args);
-	}
+	};
 	var inject_code = eval;
 }
 
@@ -172,6 +186,9 @@ function add_wrappers(wrappers) {
 }
 
 function wrap_code(wrappers) {
+	if (wrappers.length === 0) {
+		return; // Nothing to wrap
+	}
 	var code = `(function() {
 		var original_functions = {};
 		`;
