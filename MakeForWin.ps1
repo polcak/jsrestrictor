@@ -18,7 +18,7 @@ function Firefox {
 
 
 function FirefoxUnzip {
-	expand-archive -Path "firefox_JSR.zip" -destinationpath "firefox_JSR" -Force
+	Expand-Archive -Path "firefox_JSR.zip" -destinationpath "firefox_JSR" -Force
 	Write-Output "Firefox dir extension exported -> Firefox_JSR/"
 }
 
@@ -36,7 +36,7 @@ function Chrome {
 
 
 function ChromeUnzip {
-	expand-archive -Path "chrome_JSR.zip" -destinationpath "chrome_JSR" -Force
+	Expand-Archive -Path "chrome_JSR.zip" -destinationpath "chrome_JSR" -Force
 	Write-Output "Chrome dir extension exported  -> chrome_JSR/"
 }
 
