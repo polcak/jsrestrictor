@@ -22,7 +22,7 @@
 
 
 if ((typeof chrome) !== "undefined") {
-  var browser = chrome;
+	var browser = chrome;
 }
 
 function prepare_level_config(action_descr, params = {
