@@ -31,6 +31,8 @@ function prepare_level_config(action_descr, params = {
 			description: "",
 			time_precision_checked: false,
 			time_precision_round: 1,
+			time_round_checked: false,
+			time_random_checked: false,
 			htmlcanvas_checked: false,
 			hardware_checked: false,
 			xhr_checked: false,
@@ -45,7 +47,7 @@ function prepare_level_config(action_descr, params = {
 	  <h2>${action_descr}</h2>
 	</div>
 	<form>
-	
+
 		<!-- Metadata -->
 		<div class="main-section">
 			<span class="section-header">Name:</span>
@@ -70,14 +72,20 @@ function prepare_level_config(action_descr, params = {
 			<span class="section-header">Manipulate the time precision provided by Date and
 				performance:</span>
 		</div>
-		<div>
+		<div id="time_precision_options" class="${params.time_precision_checked ? "" : "hidden"}">
 			<div class="row">
-				<span class="table-left-column">Round time to:</span>
-				<select id="time_precision_round_precision" ${params.time_precision_checked ? "": "disabled"}>
-					<option value="2" ${params.time_precision_round == 2 ? "selected" : ""}>hundredths of a second (1.230)</option>
-					<option value="1" ${params.time_precision_round == 1 ? "selected" : ""}>tenths of a second (1.200)</option>
-					<option value="0" ${params.time_precision_round == 0 ? "selected" : ""}>full seconds (1.000)</option>
+				<span class="table-left-column">Manipulate time to:</span>
+				<select id="time_precision_round_precision">
+					<option value="2" ${params.time_precision_round === 2 ? "selected" : ""}>hundredths of a second (1.230)</option>
+					<option value="1" ${params.time_precision_round === 1 ? "selected" : ""}>tenths of a second (1.200)</option>
+					<option value="0" ${params.time_precision_round === 0 ? "selected" : ""}>full seconds (1.000)</option>
 				</select>
+			</div>
+			<div class="row">
+				<input type="radio" id="timeoptions_round_checkbox" name="timeoptions" ${params.time_random_checked ? "" : "checked"}/>
+				<span class="section-header">Round time.</span>
+				<input type="radio" id="timeoptions_random_checkbox" name="timeoptions" ${params.time_random_checked ? "checked" : ""}/>
+				<span class="section-header">Randomize time.</span>
 			</div>
 		</div>
 		
@@ -97,9 +105,9 @@ function prepare_level_config(action_descr, params = {
 			<span class="section-header">Spoof hardware information to the most popular HW:</span>
 		</div>
 		<div>
-			<span class="table-left-column"><strong>JS navigator.deviceMemory:</strong> 4</span>
+			<span class="table-left-column">JS navigator.deviceMemory: 4</span>
 			<br>
-			<span class="table-left-column"><strong>JS navigator.hardwareConcurrency:</strong> 2</span>
+			<span class="table-left-column">JS navigator.hardwareConcurrency: 2</span>
 		</div>
 		
 		<!-- XMLHTTPREQUEST -->
@@ -149,15 +157,18 @@ function prepare_level_config(action_descr, params = {
 		}
 		if (document.getElementById("time_precision_main_checkbox").checked) {
 			var precision = document.getElementById("time_precision_round_precision").value;
+			var randomize = document.getElementById("timeoptions_random_checkbox").checked;
+
 			new_level.wrappers.push(
 				// HRT
-				["Performance.prototype.now", precision],
+				["Performance.prototype.now", precision, randomize],
+				["window.PerformanceEntry", precision, randomize]
 				// PT2
-				["performance.getEntries", precision],
-				["performance.getEntriesByName", precision],
-				["performance.getEntriesByType", precision],
+				["performance.getEntries", precision, randomize],
+				["performance.getEntriesByName", precision, randomize],
+				["performance.getEntriesByType", precision, randomize],
 				// ECMA
-				["window.Date", precision],
+				["window.Date", precision, randomize],
 			);
 		}
 		if (document.getElementById("xhr_main_checkbox").checked) {
@@ -221,6 +232,7 @@ function edit_level(id) {
 					"performance.getEntriesByType" in lev &&
 					"window.Date" in lev,
 			time_precision_round: "Performance.prototype.now" in lev ? lev["Performance.prototype.now"][0] : 100,
+			time_random_checked: (lev["window.Date"][1]),
 			htmlcanvas_checked: "CanvasRenderingContext2D.prototype.getImageData" in lev &&
 					"HTMLCanvasElement.prototype.toBlob" in lev &&
 					"HTMLCanvasElement.prototype.toDataURL" in lev,
