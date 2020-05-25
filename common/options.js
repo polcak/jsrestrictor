@@ -43,6 +43,8 @@ function prepare_level_config(action_descr, params = {
 			mapping_checked: false,
 			shared_array_checked: false,
 			shared_slow_checked: false,
+			webworker_checked: false,
+			webworker_slow_checked: false,
 		}) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
@@ -154,6 +156,19 @@ function prepare_level_config(action_descr, params = {
 			</div>
 		</div>
 
+		<!-- WEBWORKER -->
+		<div class="main-section">
+			<input type="checkbox" id="webworker_main_checkbox" ${params.webworker_checked ? "checked" : ""}>
+			<span class="section-header">Protect against WebWorker exploitation:</span>
+		</div>
+		<div id="webworker_options" class="${params.webworker_checked ? "" : "hidden"}">
+			<div class="row">
+				<input type="radio" id="webworker_polyfill_checkbox" name="workeroptions"  ${params.webworker_slow_checked ? "" : "checked"}/>
+				<span class="section-header">Remove real parallelism.</span>
+				<input type="radio" id="webworker_slow_checkbox" name="workeroptions"  ${params.webworker_slow_checked ? "checked" : ""}/>
+				<span class="section-header">Randomly slow messages to prevent high resolution timers.</span>
+			</div>
+		</div>
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
@@ -173,6 +188,8 @@ function prepare_level_config(action_descr, params = {
 	connect_options_group("xhr");
 	connect_options_group("arrays");
 	connect_options_group("shared_array");
+	connect_options_group("webworker");
+
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
 		new_level = {
@@ -236,6 +253,11 @@ function prepare_level_config(action_descr, params = {
 			new_level.wrappers.push(
 				// SHARED
 				["window.SharedArrayBuffer", block],
+		if (document.getElementById("webworker_main_checkbox").checked) {
+			let polyfill = document.getElementById("webworker_polyfill_checkbox").checked;
+			new_level.wrappers.push(
+				// WORKER
+				["window.Worker", polyfill],
 			);
 		}
 
@@ -299,7 +321,9 @@ function edit_level(id) {
 			mapping_checked: (lev["Uint8Array"][0])
 			shared_array_checked: "window.SharedArrayBuffer" in lev,
 			shared_slow_checked: !(lev["window.SharedArrayBuffer"][0]),
-		});
+			webworker_checked: "window.Worker" in lev,
+			webworker_slow_checked: !(lev["window.Worker"][0]),
+	});
 }
 
 function restore_level(id, settings) {
