@@ -41,6 +41,8 @@ function prepare_level_config(action_descr, params = {
 			xhr_ask_checked: false,
 			arrays_checked: false,
 			mapping_checked: false,
+			shared_array_checked: false,
+			shared_slow_checked: false,
 		}) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
@@ -137,10 +139,21 @@ function prepare_level_config(action_descr, params = {
 			<input type="checkbox" id="mapping_checkbox" ${params.mapping_checked ? "checked" : ""}>
 			<span class="section-header">Use random mapping of array indexing to memory.</span>
 		</div>
-		<br>
-		<br>
-		<br>
-		<br>
+
+		<!-- SHAREDARRAY -->
+		<div class="main-section">
+			<input type="checkbox" id="shared_array_main_checkbox" ${params.shared_array_checked ? "checked" : ""}>
+			<span class="section-header">Protect against SharedArray exploitation:</span>
+		</div>
+		<div id="shared_array_options" class="${params.shared_array_checked ? "" : "hidden"}">
+			<div class="row">
+				<input type="radio" id="shared_array_block_checkbox" name="sharedoptions"  ${params.shared_slow_checked ? "" : "checked"}/>
+				<span class="section-header">Block SharedArray.</span>
+				<input type="radio" id="shared_array_polyfill_checkbox" name="sharedoptions"  ${params.shared_slow_checked ? "checked" : ""}/>
+				<span class="section-header">Randomly slow messages to prevent high resolution timers.</span>
+			</div>
+		</div>
+
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
@@ -159,6 +172,7 @@ function prepare_level_config(action_descr, params = {
 	connect_options_group("time_precision");
 	connect_options_group("xhr");
 	connect_options_group("arrays");
+	connect_options_group("shared_array");
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
 		new_level = {
@@ -166,7 +180,8 @@ function prepare_level_config(action_descr, params = {
 			level_text: document.getElementById("level_text").value,
 			level_description: document.getElementById("level_description").value,
 			wrappers: []
-		}
+		};
+
 		if (document.getElementById("htmlcanvaselement_main_checkbox").checked) {
 			new_level.wrappers.push(
 				// H-C
@@ -214,6 +229,13 @@ function prepare_level_config(action_descr, params = {
 			}
 			new_level.wrappers.push(
 				["window.DataView", doMapping],
+			);
+		}
+		if (document.getElementById("shared_array_checkbox").checked) {
+			let block = document.getElementById("shared_array_block_checkbox").checked;
+			new_level.wrappers.push(
+				// SHARED
+				["window.SharedArrayBuffer", block],
 			);
 		}
 
@@ -275,6 +297,8 @@ function edit_level(id) {
 			xhr_ask_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
 			arrays_checked: "Uint8Array" in lev,
 			mapping_checked: (lev["Uint8Array"][0])
+			shared_array_checked: "window.SharedArrayBuffer" in lev,
+			shared_slow_checked: !(lev["window.SharedArrayBuffer"][0]),
 		});
 }
 

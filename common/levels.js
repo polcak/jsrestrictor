@@ -102,6 +102,8 @@ var level_3 = {
 		["navigator.hardwareConcurrency"],
 		// ARRAY + see the insert_array_wrappings() below
 		["window.DataView", true],
+		// SHARED
+		["window.SharedArrayBuffer", true],
 	]
 };
 
