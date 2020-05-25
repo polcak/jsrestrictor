@@ -95,7 +95,7 @@ browser.runtime.onMessage.addListener(messageListener);
 //Iterates error counter, blocks the host if limit was exceeded
 //Takes object representing error in responseDetails variable
 function onErrorOccuredListener(responseDetails) {
-
+  
   //It's neccessary to have both of these defined, otherwise the error can't be analyzed
   if (responseDetails.initiator === undefined || responseDetails.url === undefined)
   {
@@ -284,7 +284,7 @@ function beforeSendHeadersListener(requestDetail) {
   var isDestinationPrivate = false;
 
   //Host found among user's trusted hosts, allow it right away
-  if (checkWhitelist(sourceUrl.hostname) != undefined)
+  if (checkWhitelist(sourceUrl.hostname))
   {
     return {cancel:false};
   }

@@ -40,24 +40,26 @@ browser.storage.sync.get(["requestShieldOn"], function(result){
   }
 });
 
-
 //webRequest event listener
 //Listens to onBeforeSendHeaders event, receives detail of HTTP request in requestDetail
 //Catches the request, analyzes it's origin and target URLs and blocks it/permits it based
 //on their IP adresses. Requests coming from public IP ranges targeting the private IPs are
 //blocked by default. Others are permitted by default.
-async function beforeSendHeadersListener(requestDetail) {
-  
+async function beforeSendHeadersListener(requestDetail) {  
   //If either of information is undefined, permit it 
   //originUrl happens to be undefined for the first request of the page loading the document itself
   if (requestDetail.originUrl === undefined || requestDetail.url === undefined)
   {
     return {cancel:false};
-  }  
+  } 
   var sourceUrl = new URL(requestDetail.originUrl);
+  var fullSourceDomain = sourceUrl.hostname;
   //Removing www. from hostname, so the hostnames are uniform
   sourceUrl.hostname = sourceUrl.hostname.replace(/^www\./,''); 
+
   var targetUrl = new URL(requestDetail.url);
+  var fullTargetDomain = targetUrl.hostname;
+  //Removing www. from hostname, so the hostnames are uniform
   targetUrl.hostname = targetUrl.hostname.replace(/^www\./,'');
 
   var targetIP;
@@ -72,7 +74,6 @@ async function beforeSendHeadersListener(requestDetail) {
   {
     return {cancel:false};
   }
-
   //Checking type of SOURCE URL
   if (isIPV4(sourceUrl.hostname)) //SOURCE is IPV4 adddr
   { 
@@ -95,7 +96,7 @@ async function beforeSendHeadersListener(requestDetail) {
   else //SOURCE is hostname
   {
     //Resoluting DNS query for source domain
-    sourceResolution = browser.dns.resolve(sourceUrl.hostname).then((val) =>
+    sourceResolution = browser.dns.resolve(fullSourceDomain).then((val) =>
     {
       //Assigning source IPs
       sourceIP = val;
@@ -130,7 +131,6 @@ async function beforeSendHeadersListener(requestDetail) {
     if (isIPV4Private(targetUrl.hostname))
     {
       isDestinationPrivate = true;
-
     }
   }
   else if(isIPV6(targetUrl.hostname))
@@ -143,7 +143,7 @@ async function beforeSendHeadersListener(requestDetail) {
   else //Target is hostname
   {
     //Resoluting DNS query for destination domain
-    destinationResolution = browser.dns.resolve(targetUrl.hostname).then((val) =>
+    destinationResolution = browser.dns.resolve(fullTargetDomain).then((val) =>
     {
       //Assigning source IPs
       targetIP = val;
@@ -171,7 +171,7 @@ async function beforeSendHeadersListener(requestDetail) {
   }  
   //Wait till all DNS resolutions are done, because its neccessary for upcoming actions
   await Promise.all([sourceResolution, destinationResolution]);
-  
+
   //Blocking direction Public -> Private
   if (!isSourcePrivate && isDestinationPrivate)
   {
