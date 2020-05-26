@@ -1,6 +1,6 @@
-all: get_csv firefox chrome
+all: firefox chrome
 
-.PHONY: firefox chrome clean
+.PHONY: firefox chrome clean get_csv
 firefox: firefox_JSR.zip
 chrome: chrome_JSR.zip
 
@@ -15,7 +15,7 @@ get_csv:
 	wget -q -N --directory-prefix=./common/ https://www.iana.org/assignments/locally-served-dns-zones/ipv6.csv
 
 
-%_JSR.zip: $(COMMON_FILES)
+%_JSR.zip: $(COMMON_FILES) get_csv
 	@rm -rf $*_JSR/ $@
 	@cp -r common/ $*_JSR/
 	@cp -r $*/* $*_JSR/
