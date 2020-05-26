@@ -40,7 +40,7 @@
   "manifest_version": 2,
   "name": "JavaScript Restrictor",
   "options_page": "options.html",
-  "permissions": ["storage", "tabs",  "webRequest", "webRequestBlocking", "proxy", "<all_urls>", "notifications"],
+  "permissions": ["storage", "tabs",  "webRequest", "webRequestBlocking", "<all_urls>", "notifications"],
   "short_name": "JSR",
   "version": "0.3"
 }

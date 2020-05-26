@@ -43,7 +43,7 @@
     "page": "options.html",
     "open_in_tab": true
   },
-  "permissions": ["storage", "tabs",  "webRequest", "webRequestBlocking", "proxy", "dns", "<all_urls>", "notifications"],
+  "permissions": ["storage", "tabs",  "webRequest", "webRequestBlocking", "dns", "<all_urls>", "notifications"],
   "short_name": "JSR",
   "version": "0.3",
   "browser_specific_settings": {
