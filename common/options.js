@@ -23,7 +23,8 @@
 //
 
 
-if ((typeof chrome) !== "undefined") {
+//Chrome compatibility
+if ((typeof browser) === "undefined") {
 	var browser = chrome;
 }
 

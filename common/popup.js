@@ -21,8 +21,10 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-// set browser var as chrome
-var browser = chrome;
+//Chrome compatibility
+if ((typeof browser) === "undefined") {
+	var browser = chrome;
+}
 
 const fadeOut = "0.3";
 const fadeIn = "1.0";
