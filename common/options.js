@@ -253,6 +253,8 @@ function prepare_level_config(action_descr, params = {
 			new_level.wrappers.push(
 				// SHARED
 				["window.SharedArrayBuffer", block],
+			);
+		}
 		if (document.getElementById("webworker_main_checkbox").checked) {
 			let polyfill = document.getElementById("webworker_polyfill_checkbox").checked;
 			new_level.wrappers.push(
@@ -320,7 +322,7 @@ function edit_level(id) {
 			xhr_block_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : false,
 			xhr_ask_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
 			arrays_checked: "Uint8Array" in lev,
-			mapping_checked: (lev["Uint8Array"][0])
+			mapping_checked: (lev["Uint8Array"][0]),
 			shared_array_checked: "window.SharedArrayBuffer" in lev,
 			shared_slow_checked: !(lev["window.SharedArrayBuffer"][0]),
 			webworker_checked: "window.Worker" in lev,
