@@ -45,6 +45,7 @@ function prepare_level_config(action_descr, params = {
 			shared_slow_checked: false,
 			webworker_checked: false,
 			webworker_slow_checked: false,
+			battery_checked: true,
 		}) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
@@ -169,6 +170,12 @@ function prepare_level_config(action_descr, params = {
 				<span class="section-header">Randomly slow messages to prevent high resolution timers.</span>
 			</div>
 		</div>
+
+		<!-- BATTERY -->
+		<div class="main-section">
+			<input type="checkbox" id="battery_main_checkbox" ${params.battery_checked ? "checked" : ""}>
+			<span class="section-header">Disable Battery status API</span>
+		</div>
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
@@ -262,8 +269,12 @@ function prepare_level_config(action_descr, params = {
 				["window.Worker", polyfill],
 			);
 		}
-		// Wrap battery status api on every new level created.
-		new_level.wrappers.push(["navigator.getBattery"]);
+		if (document.getElementById("battery_main_checkbox").checked) {
+			new_level.wrappers.push(
+				// BATTERY
+				["navigator.getBattery"],
+			);
+		}
 
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
 			if (new_level.level_id.length > 3) {
@@ -327,6 +338,7 @@ function edit_level(id) {
 			shared_slow_checked: !(lev["window.SharedArrayBuffer"][0]),
 			webworker_checked: "window.Worker" in lev,
 			webworker_slow_checked: !(lev["window.Worker"][0]),
+			battery_checked: "navigator.getBattery" in lev,
 	});
 }
 
