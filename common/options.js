@@ -36,6 +36,7 @@ function prepare_level_config(action_descr, params = {
 			xhr_checked: false,
 			xhr_block_checked: false,
 			xhr_ask_checked: false,
+			battery_checked: false,
 		}) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
@@ -115,6 +116,12 @@ function prepare_level_config(action_descr, params = {
 				<span class="section-header">Ask before executing an XHR request.</span>
 			</div>
 		</div>
+
+		<!-- BATTERY -->
+		<div class="main-section">
+			<input type="checkbox" id="battery_main_checkbox" ${params.battery_checked ? "checked" : ""}>
+			<span class="section-header">Disable Battery status API</span>
+		</div>
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
@@ -174,6 +181,14 @@ function prepare_level_config(action_descr, params = {
 				["navigator.hardwareConcurrency"],
 			);
 		}
+
+		if (document.getElementById("battery_main_checkbox").checked) {
+			new_level.wrappers.push(
+				// BATTERY
+				["navigator.getBattery"],
+			);
+		}
+
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
 			if (new_level.level_id.length > 3) {
 				alert("Level ID too long, provide 3 characters or less");
@@ -229,6 +244,7 @@ function edit_level(id) {
 			xhr_checked: "window.XMLHttpRequest" in lev,
 			xhr_block_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : false,
 			xhr_ask_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
+			battery_checked: "navigator.getBattery" in lev,
 		});
 }
 
