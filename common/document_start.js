@@ -21,5 +21,14 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-var currentLevel = getCurrentLevelJSON(window.location.href);
-wrap_code(currentLevel.wrappers);
+function wrapCurrentPage() {
+	var currentLevel = getCurrentLevelJSON(window.location.href);
+	wrap_code(currentLevel.wrappers);
+}
+
+if (levels_initialised) {
+	wrapCurrentPage();
+}
+else {
+	levels_updated_callbacks.push(wrapCurrentPage);
+}
