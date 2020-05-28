@@ -47,6 +47,8 @@ var level_1 = {
 		["performance.getEntriesByType", level_1_time_precision],
 		// ECMA
 		["window.Date", level_1_time_precision],
+		// BATTERY
+		["navigator.getBattery"],
 		// DM
 		["navigator.deviceMemory"],
 		// HTML-LS
@@ -72,6 +74,8 @@ var level_2 = {
 		["performance.getEntriesByType", level_2_time_precision],
 		// ECMA
 		["window.Date", level_2_time_precision],
+		// BATTERY
+		["navigator.getBattery"],
 		// DM
 		["navigator.deviceMemory"],
 		// HTML-LS
@@ -90,21 +94,39 @@ var level_3 = {
 		["HTMLCanvasElement.prototype.toBlob"],
 		["HTMLCanvasElement.prototype.toDataURL"],
 		// HRT
-		["Performance.prototype.now", level_3_time_precision],
+		["Performance.prototype.now", level_3_time_precision, true],
+		["window.PerformanceEntry", level_3_time_precision, true],
 		// PT2
-		["performance.getEntries", level_3_time_precision],
-		["performance.getEntriesByName", level_3_time_precision],
-		["performance.getEntriesByType", level_3_time_precision],
+		["performance.getEntries", level_3_time_precision, true],
+		["performance.getEntriesByName", level_3_time_precision, true],
+		["performance.getEntriesByType", level_3_time_precision, true],
 		// ECMA
-		["window.Date", level_3_time_precision],
+		["window.Date", level_3_time_precision, true],
 		// AJAX
 		["window.XMLHttpRequest", false, true],
+		// BATTERY
+		["navigator.getBattery"],
 		// DM
 		["navigator.deviceMemory"],
 		// HTML-LS
 		["navigator.hardwareConcurrency"],
+		// ARRAY + see the insert_array_wrappings() below
+		["window.DataView", true],
+		// SHARED
+		["window.SharedArrayBuffer", true],
+		// WORKER
+		["window.Worker", true],
 	]
 };
+
+// ARRAY
+(function insert_array_wrappings() {
+	let arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array",
+		"Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+	for (let a of arrays) {
+		level_3.wrappers.push([`window.${a}`, true]);
+	}
+})();
 
 // default extension_settings_data setting. used on install
 var extension_settings_data = level_0;

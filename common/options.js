@@ -5,6 +5,7 @@
 //
 //  Copyright (C) 2019  Libor Polcak
 //  Copyright (C) 2019  Martin Timko
+//  Copyright (C) 2020  Peter Hornak
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,7 +23,7 @@
 
 
 if ((typeof chrome) !== "undefined") {
-  var browser = chrome;
+	var browser = chrome;
 }
 
 function prepare_level_config(action_descr, params = {
@@ -31,23 +32,31 @@ function prepare_level_config(action_descr, params = {
 			description: "",
 			time_precision_checked: false,
 			time_precision_round: 1,
+			time_round_checked: false,
+			time_random_checked: false,
 			htmlcanvas_checked: false,
 			hardware_checked: false,
 			xhr_checked: false,
 			xhr_block_checked: false,
 			xhr_ask_checked: false,
+			arrays_checked: false,
+			mapping_checked: false,
+			shared_array_checked: false,
+			shared_slow_checked: false,
+			webworker_checked: false,
+			webworker_slow_checked: false,
+			battery_checked: true,
 		}) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
 	var fragment = document.createRange().createContextualFragment(`
 <div>
+		<p>Note that for fingerprintability prevention, JS Restrictor does not wrap objects that are not defined. For example, if an experimental feature like <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory"><code>navigator.deviceMemory</code></a> is not defined in your browser, JS Restrictor does not define the property even if it is shown below that the valut is defined.</p>
 	<div>
 	  <h2>${action_descr}</h2>
 	</div>
 	<form>
 
-		<p>Note that for fingerprintability prevention, JS Restrictor does not wrap objects that are not defined. For example, if an experimental feature like <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory"><code>navigator.deviceMemory</code></a> is not defined in your browser, JS Restrictor does not define the property even if it is shown below that the valut is defined.</p>
-	
 		<!-- Metadata -->
 		<div class="main-section">
 			<span class="section-header">Name:</span>
@@ -74,12 +83,18 @@ function prepare_level_config(action_descr, params = {
 		</div>
 		<div id="time_precision_options" class="${params.time_precision_checked ? "" : "hidden"}">
 			<div class="row">
-				<span class="table-left-column">Round time to:</span>
+				<span class="table-left-column">Manipulate time to:</span>
 				<select id="time_precision_round_precision">
-					<option value="2" ${params.time_precision_round == 2 ? "selected" : ""}>hundredths of a second (1.230)</option>
-					<option value="1" ${params.time_precision_round == 1 ? "selected" : ""}>tenths of a second (1.200)</option>
-					<option value="0" ${params.time_precision_round == 0 ? "selected" : ""}>full seconds (1.000)</option>
+					<option value="2" ${params.time_precision_round === 2 ? "selected" : ""}>hundredths of a second (1.230)</option>
+					<option value="1" ${params.time_precision_round === 1 ? "selected" : ""}>tenths of a second (1.200)</option>
+					<option value="0" ${params.time_precision_round === 0 ? "selected" : ""}>full seconds (1.000)</option>
 				</select>
+			</div>
+			<div class="row">
+				<input type="radio" id="timeoptions_round_checkbox" name="timeoptions" ${params.time_random_checked ? "" : "checked"}/>
+				<span class="section-header">Round time.</span>
+				<input type="radio" id="timeoptions_random_checkbox" name="timeoptions" ${params.time_random_checked ? "checked" : ""}/>
+				<span class="section-header">Randomize time.</span>
 			</div>
 		</div>
 		
@@ -117,6 +132,50 @@ function prepare_level_config(action_descr, params = {
 				<span class="section-header">Ask before executing an XHR request.</span>
 			</div>
 		</div>
+
+		<!-- ARRAYS -->
+		<div class="main-section">
+			<input type="checkbox" id="arrays_main_checkbox" ${params.arrays_checked ? "checked" : ""}>
+			<span class="section-header">Protect against ArrayBuffer exploitation.</span>
+		</div>
+		<div class=${params.arrays_checked ? "" : "hidden"} id="arrays_options" >
+			<input type="checkbox" id="mapping_checkbox" ${params.mapping_checked ? "checked" : ""}>
+			<span class="section-header">Use random mapping of array indexing to memory.</span>
+		</div>
+
+		<!-- SHAREDARRAY -->
+		<div class="main-section">
+			<input type="checkbox" id="shared_array_main_checkbox" ${params.shared_array_checked ? "checked" : ""}>
+			<span class="section-header">Protect against SharedArray exploitation:</span>
+		</div>
+		<div id="shared_array_options" class="${params.shared_array_checked ? "" : "hidden"}">
+			<div class="row">
+				<input type="radio" id="shared_array_block_checkbox" name="sharedoptions"  ${params.shared_slow_checked ? "" : "checked"}/>
+				<span class="section-header">Block SharedArray.</span>
+				<input type="radio" id="shared_array_polyfill_checkbox" name="sharedoptions"  ${params.shared_slow_checked ? "checked" : ""}/>
+				<span class="section-header">Randomly slow messages to prevent high resolution timers.</span>
+			</div>
+		</div>
+
+		<!-- WEBWORKER -->
+		<div class="main-section">
+			<input type="checkbox" id="webworker_main_checkbox" ${params.webworker_checked ? "checked" : ""}>
+			<span class="section-header">Protect against WebWorker exploitation:</span>
+		</div>
+		<div id="webworker_options" class="${params.webworker_checked ? "" : "hidden"}">
+			<div class="row">
+				<input type="radio" id="webworker_polyfill_checkbox" name="workeroptions"  ${params.webworker_slow_checked ? "" : "checked"}/>
+				<span class="section-header">Remove real parallelism.</span>
+				<input type="radio" id="webworker_slow_checkbox" name="workeroptions"  ${params.webworker_slow_checked ? "checked" : ""}/>
+				<span class="section-header">Randomly slow messages to prevent high resolution timers.</span>
+			</div>
+		</div>
+
+		<!-- BATTERY -->
+		<div class="main-section">
+			<input type="checkbox" id="battery_main_checkbox" ${params.battery_checked ? "checked" : ""}>
+			<span class="section-header">Disable Battery status API</span>
+		</div>
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
@@ -134,6 +193,10 @@ function prepare_level_config(action_descr, params = {
 	}
 	connect_options_group("time_precision");
 	connect_options_group("xhr");
+	connect_options_group("arrays");
+	connect_options_group("shared_array");
+	connect_options_group("webworker");
+
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
 		new_level = {
@@ -141,7 +204,8 @@ function prepare_level_config(action_descr, params = {
 			level_text: document.getElementById("level_text").value,
 			level_description: document.getElementById("level_description").value,
 			wrappers: []
-		}
+		};
+
 		if (document.getElementById("htmlcanvaselement_main_checkbox").checked) {
 			new_level.wrappers.push(
 				// H-C
@@ -152,15 +216,18 @@ function prepare_level_config(action_descr, params = {
 		}
 		if (document.getElementById("time_precision_main_checkbox").checked) {
 			var precision = document.getElementById("time_precision_round_precision").value;
+			var randomize = document.getElementById("timeoptions_random_checkbox").checked;
+
 			new_level.wrappers.push(
 				// HRT
-				["Performance.prototype.now", precision],
+				["Performance.prototype.now", precision, randomize],
+				["window.PerformanceEntry", precision, randomize]
 				// PT2
-				["performance.getEntries", precision],
-				["performance.getEntriesByName", precision],
-				["performance.getEntriesByType", precision],
+				["performance.getEntries", precision, randomize],
+				["performance.getEntriesByName", precision, randomize],
+				["performance.getEntriesByType", precision, randomize],
 				// ECMA
-				["window.Date", precision],
+				["window.Date", precision, randomize],
 			);
 		}
 		if (document.getElementById("xhr_main_checkbox").checked) {
@@ -177,6 +244,38 @@ function prepare_level_config(action_descr, params = {
 				["navigator.hardwareConcurrency"],
 			);
 		}
+
+		if (document.getElementById("arrays_main_checkbox").checked) {
+			let doMapping = document.getElementById("mapping_checkbox").checked;
+			let arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
+			for (let a of arrays) {
+				new_level.wrappers.push([`window.${a}`, doMapping]);
+			}
+			new_level.wrappers.push(
+				["window.DataView", doMapping],
+			);
+		}
+		if (document.getElementById("shared_array_checkbox").checked) {
+			let block = document.getElementById("shared_array_block_checkbox").checked;
+			new_level.wrappers.push(
+				// SHARED
+				["window.SharedArrayBuffer", block],
+			);
+		}
+		if (document.getElementById("webworker_main_checkbox").checked) {
+			let polyfill = document.getElementById("webworker_polyfill_checkbox").checked;
+			new_level.wrappers.push(
+				// WORKER
+				["window.Worker", polyfill],
+			);
+		}
+		if (document.getElementById("battery_main_checkbox").checked) {
+			new_level.wrappers.push(
+				// BATTERY
+				["navigator.getBattery"],
+			);
+		}
+
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
 			if (new_level.level_id.length > 3) {
 				alert("Level ID too long, provide 3 characters or less");
@@ -224,6 +323,7 @@ function edit_level(id) {
 					"performance.getEntriesByType" in lev &&
 					"window.Date" in lev,
 			time_precision_round: "Performance.prototype.now" in lev ? lev["Performance.prototype.now"][0] : 100,
+			time_random_checked: (lev["window.Date"][1]),
 			htmlcanvas_checked: "CanvasRenderingContext2D.prototype.getImageData" in lev &&
 					"HTMLCanvasElement.prototype.toBlob" in lev &&
 					"HTMLCanvasElement.prototype.toDataURL" in lev,
@@ -232,7 +332,14 @@ function edit_level(id) {
 			xhr_checked: "window.XMLHttpRequest" in lev,
 			xhr_block_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : false,
 			xhr_ask_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
-		});
+			arrays_checked: "Uint8Array" in lev,
+			mapping_checked: (lev["Uint8Array"][0]),
+			shared_array_checked: "window.SharedArrayBuffer" in lev,
+			shared_slow_checked: !(lev["window.SharedArrayBuffer"][0]),
+			webworker_checked: "window.Worker" in lev,
+			webworker_slow_checked: !(lev["window.Worker"][0]),
+			battery_checked: "navigator.getBattery" in lev,
+	});
 }
 
 function restore_level(id, settings) {
