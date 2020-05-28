@@ -135,7 +135,7 @@ h3 {
 	-webkit-transition: .4s;
 	transition: .4s;
 	color: gray;
-	content:"OFF";
+	content:"NO";
 }
 
 input:checked + .slider {
@@ -150,7 +150,7 @@ input:checked + .slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
-	content:"ON";
+	content:"YES";
 	color:black;
 }
 

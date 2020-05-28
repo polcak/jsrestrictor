@@ -126,11 +126,11 @@ function load_on_off_switch()
 				//Check or uncheck the slider
 				if (response === "current site is whitelisted")
 				{
-					checkbox.checked = true;
+					checkbox.checked = false;
 				}
 				else
 				{
-					checkbox.checked = false;
+					checkbox.checked = true;
 				}
 			});
 		});
@@ -148,7 +148,7 @@ function control_whitelist()
 		currentHost = new URL(tabs[0].url);
 		currentHost = currentHost.hostname.replace(/^www\./,'');
 		//Send approriate message based on slider's state
-		if (checkbox.checked)	//Turn ON
+		if (!checkbox.checked)	//Turn ON
 		{
 			browser.runtime.sendMessage({message:"add site to whitelist", site:currentHost}, function (response) {});
 		}
