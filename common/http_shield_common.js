@@ -337,3 +337,20 @@ function checkWhitelist(hostname)
 	}
 	return false;
 }
+//
+/// Creates and presents notification to the user
+/// works with webExtensions notification API
+/// Creates notification about blocked request
+/// Arguments:
+/// 	origin - origin of the request
+/// 	target - target of the request
+/// 	resource - type of the resource
+function notifyBlockedRequest(origin, target, resource) {
+	browser.notifications.create({
+		"type": "basic",
+		"iconUrl": browser.extension.getURL("img/icon-48.png"),
+		"title": "Network boundary shield blocked suspicious request!",
+		"message": `Request from ${origin} to ${target} blocked.\n\nMake sure that you are on a benign page. If you want to allow web requests from ${origin}, please, go to the JS Restrictor settings and add an exception.`
+	});
+}
+

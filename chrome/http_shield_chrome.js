@@ -394,17 +394,6 @@ function beforeSendHeadersListener(requestDetail) {
 
 /// Creates and presents notification to the user
 /// works with webExtensions notification API
-function notifyBlockedRequest(origin, target, resource) {
-	browser.notifications.create({
-		"type": "basic",
-		"iconUrl": browser.extension.getURL("img/icon-48.png"),
-		"title": "Blocked suspicious request!",
-		"message": "Request from originUrl " + origin + " to targetUrl " + target + " was blocked. If it's unwanted behaviour, please go to options and add an exception."
-	});
-}
-
-/// Creates and presents notification to the user
-/// works with webExtensions notification API
 function notifyBlockedHost(host) {
 	browser.notifications.create({
 		"type": "basic",

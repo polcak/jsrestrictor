@@ -178,28 +178,13 @@ async function beforeSendHeadersListener(requestDetail) {
 	//Blocking direction Public -> Private
 	if (!isSourcePrivate && isDestinationPrivate)
 	{
-		notify(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
+		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
 		return {cancel:true}
 	}
 	else //Permitting others
 	{
 		return {cancel: false};
 	}
-}
-
-/// Function that works with webExtensions notifications
-/// Creates notification about blocked request
-/// Arguments:
-/// 	origin - origin of the request
-/// 	target - target of the request
-/// 	resource - type of the resource
-function notify(origin, target, resource) {
-	browser.notifications.create({
-		"type": "basic",
-		"iconUrl": browser.extension.getURL("img/icon-48.png"),
-		"title": "Blocked suspicious request!",
-		"message": "Request from originUrl " + origin + " to targetUrl " + target + " was blocked. If it's unwanted behaviour, please go to options and add an exception."
-	});
 }
 
 /// Event listener hooked up to webExtensions onMessage event
