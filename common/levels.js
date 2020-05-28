@@ -21,6 +21,9 @@
 //
 
 // levels of protection
+if ((typeof browser) === "undefined") {
+	var browser = chrome;
+}
 
 var level_0 = {
 	"level_id": "0",
