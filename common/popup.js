@@ -32,17 +32,24 @@ var myAddon = new URL(browser.runtime.getURL ('./')); // get my extension / addo
 var url; // "www.example.com"
 
 /**
+ * Enable the refresh page option.
+ */
+function showRefreshPageOption() {
+	document.getElementById('set-level-on').innerHTML = "<a href='' id='refresh-page'>Refresh page</a>";
+	document.getElementById('refresh-page').addEventListener('click', function (e) {
+		browser.tabs.reload();
+		window.close();
+	});
+}
+
+/**
  * Visaully highlights the active level.
  */
 function changeActiveLevel(activeEl) {
 	Array.prototype.forEach.call(document.getElementsByClassName("level_control"),
 		(el) => el.classList.remove("active"));
 	activeEl.classList.add("active");
-	document.getElementById('set-level-on').innerHTML = "<a href='' id='refresh-page'>Refresh page</a>";
-	document.getElementById('refresh-page').addEventListener('click', function (e) {
-		browser.tabs.reload();
-		window.close();
-	});
+	showRefreshPageOption();
 }
 
 //find url of current tab where popup showed
@@ -158,6 +165,7 @@ function control_whitelist()
 				function (response) {});
 		}
 	});
+	showRefreshPageOption();
 }
 
 
