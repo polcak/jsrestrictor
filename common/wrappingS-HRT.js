@@ -53,6 +53,7 @@
 			wrapping_function_body: `
 					var originalPerformanceValue = origNow.call(window.performance);
 					return rounding_function(originalPerformanceValue, precision);
+			`,
 			helping_code: rounding_function + noise_function + `
 				let precision = args[0];
 				let doNoise = args[1];
