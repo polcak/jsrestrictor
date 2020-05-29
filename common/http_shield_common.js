@@ -40,6 +40,39 @@ browser.storage.sync.get(["whitelistedHosts"], function(result){
 			doNotBlockHosts = result.whitelistedHosts;
 	});
 
+/// Hook up the listener for receiving messages
+browser.runtime.onMessage.addListener(commonMessageListener);
+browser.runtime.onMessage.addListener(messageListener);
+
+/// Check the storage for requestShieldOn object
+browser.storage.sync.get(["requestShieldOn"], function(result){
+	//If found object is true or undefined, turn the requestShieldOn
+	if (result.requestShieldOn == undefined || result.requestShieldOn)
+	{
+		//Hook up the listeners
+		browser.webRequest.onBeforeSendHeaders.addListener(
+			beforeSendHeadersListener,
+			{urls: ["<all_urls>"]},
+			["blocking", "requestHeaders"]
+		);
+
+		if (typeof onHeadersReceivedRequestListener === "function")
+		{
+			browser.webRequest.onHeadersReceived.addListener(
+			onHeadersReceivedRequestListener,
+			{urls: ["<all_urls>"]},
+			["blocking"]
+			);
+
+			browser.webRequest.onErrorOccurred.addListener(
+				onErrorOccuredListener,
+				{urls: ["<all_urls>"]}
+			);
+		}
+	}
+});
+
+
 /// Function for reading locally stored csv file
 let readFile = (_path) => {
 	return new Promise((resolve, reject) => {
@@ -354,3 +387,70 @@ function notifyBlockedRequest(origin, target, resource) {
 	});
 }
 
+/// Event listener hooked up to webExtensions onMessage event
+/// Receives full message in message,
+/// sender of the message in sender,
+/// function for sending response in sendResponse
+/// Does appropriate action based on message
+function commonMessageListener(message, sender, sendResponse)
+{
+	//Message came from options.js, updated whitelist
+	if (message.message === "whitelist updated")
+	{
+		//actualize current doNotBlockHosts from storage
+		browser.storage.sync.get(["whitelistedHosts"], function(result){
+			doNotBlockHosts = result.whitelistedHosts;
+		});
+	}
+	//Mesage came from popup.js, whitelist this site
+	else if (message.message === "add site to whitelist")
+	{
+			//Obtain current hostname and whitelist it
+			var currentHost = message.site;
+			doNotBlockHosts[currentHost] = true;
+			browser.storage.sync.set({"whitelistedHosts":doNotBlockHosts});
+	}
+	//Message came from popup.js, remove whitelisted site
+	else if (message.message === "remove site from whitelist")
+	{
+			//Obtain current hostname and remove it
+			currentHost = message.site;
+			delete doNotBlockHosts[currentHost];
+			browser.storage.sync.set({"whitelistedHosts":doNotBlockHosts});
+	}
+	//HTTP request shield was turned on
+	else if (message.message === "turn request shield on")
+	{
+		//Hook up the listeners
+		browser.webRequest.onBeforeSendHeaders.addListener(
+			beforeSendHeadersListener,
+			{urls: ["<all_urls>"]},
+			["blocking", "requestHeaders"]
+		);
+
+		if (typeof onHeadersReceivedRequestListener === "function")
+		{
+			browser.webRequest.onHeadersReceived.addListener(
+			onHeadersReceivedRequestListener,
+			{urls: ["<all_urls>"]},
+			["blocking"]
+			);
+
+			browser.webRequest.onErrorOccurred.addListener(
+				onErrorOccuredListener,
+				{urls: ["<all_urls>"]}
+			);
+		}
+	}
+	//HTTP request shield was turned off
+	else if (message.message === "turn request shield off")
+	{
+		browser.webRequest.onBeforeSendHeaders.removeListener(beforeSendHeadersListener);
+		if (typeof onHeadersReceivedRequestListener === "function")
+		{
+			//Disconnect the listeners
+			browser.webRequest.onHeadersReceived.removeListener(onHeadersReceivedRequestListener);
+			browser.webRequest.onErrorOccurred.removeListener(onErrorOccuredListener);
+		}
+	}
+}

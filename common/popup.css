@@ -90,6 +90,10 @@ h3 {
 	grid-area:whitelist;
 }
 
+#shield_off_message{
+	font-size: large;
+}
+
 /* The switch - the box around the slider */
 .switch {
 	position: relative;

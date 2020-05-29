@@ -75,34 +75,6 @@ window.addEventListener("offline", function()
 	browser.webRequest.onErrorOccurred.removeListener(onErrorOccuredListener);
 });
 
-/// Check the storage for requestShieldOn boolean
-browser.storage.sync.get(["requestShieldOn"], function(result){
-	//If not found (initialization) or true
-	if (result.requestShieldOn == undefined || result.requestShieldOn)
-	{
-	//Hook up the listeners
-	browser.webRequest.onBeforeSendHeaders.addListener(
-		beforeSendHeadersListener,
-		{urls: ["<all_urls>"]},
-		["blocking", "requestHeaders"]
-	);
-
-	browser.webRequest.onHeadersReceived.addListener(
-		onHeadersReceivedRequestListener,
-		{urls: ["<all_urls>"]},
-		["blocking"]
-	);
-
-	browser.webRequest.onErrorOccurred.addListener(
-		onErrorOccuredListener,
-		{urls: ["<all_urls>"]}
-	);
-	}
-});
-
-/// Hook up the listener for receiving messages
-browser.runtime.onMessage.addListener(messageListener);
-
 /// webRequest event listener, hooked to onErrorOccured event
 /// Catches all errors, checks them for Request Timed out errors
 /// Iterates error counter, blocks the host if limit was exceeded
@@ -409,61 +381,8 @@ function notifyBlockedHost(host) {
 /// Does approriate action based on message text
 function messageListener(message, sender, sendResponse)
 {
-	//Message sent from options.js, whitelist was updated
-	if (message.message === "whitelist updated")
-	{
-		//Updating whitelist from storage
-		browser.storage.sync.get(["whitelistedHosts"], function(result){
-			doNotBlockHosts = result.whitelistedHosts;
-		});
-	}
-	//HTTP request shield was turned on
-	else if (message.message === "turn request shield on")
-	{
-		//Hook up the listeners
-		browser.webRequest.onBeforeSendHeaders.addListener(
-			beforeSendHeadersListener,
-			{urls: ["<all_urls>"]},
-			["blocking", "requestHeaders"]
-		);
-
-		browser.webRequest.onHeadersReceived.addListener(
-		onHeadersReceivedRequestListener,
-		{urls: ["<all_urls>"]},
-		["blocking"]
-		);
-
-		browser.webRequest.onErrorOccurred.addListener(
-			onErrorOccuredListener,
-			{urls: ["<all_urls>"]}
-		);
-	}
-	//HTTP request shield was turned off
-	else if (message.message === "turn request shield off")
-	{
-	//Disconnect the listeners
-	browser.webRequest.onBeforeSendHeaders.removeListener(beforeSendHeadersListener);
-	browser.webRequest.onHeadersReceived.removeListener(onHeadersReceivedRequestListener);
-	browser.webRequest.onErrorOccurred.removeListener(onErrorOccuredListener);
-	}
-	//Mesage came from popup.js, whitelist this site
-	else if (message.message === "add site to whitelist")
-	{
-		//Obtain current hostname and whitelist it
-		var currentHost = message.site;
-		doNotBlockHosts[currentHost] = true;
-		browser.storage.sync.set({"whitelistedHosts":doNotBlockHosts});
-	}
-	//Message came from popup.js, remove whitelisted site
-	else if (message.message === "remove site from whitelist")
-	{
-		//Obtain current hostname and remove it
-		currentHost = message.site;
-		delete doNotBlockHosts[currentHost];
-		browser.storage.sync.set({"whitelistedHosts":doNotBlockHosts});
-	}
 	//Message came from popup,js, asking whether is this site whitelisted
-	else if (message.message === "is current site whitelisted?")
+	if (message.message === "is current site whitelisted?")
 	{
 		//Read the current hostname
 		var currentHost = message.site;
