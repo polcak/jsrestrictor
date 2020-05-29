@@ -122,25 +122,37 @@ document.getElementsByClassName("slider")[0].addEventListener("click", () => {se
 function load_on_off_switch()
 {
 	var checkbox = document.getElementById("switch-checkbox");
-	var currentHost = "";
-	//Obtain URL of the current site
-	browser.tabs.query({currentWindow: true, active: true}, function (tabs) {
-		//Obtain hostname
-		currentHost = new URL(tabs[0].url);
-		currentHost = currentHost.hostname.replace(/^www\./,'');
-		//Ask background whether is this site whitelisted or not
-		browser.runtime.sendMessage({message:"is current site whitelisted?", site:currentHost}, function (response) {
-				//Check or uncheck the slider
-				if (response === "current site is whitelisted")
-				{
-					checkbox.checked = false;
-				}
-				else
-				{
-					checkbox.checked = true;
-				}
+
+	browser.storage.sync.get(["requestShieldOn"], function(result)
+	{
+		if (result.requestShieldOn === false)
+		{
+			document.getElementById("http_shield_switch_wrapper").style.display = "none";
+			document.getElementById("shield_off_message").innerHTML = "Network boundary shield is currently off.";
+		}	
+		else
+		{
+			var currentHost = "";
+			//Obtain URL of the current site
+			browser.tabs.query({currentWindow: true, active: true}, function (tabs) {
+				//Obtain hostname
+				currentHost = new URL(tabs[0].url);
+				currentHost = currentHost.hostname.replace(/^www\./,'');
+				//Ask background whether is this site whitelisted or not
+				browser.runtime.sendMessage({message:"is current site whitelisted?", site:currentHost}, function (response) {
+					//Check or uncheck the slider
+					if (response === "current site is whitelisted")
+					{
+						checkbox.checked = false;
+					}
+					else
+					{
+						checkbox.checked = true;
+					}
+				});
 			});
-		});
+		}
+	});
 }
 
 /// Event handler for On/off switch

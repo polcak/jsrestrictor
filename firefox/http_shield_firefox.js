@@ -23,29 +23,14 @@
 /// Contains Firefox specific functions
 /// Event handlers for webRequest API, notifications and messaging
 
-/// Hooking up the messageListener to message event
-browser.runtime.onMessage.addListener(messageListener);
-
-/// Check the storage for requestShieldOn object
-browser.storage.sync.get(["requestShieldOn"], function(result){
-	//If found object is true or undefined, turn the requestShieldOn
-	if (result.requestShieldOn == undefined || result.requestShieldOn)
-	{
-		//Hookup the event handler for event onBeforeSendHeaders from webRequest API
-		browser.webRequest.onBeforeSendHeaders.addListener(
-			beforeSendHeadersListener,
-			{urls: ["<all_urls>"]},
-			["blocking", "requestHeaders"]
-		);
-	}
-});
-
-
 /// webRequest event listener
 /// Listens to onBeforeSendHeaders event, receives detail of HTTP request in requestDetail
 /// Catches the request, analyzes it's origin and target URLs and blocks it/permits it based
 /// on their IP adresses. Requests coming from public IP ranges targeting the private IPs are
 /// blocked by default. Others are permitted by default.
+
+browser.runtime.onMessage.addListener(messageListener);
+
 async function beforeSendHeadersListener(requestDetail) {
 
 	//If either of information is undefined, permit it
@@ -192,50 +177,10 @@ async function beforeSendHeadersListener(requestDetail) {
 /// sender of the message in sender,
 /// function for sending response in sendResponse
 /// Does appropriate action based on message
-async function messageListener(message, sender, sendResponse)
+function messageListener(message, sender, sendResponse)
 {
-	//Message came from options.js, updated whitelist
-	if (message.message === "whitelist updated")
-	{
-		//actualize current doNotBlockHosts from storage
-		browser.storage.sync.get(["whitelistedHosts"], function(result){
-			doNotBlockHosts = result.whitelistedHosts;
-		});
-	}
-	//Message came from option.js, request shield was turned on
-	else if (message.message === "turn request shield on")
-	{
-		//Hook up the event handler
-		browser.webRequest.onBeforeSendHeaders.addListener(
-			beforeSendHeadersListener,
-			{urls: ["<all_urls>"]},
-			["blocking", "requestHeaders"]
-		);
-	}
-	//Message came from option.js, request shield was turned off
-	else if (message.message === "turn request shield off")
-	{
-		//Remove event handler from onBeforeSendHeaders event
-		browser.webRequest.onBeforeSendHeaders.removeListener(beforeSendHeadersListener);
-	}
-	//Mesage came from popup.js, whitelist this site
-	else if (message.message === "add site to whitelist")
-	{
-			//Obtain current hostname and whitelist it
-			var currentHost = message.site;
-			doNotBlockHosts[currentHost] = true;
-			browser.storage.sync.set({"whitelistedHosts":doNotBlockHosts});
-	}
-	//Message came from popup.js, remove whitelisted site
-	else if (message.message === "remove site from whitelist")
-	{
-			//Obtain current hostname and remove it
-			currentHost = message.site;
-			delete doNotBlockHosts[currentHost];
-			browser.storage.sync.set({"whitelistedHosts":doNotBlockHosts});
-	}
 	//Message came from popup,js, asking whether is this site whitelisted
-	else if (message.message === "is current site whitelisted?")
+	if (message.message === "is current site whitelisted?")
 	{
 		//Read the current hostname
 		var currentHost = message.site;
