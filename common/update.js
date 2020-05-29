@@ -20,9 +20,9 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-// either way, set browser var as chrome
-if ((typeof chrome) !== "undefined") {
-  var browser = chrome;
+//Chrome compatibility
+if ((typeof browser) === "undefined") {
+	var browser = chrome;
 }
 
 function installUpdate() {
@@ -40,6 +40,8 @@ function installUpdate() {
 	 *    domains: {}, // associative array of levels associated with specific domains (key, the domain => object)
 	 *      {level_id: short string of the level in use
 	 *      }
+	 *	  whitelistedHosts: {} // associative array of hosts that are removed from http protection control (hostname => boolean)
+	 *	  requestShieldOn: {} // Boolean, if it's TRUE or undefined, the http request protection is turned on,  if it's FALSE, the protection si turned off
 	 */
 	browser.storage.sync.get(null, function (item) {
 		if (!item.hasOwnProperty("version")) {

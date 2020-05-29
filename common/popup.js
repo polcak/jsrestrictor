@@ -5,6 +5,7 @@
 //
 //  Copyright (C) 2019  Martin Timko
 //  Copyright (C) 2019  Libor Polcak
+//  Copyright (C) 2020  Pavel Pohner
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,11 +21,26 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+//Chrome compatibility
+if ((typeof browser) === "undefined") {
+	var browser = chrome;
+}
+
 const fadeOut = "0.3";
 const fadeIn = "1.0";
-
 var myAddon = new URL(browser.runtime.getURL ('./')); // get my extension / addon url
 var url; // "www.example.com"
+
+/**
+ * Enable the refresh page option.
+ */
+function showRefreshPageOption() {
+	document.getElementById('set-level-on').innerHTML = "<a href='' id='refresh-page'>Refresh page</a>";
+	document.getElementById('refresh-page').addEventListener('click', function (e) {
+		browser.tabs.reload();
+		window.close();
+	});
+}
 
 /**
  * Visaully highlights the active level.
@@ -33,11 +49,7 @@ function changeActiveLevel(activeEl) {
 	Array.prototype.forEach.call(document.getElementsByClassName("level_control"),
 		(el) => el.classList.remove("active"));
 	activeEl.classList.add("active");
-	document.getElementById('set-level-on').innerHTML = "<a href='' id='refresh-page'>Refresh page</a>";
-	document.getElementById('refresh-page').addEventListener('click', function (e) {
-		browser.tabs.reload();
-		window.close();
-	});
+	showRefreshPageOption();
 }
 
 //find url of current tab where popup showed
@@ -99,3 +111,73 @@ document.getElementById('controls').addEventListener('click', function (e) {
 	browser.runtime.openOptionsPage();
 	window.close();
 });
+
+window.addEventListener("load", function() {
+	load_on_off_switch();
+});
+
+document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200)});
+
+/// Load switch state from storage for current site
+function load_on_off_switch()
+{
+	var checkbox = document.getElementById("switch-checkbox");
+
+	browser.storage.sync.get(["requestShieldOn"], function(result)
+	{
+		if (result.requestShieldOn === false)
+		{
+			document.getElementById("http_shield_switch_wrapper").style.display = "none";
+			document.getElementById("shield_off_message").innerHTML = "Network boundary shield is currently off.";
+		}	
+		else
+		{
+			var currentHost = "";
+			//Obtain URL of the current site
+			browser.tabs.query({currentWindow: true, active: true}, function (tabs) {
+				//Obtain hostname
+				currentHost = new URL(tabs[0].url);
+				currentHost = currentHost.hostname.replace(/^www\./,'');
+				//Ask background whether is this site whitelisted or not
+				browser.runtime.sendMessage({message:"is current site whitelisted?", site:currentHost}, function (response) {
+					//Check or uncheck the slider
+					if (response === "current site is whitelisted")
+					{
+						checkbox.checked = false;
+					}
+					else
+					{
+						checkbox.checked = true;
+					}
+				});
+			});
+		}
+	});
+}
+
+/// Event handler for On/off switch
+function control_whitelist()
+{
+	var checkbox = document.getElementById("switch-checkbox");
+
+	var currentHost = "";
+	//Obtain current site URL
+	browser.tabs.query({currentWindow: true, active: true}, function (tabs) {
+		//Obtain hostname
+		currentHost = new URL(tabs[0].url);
+		currentHost = currentHost.hostname.replace(/^www\./,'');
+		//Send approriate message based on slider's state
+		if (!checkbox.checked)	//Turn ON
+		{
+			browser.runtime.sendMessage({message:"add site to whitelist", site:currentHost}, function (response) {});
+		}
+		else
+		{
+			browser.runtime.sendMessage({message:"remove site from whitelist", site:currentHost},
+				function (response) {});
+		}
+	});
+	showRefreshPageOption();
+}
+
+

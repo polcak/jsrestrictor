@@ -31,6 +31,7 @@ var running_in_firefox = (function() {
 	}
 })();
 
+//Chrome compatibility
 if ((typeof browser) === "undefined") {
 	var browser = chrome;
 }
