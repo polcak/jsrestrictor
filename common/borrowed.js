@@ -23,7 +23,7 @@
 /**
  * Execute given script in the page's JavaScript context.
  *
- * This function was originaly a part of
+ * This function is a modified version of the similar function from
  * Privacy Badger <https://www.eff.org/privacybadger>
  * https://github.com/EFForg/privacybadger/blob/master/src/js/utils.js
  * Copyright (C) 2014 Electronic Frontier Foundation
@@ -36,18 +36,13 @@
  * published by the Free Software Foundation.
  *
  * @param {String} text The content of the script to insert.
- * @param {Object} data Data attributes to set on the inserted script tag.
  */
-window.injectScript = function (text, data) {
+window.injectScript = function (text) {
   var parent = document.documentElement,
     script = document.createElement('script');
 
   script.text = text;
   script.async = false;
-
-  for (var key in data) {
-    script.setAttribute('data-' + key.replace(/_/g, '-'), data[key]);
-  }
 
   parent.insertBefore(script, parent.firstChild);
   parent.removeChild(script);
