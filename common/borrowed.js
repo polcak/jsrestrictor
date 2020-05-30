@@ -38,8 +38,8 @@
  * @param {String} text The content of the script to insert.
  */
 window.injectScript = function (text) {
-  var parent = document.documentElement,
-    script = document.createElement('script');
+  var parent = document.documentElement;
+  var script = document.createElement('script');
 
   script.text = text;
   script.async = false;
