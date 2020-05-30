@@ -20,8 +20,11 @@
 //
 
 
-/*
- * The following code was originaly part of Privacy Badger <https://www.eff.org/privacybadger>
+/**
+ * Execute given script in the page's JavaScript context.
+ *
+ * This function was originaly a part of
+ * Privacy Badger <https://www.eff.org/privacybadger>
  * https://github.com/EFForg/privacybadger/blob/master/src/js/utils.js
  * Copyright (C) 2014 Electronic Frontier Foundation
  *
@@ -31,20 +34,6 @@
  * Privacy Badger is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
  * published by the Free Software Foundation.
- *
- * Privacy Badger is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Privacy Badger.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/**
- * Executes a script in the page's JavaScript context.
- *
- * This code is copied from EFF PrivacyBadger under GPL3.
  *
  * @param {String} text The content of the script to insert.
  * @param {Object} data Data attributes to set on the inserted script tag.
