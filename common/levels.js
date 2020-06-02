@@ -140,6 +140,7 @@ const L3 = "3";
 var levels = {};
 var default_level = {};
 var domains = {};
+var wrapped_codes = {};
 function init_levels() {
 	levels = {
 		[level_0.level_id]: level_0,
@@ -150,6 +151,7 @@ function init_levels() {
 	default_level = Object.create(levels[L2]);
 	default_level.level_text = "Default";
 	domains = {};
+	wrapped_codes = {};
 }
 init_levels();
 
@@ -160,6 +162,11 @@ function updateLevels(res) {
 	custom_levels = res["custom_levels"] || {};
 	for (let key in custom_levels) {
 		levels[custom_levels[key].level_id] = custom_levels[key];
+	}
+	if (window.wrap_code !== undefined) {
+		for (l in levels) {
+			wrapped_codes[l] = wrap_code(levels[l].wrappers) || "";
+		}
 	}
 	var new_default_level = res["__default__"];
 	if (new_default_level === undefined || new_default_level === null || !(new_default_level in levels)) {
@@ -198,8 +205,9 @@ function getCurrentLevelJSON(url) {
 	var subDomains = extractSubDomains(new URL(url).hostname.replace(/^www\./, ''));
 	for (let domain of subDomains.reverse()) {
 		if (domain in domains) {
-			return levels[domains[domain].level_id];
+			let l = domains[domain];
+			return [l, wrapped_codes[l.level_id]];
 		}
 	}
-	return default_level;
+	return [default_level, wrapped_codes[default_level.level_id]];
 }

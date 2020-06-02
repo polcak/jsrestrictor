@@ -44,7 +44,7 @@ function tabUpdate(tabid, changeInfo) {
 	if (url === undefined) {
 		return;
 	}
-	current_level = getCurrentLevelJSON(url);
+	current_level = getCurrentLevelJSON(url)[0];
 	tab_levels[tabid] = current_level;
 	updateBadge(current_level);
 }
@@ -57,10 +57,12 @@ function tabActivate(activeInfo) {
 browser.tabs.onUpdated.addListener(tabUpdate);     // reload tab
 browser.tabs.onActivated.addListener(tabActivate); // change tab
 
+// Communication channels
+
 /**
- * Communication channels
+ * Create a port to popup window
  *
- * Currently, we need to communicate only with popups. Mostly because
+ * The communication cannels are mostly used  because
  * browser.runtime.getBackgroundPage() does not work as expected. See
  * also https://bugzilla.mozilla.org/show_bug.cgi?id=1329304.
  */

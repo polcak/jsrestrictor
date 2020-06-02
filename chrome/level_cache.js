@@ -19,12 +19,28 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-/// Get current level configuration from the background script
-browser.runtime.sendMessage({
-		message: "get wrapping for URL",
-		url: window.location.href
-	},
-	function handleResponse(reply) {
-		injectScript(reply.code, reply.wrappers, reply.ffbug1267027);
+/**
+ * Messaging with content script.
+ *
+ * @message The message from consent script.
+ *
+ * Sends back the wrapping code.
+ */
+function contentScriptLevelSetter(message, sender, sendResponse) {
+	if (message.message === "get wrapping for URL") {
+		function get_level() {
+			var page_level = getCurrentLevelJSON(message.url);
+			sendResponse({
+				code: page_level[1],
+			});
+		}
+		if (levels_initialised === true) {
+			get_level();
+		}
+		else {
+			levels_updated_callbacks.push(page_level);
+			return true;
+		}
 	}
-);
+}
+browser.runtime.onMessage.addListener(contentScriptLevelSetter);

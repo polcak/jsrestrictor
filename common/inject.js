@@ -11,7 +11,7 @@
 //  (at your option) any later version.
 //
 //  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  but WITHOUT ANY WARRANTY; without ev1267027en the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
@@ -47,3 +47,4 @@ window.injectScript = function (text) {
   parent.insertBefore(script, parent.firstChild);
   parent.removeChild(script);
 };
+
