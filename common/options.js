@@ -255,7 +255,7 @@ function prepare_level_config(action_descr, params = {
 				["window.DataView", doMapping],
 			);
 		}
-		if (document.getElementById("shared_array_checkbox").checked) {
+		if (document.getElementById("shared_array_main_checkbox").checked) {
 			let block = document.getElementById("shared_array_block_checkbox").checked;
 			new_level.wrappers.push(
 				// SHARED
