@@ -323,7 +323,7 @@ function edit_level(id) {
 					"performance.getEntriesByType" in lev &&
 					"window.Date" in lev,
 			time_precision_round: "Performance.prototype.now" in lev ? lev["Performance.prototype.now"][0] : 100,
-			time_random_checked: (lev["window.Date"][1]),
+			time_random_checked: "window.Date" in lev ? lev["window.Date"][1] : false,
 			htmlcanvas_checked: "CanvasRenderingContext2D.prototype.getImageData" in lev &&
 					"HTMLCanvasElement.prototype.toBlob" in lev &&
 					"HTMLCanvasElement.prototype.toDataURL" in lev,
@@ -332,12 +332,12 @@ function edit_level(id) {
 			xhr_checked: "window.XMLHttpRequest" in lev,
 			xhr_block_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : false,
 			xhr_ask_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
-			arrays_checked: "Uint8Array" in lev,
-			mapping_checked: (lev["Uint8Array"][0]),
+			arrays_checked: "window.Uint8Array" in lev,
+			mapping_checked: "window.Uint8Array" in lev ? lev["window.Uint8Array"][0] : false,
 			shared_array_checked: "window.SharedArrayBuffer" in lev,
-			shared_slow_checked: !(lev["window.SharedArrayBuffer"][0]),
+			shared_slow_checked: "window.SharedArrayBuffer" in lev ? !(lev["window.SharedArrayBuffer"][0]) : false,
 			webworker_checked: "window.Worker" in lev,
-			webworker_slow_checked: !(lev["window.Worker"][0]),
+			webworker_slow_checked: "window.Worker" in lev ? !(lev["window.Worker"][0]) : false,
 			battery_checked: "navigator.getBattery" in lev,
 	});
 }
