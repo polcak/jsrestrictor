@@ -20,17 +20,6 @@
 //
 
 
-/*
- * Check if we are running in Firefox or not
- */
-var running_in_firefox = (function() {
-	if ((typeof browser) !== "undefined") {
-	  return true;
-	} else {
-	  return false;
-	}
-})();
-
 //Chrome compatibility
 if ((typeof browser) === "undefined") {
 	var browser = chrome;
