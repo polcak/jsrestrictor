@@ -309,7 +309,7 @@ function prepare_level_config(action_descr, params = {
 }
 
 function edit_level(id) {
-	lev = {};
+	var lev = {};
 	for (wrapper of levels[id].wrappers) {
 		lev[wrapper[0]] = wrapper.slice(1);
 	}
