@@ -56,14 +56,19 @@
 		{
 			parent_object: "HTMLCanvasElement.prototype",
 			parent_object_property: "toBlob",
-			wrapped_objects: [],
+			wrapped_objects: [
+				{
+					original_name: "HTMLCanvasElement.prototype.toBlob",
+					wrapped_name: "origToBlob",
+				}
+			],
 			helping_code: "",
 			wrapping_function_args: "callback, mimeType, qualityArgument",
 			wrapping_function_body: `
 				var fake = document.createElement("canvas");
 				fake.setAttribute("width", this.width);
 				fake.setAttribute("height", this.height);
-				return fake.toBlob(callback, mimeType, qualityArgument);
+				return origToBlob.call(fake, callback, mimeType, qualityArgument);
 			`
 		}
 	]
