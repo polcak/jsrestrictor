@@ -140,7 +140,7 @@ function prepare_level_config(action_descr, params = {
 			<input type="checkbox" id="arrays_main_checkbox" ${params.arrays_checked ? "checked" : ""}>
 			<span class="section-header">Protect against ArrayBuffer exploitation.</span>
 		</div>
-		<div class=${params.arrays_checked ? "" : "hidden"} id="arrays_options" >
+		<div class="${params.arrays_checked ? "" : "hidden"}" id="arrays_options" >
 			<input type="checkbox" id="mapping_checkbox" ${params.mapping_checked ? "checked" : ""}>
 			<span class="section-header">Use random mapping of array indexing to memory.</span>
 		</div>
@@ -223,7 +223,7 @@ function prepare_level_config(action_descr, params = {
 			new_level.wrappers.push(
 				// HRT
 				["Performance.prototype.now", precision, randomize],
-				["window.PerformanceEntry", precision, randomize]
+				["window.PerformanceEntry", precision, randomize],
 				// PT2
 				["performance.getEntries", precision, randomize],
 				["performance.getEntriesByName", precision, randomize],
@@ -257,7 +257,7 @@ function prepare_level_config(action_descr, params = {
 				["window.DataView", doMapping],
 			);
 		}
-		if (document.getElementById("shared_array_checkbox").checked) {
+		if (document.getElementById("shared_array_main_checkbox").checked) {
 			let block = document.getElementById("shared_array_block_checkbox").checked;
 			new_level.wrappers.push(
 				// SHARED
@@ -311,7 +311,7 @@ function prepare_level_config(action_descr, params = {
 }
 
 function edit_level(id) {
-	lev = {};
+	var lev = {};
 	for (wrapper of levels[id].wrappers) {
 		lev[wrapper[0]] = wrapper.slice(1);
 	}
@@ -325,7 +325,7 @@ function edit_level(id) {
 					"performance.getEntriesByType" in lev &&
 					"window.Date" in lev,
 			time_precision_round: "Performance.prototype.now" in lev ? lev["Performance.prototype.now"][0] : 100,
-			time_random_checked: (lev["window.Date"][1]),
+			time_random_checked: "window.Date" in lev ? lev["window.Date"][1] : false,
 			htmlcanvas_checked: "CanvasRenderingContext2D.prototype.getImageData" in lev &&
 					"HTMLCanvasElement.prototype.toBlob" in lev &&
 					"HTMLCanvasElement.prototype.toDataURL" in lev,
@@ -334,12 +334,12 @@ function edit_level(id) {
 			xhr_checked: "window.XMLHttpRequest" in lev,
 			xhr_block_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : false,
 			xhr_ask_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
-			arrays_checked: "Uint8Array" in lev,
-			mapping_checked: (lev["Uint8Array"][0]),
+			arrays_checked: "window.Uint8Array" in lev,
+			mapping_checked: "window.Uint8Array" in lev ? lev["window.Uint8Array"][0] : false,
 			shared_array_checked: "window.SharedArrayBuffer" in lev,
-			shared_slow_checked: !(lev["window.SharedArrayBuffer"][0]),
+			shared_slow_checked: "window.SharedArrayBuffer" in lev ? !(lev["window.SharedArrayBuffer"][0]) : false,
 			webworker_checked: "window.Worker" in lev,
-			webworker_slow_checked: !(lev["window.Worker"][0]),
+			webworker_slow_checked: "window.Worker" in lev ? !(lev["window.Worker"][0]) : false,
 			battery_checked: "navigator.getBattery" in lev,
 	});
 }
