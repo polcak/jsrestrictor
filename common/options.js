@@ -221,7 +221,7 @@ function prepare_level_config(action_descr, params = {
 			new_level.wrappers.push(
 				// HRT
 				["Performance.prototype.now", precision, randomize],
-				["window.PerformanceEntry", precision, randomize]
+				["window.PerformanceEntry", precision, randomize],
 				// PT2
 				["performance.getEntries", precision, randomize],
 				["performance.getEntriesByName", precision, randomize],
