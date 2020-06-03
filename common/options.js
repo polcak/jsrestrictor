@@ -138,7 +138,7 @@ function prepare_level_config(action_descr, params = {
 			<input type="checkbox" id="arrays_main_checkbox" ${params.arrays_checked ? "checked" : ""}>
 			<span class="section-header">Protect against ArrayBuffer exploitation.</span>
 		</div>
-		<div class=${params.arrays_checked ? "" : "hidden"} id="arrays_options" >
+		<div class="${params.arrays_checked ? "" : "hidden"}" id="arrays_options" >
 			<input type="checkbox" id="mapping_checkbox" ${params.mapping_checked ? "checked" : ""}>
 			<span class="section-header">Use random mapping of array indexing to memory.</span>
 		</div>
