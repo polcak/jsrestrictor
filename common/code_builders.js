@@ -32,19 +32,31 @@ function enclose_wrapping(code, ...args) {
 }
 
 /**
+ * Create wrapping that might be IIFE or a function that is immediately called and also available
+ * for future.
+ */
+function enclose_wrapping2(code, name, params, call_with_window) {
+	if (name === undefined) {
+		return enclose_wrapping(code);
+	}
+	return `function ${name}(${params}) {${code}}
+		${name}(${call_with_window ? "window" : ""});`
+}
+
+/**
  * This function create code (as string) that creates code that can be used to inject (or overwrite)
  * a function in the page context.
  */
 function define_page_context_function(wrapper) {
 	var originalF = wrapper["original_function"] || `${wrapper.parent_object}.${wrapper.parent_object_property}`;
-	return enclose_wrapping(`var originalF = ${originalF};
+	return enclose_wrapping2(`var originalF = ${originalF};
 			var replacementF = function(${wrapper.wrapping_function_args}) {
 				${wrapper.wrapping_function_body}
 			};
-			${wrapper.parent_object}.${wrapper.parent_object_property} = replacementF;
+			${wrapper.replace_original_function ? wrapper.original_function : `${wrapper.parent_object}.${wrapper.parent_object_property}`} = replacementF;
 			original_functions[replacementF.toString()] = originalF.toString();
 			${wrapper.post_replacement_code || ''}
-	`);
+	`, wrapper.wrapping_code_function_name, wrapper.wrapping_code_function_params, wrapper.wrapping_code_function_call_window);
 }
 
 /**
@@ -56,12 +68,36 @@ function generate_assign_function_code(code_spec_obj) {
 }
 
 /**
+ * This function wraps object properties using Object.defineProperties.
+ */
+function generate_object_properties(code_spec_obj) {
+	var code = "";
+	for (assign of code_spec_obj.wrapped_objects) {
+		code += `var ${assign.wrapped_name} = ${assign.original_name};`;
+	}
+	code += `
+		Object.defineProperties(
+			${code_spec_obj.parent_object},
+			{
+				${code_spec_obj.parent_object_property}: {`
+	for (wrap_spec of code_spec_obj.wrapped_properties) {
+		code += `${wrap_spec.property_name}: ${wrap_spec.property_value}`;
+	}
+	code +=	`
+				}
+			}
+		);`;
+	return code;
+}
+
+/**
  * This function builds the wrapping code.
  */
 var build_code = function(wrapper, ...args) {
 	var post_wrapping_functions = {
 		function_define: define_page_context_function,
 		function_export: generate_assign_function_code,
+		object_properties: generate_object_properties,
 	};
 	var code = "";
 	for (wrapped of wrapper.wrapped_objects) {

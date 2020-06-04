@@ -49,6 +49,16 @@ function generate_assign_function_code_ffbug(code_spec_obj) {
 }
 
 /**
+ * This function wraps object properties using Object.defineProperties. Supporting
+ * code for dealing with bug https://bugzilla.mozilla.org/show_bug.cgi?id=1267027.
+
+ */
+function generate_object_properties_ffbug(code_spec_obj) {
+	console.log(`Generate_object_properties for bug 1267027 not defined. Please go to https://bugzilla.mozilla.org/show_bug.cgi?id=1267027 and report that you are affected by the bug. Affected wrapping: ${code_spec_obj.parent_object}.${code_spec_obj.parent_object_property}`);
+	return "";
+}
+
+/**
  * Alternative definition of the build_code function.
  *
  * FIXME:this code needs improvements, see bug #25
@@ -57,6 +67,7 @@ function build_code_ffbug(wrapper, ...args) {
 	var post_wrapping_functions = {
 		function_define: define_page_context_function_ffbug,
 		function_export: generate_assign_function_code_ffbug,
+		object_properties: generate_object_properties_ffbug,
 	};
 	var code = "";
 	for (wrapped of wrapper.wrapped_objects) {
