@@ -128,9 +128,6 @@ var level_3 = {
 	}
 })();
 
-// default extension_settings_data setting. used on install
-var extension_settings_data = level_0;
-
 // Level aliases
 const L0 = "0";
 const L1 = "1";
