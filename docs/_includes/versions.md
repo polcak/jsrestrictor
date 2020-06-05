@@ -15,11 +15,11 @@ ide-Channel Attacks](https://misc0110.net/web/files/jszero.pdf)
 * Removed features:
  * Do not change request HTTP headers. See the paper FP-Scanner: The privacy implications of browser
     fingerprint inconsistencies and pages like
-    https://ghacksuserjs.github.io/TorZillaPrint/TorZillaPrint.html.
+    [https://ghacksuserjs.github.io/TorZillaPrint/TorZillaPrint.html](https://ghacksuserjs.github.io/TorZillaPrint/TorZillaPrint.html).
  * GPS/location is not blocked anymore, we expect to reintroduce this feature in the future.
 * Unfortunately, we do not migrate old settings as the levels were redesigned and several features
 	were removed. We expect to migrate previous settings in the future.
-* Initial attempt to deal with a bug https://bugzilla.mozilla.org/show_bug.cgi?id=1267027 but it
+* Initial attempt to deal with a bug [https://bugzilla.mozilla.org/show_bug.cgi?id=1267027](https://bugzilla.mozilla.org/show_bug.cgi?id=1267027) but it
 	does not work completely as expected, yet.
 * Make sure that calling toString on the wrapped function does not leak the wrapping code.
 * Fix original canvas method leaks through iframes
