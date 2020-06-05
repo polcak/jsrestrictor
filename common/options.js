@@ -148,12 +148,12 @@ function prepare_level_config(action_descr, params = {
 		<!-- SHAREDARRAY -->
 		<div class="main-section">
 			<input type="checkbox" id="shared_array_main_checkbox" ${params.shared_array_checked ? "checked" : ""}>
-			<span class="section-header">Protect against SharedArray exploitation:</span>
+			<span class="section-header">Protect against SharedArrayBuffer exploitation:</span>
 		</div>
 		<div id="shared_array_options" class="${params.shared_array_checked ? "" : "hidden"}">
 			<div class="row">
 				<input type="radio" id="shared_array_block_checkbox" name="sharedoptions"  ${params.shared_slow_checked ? "" : "checked"}/>
-				<span class="section-header">Block SharedArray.</span>
+				<span class="section-header">Block SharedArrayBuffer.</span>
 				<input type="radio" id="shared_array_polyfill_checkbox" name="sharedoptions"  ${params.shared_slow_checked ? "checked" : ""}/>
 				<span class="section-header">Randomly slow messages to prevent high resolution timers.</span>
 			</div>
