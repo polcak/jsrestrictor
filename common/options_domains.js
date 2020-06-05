@@ -73,7 +73,7 @@ function show_domain_level(levelsEl, domain) {
 			</span>
 			<select id="dl-change-${escape(domain)}"></select>
 			<span id="li-exist-group-${escape(domain)}">
-				<button id="overwrite-dl-${escape(domain)}">Overwrite</button>
+				<button id="overwrite-dl-${escape(domain)}">Save</button>
 				<button id="delete-dl-${escape(domain)}">Remove</button>
 			</span>
 			<span id="li-removed-group-${escape(domain)}" class="hidden">
