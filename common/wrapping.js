@@ -40,7 +40,8 @@ var rounding_function = `function rounding_function(numberToRound, precision) {
 /**
  * Function to be used by wrapped code for adding randomized noise
  */
-var noise_function = `function noise_function(numberToChange, precision) {
+var noise_function = `let lastValue = 0;
+	function noise_function(numberToChange, precision) {
     const noise = Math.floor(Math.random() * Math.pow(10, 3 - precision));
     const arr = (numberToChange + '').split('.');
     const number = parseInt(arr[0]);

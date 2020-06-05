@@ -36,7 +36,6 @@
 			],
 			helping_code: rounding_function + noise_function +
 				`
-				var lastValue = 0;
 				var precision = args[0];
 				var doNoise = args[1];
 				var func = rounding_function;
