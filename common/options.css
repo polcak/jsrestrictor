@@ -112,6 +112,12 @@ section.content {
 	padding: 0.5em;
 }
 
+.main-section + div:not(.main-section) {
+	padding-top: 0em;
+	padding-left: 3em;
+	padding-bottom: 1em;
+}
+
 #levels-list li, #domain-level-list li {
 	list-style-type: none;
 	margin: 7px;
