@@ -52,7 +52,7 @@
 					wrapped_name: "origFunc",
 				}
 			],
-			helping_code: rounding_function + "var precision = args[0]; var doNoise = args[1];",
+			helping_code: rounding_function + noise_function + "var precision = args[0]; var doNoise = args[1];",
 			wrapping_function_args: "...args",
 			wrapping_function_body: common_function_body
 		},
@@ -65,7 +65,7 @@
 					wrapped_name: "origFunc",
 				}
 			],
-			helping_code: rounding_function + "var precision = args[0]; var doNoise = args[1];",
+			helping_code: rounding_function + noise_function + "var precision = args[0]; var doNoise = args[1];",
 			wrapping_function_args: "...args",
 			wrapping_function_body: common_function_body
 		},
@@ -78,7 +78,7 @@
 					wrapped_name: "origFunc",
 				}
 			],
-			helping_code: rounding_function + "var precision = args[0]; var doNoise = args[1];",
+			helping_code: rounding_function + noise_function + "var precision = args[0]; var doNoise = args[1];",
 			wrapping_function_args: "...args",
 			wrapping_function_body: common_function_body
 		},
