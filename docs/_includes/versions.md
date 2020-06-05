@@ -10,7 +10,7 @@ ide-Channel Attacks](https://misc0110.net/web/files/jszero.pdf)
 * Allow multiple custom levels
 * Do not modify DOM of displayed pages (the modifications were detectable by the page scripts and may
 	reveal that the user is running JSR)
-* Canvas fingerprinting: originally, only toDataURL was blocked. The extension now blocks CanvasRenderingContext2D.prototype.getImageData and HTMLCanvasElement.prototype.toBlob.
+* Canvas fingerprinting: originally, only `toDataURL` was blocked. The extension now blocks `CanvasRenderingContext2D.prototype.getImageData` and `HTMLCanvasElement.prototype.toBlob`.
 * Block additionaly methods to get performance data.
 * Unfortunately, we do not migrate old settings as the levels were redesigned and several features
 	were removed. We expect to migrate previous settings in the future.
