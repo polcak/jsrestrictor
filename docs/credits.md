@@ -18,4 +18,4 @@ Martin Bednář is currently working on testing the extension as a part of his m
 
 # Key ideas
 
-The development of this extension is influenced by the paper [JavaScript Zero: Real JavaScript and Zero Side-Channel Attacks](https://misc0110.net/web/files/jszero.pdf). It appeared during the work of Zbyněk Červinka and provided basically the same approach to restrict APIs as was at the time developped by Zbyněk Červinka.
+The development of this extension is influenced by the paper [JavaScript Zero: Real JavaScript and Zero Side-Channel Attacks](https://graz.pure.elsevier.com/de/publications/javascript-zero-real-javascript-and-zero-side-channel-attacks). It appeared during the work of Zbyněk Červinka and provided basically the same approach to restrict APIs as was at the time developped by Zbyněk Červinka.
