@@ -106,7 +106,7 @@ function prepare_level_config(action_descr, params = {
 			<span class="section-header">Protect against canvas fingerprinting:</span>
 		</div>
 		<div>
-			<span class="table-left-column">Canvas return white image data by modifiing
+			<span class="table-left-column">Canvas returns white image data by modifiing
 					canvas.toDataURL(), canvas.toBlob() and CanvasRenderingContext2D.getImageData functions</span>
 		</div>
 		
