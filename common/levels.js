@@ -35,25 +35,26 @@ var wrapping_groups = {
 				level_name: "",
 				short_id: "",
 				description: "",
-				time_precision_checked: false,
+				time_precision: false,
 				time_precision_precision: 1,
 				time_precision_randomize: false,
-				htmlcanvaselement_checked: false,
-				hardware_checked: false,
-				xhr_checked: false,
+				htmlcanvaselement: false,
+				hardware: false,
+				xhr: false,
 				xhr_behaviour_block: false,
 				xhr_behaviour_ask: true,
-				arrays_checked: false,
+				arrays: false,
 				arrays_mapping: false,
-				shared_array_checked: false,
+				shared_array: false,
 				shared_array_approach_block: true,
 				shared_array_approach_polyfill: false,
-				webworker_checked: false,
+				webworker: false,
 				webworker_approach_polyfill: true,
 				webworker_approach_slow: false,
-				battery_checked: true,
+				battery: true,
 		}
 	},
+	option_map: {}, ///Automatically populated
 	groups: [
 		{
 			name: "time_precision",
@@ -63,7 +64,7 @@ var wrapping_groups = {
 				{
 					description: "Manipulate time to",
 					ui_elem: "select",
-					id: "precision",
+					name: "precision",
 					data_type: "Number",
 					options: [
 						{
@@ -82,7 +83,7 @@ var wrapping_groups = {
 				},
 				{
 					ui_elem: "input-checkbox",
-					id: "randomize",
+					name: "randomize",
 					description: "Apply additional randomization after rounding",
 					data_type: "Boolean",
 				},
@@ -133,7 +134,7 @@ var wrapping_groups = {
 			options: [
 				{
 					ui_elem: "input-radio",
-					id: "behaviour",
+					name: "behaviour",
 					data_type: "Boolean",
 					options: [
 						{
@@ -159,7 +160,7 @@ var wrapping_groups = {
 			options: [
 				{
 					ui_elem: "input-checkbox",
-					id: "mapping",
+					name: "mapping",
 					description: "Use random mapping of array indexing to memory.",
 					data_type: "Boolean",
 				},
@@ -184,7 +185,7 @@ var wrapping_groups = {
 			options: [
 				{
 					ui_elem: "input-radio",
-					id: "approach",
+					name: "approach",
 					data_type: "Boolean",
 					options: [
 						{
@@ -210,7 +211,7 @@ var wrapping_groups = {
 			options: [
 				{
 					ui_elem: "input-radio",
-					id: "approach",
+					name: "approach",
 					data_type: "Boolean",
 					options: [
 						{
@@ -240,6 +241,23 @@ var wrapping_groups = {
 		},
 	],
 }
+
+/// Automatically populate infered metadata in wrapping_groups.
+wrapping_groups.groups.forEach(function (group) {
+	group.id = group.name;
+	group.data_type = "Boolean";
+	wrapping_groups.option_map[group.id] = group
+	group.options.forEach((function (gid, option) {
+		option.id = `${gid}_${option.name}`;
+		wrapping_groups.option_map[option.id] = option;
+		if (option.options !== undefined) {
+			option.options.forEach((function (oid, choice) {
+				choice.id = `${oid}_${choice.value}`;
+				wrapping_groups.option_map[choice.id] = choice;
+			}).bind(null, option.id));
+		}
+	}).bind(null, group.id));
+});
 
 // levels of protection
 

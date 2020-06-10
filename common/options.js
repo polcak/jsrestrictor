@@ -41,26 +41,26 @@ function prepare_level_config(action_descr, params = wrapping_groups.create_defa
 			function process_select(group_option) {
 				return `
 					<span class="table-left-column">${group_option.description}:</span>
-					<select id="${group.name}_${group_option.id}">
-							${group_option.options.reduce(process_select_option.bind(null, group.name + "_" + group_option.id), "")}
+					<select id="${group_option.id}">
+							${group_option.options.reduce(process_select_option.bind(null, group_option.id), "")}
 					</select>
 				`;
 			}
 			function process_checkbox(group_option) {
 				return `
-					<input type="checkbox" id="${group.name}_${group_option.id}" ${params[group.name + '_' + group_option.id] ? "checked" : ""}>
+					<input type="checkbox" id="${group_option.id}" ${params[group_option.id] ? "checked" : ""}>
 					<span class="section-header">${group_option.description}</span>
 				`;
 			}
 			function process_radio_option(param_property, html, option) {
 				return html + `
-						<input type="radio" id="${param_property}_${option.value}" name="${param_property}"  ${params[param_property + '_' + option.value] ? "checked" : ""}></input>
+						<input type="radio" id="${option.id}" name="${param_property}"  ${params[option.id] ? "checked" : ""}></input>
 						<span class="section-header">${option.description}</span>
 					`
 			}
 			function process_radio(group_option) {
 				return `
-					${group_option.options.reduce(process_radio_option.bind(null, group.name + "_" + group_option.id), "")}
+					${group_option.options.reduce(process_radio_option.bind(null, group_option.id), "")}
 				`;
 			}
 			function process_option(html, option) {
@@ -82,10 +82,10 @@ function prepare_level_config(action_descr, params = wrapping_groups.create_defa
 			}
 			return html + `
 				<div class="main-section">
-					<input type="checkbox" id="${group.name}_main_checkbox" ${params[group.name + '_checked'] ? "checked" : ""}>
+					<input type="checkbox" id="${group.id}" ${params[group.id] ? "checked" : ""}>
 					<span class="section-header">${group.description}:</span>
 				</div>
-					<div id="${group.name}_options" class="${params[group.name + '_checked'] ? "" : "hidden"}">
+					<div id="${group.name}_options" class="${params[group.id] ? "" : "hidden"}">
 						${group.description2.reduce(process_descriptions, "")}
 						${group.options.reduce(process_option, "")}
 					</div>
@@ -126,9 +126,9 @@ function prepare_level_config(action_descr, params = wrapping_groups.create_defa
 </div>`);
 
 	configuration_area_el.appendChild(fragment);
-	function connect_options_group(group_name) {
-		document.getElementById(group_name + "_main_checkbox").addEventListener("click", function(e) {
-			var options_el = document.getElementById(group_name + "_options");
+	function connect_options_group(group) {
+		document.getElementById(group.id).addEventListener("click", function(e) {
+			var options_el = document.getElementById(group.name + "_options");
 			if (this.checked) {
 				options_el.classList.remove("hidden");
 			}
@@ -137,7 +137,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.create_defa
 			}
 		});
 	}
-	wrapping_groups.groups.forEach(g => connect_options_group(g.name));
+	wrapping_groups.groups.forEach(g => connect_options_group(g));
 
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
@@ -148,7 +148,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.create_defa
 			wrappers: []
 		};
 
-		if (document.getElementById("htmlcanvaselement_main_checkbox").checked) {
+		if (document.getElementById("htmlcanvaselement").checked) {
 			new_level.wrappers.push(
 				// H-C
 				["CanvasRenderingContext2D.prototype.getImageData"],
@@ -156,7 +156,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.create_defa
 				["HTMLCanvasElement.prototype.toDataURL"],
 			);
 		}
-		if (document.getElementById("time_precision_main_checkbox").checked) {
+		if (document.getElementById("time_precision").checked) {
 			var precision = document.getElementById("time_precision_precision").value;
 			var randomize = document.getElementById("time_precision_randomize").checked;
 
@@ -172,13 +172,13 @@ function prepare_level_config(action_descr, params = wrapping_groups.create_defa
 				["window.Date", precision, randomize],
 			);
 		}
-		if (document.getElementById("xhr_main_checkbox").checked) {
+		if (document.getElementById("xhr").checked) {
 			new_level.wrappers.push(
 				// AJAX
 				["window.XMLHttpRequest", document.getElementById("xhr_behaviour_block").checked, document.getElementById("xhr_behaviour_ask").checked],
 			);
 		}
-		if (document.getElementById("hardware_main_checkbox").checked) {
+		if (document.getElementById("hardware").checked) {
 			new_level.wrappers.push(
 				// DM
 				["navigator.deviceMemory"],
@@ -187,7 +187,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.create_defa
 			);
 		}
 
-		if (document.getElementById("arrays_main_checkbox").checked) {
+		if (document.getElementById("arrays").checked) {
 			let doMapping = document.getElementById("arrays_mapping").checked;
 			let arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
 			for (let a of arrays) {
@@ -197,21 +197,21 @@ function prepare_level_config(action_descr, params = wrapping_groups.create_defa
 				["window.DataView", doMapping],
 			);
 		}
-		if (document.getElementById("shared_array_main_checkbox").checked) {
+		if (document.getElementById("shared_array").checked) {
 			let block = document.getElementById("shared_array_approach_block").checked;
 			new_level.wrappers.push(
 				// SHARED
 				["window.SharedArrayBuffer", block],
 			);
 		}
-		if (document.getElementById("webworker_main_checkbox").checked) {
+		if (document.getElementById("webworker").checked) {
 			let polyfill = document.getElementById("webworker_approach_polyfill").checked;
 			new_level.wrappers.push(
 				// WORKER
 				["window.Worker", polyfill],
 			);
 		}
-		if (document.getElementById("battery_main_checkbox").checked) {
+		if (document.getElementById("battery").checked) {
 			new_level.wrappers.push(
 				// BATTERY
 				["navigator.getBattery"],
@@ -259,30 +259,30 @@ function edit_level(id) {
 			level_name: levels[id].level_text,
 			short_id: levels[id].level_id,
 			description: levels[id].level_description,
-			time_precision_checked: "Performance.prototype.now" in lev &&
+			time_precision: "Performance.prototype.now" in lev &&
 					"performance.getEntries" in lev &&
 					"performance.getEntriesByName" in lev &&
 					"performance.getEntriesByType" in lev &&
 					"window.Date" in lev,
 			time_precision_precision: "Performance.prototype.now" in lev ? lev["Performance.prototype.now"][0] : 100,
 			time_precision_randomize: "window.Date" in lev ? lev["window.Date"][1] : false,
-			htmlcanvaselement_checked: "CanvasRenderingContext2D.prototype.getImageData" in lev &&
+			htmlcanvaselement: "CanvasRenderingContext2D.prototype.getImageData" in lev &&
 					"HTMLCanvasElement.prototype.toBlob" in lev &&
 					"HTMLCanvasElement.prototype.toDataURL" in lev,
-			hardware_checked: "navigator.deviceMemory" in lev &&
+			hardware: "navigator.deviceMemory" in lev &&
 					"navigator.hardwareConcurrency" in lev,
-			xhr_checked: "window.XMLHttpRequest" in lev,
+			xhr: "window.XMLHttpRequest" in lev,
 			xhr_behaviour_block: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : true,
 			xhr_behaviour_ask: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
-			arrays_checked: "window.Uint8Array" in lev,
+			arrays: "window.Uint8Array" in lev,
 			arrays_mapping: "window.Uint8Array" in lev ? lev["window.Uint8Array"][0] : false,
-			shared_array_checked: "window.SharedArrayBuffer" in lev,
+			shared_array: "window.SharedArrayBuffer" in lev,
 			shared_array_approach_block: "window.SharedArrayBuffer" in lev ? (lev["window.SharedArrayBuffer"][0]) : true,
 			shared_array_approach_polyfill: "window.SharedArrayBuffer" in lev ? !(lev["window.SharedArrayBuffer"][0]) : false,
-			webworker_checked: "window.Worker" in lev,
+			webworker: "window.Worker" in lev,
 			webworker_approach_polyfill: "window.Worker" in lev ? (lev["window.Worker"][0]) : true,
 			webworker_approach_slow: "window.Worker" in lev ? !(lev["window.Worker"][0]) : false,
-			battery_checked: "navigator.getBattery" in lev,
+			battery: "navigator.getBattery" in lev,
 	});
 }
 
