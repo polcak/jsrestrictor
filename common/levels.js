@@ -31,9 +31,9 @@ if ((typeof browser) === "undefined") {
  */
 var wrapping_groups = {
 	empty_level: { /// Automatically populated
-		level_name: "",
-		short_id: "",
-		description: "",
+		level_text: "",
+		level_id: "",
+		level_description: "",
 	},
 	option_map: {}, ///Automatically populated
 	groups: [

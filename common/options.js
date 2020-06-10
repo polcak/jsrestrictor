@@ -104,11 +104,11 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 		<!-- Metadata -->
 		<div class="main-section">
 			<span class="section-header">Name:</span>
-			<input id="level_text" value="${escape(params.level_name)}"></input>
+			<input id="level_text" value="${escape(params.level_text)}"></input>
 		</div>
 		<div class="main-section">
 			<span class="section-header">Short ID:</span>
-			<input id="level_id" ${params.short_id != "" ? "disabled" : ""} value="${escape(params.short_id)}"></input>
+			<input id="level_id" ${params.level_id != "" ? "disabled" : ""} value="${escape(params.level_id)}"></input>
 		</div>
 		<div>
 			<span class="table-left-column">This ID is displayed above the JSR icon. If you use an
@@ -116,7 +116,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 		</div>
 		<div class="main-section">
 			<span class="section-header">Description:</span>
-			<input id="level_description" value="${escape(params.description)}"></input>
+			<input id="level_description" value="${escape(params.level_description)}"></input>
 		</div>
 
 		${create_wrapping_groups_html()}
@@ -256,9 +256,9 @@ function edit_level(id) {
 		lev[wrapper[0]] = wrapper.slice(1);
 	}
 	prepare_level_config("Edit level " + escape(id), {
-			level_name: levels[id].level_text,
-			short_id: levels[id].level_id,
-			description: levels[id].level_description,
+			level_text: levels[id].level_text,
+			level_id: levels[id].level_id,
+			level_description: levels[id].level_description,
 			time_precision: "Performance.prototype.now" in lev &&
 					"performance.getEntries" in lev &&
 					"performance.getEntriesByName" in lev &&
