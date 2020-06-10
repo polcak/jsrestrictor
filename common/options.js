@@ -28,14 +28,14 @@ if ((typeof browser) === "undefined") {
 	var browser = chrome;
 }
 
-function prepare_level_config(action_descr, params = wrapping_groups.create_default()) {
+function prepare_level_config(action_descr, params = wrapping_groups.empty_level) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
 	function create_wrapping_groups_html() {
 		function process_group(html, group) {
 			function process_select_option(param_property, html, option) {
 				return html + `
-						<option value="${option.value}" ${params[param_property] === option.value.toString() ? "selected" : ""}>${option.description}</option>
+						<option value="${option.value}" ${params[param_property] === option.value ? "selected" : ""}>${option.description}</option>
 					`
 			}
 			function process_select(group_option) {

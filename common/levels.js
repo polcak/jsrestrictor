@@ -30,29 +30,10 @@ if ((typeof browser) === "undefined") {
  * Used to control the built-in levels and options GUI.
  */
 var wrapping_groups = {
-	create_default: function() {
-		return {
-				level_name: "",
-				short_id: "",
-				description: "",
-				time_precision: false,
-				time_precision_precision: 1,
-				time_precision_randomize: false,
-				htmlcanvaselement: false,
-				hardware: false,
-				xhr: false,
-				xhr_behaviour_block: false,
-				xhr_behaviour_ask: true,
-				arrays: false,
-				arrays_mapping: false,
-				shared_array: false,
-				shared_array_approach_block: true,
-				shared_array_approach_polyfill: false,
-				webworker: false,
-				webworker_approach_polyfill: true,
-				webworker_approach_slow: false,
-				battery: true,
-		}
+	empty_level: { /// Automatically populated
+		level_name: "",
+		short_id: "",
+		description: "",
 	},
 	option_map: {}, ///Automatically populated
 	groups: [
@@ -65,6 +46,7 @@ var wrapping_groups = {
 					description: "Manipulate time to",
 					ui_elem: "select",
 					name: "precision",
+					default: 1,
 					data_type: "Number",
 					options: [
 						{
@@ -86,6 +68,7 @@ var wrapping_groups = {
 					name: "randomize",
 					description: "Apply additional randomization after rounding",
 					data_type: "Boolean",
+					default: false,
 				},
 			],
 			wrappers: [
@@ -140,10 +123,12 @@ var wrapping_groups = {
 						{
 							value: "block",
 							description: "Block all XMLHttpRequest.",
+							default: false,
 						},
 						{
 							value: "ask",
 							description: "Ask before executing an XHR request.",
+							default: true,
 						},
 					],
 				},
@@ -163,6 +148,7 @@ var wrapping_groups = {
 					name: "mapping",
 					description: "Use random mapping of array indexing to memory.",
 					data_type: "Boolean",
+					default: false,
 				},
 			],
 			wrappers: [
@@ -191,10 +177,12 @@ var wrapping_groups = {
 						{
 							value: "block",
 							description: "Block SharedArrayBuffer.",
+							default: true,
 						},
 						{
 							value: "polyfill",
 							description: "Randomly slow messages to prevent high resolution timers.",
+							default: false,
 						},
 					],
 				},
@@ -217,10 +205,12 @@ var wrapping_groups = {
 						{
 							value: "polyfill",
 							description: "Remove real parallelism, use WebWorker polyfill.",
+							default: true,
 						},
 						{
 							value: "slow",
 							description: "Randomly slow messages to prevent high resolution timers.",
+							default: false,
 						},
 					],
 				},
@@ -233,6 +223,7 @@ var wrapping_groups = {
 			name: "battery",
 			description: "Disable Battery status API",
 			description2: [],
+			default: true,
 			options: [],
 			wrappers: [
 				// BATTERY
@@ -246,13 +237,20 @@ var wrapping_groups = {
 wrapping_groups.groups.forEach(function (group) {
 	group.id = group.name;
 	group.data_type = "Boolean";
+	wrapping_groups.empty_level[group.id] = Boolean(group.default);
 	wrapping_groups.option_map[group.id] = group
 	group.options.forEach((function (gid, option) {
 		option.id = `${gid}_${option.name}`;
+		if (option.default !== undefined) {
+			wrapping_groups.empty_level[option.id] = option.default;
+		}
 		wrapping_groups.option_map[option.id] = option;
 		if (option.options !== undefined) {
 			option.options.forEach((function (oid, choice) {
 				choice.id = `${oid}_${choice.value}`;
+				if (choice.default !== undefined) {
+					wrapping_groups.empty_level[choice.id] = choice.default;
+				}
 				wrapping_groups.option_map[choice.id] = choice;
 			}).bind(null, option.id));
 		}
