@@ -24,6 +24,223 @@ if ((typeof browser) === "undefined") {
 	var browser = chrome;
 }
 
+/**
+ * Wrapping groups
+ *
+ * Used to control the built-in levels and options GUI.
+ */
+var wrapping_groups = {
+	create_default: function() {
+		return {
+				level_name: "",
+				short_id: "",
+				description: "",
+				time_precision_checked: false,
+				time_precision_precision: 1,
+				time_precision_randomize: false,
+				htmlcanvaselement_checked: false,
+				hardware_checked: false,
+				xhr_checked: false,
+				xhr_behaviour_block: false,
+				xhr_behaviour_ask: true,
+				arrays_checked: false,
+				arrays_mapping: false,
+				shared_array_checked: false,
+				shared_array_approach_block: true,
+				shared_array_approach_polyfill: false,
+				webworker_checked: false,
+				webworker_approach_polyfill: true,
+				webworker_approach_slow: false,
+				battery_checked: true,
+		}
+	},
+	groups: [
+		{
+			name: "time_precision",
+			description: "Manipulate the time precision provided by Date and performance",
+			description2: [],
+			options: [
+				{
+					description: "Manipulate time to",
+					ui_elem: "select",
+					id: "precision",
+					data_type: "Number",
+					options: [
+						{
+							value: 2,
+							description: "Hundredths of a second (1.230)",
+						},
+						{
+							value: 1,
+							description: "Tenths of a second (1.200)",
+						},
+						{
+							value: 0,
+							description: "Full seconds (1.000)",
+						},
+					],
+				},
+				{
+					ui_elem: "input-checkbox",
+					id: "randomize",
+					description: "Apply additional randomization after rounding",
+					data_type: "Boolean",
+				},
+			],
+			wrappers: [
+				// HRT
+				"Performance.prototype.now",
+				"window.PerformanceEntry",
+				// PT2
+				"performance.getEntries",
+				"performance.getEntriesByName",
+				"performance.getEntriesByType",
+				// ECMA
+				"window.Date",
+			],
+		},
+		{
+			name: "htmlcanvaselement",
+			description: "Protect against canvas fingerprinting",
+			description2: ["Canvas returns white image data by modifiing canvas.toDataURL(), canvas.toBlob() and CanvasRenderingContext2D.getImageData functions",],
+			options: [],
+			wrappers: [
+				// H-C
+				"CanvasRenderingContext2D.prototype.getImageData",
+				"HTMLCanvasElement.prototype.toBlob",
+				"HTMLCanvasElement.prototype.toDataURL",
+			],
+		},
+		{
+			name: "hardware",
+			description: "Spoof hardware information to the most popular HW",
+			description2: [
+				"JS navigator.deviceMemory: 4",
+				"JS navigator.hardwareConcurrency: 2",
+			],
+			options: [],
+			wrappers: [
+				// BATTERY
+				["navigator.getBattery"],
+				// DM
+				["navigator.deviceMemory"],
+			],
+		},
+		{
+			name: "xhr",
+			description: "Filter XMLHttpRequest requests",
+			description2: [],
+			options: [
+				{
+					ui_elem: "input-radio",
+					id: "behaviour",
+					data_type: "Boolean",
+					options: [
+						{
+							value: "block",
+							description: "Block all XMLHttpRequest.",
+						},
+						{
+							value: "ask",
+							description: "Ask before executing an XHR request.",
+						},
+					],
+				},
+			],
+			wrappers: [
+				// AJAX
+				"window.XMLHttpRequest",
+			],
+		},
+		{
+			name: "arrays",
+			description: "Protect against ArrayBuffer exploitation",
+			description2: [],
+			options: [
+				{
+					ui_elem: "input-checkbox",
+					id: "mapping",
+					description: "Use random mapping of array indexing to memory.",
+					data_type: "Boolean",
+				},
+			],
+			wrappers: [
+				"window.DataView",
+				"window.Uint8Array",
+				"window.Int8Array",
+				"window.Uint8ClampedArray",
+				"window.Int16Array",
+				"window.Uint16Array",
+				"window.Int32Array",
+				"window.Uint32Array",
+				"window.Float32Array",
+				"window.Float64Array",
+			],
+		},
+		{
+			name: "shared_array",
+			description: "Protect against SharedArrayBuffer exploitation:",
+			description2: [],
+			options: [
+				{
+					ui_elem: "input-radio",
+					id: "approach",
+					data_type: "Boolean",
+					options: [
+						{
+							value: "block",
+							description: "Block SharedArrayBuffer.",
+						},
+						{
+							value: "polyfill",
+							description: "Randomly slow messages to prevent high resolution timers.",
+						},
+					],
+				},
+			],
+			wrappers: [
+				// SHARED
+				"window.SharedArrayBuffer"
+			],
+		},
+		{
+			name: "webworker",
+			description: "Protect against WebWorker exploitation",
+			description2: [],
+			options: [
+				{
+					ui_elem: "input-radio",
+					id: "approach",
+					data_type: "Boolean",
+					options: [
+						{
+							value: "polyfill",
+							description: "Remove real parallelism, use WebWorker polyfill.",
+						},
+						{
+							value: "slow",
+							description: "Randomly slow messages to prevent high resolution timers.",
+						},
+					],
+				},
+			],
+			wrappers: [
+				"window.Worker",
+			],
+		},
+		{
+			name: "battery",
+			description: "Disable Battery status API",
+			description2: [],
+			options: [],
+			wrappers: [
+				// BATTERY
+				"navigator.getBattery",
+			],
+		},
+	],
+}
+
 // levels of protection
 
 var level_0 = {

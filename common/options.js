@@ -28,29 +28,71 @@ if ((typeof browser) === "undefined") {
 	var browser = chrome;
 }
 
-function prepare_level_config(action_descr, params = {
-			level_name: "",
-			short_id: "",
-			description: "",
-			time_precision_checked: false,
-			time_precision_round: 1,
-			time_round_checked: false,
-			time_random_checked: false,
-			htmlcanvas_checked: false,
-			hardware_checked: false,
-			xhr_checked: false,
-			xhr_block_checked: false,
-			xhr_ask_checked: false,
-			arrays_checked: false,
-			mapping_checked: false,
-			shared_array_checked: false,
-			shared_slow_checked: false,
-			webworker_checked: false,
-			webworker_slow_checked: false,
-			battery_checked: true,
-		}) {
+function prepare_level_config(action_descr, params = wrapping_groups.create_default()) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
+	function create_wrapping_groups_html() {
+		function process_group(html, group) {
+			function process_select_option(param_property, html, option) {
+				return html + `
+						<option value="${option.value}" ${params[param_property] === option.value.toString() ? "selected" : ""}>${option.description}</option>
+					`
+			}
+			function process_select(group_option) {
+				return `
+					<span class="table-left-column">${group_option.description}:</span>
+					<select id="${group.name}_${group_option.id}">
+							${group_option.options.reduce(process_select_option.bind(null, group.name + "_" + group_option.id), "")}
+					</select>
+				`;
+			}
+			function process_checkbox(group_option) {
+				return `
+					<input type="checkbox" id="${group.name}_${group_option.id}" ${params[group.name + '_' + group_option.id] ? "checked" : ""}>
+					<span class="section-header">${group_option.description}</span>
+				`;
+			}
+			function process_radio_option(param_property, html, option) {
+				return html + `
+						<input type="radio" id="${param_property}_${option.value}" name="${param_property}"  ${params[param_property + '_' + option.value] ? "checked" : ""}></input>
+						<span class="section-header">${option.description}</span>
+					`
+			}
+			function process_radio(group_option) {
+				return `
+					${group_option.options.reduce(process_radio_option.bind(null, group.name + "_" + group_option.id), "")}
+				`;
+			}
+			function process_option(html, option) {
+				processors = {
+					select: process_select,
+					"input-checkbox": process_checkbox,
+					"input-radio": process_radio,
+				};
+				return html + `
+					<div class="row">
+						${processors[option.ui_elem](option)}
+					</div>
+					`;
+			}
+			function process_descriptions(html, descr) {
+				return html + `
+					<span class="table-left-column">${descr}</span><br>
+				`;
+			}
+			return html + `
+				<div class="main-section">
+					<input type="checkbox" id="${group.name}_main_checkbox" ${params[group.name + '_checked'] ? "checked" : ""}>
+					<span class="section-header">${group.description}:</span>
+				</div>
+					<div id="${group.name}_options" class="${params[group.name + '_checked'] ? "" : "hidden"}">
+						${group.description2.reduce(process_descriptions, "")}
+						${group.options.reduce(process_option, "")}
+					</div>
+			`;
+		}
+		return wrapping_groups.groups.reduce(process_group, "");
+	}
 	var fragment = document.createRange().createContextualFragment(`
 <div>
 		<p>Note that for fingerprintability prevention, JS Restrictor does not wrap objects that are not defined. For example, if an experimental feature like <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory"><code>navigator.deviceMemory</code></a> is not defined in your browser, JS Restrictor does not define the property even if it is shown below that the valut is defined.</p>
@@ -76,111 +118,13 @@ function prepare_level_config(action_descr, params = {
 			<span class="section-header">Description:</span>
 			<input id="level_description" value="${escape(params.description)}"></input>
 		</div>
-		
-		<!-- DATE and performance -->
-		<div class="main-section">
-			<input type="checkbox" id="time_precision_main_checkbox" ${params.time_precision_checked ? "checked" : ""}>
-			<span class="section-header">Manipulate the time precision provided by Date and
-				performance:</span>
-		</div>
-		<div id="time_precision_options" class="${params.time_precision_checked ? "" : "hidden"}">
-			<div class="row">
-				<span class="table-left-column">Manipulate time to:</span>
-				<select id="time_precision_round_precision">
-					<option value="2" ${params.time_precision_round === 2 ? "selected" : ""}>hundredths of a second (1.230)</option>
-					<option value="1" ${params.time_precision_round === 1 ? "selected" : ""}>tenths of a second (1.200)</option>
-					<option value="0" ${params.time_precision_round === 0 ? "selected" : ""}>full seconds (1.000)</option>
-				</select>
-			</div>
-			<div class="row">
-				<input type="radio" id="timeoptions_round_checkbox" name="timeoptions" ${params.time_random_checked ? "" : "checked"}/>
-				<span class="section-header">Round time.</span>
-				<input type="radio" id="timeoptions_random_checkbox" name="timeoptions" ${params.time_random_checked ? "checked" : ""}/>
-				<span class="section-header">Randomize time.</span>
-			</div>
-		</div>
-		
-		<!-- CANVAS -->
-		<div class="main-section">
-			<input type="checkbox" id="htmlcanvaselement_main_checkbox" ${params.htmlcanvas_checked ? "checked" : ""}>
-			<span class="section-header">Protect against canvas fingerprinting:</span>
-		</div>
-		<div>
-			<span class="table-left-column">Canvas returns white image data by modifiing
-					canvas.toDataURL(), canvas.toBlob() and CanvasRenderingContext2D.getImageData functions</span>
-		</div>
-		
-		<!-- HARDWARE -->
-		<div class="main-section">
-			<input type="checkbox" id="hardware_main_checkbox" ${params.hardware_checked ? "checked" : ""}>
-			<span class="section-header">Spoof hardware information to the most popular HW:</span>
-		</div>
-		<div>
-			<span class="table-left-column">JS navigator.deviceMemory: 4</span>
-			<br>
-			<span class="table-left-column">JS navigator.hardwareConcurrency: 2</span>
-		</div>
-		
-		<!-- XMLHTTPREQUEST -->
-		<div class="main-section">
-			<input type="checkbox" id="xhr_main_checkbox" ${params.xhr_checked ? "checked" : ""}>
-			<span class="section-header"><i>Filter XMLHttpRequest requests:</i></span>
-		</div>
-		<div id="xhr_options" class="${params.xhr_checked ? "" : "hidden"}">
-			<div class="row">
-				<input type="radio" id="xmlhttprequest_block_checkbox" name="xhroptions"  ${params.xhr_block_checked ? "checked" : ""}></input>
-				<span class="section-header">Block all XMLHttpRequest.</span>
-				<input type="radio" id="xmlhttprequest_ask_checkbox" name="xhroptions"  ${params.xhr_ask_checked ? "checked" : ""}></input>
-				<span class="section-header">Ask before executing an XHR request.</span>
-			</div>
-		</div>
 
-		<!-- ARRAYS -->
-		<div class="main-section">
-			<input type="checkbox" id="arrays_main_checkbox" ${params.arrays_checked ? "checked" : ""}>
-			<span class="section-header">Protect against ArrayBuffer exploitation.</span>
-		</div>
-		<div class="${params.arrays_checked ? "" : "hidden"}" id="arrays_options" >
-			<input type="checkbox" id="mapping_checkbox" ${params.mapping_checked ? "checked" : ""}>
-			<span class="section-header">Use random mapping of array indexing to memory.</span>
-		</div>
-
-		<!-- SHAREDARRAY -->
-		<div class="main-section">
-			<input type="checkbox" id="shared_array_main_checkbox" ${params.shared_array_checked ? "checked" : ""}>
-			<span class="section-header">Protect against SharedArrayBuffer exploitation:</span>
-		</div>
-		<div id="shared_array_options" class="${params.shared_array_checked ? "" : "hidden"}">
-			<div class="row">
-				<input type="radio" id="shared_array_block_checkbox" name="sharedoptions"  ${params.shared_slow_checked ? "" : "checked"}/>
-				<span class="section-header">Block SharedArrayBuffer.</span>
-				<input type="radio" id="shared_array_polyfill_checkbox" name="sharedoptions"  ${params.shared_slow_checked ? "checked" : ""}/>
-				<span class="section-header">Randomly slow messages to prevent high resolution timers.</span>
-			</div>
-		</div>
-
-		<!-- WEBWORKER -->
-		<div class="main-section">
-			<input type="checkbox" id="webworker_main_checkbox" ${params.webworker_checked ? "checked" : ""}>
-			<span class="section-header">Protect against WebWorker exploitation:</span>
-		</div>
-		<div id="webworker_options" class="${params.webworker_checked ? "" : "hidden"}">
-			<div class="row">
-				<input type="radio" id="webworker_polyfill_checkbox" name="workeroptions"  ${params.webworker_slow_checked ? "" : "checked"}/>
-				<span class="section-header">Remove real parallelism.</span>
-				<input type="radio" id="webworker_slow_checkbox" name="workeroptions"  ${params.webworker_slow_checked ? "checked" : ""}/>
-				<span class="section-header">Randomly slow messages to prevent high resolution timers.</span>
-			</div>
-		</div>
-
-		<!-- BATTERY -->
-		<div class="main-section">
-			<input type="checkbox" id="battery_main_checkbox" ${params.battery_checked ? "checked" : ""}>
-			<span class="section-header">Disable Battery status API</span>
-		</div>
+		${create_wrapping_groups_html()}
+		
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
+
 	configuration_area_el.appendChild(fragment);
 	function connect_options_group(group_name) {
 		document.getElementById(group_name + "_main_checkbox").addEventListener("click", function(e) {
@@ -193,11 +137,7 @@ function prepare_level_config(action_descr, params = {
 			}
 		});
 	}
-	connect_options_group("time_precision");
-	connect_options_group("xhr");
-	connect_options_group("arrays");
-	connect_options_group("shared_array");
-	connect_options_group("webworker");
+	wrapping_groups.groups.forEach(g => connect_options_group(g.name));
 
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
@@ -217,8 +157,8 @@ function prepare_level_config(action_descr, params = {
 			);
 		}
 		if (document.getElementById("time_precision_main_checkbox").checked) {
-			var precision = document.getElementById("time_precision_round_precision").value;
-			var randomize = document.getElementById("timeoptions_random_checkbox").checked;
+			var precision = document.getElementById("time_precision_precision").value;
+			var randomize = document.getElementById("time_precision_randomize").checked;
 
 			new_level.wrappers.push(
 				// HRT
@@ -235,7 +175,7 @@ function prepare_level_config(action_descr, params = {
 		if (document.getElementById("xhr_main_checkbox").checked) {
 			new_level.wrappers.push(
 				// AJAX
-				["window.XMLHttpRequest", document.getElementById("xmlhttprequest_block_checkbox").checked, document.getElementById("xmlhttprequest_ask_checkbox").checked],
+				["window.XMLHttpRequest", document.getElementById("xhr_behaviour_block").checked, document.getElementById("xhr_behaviour_ask").checked],
 			);
 		}
 		if (document.getElementById("hardware_main_checkbox").checked) {
@@ -248,7 +188,7 @@ function prepare_level_config(action_descr, params = {
 		}
 
 		if (document.getElementById("arrays_main_checkbox").checked) {
-			let doMapping = document.getElementById("mapping_checkbox").checked;
+			let doMapping = document.getElementById("arrays_mapping").checked;
 			let arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
 			for (let a of arrays) {
 				new_level.wrappers.push([`window.${a}`, doMapping]);
@@ -258,14 +198,14 @@ function prepare_level_config(action_descr, params = {
 			);
 		}
 		if (document.getElementById("shared_array_main_checkbox").checked) {
-			let block = document.getElementById("shared_array_block_checkbox").checked;
+			let block = document.getElementById("shared_array_approach_block").checked;
 			new_level.wrappers.push(
 				// SHARED
 				["window.SharedArrayBuffer", block],
 			);
 		}
 		if (document.getElementById("webworker_main_checkbox").checked) {
-			let polyfill = document.getElementById("webworker_polyfill_checkbox").checked;
+			let polyfill = document.getElementById("webworker_approach_polyfill").checked;
 			new_level.wrappers.push(
 				// WORKER
 				["window.Worker", polyfill],
@@ -324,22 +264,24 @@ function edit_level(id) {
 					"performance.getEntriesByName" in lev &&
 					"performance.getEntriesByType" in lev &&
 					"window.Date" in lev,
-			time_precision_round: "Performance.prototype.now" in lev ? lev["Performance.prototype.now"][0] : 100,
-			time_random_checked: "window.Date" in lev ? lev["window.Date"][1] : false,
-			htmlcanvas_checked: "CanvasRenderingContext2D.prototype.getImageData" in lev &&
+			time_precision_precision: "Performance.prototype.now" in lev ? lev["Performance.prototype.now"][0] : 100,
+			time_precision_randomize: "window.Date" in lev ? lev["window.Date"][1] : false,
+			htmlcanvaselement_checked: "CanvasRenderingContext2D.prototype.getImageData" in lev &&
 					"HTMLCanvasElement.prototype.toBlob" in lev &&
 					"HTMLCanvasElement.prototype.toDataURL" in lev,
 			hardware_checked: "navigator.deviceMemory" in lev &&
 					"navigator.hardwareConcurrency" in lev,
 			xhr_checked: "window.XMLHttpRequest" in lev,
-			xhr_block_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : false,
-			xhr_ask_checked: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
+			xhr_behaviour_block: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : true,
+			xhr_behaviour_ask: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
 			arrays_checked: "window.Uint8Array" in lev,
-			mapping_checked: "window.Uint8Array" in lev ? lev["window.Uint8Array"][0] : false,
+			arrays_mapping: "window.Uint8Array" in lev ? lev["window.Uint8Array"][0] : false,
 			shared_array_checked: "window.SharedArrayBuffer" in lev,
-			shared_slow_checked: "window.SharedArrayBuffer" in lev ? !(lev["window.SharedArrayBuffer"][0]) : false,
+			shared_array_approach_block: "window.SharedArrayBuffer" in lev ? (lev["window.SharedArrayBuffer"][0]) : true,
+			shared_array_approach_polyfill: "window.SharedArrayBuffer" in lev ? !(lev["window.SharedArrayBuffer"][0]) : false,
 			webworker_checked: "window.Worker" in lev,
-			webworker_slow_checked: "window.Worker" in lev ? !(lev["window.Worker"][0]) : false,
+			webworker_approach_polyfill: "window.Worker" in lev ? (lev["window.Worker"][0]) : true,
+			webworker_approach_slow: "window.Worker" in lev ? !(lev["window.Worker"][0]) : false,
 			battery_checked: "navigator.getBattery" in lev,
 	});
 }
