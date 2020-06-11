@@ -20,11 +20,6 @@
 //
 
 /**
- * The object carrying all the wrappers
- */
-var build_wrapping_code = {};
-
-/**
  * Create IIFE to wrap the code in closure
  */
 function enclose_wrapping(code, ...args) {
