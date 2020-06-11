@@ -28,6 +28,13 @@ if ((typeof browser) === "undefined") {
 	var browser = chrome;
 }
 
+/// A map where to look for the values in HTML elements
+const html_element_value_source = {
+	"select": "value",
+	"input-checkbox": "checked",
+	"input-radio": "checked",
+};
+
 function prepare_level_config(action_descr, params = wrapping_groups.empty_level) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
@@ -141,82 +148,14 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
-		new_level = {
-			level_id: document.getElementById("level_id").value,
-			level_text: document.getElementById("level_text").value,
-			level_description: document.getElementById("level_description").value,
-			wrappers: []
+		new_level = {};
+		for (property in wrapping_groups.empty_level) {
+			let p = wrapping_groups.option_map[property];
+			let convertor = (p && p.data_type) ? window[p.data_type] : (a) => a;
+			let elem = document.getElementById(property);
+			let value_getter = (p && p.ui_elem && (p.ui_elem in html_element_value_source)) ? html_element_value_source[p.ui_elem] : "value";
+			new_level[property] = convertor(elem[value_getter]);
 		};
-
-		if (document.getElementById("htmlcanvaselement").checked) {
-			new_level.wrappers.push(
-				// H-C
-				["CanvasRenderingContext2D.prototype.getImageData"],
-				["HTMLCanvasElement.prototype.toBlob"],
-				["HTMLCanvasElement.prototype.toDataURL"],
-			);
-		}
-		if (document.getElementById("time_precision").checked) {
-			var precision = document.getElementById("time_precision_precision").value;
-			var randomize = document.getElementById("time_precision_randomize").checked;
-
-			new_level.wrappers.push(
-				// HRT
-				["Performance.prototype.now", precision, randomize],
-				["window.PerformanceEntry", precision, randomize],
-				// PT2
-				["performance.getEntries", precision, randomize],
-				["performance.getEntriesByName", precision, randomize],
-				["performance.getEntriesByType", precision, randomize],
-				// ECMA
-				["window.Date", precision, randomize],
-			);
-		}
-		if (document.getElementById("xhr").checked) {
-			new_level.wrappers.push(
-				// AJAX
-				["window.XMLHttpRequest", document.getElementById("xhr_behaviour_block").checked, document.getElementById("xhr_behaviour_ask").checked],
-			);
-		}
-		if (document.getElementById("hardware").checked) {
-			new_level.wrappers.push(
-				// DM
-				["navigator.deviceMemory"],
-				// HTML-LS
-				["navigator.hardwareConcurrency"],
-			);
-		}
-
-		if (document.getElementById("arrays").checked) {
-			let doMapping = document.getElementById("arrays_mapping").checked;
-			let arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array", "Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
-			for (let a of arrays) {
-				new_level.wrappers.push([`window.${a}`, doMapping]);
-			}
-			new_level.wrappers.push(
-				["window.DataView", doMapping],
-			);
-		}
-		if (document.getElementById("shared_array").checked) {
-			let block = document.getElementById("shared_array_approach_block").checked;
-			new_level.wrappers.push(
-				// SHARED
-				["window.SharedArrayBuffer", block],
-			);
-		}
-		if (document.getElementById("webworker").checked) {
-			let polyfill = document.getElementById("webworker_approach_polyfill").checked;
-			new_level.wrappers.push(
-				// WORKER
-				["window.Worker", polyfill],
-			);
-		}
-		if (document.getElementById("battery").checked) {
-			new_level.wrappers.push(
-				// BATTERY
-				["navigator.getBattery"],
-			);
-		}
 
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
 			if (new_level.level_id.length > 3) {
@@ -224,17 +163,18 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 				return;
 			}
 			async function updateLevels(new_level, stored_levels) {
+				custom_levels = stored_levels.custom_levels;
 				let ok = false;
-				if (new_level.level_id in stored_levels) {
+				if (new_level.level_id in custom_levels) {
 					ok = window.confirm("Custom level " + new_level.level_id + " already exists. It will be overriden.");
 				}
 				else {
 					ok = true;
 				}
 				if (ok) {
-					stored_levels[new_level.level_id] = new_level;
+					custom_levels[new_level.level_id] = new_level;
 					try {
-						await browser.storage.sync.set({custom_levels: stored_levels});
+						await browser.storage.sync.set({custom_levels: custom_levels});
 						location = "";
 					}
 					catch (err) {
@@ -242,7 +182,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 					}
 				}
 			}
-			browser.storage.sync.get(custom_levels, updateLevels.bind(null, new_level));
+			browser.storage.sync.get("custom_levels", updateLevels.bind(null, new_level));
 		}
 		else {
 			alert("Please provide all required fields: ID, Name, and Decription");
@@ -251,50 +191,22 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 }
 
 function edit_level(id) {
-	var lev = {};
-	for (wrapper of levels[id].wrappers) {
-		lev[wrapper[0]] = wrapper.slice(1);
-	}
-	prepare_level_config("Edit level " + escape(id), {
-			level_text: levels[id].level_text,
-			level_id: levels[id].level_id,
-			level_description: levels[id].level_description,
-			time_precision: "Performance.prototype.now" in lev &&
-					"performance.getEntries" in lev &&
-					"performance.getEntriesByName" in lev &&
-					"performance.getEntriesByType" in lev &&
-					"window.Date" in lev,
-			time_precision_precision: "Performance.prototype.now" in lev ? lev["Performance.prototype.now"][0] : 100,
-			time_precision_randomize: "window.Date" in lev ? lev["window.Date"][1] : false,
-			htmlcanvaselement: "CanvasRenderingContext2D.prototype.getImageData" in lev &&
-					"HTMLCanvasElement.prototype.toBlob" in lev &&
-					"HTMLCanvasElement.prototype.toDataURL" in lev,
-			hardware: "navigator.deviceMemory" in lev &&
-					"navigator.hardwareConcurrency" in lev,
-			xhr: "window.XMLHttpRequest" in lev,
-			xhr_behaviour_block: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][0] : true,
-			xhr_behaviour_ask: "window.XMLHttpRequest" in lev ? lev["window.XMLHttpRequest"][1] : false,
-			arrays: "window.Uint8Array" in lev,
-			arrays_mapping: "window.Uint8Array" in lev ? lev["window.Uint8Array"][0] : false,
-			shared_array: "window.SharedArrayBuffer" in lev,
-			shared_array_approach_block: "window.SharedArrayBuffer" in lev ? (lev["window.SharedArrayBuffer"][0]) : true,
-			shared_array_approach_polyfill: "window.SharedArrayBuffer" in lev ? !(lev["window.SharedArrayBuffer"][0]) : false,
-			webworker: "window.Worker" in lev,
-			webworker_approach_polyfill: "window.Worker" in lev ? (lev["window.Worker"][0]) : true,
-			webworker_approach_slow: "window.Worker" in lev ? !(lev["window.Worker"][0]) : false,
-			battery: "navigator.getBattery" in lev,
-	});
+	prepare_level_config("Edit level " + escape(id), levels[id]);
 }
 
-function restore_level(id, settings) {
-	levels[id] = settings;
-	browser.storage.sync.set({"custom_levels": levels});
-	var existPref = document.getElementById(`li-exist-group-${escape(id)}`);
-	existPref.classList.remove("hidden");
-	var removedPref = document.getElementById(`li-removed-group-${escape(id)}`);
-	removedPref.classList.add("hidden");
-	var lielem = document.getElementById(`li-${id}`);
-	lielem.classList.remove("undo");
+function restore_level(id, level_params) {
+	function restoreLevel(settings) {
+		var custom_levels = settings.custom_levels;
+		custom_levels[id] = level_params;
+		browser.storage.sync.set({"custom_levels": custom_levels});
+		var existPref = document.getElementById(`li-exist-group-${escape(id)}`);
+		existPref.classList.remove("hidden");
+		var removedPref = document.getElementById(`li-removed-group-${escape(id)}`);
+		removedPref.classList.add("hidden");
+		var lielem = document.getElementById(`li-${id}`);
+		lielem.classList.remove("undo");
+	}
+	browser.storage.sync.get("custom_levels", restoreLevel);
 }
 
 function show_existing_level(levelsEl, level) {
@@ -339,15 +251,19 @@ function show_existing_level(levelsEl, level) {
 }
 
 function remove_level(id) {
-	// See https://alistapart.com/article/neveruseawarning/
-	var existPref = document.getElementById(`li-exist-group-${escape(id)}`);
-	existPref.classList.add("hidden");
-	var removedPref = document.getElementById(`li-removed-group-${escape(id)}`);
-	removedPref.classList.remove("hidden");
-	var lielem = document.getElementById(`li-${id}`);
-	lielem.classList.add("undo");
-	delete levels[id];
-	browser.storage.sync.set({"custom_levels": levels});
+	function remove_level(settings) {
+		var custom_levels = settings.custom_levels;
+		// See https://alistapart.com/article/neveruseawarning/
+		var existPref = document.getElementById(`li-exist-group-${escape(id)}`);
+		existPref.classList.add("hidden");
+		var removedPref = document.getElementById(`li-removed-group-${escape(id)}`);
+		removedPref.classList.remove("hidden");
+		var lielem = document.getElementById(`li-${id}`);
+		lielem.classList.add("undo");
+		delete custom_levels[id];
+		browser.storage.sync.set({"custom_levels": custom_levels});
+	}
+	browser.storage.sync.get("custom_levels", remove_level);
 }
 
 function insert_levels() {

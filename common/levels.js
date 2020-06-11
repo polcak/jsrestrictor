@@ -36,6 +36,21 @@ var wrapping_groups = {
 		level_description: "",
 	},
 	option_map: {}, ///Automatically populated
+	associated_params: {}, ///Automatically populated
+	get_wrappers: function(level) {
+		wrappers = [];
+		for (group of wrapping_groups.groups) {
+			if (level[group.id] === true) {
+				let arg_names = wrapping_groups.associated_params[group.id];
+				let arg_values = arg_names.reduce(function(prev, name) {
+					prev.push(level[name]);
+					return prev;
+				}, []);
+				group.wrappers.forEach((w) => wrappers.push([w, ...arg_values]));
+			}
+		}
+		return wrappers;
+	},
 	groups: [
 		{
 			name: "time_precision",
@@ -237,12 +252,15 @@ var wrapping_groups = {
 wrapping_groups.groups.forEach(function (group) {
 	group.id = group.name;
 	group.data_type = "Boolean";
+	group.ui_elem = "input-checkbox";
 	wrapping_groups.empty_level[group.id] = Boolean(group.default);
 	wrapping_groups.option_map[group.id] = group
+	wrapping_groups.associated_params[group.id] = [];
 	group.options.forEach((function (gid, option) {
 		option.id = `${gid}_${option.name}`;
 		if (option.default !== undefined) {
 			wrapping_groups.empty_level[option.id] = option.default;
+			wrapping_groups.associated_params[group.id].push(option.id);
 		}
 		wrapping_groups.option_map[option.id] = option;
 		if (option.options !== undefined) {
@@ -250,6 +268,10 @@ wrapping_groups.groups.forEach(function (group) {
 				choice.id = `${oid}_${choice.value}`;
 				if (choice.default !== undefined) {
 					wrapping_groups.empty_level[choice.id] = choice.default;
+					wrapping_groups.associated_params[group.id].push(choice.id);
+				}
+				if (choice.ui_elem === undefined && option.ui_elem !== undefined) {
+					choice.ui_elem = option.ui_elem;
 				}
 				wrapping_groups.option_map[choice.id] = choice;
 			}).bind(null, option.id));
@@ -263,103 +285,53 @@ var level_0 = {
 	"level_id": "0",
 	"level_text": "Built-in 0",
 	"level_description": "No protection at all",
-	"wrappers": [],
 };
 
-var level_1_time_precision = 2;
 var level_1 = {
 	"level_id": "1",
 	"level_text": "Built-in 1",
 	"level_description": "Minimal level of protection",
-	"wrappers": [
-		// HRT
-		["Performance.prototype.now", level_1_time_precision],
-		// PT2
-		["performance.getEntries", level_1_time_precision],
-		["performance.getEntriesByName", level_1_time_precision],
-		["performance.getEntriesByType", level_1_time_precision],
-		// ECMA
-		["window.Date", level_1_time_precision],
-		// BATTERY
-		["navigator.getBattery"],
-		// DM
-		["navigator.deviceMemory"],
-		// HTML-LS
-		["navigator.hardwareConcurrency"],
-	]
+	"time_precision": true,
+	"time_precision_precision": 2,
+	"time_precision_randomize": false,
+	"hardware": true,
+	"battery": true,
 };
 
-var level_2_time_precision = 1;
 var level_2 = {
 	"level_id": "2",
 	"level_text": "Built-in 2",
 	"level_description": "Recomended level of protection for most sites",
-	"wrappers": [
-		// H-C
-		["CanvasRenderingContext2D.prototype.getImageData"],
-		["HTMLCanvasElement.prototype.toBlob"],
-		["HTMLCanvasElement.prototype.toDataURL"],
-		// HRT
-		["Performance.prototype.now", level_2_time_precision],
-		// PT2
-		["performance.getEntries", level_2_time_precision],
-		["performance.getEntriesByName", level_2_time_precision],
-		["performance.getEntriesByType", level_2_time_precision],
-		// ECMA
-		["window.Date", level_2_time_precision],
-		// BATTERY
-		["navigator.getBattery"],
-		// DM
-		["navigator.deviceMemory"],
-		// HTML-LS
-		["navigator.hardwareConcurrency"],
-	]
+	"time_precision": true,
+	"time_precision_precision": 1,
+	"time_precision_randomize": false,
+	"hardware": true,
+	"battery": true,
+	"htmlcanvaselement": true,
 };
 
-var level_3_time_precision = 0;
 var level_3 = {
 	"level_id": "3",
 	"level_text": "Built-in 3",
 	"level_description": "High level of protection",
-	"wrappers": [
-		// H-C
-		["CanvasRenderingContext2D.prototype.getImageData"],
-		["HTMLCanvasElement.prototype.toBlob"],
-		["HTMLCanvasElement.prototype.toDataURL"],
-		// HRT
-		["Performance.prototype.now", level_3_time_precision, true],
-		["window.PerformanceEntry", level_3_time_precision, true],
-		// PT2
-		["performance.getEntries", level_3_time_precision, true],
-		["performance.getEntriesByName", level_3_time_precision, true],
-		["performance.getEntriesByType", level_3_time_precision, true],
-		// ECMA
-		["window.Date", level_3_time_precision, true],
-		// AJAX
-		["window.XMLHttpRequest", false, true],
-		// BATTERY
-		["navigator.getBattery"],
-		// DM
-		["navigator.deviceMemory"],
-		// HTML-LS
-		["navigator.hardwareConcurrency"],
-		// ARRAY + see the insert_array_wrappings() below
-		["window.DataView", true],
-		// SHARED
-		["window.SharedArrayBuffer", true],
-		// WORKER
-		["window.Worker", true],
-	]
+	"time_precision": true,
+	"time_precision_precision": 0,
+	"time_precision_randomize": true,
+	"hardware": true,
+	"battery": true,
+	"htmlcanvaselement": true,
+	"xhr": true,
+	"xhr_behaviour_block": false,
+	"xhr_behaviour_ask": true,
+	"arrays": true,
+	"arrays_mapping": true,
+	"shared_array": true,
+	"shared_array_approach_block": true,
+	"shared_array_approach_polyfill": false,
+	"webworker": true,
+	"webworker_approach_polyfill": true,
+	"webworker_approach_slow": false,
 };
-
-// ARRAY
-(function insert_array_wrappings() {
-	let arrays = ["Uint8Array", "Int8Array", "Uint8ClampedArray", "Int16Array",
-		"Uint16Array", "Int32Array", "Uint32Array", "Float32Array", "Float64Array"];
-	for (let a of arrays) {
-		level_3.wrappers.push([`window.${a}`, true]);
-	}
-})();
 
 // Level aliases
 const L0 = "0";
@@ -391,7 +363,10 @@ function updateLevels(res) {
 	init_levels();
 	custom_levels = res["custom_levels"] || {};
 	for (let key in custom_levels) {
-		levels[custom_levels[key].level_id] = custom_levels[key];
+		levels[key] = custom_levels[key];
+	}
+	for (let key in levels) {
+		levels[key].wrappers = wrapping_groups.get_wrappers(levels[key]);
 	}
 	if (window.wrap_code !== undefined) {
 		for (l in levels) {
