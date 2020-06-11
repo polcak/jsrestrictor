@@ -49,7 +49,7 @@
   "browser_specific_settings": {
     "gecko": {
         "id": "jsr@javascriptrestrictor",
-        "strict_min_version": "57.0a1"
+        "strict_min_version": "68.0"
       } 
   }
 }
