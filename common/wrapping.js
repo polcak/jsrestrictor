@@ -20,6 +20,11 @@
 //
 
 /**
+ * The object carrying all the wrappers
+ */
+var build_wrapping_code = {};
+
+/**
  * Adds a list of wrapping objects to the build_wrapping_code.
  *
  * This function is called from each wrapper in its file.

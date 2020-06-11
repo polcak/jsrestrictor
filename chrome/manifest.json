@@ -1,7 +1,7 @@
 {
   "author": "Libor Polčák, Martin Timko, Pavel Pohner",
   "background": {
-      "scripts": ["update.js", "url.js", "code_builders.js", "levels.js", WRAPPING, "background.js", "level_cache.js", "http_shield_chrome.js", "http_shield_common.js"],
+      "scripts": ["update.js", "url.js", WRAPPING, "code_builders.js", "levels.js", "background.js", "level_cache.js", "http_shield_chrome.js", "http_shield_common.js"],
       "persistent": true
   },
   "browser_action": {
