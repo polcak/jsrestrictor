@@ -1,5 +1,5 @@
 {
-  "author": "Libor Polčák, Martin Timko, Pavel Pohner",
+  "author": "Libor Polčák, Martin Timko, Pavel Pohner, Peter Horňák",
   "background": {
       "scripts": ["update.js", "url.js", WRAPPING, "code_builders.js", "levels.js", "background.js", "level_cache.js", "http_shield_firefox.js", "http_shield_common.js"]
   },
