@@ -13,8 +13,8 @@
 			</section>
 			<nav class="menu">
 				<ul>
-					<li><a href="options.html">Protection levels</a></li>
-					<li><a href="options_domains.html">Specific domain configuration</a></li>
+					<li><a href="options.html">Main JSR settings</a></li>
+					<li><a href="options_domains.html">Specific domain level configuration</a></li>
 					<li>
 						<p>External links</p>
 						<ul>
@@ -43,6 +43,53 @@
     </ul>
     <p id="levels-link" class="links">For more info about levels visit: <a href="https://polcak.github.io/jsrestrictor/levels.html" target="_blank">Levels description</a></p>
     <button id="new_level" class="jsr-button">Add custom level</button>
+  </div>
+
+  <div id="proxy-protection-config">
+	<h2>Network boundary shield</h2>
+  	<div>
+			<label id="switch-label">Network boundary shield: </label>
+	  	<label class="switch">
+			  <input id="switch-checkbox" type="checkbox" checked>
+			  <span class="slider"></span>
+		</label>
+	</div>
+	<p>
+		Network boundary shield prevents web pages to use the browser as a proxy between local network
+		and the public Internet. See the
+		<a
+			href="https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf">Force
+			Point report</a> for an example of the attack.
+		The protection encapsulates the WebRequest API, so it captures all outgoing requests.
+	</p>
+	<p>
+		Generally, you want Network boundary shield protection active, however, some pages can be
+		broken, because they require interaction between public Internet and local network, for example,
+		some Intranet information systems might be broken by the Network boundary shield.
+	</p>
+	<p>
+		You can disable the Network boundary shield by adding the domain (e.g. example.com) to the
+		list below. The domains and all their subdomains listed bellow are not blocked by the Network
+		boundary shield. To selectively deactivate the Network boundary shield, insert the domains to the list (excluding "www", but including all other domains eg. ".com").
+		We generally do <strong>not</strong> recommend disabling the Network boundary shield for domains
+		from the public Internet.
+	</p>
+	<p>
+		Please note, that these domain names are checked with domain hierarchy, so whitelisting
+		<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
+	</p>
+  	<div>
+	  	<input id="whitelist-input" type="text" name="whitelist-hostname" placeholder="example.com">
+			<button id="whitelist-add-button" class="jsr-button">Deactivate the Network boundary shield
+				for the domain</button>
+	</div>
+  	<select id="whitelist-select" name="sometext" size="5" multiple>
+
+	</select>
+	<div>
+		<button id="whitelist-remove-button" class="jsr-button">Reactivate the Network boundary shield
+			for the selected domains</button>
+	</div>
   </div>
 
 </section>

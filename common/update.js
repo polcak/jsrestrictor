@@ -20,9 +20,9 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-// either way, set browser var as chrome
-if ((typeof chrome) !== "undefined") {
-  var browser = chrome;
+//Chrome compatibility
+if ((typeof browser) === "undefined") {
+	var browser = chrome;
 }
 
 function installUpdate() {
@@ -30,24 +30,28 @@ function installUpdate() {
 	 * 0.3 storage
 	 *  {
 	 *    __default__: 2, // Default protection level
-	 *    version: 2,     // The version of this storage
+	 *    version: 2.1,     // The version of this storage
 	 *    custom_levels: {}, // associative array of custom level (key, its id => object)
 	 *      {level_id: short string used for example on the badge
 	 *       level_text: Short level description
 	 *       level_description: Full level description
-	 *       wrappers": list of wrappers and their parameters
+	 *       ...
+	 *       wrapping_params (key-value pairs), see wrapping_groups for the list of params and
+	 *                       supported values
 	 *      }
 	 *    domains: {}, // associative array of levels associated with specific domains (key, the domain => object)
 	 *      {level_id: short string of the level in use
 	 *      }
+	 *	  whitelistedHosts: {} // associative array of hosts that are removed from http protection control (hostname => boolean)
+	 *	  requestShieldOn: {} // Boolean, if it's TRUE or undefined, the http request protection is turned on,  if it's FALSE, the protection si turned off
 	 */
 	browser.storage.sync.get(null, function (item) {
-		if (!item.hasOwnProperty("version")) {
+		if (!item.hasOwnProperty("version") || (item.version < 2.1)) {
 			browser.storage.sync.clear();
 			console.log("All JavaScript Restrictor data cleared! Unfortunately, we do not migrate settings from versions bellow 0.3.");
 			browser.storage.sync.set({
 				__default__: 2,
-				version: 2,
+				version: 2.1,
 				custom_levels: {},
 				domains: {},
 			});
