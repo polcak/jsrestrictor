@@ -30,4 +30,11 @@ function escape(str) {
 	return str.replace(/["'&<>]/g, (c) =>  map[c]);
 }
 
-
+/**
+ * Generate random 32-bit number.
+ */
+function gen_random32() {
+	var array = new Uint32Array(1);
+	window.crypto.getRandomValues(array);
+	return array[0];
+}

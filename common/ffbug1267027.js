@@ -99,9 +99,7 @@ function build_code_ffbug(wrapper, ...args) {
  * https://bugzilla.mozilla.org/show_bug.cgi?id=1267027
  */
 function is_firefox_blocking_scripts() {
-	var array = new Uint32Array(1);
-	window.crypto.getRandomValues(array);
-	random_str = "JSR" + array[0];
+	var random_str = "JSR" + gen_random32();
 	if (window.wrappedJSObject[random_str] !== undefined) {
 		// Unlikely, but we hit an existing property
 		return is_firefox_blocking_scripts(); // rerun and generate a new number
