@@ -1,7 +1,7 @@
 {
   "author": "Libor Polčák, Martin Timko, Pavel Pohner, Peter Horňák",
   "background": {
-      "scripts": ["update.js", "url.js", WRAPPING, "code_builders.js", "levels.js", "background.js", "level_cache.js", "http_shield_firefox.js", "http_shield_common.js"]
+      "scripts": ["helpers.js", "update.js", "url.js", WRAPPING, "code_builders.js", "levels.js", "background.js", "level_cache.js", "http_shield_firefox.js", "http_shield_common.js"]
   },
   "browser_action": {
     "browser_style": true,
@@ -21,7 +21,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["browser.js", "inject.js", WRAPPING, "code_builders.js", "ffbug1267027.js", "document_start.js"],
+      "js": ["helpers.js", "browser.js", "inject.js", WRAPPING, "code_builders.js", "ffbug1267027.js", "document_start.js"],
       "run_at": "document_start"
     }
   ],
