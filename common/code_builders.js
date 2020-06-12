@@ -46,6 +46,11 @@ function define_page_context_function(wrapper) {
 	var originalF = wrapper["original_function"] || `${wrapper.parent_object}.${wrapper.parent_object_property}`;
 	return enclose_wrapping2(`var originalF = ${originalF};
 			var replacementF = function(${wrapper.wrapping_function_args}) {
+				// This comment is needed to correctly differentiate wrappers with the same body
+				// by the toString() wrapper
+				// ${wrapper.parent_object}.${wrapper.parent_object_property} - ${wrapper.original_function}
+				// Prevent fingerprintability of the extension by toString behaviour
+				// ${gen_random32()}
 				${wrapper.wrapping_function_body}
 			};
 			${wrapper.replace_original_function ? wrapper.original_function : `${wrapper.parent_object}.${wrapper.parent_object_property}`} = replacementF;
