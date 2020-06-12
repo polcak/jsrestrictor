@@ -24,11 +24,21 @@
  * Create private namespace
  */
 (function() {
+	var helping_code = "var precision = args[0]; var doNoise = args[1]; var pastValues = {};" + \
+		rounding_function + noise_function;
 	var common_function_body = `
 				var measures = origFunc.call(this, ...args);
 				func = rounding_function;
 				if (doNoise === true){
-					func = noise_function
+					func = function(value, precision) {
+						let params = [value, precision];
+						if (params in pastValues) {
+							return pastValues[params];
+						}
+						let result = noise_function(...params);
+						pastValues[params] = result;
+						return result;
+					}
 				}
 				var ret = [];
 				for (measure of measures) {
@@ -42,6 +52,7 @@
 				}
 				return ret;
 			`;
+
 	var wrappers = [
 		{
 			parent_object: "performance",
@@ -52,7 +63,7 @@
 					wrapped_name: "origFunc",
 				}
 			],
-			helping_code: rounding_function + noise_function + "var precision = args[0]; var doNoise = args[1];",
+			helping_code: helping_code,
 			wrapping_function_args: "...args",
 			wrapping_function_body: common_function_body
 		},
@@ -65,7 +76,7 @@
 					wrapped_name: "origFunc",
 				}
 			],
-			helping_code: rounding_function + noise_function + "var precision = args[0]; var doNoise = args[1];",
+			helping_code: helping_code,
 			wrapping_function_args: "...args",
 			wrapping_function_body: common_function_body
 		},
@@ -78,7 +89,7 @@
 					wrapped_name: "origFunc",
 				}
 			],
-			helping_code: rounding_function + noise_function + "var precision = args[0]; var doNoise = args[1];",
+			helping_code: helping_code,
 			wrapping_function_args: "...args",
 			wrapping_function_body: common_function_body
 		},
