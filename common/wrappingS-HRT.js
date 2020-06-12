@@ -34,12 +34,6 @@
 					wrapped_name: "origNow",
 				}
 			],
-			helping_code: rounding_function + "var precision = args[0];",
-			wrapping_function_args: "",
-			wrapping_function_body: `
-					var originalPerformanceValue = origNow.call(window.performance);
-					return rounding_function(originalPerformanceValue, precision);
-			`,
 			helping_code: rounding_function + noise_function + `
 				let precision = args[0];
 				let doNoise = args[1];
@@ -47,12 +41,9 @@
 			wrapping_function_args: "",
 			wrapping_function_body: `
 					var originalPerformanceValue = origNow.call(window.performance);
-					var func = rounding_function;
-					if (doNoise === true){
-						func = noise_function
-					}
-					return func(originalPerformanceValue, precision);
-				`
+					var limit_precision = doNoise ? noise_function : rounding_function;
+					return limit_precision(originalPerformanceValue, precision);
+			`,
 		},
 	];
 	add_wrappers(wrappers);
