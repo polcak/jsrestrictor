@@ -89,7 +89,6 @@ var wrapping_groups = {
 			wrappers: [
 				// HRT
 				"Performance.prototype.now",
-				"window.PerformanceEntry",
 				// PT2
 				"performance.getEntries",
 				"performance.getEntriesByName",
