@@ -35,6 +35,18 @@ const html_element_value_source = {
 	"input-radio": "checked",
 };
 
+function is_api_undefined(api) {
+	let s = api.split(".");
+	let last = window;
+	for (p of s) {
+		if (last[p] === undefined) {
+			return true;
+		}
+		last = last[p];
+	}
+	return false;
+}
+
 function prepare_level_config(action_descr, params = wrapping_groups.empty_level) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
@@ -87,12 +99,20 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 					<span class="table-left-column">${descr}</span><br>
 				`;
 			}
+			function are_all_api_unsupported(wrappers) {
+				for (wrapper of wrappers) {
+					if (!is_api_undefined(wrapper)) {
+						return "";
+					}
+				}
+				return "notsupportedapis";
+			}
 			return html + `
-				<div class="main-section">
-					<input type="checkbox" id="${group.id}" ${params[group.id] ? "checked" : ""}>
+				<div class="main-section ${are_all_api_unsupported(group.wrappers)}">
+					<input type="checkbox" id="${group.id}"  ${params[group.id] ? "checked" : ""}>
 					<span class="section-header">${group.description}:</span>
 				</div>
-					<div id="${group.name}_options" class="${params[group.id] ? "" : "hidden"}">
+					<div id="${group.name}_options" class=" ${are_all_api_unsupported(group.wrappers)} ${params[group.id] ? "" : "hidden"}">
 						${group.description2.reduce(process_descriptions, "")}
 						${group.options.reduce(process_option, "")}
 					</div>
@@ -100,9 +120,16 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 		}
 		return wrapping_groups.groups.reduce(process_group, "");
 	}
+	function find_unsupported_apis(html, wrapper) {
+		if (is_api_undefined(wrapper)) {
+			return html + `<p class="unsupported_api">Your browser does not support <code>${wrapper}</code>.</p>`;
+		}
+		return html;
+	}
 	var fragment = document.createRange().createContextualFragment(`
 <div>
 		<p>Note that for fingerprintability prevention, JS Restrictor does not wrap objects that are not defined. For example, if an experimental feature like <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory"><code>navigator.deviceMemory</code></a> is not defined in your browser, JS Restrictor does not define the property even if it is shown below that the value is defined.</p>
+	${wrapping_groups.groups.reduce((acc, group) => group.wrappers.reduce(find_unsupported_apis, acc), "")}
 	<div>
 	  <h2>${action_descr}</h2>
 	</div>
