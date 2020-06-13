@@ -113,8 +113,8 @@ var wrapping_groups = {
 			name: "hardware",
 			description: "Spoof hardware information to the most popular HW",
 			description2: [
-				"JS navigator.deviceMemory: 4",
-				"JS navigator.hardwareConcurrency: 2",
+				navigator.deviceMemory !== undefined ? "navigator.deviceMemory: 4" : "",
+				"navigator.hardwareConcurrency: 2",
 			],
 			options: [],
 			wrappers: [
@@ -247,12 +247,40 @@ var wrapping_groups = {
 	],
 }
 
+/**
+ * Check if the given API is supported by the browser
+ * @param String to the object which presence to check.
+ */
+function is_api_undefined(api) {
+	let s = api.split(".");
+	let last = window;
+	for (p of s) {
+		if (last[p] === undefined) {
+			return true;
+		}
+		last = last[p];
+	}
+	return false;
+}
+
+/**
+ * Returns true if all given API wrappers are unsuported.
+ */
+function are_all_api_unsupported(wrappers) {
+	for (wrapper of wrappers) {
+		if (!is_api_undefined(wrapper)) {
+			return false;
+		}
+	}
+	return true;
+}
+
 /// Automatically populate infered metadata in wrapping_groups.
 wrapping_groups.groups.forEach(function (group) {
 	group.id = group.name;
 	group.data_type = "Boolean";
 	group.ui_elem = "input-checkbox";
-	wrapping_groups.empty_level[group.id] = Boolean(group.default);
+	wrapping_groups.empty_level[group.id] = are_all_api_unsupported(group.wrappers) ? true : Boolean(group.default);
 	wrapping_groups.option_map[group.id] = group
 	wrapping_groups.associated_params[group.id] = [];
 	group.options.forEach((function (gid, option) {
