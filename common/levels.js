@@ -120,10 +120,10 @@ var wrapping_groups = {
 			],
 			options: [],
 			wrappers: [
-				// BATTERY
-				["navigator.getBattery"],
+				// HTML-LS
+				"navigator.hardwareConcurrency",
 				// DM
-				["navigator.deviceMemory"],
+				"navigator.deviceMemory",
 			],
 		},
 		{
