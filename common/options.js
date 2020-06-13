@@ -103,14 +103,19 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 	}
 	function find_unsupported_apis(html, wrapper) {
 		if (is_api_undefined(wrapper)) {
-			return html + `<p class="unsupported_api">Your browser does not support <code>${wrapper}</code>.</p>`;
+			return html + `<li> <code>${wrapper}</code>.</li>`;
 		}
 		return html;
 	}
+	var unsupported_apis = wrapping_groups.groups.reduce((acc, group) =>
+		group.wrappers.reduce(find_unsupported_apis, acc), "");
+	if (unsupported_apis !== "") {
+		unsupported_apis = `<div class="unsupported_api"><p>Your browser does not support:</p>${unsupported_apis}</div>`;
+	}
 	var fragment = document.createRange().createContextualFragment(`
 <div>
-		<p>Note that for fingerprintability prevention, JS Restrictor does not wrap objects that are not defined. For example, if an experimental feature like <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory"><code>navigator.deviceMemory</code></a> is not defined in your browser, JS Restrictor does not define the property even if it is shown below that the value is defined.</p>
-	${wrapping_groups.groups.reduce((acc, group) => group.wrappers.reduce(find_unsupported_apis, acc), "")}
+		<p>Note that for fingerprintability prevention, JS Restrictor does not wrap objects that are not defined.</p>
+	${unsupported_apis}
 	<div>
 	  <h2>${action_descr}</h2>
 	</div>
