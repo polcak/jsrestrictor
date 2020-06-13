@@ -113,8 +113,8 @@ var wrapping_groups = {
 			name: "hardware",
 			description: "Spoof hardware information to the most popular HW",
 			description2: [
-				"JS navigator.deviceMemory: 4",
-				"JS navigator.hardwareConcurrency: 2",
+				navigator.deviceMemory !== undefined ? "navigator.deviceMemory: 4" : "",
+				"navigator.hardwareConcurrency: 2",
 			],
 			options: [],
 			wrappers: [
