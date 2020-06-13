@@ -35,18 +35,6 @@ const html_element_value_source = {
 	"input-radio": "checked",
 };
 
-function is_api_undefined(api) {
-	let s = api.split(".");
-	let last = window;
-	for (p of s) {
-		if (last[p] === undefined) {
-			return true;
-		}
-		last = last[p];
-	}
-	return false;
-}
-
 function prepare_level_config(action_descr, params = wrapping_groups.empty_level) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
@@ -99,20 +87,13 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 					<span class="table-left-column">${descr}</span><br>
 				`;
 			}
-			function are_all_api_unsupported(wrappers) {
-				for (wrapper of wrappers) {
-					if (!is_api_undefined(wrapper)) {
-						return "";
-					}
-				}
-				return "notsupportedapis";
-			}
+			let = supportedapis = are_all_api_unsupported(group.wrappers) ? "notsupportedapis" : "";
 			return html + `
-				<div class="main-section ${are_all_api_unsupported(group.wrappers)}">
+				<div class="main-section ${supportedapis}">
 					<input type="checkbox" id="${group.id}"  ${params[group.id] ? "checked" : ""}>
 					<span class="section-header">${group.description}:</span>
 				</div>
-					<div id="${group.name}_options" class=" ${are_all_api_unsupported(group.wrappers)} ${params[group.id] ? "" : "hidden"}">
+					<div id="${group.name}_options" class="${supportedapis} ${params[group.id] ? "" : "hidden"}">
 						${group.description2.reduce(process_descriptions, "")}
 						${group.options.reduce(process_option, "")}
 					</div>
