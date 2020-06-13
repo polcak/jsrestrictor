@@ -24,8 +24,11 @@
  * Create private namespace
  */
 (function() {
-	var helping_code = "var precision = args[0]; var doNoise = args[1]; var pastValues = {};" + \
-		rounding_function + noise_function;
+	var helping_code = `var precision = args[0];
+	var doNoise = args[1];
+	var pastValues = {};
+	${rounding_function}
+	${noise_function}`;
 	var common_function_body = `
 				var measures = origFunc.call(this, ...args);
 				func = rounding_function;
