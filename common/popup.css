@@ -1,0 +1,167 @@
+body {
+	display: grid;
+	grid-template-columns: 32px 1fr 25px;
+	grid-template-areas:
+		"logo   jsr    controls"
+		"levels levels levels"
+		"whitelist whitelist whitelist";
+	grid-gap: 3em;
+	padding: 1em;
+	margin: 1em;
+}
+
+h3 {
+	font-size: 3ex;
+}
+
+#logo {
+	grid-area: logo;
+	width: 32px;
+}
+
+#titletext {
+	grid-area: jsr;
+	display: block;
+	font-size: large;
+}
+
+#controls {
+	grid-area: controls;
+	width: 25px;
+}
+
+#level_controls {
+	grid-area: levels;
+}
+
+#current-site {
+	font-size: large;
+}
+
+#level-select {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
+
+.level {
+	font-weight: bold;
+	font-size: large;
+	color: #4a4a4a;
+	margin: 0.7ex;
+	padding: 0.7ex;
+	border: 2px solid grey;
+	border-radius: 0.5ex;
+}
+
+.level:hover {
+	cursor: pointer;
+	background-color: #c9c9c9;
+	color: black;
+}
+
+.active {
+	border: 2px solid black;
+	background-color: #c9c9c9;
+	color:  black;
+}
+
+#controls {
+	font-weight: bold;
+	font-size: 1.5ex;
+	color: #4a4a4a;
+	margin: 0.7ex;
+	padding: 0.7ex;
+	border: 2px solid grey;
+	border-radius: 0.5ex;
+	//display: inline-block;
+	margin-top: 1.3ex;
+	margin-left: 2ex;
+}
+
+#controls:hover {
+	cursor: pointer;
+	border: 2px solid black;
+	background-color: #c9c9c9;
+	color:  black;
+}
+
+#http_shield_whitelist{
+	grid-area:whitelist;
+}
+
+#shield_off_message{
+	font-size: large;
+}
+
+/* The switch - the box around the slider */
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+	margin-left: 3px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+	
+}
+
+/* The slider */
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: red;
+	-webkit-transition: .4s;
+	transition: .4s;
+	font-size:10pt;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 25px;	
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+	color: gray;
+	content:"NO";
+}
+
+input:checked + .slider {
+	background-color: rgb(247,224,50);
+}
+
+input:focus + .slider {
+	box-shadow: 0 0 1px rgb(247,224,50);
+}
+
+input:checked + .slider:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+	content:"YES";
+	color:black;
+}
+
+#switch-label
+{
+	text-align: center;
+	vertical-align: middle;
+	font-size:14pt;
+	padding-top:5px;
+}

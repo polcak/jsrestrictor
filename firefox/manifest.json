@@ -1,10 +1,10 @@
 {
-  "author": "Libor Polčák, Martin Timko",
+  "author": "Libor Polčák, Martin Timko, Pavel Pohner, Peter Horňák",
   "background": {
-      "scripts": ["background.js"],
-      "persistent": true
+      "scripts": ["helpers.js", "update.js", "url.js", WRAPPING, "code_builders.js", "levels.js", "background.js", "level_cache.js", "http_shield_firefox.js", "http_shield_common.js"]
   },
   "browser_action": {
+    "browser_style": true,
     "default_icon": {
       "16": "img/icon-16.png",
       "32": "img/icon-32.png",
@@ -21,7 +21,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["document_start.js"],
+      "js": ["helpers.js", "browser.js", "inject.js", WRAPPING, "code_builders.js", "ffbug1267027.js", "document_start.js"],
       "run_at": "document_start"
     }
   ],
@@ -39,8 +39,17 @@
   },
   "manifest_version": 2,
   "name": "JavaScript Restrictor",
-  "options_page": "options.html",
-  "permissions": ["storage", "tabs", "webRequest", "webRequestBlocking", "<all_urls>"],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "permissions": ["storage", "tabs",  "webRequest", "webRequestBlocking", "dns", "<all_urls>", "notifications"],
   "short_name": "JSR",
-  "version": "0.2.1"
+  "version": "0.3",
+  "browser_specific_settings": {
+    "gecko": {
+        "id": "jsr@javascriptrestrictor",
+        "strict_min_version": "68.0"
+      } 
+  }
 }

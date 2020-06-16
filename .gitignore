@@ -2,3 +2,6 @@
 *.zip
 chrome_JSR/
 firefox_JSR/
+common/ipv4.csv
+common/ipv6.csv
+doxygen/

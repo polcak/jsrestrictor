@@ -1,124 +1,58 @@
-# Levels
+# The configuration of the extension
+
+## Network Boundary Shield (NBS)
+
+NBS is active independently on the levels defined below. If necessary, you can whitelist websites for which the NBS should be turned off. Generally, you want NBS to be active, however, some pages can be broken, because they require interaction between public Internet and local network, for example, some Intranet information systems might be broken by the NBS.
+
+## Levels controlling JS-object wrapping
+
 ### Level 0
-* **Spoof user agent (inspired by Tor browser) --** *OFF*
-* **Empty Referer HTTP webRequest & JS document.referrer --** *OFF*
-* **Spoof browser language to: English only --** *OFF*
-* **Set Do-Not-Track setting (navigator.doNotTrack) --** *OFF*
-* **Reduce the time accuracy of "Date" object --** *OFF*
-* **Reduce the "performance.now()" accuracy --** *OFF*
-* **Protect against canvas fingerprinting: --** *OFF*
-* **Reduce accuracy of geolocation data --** *OFF*
-* **Spoof hardware information to the most popular HW --** *OFF* 
-* **Set navigator.cookieEnabled value (experimental only) --** *OFF*
-* **Filter XMLHttpRequest requests: (experimental only) --** *OFF*
+* *All functionality is disabled OFF*
 
 ### Level 1
-* **Spoof user agent (inspired by Tor browser) --** *OFF*
-* **Empty Referer HTTP webRequest & JS document.referrer --** *OFF*
-* **Spoof browser language to: English only --** *OFF*
-* **Set Do-Not-Track setting (navigator.doNotTrack) --** *ON*
-    * Always: *yes*
-* **Reduce the time accuracy of "Date" object --** *ON*
-    * Round time to: *hundredths of a second (1.230)*
-* **Reduce the "performance.now()" accuracy --** *ON*
-    * Round "performance.now()" value to: *tens (1230)*
-* **Protect against canvas fingerprinting: --** *OFF*
-* **Reduce accuracy of geolocation data --** *ON*
-    * Round location data to:
-    * Latitude value in decimal degrees: *round to 2 decimals (12.34000)*
-    * Longitude value in decimal degrees: *round to 2 decimals (12.34000)*
-    * Altitude value in meters: *round to tens (1230)*
-    * Latitude and longitude accuracy in meters: *round to tens (1230)*
-    * Altitude accuracy in meters: *round to tens (1230)*
-    * Heading (direction of device) in degrees: *round to tens (1230)*
-    * Velocity of the device in meters per second: *round to tens (1230)*
-* **Spoof hardware information to the most popular HW --** *ON* 
-    * JS navigator.deviceMemory: *4*
+
+* **Manipulate the time precision provided by Date and performance: --** *ON*
+    * Round time to: *hundredths of a second (1.230 -- Date, 1230 -- performance)*
+* **Protect against canvas fingerprinting --** *OFF*
+* **Spoof hardware information to the most popular HW --** *ON*
+    * JS navigator.deviceMemory: *4* (not applied if the browser does not support the property, e.g.
+			Firefox)
     * JS navigator.hardwareConcurrency: *2*
-* **Set navigator.cookieEnabled value (experimental only) --** *OFF*
-* **Filter XMLHttpRequest requests: (experimental only) --** *OFF*
+* **Filter XMLHttpRequest requests --** *OFF*
+* **Protect against ArrayBuffer exploitation --** *OFF*
+* **Protect against SharedArrayBuffer exploitation --** *OFF*
+* **Protect against WebWorker exploitation --** *OFF*
+* **Disable Battery status API --** *ON*
 
 ### Level 2
-* **Spoof user agent (inspired by Tor browser) --** *ON*
-    * "User-Agent" HTTP web request & JS navigator.userAgent: *based on actual browser*
-        * Firefox: *Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0*
-        * Chrome, Opera: *Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729 Safari/537.36*
-    * JS navigator.vendor: *based on actual browser*
-        * Firefox: *empty string*
-        * Chrome, Opera: *Google Inc.*
-    * JS navigator.platform: *Win32*
-    * JS navigator.appVersion: *5.0 (Windows)*
-    * JS navigator.oscpu: *undefined*
-* **Empty Referer HTTP webRequest & JS document.referrer --** *ON*
-    * "Referrer" HTTP web request & JS document.referrer: *empty string (make websites think we always go to them directly rather than being referred)*
-* **Spoof browser language to: English only --** *OFF*
-* **Set Do-Not-Track setting (navigator.doNotTrack) --** *ON*
-    * Always: *yes*
-* **Reduce the time accuracy of "Date" object --** *ON*
-    * Round time to: *tenths of a second (1.200)*
-* **Reduce the "performance.now()" accuracy --** *ON*
-    * Round "performance.now()" value to: *hundreds (1200)*
+* **Manipulate the time precision provided by Date and performance --** *ON*
+    * Round time to: *tenths of a second (1.200 -- Date, 1200 -- performance)*
 * **Protect against canvas fingerprinting: --** *ON*
-    * Canvas return white image data by modifiing canvas.toDataURL() function
-* **Reduce accuracy of geolocation data --** *ON*
-    * Round location data to:
-    * Latitude value in decimal degrees: *round to 1 decimal place (12.30000)*
-    * Longitude value in decimal degrees: *round to 1 decimal place (12.30000)*
-    * Altitude value in meters: *round to hundreds (1200)*
-    * Latitude and longitude accuracy in meters: *round to hundreds (1200)*
-    * Altitude accuracy in meters: *round to hundreds (1200)*
-    * Heading (direction of device) in degrees: *round to hundreds (1200)*
-    * Velocity of the device in meters per second: *round to hundreds (1200)*
-* **Spoof hardware information to the most popular HW --** *ON* 
-    * JS navigator.deviceMemory: *4*
-    * JS navigator.hardwareConcurrency: *2* 
-* **Set navigator.cookieEnabled value (experimental only) --** *OFF*
-* **Filter XMLHttpRequest requests: (experimental only) --** *OFF*
+    * Reading from canvas returns white image.
+* **Spoof hardware information to the most popular HW --** *ON*
+    * JS navigator.deviceMemory: *4* (not applied if the browser does not support the property)
+    * JS navigator.hardwareConcurrency: *2*
+* **Filter XMLHttpRequest requests --** *OFF*
+* **Protect against ArrayBuffer exploitation --** *OFF*
+* **Protect against SharedArrayBuffer exploitation --** *OFF*
+* **Protect against WebWorker exploitation --** *OFF*
+* **Disable Battery status API --** *ON*
 
 ### Level 3
-* **Spoof user agent (inspired by Tor browser) --** *ON*
-    * "User-Agent" HTTP web request & JS navigator.userAgent: *Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729 Safari/537.36*
-    * JS navigator.vendor: *Google Inc.*
-    * JS navigator.platform: *Win32*
-    * JS navigator.appVersion: *5.0 (Windows)*
-    * JS navigator.oscpu: *undefined*
-* **Empty Referer HTTP webRequest & JS document.referrer --** *ON*
-    * "Referrer" HTTP web request & JS document.referrer: *empty string (make websites think we always go to them directly rather than being referred)*
-* **Spoof browser language to: English only --** *ON*
-    * "Accept-Language" HTTP web request & JS navigator.language, navigator.languages: *en-US, en*
-* **Set Do-Not-Track setting (navigator.doNotTrack) --** *ON*
-    * Always: *yes*
-* **Reduce the time accuracy of "Date" object --** *ON*
-    * Round time to: *full seconds (1.000)*
-* **Reduce the "performance.now()" accuracy --** *ON*
-    * Round "performance.now()" value to: *thousands (1000)*
+* **Manipulate the time precision provided by Date and performance --** *ON*
+    * Round time to: *full seconds (1.000 -- Date, 1000 -- performance)*
+		* *Randomize time*
 * **Protect against canvas fingerprinting: --** *ON*
-    * Canvas return white image data by modifiing canvas.toDataURL() function
-* **Reduce accuracy of geolocation data --** *ON*
-    * Null all location data (all set to zero):
-    * Latitude value in decimal degrees: *0*
-    * Longitude value in decimal degrees: *0*
-    * Altitude value in meters: *0*
-    * Latitude and longitude accuracy in meters: *0*
-    * Altitude accuracy in meters: *0*
-    * Heading (direction of device) in degrees: *0*
-    * Velocity of the device in meters per second: *0*
-* **Spoof hardware information to the most popular HW --** *ON* 
-    * JS navigator.deviceMemory: *4*
-    * JS navigator.hardwareConcurrency: *2* 
-* **Set navigator.cookieEnabled value (experimental only) --** *OFF*
-* **Filter XMLHttpRequest requests: (experimental only) --** *OFF*
-
-### Custom level
-* **Spoof user agent (inspired by Tor browser) --** *custom setting*
-* **Empty Referer HTTP webRequest & JS document.referrer --** *custom setting*
-* **Spoof browser language to: English only --** *custom setting*
-* **Set Do-Not-Track setting (navigator.doNotTrack) --** *custom setting*
-* **Reduce the time accuracy of "Date" object --** *custom setting*
-* **Reduce the "performance.now()" accuracy --** *custom setting*
-* **Protect against canvas fingerprinting: --** *custom setting*
-* **Reduce accuracy of geolocation data --** *custom setting*
-* **Spoof hardware information to the most popular HW --** *custom setting* 
-* **Set navigator.cookieEnabled value (experimental only) --** *custom setting*
-* **Filter XMLHttpRequest requests: (experimental only) --** *custom setting*
+    * Reading from canvas returns white image.
+* **Spoof hardware information to the most popular HW --** *ON*
+    * JS navigator.deviceMemory: *4* (not applied if the browser does not support the property)
+    * JS navigator.hardwareConcurrency: *2*
+* **Filter XMLHttpRequest requests: --** *confirm requests but do not block*
+* **Protect against ArrayBuffer exploitation --** *ON*
+    * *Use random mapping of array indexing to memory*
+* **Protect against SharedArrayBuffer exploitation --** *ON*
+    * *Block SharedArrayBuffer* -- SharedArrayBuffer provided by the browser is not available to page scripts at all.
+* **Protect against WebWorker exploitation --** *ON*
+    * *Remove real parallelism* -- Use Worker polyfill instead of the native Worker.
+* **Disable Battery status API --** *ON*
 

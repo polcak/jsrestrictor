@@ -8,26 +8,26 @@ Various websites collect information about users without their awareness. The co
 
 Another goal of the extension is not to break the visited websites. As the deployment of JavaScript only websites rise, it is necessary to fine-tune the API available to the websites to prevent unsolicited tracking and protect against data thefts.
 
-JavaScript Restrictor currently supports modifying and restricting the following APIs (for full details visit [levels of protection page](https://polcak.github.io/jsrestrictor/levels.html):
+JavaScript Restrictor currently supports modifying and restricting the following APIs (for more details visit [levels of protection page](https://polcak.github.io/jsrestrictor/levels.html)):
 
-* **Various Navigator object data** and **HTTP web requests,** which can be queried for information about the user's User Agent, platform, browser version etc.,
-* **document.referrer** and **Referrer HTTP web request** gives the URI of the page that linked to the current page,
-* **navigator.language** and **Accept-Language HTTP web request** can reveal user's preferred language and the language of the browser UI,
-* **navigator.doNotTrack** gives browser's Do Not Track setting,
-* **window.Date object** and **window.performance.now() function** provide high-resolution timestamps that can be used to idenfity the user or can be used for microarchitectural attacks,
-* **HTMLCanvasElement.toDataURL()** function can be used to fingerprint user's device. Canvas element provides access to HW acceleration which may reveal the card and consequently be used as a fingerprinting source,
-* **Geolocation data** can reveal the physical location of the device,
-* **navigator.deviceMemory** or **navigator.hardwareConcurrency** can reveal hardware specification of the device, 
-* **navigator.cookieEnabled, experimental only** (available only in the _Custom level_) to determine if the client web browser has cookies enabled,
-* **XMLHttpRequest (XHR), experimental only** (available only in the _Custom level_) issues requests to the server after the page is displayed and gathered information available through other APIs. Such information might carry identification data,
+* **Network boundary shield** (NBS) prevents web pages to use the browser as a proxy between local network and the public Internet. See the [Force Point report](https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf) for an example of the attack. The protection encapsulates the WebRequest API, so it captures all outgoing requests including all elements created by JavaScript.
+* **window.Date object** and **window.performance functions** provide high-resolution timestamps that can be used to [idenfity the user](http://www.jucs.org/jucs_21_9/clock_skew_based_computer) or can be used for microarchitectural attacks and [timing attacks](https://lirias.kuleuven.be/retrieve/389086).
+* **HTMLCanvasElement**:  return white image data by modifiing canvas.toDataURL(), canvas.toBlob() and CanvasRenderingContext2D.getImageData() functions that can be used to fingerprint user's device. Canvas element provides access to HW acceleration which may reveal the card and consequently be used as a fingerprinting source.
+* **navigator.deviceMemory** or **navigator.hardwareConcurrency** can reveal hardware specification of the device.
+* **XMLHttpRequest (XHR)** performs requests to the server after the page is displayed and gathered information available through other APIs. Such information might carry identification data or results of other attacks.
+* **ArrayBuffer** can be exploited for microarchitectural attacks.
+    * Encapsulates window.DataView, window.Uint8Array, window.Int8Array, window.Uint8ClampedArray, window.Int16Array, window.Uint16Array, window.Int32Array, window.Uint32Array, window.Float32Array, window.Float64Array
+* **SharedArrayBuffer (window.SharedArrayBuffer)** can be exploited for [timing attacks](https://graz.pure.elsevier.com/de/publications/fantastic-timers-and-where-to-find-them-high-resolution-microarch).
+* **WebWorker (window.Worker)** can be exploited for [timing attacks](https://graz.pure.elsevier.com/de/publications/practical-keystroke-timing-attacks-in-sandboxed-javascript).
 
-JavaScript Restrictor provides five levels of protection:
+JavaScript Restrictor provides four in-built levels of protection:
 
 * 0 - the functionality of the extension is turned off. All web pages are displayed as intended without any interaction from JavaScript Restrictor.
-* 1 - the minimal level of protection. The timestamp values and geolocation data are modified. Also hardware spoofing is enabled.
-* 2 - improved level of protection. On this level User Agent, platform and hardware information as well as referrer are spoofed. Protection against canvas fingerprinting is enabled. The timestamp values and geolocation data are even more restricted.
-* 3 - maximal level of protection. User Agent, platrofm, hardware and also browser's language is spoofed. Protection against canvas fingerprinting is enabled. Timestamp values are even more restricted and geolocation data is nullified.
-* Custom - your level of protection. If desired, you can set your own level of protection.
+* 1 - the minimal level of protection. Only changes that should not break most pages are enabled.
+	Note that timestamps are rounded so pages relying on precise time may be broken.
+* 2 - intended to be used as a default level of protection, this level should not break any site
+	while maintaining strong protection.
+* 3 - maximal level of protection: enable all functionality.
 
 For more accurate description of the restrictions see [levels of protection page](https://polcak.github.io/jsrestrictor/levels.html).
 

@@ -1,0 +1,257 @@
+body {
+	color: black;
+	background-color: white;
+	display: grid;
+	grid-template-columns: 10em 1fr;
+	grid-template-areas: 
+	      "logo     content"
+	      "menu     content"
+	      "versions content"
+	      "footer   footer";
+	grid-gap: 3em;
+}
+
+section.logo {
+	grid-area: logo;
+}
+nav.menu {
+	grid-area: menu;
+}
+section.content {
+	grid-area: content;
+}
+section.versions {
+	grid-area: versions;
+}
+footer {
+	grid-area: footer;
+}
+
+@media (max-width: 600px) {
+	body {
+		/*  Redefine the grid into a single column layout. */
+		grid-template-columns: 1fr;
+		grid-template-areas: 
+			"content"
+			"menu"
+			"logo"
+			"versions"
+			"footer";
+	}
+}
+
+@media (min-width: 1300px) {
+	body {
+		/*  Redefine the grid into a three column layout with empty space on the left and right. */
+		grid-template-columns: 1fr 10em 1000px 10% 1fr;
+		grid-template-areas: 
+			"left-empty menu content logo     right-empty"
+			"left-empty menu content versions right-empty"
+			"left-empty menu footer  footer   right-empty"
+	}
+	section.logo {
+		padding-top: 3em;
+	}
+}
+
+section.logo img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+nav.menu {
+	font-family: sans-serif;
+}
+
+@media (min-width: 601px) {
+	nav.menu {
+		padding-top: 3em;
+	}
+}
+
+nav.menu ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+nav.menu {
+	background-color: #f7e032;
+}
+
+nav.menu ul ul {
+	padding-left: 1em;
+}
+
+nav.menu ul p:after {
+	content: "  »";
+}
+
+nav.menu ul a:visited, nav.menu ul a, nav.menu ul p {
+	color: black;
+	display: block;
+	text-decoration: none;
+	padding-top: 1ex;
+	padding-bottom: 1ex;
+	padding-right: 1em;
+	padding-left: 1em;
+	margin: 0;
+}
+
+nav.menu ul a:hover {
+	color: #f7e032;
+	background-color: #6c6216;
+}
+
+section.content {
+	text-align: justify;
+}
+
+.main-section {
+	padding: 0.5em;
+}
+
+.main-section + div:not(.main-section) {
+	padding-top: 0em;
+	padding-left: 3em;
+	padding-bottom: 1em;
+}
+
+#levels-list li, #domain-level-list li {
+	list-style-type: none;
+	margin: 7px;
+	padding: 7px;
+}
+.level {
+	margin: 7px;
+	padding: 7px;
+	font-weight: bold;
+	border: 2px solid grey;
+	border-radius: 5px;
+}
+
+.level:hover {
+	cursor: pointer;
+	background-color: #f7e032;
+	color:  blue;
+}
+
+.active {
+	border: 2px solid black;
+	background-color: #f7e032;
+	color:  black;
+}
+
+.undo{
+	background-color: red;
+	color: white;
+}
+
+.hidden{
+	visibility: hidden;
+}
+
+#proxy-protection-config
+{
+	display:flex;
+	flex-direction: column;
+}
+
+#whitelist-select
+{
+	width:40%;
+	max-width: 400px;
+	min-width: 200px;
+	font-size: 12pt;
+	margin-bottom:3px;
+	margin-top: 3px;
+}
+
+#whitelist-input
+{
+	width: 39.5%;
+	max-width: 394px;
+	min-width: 194px;
+	font-size: 12pt;
+}
+
+/* The switch - the box around the slider */
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+	margin-left: 3px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+	
+}
+
+/* The slider */
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: red;
+	-webkit-transition: .4s;
+	transition: .4s;
+	font-size:10pt;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 25px;	
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+	color: gray;
+	content:"OFF";
+}
+
+input:checked + .slider {
+	background-color: rgb(247,224,50);
+}
+
+input:focus + .slider {
+	box-shadow: 0 0 1px rgb(247,224,50);
+}
+
+input:checked + .slider:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+	content:"ON";
+	color:black;
+}
+
+#switch-label
+{
+	text-align: center;
+	vertical-align: middle;
+	font-size:14pt;
+	padding-top:5px;
+}
+
+.unsupported_api {
+	color: darkgreen;
+}
+
+.notsupportedapis {
+	display: none;
+}
