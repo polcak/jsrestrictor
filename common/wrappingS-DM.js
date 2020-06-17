@@ -27,16 +27,24 @@
 		{
 			parent_object: "navigator",
 			parent_object_property: "deviceMemory",
-			wrapped_objects: [
+			wrapped_objects: [],
+			post_wrapping_code: [
 				{
-					original_name: "navigator.deviceMemory",
-					wrapped_name: "origMemory",
+					code_type: "object_properties",
+					parent_object: "navigator",
+					parent_object_property: "deviceMemory",
+					wrapped_objects: [],
+					wrapped_properties: [
+						{
+							property_name: "get",
+							property_value: `
+								function() {
+									return 4;
+								}`,
+						},
+					],
 				}
 			],
-			wrapping_function_args: "",
-			wrapping_function_body: `
-					return 4;
-				`
 		},
 	]
 	add_wrappers(wrappers);

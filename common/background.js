@@ -26,6 +26,7 @@ if ((typeof browser) === "undefined") {
 }
 
 var tab_levels = {};
+var tab_urls = {};
 var current_level = {level_id: "?"};
 
 function updateBadge(level) {
@@ -40,12 +41,13 @@ var queryInfo = {
 
 // get level for updated tab
 function tabUpdate(tabid, changeInfo) {
-	var url = changeInfo["url"];
+	var url = changeInfo["url"] || tab_urls[tabid];
 	if (url === undefined) {
 		return;
 	}
 	current_level = getCurrentLevelJSON(url)[0];
 	tab_levels[tabid] = current_level;
+	tab_urls[tabid] = url;
 	updateBadge(current_level);
 }
 // get level for activated tab
