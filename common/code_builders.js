@@ -71,7 +71,18 @@ function generate_assign_function_code(code_spec_obj) {
  * This function wraps object properties using Object.defineProperties.
  */
 function generate_object_properties(code_spec_obj) {
-	var code = "";
+	var code = `
+		try {
+			if (${code_spec_obj.parent_object}.${code_spec_obj.parent_object_property} === undefined) {
+				// Do not wrap an object that is not defined, e.g. because it is experimental feature.
+				// This should reduce fingerprintability.
+				return;
+			}
+		}
+		catch (e) {
+			// Intentionally do nothing (Canvas wrappers throw error here)
+		}
+	`;
 	for (assign of code_spec_obj.wrapped_objects) {
 		code += `var ${assign.wrapped_name} = ${assign.original_name};`;
 	}
