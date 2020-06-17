@@ -218,16 +218,26 @@
 		{
 			parent_object: "navigator",
 			parent_object_property: "hardwareConcurrency",
-			wrapped_objects: [
+			wrapped_objects: [],
+			post_wrapping_code: [
 				{
+					code_type: "object_properties",
 					original_name: "navigator.hardwareConcurrency",
 					wrapped_name: "origConcurrency",
+					wrapped_objects: [],
+					parent_object: "navigator",
+					parent_object_property: "hardwareConcurrency",
+					wrapped_properties: [
+						{
+							property_name: "get",
+							property_value: `
+								function() {
+									return 2;
+								}`,
+						},
+					],
 				}
 			],
-			wrapping_function_args: "",
-			wrapping_function_body: `
-					return 2;
-				`
 		},
 		{
 			parent_object: "window",
