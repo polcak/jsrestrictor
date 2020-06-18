@@ -98,7 +98,7 @@ let readFile = (_path) => {
 };
 
 /// Obtain file path in user's file system and read CSV file with IPv4 local zones
-readFile(browser.runtime.getURL("ipv4.csv"))
+readFile(browser.runtime.getURL("ipv4.dat"))
 	.then(_res => {
 		//Parse loaded CSV and store it in prepared variable
 		localIPV4DNSZones = parseCSV(_res, true);
@@ -108,7 +108,7 @@ readFile(browser.runtime.getURL("ipv4.csv"))
 	});
 
 /// Obtain file path in user's file system and read CSV file with IPv6 local zones
-readFile(browser.runtime.getURL("ipv6.csv"))
+readFile(browser.runtime.getURL("ipv6.dat"))
 	.then(_res => {
 		//Parse loaded CSV and store it in prepared variable
 		localIPV6DNSZones = parseCSV(_res, false);
