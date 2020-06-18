@@ -1,6 +1,10 @@
 
 # Release history
 
+## 0.3.1
+
+* Improve compatibility with Chromium based browsers
+
 ## 0.3
 
 * Major code rewrite - make the code more modular, remove duplications
