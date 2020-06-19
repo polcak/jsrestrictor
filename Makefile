@@ -11,8 +11,10 @@ COMMON_FILES = $(shell find common/) \
 			   $(shell find chrome/)
 
 get_csv:
-	wget -q -N --directory-prefix=./common/ https://www.iana.org/assignments/locally-served-dns-zones/ipv4.csv
-	wget -q -N --directory-prefix=./common/ https://www.iana.org/assignments/locally-served-dns-zones/ipv6.csv
+	wget -q -N https://www.iana.org/assignments/locally-served-dns-zones/ipv4.csv
+	cp ipv4.csv common/ipv4.dat
+	wget -q -N https://www.iana.org/assignments/locally-served-dns-zones/ipv6.csv
+	cp ipv6.csv common/ipv6.dat
 
 
 %_JSR.zip: $(COMMON_FILES) get_csv
@@ -21,7 +23,7 @@ get_csv:
 	@cp -r $*/* $*_JSR/
 	@cp LICENSE $*_JSR/
 	@./fix_manifest.sh $*_JSR/manifest.json
-	@rm -f $*_JSR/\*.sw[pno]
+	@rm -f $*_JSR/.*.sw[pno]
 	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
 
 clean:
