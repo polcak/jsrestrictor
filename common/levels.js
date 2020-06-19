@@ -81,7 +81,7 @@ var wrapping_groups = {
 				{
 					ui_elem: "input-checkbox",
 					name: "randomize",
-					description: "Apply additional randomization after rounding",
+					description: "Apply additional randomization after rounding (note that the random noise is influenced by the selected precision and consequently is more effective with lower time precision)",
 					data_type: "Boolean",
 					default: false,
 				},
