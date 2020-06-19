@@ -60,35 +60,35 @@ section.logo img {
 	margin-right: auto;
 }
 
-nav.menu {
+.menu {
 	font-family: sans-serif;
 }
 
 @media (min-width: 601px) {
-	nav.menu {
+	.menu {
 		padding-top: 3em;
 	}
 }
 
-nav.menu ul {
+.menu ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
 
-nav.menu {
+.menu {
 	background-color: #f7e032;
 }
 
-nav.menu ul ul {
+.menu ul ul {
 	padding-left: 1em;
 }
 
-nav.menu ul p:after {
+.menu ul p:after {
 	content: "  »";
 }
 
-nav.menu ul a:visited, nav.menu ul a, nav.menu ul p {
+.menu ul a:visited, .menu ul a, .menu h2 {
 	color: black;
 	display: block;
 	text-decoration: none;
@@ -99,19 +99,9 @@ nav.menu ul a:visited, nav.menu ul a, nav.menu ul p {
 	margin: 0;
 }
 
-nav.menu ul a:hover {
+.menu ul a:hover {
 	color: #f7e032;
 	background-color: #6c6216;
-}
-
-.versions {
-	background-color: #f7e032;
-	padding: 1em;
-}
-
-.versions ul {
-	margin: 0.3em;
-	padding: 0;
 }
 
 section.content {
