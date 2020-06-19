@@ -3,10 +3,11 @@ body {
 	background-color: white;
 	display: grid;
 	grid-template-columns: 10em 1fr;
+	grid-template-rows: auto auto 1fr auto;
 	grid-template-areas: 
 	      "logo     content"
-	      "menu     content"
 	      "install  content"
+	      "menu     content"
 	      "footer   footer";
 	grid-gap: 3em;
 }
@@ -32,10 +33,10 @@ footer {
 		/*  Redefine the grid into a single column layout. */
 		grid-template-columns: 1fr;
 		grid-template-areas: 
+			"install"
 			"content"
 			"menu"
 			"logo"
-			"install"
 			"footer";
 	}
 }
