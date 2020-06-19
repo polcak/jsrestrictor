@@ -44,6 +44,7 @@ footer {
 	body {
 		/*  Redefine the grid into a three column layout with empty space on the left and right. */
 		grid-template-columns: 1fr 10em 1000px 10% 1fr;
+		grid-template-rows: auto 1fr auto;
 		grid-template-areas: 
 			"left-empty menu content logo     right-empty"
 			"left-empty menu content versions right-empty"
