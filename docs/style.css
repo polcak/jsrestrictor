@@ -6,7 +6,7 @@ body {
 	grid-template-areas: 
 	      "logo     content"
 	      "menu     content"
-	      "versions content"
+	      "install  content"
 	      "footer   footer";
 	grid-gap: 3em;
 }
@@ -20,8 +20,8 @@ nav.menu {
 section.content {
 	grid-area: content;
 }
-section.versions {
-	grid-area: versions;
+section.install {
+	grid-area: install;
 }
 footer {
 	grid-area: footer;
@@ -35,7 +35,7 @@ footer {
 			"content"
 			"menu"
 			"logo"
-			"versions"
+			"install"
 			"footer";
 	}
 }
@@ -47,7 +47,7 @@ footer {
 		grid-template-rows: auto 1fr auto;
 		grid-template-areas: 
 			"left-empty menu content logo     right-empty"
-			"left-empty menu content versions right-empty"
+			"left-empty menu content install  right-empty"
 			"left-empty menu footer  footer   right-empty"
 	}
 	section.logo {
