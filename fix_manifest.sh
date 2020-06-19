@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 #  JavaScript Restrictor is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
