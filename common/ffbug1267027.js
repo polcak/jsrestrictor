@@ -51,11 +51,25 @@ function generate_assign_function_code_ffbug(code_spec_obj) {
 /**
  * This function wraps object properties using Object.defineProperties. Supporting
  * code for dealing with bug https://bugzilla.mozilla.org/show_bug.cgi?id=1267027.
-
  */
 function generate_object_properties_ffbug(code_spec_obj) {
-	console.log(`Generate_object_properties for bug 1267027 not defined. Please go to https://bugzilla.mozilla.org/show_bug.cgi?id=1267027 and report that you are affected by the bug. Affected wrapping: ${code_spec_obj.parent_object}.${code_spec_obj.parent_object_property}`);
-	return "";
+	var code = "";
+	for (assign of code_spec_obj.wrapped_objects) {
+		code += `var ${assign.wrapped_name} = window.wrappedJSObject.${assign.original_name};`;
+	}
+	code += `
+		window.wrappedJSObject.Object.defineProperties(
+			window.wrappedJSObject.${code_spec_obj.parent_object},
+			{
+				${code_spec_obj.parent_object_property}: {`
+	for (wrap_spec of code_spec_obj.wrapped_properties) {
+		code += `${wrap_spec.property_name}: ${wrap_spec.property_value}`;
+	}
+	code +=	`
+				}
+			}
+		);`;
+	return code;
 }
 
 /**
