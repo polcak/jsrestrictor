@@ -52,7 +52,7 @@ function contentScriptLevelSetter(message) {
 		});
 	}
 	else if (message.message === "ffbug1267027") {
-		domains_bug1267027[message.url] = message.affected;
+		domains_bug1267027[message.url] = message.present;
 	}
 }
 browser.runtime.onMessage.addListener(contentScriptLevelSetter);
