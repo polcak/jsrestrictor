@@ -32,7 +32,7 @@
 					parent_object_property: "contentWindow",
 					wrapped_objects: [
 						{
-							original_name: "HTMLIFrameElement.prototype.__lookupGetter__('contentWindow')",
+							original_name: "Object.getOwnPropertyDescriptor(HTMLIFrameElement.prototype, 'contentWindow')['get'];",
 							wrapped_name: "cw",
 						},
 					],
@@ -60,7 +60,7 @@
 					parent_object_property: "contentDocument",
 					wrapped_objects: [
 						{
-							original_name: "HTMLIFrameElement.prototype.__lookupGetter__('contentDocument')",
+							original_name: "Object.getOwnPropertyDescriptor(HTMLIFrameElement.prototype, 'contentDocument')['get'];",
 							wrapped_name: "cd",
 						},
 					],

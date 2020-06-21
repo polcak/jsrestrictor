@@ -72,32 +72,39 @@ function generate_assign_function_code(code_spec_obj) {
  */
 function generate_object_properties(code_spec_obj) {
 	var code = `
-		try {
-			if (${code_spec_obj.parent_object}.${code_spec_obj.parent_object_property} === undefined) {
-				// Do not wrap an object that is not defined, e.g. because it is experimental feature.
-				// This should reduce fingerprintability.
-				return;
-			}
-		}
-		catch (e) {
-			// Intentionally do nothing (Canvas wrappers throw error here)
+		if (!("${code_spec_obj.parent_object_property}" in ${code_spec_obj.parent_object})) {
+			// Do not wrap an object that is not defined, e.g. because it is experimental feature.
+			// This should reduce fingerprintability.
+			return;
 		}
 	`;
 	for (assign of code_spec_obj.wrapped_objects) {
 		code += `var ${assign.wrapped_name} = ${assign.original_name};`;
 	}
-	code += `
-		Object.defineProperties(
-			${code_spec_obj.parent_object},
-			{
-				${code_spec_obj.parent_object_property}: {`
+	code += `descriptor = Object.getOwnPropertyDescriptor(
+			${code_spec_obj.parent_object}, "${code_spec_obj.parent_object_property}");
+		if (descriptor === undefined) {
+			descriptor = { // Originally not a descriptor
+				get: ${code_spec_obj.parent_object}.${code_spec_obj.parent_object_property},
+				set: undefined,
+				configurable: false,
+				enumerable: true,
+			};
+		}
+	`
 	for (wrap_spec of code_spec_obj.wrapped_properties) {
-		code += `${wrap_spec.property_name}: ${wrap_spec.property_value}`;
-	}
-	code +=	`
-				}
+		code += `
+			originalPDF = descriptor["${wrap_spec.property_name}"];
+			replacementPD = ${wrap_spec.property_value};
+			descriptor["${wrap_spec.property_name}"] = replacementPD;
+			if (replacementPD instanceof Function) {
+				original_functions[replacementPD.toString()] = originalPDF.toString();
 			}
-		);`;
+		`;
+	}
+	code += `Object.defineProperty(${code_spec_obj.parent_object},
+		"${code_spec_obj.parent_object_property}", descriptor);
+	`;
 	return code;
 }
 
