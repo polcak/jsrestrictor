@@ -90,9 +90,7 @@ var wrapping_groups = {
 				// HRT
 				"Performance.prototype.now",
 				// PT2
-				"performance.getEntries",
-				"performance.getEntriesByName",
-				"performance.getEntriesByType",
+				"PerformanceEntry.prototype",
 				// ECMA
 				"window.Date",
 			],
@@ -255,8 +253,15 @@ function is_api_undefined(api) {
 	let s = api.split(".");
 	let last = window;
 	for (p of s) {
-		if (last[p] === undefined) {
-			return true;
+		try {
+			if (last[p] === undefined) {
+				return true;
+			}
+		}
+		catch (e) {
+			// We may have encountered something like
+			// TypeError: 'get startTime' called on an object that does not implement interface PerformanceEntry.
+			break;
 		}
 		last = last[p];
 	}

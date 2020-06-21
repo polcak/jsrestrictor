@@ -28,10 +28,8 @@
 	var doNoise = args[1];
 	var pastValues = {};
 	${rounding_function}
-	${noise_function}`;
-	var common_function_body = `
-				var measures = origFunc.call(this, ...args);
-				func = rounding_function;
+	${noise_function}
+				var func = rounding_function;
 				if (doNoise === true){
 					func = function(value, precision) {
 						let params = [value, precision];
@@ -43,58 +41,80 @@
 						return result;
 					}
 				}
-				var ret = [];
-				for (measure of measures) {
-					ret.push({
-						entryType: measure.entryType,
-						name: measure.name,
-						startTime: func(measure.startTime, precision),
-						duration: func(measure.duration, precision),
-						toJSON: function() {return this},
-					});
-				}
-				return ret;
 			`;
 
 	var wrappers = [
 		{
-			parent_object: "performance",
-			parent_object_property: "getEntries",
-			wrapped_objects: [
-				{
-					original_name: "performance.getEntries",
-					wrapped_name: "origFunc",
-				}
-			],
+			parent_object: "PerformanceEntry",
+			parent_object_property: "prototype",
+			wrapped_objects: [],
 			helping_code: helping_code,
-			wrapping_function_args: "...args",
-			wrapping_function_body: common_function_body
-		},
-		{
-			parent_object: "performance",
-			parent_object_property: "getEntriesByName",
-			wrapped_objects: [
+			post_wrapping_code: [
 				{
-					original_name: "performance.getEntriesByName",
-					wrapped_name: "origFunc",
-				}
-			],
-			helping_code: helping_code,
-			wrapping_function_args: "...args",
-			wrapping_function_body: common_function_body
-		},
-		{
-			parent_object: "performance",
-			parent_object_property: "getEntriesByType",
-			wrapped_objects: [
+					code_type: "object_properties",
+					parent_object: "PerformanceEntry.prototype",
+					parent_object_property: "startTime",
+					wrapped_objects: [
+						{
+							original_name: "Object.getOwnPropertyDescriptor(PerformanceEntry.prototype, 'startTime')['get']",
+							wrapped_name: "originalST",
+						},
+					],
+					wrapped_properties: [
+						{
+							property_name: "get",
+							property_value: `
+								function() {
+									let originalVal = originalST.call(this, ...arguments);
+									return func(originalVal, precision);
+								}`,
+						},
+					],
+				},
 				{
-					original_name: "performance.getEntriesByType",
-					wrapped_name: "origFunc",
-				}
+					code_type: "object_properties",
+					parent_object: "PerformanceEntry.prototype",
+					parent_object_property: "duration",
+					wrapped_objects: [
+						{
+							original_name: "Object.getOwnPropertyDescriptor(PerformanceEntry.prototype, 'duration')['get']",
+							wrapped_name: "originalD",
+						},
+					],
+					wrapped_properties: [
+						{
+							property_name: "get",
+							property_value: `
+								function() {
+									let originalVal = originalD.call(this, ...arguments);
+									return func(this.startTime + originalVal, precision) - this.startTime;
+								}`,
+						},
+					],
+				},
+				{
+					code_type: "object_properties",
+					parent_object: "PerformanceEntry.prototype",
+					parent_object_property: "toJSON",
+					wrapped_objects: [],
+					wrapped_properties: [
+						{
+							property_name: "value",
+							property_value: `
+								function() {
+									let res = {
+										entryType: this.entryType,
+										name: this.name,
+										startTime: this.startTime,
+										duration: this.duration,
+										toJSON: function() {return this},
+									};
+									return res.toJSON();
+								}`,
+						},
+					],
+				},
 			],
-			helping_code: helping_code,
-			wrapping_function_args: "...args",
-			wrapping_function_body: common_function_body
 		},
 	]
 	add_wrappers(wrappers);
