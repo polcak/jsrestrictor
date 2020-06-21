@@ -1,6 +1,16 @@
 
 # Release history
 
+## 0.3.2
+
+* Bugfix: Set up domain-specific levels from storage correctly
+* Wrap PerformanceEntry instead of performance.getEntries\*() - prevents a known leak of precise
+	time stamps in Chromium-based browsers.
+* Add note on the effectivity of time randomization
+* Firefox fix background and content scripts synchronization, use correct naming (improves speed)
+* Time wrappers in Firefox affected by the <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1267027">Fiefox CSP bug</a> should work better. However, the precise timers are not wrapped, see also <a href="https://github.com/polcak/jsrestrictor/issues/25">#25</a>.
+* NBS message for Chromium-based browsers reworded.
+
 ## 0.3.1
 
 * Improve compatibility with Chromium based browsers
