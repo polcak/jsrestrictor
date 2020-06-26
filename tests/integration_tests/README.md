@@ -80,9 +80,7 @@ When script execution starts for the first time, OS Windows may ask you to allow
 
 ## on Linux OS
 
-Open Terminal in folder *integration_tests* and run command: `chmod +x ./setup_buildJSR_runTests.sh`
-
-Then run the script by command: `./setup_buildJSR_runTests.sh`
+Open Terminal in folder *integration_tests* and run command: `./setup_buildJSR_runTests.sh`
 
 Script may ask you for the path into directory, where the files of Firefox ESR default profile are stored.
 
