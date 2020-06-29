@@ -53,6 +53,40 @@ var wrapping_groups = {
 	},
 	groups: [
 		{
+			name: "geolocation",
+			description: "Geolocation API wrapping",
+			description2: [],
+			options: [
+				{
+					description: "Manipulate time to",
+					ui_elem: "select",
+					name: "precision",
+					default: 0,
+					data_type: "Number",
+					options: [
+						{
+							value: 0,
+							description: "Full seconds (0)",
+						}
+					]
+				},
+				{
+					ui_elem: "input-checkbox",
+					name: "randomize",
+					description: "Apply additional randomization",
+					data_type: "Boolean",
+					default: true,
+				},
+			],
+			wrappers: [
+				// GPS
+				"navigator.geolocation",
+				"navigator.geolocation.getCurrentPosition",
+				"navigator.geolocation.watchPosition",
+				"navigator.geolocation.clearWatch"
+			],
+		},
+		{
 			name: "time_precision",
 			description: "Manipulate the time precision provided by Date and performance",
 			description2: [],
@@ -340,6 +374,7 @@ var level_2 = {
 	"hardware": true,
 	"battery": true,
 	"htmlcanvaselement": true,
+	"geolocation": true,
 };
 
 var level_3 = {
@@ -363,6 +398,7 @@ var level_3 = {
 	"webworker": true,
 	"webworker_approach_polyfill": true,
 	"webworker_approach_slow": false,
+	"geolocation": true,
 };
 
 // Level aliases
