@@ -58,24 +58,179 @@ var wrapping_groups = {
 			description2: [],
 			options: [
 				{
-					description: "Manipulate time to",
+					ui_elem: "input-checkbox",
+					name: "setAllGPSDataToZero",
+					description: "Set all GPS data to zero",
+					data_type: "Boolean",
+					default: true,
+				},
+				{
 					ui_elem: "select",
-					name: "precision",
-					default: 0,
+					default: 3,
 					data_type: "Number",
+					name:"latitudePrecisionInDecimalPlaces",
+					description: "Latitude precision in decimalPlaces",
 					options: [
 						{
-							value: 0,
-							description: "Full seconds (0)",
+							value: 3,
+							description: "3 decimal places",
+						},
+						{
+							value: 5,
+							description: "5 decimal places",
+						},
+						{
+							value: 7,
+							description: "7 decimal places",
 						}
 					]
 				},
 				{
-					ui_elem: "input-checkbox",
-					name: "randomize",
-					description: "Apply additional randomization",
-					data_type: "Boolean",
-					default: true,
+					ui_elem: "select",
+					default: 3,
+					data_type: "Number",
+					name:"longitudePrecisionInDecimalPlaces",
+					description: "Longitude precision in decimalPlaces",
+					options: [
+						{
+							value: 3,
+							description: "3 decimal places",
+						},
+						{
+							value: 5,
+							description: "5 decimal places",
+						},
+						{
+							value: 7,
+							description: "7 decimal places",
+						}
+					]
+				},
+				{
+					ui_elem: "select",
+					default: 3,
+					data_type: "Number",
+					name:"altitudePrecisionInDecimalPlaces",
+					description: "Altitude precision in decimalPlaces",
+					options: [
+						{
+							value: 3,
+							description: "3 decimal places",
+						},
+						{
+							value: 5,
+							description: "5 decimal places",
+						},
+						{
+							value: 7,
+							description: "7 decimal places",
+						}
+					]
+				},
+				{
+					ui_elem: "select",
+					default: 3,
+					data_type: "Number",
+					name:"accuracyPrecisionInDecimalPlaces",
+					description: "Accuracy precision in decimalPlaces",
+					options: [
+						{
+							value: 3,
+							description: "3 decimal places",
+						},
+						{
+							value: 5,
+							description: "5 decimal places",
+						},
+						{
+							value: 7,
+							description: "7 decimal places",
+						}
+					]
+				},
+				{
+					ui_elem: "select",
+					default: 3,
+					data_type: "Number",
+					name:"altitudeAccuracyPrecisionInDecimalPlaces",
+					description: "Altitude accuracy precision in decimal places",
+					options: [
+						{
+							value: 3,
+							description: "3 decimal places",
+						},
+						{
+							value: 5,
+							description: "5 decimal places",
+						},
+						{
+							value: 7,
+							description: "7 decimal places",
+						}
+					]
+				},
+				{
+					ui_elem: "select",
+					default: 3,
+					data_type: "Number",
+					name:"headingPrecisionInDecimalPlaces",
+					description: "Heading precision in decimal places",
+					options: [
+						{
+							value: 3,
+							description: "3 decimal places",
+						},
+						{
+							value: 5,
+							description: "5 decimal places",
+						},
+						{
+							value: 7,
+							description: "7 decimal places",
+						}
+					]
+				},
+				{
+					ui_elem: "select",
+					default: 3,
+					data_type: "Number",
+					name:"speedPrecisionInDecimalPlaces",
+					description: "Speed precision in decimal places",
+					options: [
+						{
+							value: 3,
+							description: "3 decimal places",
+						},
+						{
+							value: 5,
+							description: "5 decimal places",
+						},
+						{
+							value: 7,
+							description: "7 decimal places",
+						}
+					]
+				},
+				{
+					ui_elem: "select",
+					default: 3,
+					data_type: "Number",
+					name:"timestampPrecisionInDecimalPlaces",
+					description: "Timestamp precision in decimal places",
+					options: [
+						{
+							value: 3,
+							description: "3 decimal places",
+						},
+						{
+							value: 5,
+							description: "5 decimal places",
+						},
+						{
+							value: 7,
+							description: "7 decimal places",
+						}
+					]
 				},
 			],
 			wrappers: [
