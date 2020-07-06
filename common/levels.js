@@ -62,7 +62,7 @@ var wrapping_groups = {
 					name: "setAllGPSDataToZero",
 					description: "Set all GPS data to zero",
 					data_type: "Boolean",
-					default: true,
+					default: false,
 				},
 				{
 					ui_elem: "select",
@@ -232,10 +232,16 @@ var wrapping_groups = {
 						}
 					]
 				},
+				{
+					ui_elem: "input-checkbox",
+					name: "randomize",
+					description: "Apply additional randomization after rounding (note that the random noise is influenced by the selected precision and consequently is more effective with lower precision)",
+					data_type: "Boolean",
+					default: false,
+				},
 			],
 			wrappers: [
 				// GPS
-				"navigator.geolocation",
 				"navigator.geolocation.getCurrentPosition",
 				"navigator.geolocation.watchPosition",
 				"navigator.geolocation.clearWatch"
@@ -529,6 +535,16 @@ var level_2 = {
 	"hardware": true,
 	"battery": true,
 	"htmlcanvaselement": true,
+	"geolocation_setAllGPSDataToZero" : false,
+	"geolocation_latitudePrecisionInDecimalPlaces" : 3,
+	"geolocation_longitudePrecisionInDecimalPlaces" : 3,
+	"geolocation_altitudePrecisionInDecimalPlaces" : 3,
+	"geolocation_accuracyPrecisionInDecimalPlaces" : 3,
+	"geolocation_altitudeAccuracyPrecisionInDecimalPlaces" : 3,
+	"geolocation_headingPrecisionInDecimalPlaces" : 3,
+	"geolocation_speedPrecisionInDecimalPlaces" : 3,
+	"geolocation_timestampPrecisionInDecimalPlaces" : 3,
+	"geolocation_randomize": false,
 	"geolocation": true,
 };
 
@@ -553,6 +569,16 @@ var level_3 = {
 	"webworker": true,
 	"webworker_approach_polyfill": true,
 	"webworker_approach_slow": false,
+	"geolocation_setAllGPSDataToZero" : false,
+	"geolocation_latitudePrecisionInDecimalPlaces" : 3,
+	"geolocation_longitudePrecisionInDecimalPlaces" : 3,
+	"geolocation_altitudePrecisionInDecimalPlaces" : 3,
+	"geolocation_accuracyPrecisionInDecimalPlaces" : 3,
+	"geolocation_altitudeAccuracyPrecisionInDecimalPlaces" : 3,
+	"geolocation_headingPrecisionInDecimalPlaces" : 3,
+	"geolocation_speedPrecisionInDecimalPlaces" : 3,
+	"geolocation_timestampPrecisionInDecimalPlaces" : 3,
+	"geolocation_randomize": false,
 	"geolocation": true,
 };
 

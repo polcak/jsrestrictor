@@ -84,7 +84,12 @@
 <!-- 	<iframe width="600" height="450" allowfullscreen="" class="maps" frameborder="0" id="mapnavi" name="mapnavi" src="https://www.google.com/maps/embed/v1/place?zoom=11&q=49.1951%2C16.6068&key=AIzaSyC-5CY9mOCeg5Y3IhPqi_Yd0-DZtWrJl-E" /> -->
 
 	<button onclick="showGPSData();">Show GPS data</button><br><br>
+	
+	Redraw map, when position changes
+	<button onclick="watchGPSPosition();">Watch position</button><br><br>
+	<button id="clearWatchButton" onclick="clearGPSWatch();" disabled>Clear watch</button><br><br>
 	<div id="placeToWriteGPSDetails"></div>
+	<div id="placeToWriteWatchPositionId"></div>
 
 	<br><br><br><hr>
 
