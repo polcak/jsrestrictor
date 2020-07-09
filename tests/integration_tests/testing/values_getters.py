@@ -84,4 +84,4 @@ def is_canvas_spoofed(driver):
     driver.find_element_by_xpath("//button[text()='Add text to canvas']").click()
     driver.find_element_by_xpath("//button[text()='Get data and show image in canvas frame']").click()
     return driver.execute_script("var canvas = document.getElementById('canvas1'); return !canvas.getContext('2d')"
-                                 ".getImageData(0, 0, canvas.width, canvas.height).data.some(channel => channel !== 20)")
+                                 ".getImageData(0, 0, canvas.width, canvas.height).data.some(channel => channel !== 0)")
