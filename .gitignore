@@ -2,3 +2,10 @@
 *.zip
 chrome_JSR/
 firefox_JSR/
+*.crx
+*.xpi
+*.log
+tests/integration_tests/testing/__pycache__/
+tests/integration_tests/testing/tests_definition/__pycache__/
+tests/common_files/webbrowser_drivers/chromedriver*
+tests/common_files/webbrowser_drivers/geckodriver*
