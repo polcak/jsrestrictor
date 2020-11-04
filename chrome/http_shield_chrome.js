@@ -371,7 +371,7 @@ function notifyBlockedHost(host) {
 		"type": "basic",
 		"iconUrl": browser.extension.getURL("img/icon-48.png"),
 		"title": "Host was blocked!",
-		"message": "Host: " + host + " was blocked based on suspicious actions. If it's unwanted behaviour, please add an exception in options or popup."
+		"message": "Host: " + host + " issued to many unsuccessful requests. This may be just an error in your network connectivity or innocent error of the web site. But it can also be a sign of malicious activities such as using your browser as a proxy to scan your local network. It is up to you to decide if you trust the web site and give it an exception from the Network Boundary Scanner using pop up or the option page."
 	});
 }
 
