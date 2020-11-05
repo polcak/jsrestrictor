@@ -53,6 +53,185 @@ var wrapping_groups = {
 	},
 	groups: [
 		{
+			name: "time_precision",
+			description: "Manipulate the time precision provided by Date and performance",
+			description2: [],
+			options: [
+				{
+					description: "Manipulate time to",
+					ui_elem: "select",
+					name: "precision",
+					default: 1,
+					data_type: "Number",
+					options: [
+						{
+							value: 2,
+							description: "Hundredths of a second (1.230)",
+						},
+						{
+							value: 1,
+							description: "Tenths of a second (1.200)",
+						},
+						{
+							value: 0,
+							description: "Full seconds (1.000)",
+						},
+					],
+				},
+				{
+					ui_elem: "input-checkbox",
+					name: "randomize",
+					description: "Apply additional randomization after rounding (note that the random noise is influenced by the selected precision and consequently is more effective with lower time precision)",
+					data_type: "Boolean",
+					default: false,
+				},
+			],
+			wrappers: [
+				// HRT
+				"Performance.prototype.now",
+				// PT2
+				"PerformanceEntry.prototype",
+				// ECMA
+				"window.Date",
+			],
+		},
+		{
+			name: "htmlcanvaselement",
+			description: "Protect against canvas fingerprinting",
+			description2: ["Canvas returns white image data by modifiing canvas.toDataURL(), canvas.toBlob() and CanvasRenderingContext2D.getImageData functions",],
+			options: [],
+			wrappers: [
+				// H-C
+				"CanvasRenderingContext2D.prototype.getImageData",
+				"HTMLCanvasElement.prototype.toBlob",
+				"HTMLCanvasElement.prototype.toDataURL",
+			],
+		},
+		{
+			name: "hardware",
+			description: "Spoof hardware information to the most popular HW",
+			description2: [
+				navigator.deviceMemory !== undefined ? "navigator.deviceMemory: 4" : "",
+				"navigator.hardwareConcurrency: 2",
+			],
+			options: [],
+			wrappers: [
+				// HTML-LS
+				"navigator.hardwareConcurrency",
+				// DM
+				"navigator.deviceMemory",
+			],
+		},
+		{
+			name: "xhr",
+			description: "Filter XMLHttpRequest requests",
+			description2: [],
+			options: [
+				{
+					ui_elem: "input-radio",
+					name: "behaviour",
+					data_type: "Boolean",
+					options: [
+						{
+							value: "block",
+							description: "Block all XMLHttpRequest.",
+							default: false,
+						},
+						{
+							value: "ask",
+							description: "Ask before executing an XHR request.",
+							default: true,
+						},
+					],
+				},
+			],
+			wrappers: [
+				// AJAX
+				"window.XMLHttpRequest",
+			],
+		},
+		{
+			name: "arrays",
+			description: "Protect against ArrayBuffer exploitation",
+			description2: [],
+			options: [
+				{
+					ui_elem: "input-checkbox",
+					name: "mapping",
+					description: "Use random mapping of array indexing to memory.",
+					data_type: "Boolean",
+					default: false,
+				},
+			],
+			wrappers: [
+				"window.DataView",
+				"window.Uint8Array",
+				"window.Int8Array",
+				"window.Uint8ClampedArray",
+				"window.Int16Array",
+				"window.Uint16Array",
+				"window.Int32Array",
+				"window.Uint32Array",
+				"window.Float32Array",
+				"window.Float64Array",
+			],
+		},
+		{
+			name: "shared_array",
+			description: "Protect against SharedArrayBuffer exploitation:",
+			description2: [],
+			options: [
+				{
+					ui_elem: "input-radio",
+					name: "approach",
+					data_type: "Boolean",
+					options: [
+						{
+							value: "block",
+							description: "Block SharedArrayBuffer.",
+							default: true,
+						},
+						{
+							value: "polyfill",
+							description: "Randomly slow messages to prevent high resolution timers.",
+							default: false,
+						},
+					],
+				},
+			],
+			wrappers: [
+				// SHARED
+				"window.SharedArrayBuffer"
+			],
+		},
+		{
+			name: "webworker",
+			description: "Protect against WebWorker exploitation",
+			description2: [],
+			options: [
+				{
+					ui_elem: "input-radio",
+					name: "approach",
+					data_type: "Boolean",
+					options: [
+						{
+							value: "polyfill",
+							description: "Remove real parallelism, use WebWorker polyfill.",
+							default: true,
+						},
+						{
+							value: "slow",
+							description: "Randomly slow messages to prevent high resolution timers.",
+							default: false,
+						},
+					],
+				},
+			],
+			wrappers: [
+				"window.Worker",
+			],
+		},
+		{
 			name: "geolocation",
 			description: "Geolocation API wrapping",
 			description2: [],
@@ -245,185 +424,6 @@ var wrapping_groups = {
 				"navigator.geolocation.getCurrentPosition",
 				"navigator.geolocation.watchPosition",
 				"navigator.geolocation.clearWatch"
-			],
-		},
-		{
-			name: "time_precision",
-			description: "Manipulate the time precision provided by Date and performance",
-			description2: [],
-			options: [
-				{
-					description: "Manipulate time to",
-					ui_elem: "select",
-					name: "precision",
-					default: 1,
-					data_type: "Number",
-					options: [
-						{
-							value: 2,
-							description: "Hundredths of a second (1.230)",
-						},
-						{
-							value: 1,
-							description: "Tenths of a second (1.200)",
-						},
-						{
-							value: 0,
-							description: "Full seconds (1.000)",
-						},
-					],
-				},
-				{
-					ui_elem: "input-checkbox",
-					name: "randomize",
-					description: "Apply additional randomization after rounding (note that the random noise is influenced by the selected precision and consequently is more effective with lower time precision)",
-					data_type: "Boolean",
-					default: false,
-				},
-			],
-			wrappers: [
-				// HRT
-				"Performance.prototype.now",
-				// PT2
-				"PerformanceEntry.prototype",
-				// ECMA
-				"window.Date",
-			],
-		},
-		{
-			name: "htmlcanvaselement",
-			description: "Protect against canvas fingerprinting",
-			description2: ["Canvas returns white image data by modifiing canvas.toDataURL(), canvas.toBlob() and CanvasRenderingContext2D.getImageData functions",],
-			options: [],
-			wrappers: [
-				// H-C
-				"CanvasRenderingContext2D.prototype.getImageData",
-				"HTMLCanvasElement.prototype.toBlob",
-				"HTMLCanvasElement.prototype.toDataURL",
-			],
-		},
-		{
-			name: "hardware",
-			description: "Spoof hardware information to the most popular HW",
-			description2: [
-				navigator.deviceMemory !== undefined ? "navigator.deviceMemory: 4" : "",
-				"navigator.hardwareConcurrency: 2",
-			],
-			options: [],
-			wrappers: [
-				// HTML-LS
-				"navigator.hardwareConcurrency",
-				// DM
-				"navigator.deviceMemory",
-			],
-		},
-		{
-			name: "xhr",
-			description: "Filter XMLHttpRequest requests",
-			description2: [],
-			options: [
-				{
-					ui_elem: "input-radio",
-					name: "behaviour",
-					data_type: "Boolean",
-					options: [
-						{
-							value: "block",
-							description: "Block all XMLHttpRequest.",
-							default: false,
-						},
-						{
-							value: "ask",
-							description: "Ask before executing an XHR request.",
-							default: true,
-						},
-					],
-				},
-			],
-			wrappers: [
-				// AJAX
-				"window.XMLHttpRequest",
-			],
-		},
-		{
-			name: "arrays",
-			description: "Protect against ArrayBuffer exploitation",
-			description2: [],
-			options: [
-				{
-					ui_elem: "input-checkbox",
-					name: "mapping",
-					description: "Use random mapping of array indexing to memory.",
-					data_type: "Boolean",
-					default: false,
-				},
-			],
-			wrappers: [
-				"window.DataView",
-				"window.Uint8Array",
-				"window.Int8Array",
-				"window.Uint8ClampedArray",
-				"window.Int16Array",
-				"window.Uint16Array",
-				"window.Int32Array",
-				"window.Uint32Array",
-				"window.Float32Array",
-				"window.Float64Array",
-			],
-		},
-		{
-			name: "shared_array",
-			description: "Protect against SharedArrayBuffer exploitation:",
-			description2: [],
-			options: [
-				{
-					ui_elem: "input-radio",
-					name: "approach",
-					data_type: "Boolean",
-					options: [
-						{
-							value: "block",
-							description: "Block SharedArrayBuffer.",
-							default: true,
-						},
-						{
-							value: "polyfill",
-							description: "Randomly slow messages to prevent high resolution timers.",
-							default: false,
-						},
-					],
-				},
-			],
-			wrappers: [
-				// SHARED
-				"window.SharedArrayBuffer"
-			],
-		},
-		{
-			name: "webworker",
-			description: "Protect against WebWorker exploitation",
-			description2: [],
-			options: [
-				{
-					ui_elem: "input-radio",
-					name: "approach",
-					data_type: "Boolean",
-					options: [
-						{
-							value: "polyfill",
-							description: "Remove real parallelism, use WebWorker polyfill.",
-							default: true,
-						},
-						{
-							value: "slow",
-							description: "Randomly slow messages to prevent high resolution timers.",
-							default: false,
-						},
-					],
-				},
-			],
-			wrappers: [
-				"window.Worker",
 			],
 		},
 		{
