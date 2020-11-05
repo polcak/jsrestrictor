@@ -143,20 +143,23 @@
 					wrapped_name: "originalWatchPosition",
 				},
 			],
-			helping_code: rounding_function + geolocation_noise_function + setArgs,
-			wrapping_function_args: "successCallback",
-			wrapping_function_body: processOriginalGPSDataObject + `
-			function error(err) {
-					console.warn('ERROR(' + err.code + '): ' + err.message);
-			}
-
-			var options = {
-				enableHighAccuracy: false,
-				timeout: 5000,
-				maximumAge: 0
-			};
-
-			return originalWatchPosition.call(navigator.geolocation, processOriginalGPSDataObject, error, options);
+			helping_code: rounding_function + geolocation_noise_function + setArgs + "let watchPositionCounter = 0;",
+			wrapping_function_args: "successCallback, errorCallback, origOptions",
+			/**
+			 * navigator.geolocation.watchPosition intended use concerns tracking user position changes.
+			 * JSR provides four modes of operaion:
+			 * * GEO OFF: navigator.geolocation is undefined. FIXME implement
+			 * * current position approximation: Always return the same data, the same as getCurrentPosition()
+			 * * accurate data: Return exact position but fake timestamp FIXME implement
+			 */
+			wrapping_function_body: `
+				if (provideAccurateGeolocationData) {
+					let wrappedSuccessCallback = successCallback; // FIXME wrap successCallback to return timestamp with the precision as performance.now()
+					return originalWatchPosition.call(navigator.geolocation, wrappedSuccessCallback, errorCallback, origOptions);
+				}
+				navigator.geolocation.getCurrentPosition(successCallback, errorCallback, origOptions);
+				watchPositionCounter++;
+				return watchPositionCounter;
 			`,
 		},
 		{
@@ -168,10 +171,16 @@
 					wrapped_name: "originalClearWatch",
 				},
 			],
-			helping_code: "",
+			helping_code: setArgs,
 			wrapping_function_args: "id",
+			/**
+			 * If the Geolocation API provides correct data, call the original implementation,
+			 * otherwise do nothing as the watchPosition object was not created.
+			 */
 			wrapping_function_body: `
-				originalClearWatch.call(navigator.geolocation, id);
+				if (provideAccurateGeolocationData) {
+					originalClearWatch.call(navigator.geolocation, id);
+				}
 			`,
 		}
 	]
