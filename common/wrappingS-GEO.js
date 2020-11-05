@@ -72,6 +72,15 @@
 		}
 	`;
 
+	/**
+	 * Randomize Geolocation data
+	 */
+	var geolocation_noise_function = `
+	function geolocation_noise_function(numberToChange, precision) {
+		var rounded = rounding_function(numberToChange, precision);
+		return rounded + Math.random() * Math.pow(10, 3 - precision);
+	}`;
+
 	var wrappers = [
 		{
 			parent_object: "navigator.geolocation",
