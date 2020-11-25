@@ -109,6 +109,27 @@ function generate_object_properties(code_spec_obj) {
 }
 
 /**
+ * This function removes a property.
+ */
+function generate_delete_properties(code_spec_obj) {
+	var code = `
+	`;
+	for (prop of code_spec_obj.delete_properties) {
+		code += `
+			if ("${prop}" in ${code_spec_obj.parent_object}) {
+				// Delete only properties that are available.
+				// The if should be safe to be deleted but it can possibly reduce fingerprintability
+				Object.defineProperty(
+					${code_spec_obj.parent_object},
+					"${prop}", {get: undefined, set: undefined, configurable: false, enumerable: false}
+				);
+			}
+		`
+	}
+	return code;
+}
+
+/**
  * This function builds the wrapping code.
  */
 var build_code = function(wrapper, ...args) {
@@ -116,6 +137,7 @@ var build_code = function(wrapper, ...args) {
 		function_define: define_page_context_function,
 		function_export: generate_assign_function_code,
 		object_properties: generate_object_properties,
+		delete_properties: generate_delete_properties,
 	};
 	var code = "";
 	for (wrapped of wrapper.wrapped_objects) {
