@@ -156,7 +156,13 @@ var build_code = function(wrapper, ...args) {
 	}
 	if (wrapper["post_wrapping_code"] !== undefined) {
 		for (code_spec of wrapper["post_wrapping_code"]) {
+			if (code_spec.apply_if !== undefined) {
+				code += `if (${code_spec.apply_if}) {`
+			}
 			code += post_wrapping_functions[code_spec.code_type](code_spec);
+			if (code_spec.apply_if !== undefined) {
+				code += "}";
+			}
 		}
 	}
 	if (wrapper["wrapper_prototype"] !== undefined) {
