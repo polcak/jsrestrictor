@@ -21,88 +21,139 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-(function() {
-	var processOriginalGPSDataObject = `
-		function processOriginalGPSDataObject(originalPositionObject) {
-			var newLatitude = 0;
-			var newLongitude = 0;
-			var newAltitude = 0;
-			var newAccuracy = 0;
-			var newAltitudeAccuracy = 0;
-			var newHeading = 0;
-			var newSpeed = 0;
-			var newTimestamp = 0;
+/// See https://www.w3.org/TR/geolocation-API/ for the API description
 
-			if (!setAllGPSDataToZero) {
-				if (originalPositionObject.coords.latitude != null && originalPositionObject.coords.latitude != Infinity && originalPositionObject.coords.latitude >= 0) {
-						newLatitude = func(originalPositionObject.coords.latitude, latitudePrecisionInDecimalPlaces);
-				}
-				if (originalPositionObject.coords.longitude != null && originalPositionObject.coords.longitude != Infinity && originalPositionObject.coords.longitude >= 0) {
-					newLongitude = func(originalPositionObject.coords.longitude, longitudePrecisionInDecimalPlaces);
-				}
-				if (originalPositionObject.coords.altitude != null && originalPositionObject.coords.altitude != Infinity && originalPositionObject.coords.altitude >= 0) {
-					newAltitude = func(originalPositionObject.coords.altitude, altitudePrecisionInDecimalPlaces);
-				}
-				if (originalPositionObject.coords.accuracy != null && originalPositionObject.coords.accuracy != Infinity && originalPositionObject.coords.accuracy >= 0) {
-					newAccuracy = func(originalPositionObject.coords.accuracy, accuracyPrecisionInDecimalPlaces);
-				}
-				if (originalPositionObject.coords.altitudeAccuracy != null && originalPositionObject.coords.altitudeAccuracy != Infinity && originalPositionObject.coords.altitudeAccuracy >= 0) {
-					newAltitudeAccuracy = func(originalPositionObject.coords.altitudeAccuracy, altitudeAccuracyPrecisionInDecimalPlaces);
-				}
-				if (originalPositionObject.coords.heading != null && originalPositionObject.coords.heading != Infinity && originalPositionObject.coords.heading >= 0) {
-					newHeading = func(originalPositionObject.coords.heading, headingPrecisionInDecimalPlaces);
-				}
-				if (originalPositionObject.coords.speed != null && originalPositionObject.coords.speed != Infinity && originalPositionObject.coords.speed >= 0) {
-					newSpeed = func(originalPositionObject.coords.speed, speedPrecisionInDecimalPlaces);
-				}
-				if (originalPositionObject.timestamp != null && originalPositionObject.timestamp != Infinity && originalPositionObject.timestamp >= 0) {
-					newTimestamp = func(originalPositionObject.timestamp, timestampPrecisionInDecimalPlaces);
-				}
+(function() {
+	var processOriginalGPSDataObject_globals = gen_random32 + `
+		/**
+		 * Make sure that repeated calls shows the same position to reduce
+		 * fingerprintablity.
+		 */
+		var previouslyReturnedCoords = undefined;
+		var geoTimestamp = Date.now();
+		`;
+	var processOriginalGPSDataObject = `
+		function processOriginalGPSDataObject(expectedMaxAge, originalPositionObject) {
+			if (expectedMaxAge === undefined) {
+				expectedMaxAge = 0; // default value
 			}
+			// Set reasonable expectedMaxAge of 1 hour for later computation
+			expectedMaxAge = Math.min(3600000, expectedMaxAge);
+			geoTimestamp = Math.max(geoTimestamp, Date.now() - Math.random()*expectedMaxAge);
+			if (provideAccurateGeolocationData) {
+			  var pos = {
+    			coords: originalPositionObject.coords,
+			    timestamp: geoTimestamp // Limit the timestamp accuracy
+			  };	
+				successCallback(pos);
+				return;
+			}
+			if (previouslyReturnedCoords !== undefined) {
+				var pos = {
+					coords: previouslyReturnedCoords,
+					timestamp: geoTimestamp
+				};
+				successCallback(pos);
+				return;
+			}
+
+			const EQUATOR_LEN = 40074;
+			const HALF_MERIDIAN = 10002;
+			const DESIRED_ACCURACY_M = desiredAccuracy*1000*2;
+
+			var lat = originalPositionObject.coords.latitude;
+			var lon = originalPositionObject.coords.longitude;
+			// Compute (approximate) kilometres from 0 meridian [m]
+			var x = lon * (EQUATOR_LEN * Math.cos((lat/90)*(Math.PI/2))) / 180 * 1000;
+			// Compute (approximate) distance from equator [m]
+			var y = (lat / 90) * (HALF_MERIDIAN) * 1000;
+
+			var xmin = Math.floor(x / DESIRED_ACCURACY_M) * DESIRED_ACCURACY_M;
+			var ymin = Math.floor(y / DESIRED_ACCURACY_M) * DESIRED_ACCURACY_M;
+
+			// The computed position is in the original tile and the 8 adjacent:
+			// +----+----+----+
+			// |    |    |    |
+			// +----+----+----+
+			// |    |orig|    |
+			// +----+----+----+
+			// |    |    |    |
+			// +----+----+----+
+			var newx = (xmin + gen_random32()/2**32 * 3 * DESIRED_ACCURACY_M - DESIRED_ACCURACY_M) / 1000;
+			var newy = (ymin + gen_random32()/2**32 * 3 * DESIRED_ACCURACY_M - DESIRED_ACCURACY_M) / 1000;
+
+			if (newy > (HALF_MERIDIAN)) {
+				newy = HALF_MERIDIAN - (newy - HALF_MERIDIAN);
+				newx = -newx;
+			}
+
+			var newLatitude = newy / HALF_MERIDIAN * 90;
+			var newLongitude = newx * 180 / (EQUATOR_LEN * Math.cos((newLatitude/90)*(Math.PI/2)));
+
+			if (newLongitude < -180) {
+				newLongitude += 360;
+			}
+			if (newLongitude > 180) {
+				newLongitude -= 360;
+			}
+
+			var newAccuracy = DESIRED_ACCURACY_M * 2.5; // in meters
 
 			const editedPositionObject = {
 				coords: {
 					latitude: newLatitude,
 					longitude: newLongitude,
-					altitude: newAltitude,
+					altitude: null,
 					accuracy: newAccuracy,
-					altitudeAccuracy: newAltitudeAccuracy,
-					heading: newHeading,
-					speed: newSpeed,
+					altitudeAccuracy: null,
+					heading: null,
+					speed: null,
 					__proto__: originalPositionObject.coords.__proto__
 				},
-				timestamp: newTimestamp,
+				timestamp: geoTimestamp,
 				__proto__: originalPositionObject.__proto__
 			};
+			Object.freeze(editedPositionObject.coords);
+			previouslyReturnedCoords = editedPositionObject.coords;
 			successCallback(editedPositionObject);
 		}
 	`;
 	setArgs = `
-		var setAllGPSDataToZero = args[0];
-		var latitudePrecisionInDecimalPlaces = args[1];
-		var longitudePrecisionInDecimalPlaces = args[2];
-		var altitudePrecisionInDecimalPlaces = args[3];
-		var accuracyPrecisionInDecimalPlaces = args[4];
-		var altitudeAccuracyPrecisionInDecimalPlaces = args[5];
-		var headingPrecisionInDecimalPlaces = args[6];
-		var speedPrecisionInDecimalPlaces = args[7];
-		var timestampPrecisionInDecimalPlaces = args[8];
-		var func = rounding_function;
-		if (args[9]) {
-			func = geolocation_noise_function;
+		var enableGeolocation = (args[0] !== 0);
+		var provideAccurateGeolocationData = (args[0] === -1);
+		let desiredAccuracy = 0;
+		switch (args[0]) {
+			case 2:
+				desiredAccuracy = 0.1;
+				break;
+			case 3:
+				desiredAccuracy = 1;
+				break;
+			case 4:
+				desiredAccuracy = 10;
+				break;
+			case 5:
+				desiredAccuracy = 100;
+				break;
 		}
 	`;
 
-	/**
-	 * Randomize Geolocation data
-	 */
-	var geolocation_noise_function = `
-	function geolocation_noise_function(numberToChange, precision) {
-		var rounded = rounding_function(numberToChange, precision);
-		return rounded + Math.random() * Math.pow(10, 3 - precision);
-	}`;
-
 	var wrappers = [
+		{
+			parent_object: "navigator",
+			parent_object_property: "geolocation",
+			wrapped_objects: [],
+			helping_code: setArgs,
+			post_wrapping_code: [
+				{
+					code_type: "delete_properties",
+					parent_object: "navigator",
+					apply_if: "!enableGeolocation",
+					delete_properties: ["geolocation"],
+				}
+			],
+			nofreeze: true,
+		},
 		{
 			parent_object: "navigator.geolocation",
 			parent_object_property: "getCurrentPosition",
@@ -113,25 +164,22 @@
 					wrapped_name: "originalGetCurrentPosition",
 				},
 			],
-			helping_code: rounding_function + geolocation_noise_function + setArgs,
-			wrapping_function_args: "successCallback",
+			helping_code: setArgs + processOriginalGPSDataObject_globals,
+			wrapping_function_args: "successCallback, errorCallback, origOptions",
 			wrapping_function_body: processOriginalGPSDataObject + `
-				function error(err) {
-						console.warn('ERROR(' + err.code + '): ' + err.message);
-				}
-
-				function error(err) {
-						console.warn('ERROR(' + err.code + '): ' + err.message);
-				}
-
 				var options = {
 					enableHighAccuracy: false,
-					timeout: 5000,
-					maximumAge: 0
 				};
-				originalGetCurrentPosition.call(navigator.geolocation, processOriginalGPSDataObject, error, options);
-
-				
+				try {
+					if ("timeout" in origOptions) {
+						options.timeout = origOptions.timeout;
+					}
+					if ("maximumAge" in origOptions) {
+						option.maximumAge = origOptions.maximumAge;
+					}
+				}
+				catch { /* Undefined or another error */}
+				originalGetCurrentPosition.call(this, processOriginalGPSDataObject.bind(null, options.maximumAge), errorCallback, options);
 			`,
 		},
 		{
@@ -143,23 +191,32 @@
 					wrapped_name: "originalWatchPosition",
 				},
 			],
-			helping_code: rounding_function + geolocation_noise_function + setArgs + "let watchPositionCounter = 0;",
+			helping_code: setArgs + processOriginalGPSDataObject_globals + "let watchPositionCounter = 0;",
 			wrapping_function_args: "successCallback, errorCallback, origOptions",
 			/**
 			 * navigator.geolocation.watchPosition intended use concerns tracking user position changes.
 			 * JSR provides four modes of operaion:
-			 * * GEO OFF: navigator.geolocation is undefined. FIXME implement
 			 * * current position approximation: Always return the same data, the same as getCurrentPosition()
-			 * * accurate data: Return exact position but fake timestamp FIXME implement
+			 * * accurate data: Return exact position but fake timestamp
 			 */
 			wrapping_function_body: `
 				if (provideAccurateGeolocationData) {
-					let wrappedSuccessCallback = successCallback; // FIXME wrap successCallback to return timestamp with the precision as performance.now()
-					return originalWatchPosition.call(navigator.geolocation, wrappedSuccessCallback, errorCallback, origOptions);
+					function wrappedSuccessCallback(originalPositionObject) {
+						geoTimestamp = Date.now(); // Limit the timestamp accuracy by calling possibly wrapped function
+				  	var pos = {
+    					coords: originalPositionObject.coords,
+				  	  timestamp: geoTimestamp
+				  	};	
+						successCallback(pos);
+					}
+					originalWatchPosition.call(this, wrappedSuccessCallback, errorCallback, origOptions);
 				}
-				navigator.geolocation.getCurrentPosition(successCallback, errorCallback, origOptions);
-				watchPositionCounter++;
-				return watchPositionCounter;
+				else {
+					// Re-use the wrapping of n.g.getCurrentPosition()
+					navigator.geolocation.getCurrentPosition(successCallback, errorCallback, origOptions);
+					watchPositionCounter++;
+					return watchPositionCounter;
+				}
 			`,
 		},
 		{

@@ -237,190 +237,46 @@ var wrapping_groups = {
 			description2: [],
 			options: [
 				{
-					ui_elem: "input-checkbox",
-					name: "setAllGPSDataToZero",
-					description: "Set all GPS data to zero",
-					data_type: "Boolean",
-					default: false,
-				},
-				{
+					description: "Location obfuscation",
 					ui_elem: "select",
-					default: 3,
+					name: "locationObfuscationType",
+					default: 0,
 					data_type: "Number",
-					name:"latitudePrecisionInDecimalPlaces",
-					description: "Latitude precision in decimalPlaces",
 					options: [
 						{
+							value: 0,
+							description: "Turn location services off",
+						},
+						//{
+						//	value: 1,
+						//	description: "Use the position below",
+						//},
+						{
+							value: 2,
+							description: "Use accuracy of hundreds of meters",
+						},
+						{
 							value: 3,
-							description: "3 decimal places",
+							description: "Use accuracy of kilometers",
+						},
+						{
+							value: 4,
+							description: "Use accuracy of tens of kilometers",
 						},
 						{
 							value: 5,
-							description: "5 decimal places",
+							description: "Use accuracy of hundreds of kilometers",
 						},
 						{
-							value: 7,
-							description: "7 decimal places",
-						}
-					]
-				},
-				{
-					ui_elem: "select",
-					default: 3,
-					data_type: "Number",
-					name:"longitudePrecisionInDecimalPlaces",
-					description: "Longitude precision in decimalPlaces",
-					options: [
-						{
-							value: 3,
-							description: "3 decimal places",
+							value: -1,
+							description: "Provide accurate data (use when you really need to provide exact location)",
 						},
-						{
-							value: 5,
-							description: "5 decimal places",
-						},
-						{
-							value: 7,
-							description: "7 decimal places",
-						}
-					]
-				},
-				{
-					ui_elem: "select",
-					default: 3,
-					data_type: "Number",
-					name:"altitudePrecisionInDecimalPlaces",
-					description: "Altitude precision in decimalPlaces",
-					options: [
-						{
-							value: 3,
-							description: "3 decimal places",
-						},
-						{
-							value: 5,
-							description: "5 decimal places",
-						},
-						{
-							value: 7,
-							description: "7 decimal places",
-						}
-					]
-				},
-				{
-					ui_elem: "select",
-					default: 3,
-					data_type: "Number",
-					name:"accuracyPrecisionInDecimalPlaces",
-					description: "Accuracy precision in decimalPlaces",
-					options: [
-						{
-							value: 3,
-							description: "3 decimal places",
-						},
-						{
-							value: 5,
-							description: "5 decimal places",
-						},
-						{
-							value: 7,
-							description: "7 decimal places",
-						}
-					]
-				},
-				{
-					ui_elem: "select",
-					default: 3,
-					data_type: "Number",
-					name:"altitudeAccuracyPrecisionInDecimalPlaces",
-					description: "Altitude accuracy precision in decimal places",
-					options: [
-						{
-							value: 3,
-							description: "3 decimal places",
-						},
-						{
-							value: 5,
-							description: "5 decimal places",
-						},
-						{
-							value: 7,
-							description: "7 decimal places",
-						}
-					]
-				},
-				{
-					ui_elem: "select",
-					default: 3,
-					data_type: "Number",
-					name:"headingPrecisionInDecimalPlaces",
-					description: "Heading precision in decimal places",
-					options: [
-						{
-							value: 3,
-							description: "3 decimal places",
-						},
-						{
-							value: 5,
-							description: "5 decimal places",
-						},
-						{
-							value: 7,
-							description: "7 decimal places",
-						}
-					]
-				},
-				{
-					ui_elem: "select",
-					default: 3,
-					data_type: "Number",
-					name:"speedPrecisionInDecimalPlaces",
-					description: "Speed precision in decimal places",
-					options: [
-						{
-							value: 3,
-							description: "3 decimal places",
-						},
-						{
-							value: 5,
-							description: "5 decimal places",
-						},
-						{
-							value: 7,
-							description: "7 decimal places",
-						}
-					]
-				},
-				{
-					ui_elem: "select",
-					default: 3,
-					data_type: "Number",
-					name:"timestampPrecisionInDecimalPlaces",
-					description: "Timestamp precision in decimal places",
-					options: [
-						{
-							value: 3,
-							description: "3 decimal places",
-						},
-						{
-							value: 5,
-							description: "5 decimal places",
-						},
-						{
-							value: 7,
-							description: "7 decimal places",
-						}
-					]
-				},
-				{
-					ui_elem: "input-checkbox",
-					name: "randomize",
-					description: "Apply additional randomization after rounding (note that the random noise is influenced by the selected precision and consequently is more effective with lower precision)",
-					data_type: "Boolean",
-					default: false,
+					],
 				},
 			],
 			wrappers: [
 				// GPS
+				"navigator.geolocation",
 				"navigator.geolocation.getCurrentPosition",
 				"navigator.geolocation.watchPosition",
 				"navigator.geolocation.clearWatch"
@@ -523,6 +379,8 @@ var level_1 = {
 	"time_precision_randomize": false,
 	"hardware": true,
 	"battery": true,
+	"geolocation": true,
+	"geolocation_locationObfuscationType": 2,
 };
 
 var level_2 = {
@@ -535,17 +393,8 @@ var level_2 = {
 	"hardware": true,
 	"battery": true,
 	"htmlcanvaselement": true,
-	"geolocation_setAllGPSDataToZero" : false,
-	"geolocation_latitudePrecisionInDecimalPlaces" : 3,
-	"geolocation_longitudePrecisionInDecimalPlaces" : 3,
-	"geolocation_altitudePrecisionInDecimalPlaces" : 3,
-	"geolocation_accuracyPrecisionInDecimalPlaces" : 3,
-	"geolocation_altitudeAccuracyPrecisionInDecimalPlaces" : 3,
-	"geolocation_headingPrecisionInDecimalPlaces" : 3,
-	"geolocation_speedPrecisionInDecimalPlaces" : 3,
-	"geolocation_timestampPrecisionInDecimalPlaces" : 3,
-	"geolocation_randomize": false,
 	"geolocation": true,
+	"geolocation_locationObfuscationType": 3,
 };
 
 var level_3 = {
@@ -569,17 +418,8 @@ var level_3 = {
 	"webworker": true,
 	"webworker_approach_polyfill": true,
 	"webworker_approach_slow": false,
-	"geolocation_setAllGPSDataToZero" : false,
-	"geolocation_latitudePrecisionInDecimalPlaces" : 3,
-	"geolocation_longitudePrecisionInDecimalPlaces" : 3,
-	"geolocation_altitudePrecisionInDecimalPlaces" : 3,
-	"geolocation_accuracyPrecisionInDecimalPlaces" : 3,
-	"geolocation_altitudeAccuracyPrecisionInDecimalPlaces" : 3,
-	"geolocation_headingPrecisionInDecimalPlaces" : 3,
-	"geolocation_speedPrecisionInDecimalPlaces" : 3,
-	"geolocation_timestampPrecisionInDecimalPlaces" : 3,
-	"geolocation_randomize": false,
 	"geolocation": true,
+	"geolocation_locationObfuscationType": 0,
 };
 
 // Level aliases
