@@ -170,7 +170,11 @@ var build_code = function(wrapper, ...args) {
 				${wrapper.wrapper_prototype});
 		`
 	}
-	code += `Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});`;
+	code += `
+		if (!${wrapper.nofreeze}) {
+			Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});
+		}
+	`;
 	return enclose_wrapping(code, ...args);
 };
 
