@@ -1,6 +1,10 @@
 
 # Release history
 
+## 0.4
+
+* Re-introduced Geolocation API wrapping (several settings available).
+
 ## 0.3.2
 
 * Bugfix: Set up domain-specific levels from storage correctly
