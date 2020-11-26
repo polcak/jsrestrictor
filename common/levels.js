@@ -55,7 +55,7 @@ var wrapping_groups = {
 		{
 			name: "time_precision",
 			description: "Manipulate the time precision provided by Date and performance",
-			description2: [],
+			description2: ["If you enable Geolocation API wrapping below, timestamps provided by the Geolocation API will be wrapped as well"],
 			options: [
 				{
 					description: "Manipulate time to",
