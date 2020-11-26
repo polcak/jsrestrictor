@@ -13,7 +13,7 @@ function drawPosition(gpsDataObject) {
 		document.getElementById("placeToWriteGPSDetails").innerHTML += "<b>Timestamp:</b> " + gpsDataObject.timestamp + "<br>";
 		clearInterval(gettingGPSDataInterval);
 
-		document.getElementById("map").innerHTML = "<iframe width=\"450\" height=\"450\" allowfullscreen=\"\" class=\"maps\" frameborder=\"0\" id=\"mapnavi\" name=\"mapnavi\" src=\"https://www.google.com/maps/embed/v1/place?zoom=15&q="+ gpsDataObject.coords.latitude +"%2C"+ gpsDataObject.coords.longitude +"&key=AIzaSyC-5CY9mOCeg5Y3IhPqi_Yd0-DZtWrJl-E\" />";
+		document.getElementById("map").innerHTML = '<iframe width="900" height="450" frameborder="0" id="mapnavi" name="mapnavi" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=' + (gpsDataObject.coords.longitude - 0.004).toString() + '%2C' + (gpsDataObject.coords.latitude - 0.001).toString() + '%2C' + (gpsDataObject.coords.longitude + 0.004).toString() + '%2C' + (gpsDataObject.coords.latitude + 0.001).toString() + '&amp;layer=mapnik&amp;marker=' + gpsDataObject.coords.latitude.toString() + '%2C' + gpsDataObject.coords.longitude.toString() + '" style="border: 1px solid black"></iframe>';
 	}
 	else {
 		document.getElementById("placeToWriteGPSDetails").innerHTML = "Waiting for GPS data.";
