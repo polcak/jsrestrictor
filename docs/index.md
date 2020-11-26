@@ -19,6 +19,11 @@ JavaScript Restrictor currently supports modifying and restricting the following
     * Encapsulates window.DataView, window.Uint8Array, window.Int8Array, window.Uint8ClampedArray, window.Int16Array, window.Uint16Array, window.Int32Array, window.Uint32Array, window.Float32Array, window.Float64Array
 * **SharedArrayBuffer (window.SharedArrayBuffer)** can be exploited for [timing attacks](https://graz.pure.elsevier.com/de/publications/fantastic-timers-and-where-to-find-them-high-resolution-microarch).
 * **WebWorker (window.Worker)** can be exploited for [timing attacks](https://graz.pure.elsevier.com/de/publications/practical-keystroke-timing-attacks-in-sandboxed-javascript).
+* **[Geolocation API](https://www.w3.org/TR/geolocation-API/) (navigator.geolocation)**: Although
+	the browser should request permission to access to the Geolocation API, the user can be unwilling
+	to share the exact position. JSR allows the user to limit the precission of the API or disable the
+	API. JSR also modifies the timestamps provided by Geolocation API in consistency with its time
+	precision settings.
 
 JavaScript Restrictor provides four in-built levels of protection:
 
