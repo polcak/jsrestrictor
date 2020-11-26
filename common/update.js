@@ -30,7 +30,7 @@ function installUpdate() {
 	 * 0.3 storage
 	 *  {
 	 *    __default__: 2, // Default protection level
-	 *    version: 2.1,     // The version of this storage
+	 *    version: 2.2,     // The version of this storage
 	 *    custom_levels: {}, // associative array of custom level (key, its id => object)
 	 *      {level_id: short string used for example on the badge
 	 *       level_text: Short level description
@@ -49,13 +49,48 @@ function installUpdate() {
 		if (!item.hasOwnProperty("version") || (item.version < 2.1)) {
 			browser.storage.sync.clear();
 			console.log("All JavaScript Restrictor data cleared! Unfortunately, we do not migrate settings from versions bellow 0.3.");
-			browser.storage.sync.set({
+			item = {
 				__default__: 2,
 				version: 2.1,
 				custom_levels: {},
 				domains: {},
-			});
+			};
 		}
+		if (item.version == 2.1) {
+			// No Geolocation below 2.2
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.time_precision) {
+					l.geolocation = true;
+					if (l.time_precision_randomize) {
+						l.geolocation_locationObfuscationType = 5;
+					}
+					else if (l.time_precision_precision == 2) {
+						l.geolocation_locationObfuscationType = 2;
+					}
+					else if (l.time_precision_precision == 1) {
+						l.geolocation_locationObfuscationType = 3;
+					}
+					else if (l.time_precision_precision == 0) {
+						l.geolocation_locationObfuscationType = 4;
+					}
+					else {
+						l.geolocation_locationObfuscationType = -1;
+					}
+					// note that the obfuscation type might be redefined below
+				}
+				if (l.shared_array || l.webworker || l.xhr || l.arrays) {
+					l.geolocation = true;
+					l.geolocation_locationObfuscationType = 0;
+				}
+				if (l.geolocation_locationObfuscationType === undefined && l.htmlcanvaselement) {
+					l.geolocation = true;
+					l.geolocation_locationObfuscationType = 3;
+				}
+			}
+			item.version = 2.2;
+		}
+		browser.storage.sync.set(item);
 	});
 }
 browser.runtime.onInstalled.addListener(installUpdate);
