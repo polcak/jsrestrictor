@@ -1,6 +1,11 @@
 
 # Release history
 
+## 0.4.1
+
+* Fix the amount of saved data through pop-up (for a specific domain), it is much harder to reach
+	the quoa
+
 ## 0.4
 
 * Re-introduced Geolocation API wrapping (several settings available).
