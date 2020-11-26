@@ -492,7 +492,11 @@ function setDefaultLevel(level) {
 }
 
 function saveDomainLevels() {
-	browser.storage.sync.set({domains: domains});
+	tobesaved = {};
+	for (k in domains) {
+		tobesaved[k] = {level_id: domains[k].level_id};
+	}
+	browser.storage.sync.set({domains: tobesaved});
 }
 
 function getCurrentLevelJSON(url) {
