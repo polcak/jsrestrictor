@@ -441,6 +441,15 @@ function commonMessageListener(message, sender, sendResponse)
 				{urls: ["<all_urls>"]}
 			);
 		}
+
+		if (typeof onResponseStartedListener === "function")
+		{
+			browser.webRequest.onResponseStarted.addListener(
+			onResponseStartedListener,
+			{urls: ["<all_urls>"]},
+			["responseHeaders"]
+			);
+		}
 	}
 	//HTTP request shield was turned off
 	else if (message.message === "turn request shield off")
@@ -451,6 +460,12 @@ function commonMessageListener(message, sender, sendResponse)
 			//Disconnect the listeners
 			browser.webRequest.onHeadersReceived.removeListener(onHeadersReceivedRequestListener);
 			browser.webRequest.onErrorOccurred.removeListener(onErrorOccuredListener);
+		}
+
+		if (typeof onResponseStartedListener === "function")
+		{
+			//Disconnect the listeners
+			browser.webRequest.onResponseStarted.removeListener(onResponseStartedListener);
 		}
 	}
 }
