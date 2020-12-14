@@ -69,6 +69,15 @@ browser.storage.sync.get(["requestShieldOn"], function(result){
 				{urls: ["<all_urls>"]}
 			);
 		}
+
+		if (typeof onResponseStartedListener === "function")
+		{
+			browser.webRequest.onResponseStarted.addListener(
+			onResponseStartedListener,
+			{urls: ["<all_urls>"]},
+			["responseHeaders"]
+			);
+		}
 	}
 });
 
