@@ -408,7 +408,7 @@ function messageListener(message, sender, sendResponse)
 
 function onResponseStartedListener(responseDetails) {
 	
-	//It's neccessary to have both of these defined, otherwise the response can't be analyzed
+	//It's neccessary to have these properities defined, otherwise the response can't be analyzed
 	if (responseDetails.ip === undefined || responseDetails.initiator === undefined || responseDetails.url === undefined)
 	{
 		return;
