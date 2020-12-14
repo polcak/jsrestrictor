@@ -61,6 +61,12 @@ async function beforeSendHeadersListener(requestDetail) {
 		return {cancel:false};
 	}
 
+	//If there is same origin, do not cancel request.
+	if (sourceUrl.origin == targetUrl.origin)
+	{
+		return {cancel:false};
+	}
+
 	//Checking type of SOURCE URL
 	if (isIPV4(sourceUrl.hostname)) //SOURCE is IPV4 adddr
 	{

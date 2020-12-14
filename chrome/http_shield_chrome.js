@@ -274,6 +274,12 @@ function beforeSendHeadersListener(requestDetail) {
 		return {cancel:false};
 	}
 
+	//If there is same origin, do not cancel request.
+	if (sourceUrl.origin == targetUrl.origin)
+	{
+		return {cancel:false};
+	}
+
 	//Host found among user's untrusted, thus blocked, hosts, blocking it without further actions
 	if (blockedHosts[sourceUrl.hostname] != undefined)
 	{
