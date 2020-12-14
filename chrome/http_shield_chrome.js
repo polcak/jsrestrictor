@@ -400,3 +400,58 @@ function messageListener(message, sender, sendResponse)
 	}
 }
 
+function onResponseStartedListener(responseDetails) {
+	
+	//It's neccessary to have both of these defined, otherwise the response can't be analyzed
+	if (responseDetails.ip === undefined || responseDetails.initiator === undefined || responseDetails.url === undefined)
+	{
+		return;
+	}
+	
+	var sourceUrl = new URL(responseDetails.initiator);
+	//Removing www. from hostname, so the hostnames are uniform
+	sourceUrl.hostname = sourceUrl.hostname.replace(/^www\./,'');
+	
+	var targetUrl = new URL(responseDetails.url);
+	//Removing www. from hostname, so the hostnames are uniform
+	targetUrl.hostname = targetUrl.hostname.replace(/^www\./,'');
+
+	//Host found among user's trusted hosts, allow it right away
+	if (checkWhitelist(sourceUrl.hostname))
+	{
+		return;
+	}
+	
+	var targetIP = responseDetails.ip;
+	var isDestinationPrivate = false;
+	
+	//Checking type of DESTINATION IP
+	if (isIPV4(targetIP)) //DESTINATION is IPV4 adddr
+	{
+		//Checking privacy of IPv4
+		if (isIPV4Private(targetIP))
+		{
+			//Destination is IPv4 private
+			isDestinationPrivate = true;
+		}
+	}
+	else if(isIPV6(targetIP)) //DESTINATION is IPV6
+	{
+		//Checking privacy of IPv6
+		if (isIPV6Private(targetIP))
+		{
+			//Destination is IPv6 private
+			isDestinationPrivate = true;
+		}
+	}
+	
+	//If there is not same origin, check destination privacy.
+	//If there is same origin, do nothing. It is alright.
+	if (sourceUrl.origin != targetUrl.origin) {
+		//Add host to blocked if it sent request to private IP address.
+		if(isDestinationPrivate)
+		{
+			blockedHosts[sourceUrl.hostname] = true;
+		}
+	}
+}
