@@ -31,3 +31,7 @@ clean:
 	rm -rf firefox_JSR
 	rm -rf chrome_JSR.zip
 	rm -rf chrome_JSR
+	rm -rf common/ipv4.dat
+	rm -rf common/ipv6.dat
+	rm -rf ipv4.csv
+	rm -rf ipv6.csv
