@@ -47,7 +47,7 @@ function beforeSendHeadersListener(requestDetail) {
 	sourceUrl.hostname = wwwRemove(sourceUrl.hostname);
 	var targetUrl = new URL(requestDetail.url);
 	//Removing www. from hostname, so the hostnames are uniform
-	targetUrl.hostname = wwwRemove(targetUrl.hostname.replace);
+	targetUrl.hostname = wwwRemove(targetUrl.hostname);
 
 	var targetIP;
 	var sourceIP;
@@ -206,7 +206,7 @@ function onResponseStartedListener(responseDetails)
 	
 	var targetUrl = new URL(responseDetails.url);
 	//Removing www. from hostname, so the hostnames are uniform.
-	targetUrl.hostname = wwwRemove(targetUrl.hostname.replace);
+	targetUrl.hostname = wwwRemove(targetUrl.hostname);
 	
 	//If target hostname is IPv4 or IPv6 do not create any DNS record in cache.
 	if (!isIPV4(targetUrl.hostname) && !isIPV6(targetUrl.hostname)) {
