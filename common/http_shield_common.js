@@ -55,6 +55,15 @@ browser.storage.sync.get(["requestShieldOn"], function(result){
 			{urls: ["<all_urls>"]},
 			["blocking", "requestHeaders"]
 		);
+
+		if (typeof onResponseStartedListener === "function")
+		{
+			browser.webRequest.onResponseStarted.addListener(
+			onResponseStartedListener,
+			{urls: ["<all_urls>"]},
+			["responseHeaders"]
+			);
+		}
 	}
 });
 
@@ -413,10 +422,25 @@ function commonMessageListener(message, sender, sendResponse)
 			{urls: ["<all_urls>"]},
 			["blocking", "requestHeaders"]
 		);
+
+		if (typeof onResponseStartedListener === "function")
+		{
+			browser.webRequest.onResponseStarted.addListener(
+			onResponseStartedListener,
+			{urls: ["<all_urls>"]},
+			["responseHeaders"]
+			);
+		}
 	}
 	//HTTP request shield was turned off
 	else if (message.message === "turn request shield off")
 	{
+		//Disconnect the listeners
 		browser.webRequest.onBeforeSendHeaders.removeListener(beforeSendHeadersListener);
+		
+		if (typeof onResponseStartedListener === "function")
+		{
+			browser.webRequest.onResponseStarted.removeListener(onResponseStartedListener);
+		}
 	}
 }
