@@ -61,7 +61,7 @@ browser.tabs.query(queryInfo, function(tabs) {
 	let tab = tabs[0];
 	url = new URL(tab.url);
 	// remove www
-	url.hostname = url.hostname.replace(/^www\./,'');
+	url.hostname = wwwRemove(url.hostname);
 	if (url.hostname == "" || url.hostname == myAddon.hostname || url.hostname == "newtab") {
 		document.getElementById("current_site_level_settings").style.opacity = fadeOut;
 		return;
@@ -137,7 +137,7 @@ function load_on_off_switch()
 			browser.tabs.query({currentWindow: true, active: true}, function (tabs) {
 				//Obtain hostname
 				currentHost = new URL(tabs[0].url);
-				currentHost = currentHost.hostname.replace(/^www\./,'');
+				currentHost = wwwRemove(currentHost.hostname);
 				//Ask background whether is this site whitelisted or not
 				browser.runtime.sendMessage({message:"is current site whitelisted?", site:currentHost}, function (response) {
 					//Check or uncheck the slider
@@ -165,7 +165,7 @@ function control_whitelist()
 	browser.tabs.query({currentWindow: true, active: true}, function (tabs) {
 		//Obtain hostname
 		currentHost = new URL(tabs[0].url);
-		currentHost = currentHost.hostname.replace(/^www\./,'');
+		currentHost = wwwRemove(currentHost.hostname);
 		//Send approriate message based on slider's state
 		if (!checkbox.checked)	//Turn ON
 		{
