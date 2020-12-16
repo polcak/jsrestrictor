@@ -24,6 +24,10 @@
 // Event handlers for webRequest API, notifications and messaging
 
 
+/// Custom DNS cache created based on previous requests.
+var dnsCache = new Object();
+
+
 /// webRequest event listener, hooked to onBeforeSendHeaders event
 /// Catches all requests, analyzes them, does blocking
 function beforeSendHeadersListener(requestDetail) {
@@ -52,6 +56,37 @@ function messageListener(message, sender, sendResponse)
 		{
 			sendResponse("current site is not whitelisted");
 			return true;
+		}
+	}
+}
+
+
+/// webRequest event listener, hooked to onResponseStarted event
+/// analyze HTTP response
+/// get ip address and hostname (domain) from response
+/// creating custom dns cache in object dnsCache from obtained ip address and domain
+/// In Chrome, custom DNS cache has to be created because Chrome does not have dns API.
+function onResponseStartedListener(responseDetails) {
+	//It's neccessary to have both properities defined, otherwise the response can't be analyzed.
+	if (responseDetails.ip === undefined || responseDetails.url === undefined)
+	{
+		return;
+	}
+	
+	var targetUrl = new URL(responseDetails.url);
+	//Removing www. from hostname, so the hostnames are uniform.
+	targetUrl.hostname = targetUrl.hostname.replace(/^www\./,'');
+	
+	//If target hostname is IPv4 or IPv6 do not create any DNS record in cache.
+	if (!isIPV4(targetUrl.hostname) && !isIPV6(targetUrl.hostname)) {
+		if (dnsCache[targetUrl.hostname] === undefined) {
+			//DNS entry for this domain not created yet.
+			dnsCache[targetUrl.hostname] = [responseDetails.ip];
+		}
+		else if (dnsCache[targetUrl.hostname].indexOf(responseDetails.ip) === -1) {
+			//DNS entry or entries already created for this domain.
+			//Push new IP address if it does not already exist.
+			dnsCache[targetUrl.hostname].push(responseDetails.ip);
 		}
 	}
 }
