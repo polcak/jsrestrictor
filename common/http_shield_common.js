@@ -56,20 +56,6 @@ browser.storage.sync.get(["requestShieldOn"], function(result){
 			["blocking", "requestHeaders"]
 		);
 
-		if (typeof onHeadersReceivedRequestListener === "function")
-		{
-			browser.webRequest.onHeadersReceived.addListener(
-			onHeadersReceivedRequestListener,
-			{urls: ["<all_urls>"]},
-			["blocking"]
-			);
-
-			browser.webRequest.onErrorOccurred.addListener(
-				onErrorOccuredListener,
-				{urls: ["<all_urls>"]}
-			);
-		}
-
 		if (typeof onResponseStartedListener === "function")
 		{
 			browser.webRequest.onResponseStarted.addListener(
@@ -437,20 +423,6 @@ function commonMessageListener(message, sender, sendResponse)
 			["blocking", "requestHeaders"]
 		);
 
-		if (typeof onHeadersReceivedRequestListener === "function")
-		{
-			browser.webRequest.onHeadersReceived.addListener(
-			onHeadersReceivedRequestListener,
-			{urls: ["<all_urls>"]},
-			["blocking"]
-			);
-
-			browser.webRequest.onErrorOccurred.addListener(
-				onErrorOccuredListener,
-				{urls: ["<all_urls>"]}
-			);
-		}
-
 		if (typeof onResponseStartedListener === "function")
 		{
 			browser.webRequest.onResponseStarted.addListener(
@@ -463,18 +435,173 @@ function commonMessageListener(message, sender, sendResponse)
 	//HTTP request shield was turned off
 	else if (message.message === "turn request shield off")
 	{
-		browser.webRequest.onBeforeSendHeaders.removeListener(beforeSendHeadersListener);
-		if (typeof onHeadersReceivedRequestListener === "function")
-		{
-			//Disconnect the listeners
-			browser.webRequest.onHeadersReceived.removeListener(onHeadersReceivedRequestListener);
-			browser.webRequest.onErrorOccurred.removeListener(onErrorOccuredListener);
-		}
-
 		if (typeof onResponseStartedListener === "function")
 		{
 			//Disconnect the listeners
 			browser.webRequest.onResponseStarted.removeListener(onResponseStartedListener);
 		}
+	}
+}
+
+
+//This function must not be asunchronous in Google Chrome: https://stackoverflow.com/questions/47910732/browserextension-webrequest-onbeforerequest-return-promise
+
+/// webRequest event listener
+/// Listens to onBeforeSendHeaders event, receives detail of HTTP request in requestDetail
+/// Catches the request, analyzes it's origin and target URLs and blocks it/permits it based
+/// on their IP adresses. Requests coming from public IP ranges targeting the private IPs are
+/// blocked by default. Others are permitted by default.
+async function beforeSendHeadersListener(requestDetail) {
+	
+	//Firefox use properity originUrl, but Chrome use properity initiator. It it the same onlu different name.
+	if(requestDetail.originUrl === undefined) {
+		requestDetail.originUrl = requestDetail.initiator;
+	}
+	
+	//If either of information is undefined, permit it
+	//originUrl happens to be undefined for the first request of the page loading the document itself
+	if (requestDetail.originUrl === undefined || requestDetail.url === undefined)
+	{
+		return {cancel:false};
+	}
+	var sourceUrl = new URL(requestDetail.originUrl);
+	var fullSourceDomain = sourceUrl.hostname;
+	//Removing www. from hostname, so the hostnames are uniform
+	sourceUrl.hostname = sourceUrl.hostname.replace(/^www\./,'');
+	var targetUrl = new URL(requestDetail.url);
+	var fullTargetDomain = targetUrl.hostname;
+	//Removing www. from hostname, so the hostnames are uniform
+	targetUrl.hostname = targetUrl.hostname.replace(/^www\./,'');
+
+	var targetIP;
+	var sourceIP;
+	var isSourcePrivate = false;
+	var isDestinationPrivate = false;
+	var destinationResolution = "";
+	var sourceResolution = "";
+
+	//Host found among user's trusted hosts, allow it right away
+	if (checkWhitelist(sourceUrl.hostname))
+	{
+		return {cancel:false};
+	}
+
+	//Checking type of SOURCE URL
+	if (isIPV4(sourceUrl.hostname)) //SOURCE is IPV4 adddr
+	{
+		//Checking privacy of IPv4
+		if (isIPV4Private(sourceUrl.hostname))
+		{
+			//Source is IPv4 private
+			isSourcePrivate = true;
+		}
+	}
+	else if(isIPV6(sourceUrl.hostname)) //SOURCE is IPV6
+	{
+		//Checking privacy of IPv6
+		if (isIPV6Private(sourceUrl.hostname))
+		{
+			//Source is IPv6 private
+			isSourcePrivate = true;
+		}
+	}
+	else //SOURCE is hostname
+	{
+		if (typeof dnsResolveChrome === "function") {
+			isSourcePrivate = dnsResolveChrome(sourceUrl.hostname);
+		}
+		else {
+			//Resoluting DNS query for source domain
+			browser.dns.resolve(fullSourceDomain).then((val) =>
+			{
+				//More IPs could have been found, for each of them
+				for (let ip of val.addresses)
+				{
+					//Check whether it's IPv4
+					if (isIPV4(ip))
+					{
+						 if (isIPV4Private(ip))
+						 {
+							//Source is IPv4 private
+							isSourcePrivate = true;
+						 }
+					}
+					else if (isIPV6(ip))
+					{
+						if (isIPV6Private(ip))
+						{
+							//Source is IPv6 private
+							isSourcePrivate = true;
+						}
+					}
+				}
+			});
+		}
+	}
+
+	//Analyzing targetUrl
+	//Check IPv4/IPv6 and privacy
+	if (isIPV4(targetUrl.hostname))
+	{
+		if (isIPV4Private(targetUrl.hostname))
+		{
+			isDestinationPrivate = true;
+
+		}
+	}
+	else if(isIPV6(targetUrl.hostname))
+	{
+		if (isIPV6Private(targetUrl.hostname))
+		{
+			isDestinationPrivate = true;
+		}
+	}
+	else //Target is hostname
+	{
+		if (typeof dnsResolveChrome === "function") {
+			isDestinationPrivate = dnsResolveChrome(targetUrl.hostname);
+		}
+		else {
+			//Resoluting DNS query for source domain
+			browser.dns.resolve(fullTargetDomain).then((val) =>
+			{
+				//More IPs could have been found, for each of them
+				for (let ip of val.addresses)
+				{
+					//Check whether it's IPv4
+					if (isIPV4(ip))
+					{
+						 if (isIPV4Private(ip))
+						 {
+							//Source is IPv4 private
+							isSourcePrivate = true;
+						 }
+					}
+					else if (isIPV6(ip))
+					{
+						if (isIPV6Private(ip))
+						{
+							//Source is IPv6 private
+							isSourcePrivate = true;
+						}
+					}
+				}
+			});
+		}
+	}
+	if (typeof dnsResolveChrome !== "function") {
+		//Wait till all DNS resolutions are done, because its neccessary for upcoming actions
+		await Promise.all([sourceResolution, destinationResolution]);
+	}
+
+	//Blocking direction Public -> Private
+	if (!isSourcePrivate && isDestinationPrivate)
+	{
+		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
+		return {cancel:true}
+	}
+	else //Permitting others
+	{
+		return {cancel: false};
 	}
 }
