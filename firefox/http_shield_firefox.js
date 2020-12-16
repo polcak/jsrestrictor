@@ -31,7 +31,8 @@
 
 browser.runtime.onMessage.addListener(messageListener);
 
-async function beforeSendHeadersListener(requestDetail) {
+async function beforeSendHeadersListener(requestDetail)
+{
 
 	//If either of information is undefined, permit it
 	//originUrl happens to be undefined for the first request of the page loading the document itself

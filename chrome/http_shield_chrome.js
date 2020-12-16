@@ -196,7 +196,8 @@ function messageListener(message, sender, sendResponse)
 /// get ip address and hostname (domain) from response
 /// creating custom dns cache in object dnsCache from obtained ip address and domain
 /// In Chrome, custom DNS cache has to be created because Chrome does not have dns API.
-function onResponseStartedListener(responseDetails) {
+function onResponseStartedListener(responseDetails)
+{
 	//It's neccessary to have both properities defined, otherwise the response can't be analyzed.
 	if (responseDetails.ip === undefined || responseDetails.url === undefined)
 	{
