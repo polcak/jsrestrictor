@@ -38,16 +38,16 @@ function beforeSendHeadersListener(requestDetail) {
 
 	//If either of information is undefined, permit it
 	//initiator happens to be undefined for the first request of the page loading the document itself
-	if (requestDetail.initiator === undefined || requestDetail.url === undefined)
+	if (requestDetail.initiator === undefined || requestDetail.url === undefined || requestDetail.initiator === "null" || requestDetail.url === "null")
 	{
 		return {cancel:false};
 	}
 	var sourceUrl = new URL(requestDetail.initiator);
 	//Removing www. from hostname, so the hostnames are uniform
-	sourceUrl.hostname = sourceUrl.hostname.replace(/^www\./,'');
+	sourceUrl.hostname = wwwRemove(sourceUrl.hostname);
 	var targetUrl = new URL(requestDetail.url);
 	//Removing www. from hostname, so the hostnames are uniform
-	targetUrl.hostname = targetUrl.hostname.replace(/^www\./,'');
+	targetUrl.hostname = wwwRemove(targetUrl.hostname);
 
 	var targetIP;
 	var sourceIP;
@@ -206,7 +206,7 @@ function onResponseStartedListener(responseDetails)
 	
 	var targetUrl = new URL(responseDetails.url);
 	//Removing www. from hostname, so the hostnames are uniform.
-	targetUrl.hostname = targetUrl.hostname.replace(/^www\./,'');
+	targetUrl.hostname = wwwRemove(targetUrl.hostname);
 	
 	//If target hostname is IPv4 or IPv6 do not create any DNS record in cache.
 	if (!isIPV4(targetUrl.hostname) && !isIPV6(targetUrl.hostname)) {
