@@ -89,17 +89,17 @@ function beforeSendHeadersListener(requestDetail) {
 				//Check whether it's IPv4
 				if (isIPV4(ip))
 				{
-					 if (isIPV4Private(ip))
-					 {
-						//IPv4 is private
+					if (isIPV4Private(ip))
+					{
+						//Source is IPv4 private
 						isSourcePrivate = true;
-					 }
+					}
 				}
 				else if (isIPV6(ip))
 				{
 					if (isIPV6Private(ip))
 					{
-						//IPv6 is private
+						//Source is IPv6 private
 						isSourcePrivate = true;
 					}
 				}
@@ -134,17 +134,17 @@ function beforeSendHeadersListener(requestDetail) {
 				//Check whether it's IPv4
 				if (isIPV4(ip))
 				{
-					 if (isIPV4Private(ip))
-					 {
-						//IPv4 is private
+					if (isIPV4Private(ip))
+					{
+						//Destination is IPv4 private
 						isDestinationPrivate = true;
-					 }
+					}
 				}
 				else if (isIPV6(ip))
 				{
 					if (isIPV6Private(ip))
 					{
-						//IPv6 is private
+						//Destination is IPv6 private
 						isDestinationPrivate = true;
 					}
 				}

@@ -23,14 +23,15 @@
 /// Contains Firefox specific functions
 /// Event handlers for webRequest API, notifications and messaging
 
+
+browser.runtime.onMessage.addListener(messageListener);
+
+
 /// webRequest event listener
 /// Listens to onBeforeSendHeaders event, receives detail of HTTP request in requestDetail
 /// Catches the request, analyzes it's origin and target URLs and blocks it/permits it based
 /// on their IP adresses. Requests coming from public IP ranges targeting the private IPs are
 /// blocked by default. Others are permitted by default.
-
-browser.runtime.onMessage.addListener(messageListener);
-
 async function beforeSendHeadersListener(requestDetail)
 {
 
@@ -94,11 +95,11 @@ async function beforeSendHeadersListener(requestDetail)
 				//Check whether it's IPv4
 				if (isIPV4(ip))
 				{
-					 if (isIPV4Private(ip))
-					 {
-							//Source is IPv4 private
-							isSourcePrivate = true;
-					 }
+					if (isIPV4Private(ip))
+					{
+						//Source is IPv4 private
+						isSourcePrivate = true;
+					}
 				}
 				else if (isIPV6(ip))
 				{
@@ -139,19 +140,20 @@ async function beforeSendHeadersListener(requestDetail)
 			//More IPs could have been found, for each of them
 			for (let ip of targetIP.addresses)
 			{
-				//Checking type
+				//Check whether it's IPv4
 				if (isIPV4(ip))
 				{
-					 //Checking privacy
-					 if (isIPV4Private(ip))
-					 {
-							isDestinationPrivate = true;
-					 }
+					if (isIPV4Private(ip))
+					{
+						//Destination is IPv4 private
+						isDestinationPrivate = true;
+					}
 				}
 				else if (isIPV6(ip))
 				{
 					if (isIPV6Private(ip))
 					{
+						//Destination is IPv6 private
 						isDestinationPrivate = true;
 					}
 				}
