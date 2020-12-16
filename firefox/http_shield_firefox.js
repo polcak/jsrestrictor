@@ -37,18 +37,18 @@ async function beforeSendHeadersListener(requestDetail)
 
 	//If either of information is undefined, permit it
 	//originUrl happens to be undefined for the first request of the page loading the document itself
-	if (requestDetail.originUrl === undefined || requestDetail.url === undefined)
+	if (requestDetail.originUrl === undefined || requestDetail.url === undefined || requestDetail.originUrl === "null" || requestDetail.url === "null")
 	{
 		return {cancel:false};
 	}
 	var sourceUrl = new URL(requestDetail.originUrl);
 	var fullSourceDomain = sourceUrl.hostname;
 	//Removing www. from hostname, so the hostnames are uniform
-	sourceUrl.hostname = sourceUrl.hostname.replace(/^www\./,'');
+	sourceUrl.hostname = wwwRemove(sourceUrl.hostname);
 	var targetUrl = new URL(requestDetail.url);
 	var fullTargetDomain = targetUrl.hostname;
 	//Removing www. from hostname, so the hostnames are uniform
-	targetUrl.hostname = targetUrl.hostname.replace(/^www\./,'');
+	targetUrl.hostname = wwwRemove(targetUrl.hostname);
 
 	var targetIP;
 	var sourceIP;

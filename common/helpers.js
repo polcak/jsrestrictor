@@ -38,3 +38,10 @@ function gen_random32() {
 	window.crypto.getRandomValues(array);
 	return array[0];
 }
+
+/**
+ * Remove "www." at the beggining of the given hostname.
+ */
+function wwwRemove(hostname) {
+	return String(hostname).replace(/^www\./,'');
+}
