@@ -1,6 +1,10 @@
 
 # Release history
 
+## 0.4.2
+
+* Rewrite the NBS with custom DNS cache build with resolved data available in onResponseStartedListener()
+
 ## 0.4.1
 
 * Fix the amount of saved data through pop-up (for a specific domain), it is much harder to reach
