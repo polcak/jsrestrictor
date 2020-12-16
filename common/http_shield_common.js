@@ -55,20 +55,6 @@ browser.storage.sync.get(["requestShieldOn"], function(result){
 			{urls: ["<all_urls>"]},
 			["blocking", "requestHeaders"]
 		);
-
-		if (typeof onHeadersReceivedRequestListener === "function")
-		{
-			browser.webRequest.onHeadersReceived.addListener(
-			onHeadersReceivedRequestListener,
-			{urls: ["<all_urls>"]},
-			["blocking"]
-			);
-
-			browser.webRequest.onErrorOccurred.addListener(
-				onErrorOccuredListener,
-				{urls: ["<all_urls>"]}
-			);
-		}
 	}
 });
 
@@ -427,30 +413,10 @@ function commonMessageListener(message, sender, sendResponse)
 			{urls: ["<all_urls>"]},
 			["blocking", "requestHeaders"]
 		);
-
-		if (typeof onHeadersReceivedRequestListener === "function")
-		{
-			browser.webRequest.onHeadersReceived.addListener(
-			onHeadersReceivedRequestListener,
-			{urls: ["<all_urls>"]},
-			["blocking"]
-			);
-
-			browser.webRequest.onErrorOccurred.addListener(
-				onErrorOccuredListener,
-				{urls: ["<all_urls>"]}
-			);
-		}
 	}
 	//HTTP request shield was turned off
 	else if (message.message === "turn request shield off")
 	{
 		browser.webRequest.onBeforeSendHeaders.removeListener(beforeSendHeadersListener);
-		if (typeof onHeadersReceivedRequestListener === "function")
-		{
-			//Disconnect the listeners
-			browser.webRequest.onHeadersReceived.removeListener(onHeadersReceivedRequestListener);
-			browser.webRequest.onErrorOccurred.removeListener(onErrorOccuredListener);
-		}
 	}
 }
