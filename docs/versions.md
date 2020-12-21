@@ -3,7 +3,7 @@
 
 ## 0.4.2
 
-* Rewrite the NBS with custom DNS cache build with resolved data available in onResponseStartedListener()
+* Rewrite the NBS for Chromium-based browsers with custom DNS cache build with resolved data available in onResponseStartedListener()
 
 ## 0.4.1
 
