@@ -293,6 +293,17 @@ var wrapping_groups = {
 				"navigator.getBattery",
 			],
 		},
+		{
+			name: "windowname",
+			description: "Clear window.name value on the webpage loading",
+			description2: [],
+			default: true,
+			options: [],
+			wrappers: [
+				// WINDOW-NAME
+				"window.name",
+			],
+		},
 	],
 }
 
@@ -381,6 +392,7 @@ var level_1 = {
 	"battery": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 2,
+	"windowname": true,
 };
 
 var level_2 = {
@@ -395,6 +407,7 @@ var level_2 = {
 	"htmlcanvaselement": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
+	"windowname": true,
 };
 
 var level_3 = {
@@ -420,6 +433,7 @@ var level_3 = {
 	"webworker_approach_slow": false,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 0,
+	"windowname": true,
 };
 
 // Level aliases
