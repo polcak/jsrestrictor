@@ -1,6 +1,10 @@
 
 # Release history
 
+## 0.4.3
+
+* Add an option to clear `window.name` with each page reload.
+
 ## 0.4.2
 
 * Rewrite the NBS for Chromium-based browsers with custom DNS cache build with resolved data available in onResponseStartedListener()
