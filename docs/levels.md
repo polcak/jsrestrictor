@@ -24,6 +24,7 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Protect against WebWorker exploitation --** *OFF*
 * **Limit Geolocation API --** *Use accuracy of hundreds of meters*
 * **Disable Battery status API --** *ON*
+* **window.name --** *Clear with each page load*
 
 ### Level 2
 * **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
@@ -39,6 +40,7 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Protect against WebWorker exploitation --** *OFF*
 * **Limit Geolocation API --** *Use accuracy of kilometers*
 * **Disable Battery status API --** *ON*
+* **window.name --** *Clear with each page load*
 
 ### Level 3
 * **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
@@ -58,4 +60,5 @@ NBS is active independently on the levels defined below. If necessary, you can w
     * *Remove real parallelism* -- Use Worker polyfill instead of the native Worker.
 * **Limit Geolocation API --** *Disabled*
 * **Disable Battery status API --** *ON*
+* **window.name --** *Clear with each page load*
 
