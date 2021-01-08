@@ -1,6 +1,11 @@
 
 # Release history
 
+## 0.4.4
+
+* Bugfix: Do not try to redefine undefined objects. The exceptions thrown in injected code used to
+	prevent application of all the wrapping code.
+
 ## 0.4.3
 
 * Add an option to clear `window.name` with each page reload.
