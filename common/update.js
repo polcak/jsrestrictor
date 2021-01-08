@@ -90,6 +90,26 @@ function installUpdate() {
 			}
 			item.version = 2.2;
 		}
+		if (item.version == 2.2) {
+			// No window.name wrapping below 2.2
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				let count = 0;
+				count += Number(Boolean(l.time_precision)) +
+				         Number(Boolean(l.hardware)) +
+				         Number(Boolean(l.battery)) +
+				         Number(Boolean(l.geolocation)) +
+				         Number(Boolean(l.shared_array)) +
+				         Number(Boolean(l.webworker)) +
+				         Number(Boolean(l.xhr)) +
+				         Number(Boolean(l.arrays)) +
+				         Number(Boolean(l.htmlcanvaselement));
+				if (count >= 3) {
+					l.windowname = true;
+				}
+			}
+			item.version = 2.3;
+		}
 		browser.storage.sync.set(item);
 	});
 }
