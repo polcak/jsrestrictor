@@ -139,7 +139,7 @@ var build_code = function(wrapper, ...args) {
 		object_properties: generate_object_properties,
 		delete_properties: generate_delete_properties,
 	};
-	var code = "";
+	var code = `if (${wrapper.parent_object} === undefined) {return;}`;
 	for (wrapped of wrapper.wrapped_objects) {
 		code += `
 			var ${wrapped.wrapped_name} = ${wrapped.original_name};
