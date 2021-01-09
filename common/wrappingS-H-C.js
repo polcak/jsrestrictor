@@ -4,6 +4,7 @@
 //  internet.
 //
 //  Copyright (C) 2019  Libor Polcak
+//  Copyright (C) 2021  Matus Svancar
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +24,6 @@
  * Create private namespace
  */
 (function() {
-
 	function create_post_wrappers(parent_object) {
 		return [
 				{
@@ -95,7 +95,7 @@
 					wrapped_name: "origToDataURL",
 				}
 			],
-			helping_code: "",
+			helping_code: ``,
 			wrapping_code_function_name: "wrapping",
 			wrapping_code_function_params: "parent",
 			wrapping_code_function_call_window: true,
@@ -104,17 +104,63 @@
 			wrapping_function_args: "...args",
 			wrapping_function_body: `
 					var ctx = this.getContext("2d");
-					ctx.fillStyle = "white";
-					ctx.fillRect(0, 0, this.width, this.height);
-					return origToDataURL.call(this, ...args);
+					var fake = document.createElement("canvas");
+					fake.setAttribute("width", this.width);
+					fake.setAttribute("height", this.height);
+					var stx = fake.getContext("2d");
+					var imageData = ctx.getImageData(0,0,this.width,this.height);
+					stx.putImageData(imageData, 0, 0);
+					return origToDataURL.call(fake, ...args);
 				`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 		{
 			parent_object: "CanvasRenderingContext2D.prototype",
 			parent_object_property: "getImageData",
-			wrapped_objects: [],
-			helping_code: "",
+			wrapped_objects: [
+				{
+					original_name: "CanvasRenderingContext2D.prototype.getImageData",
+					wrapped_name: "origGetImageData",
+				}
+			],
+			helping_code: `var farble = function(context, fake) {
+				const width = context.canvas.width;
+				const height = context.canvas.height;
+				var imageData = origGetImageData.call(context,0, 0, width, height);
+				var fakeData = origGetImageData.call(fake,0, 0, width, height);
+
+				for (let i = 0; i < height; i++) {
+					for (let j = 0; j < width; j++) {
+						const n = ((i * (width * 4)) + (j * 4));
+						fakeData.data[n + 0] = imageData.data[n + 0];
+						fakeData.data[n + 1] = imageData.data[n + 1];
+						fakeData.data[n + 2] = imageData.data[n + 2];
+						fakeData.data[n + 3] = imageData.data[n + 3];
+
+					}
+				}
+
+				function lfsr_next(v) {
+					return BigInt.asUintN(64, ((v >> 1n) | (((v << 62n) ^ (v << 61n)) & (~(~0n << 63n) << 62n))));
+				}
+
+				var pixel_count = BigInt(width * height);
+				var channel = domainHash[0].charCodeAt(0) % 3;
+				var canvas_key = domainHash;
+				var v = BigInt(sessionHash);
+
+				for (let i = 0; i < 32; i++) {
+					var bit = canvas_key[i];
+					for (let j = 8; j >= 0; j--) {
+						var pixel_index = (4 * Number(v % pixel_count) + channel);
+						fakeData.data[pixel_index] = fakeData.data[pixel_index] ^ (bit & 0x1);
+						bit = bit >> 1;
+						v = lfsr_next(v);
+					}
+				}
+				fake.putImageData(fakeData, 0, 0);
+
+			};`,
 			wrapping_code_function_name: "wrapping",
 			wrapping_code_function_params: "parent",
 			wrapping_code_function_call_window: true,
@@ -122,8 +168,12 @@
 			replace_original_function: true,
 			wrapping_function_args: "sx, sy, sw, sh",
 			wrapping_function_body: `
-				var fake_image = new ImageData(sw, sh);
-				return fake_image;
+				var fake = document.createElement("canvas");
+				fake.setAttribute("width", this.canvas.width);
+				fake.setAttribute("height", this.canvas.height);
+				var stx = fake.getContext("2d");
+				farble(this,stx);
+				return origGetImageData.call(stx, sx, sy, sw, sh);
 			`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
@@ -136,18 +186,50 @@
 					wrapped_name: "origToBlob",
 				}
 			],
-			helping_code: "",
+			helping_code: ``,
 			wrapping_code_function_name: "wrapping",
 			wrapping_code_function_params: "parent",
 			wrapping_code_function_call_window: true,
 			original_function: "parent.HTMLCanvasElement.prototype.toBlob",
 			replace_original_function: true,
-			wrapping_function_args: "callback, mimeType, qualityArgument",
+			wrapping_function_args: "...args",
 			wrapping_function_body: `
+				var ctx = this.getContext("2d");
 				var fake = document.createElement("canvas");
 				fake.setAttribute("width", this.width);
 				fake.setAttribute("height", this.height);
-				return origToBlob.call(fake, callback, mimeType, qualityArgument);
+				var stx = fake.getContext("2d");
+				var imageData = ctx.getImageData(0,0,this.width,this.height);
+				stx.putImageData(imageData, 0, 0);
+				return origToBlob.call(fake, ...args);
+			`,
+			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
+		},
+		{
+			parent_object: "OffscreenCanvas.prototype",
+			parent_object_property: "convertToBlob",
+			wrapped_objects: [
+				{
+					original_name: "OffscreenCanvas.prototype.convertToBlob",
+					wrapped_name: "origConvertToBlob",
+				}
+			],
+			helping_code: ``,
+			wrapping_code_function_name: "wrapping",
+			wrapping_code_function_params: "parent",
+			wrapping_code_function_call_window: true,
+			original_function: "parent.OffscreenCanvas.prototype.convertToBlob",
+			replace_original_function: true,
+			wrapping_function_args: "...args",
+			wrapping_function_body: `
+				var ctx = this.getContext("2d");
+				var fake = document.createElement("canvas");
+				fake.setAttribute("width", this.width);
+				fake.setAttribute("height", this.height);
+				var stx = fake.getContext("2d");
+				var imageData = ctx.getImageData(0,0,this.width,this.height);
+				stx.putImageData(imageData, 0, 0);
+				return origConvertToBlob.call(fake, ...args);
 			`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		}

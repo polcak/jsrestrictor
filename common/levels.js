@@ -3,8 +3,9 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2019  Libor Polcak
+//  Copyright (C) 2019-2021  Libor Polcak
 //  Copyright (C) 2019  Martin Timko
+//  Copyright (C) 2021  Matus Svancar
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -98,13 +99,16 @@ var wrapping_groups = {
 		{
 			name: "htmlcanvaselement",
 			description: "Protect against canvas fingerprinting",
-			description2: ["Canvas returns white image data by modifiing canvas.toDataURL(), canvas.toBlob() and CanvasRenderingContext2D.getImageData functions",],
+			description2: ["Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData, OffscreenCanvas.convertToBlob() return modified image data based on session and domain keys",],
 			options: [],
 			wrappers: [
 				// H-C
 				"CanvasRenderingContext2D.prototype.getImageData",
 				"HTMLCanvasElement.prototype.toBlob",
 				"HTMLCanvasElement.prototype.toDataURL",
+				"OffscreenCanvas.prototype.convertToBlob"
+			],
+		},
 			],
 		},
 		{
