@@ -3,8 +3,9 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2019  Libor Polcak
+//  Copyright (C) 2019-2021  Libor Polcak
 //  Copyright (C) 2019  Martin Timko
+//  Copyright (C) 2021  Matus Svancar
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -98,13 +99,34 @@ var wrapping_groups = {
 		{
 			name: "htmlcanvaselement",
 			description: "Protect against canvas fingerprinting",
-			description2: ["Canvas returns white image data by modifiing canvas.toDataURL(), canvas.toBlob() and CanvasRenderingContext2D.getImageData functions",],
-			options: [],
+			description2: ["Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData, OffscreenCanvas.convertToBlob() return modified image data to prevent fingerprinting",],
+			options: [
+				{
+				description: "farbling type",
+				ui_elem: "select",
+				name: "method",
+				default: 0,
+				data_type: "Number",
+				options: [
+					{
+						value: 0,
+						description: "Alter image data based on domain and session hashes",
+					},
+					{
+						value: 1,
+						description: "Replace by white image",
+					}
+				],
+			}
+		],
 			wrappers: [
 				// H-C
 				"CanvasRenderingContext2D.prototype.getImageData",
 				"HTMLCanvasElement.prototype.toBlob",
 				"HTMLCanvasElement.prototype.toDataURL",
+				"OffscreenCanvas.prototype.convertToBlob"
+			],
+		},
 			],
 		},
 		{
@@ -415,6 +437,7 @@ var level_2 = {
 	"hardware": true,
 	"battery": true,
 	"htmlcanvaselement": true,
+	"htmlcanvaselement_method": 0,
 	"enumerateDevices": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
@@ -431,6 +454,7 @@ var level_3 = {
 	"hardware": true,
 	"battery": true,
 	"htmlcanvaselement": true,
+	"htmlcanvaselement_method": 0,
 	"enumerateDevices": true,
 	"xhr": true,
 	"xhr_behaviour_block": false,

@@ -3,7 +3,6 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2020  Libor Polcak
 //  Copyright (C) 2021  Matus Svancar
 //
 //  This program is free software: you can redistribute it and/or modify
@@ -20,27 +19,18 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-/// Get current level configuration from the background script
-browser.runtime.sendMessage({
-		message: "get wrapping for URL",
-		url: window.location.href
-	},
-	/// prepend domain and session hashes
-	function handleResponse(reply) {
-		browser.storage.local.get(["sessionHash", "visitedDomains"], function(storageData) {
-			domains = storageData.visitedDomains;
-			sessionHash = storageData.sessionHash
-			if (!domains[location.origin]) {
-				domains[location.origin] = generateId();
-				browser.storage.local.set({
-					"visitedDomains": domains
-				})
-			};
-			var tempCode = `
-				var domainHash = "${domains[location.origin]}";
-				var sessionHash ="${sessionHash}";` + reply.code;
-			reply.code = `(function() {${tempCode}})();`;
-			injectScript(reply.code, reply.wrappers, reply.ffbug1267027);
-		});
-	}
-);
+if ((typeof browser) === "undefined") {
+  var browser = chrome;
+}
+
+
+browser.storage.local.remove("visitedDomains");
+browser.storage.local.remove("sessionHash");
+var visitedDomains = {};
+visitedDomains[location.origin] = generateId();
+browser.storage.local.set({
+  "visitedDomains": visitedDomains
+});
+browser.storage.local.set({
+  "sessionHash": gen_random64().toString()
+});

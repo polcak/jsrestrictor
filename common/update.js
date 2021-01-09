@@ -44,6 +44,11 @@ function installUpdate() {
 	 *      }
 	 *	  whitelistedHosts: {} // associative array of hosts that are removed from http protection control (hostname => boolean)
 	 *	  requestShieldOn: {} // Boolean, if it's TRUE or undefined, the http request protection is turned on,  if it's FALSE, the protection si turned off
+	 *
+	 *------local
+	 *		sessionHash: {}, // 64bit session hash
+	 *		visitedDomains: {} // associative array of domain hashes (domain name => 32 byte hash)
+	 *
 	 */
 	browser.storage.sync.get(null, function (item) {
 		if (!item.hasOwnProperty("version") || (item.version < 2.1)) {
