@@ -69,6 +69,30 @@
 					wrapping_function_args: "",
 					wrapping_function_body: "return func(originalDateConstructor.now.call(Date), precision);",
 				},
+				{
+					code_type: "function_export",
+					parent_object: "window.Date",
+					parent_object_property: "parse",
+					export_function_name: "originalDateConstructor.parse",
+				},
+				{
+					code_type: "function_export",
+					parent_object: "window.Date",
+					parent_object_property: "UTC",
+					export_function_name: "originalDateConstructor.UTC",
+				},
+				{
+					code_type: "assign",
+					parent_object: "window.Date",
+					parent_object_property: "prototype",
+					value: "originalDateConstructor.prototype",
+				},
+				{
+					code_type: "assign",
+					parent_object: "window.Date.prototype",
+					parent_object_property: "constructor",
+					value: "window.Date",
+				},
 			]
 		},
 	]

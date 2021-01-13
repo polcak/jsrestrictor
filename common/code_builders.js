@@ -130,6 +130,13 @@ function generate_delete_properties(code_spec_obj) {
 }
 
 /**
+ * This function generates code that makes an assignment.
+ */
+function generate_assignement(code_spec_obj) {
+	return `${code_spec_obj.parent_object}.${code_spec_obj.parent_object_property} = ${code_spec_obj.value};`
+}
+
+/**
  * This function builds the wrapping code.
  */
 var build_code = function(wrapper, ...args) {
@@ -138,6 +145,7 @@ var build_code = function(wrapper, ...args) {
 		function_export: generate_assign_function_code,
 		object_properties: generate_object_properties,
 		delete_properties: generate_delete_properties,
+		assign: generate_assignement,
 	};
 	var code = "";
 	for (wrapped of wrapper.wrapped_objects) {
