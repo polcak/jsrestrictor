@@ -73,6 +73,37 @@ function generate_object_properties_ffbug(code_spec_obj) {
 }
 
 /**
+ * This function removes a property. Supporting
+ * code for dealing with bug https://bugzilla.mozilla.org/show_bug.cgi?id=1267027.
+
+ */
+function generate_delete_properties_ffbug(code_spec_obj) {
+	var code = `
+	`;
+	for (prop of code_spec_obj.delete_properties) {
+		code += `
+			if ("${prop}" in window.wrappedJSObject.${code_spec_obj.parent_object}) {
+				// Delete only properties that are available.
+				// The if should be safe to be deleted but it can possibly reduce fingerprintability
+				Object.defineProperty(
+					window.wrappedJSObject.${code_spec_obj.parent_object},
+					"${prop}", {get: undefined, set: undefined, configurable: false, enumerable: false}
+				);
+			}
+		`
+	}
+	return code;
+}
+
+/**
+ * This function generates code that makes an assignment. Supporting
+ * code for dealing with bug https://bugzilla.mozilla.org/show_bug.cgi?id=1267027.
+ */
+function generate_assignement_ffbug(code_spec_obj) {
+	return `window.wrappedJSObject.${code_spec_obj.parent_object}.${code_spec_obj.parent_object_property} = ${code_spec_obj.value};`
+}
+
+/**
  * Alternative definition of the build_code function.
  *
  * FIXME:this code needs improvements, see bug #25
@@ -82,6 +113,8 @@ function build_code_ffbug(wrapper, ...args) {
 		function_define: define_page_context_function_ffbug,
 		function_export: generate_assign_function_code_ffbug,
 		object_properties: generate_object_properties_ffbug,
+		delete_properties: generate_delete_properties_ffbug,
+		assign: generate_assignement_ffbug,
 	};
 	var code = "";
 	for (wrapped of wrapper.wrapped_objects) {
