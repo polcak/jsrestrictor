@@ -24,20 +24,6 @@
  * Create private namespace
  */
 (function() {
-	function changePropertyPrototype(name) {
-		let descriptor = Object.getOwnPropertyDescriptor(PerformanceEntry.prototype, name);
-		let originalF = descriptor['get'];
-		let replacementF = function() {
-			let originalVal = originalF.call(this, ...arguments);
-			return func(originalVal, precision);
-			// Replace this when injecting, to differ between startTime and duration functions
-			'__name__';
-		};
-		descriptor['get'] = replacementF;
-		original_functions[replacementF.toString()] = originalF.toString();
-		Object.defineProperty(PerformanceEntry.prototype, name, descriptor);
-	}
-
 	var wrappers = [
 		{
 			parent_object: "Performance.prototype",
@@ -48,42 +34,17 @@
 					wrapped_name: "origNow",
 				}
 			],
-			helping_code: rounding_function + "var precision = args[0];",
-			wrapping_function_args: "",
-			wrapping_function_body: `
-					var originalPerformanceValue = origNow.call(window.performance);
-					return rounding_function(originalPerformanceValue, precision);
 			helping_code: rounding_function + noise_function + `
 				let precision = args[0];
 				let doNoise = args[1];
-				let lastValue = 0;
 			`,
 			wrapping_function_args: "",
 			wrapping_function_body: `
 					var originalPerformanceValue = origNow.call(window.performance);
-					var func = rounding_function;
-					if (doNoise === true){
-						func = noise_function
-					}
-					return func(originalPerformanceValue, precision);
-				`
+					var limit_precision = doNoise ? noise_function : rounding_function;
+					return limit_precision(originalPerformanceValue, precision);
+			`,
 		},
-		{
-			parent_object: "window",
-			parent_object_property: "PerformanceEntry",
-			wrapped_objects: [],
-			helping_code: rounding_function + noise_function + `
-			let precision = args[0];
-			let doNoise = args[1];
-			let lastValue = 0;
-			var func = rounding_function;
-			if (doNoise === true){
-				func = noise_function
-			}
-			(${changePropertyPrototype.toString().split("__name__").join('"startTime"')})('startTime');
-			(${changePropertyPrototype.toString().split("__name__").join('"duration"')})('duration');
-			`
-		}
 	];
 	add_wrappers(wrappers);
 })();
