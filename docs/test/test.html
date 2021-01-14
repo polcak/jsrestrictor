@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="gps.js"></script>
 	<script type="text/javascript" src="xmlhttprequest.js"></script>
 	<script type="text/javascript" src="hw.js"></script>
+	<script type="text/javascript" src="enumerateDevices.js" defer></script>
 	<link rel="stylesheet" type="text/css" href="global.css">
 </head>
 <body onload="initClock(); updatePerformanceLabelEvery(200); getHW();">
@@ -88,6 +89,10 @@
 
 	<br><br><br><hr>
 
+
+	<h2>Your multimedia devices (cameras, microphones) connected to the computer</h2>
+	<ul id="enumerateDevices"></ul>
+	<br><br><br><hr>
 
 	<h2>window.XMLHttpRequest example</h2>
 	<button onclick="runRequest();">Run XMLHttpRequest on a test URL</button>

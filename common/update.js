@@ -110,6 +110,26 @@ function installUpdate() {
 			}
 			item.version = 2.3;
 		}
+		if (item.version == 2.3) {
+			// No enumerateDevices wrapping below 2.4
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				let count = 0;
+				count += Number(Boolean(l.time_precision)) +
+				         Number(Boolean(l.hardware)) +
+				         Number(Boolean(l.battery)) +
+				         Number(Boolean(l.geolocation)) +
+				         Number(Boolean(l.shared_array)) +
+				         Number(Boolean(l.webworker)) +
+				         Number(Boolean(l.xhr)) +
+				         Number(Boolean(l.arrays)) +
+				         100*Number(Boolean(l.htmlcanvaselement));
+				if (count >= 102) {
+					l.enumerateDevices = true;
+				}
+			}
+			item.version = 2.4;
+		}
 		browser.storage.sync.set(item);
 	});
 }
