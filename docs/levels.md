@@ -14,6 +14,7 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
     * Round time to: *hundredths of a second (1.230 -- Date, 1230 -- performance, Geolocation API)*
 * **Protect against canvas fingerprinting --** *OFF*
+* **List of microphones and cameras: --** *original*
 * **Spoof hardware information to the most popular HW --** *ON*
     * JS navigator.deviceMemory: *4* (not applied if the browser does not support the property, e.g.
 			Firefox)
@@ -31,6 +32,7 @@ NBS is active independently on the levels defined below. If necessary, you can w
     * Round time to: *tenths of a second (1.200 -- Date, 1200 -- performance, Geolocation API)*
 * **Protect against canvas fingerprinting: --** *ON*
     * Reading from canvas returns white image.
+* **List of microphones and cameras: --** *EMPTY*
 * **Spoof hardware information to the most popular HW --** *ON*
     * JS navigator.deviceMemory: *4* (not applied if the browser does not support the property)
     * JS navigator.hardwareConcurrency: *2*
@@ -48,6 +50,7 @@ NBS is active independently on the levels defined below. If necessary, you can w
 		* *Randomize time*
 * **Protect against canvas fingerprinting: --** *ON*
     * Reading from canvas returns white image.
+* **List of microphones and cameras: --** *EMPTY*
 * **Spoof hardware information to the most popular HW --** *ON*
     * JS navigator.deviceMemory: *4* (not applied if the browser does not support the property)
     * JS navigator.hardwareConcurrency: *2*
