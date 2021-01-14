@@ -108,6 +108,16 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "enumerateDevices",
+			description: "Hide multimedia devices. Consequently, prevent fingerprinting based on the multimedia devices connected to the computer",
+			description2: [],
+			options: [],
+			wrappers: [
+				// MCS
+				"MediaDevices.prototype.enumerateDevices",
+			],
+		},
+		{
 			name: "hardware",
 			description: "Spoof hardware information to the most popular HW",
 			description2: [
@@ -405,6 +415,7 @@ var level_2 = {
 	"hardware": true,
 	"battery": true,
 	"htmlcanvaselement": true,
+	"enumerateDevices": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
 	"windowname": true,
@@ -420,6 +431,7 @@ var level_3 = {
 	"hardware": true,
 	"battery": true,
 	"htmlcanvaselement": true,
+	"enumerateDevices": true,
 	"xhr": true,
 	"xhr_behaviour_block": false,
 	"xhr_behaviour_ask": true,
