@@ -16,3 +16,4 @@ tests/common_files/webbrowser_drivers/geckodriver*
 tests/system_tests/data/
 tests/system_tests/get_data/top_sites/*.csv
 tests/system_tests/get_data/selenium/*.jar
+tests/unit_tests/tmp/*
