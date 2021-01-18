@@ -66,6 +66,150 @@ describe("GEO", function() {
 					speed: null
 				},
 				timestamp: 1610704131841
+			},
+			london: {
+				coords: {
+					accuracy: 150,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: 51.507351,
+					longitude: -0.127758,
+					speed: null
+				},
+				timestamp: 1610954058112
+			},
+			san_francisco: {
+				coords: {
+					accuracy: 150,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: 37.774929,
+					longitude: -122.419416,
+					speed: null
+				},
+				timestamp: 1610954150037
+			},
+			tokyo: {
+				coords: {
+					accuracy: 150,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: 35.689487,
+					longitude: 139.691706,
+					speed: null
+				},
+				timestamp: 1610954214124
+			},
+			equator_0meridian: {
+				coords: {
+					accuracy: 150,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: 0,
+					longitude: 0,
+					speed: null
+				},
+				timestamp: 1610954419061
+			},
+			equator_180meridian: {
+				coords: {
+					accuracy: 150,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: 0,
+					longitude: 180,
+					speed: null
+				},
+				timestamp: 1610954419061
+			},
+			equator_neg180meridian: {
+				coords: {
+					accuracy: 150,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: 0,
+					longitude: -180,
+					speed: null
+				},
+				timestamp: 1610954419061
+			},
+			npole_0meridian: {
+				coords: {
+					accuracy: 150,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: 90,
+					longitude: 0,
+					speed: null
+				},
+				timestamp: 1610954419061
+			},
+			npole_180meridian: {
+				coords: {
+					accuracy: 150,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: 90,
+					longitude: 180,
+					speed: null
+				},
+				timestamp: 1610954419061
+			},
+			npole_neg180meridian: {
+				coords: {
+					accuracy: 150,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: 90,
+					longitude: -180,
+					speed: null
+				},
+				timestamp: 1610954419061
+			},
+			spole_0meridian: {
+				coords: {
+					accuracy: 150,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: -90,
+					longitude: 0,
+					speed: null
+				},
+				timestamp: 1610954419061
+			},
+			spole_180meridian: {
+				coords: {
+					accuracy: 150,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: -90,
+					longitude: 180,
+					speed: null
+				},
+				timestamp: 1610954419061
+			},
+			spole_neg180meridian: {
+				coords: {
+					accuracy: 150,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: -90,
+					longitude: -180,
+					speed: null
+				},
+				timestamp: 1610954419061
 			}
 		}
 		it("should be defined.",function() {
@@ -80,8 +224,44 @@ describe("GEO", function() {
 		it("should return given coordinates when flag provideAccurateGeolocationData is set.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined) {
 				eval(processOriginalGPSDataObject);
+				eval(processOriginalGPSDataObject_globals);
 				provideAccurateGeolocationData = true;
-				expect(typeof processOriginalGPSDataObject).toBe('function');
+				for (const position_key in originalPositions) {
+					expect(processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords']).toBe(originalPositions[position_key]['coords']);
+					expect(processOriginalGPSDataObject(undefined, originalPositions[position_key])['timestamp']).not.toBe(originalPositions[position_key]['timestamp']);
+				}
+			}
+		});
+		it("should return changed timestamp when flag provideAccurateGeolocationData is set.",function() {
+			if (typeof processOriginalGPSDataObject !== undefined) {
+				eval(processOriginalGPSDataObject);
+				eval(processOriginalGPSDataObject_globals);
+				provideAccurateGeolocationData = true;
+				for (const position_key in originalPositions) {
+					expect(processOriginalGPSDataObject(undefined, originalPositions[position_key])['timestamp']).not.toBe(originalPositions[position_key]['timestamp']);
+				}
+			}
+		});
+		it("should return given coordinates when previouslyReturnedCoords are set.",function() {
+			if (typeof processOriginalGPSDataObject !== undefined) {
+				eval(processOriginalGPSDataObject);
+				eval(processOriginalGPSDataObject_globals);
+				provideAccurateGeolocationData = false;
+				for (const position_key in originalPositions) {
+					previouslyReturnedCoords = originalPositions[position_key]['coords'];
+					expect(processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords']).toBe(originalPositions[position_key]['coords']);
+				}
+			}
+		});
+		it("should return changed timestamp when previouslyReturnedCoords are set.",function() {
+			if (typeof processOriginalGPSDataObject !== undefined) {
+				eval(processOriginalGPSDataObject);
+				eval(processOriginalGPSDataObject_globals);
+				provideAccurateGeolocationData = false;
+				for (const position_key in originalPositions) {
+					previouslyReturnedCoords = originalPositions[position_key]['coords'];
+					expect(processOriginalGPSDataObject(undefined, originalPositions[position_key])['timestamp']).not.toBe(originalPositions[position_key]['timestamp']);
+				}
 			}
 		});
 	});
