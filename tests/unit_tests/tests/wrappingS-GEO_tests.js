@@ -312,6 +312,7 @@ describe("GEO", function() {
 				}
 			}
 		});
+		// Required accuracy overview: https://github.com/polcak/jsrestrictor/blob/master/common/levels.js#L254
 		it("should return changed coords that are in required accuracy.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
 				eval(processOriginalGPSDataObject);
@@ -349,6 +350,36 @@ describe("GEO", function() {
 						let changed_timestamp = processOriginalGPSDataObject(undefined, originalPositions[position_key])['timestamp'];
 						let original_timestamp = originalPositions[position_key]['timestamp'];
 						expect(changed_timestamp).not.toEqual(original_timestamp);
+					}
+				}
+			}
+		});
+		it("should not return nonsence coords.",function() {
+			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
+				eval(processOriginalGPSDataObject);
+				eval(processOriginalGPSDataObject_globals);
+				provideAccurateGeolocationData = false;
+				previouslyReturnedCoords = undefined;
+				var desiredAccuracyArray = [ 0.1, 1, 10, 100 ]
+				var desiredAccuracy;
+				provideAccurateGeolocationData = false;
+				previouslyReturnedCoords = undefined;
+				var changed_coords;
+				var original_coords;
+				for (let i = 0; i < desiredAccuracyArray.length; i++) {
+					desiredAccuracy = desiredAccuracyArray[i];
+					for (const position_key in originalPositions) {
+						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords'];
+						original_coords = originalPositions[position_key]['coords'];
+						expect(changed_coords['latitude']).not.toBeGreaterThan(90);
+						expect(changed_coords['longitude']).not.toBeGreaterThan(180);
+						expect(changed_coords['latitude']).not.toBeLessThan(-90);
+						expect(changed_coords['longitude']).not.toBeLessThan(-180);
+						expect(changed_coords['latitude']).not.toBeNull();
+						expect(changed_coords['longitude']).not.toBeNull();
+						expect(changed_coords['latitude']).toBeDefined();
+						expect(changed_coords['longitude']).toBeDefined();
+						previouslyReturnedCoords = undefined;
 					}
 				}
 			}
