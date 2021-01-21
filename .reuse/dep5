@@ -5,5 +5,5 @@ Source: https://github.com/polcak/jsrestrictor
 
 
 Files: *common/img/* *logos_images/*
-Copyright: Libor Polcak <polcak@fit.vutbr.cz>
+Copyright: Libor Polcak <polcak@fit.vutbr.cz>, Martin Timko 
 License: GPL-3.0-or-later
