@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2019 Libor Polcak <polcak@fit.vutbr.cz>
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 function writeLineToCanvas(canvasId) {
 	var myCanvas = document.getElementById(canvasId);
 

@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2019 Libor Polcak <polcak@fit.vutbr.cz>
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+
 System tests for web browser extension Javascript Restrictor (JSR) automatically checks how
 JSR affets tested websites.
 

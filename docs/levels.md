@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2019 Libor Polcak <polcak@fit.vutbr.cz>
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
+
 # The configuration of the extension
 
 ## Network Boundary Shield (NBS)

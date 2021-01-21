@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2019 Libor Polcak <polcak@fit.vutbr.cz>
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
 ### Build JSR from scratch
 
 #### GNU/Linux and Apple Mac OS:

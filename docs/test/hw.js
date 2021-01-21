@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2019 Libor Polcak <polcak@fit.vutbr.cz>
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 function getHW() {
 	// why sometimes values are not spoofed? need to refresh values again? cached values?
 		var txt = "";
