@@ -1,0 +1,9 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: jsrestrictor
+Upstream-Contact: Libor Polcak <polcak@fit.vutbr.cz>
+Source: https://github.com/polcak/jsrestrictor
+
+
+Files: *common/img/* *logos_images/*
+Copyright: Libor Polcak <polcak@fit.vutbr.cz>
+License: GPL-3.0-or-later
