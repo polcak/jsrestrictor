@@ -55,3 +55,7 @@ If you would like to give us [feedback](https://github.com/polcak/jsrestrictor/i
 
 Once you install the extension, see the [test page](test/test.html) for the working demo on how the
 extension can help in restricting JS capabilities.
+
+**LICENSE INFORMATION**
+
+This project is available as open source under the terms of the GPL 3.0 Or later. However, some elements are being licensed under MIT license. For accurate information, please check individual files. As well as for accurate information regarding copyrights. 
