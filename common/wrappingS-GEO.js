@@ -5,7 +5,7 @@
 //
 // SPDX-FileCopyrightText: 2019  Martin Timko
 // SPDX-FileCopyrightText: 2020 Libor Polcak <polcak@fit.vutbr.cz>
-// SPDX-FileCopyrightText: 2020  Peter Hornak
+// SPDX-FileCopyrightText: 2020  Peter Marko
 // SPDX-License-Identifier: GPL-3.0-or-later
 //
 

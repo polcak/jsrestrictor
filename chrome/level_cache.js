@@ -3,7 +3,7 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-// SPDX-FileCopyrightText: 2020  Pavel Pohner
+// SPDX-FileCopyrightText: 2020  Libor Polcak
 // SPDX-License-Identifier: GPL-3.0-or-later
 //
 
