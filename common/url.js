@@ -58,7 +58,6 @@ function extractSubDomains(thisDomain) {
     //extracting the root domain here
     //if there is a subdomain
     if (arrLen > 2) {
-        thisDomain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
         let domains = [];
         let subDomain = splitArr[arrLen - 1];
         for (let i = arrLen - 2; i >= 0; i--) {
