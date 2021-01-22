@@ -63,15 +63,16 @@
 
 			var lat = originalPositionObject.coords.latitude;
 			var lon = originalPositionObject.coords.longitude;
-			// Compute (approximate) kilometres from 0 meridian [m]
+			// Compute (approximate) distance from 0 meridian [m]
 			var x = (lon * (EQUATOR_LEN * Math.cos((lat/90)*(Math.PI/2))) / 180);
 			// Compute (approximate) distance from equator [m]
 			var y = (lat / 90) * (HALF_MERIDIAN);
 
+			// Compute the coordinates of the left bottom corner of the tile in which the orig position is
 			var xmin = Math.floor(x / DESIRED_ACCURACY_KM) * DESIRED_ACCURACY_KM;
 			var ymin = Math.floor(y / DESIRED_ACCURACY_KM) * DESIRED_ACCURACY_KM;
 
-			// The computed position is in the original tile and the 8 adjacent:
+			// The position to be returned should be in the original tile and the 8 adjacent tiles:
 			// +----+----+----+
 			// |    |    |    |
 			// +----+----+----+
