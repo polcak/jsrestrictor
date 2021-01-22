@@ -90,10 +90,10 @@
 			var newLatitude = newy / HALF_MERIDIAN * 90;
 			var newLongitude = newx * 180 / (EQUATOR_LEN * Math.cos((newLatitude/90)*(Math.PI/2)));
 
-			if (newLongitude < -180) {
+			while (newLongitude < -180) {
 				newLongitude += 360;
 			}
-			if (newLongitude > 180) {
+			while (newLongitude > 180) {
 				newLongitude -= 360;
 			}
 
