@@ -83,8 +83,8 @@
 			var newx = xmin + gen_random32()/2**32 * 3 * DESIRED_ACCURACY_KM - DESIRED_ACCURACY_KM;
 			var newy = ymin + gen_random32()/2**32 * 3 * DESIRED_ACCURACY_KM - DESIRED_ACCURACY_KM;
 
-			if (newy > (HALF_MERIDIAN)) {
-				newy = HALF_MERIDIAN - (newy - HALF_MERIDIAN);
+			if (Math.abs(newy) > (HALF_MERIDIAN)) {
+				newy = (HALF_MERIDIAN + HALF_MERIDIAN - Math.abs(newy)) * (newy < 0 ? -1 : 1);
 				newx = -newx;
 			}
 
