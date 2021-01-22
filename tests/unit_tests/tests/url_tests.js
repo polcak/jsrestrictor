@@ -57,6 +57,9 @@ describe("URL", function() {
 			expect(extractSubDomains("martinbednar.github.io")).toEqual(["github.io","martinbednar.github.io"]);
 			expect(extractSubDomains("swatblog.rtgp.xyz")).toEqual(["rtgp.xyz","swatblog.rtgp.xyz"]);
 			expect(extractSubDomains("thenetworg.crm4.dynamics.com")).toEqual(["dynamics.com","crm4.dynamics.com","thenetworg.crm4.dynamics.com"]);
+			expect(extractSubDomains("ab.cz")).toEqual(["ab.cz"]);
+			expect(extractSubDomains("3rd.ab.cz")).toEqual(["ab.cz", "3rd.ab.cz"]);
+			expect(extractSubDomains("www.bbc.co.uk")).toEqual(["co.uk","bbc.co.uk","www.bbc.co.uk"]);
 		});
 		it("should return IP address for IP address (no domainname). Example URL: http://89.45.196.133/paneln/Login.aspx)",function() {
 			//example web page: http://89.45.196.133/paneln/Login.aspx

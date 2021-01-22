@@ -59,13 +59,6 @@ function extractSubDomains(thisDomain) {
     //if there is a subdomain
     if (arrLen > 2) {
         thisDomain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
-        //check to see if it's using a Country Code Top Level Domain (ccTLD) (e.g. ".co.uk")
-        if (splitArr[arrLen - 2].length === 2 && splitArr[arrLen - 1].length === 2) {
-            //this is using a ccTLD
-            splitArr[arrLen - 2] += '.' + splitArr[arrLen - 1];
-            splitArr.pop();
-            arrLen -= 1
-        }
         let domains = [];
         let subDomain = splitArr[arrLen - 1];
         for (let i = arrLen - 2; i >= 0; i--) {
