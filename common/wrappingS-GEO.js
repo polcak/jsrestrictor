@@ -59,17 +59,17 @@
 
 			const EQUATOR_LEN = 40074;
 			const HALF_MERIDIAN = 10002;
-			const DESIRED_ACCURACY_M = desiredAccuracy*1000*2;
+			const DESIRED_ACCURACY_KM = desiredAccuracy*2;
 
 			var lat = originalPositionObject.coords.latitude;
 			var lon = originalPositionObject.coords.longitude;
 			// Compute (approximate) kilometres from 0 meridian [m]
-			var x = lon * (EQUATOR_LEN * Math.cos((lat/90)*(Math.PI/2))) / 180 * 1000;
+			var x = (lon * (EQUATOR_LEN * Math.cos((lat/90)*(Math.PI/2))) / 180);
 			// Compute (approximate) distance from equator [m]
-			var y = (lat / 90) * (HALF_MERIDIAN) * 1000;
+			var y = (lat / 90) * (HALF_MERIDIAN);
 
-			var xmin = Math.floor(x / DESIRED_ACCURACY_M) * DESIRED_ACCURACY_M;
-			var ymin = Math.floor(y / DESIRED_ACCURACY_M) * DESIRED_ACCURACY_M;
+			var xmin = Math.floor(x / DESIRED_ACCURACY_KM) * DESIRED_ACCURACY_KM;
+			var ymin = Math.floor(y / DESIRED_ACCURACY_KM) * DESIRED_ACCURACY_KM;
 
 			// The computed position is in the original tile and the 8 adjacent:
 			// +----+----+----+
@@ -79,8 +79,8 @@
 			// +----+----+----+
 			// |    |    |    |
 			// +----+----+----+
-			var newx = (xmin + gen_random32()/2**32 * 3 * DESIRED_ACCURACY_M - DESIRED_ACCURACY_M) / 1000;
-			var newy = (ymin + gen_random32()/2**32 * 3 * DESIRED_ACCURACY_M - DESIRED_ACCURACY_M) / 1000;
+			var newx = xmin + gen_random32()/2**32 * 3 * DESIRED_ACCURACY_KM - DESIRED_ACCURACY_KM;
+			var newy = ymin + gen_random32()/2**32 * 3 * DESIRED_ACCURACY_KM - DESIRED_ACCURACY_KM;
 
 			if (newy > (HALF_MERIDIAN)) {
 				newy = HALF_MERIDIAN - (newy - HALF_MERIDIAN);
@@ -97,7 +97,7 @@
 				newLongitude -= 360;
 			}
 
-			var newAccuracy = DESIRED_ACCURACY_M * 2.5; // in meters
+			var newAccuracy = DESIRED_ACCURACY_KM * 1000 * 2.5; // in meters
 
 			const editedPositionObject = {
 				coords: {
