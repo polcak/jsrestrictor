@@ -26,6 +26,8 @@
  * Get all sub domains for a domain.
  *
  * @param thisDomain Domain name string, e.g. www.fit.vutbr.cz
+ *                   IPv4 address, e.g. 147.229.9.23
+ *                   IPv6 address, e.g. 2001:67c:1220:809::93e5:917
  *
  * @returns List of strings representing all subdomains, TLD excluded. The
  * list starts with the most generic domain and continues with the more and
@@ -35,6 +37,24 @@
 function extractSubDomains(thisDomain) {
     var splitArr = thisDomain.split('.');
     var arrLen = splitArr.length;
+		// Check if the string is an IPv4 address
+		if (arrLen == 4) {
+			let correct = true; // initial value
+			try {
+				for (num of splitArr) {
+					let octet = Number(num);
+					if (octet !== octet /* NaN */ || octet < 0 || octet > 255) {
+						correct = false;
+					}
+				}
+			}
+			catch (error) {
+				correct = false;
+			}
+			if (correct === true) {
+				return [thisDomain]; // It is an IPv4 address
+			}
+		}
     //extracting the root domain here
     //if there is a subdomain
     if (arrLen > 2) {
