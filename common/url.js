@@ -29,9 +29,9 @@
  *                   IPv4 address, e.g. 147.229.9.23
  *                   IPv6 address, e.g. 2001:67c:1220:809::93e5:917
  *
- * @returns List of strings representing all subdomains, TLD excluded. The
+ * @returns List of strings representing all subdomains, including TLD. The
  * list starts with the most generic domain and continues with the more and
- * more specific domains. For example, www.fit.vutbr.cz -> [ "vutbr.cz",
+ * more specific domains. For example, www.fit.vutbr.cz -> [ "cz", "vutbr.cz",
  * "fit.vutbr.cz", "www.fit.vutbr.cz" ] 
  */
 function extractSubDomains(thisDomain) {
@@ -55,16 +55,21 @@ function extractSubDomains(thisDomain) {
 				return [thisDomain]; // It is an IPv4 address
 			}
 		}
-    //extracting the root domain here
-    //if there is a subdomain
-    if (arrLen > 2) {
-        let domains = [];
-        let subDomain = splitArr[arrLen - 1];
-        for (let i = arrLen - 2; i >= 0; i--) {
-            subDomain = splitArr[i] + '.' + subDomain;
-            domains.push(subDomain);
-        }
-        return domains;
-    }
-    return [thisDomain];
+		// Ignore the trailing "."
+		if (splitArr[arrLen - 1] === "") {
+			splitArr.pop();
+			arrLen -= 1;
+		}
+		if (arrLen === 0) {
+			return [""];
+		}
+		// Create the list of subdomains
+		let domains = [];
+		let subDomain = splitArr[arrLen - 1];
+		domains.push(subDomain);
+		for (let i = arrLen - 2; i >= 0; i--) {
+			subDomain = splitArr[i] + '.' + subDomain;
+			domains.push(subDomain);
+		}
+		return domains;
 }

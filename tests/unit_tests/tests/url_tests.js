@@ -42,24 +42,26 @@ describe("URL", function() {
 			expect(extractSubDomains("gsf14f56sdvds1,-dfsv,§ú")).toEqual(["gsf14f56sdvds1,-dfsv,§ú"]);
 		});
 		it("should return array of domains.",function() {
-			expect(extractSubDomains("vutbr.cz")).toEqual(["vutbr.cz"]);
-			expect(extractSubDomains("fit.vutbr.cz")).toEqual(["vutbr.cz","fit.vutbr.cz"]);
-			expect(extractSubDomains("wis.fit.vutbr.cz")).toEqual(["vutbr.cz","fit.vutbr.cz","wis.fit.vutbr.cz"]);
-			expect(extractSubDomains("eva.fit.vutbr.cz")).toEqual(["vutbr.cz","fit.vutbr.cz","eva.fit.vutbr.cz"]);
-			expect(extractSubDomains("netfox-hyperv.fit.vutbr.cz")).toEqual(["vutbr.cz","fit.vutbr.cz","netfox-hyperv.fit.vutbr.cz"]);
-			expect(extractSubDomains("project.bigred.cornell.edu")).toEqual(["cornell.edu","bigred.cornell.edu","project.bigred.cornell.edu"]);
-			expect(extractSubDomains("test.eva.fit.vutbr.cz")).toEqual(["vutbr.cz","fit.vutbr.cz","eva.fit.vutbr.cz","test.eva.fit.vutbr.cz"]);
-			expect(extractSubDomains("sites.google.com")).toEqual(["google.com","sites.google.com"]);
-			expect(extractSubDomains("code.google.com")).toEqual(["google.com","code.google.com"]);
-			expect(extractSubDomains("docs.google.com")).toEqual(["google.com","docs.google.com"]);
-			expect(extractSubDomains("support.google.com")).toEqual(["google.com","support.google.com"]);
-			expect(extractSubDomains("polcak.github.io")).toEqual(["github.io","polcak.github.io"]);
-			expect(extractSubDomains("martinbednar.github.io")).toEqual(["github.io","martinbednar.github.io"]);
-			expect(extractSubDomains("swatblog.rtgp.xyz")).toEqual(["rtgp.xyz","swatblog.rtgp.xyz"]);
-			expect(extractSubDomains("thenetworg.crm4.dynamics.com")).toEqual(["dynamics.com","crm4.dynamics.com","thenetworg.crm4.dynamics.com"]);
-			expect(extractSubDomains("ab.cz")).toEqual(["ab.cz"]);
-			expect(extractSubDomains("3rd.ab.cz")).toEqual(["ab.cz", "3rd.ab.cz"]);
-			expect(extractSubDomains("www.bbc.co.uk")).toEqual(["co.uk","bbc.co.uk","www.bbc.co.uk"]);
+			expect(extractSubDomains("vutbr.cz")).toEqual(["cz", "vutbr.cz"]);
+			expect(extractSubDomains("fit.vutbr.cz")).toEqual(["cz", "vutbr.cz","fit.vutbr.cz"]);
+			expect(extractSubDomains("wis.fit.vutbr.cz")).toEqual(["cz", "vutbr.cz","fit.vutbr.cz","wis.fit.vutbr.cz"]);
+			expect(extractSubDomains("eva.fit.vutbr.cz")).toEqual(["cz", "vutbr.cz","fit.vutbr.cz","eva.fit.vutbr.cz"]);
+			expect(extractSubDomains("netfox-hyperv.fit.vutbr.cz")).toEqual(["cz", "vutbr.cz","fit.vutbr.cz","netfox-hyperv.fit.vutbr.cz"]);
+			expect(extractSubDomains("project.bigred.cornell.edu")).toEqual(["edu", "cornell.edu","bigred.cornell.edu","project.bigred.cornell.edu"]);
+			expect(extractSubDomains("test.eva.fit.vutbr.cz")).toEqual(["cz", "vutbr.cz","fit.vutbr.cz","eva.fit.vutbr.cz","test.eva.fit.vutbr.cz"]);
+			expect(extractSubDomains("sites.google.com")).toEqual(["com", "google.com","sites.google.com"]);
+			expect(extractSubDomains("code.google.com")).toEqual(["com", "google.com","code.google.com"]);
+			expect(extractSubDomains("docs.google.com")).toEqual(["com", "google.com","docs.google.com"]);
+			expect(extractSubDomains("support.google.com")).toEqual(["com", "google.com","support.google.com"]);
+			expect(extractSubDomains("polcak.github.io")).toEqual(["io", "github.io","polcak.github.io"]);
+			expect(extractSubDomains("martinbednar.github.io")).toEqual(["io", "github.io","martinbednar.github.io"]);
+			expect(extractSubDomains("swatblog.rtgp.xyz")).toEqual(["xyz", "rtgp.xyz","swatblog.rtgp.xyz"]);
+			expect(extractSubDomains("thenetworg.crm4.dynamics.com")).toEqual(["com", "dynamics.com","crm4.dynamics.com","thenetworg.crm4.dynamics.com"]);
+			expect(extractSubDomains("ab.cz")).toEqual(["cz", "ab.cz"]);
+			expect(extractSubDomains("3rd.ab.cz")).toEqual(["cz", "ab.cz", "3rd.ab.cz"]);
+			expect(extractSubDomains("www.bbc.co.uk")).toEqual(["uk", "co.uk","bbc.co.uk","www.bbc.co.uk"]);
+			expect(extractSubDomains("example")).toEqual(["example"]);
+			expect(extractSubDomains("example.")).toEqual(["example"]);
 		});
 		it("should return IP address for IP address (no domainname). Example URL: http://89.45.196.133/paneln/Login.aspx)",function() {
 			//example web page: http://89.45.196.133/paneln/Login.aspx
