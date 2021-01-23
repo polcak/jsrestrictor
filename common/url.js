@@ -35,41 +35,41 @@
  * "fit.vutbr.cz", "www.fit.vutbr.cz" ] 
  */
 function extractSubDomains(thisDomain) {
-    var splitArr = thisDomain.split('.');
-    var arrLen = splitArr.length;
-		// Check if the string is an IPv4 address
-		if (arrLen == 4) {
-			let correct = true; // initial value
-			try {
-				for (num of splitArr) {
-					let octet = Number(num);
-					if (octet !== octet /* NaN */ || octet < 0 || octet > 255) {
-						correct = false;
-					}
+	var splitArr = thisDomain.split('.');
+	var arrLen = splitArr.length;
+	// Check if the string is an IPv4 address
+	if (arrLen == 4) {
+		let correct = true; // initial value
+		try {
+			for (num of splitArr) {
+				let octet = Number(num);
+				if (octet !== octet /* NaN */ || octet < 0 || octet > 255) {
+					correct = false;
 				}
 			}
-			catch (error) {
-				correct = false;
-			}
-			if (correct === true) {
-				return [thisDomain]; // It is an IPv4 address
-			}
 		}
-		// Ignore the trailing "."
-		if (splitArr[arrLen - 1] === "") {
-			splitArr.pop();
-			arrLen -= 1;
+		catch (error) {
+			correct = false;
 		}
-		if (arrLen === 0) {
-			return [""];
+		if (correct === true) {
+			return [thisDomain]; // It is an IPv4 address
 		}
-		// Create the list of subdomains
-		let domains = [];
-		let subDomain = splitArr[arrLen - 1];
+	}
+	// Ignore the trailing "."
+	if (splitArr[arrLen - 1] === "") {
+		splitArr.pop();
+		arrLen -= 1;
+	}
+	if (arrLen === 0) {
+		return [""];
+	}
+	// Create the list of subdomains
+	let domains = [];
+	let subDomain = splitArr[arrLen - 1];
+	domains.push(subDomain);
+	for (let i = arrLen - 2; i >= 0; i--) {
+		subDomain = splitArr[i] + '.' + subDomain;
 		domains.push(subDomain);
-		for (let i = arrLen - 2; i >= 0; i--) {
-			subDomain = splitArr[i] + '.' + subDomain;
-			domains.push(subDomain);
-		}
-		return domains;
+	}
+	return domains;
 }
