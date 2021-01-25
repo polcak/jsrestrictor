@@ -251,9 +251,13 @@ describe("GEO", function() {
 				eval(processOriginalGPSDataObject);
 				eval(processOriginalGPSDataObject_globals);
 				provideAccurateGeolocationData = true;
+				var original_coords;
+				var changed_coords;
 				for (const position_key in originalPositions) {
-					expect(processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords']).toEqual(originalPositions[position_key]['coords']);
-					expect(processOriginalGPSDataObject(undefined, originalPositions[position_key])['timestamp']).not.toEqual(originalPositions[position_key]['timestamp']);
+					original_coords = originalPositions[position_key]['coords'];
+					changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords'];
+					expect(changed_coords).toEqual(original_coords,
+					'Returned coords (Latitude: ' + changed_coords['latitude'] + ', Longtitude: ' + changed_coords['longtitude'] + ') are not equal to original coords (Latitude: ' + original_coords['latitude'] + ', Longtitude: ' + original_coords['longtitude'] + ') but non-changed (original) coords were expected.');
 				}
 			}
 		});
@@ -262,8 +266,13 @@ describe("GEO", function() {
 				eval(processOriginalGPSDataObject);
 				eval(processOriginalGPSDataObject_globals);
 				provideAccurateGeolocationData = true;
+				var original_timestamp;
+				var changed_timestamp;
 				for (const position_key in originalPositions) {
-					expect(processOriginalGPSDataObject(undefined, originalPositions[position_key])['timestamp']).not.toEqual(originalPositions[position_key]['timestamp']);
+					original_timestamp = originalPositions[position_key]['timestamp'];
+					changed_timestamp = processOriginalGPSDataObject(undefined, originalPositions[position_key])['timestamp'];
+					expect(changed_timestamp).not.toEqual(original_timestamp,
+					'Timestamp should have been changed but original timestamp (Original timestamp: ' + original_timestamp + ') has been returned (Returned timestamp: ' + changed_timestamp + '). Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
 				}
 			}
 		});
@@ -272,9 +281,14 @@ describe("GEO", function() {
 				eval(processOriginalGPSDataObject);
 				eval(processOriginalGPSDataObject_globals);
 				provideAccurateGeolocationData = false;
+				var original_coords;
+				var changed_coords;
 				for (const position_key in originalPositions) {
 					previouslyReturnedCoords = originalPositions[position_key]['coords'];
-					expect(processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords']).toEqual(originalPositions[position_key]['coords']);
+					original_coords = originalPositions[position_key]['coords'];
+					changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords'];
+					expect(changed_coords).toEqual(original_coords,
+					'Returned coords (Latitude: ' + changed_coords['latitude'] + ', Longtitude: ' + changed_coords['longtitude'] + ') are not equal to original coords (Latitude: ' + original_coords['latitude'] + ', Longtitude: ' + original_coords['longtitude'] + ') but non-changed (original) coords were expected.');
 				}
 			}
 		});
@@ -283,9 +297,14 @@ describe("GEO", function() {
 				eval(processOriginalGPSDataObject);
 				eval(processOriginalGPSDataObject_globals);
 				provideAccurateGeolocationData = false;
+				var original_timestamp;
+				var changed_timestamp;
 				for (const position_key in originalPositions) {
 					previouslyReturnedCoords = originalPositions[position_key]['coords'];
-					expect(processOriginalGPSDataObject(undefined, originalPositions[position_key])['timestamp']).not.toEqual(originalPositions[position_key]['timestamp']);
+					original_timestamp = originalPositions[position_key]['timestamp'];
+					changed_timestamp = processOriginalGPSDataObject(undefined, originalPositions[position_key])['timestamp'];
+					expect(changed_timestamp).not.toEqual(original_timestamp,
+					'Timestamp should have been changed but original timestamp (Original timestamp: ' + original_timestamp + ') has been returned (Returned timestamp: ' + changed_timestamp + '). Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
 				}
 			}
 		});
@@ -299,14 +318,15 @@ describe("GEO", function() {
 				var desiredAccuracy;
 				provideAccurateGeolocationData = false;
 				previouslyReturnedCoords = undefined;
-				var changed_coords;
 				var original_coords;
+				var changed_coords;
 				for (let i = 0; i < desiredAccuracyArray.length; i++) {
 					desiredAccuracy = desiredAccuracyArray[i];
 					for (const position_key in originalPositions) {
-						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords'];
 						original_coords = originalPositions[position_key]['coords'];
-						expect(changed_coords).not.toEqual(original_coords);
+						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords'];
+						expect(changed_coords).not.toEqual(original_coords,
+						'Returned coords (Latitude: ' + changed_coords['latitude'] + ', Longtitude: ' + changed_coords['longtitude'] + ') are equal to original coords (Latitude: ' + original_coords['latitude'] + ', Longtitude: ' + original_coords['longtitude'] + ') but spoofed coords were expected.');
 						previouslyReturnedCoords = undefined;
 					}
 				}
@@ -323,14 +343,18 @@ describe("GEO", function() {
 				var desiredAccuracy;
 				provideAccurateGeolocationData = false;
 				previouslyReturnedCoords = undefined;
-				var changed_coords;
 				var original_coords;
+				var changed_coords;
 				for (let i = 0; i < desiredAccuracyArray.length; i++) {
 					desiredAccuracy = desiredAccuracyArray[i];
 					for (const position_key in originalPositions) {
-						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords'];
 						original_coords = originalPositions[position_key]['coords'];
-						expect(calcCrow(changed_coords['latitude'], changed_coords['longitude'], original_coords['latitude'], original_coords['longitude'])).toBeLessThan(10*desiredAccuracy);
+						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords'];
+						expect(calcCrow(changed_coords['latitude'],
+										changed_coords['longitude'],
+										original_coords['latitude'],
+										original_coords['longitude'])).toBeLessThan(10*desiredAccuracy,
+										'Spoofed position (Latitude: ' + changed_coords['latitude'] + ', Longtitude: ' + changed_coords['longtitude'] + ') are not enough near to original position (Latitude: ' + original_coords['latitude'] + ', Longtitude: ' + original_coords['longtitude'] + ') according to current desiredAccuracy (' + desiredAccuracy + ').');
 						previouslyReturnedCoords = undefined;
 					}
 				}
@@ -344,12 +368,14 @@ describe("GEO", function() {
 				previouslyReturnedCoords = undefined;
 				var desiredAccuracyArray = [ 0.1, 1, 10, 100 ]
 				var desiredAccuracy;
+				var original_timestamp;
+				var changed_timestamp;
 				for (let i = 0; i < desiredAccuracyArray.length; i++) {
 					desiredAccuracy = desiredAccuracyArray[i];
 					for (const position_key in originalPositions) {
-						let changed_timestamp = processOriginalGPSDataObject(undefined, originalPositions[position_key])['timestamp'];
-						let original_timestamp = originalPositions[position_key]['timestamp'];
-						expect(changed_timestamp).not.toEqual(original_timestamp);
+						original_timestamp = originalPositions[position_key]['timestamp'];
+						changed_timestamp = processOriginalGPSDataObject(undefined, originalPositions[position_key])['timestamp'];
+						expect(changed_timestamp).not.toEqual(original_timestamp, 'Timestamp should have been changed but original timestamp (Original timestamp: ' + original_timestamp + ') has been returned (Returned timestamp: ' + changed_timestamp + '). Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
 					}
 				}
 			}
@@ -364,21 +390,21 @@ describe("GEO", function() {
 				var desiredAccuracy;
 				provideAccurateGeolocationData = false;
 				previouslyReturnedCoords = undefined;
-				var changed_coords;
 				var original_coords;
+				var changed_coords;
 				for (let i = 0; i < desiredAccuracyArray.length; i++) {
 					desiredAccuracy = desiredAccuracyArray[i];
 					for (const position_key in originalPositions) {
-						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords'];
 						original_coords = originalPositions[position_key]['coords'];
-						expect(changed_coords['latitude']).not.toBeGreaterThan(90);
-						expect(changed_coords['longitude']).not.toBeGreaterThan(180);
-						expect(changed_coords['latitude']).not.toBeLessThan(-90);
-						expect(changed_coords['longitude']).not.toBeLessThan(-180);
-						expect(changed_coords['latitude']).not.toBeNull();
-						expect(changed_coords['longitude']).not.toBeNull();
-						expect(changed_coords['latitude']).toBeDefined();
-						expect(changed_coords['longitude']).toBeDefined();
+						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords'];
+						expect(changed_coords['latitude']).not.toBeGreaterThan(90, 'Spoofed latitude (' + changed_coords['latitude'] + '°) greather than the highest possible value (90°). Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
+						expect(changed_coords['longitude']).not.toBeGreaterThan(180, 'Spoofed longitude (' + changed_coords['longitude'] + '°) greather than the highest possible value (180°). Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
+						expect(changed_coords['latitude']).not.toBeLessThan(-90, 'Spoofed latitude (' + changed_coords['latitude'] + '°) less than the lowest possible value (-90°). Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
+						expect(changed_coords['longitude']).not.toBeLessThan(-180, 'Spoofed longitude (' + changed_coords['longitude'] + '°) less than the lowest possible value (-180°). Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
+						expect(changed_coords['latitude']).not.toBeNull('Spoofed latitude is null, but a number was expected. Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
+						expect(changed_coords['longitude']).not.toBeNull('Spoofed longitude is null, but a number was expected. Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
+						expect(changed_coords['latitude']).toBeDefined('Spoofed latitude is not defined, but a number was expected. Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
+						expect(changed_coords['longitude']).toBeDefined('Spoofed longitude is not defined, but a number was expected. Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
 						previouslyReturnedCoords = undefined;
 					}
 				}
