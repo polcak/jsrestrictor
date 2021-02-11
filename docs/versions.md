@@ -1,6 +1,17 @@
 
 # Release history
 
+## 0.4.5
+
+* Add wrapper of MediaDevices.prototype.enumerateDevices
+* Fix missing Date properties
+* Fix Geolocation overflows appearing near poles
+* Improve handling of domain names (URLs):
+ * Handle IPv4 addresses used as hostnames correctly
+ * Do not treat TLD specially and allow specifying wrapping levels for TLDs
+ * Fix handling of two-letters 2-nd level domains
+* Fix exception throwing in the code generator dealing with Firefox bug 1267027
+
 ## 0.4.4
 
 * Bugfix: Do not try to redefine undefined objects. The exceptions thrown in injected code used to
