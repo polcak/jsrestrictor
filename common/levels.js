@@ -127,6 +127,37 @@ var wrapping_groups = {
 				"OffscreenCanvas.prototype.convertToBlob"
 			],
 		},
+		{
+			name: "audiobuffer",
+			description: "Protect against audio fingerprinting",
+			description2: ["Functions AudioBuffer.getChannelData() and AudioBuffer.copyFromChannel() are modified to alter audio data based on domain key"],
+			options: [
+				{
+					description: "farbling type",
+					ui_elem: "select",
+					name: "method",
+					default: 0,
+					data_type: "Number",
+					options: [
+						{
+							value: 0,
+							description: "Add amplitude noise based on domain hash",
+						},
+						{
+							value: 1,
+							description: "Replace by white noise based on domain hash",
+						}
+					],
+				}
+			],
+			wrappers: [
+				// AUDIO
+				"AudioBuffer.prototype.getChannelData",
+				"AudioBuffer.prototype.copyFromChannel",
+				"AnalyserNode.prototype.getByteTimeDomainData",
+				"AnalyserNode.prototype.getFloatTimeDomainData",
+				"AnalyserNode.prototype.getByteFrequencyData",
+				"AnalyserNode.prototype.getFloatFrequencyData"
 			],
 		},
 		{
@@ -438,6 +469,8 @@ var level_2 = {
 	"battery": true,
 	"htmlcanvaselement": true,
 	"htmlcanvaselement_method": 0,
+	"audiobuffer": true,
+	"audiobuffer_method": 0,
 	"enumerateDevices": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
@@ -455,6 +488,8 @@ var level_3 = {
 	"battery": true,
 	"htmlcanvaselement": true,
 	"htmlcanvaselement_method": 0,
+	"audiobuffer": true,
+	"audiobuffer_method": 0,
 	"enumerateDevices": true,
 	"xhr": true,
 	"xhr_behaviour_block": false,
