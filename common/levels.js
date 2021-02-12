@@ -109,6 +109,15 @@ var wrapping_groups = {
 				"OffscreenCanvas.prototype.convertToBlob"
 			],
 		},
+		{
+			name: "audiobuffer",
+			description: "Protect against audio fingerprinting",
+			description2: ["Functions AudioBuffer.getChannelData() and AudioBuffer.copyFromChannel() are modified to alter audio data based on domain key"],
+			options: [],
+			wrappers: [
+				// AUDIO
+				"AudioBuffer.prototype.getChannelData",
+				"AudioBuffer.prototype.copyFromChannel",
 			],
 		},
 		{
@@ -419,6 +428,7 @@ var level_2 = {
 	"hardware": true,
 	"battery": true,
 	"htmlcanvaselement": true,
+	"audiobuffer": true,
 	"enumerateDevices": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
@@ -435,6 +445,7 @@ var level_3 = {
 	"hardware": true,
 	"battery": true,
 	"htmlcanvaselement": true,
+	"audiobuffer": true,
 	"enumerateDevices": true,
 	"xhr": true,
 	"xhr_behaviour_block": false,
