@@ -46,8 +46,14 @@ cd ../common_files/scripts
 
 # Set executable permissions.
 chmod +x ./build_JSR_package.sh
-chmod +x ../webbrowser_drivers/chromedriver
-chmod +x ../webbrowser_drivers/geckodriver
+if [ -f ../webbrowser_drivers/chromedriver ]
+then
+	chmod +x ../webbrowser_drivers/chromedriver
+fi
+if [ -f ../webbrowser_drivers/geckodriver ]
+then
+	chmod +x ../webbrowser_drivers/geckodriver
+fi
 
 # Run script build_JSR_package.sh
 ./build_JSR_package.sh
