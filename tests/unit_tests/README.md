@@ -3,16 +3,16 @@
 ## on Linux
 
 1. Install NodeJS ([https://nodejs.org]()).
-1. Install `jq` and another necessary tools (e.g. `sed`).
-1. Open Terminal.
-1. Run `npm install`.
-1. Run `npm test`.
+2. Install `jq` and another necessary tools (e.g. `sed`).
+3. Open Terminal.
+4. Run `npm install`.
+5. Run `npm test`.
 
 ## on Windows
 
 1. Install Windows Subsystem for Linux (WSL): https://docs.microsoft.com/en-us/windows/wsl/install-win10.
-1. Convert EOL in the script *./start_unit_tests.sh* from Windows (CR LF) to Unix (LF) - you can use the tool `dos2unix` in WSL to convert CR LF to LF.
-1. Follow the instructions for Linux. Install NodeJS and run the following commands in WSL.
+2. Convert EOL in the script *./start_unit_tests.sh* from Windows (CR LF) to Unix (LF) - you can use the tool `dos2unix` in WSL to convert CR LF to LF.
+3. Follow the instructions for Linux. Install NodeJS and run the following commands in WSL.
 
 # Add new unit tests
 
