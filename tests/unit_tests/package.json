@@ -9,7 +9,7 @@
   },
   "author": "Martin Bednar, ibednar@fit.vutbr.cz",
   "license": "GNU General Public License 3 or later",
-  "devDependencies": {
+  "dependencies": {
     "jasmine": "^3.6.4",
     "navigator": "^1.0.1",
     "sinon-chrome": "^3.0.1",

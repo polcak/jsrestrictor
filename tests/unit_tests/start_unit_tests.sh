@@ -234,7 +234,7 @@ echo Preparation for testing FINISHED.
 echo Testing STARTED.
 
 # Run unit tests in framework Jasmine for NodeJS.
-jasmine --config=./tmp/jasmine.json
+npx jasmine --config=./tmp/jasmine.json
 
 echo Testing FINISHED.
 echo Cleanup STARTED.
