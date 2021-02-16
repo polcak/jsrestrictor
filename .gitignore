@@ -1,4 +1,5 @@
-.*.sw[pno]
+.*
+!.gitignore
 *.zip
 chrome_JSR/
 firefox_JSR/
