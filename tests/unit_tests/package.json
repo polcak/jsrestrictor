@@ -8,7 +8,7 @@
     "start": "./start_unit_tests.sh"
   },
   "author": "Martin Bednar, ibednar@fit.vutbr.cz",
-  "license": "GNU General Public License",
+  "license": "GNU General Public License 3 or later",
   "devDependencies": {
     "jasmine": "^3.6.4",
     "navigator": "^1.0.1",
