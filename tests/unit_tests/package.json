@@ -1,0 +1,18 @@
+{
+  "name": "unit_tests",
+  "version": "1.0.0",
+  "description": "JSR unit tests.",
+  "main": "",
+  "scripts": {
+    "test": "./start_unit_tests.sh",
+    "start": "./start_unit_tests.sh"
+  },
+  "author": "Martin Bednar, ibednar@fit.vutbr.cz",
+  "license": "GNU General Public License 3 or later",
+  "devDependencies": {
+    "jasmine": "^3.6.4",
+    "navigator": "^1.0.1",
+    "sinon-chrome": "^3.0.1",
+    "window": "^4.2.7"
+  }
+}

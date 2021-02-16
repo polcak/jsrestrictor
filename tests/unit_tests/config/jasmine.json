@@ -1,0 +1,13 @@
+{
+ "spec_dir": "tmp",
+ "spec_files": [
+ <<SPEC_FILES>>
+ ],
+ "helpers": [
+ ],
+ "stopSpecOnExpectationFailure": false,
+ "random": true
+ }
+ 
+
+

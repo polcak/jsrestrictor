@@ -58,7 +58,7 @@ describe("URL", function() {
 			expect(extractSubDomains("swatblog.rtgp.xyz")).toEqual(["rtgp.xyz","swatblog.rtgp.xyz"]);
 			expect(extractSubDomains("thenetworg.crm4.dynamics.com")).toEqual(["dynamics.com","crm4.dynamics.com","thenetworg.crm4.dynamics.com"]);
 		});
-		xit("should return IP address for IP address (no domainname). Example URL: http://89.45.196.133/paneln/Login.aspx)",function() {
+		xit("EXPECTED FAILURE: should return IP address for IP address (no domainname). Example URL: http://89.45.196.133/paneln/Login.aspx)",function() {
 			//example web page: http://89.45.196.133/paneln/Login.aspx
 			//Documentation of function extractSubDomains tells, that only domainname can be given as an argument,
 			//but in function getCurrentLevelJSON in file levels.js can be function extractSubDomains called with IP address.

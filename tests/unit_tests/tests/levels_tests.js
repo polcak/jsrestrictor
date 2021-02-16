@@ -23,29 +23,6 @@
 
 describe("Levels", function() {
 	describe("Function getCurrentLevelJSON", function() {
-		beforeAll(function() {
-			domains = {};
-			domains['stackoverflow.com'] = level_3;
-			domains['polcak.github.io'] = level_2;
-			domains['github.io'] = level_3;
-			domains['swatblog.rtgp.xyz'] = level_1;
-			domains['mail.google.com'] = level_0;
-			domains['example.net'] = level_3;
-			domains['vas-hosting.cz'] = level_2;
-			domains['crm4.dynamics.com'] = level_1;
-			domains['dynamics.com'] = level_2;
-			domains['csob.cz'] = level_0;
-			
-			for (let key in levels) {
-				levels[key].wrappers = wrapping_groups.get_wrappers(levels[key]);
-			}
-			for (l in levels) {
-				wrapped_codes[l] = wrap_code(levels[l].wrappers) || "";
-			}
-		});
-		afterAll(function() {
-			domains = {};
-		});
 		it("should be defined.",function() {
 			expect(getCurrentLevelJSON).toBeDefined();
 		});

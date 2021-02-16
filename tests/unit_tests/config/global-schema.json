@@ -1,0 +1,166 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"scripts": {
+			"type": "array",
+			"items": [
+				{
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"remove_custom_namespace": {
+							"type": "boolean"
+						},
+						"src_script_requirements": {
+							"type": "array",
+							"items": [
+								{
+									"type": "object",
+									"properties": {
+										"type": {
+											"type": "string"
+										},
+										"requirements": {
+											"type": "array",
+											"items": [
+												{
+													"type": "object",
+													"properties": {
+														"from": {
+															"type": "string"
+														},
+														"objects": {
+															"type": "array",
+															"items": [
+																{
+																	"type": "string"
+																}
+															]
+														}
+													},
+													"required": [
+														"from",
+														"objects"
+													]
+												},
+												{
+													"type": "object",
+													"properties": {
+														"import": {
+															"type": "string"
+														},
+														"as": {
+															"type": "string"
+														}
+													},
+													"required": [
+														"import",
+														"as"
+													]
+												}
+											]
+										}
+									},
+									"required": [
+										"type",
+										"requirements"
+									]
+								}
+							]
+						},
+						"test_script_requirements": {
+							"type": "array",
+							"items": [
+								{
+									"type": "object",
+									"properties": {
+										"type": {
+											"type": "string"
+										},
+										"requirements": {
+											"type": "array",
+											"items": [
+												{
+													"type": "object",
+													"properties": {
+														"from": {
+															"type": "string"
+														},
+														"objects": {
+															"type": "array",
+															"items": [
+																{
+																	"type": "string"
+																}
+															]
+														}
+													},
+													"required": [
+														"from",
+														"objects"
+													]
+												},
+												{
+													"type": "object",
+													"properties": {
+														"import": {
+															"type": "string"
+														},
+														"as": {
+															"type": "string"
+														}
+													},
+													"required": [
+														"import",
+														"as"
+													]
+												}
+											]
+										}
+									},
+									"required": [
+										"type",
+										"requirements"
+									]
+								}
+							]
+						},
+						"inject_code_to_src": {
+							"type": "object",
+							"properties": {
+								"begin": {
+									"type": "string"
+								},
+								"end": {
+									"type": "string"
+								}
+							},
+							"required": [
+							]
+						},
+						"extra_exports": {
+							"type": "array",
+							"items": [
+								{
+									"type": "string"
+								}
+							]
+						}
+					},
+					"required": [
+						"name",
+						"remove_custom_namespace",
+						"src_script_requirements",
+						"test_script_requirements"
+					]
+				}
+			]
+		}
+	},
+	"required": [
+		"scripts"
+	]
+}
