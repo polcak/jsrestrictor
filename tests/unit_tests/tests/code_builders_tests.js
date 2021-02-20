@@ -70,8 +70,5 @@ describe("Code builders", function() {
 		it("should return string.",function() {
 			expect(build_code(my_very_simple_wrapper)).toEqual(jasmine.any(String));
 		});
-		it("should return right code when argument is very simple wrapper.",function() {
-			expect(build_code(my_very_simple_wrapper).replace(/\s/g,'')).toBe("(function(...args){if(!undefined){Object.freeze(window.Float64Array);}})();".replace(/\s/g,''));
-		});
 	});
 });
