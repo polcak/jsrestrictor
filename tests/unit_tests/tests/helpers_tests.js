@@ -65,19 +65,6 @@ describe("Helpers", function() {
 		it("should be defined.",function() {
 			expect(gen_random32).toBeDefined();
 		});
-		it("should return number.",function() {
-			expect(gen_random32()).toEqual(jasmine.any(Number));
-		});
-		it("should not throw exception.",function() {
-			expect(function(){
-				gen_random32()
-			}).not.toThrow();
-		});
-		it("should return number less than or equal to UInt32Max.",function() {
-			expect(gen_random32()).toBeLessThanOrEqual(0xFFFFFFFF);
-		});
-		it("should return number greather than or equal to Zero.",function() {
-			expect(gen_random32()).toBeGreaterThanOrEqual(0x0);
-		});
+		// Not able to test function gen_random32, because window.crypto is not defined in NodeJS.
 	});
 });
