@@ -21,7 +21,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["helpers.js", "browser.js", "inject.js", WRAPPING, "code_builders.js", "ffbug1267027.js", "document_start.js"],
+      "js": ["alea.js", "helpers.js", "browser.js", "inject.js", WRAPPING, "code_builders.js", "ffbug1267027.js", "document_start.js"],
       "run_at": "document_start"
     }
   ],
