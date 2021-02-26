@@ -45,3 +45,16 @@ function gen_random32() {
 function wwwRemove(hostname) {
 	return String(hostname).replace(/^www\./,'');
 }
+
+function lfsr_next(v) {
+	return BigInt.asUintN(64, ((v >> 1n) | (((v << 62n) ^ (v << 61n)) & (~(~0n << 63n) << 62n))));
+}
+
+function PseudoRandomSequence(seed) {
+	if ( typeof this.v == 'undefined' ) {
+		this.v = seed;
+	}
+	const maxUInt64 = 18446744073709551615;
+	this.v = lfsr_next(this.v);
+	return (Number(this.v) / maxUInt64) / 10;
+}
