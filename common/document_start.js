@@ -3,7 +3,7 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2020-2021  Libor Polcak
+//  Copyright (C) 2020  Libor Polcak
 //  Copyright (C) 2021  Matus Svancar
 //
 //  This program is free software: you can redistribute it and/or modify
@@ -30,21 +30,15 @@ browser.runtime.sendMessage({
 		browser.storage.local.get(["sessionHash", "visitedDomains"], function(storageData) {
 			domains = storageData.visitedDomains;
 			sessionHash = storageData.sessionHash
-			let saveVisited = false;
 			if (!domains[location.origin]) {
 				domains[location.origin] = generateId();
-				saveVisited = true;
-			};
-			var tempCode = `
-				var domainHash = "${domains[location.origin]}";
-				var sessionHash ="${sessionHash}";` + reply.code;
-			reply.code = `(function() {${tempCode}})();`;
-			injectScript(reply.code, reply.wrappers, reply.ffbug1267027);
-			if (saveVisited === true) {
 				browser.storage.local.set({
 					"visitedDomains": domains
 				})
-			}
+			};
+			var tempCode = `var domainHash = "${domains[location.origin]}";var sessionHash ="${sessionHash}";`+alea+`var prng = new alea("${domains[location.origin]}");`+ reply.code;
+			reply.code = `(function() {${tempCode}})();`;
+			injectScript(reply.code, reply.wrappers, reply.ffbug1267027);
 		});
 	}
 );

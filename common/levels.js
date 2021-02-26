@@ -161,6 +161,49 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "webgl",
+			description: "Protect against wegbl fingerprinting",
+			description2: [],
+			options: [{
+				description: "farbling type",
+				ui_elem: "select",
+				name: "method",
+				default: 0,
+				data_type: "Number",
+				options: [
+					{
+						value: 0,
+						description: "Generate random numbers/strings based on domain hash",
+					},
+					{
+						value: 1,
+						description: "Return bottom values (null, empty string)",
+					}
+				],
+			}],
+			wrappers: [
+				// WEGBL
+				"WebGLRenderingContext.prototype.getParameter",
+				"WebGL2RenderingContext.prototype.getParameter",
+				"WebGLRenderingContext.prototype.getFramebufferAttachmentParameter",
+				"WebGLRenderingContext.prototype.getActiveAttrib",
+				"WebGLRenderingContext.prototype.getActiveUniform",
+				"WebGLRenderingContext.prototype.getAttribLocation",
+				"WebGLRenderingContext.prototype.getBufferParameter",
+				"WebGLRenderingContext.prototype.getProgramParameter",
+				"WebGLRenderingContext.prototype.getRenderbufferParameter",
+				"WebGLRenderingContext.prototype.getShaderParameter",
+				"WebGLRenderingContext.prototype.getShaderPrecisionFormat",
+				"WebGLRenderingContext.prototype.getTexParameter",
+				"WebGLRenderingContext.prototype.getUniformLocation",
+				"WebGLRenderingContext.prototype.getVertexAttribOffset",
+				"WebGLRenderingContext.prototype.getSupportedExtensions",
+				"WebGLRenderingContext.prototype.getExtension",
+				"WebGLRenderingContext.prototype.readPixels",
+				"WebGL2RenderingContext.prototype.readPixels"
+			],
+		},
+		{
 			name: "enumerateDevices",
 			description: "Hide multimedia devices. Consequently, prevent fingerprinting based on the multimedia devices connected to the computer",
 			description2: [],
@@ -471,6 +514,8 @@ var level_2 = {
 	"htmlcanvaselement_method": 0,
 	"audiobuffer": true,
 	"audiobuffer_method": 0,
+	"webgl": true,
+	"webgl_method": 1,
 	"enumerateDevices": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
@@ -490,6 +535,8 @@ var level_3 = {
 	"htmlcanvaselement_method": 0,
 	"audiobuffer": true,
 	"audiobuffer_method": 0,
+	"webgl": true,
+	"webgl_method": 1,
 	"enumerateDevices": true,
 	"xhr": true,
 	"xhr_behaviour_block": false,
