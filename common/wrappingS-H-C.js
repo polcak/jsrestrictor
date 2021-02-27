@@ -90,6 +90,7 @@
 		];
 	}
 
+	var helping_code = `var approach = args[0];`;
 	var wrappers = [{
 			parent_object: "HTMLCanvasElement.prototype",
 			parent_object_property: "toDataURL",
@@ -97,7 +98,7 @@
 				original_name: "HTMLCanvasElement.prototype.toDataURL",
 				wrapped_name: "origToDataURL",
 			}],
-			helping_code: ``,
+			helping_code: helping_code,
 			wrapping_code_function_name: "wrapping",
 			wrapping_code_function_params: "parent",
 			wrapping_code_function_call_window: true,
@@ -128,17 +129,17 @@
 				original_name: "CanvasRenderingContext2D.prototype.getImageData",
 				wrapped_name: "origGetImageData",
 			}],
-			helping_code: `
+			helping_code: helping_code + `
 				function lfsr_next(v) {
 					return BigInt.asUintN(64, ((v >> 1n) | (((v << 62n) ^ (v << 61n)) & (~(~0n << 63n) << 62n))));
 				}
 				var farble = function(context, fake) {
-					if(args[0]===1){
+					if(approach === 1){
 					fake.fillStyle = "white";
 					fake.fillRect(0, 0, context.canvas.width, context.canvas.height);
 					return;
 				}
-				else if(args[0]===0){
+				else if(approach === 0){
 					const width = context.canvas.width;
 					const height = context.canvas.height;
 					var imageData = origGetImageData.call(context,0, 0, width, height);
