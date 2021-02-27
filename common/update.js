@@ -4,7 +4,7 @@
 //  internet.
 //
 //  Copyright (C) 2019  Martin Timko
-//  Copyright (C) 2019  Libor Polcak
+//  Copyright (C) 2019-20021  Libor Polcak
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ if ((typeof browser) === "undefined") {
 
 function installUpdate() {
 	/**
-	 * 0.3 storage
+	 * 0.3+ storage
 	 *  {
 	 *    __default__: 2, // Default protection level
 	 *    version: 2.2,     // The version of this storage
