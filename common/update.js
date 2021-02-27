@@ -135,6 +135,19 @@ function installUpdate() {
 			}
 			item.version = 2.4;
 		}
+		if (item.version == 2.4) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.htmlcanvaselement) {
+					l.htmlcanvaselement_method = 1;
+					l.audiobuffer = true;
+					l.audiobuffer_method = 0;
+					l.webgl = true;
+					l.webgl_method = 0;
+				}
+			}
+			item.version = 2.5;
+		}
 		browser.storage.sync.set(item);
 	});
 }
