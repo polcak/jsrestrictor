@@ -106,6 +106,12 @@
 			replace_original_function: true,
 			wrapping_function_args: "...args",
 			wrapping_function_body: `
+				if (approach === 1) {
+					var ctx = this.getContext("2d");
+					ctx.fillStyle = "white";
+					ctx.fillRect(0, 0, this.width, this.height);
+					return origToDataURL.call(this, ...args);
+				}
 				var ctx = this.getContext("2d");
 				if(ctx){
 					var fake = document.createElement("canvas");
