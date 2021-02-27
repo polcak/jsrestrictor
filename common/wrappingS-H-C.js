@@ -105,18 +105,19 @@
 			replace_original_function: true,
 			wrapping_function_args: "...args",
 			wrapping_function_body: `
-					var ctx = this.getContext("2d");
-					if(ctx){
-						var fake = document.createElement("canvas");
-						fake.setAttribute("width", this.width);
-						fake.setAttribute("height", this.height);
-						var stx = fake.getContext("2d");
-						var imageData = ctx.getImageData(0,0,this.width,this.height);
-						stx.putImageData(imageData, 0, 0);
-						return origToDataURL.call(fake, ...args);
+				var ctx = this.getContext("2d");
+				if(ctx){
+					var fake = document.createElement("canvas");
+					fake.setAttribute("width", this.width);
+					fake.setAttribute("height", this.height);
+					var stx = fake.getContext("2d");
+					var imageData = ctx.getImageData(0,0,this.width,this.height);
+					stx.putImageData(imageData, 0, 0);
+					return origToDataURL.call(fake, ...args);
 				}
-				else
+				else {
 					return origToDataURL.call(this, ...args);
+				}
 				`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
@@ -133,9 +134,9 @@
 				}
 				var farble = function(context, fake) {
 					if(args[0]===1){
-						fake.fillStyle = "white";
+					fake.fillStyle = "white";
 					fake.fillRect(0, 0, context.canvas.width, context.canvas.height);
-						return;
+					return;
 				}
 				else if(args[0]===0){
 					const width = context.canvas.width;
