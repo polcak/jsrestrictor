@@ -115,8 +115,9 @@
 					stx.putImageData(imageData, 0, 0);
 					return origToDataURL.call(fake, ...args);
 				}
-				else
+				else {
 					return origToDataURL.call(this, ...args);
+				}
 				`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
@@ -133,9 +134,9 @@
 				}
 				var farble = function(context, fake) {
 					if(args[0]===1){
-						fake.fillStyle = "white";
+					fake.fillStyle = "white";
 					fake.fillRect(0, 0, context.canvas.width, context.canvas.height);
-						return;
+					return;
 				}
 				else if(args[0]===0){
 					const width = context.canvas.width;
