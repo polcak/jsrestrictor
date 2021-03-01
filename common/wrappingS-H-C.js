@@ -25,19 +25,44 @@
 //  This Source Code Form is subject to the terms of the Mozilla Public
 //  License, v. 2.0. If a copy of the MPL was not distributed with this file,
 //  You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+//  Copyright (c) 2020 The Brave Authors.
 
-/**
+/** \file
+ * This file contains wrappers for Canvas-related calls
+ *  * https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
+ *  * https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+ *  * https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas
  *
- * This algorithm is a modified version of the similar algorithm from
- * Brave Software <https://brave.com>
- * available at <https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/core/execution_context/execution_context.cc>
- * Copyright (c) 2020 The Brave Authors.
+ * The goal is to prevent fingerprinting by modifying the values that can be read from the canvas.
+ * So the visual content of wrapped canvases as displayed on the screen is the same as intended.
+ *
+ * The modified content can be either an empty image or a fake image that is modified according to
+ * session and domain keys to be different than the original albeit very similar (i.e. the approach
+ * inspired by the algorithms created by Brave Software <https://brave.com>
+ * available at https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/core/execution_context/execution_context.cc.
+ *
+ * Note that both approaches are detectable by a fingerprinter that checks if a predetermined image
+ * inserted to the canvas is the same as the read one, see for example,
+ * https://arkenfox.github.io/TZP/tests/canvasnoise.html. Nevertheless, the aim of the wrappers is
+ * to limit the finerprintability.
+ *
+ * Also note that a determined fingerprinter can reveal the modifications and consequently uncover
+ * the original image. This can be avoided with the approach that completely clears the data stored
+ * in the canvas. Use the modifications based on session and domain keys if you want to provide an
+ * image that is similar to the original or if you want to produce a fake image that is not
+ * obviously spoofed to a naked eye. Otherwise, use the clearing approach.
  */
 
 /*
  * Create private namespace
  */
 (function() {
+	/** \fn fake create_post_wrappers
+	 * \brief This function is used to prevent access to unwrapped APIs through iframes.
+	 *
+	 * \param The object to wrap like HTMLIFrameElement.prototype
+	 */
 	function create_post_wrappers(parent_object) {
 		return [{
 				code_type: "object_properties",
@@ -90,6 +115,11 @@
 		];
 	}
 
+	/** @var String helping_code.
+	 * Selects if the canvas should be cleared (1) or a fake image should be created based on session
+	 * and domain keys (0).
+	 */
+	var helping_code = `var approach = args[0];`;
 	var wrappers = [{
 			parent_object: "HTMLCanvasElement.prototype",
 			parent_object_property: "toDataURL",
@@ -97,26 +127,33 @@
 				original_name: "HTMLCanvasElement.prototype.toDataURL",
 				wrapped_name: "origToDataURL",
 			}],
-			helping_code: ``,
+			helping_code: helping_code,
 			wrapping_code_function_name: "wrapping",
 			wrapping_code_function_params: "parent",
 			wrapping_code_function_call_window: true,
 			original_function: "parent.HTMLCanvasElement.prototype.toDataURL",
 			replace_original_function: true,
 			wrapping_function_args: "...args",
+			/** \fn fake HTMLCanvasElement.prototype.toDataURL
+			 * \brief Returns fake canvas content, see CanvasRenderingContext2D.prototype for more details.
+			 *
+			 * Internally creates a fake canvas of the same height and width as the original and calls
+			 * CanvasRenderingContext2D.getImageData() that detemines the result.
+			 */
 			wrapping_function_body: `
-					var ctx = this.getContext("2d");
-					if(ctx){
-						var fake = document.createElement("canvas");
-						fake.setAttribute("width", this.width);
-						fake.setAttribute("height", this.height);
-						var stx = fake.getContext("2d");
-						var imageData = ctx.getImageData(0,0,this.width,this.height);
-						stx.putImageData(imageData, 0, 0);
-						return origToDataURL.call(fake, ...args);
+				var ctx = this.getContext("2d");
+				if(ctx){
+					var fake = document.createElement("canvas");
+					fake.setAttribute("width", this.width);
+					fake.setAttribute("height", this.height);
+					var stx = fake.getContext("2d");
+					var imageData = ctx.getImageData(0,0,this.width,this.height);
+					stx.putImageData(imageData, 0, 0);
+					return origToDataURL.call(fake, ...args);
 				}
-				else
+				else {
 					return origToDataURL.call(this, ...args);
+				}
 				`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
@@ -127,17 +164,17 @@
 				original_name: "CanvasRenderingContext2D.prototype.getImageData",
 				wrapped_name: "origGetImageData",
 			}],
-			helping_code: `
+			helping_code: helping_code + `
 				function lfsr_next(v) {
 					return BigInt.asUintN(64, ((v >> 1n) | (((v << 62n) ^ (v << 61n)) & (~(~0n << 63n) << 62n))));
 				}
 				var farble = function(context, fake) {
-					if(args[0]===1){
-						fake.fillStyle = "white";
+					if(approach === 1){
+					fake.fillStyle = "white";
 					fake.fillRect(0, 0, context.canvas.width, context.canvas.height);
-						return;
+					return;
 				}
-				else if(args[0]===0){
+				else if(approach === 0){
 					const width = context.canvas.width;
 					const height = context.canvas.height;
 					var imageData = origGetImageData.call(context,0, 0, width, height);
@@ -175,6 +212,13 @@
 			original_function: "parent.CanvasRenderingContext2D.prototype.getImageData",
 			replace_original_function: true,
 			wrapping_function_args: "sx, sy, sw, sh",
+			/** \fn fake CanvasRenderingContext2D.prototype.getImageData
+			 * \brief Returns a fake image data of the same height and width as stored in the original canvas.
+			 *
+			 * Internally calls the farbling that select the output which can be either an empty image or
+			 * a fake image that is modified according to session and domain keys to be different than the
+			 * original albeit very similar.
+			 */
 			wrapping_function_body: `
 				var fake = document.createElement("canvas");
 				fake.setAttribute("width", this.canvas.width);
@@ -199,6 +243,12 @@
 			original_function: "parent.HTMLCanvasElement.prototype.toBlob",
 			replace_original_function: true,
 			wrapping_function_args: "...args",
+			/** \fn fake HTMLCanvasElement.prototype.toBlob
+			 * \brief Returns fake canvas content, see CanvasRenderingContext2D.prototype for more details.
+			 *
+			 * Internally creates a fake canvas of the same height and width as the original and calls
+			 * CanvasRenderingContext2D.getImageData() that detemines the result.
+			 */
 			wrapping_function_body: `
 				var ctx = this.getContext("2d");
 				var fake = document.createElement("canvas");
@@ -225,6 +275,12 @@
 			original_function: "parent.OffscreenCanvas.prototype.convertToBlob",
 			replace_original_function: true,
 			wrapping_function_args: "...args",
+			/** \fn fake OffscreenCanvas.prototype.convertToBlob
+			 * \brief Returns fake canvas content, see CanvasRenderingContext2D.prototype for more details.
+			 *
+			 * Internally creates a fake canvas of the same height and width as the original and calls
+			 * CanvasRenderingContext2D.getImageData() that detemines the result.
+			 */
 			wrapping_function_body: `
 				var ctx = this.getContext("2d");
 				var fake = document.createElement("canvas");
