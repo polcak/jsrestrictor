@@ -138,7 +138,8 @@
 			 * \brief Returns fake canvas content, see CanvasRenderingContext2D.prototype for more details.
 			 *
 			 * Internally creates a fake canvas of the same height and width as the original and calls
-			 * CanvasRenderingContext2D.getImageData() that detemines the result.
+			 * CanvasRenderingContext2D.getImageData() that determines the result. If canvas uses WebGLRenderingContext
+			 * the content is copied to new canvas using CanvasRenderingContext2D and function toDataURL is called on it.
 			 */
 			wrapping_function_body: `
 				var ctx = this.getContext("2d");
@@ -152,7 +153,19 @@
 					return origToDataURL.call(fake, ...args);
 				}
 				else {
-					return origToDataURL.call(this, ...args);
+					var ctx = this.getContext("webgl2", {preserveDrawingBuffer: true}) ||
+					  this.getContext("experimental-webgl2", {preserveDrawingBuffer: true}) ||
+					  this.getContext("webgl", {preserveDrawingBuffer: true}) ||
+					  this.getContext("experimental-webgl", {preserveDrawingBuffer: true}) ||
+					  this.getContext("moz-webgl", {preserveDrawingBuffer: true});
+					if(ctx){
+					  var fake = document.createElement("canvas");
+					  fake.setAttribute("width", this.width);
+					  fake.setAttribute("height", this.height);
+					  var stx = fake.getContext("2d");
+					  stx.drawImage(ctx.canvas, 0, 0);
+					  return fake.toDataURL();
+          }
 				}
 				`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
