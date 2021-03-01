@@ -1,3 +1,5 @@
+# Instruction how to run integration tests
+
 Integration tests for web browser extension Javascript Restrictor automatically verify that
 required JavaScript API is wrapped and conversely, that non-wrapped JavaScript API provides real values.
 

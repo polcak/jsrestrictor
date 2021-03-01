@@ -21,7 +21,33 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-/// See https://www.w3.org/TR/geolocation-API/ for the API description
+/** \file
+ * \brief This file contains wrappers for the Geolocation API (https://www.w3.org/TR/geolocation-API/)
+ * \ingroup wrappers
+ *
+ * The goal is to prevent leaks of user current position. The Geolocation API also provides access
+ * to high precision timestamps which can be used to various web attacks (see for example,
+ * http://www.jucs.org/jucs_21_9/clock_skew_based_computer,
+ * https://lirias.kuleuven.be/retrieve/389086).
+ *
+ * Although it is true that the user needs to specificaly approve access to location facilities,
+ * these wrappers aim on improving the control of the precision of the geolocation.
+ *
+ * The wrappers support the following controls:
+ *
+ * * Accurate data: the extension provides precise geolocation position but modifies the time
+ *   precision in conformance with the Date and Performance wrappers.
+ * * Modified position: the extension modifies the time precision of the time stamps in
+ *   conformance with the Date and Performance wrappers, and additionally,  allows to limit the
+ *   precision of the current position to hundered of meters, kilometers, tens, or hundereds of
+ *   kilometers.
+ *
+ * When modifying position:
+ *
+ * * Repeated calls of navigator.geolocation.getCurrentPosition() return the same position
+ * without page load and typically return another position after page reload.
+ * * navigator.geolocation.watchPosition() does not change position.
+ */
 
 (function() {
 	var processOriginalGPSDataObject_globals = gen_random32 + `
@@ -30,8 +56,44 @@
 		 * fingerprintablity.
 		 */
 		var previouslyReturnedCoords = undefined;
+		/**
+		 * \brief Store the limit for the returned timestamps.
+		 *
+		 * This is used to avoid returning older readings compared to the previous readings.
+		 * The timestamp needs to be the same as was last time or newser.
+		 */
 		var geoTimestamp = Date.now();
 		`;
+	/**
+	 * \brief Modifies the given PositionObject according to settings
+	 *
+	 * \param expectedMaxAge The maximal age of the returned time stamps as defined by the wrapped API
+	 *        (https://www.w3.org/TR/geolocation-API/#max-age)
+	 * \param originalPositionObject the position object to be returned without this wrapper, see the
+	 *        Position interface (https://www.w3.org/TR/geolocation-API/#position)
+	 *
+	 * The function modifies the originalPositionObject and stores it for later readins. The returned
+	 * position does not modify during the life time of a pages. The returned postion can be different
+	 * after a page reload.
+	 *
+	 * The goal of the behavoiur is to prevent learning the current position so that different
+	 * original postion can be mapped to the same position and the same position should generally
+	 * yield a different outcome to prevent correlation of user activities.
+	 *
+	 * The algorithm works as follows:
+	 * 1. The Earth surface is partitioned into squares (tiles) with the edge derived from the desired
+	 * accuracy.
+	 * 2. The position from the originalPositionObject is mapped to its tile and eight adjacent tiles.
+	 * 3. A position in the current tile and the eight adjacent tiles is selected randomly.
+	 *
+	 * The returned timestamp is not older than 1 hour and it is the same as was during the last call
+	 * or newer. Different calls to the function can yield different timestamps.
+	 *
+	 * \bug The tile-based approach does not work correctly near poles but:
+	 * * The function returns fake locations near poles.
+	 * * As there are not many people near poles, we do not believe this wrapping is useful near poles
+	 * so we do not consider this bug as important.
+	 */
 	var processOriginalGPSDataObject = `
 		function processOriginalGPSDataObject(expectedMaxAge, originalPositionObject) {
 			if (expectedMaxAge === undefined) {
@@ -119,7 +181,13 @@
 			successCallback(editedPositionObject);
 		}
 	`;
-	setArgs = `
+	/**
+	 * \brief process the parameters of the wrapping function
+	 *
+	 * Checks if the wrappers should be active, and the position modified. Transforms the desired
+	 * precision into kilometers.
+	 */
+	var setArgs = `
 		var enableGeolocation = (args[0] !== 0);
 		var provideAccurateGeolocationData = (args[0] === -1);
 		let desiredAccuracy = 0;
@@ -167,6 +235,9 @@
 			],
 			helping_code: setArgs + processOriginalGPSDataObject_globals,
 			wrapping_function_args: "successCallback, errorCallback, origOptions",
+			/** \fn fake navigator.geolocation.getCurrentPosition
+			 * \brief Provide a fake geolocation position
+			 */
 			wrapping_function_body: processOriginalGPSDataObject + `
 				var options = {
 					enableHighAccuracy: false,
@@ -194,7 +265,7 @@
 			],
 			helping_code: setArgs + processOriginalGPSDataObject_globals + "let watchPositionCounter = 0;",
 			wrapping_function_args: "successCallback, errorCallback, origOptions",
-			/**
+			/** \fn fake navigator.geolocation.watchPosition
 			 * navigator.geolocation.watchPosition intended use concerns tracking user position changes.
 			 * JSR provides four modes of operaion:
 			 * * current position approximation: Always return the same data, the same as getCurrentPosition()
@@ -231,7 +302,7 @@
 			],
 			helping_code: setArgs,
 			wrapping_function_args: "id",
-			/**
+			/** \fn fake_or_original navigator.geolocation.clearWatch
 			 * If the Geolocation API provides correct data, call the original implementation,
 			 * otherwise do nothing as the watchPosition object was not created.
 			 */

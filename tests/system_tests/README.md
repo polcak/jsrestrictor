@@ -1,3 +1,5 @@
+# Instruction how to run system tests
+
 System tests for web browser extension Javascript Restrictor (JSR) automatically checks how
 JSR affets tested websites.
 
