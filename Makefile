@@ -1,6 +1,6 @@
 all: firefox chrome
 
-.PHONY: firefox chrome clean get_csv
+.PHONY: firefox chrome clean get_csv docs
 firefox: firefox_JSR.zip
 chrome: chrome_JSR.zip
 
@@ -26,6 +26,9 @@ get_csv:
 	@rm -f $*_JSR/.*.sw[pno]
 	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
 
+docs:
+	doxygen < doxyfile
+
 clean:
 	rm -rf firefox_JSR.zip
 	rm -rf firefox_JSR
@@ -35,3 +38,4 @@ clean:
 	rm -rf common/ipv6.dat
 	rm -rf ipv4.csv
 	rm -rf ipv6.csv
+	rm -rf doxygen/
