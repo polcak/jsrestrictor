@@ -10,6 +10,8 @@ COMMON_FILES = $(shell find common/) \
 			   $(shell find firefox/) \
 			   $(shell find chrome/)
 
+PROJECT_NAME = $(shell grep ^PROJECT_NAME doxyfile | cut -f2 -d'"')
+
 get_csv:
 	wget -q -N https://www.iana.org/assignments/locally-served-dns-zones/ipv4.csv
 	cp ipv4.csv common/ipv4.dat
@@ -27,7 +29,7 @@ get_csv:
 	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
 
 docs:
-	doxygen < doxyfile
+	PROJECT_NAME="${PROJECT_NAME}" doxygen < doxyfile
 
 clean:
 	rm -rf firefox_JSR.zip
