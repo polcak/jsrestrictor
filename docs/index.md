@@ -43,7 +43,7 @@ Note that the spoofing and rounding actions performed by the extension can break
 
 The default level of protection can be set by a popup (clicking on JSR icon) or through options of the extension. Specific level of protection for specific domains can be set in options by adding them to the list of websites with specific level of protection. This can be done also by a popup during a visit of the website.
 
-If you have any questions or you’ve spotted a bug, please [let us know](https://github.com/polcak/jsrestrictor/issues).
+If you have any questions or you have spotted a bug, please [let us know](https://github.com/polcak/jsrestrictor/issues).
 
 If you would like to give us [feedback](https://github.com/polcak/jsrestrictor/issues), we would really appreciate it.
 
