@@ -177,18 +177,9 @@
 				else if(approach === 0){
 					const width = context.canvas.width;
 					const height = context.canvas.height;
-					var imageData = origGetImageData.call(context,0, 0, width, height);
-					var fakeData = origGetImageData.call(fake,0, 0, width, height);
-
-					for (let i = 0; i < height; i++) {
-						for (let j = 0; j < width; j++) {
-							const n = ((i * (width * 4)) + (j * 4));
-							fakeData.data[n + 0] = imageData.data[n + 0];
-							fakeData.data[n + 1] = imageData.data[n + 1];
-							fakeData.data[n + 2] = imageData.data[n + 2];
-							fakeData.data[n + 3] = imageData.data[n + 3];
-						}
-					}
+					var imageData = origGetImageData.call(context, 0, 0, width, height);
+					fake.putImageData(imageData, 0, 0);
+					var fakeData = origGetImageData.call(fake, 0, 0, width, height);
 					var pixel_count = BigInt(width * height);
 					var channel = domainHash[0].charCodeAt(0) % 3;
 					var canvas_key = domainHash;
