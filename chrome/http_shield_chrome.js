@@ -3,7 +3,7 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2020  Pavel Pohner
+//  Copyright (C) 2021  Pavel Pohner, Martin Bednář
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,21 +19,39 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-// Implementation of HTTP webRequest shield, file: http_shield_chrome.js
-// Contains Chrome specific functions
-// Event handlers for webRequest API, notifications and messaging
-
-
-/// Custom DNS cache created based on previous requests.
+/** \file
+ *
+ * \brief This file contains Chrome specific functions for Network Boundary Shield.
+ *
+ * \ingroup NBS
+ *
+ * This file contains webRequest API listeners. These listeners handle HTTP requests in two different phases
+ * (before send headers, on response started) and handle messages (on message event).
+ */
+ 
+/**
+ * \brief Custom DNS cache created based on previous requests.
+ *
+ * Chromium-based web browsers do not provide DNS API to translate a domain name to the IP address.
+ * This object dnsCache serves as a custom DNS cache that is filled from HTTP responces that have already been received.
+ * When a new HTTP request is sent, the listener beforeSendHeadersListener looks at the domain name (from this HTTP request) in the dnsCache object.
+ * If IP address (or addresses) are find for current domain name, this IP address (or addresses) are returned from listener and
+ * domain name is successfully translated like by a DNS resolver.
+ */
 var dnsCache = new Object();
 
 
-/// webRequest event listener, hooked to onBeforeSendHeaders event
-/// Catches all requests, analyzes them, does blocking
-/// Not possible to merge implementation of this function with implementation for Firefox,
-/// because Chrome does not support async listerners for blocking requests
-/// This function must not be asynchronous for Chrome.
-/// See more: https://stackoverflow.com/questions/47910732/browserextension-webrequest-onbeforerequest-return-promise
+/**
+ * The event listener, hooked up to webRequest onBeforeSendHeaders event.
+ * The listener catches all requests, analyzes them, does blocking. Requests coming from public IP ranges targeting the private IPs are
+ * blocked by default. Others are permitted by default.
+ * Not possible to merge implementation of this function with implementation for Firefox,
+ * because Chrome does not support async listerners for blocking requests
+ * This function must not be asynchronous for Chrome.
+ * See more: https://stackoverflow.com/questions/47910732/browserextension-webrequest-onbeforerequest-return-promise
+ *
+ * \param requestDetail Details of HTTP request.
+ */
 function beforeSendHeadersListener(requestDetail) {
 
 	//If either of information is undefined, permit it
@@ -165,10 +183,15 @@ function beforeSendHeadersListener(requestDetail) {
 }
 
 
-/// webRequest event listener, hooked to onMessage event
-/// obtains message string in message, message sender in sender
-/// and function for sending response in sendResponse
-/// Does approriate action based on message text
+/**
+ * The event listener, hooked up to the webExtensions onMessage event.
+ * The listener sends message response which contains information if the current site is whitelisted or not.
+ * 
+ * \param message Receives full message.
+ * \param sender Sender of the message.
+ * \param sendResponse Function for sending response.
+ *
+ */
 function messageListener(message, sender, sendResponse)
 {
 	//Message came from popup,js, asking whether is this site whitelisted
@@ -190,12 +213,14 @@ function messageListener(message, sender, sendResponse)
 	}
 }
 
-
-/// webRequest event listener, hooked to onResponseStarted event
-/// analyze HTTP response
-/// get ip address and hostname (domain) from response
-/// creating custom dns cache in object dnsCache from obtained ip address and domain
-/// In Chrome, custom DNS cache has to be created because Chrome does not have dns API.
+/**
+ * The event listener, hooked up to webRequest onResponseStarted event.
+ * The listener analyzes a HTTP response and get an ip address and a hostname (a domain name) from the response.
+ * This listener is filling the custom dnsCache object from the obtained IP address and the domain name.
+ * In Chrome, custom DNS cache has to be created because Chrome does not have DNS API.
+ *
+ * \param responseDetails Details of HTTP response. responseDetails contains desired combination of an IP address and a corresponding domain name.
+ */
 function onResponseStartedListener(responseDetails)
 {
 	//It's neccessary to have both properities defined, otherwise the response can't be analyzed.
