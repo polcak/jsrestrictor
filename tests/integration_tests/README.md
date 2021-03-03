@@ -63,7 +63,13 @@ Download the correct GeckoDriver to folder `../common_files/webbrowser_drivers` 
 
 ## on Windows OS
 
-Open PowerShell in folder *integration_tests* and run command: `.\setup_buildJSR_runTests.ps1`
+1. Install Windows Subsystem for Linux (WSL): https://docs.microsoft.com/en-us/windows/wsl/install-win10.
+
+2. Convert EOL in the script `fix_manifest.sh` (in the root directory of JSR project) from Windows (CR LF) to Unix (LF) - you can use the tool `dos2unix` in WSL to convert CR LF to LF.
+
+3. Open root directory of JSR project in WSL and run command `make`.
+
+4. Open PowerShell in folder *integration_tests* and run command: `.\start_integration_tests.ps1`
 
 Script may ask you for the path into directory, where the file chrome.exe is stored and where the files of Firefox ESR default profile are stored.
 
@@ -77,7 +83,7 @@ When script execution starts for the first time, OS Windows may ask you to allow
 
 ## on Linux OS
 
-Open Terminal in folder *integration_tests* and run command: `./setup_buildJSR_runTests.sh`
+Open Terminal in folder *integration_tests* and run command: `./start_integration_tests.sh`
 
 Script may ask you for the path into directory, where the files of Firefox ESR default profile are stored.
 
