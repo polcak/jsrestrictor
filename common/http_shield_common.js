@@ -3,7 +3,7 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2020  Pavel Pohner
+//  Copyright (C) 2021  Pavel Pohner, Martin Bednář
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,22 +19,58 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-// Implementation of HTTP webRequest shield, file: http_shield_common.js
-// Contains common functions for both versions - Chrome and Firefox.
-// Mainly for reading CSV files, and checking IP ranges.
+/**
+ * \defgroup NBS Network Boundary Shield
+ *
+ * \brief The Network Boundary Shield (NBS) is a protection against attacks from an external network (the Internet)
+ * to an internal network - especially against a reconnaissance attacks when a web browser is abused as a proxy.
+ *
+ * The NBS functionality is based on filtering HTTP requests. The Network Boundary Shield use webRequest API to handle HTTP requests. Requests processing is blocking.
+ * This means that each HTTP request is paused before it is sent, analyzed and allowed or blocked if it is suspicious.
+ * An example of attack prevention thanks to the NBS: If the public website requests a resource from the internal network (e.g. the company's router logo),
+ * this HTTP request will be blocked by NBS. After installing the NBS, HTTP requests with the direction public -> private network are not allowed.
+ * 
+ * The NBS has only a small impact on the web browser performance. The only impact is given by the need to parse each HTTP request.
+ *
+ * More information about the Network Boundary Shield can be obtained from the master thesis by Ing. Pohnera: https://www.vutbr.cz/studenti/zav-prace/detail/129272.
+ *
+ * An example of an attack from which the shield protects is described in the report:
+ * https://www.forcepoint.com/blog/x-labs/attacking-internal-network-public-internet-using-browser-proxy.
+ */
+ 
+ /** \file
+ *
+ * \brief This file contains common functions for Network Boundary Shield.
+ *
+ * \ingroup NBS
+ *
+ * This file contains basic logic of the NBS, NBS global variables and objects,
+ * functions for reading and parsing CSV files, and functions for identifying and processing IP addresses and checking IP ranges.
+ */
 
 //Chrome compatibility
+/// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 if ((typeof browser) === "undefined") {
 	var browser = chrome;
 }
+/// \endcond
 
-/// Locally served IPV4 DNS zones loaded from IANA
+/**
+ * Locally served IPV4 DNS zones loaded from IANA.
+ */
 var localIPV4DNSZones;
-/// Locally served IPV6 DNS zones loaded from IANA
+
+/**
+ * Locally served IPV6 DNS zones loaded from IANA.
+ */
 var localIPV6DNSZones;
 
-/// Associtive array of hosts, that are currently among trusted "do not blocked" hosts
+/**
+ * Associtive array of hosts, that are currently among trusted "do not blocked" hosts.
+ */
 var doNotBlockHosts = new Object();
+
+/// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 browser.storage.sync.get(["whitelistedHosts"], function(result){
 		if (result.whitelistedHosts != undefined)
 			doNotBlockHosts = result.whitelistedHosts;
@@ -66,9 +102,15 @@ browser.storage.sync.get(["requestShieldOn"], function(result){
 		}
 	}
 });
+/// \endcond
 
-
-/// Function for reading locally stored csv file
+/**
+ * The function for reading a locally stored csv file.
+ *
+ * \param _path String with a fully-qualified URL. E.g.: moz-extension://2c127fa4-62c7-7e4f-90e5-472b45eecfdc/beasts/frog.dat
+ *
+ * The function returns promise for returning content of the file as a string.
+ */
 let readFile = (_path) => {
 	return new Promise((resolve, reject) => {
 		//Fetching locally stored CSV file in same-origin mode
@@ -92,7 +134,8 @@ let readFile = (_path) => {
 	});
 };
 
-/// Obtain file path in user's file system and read CSV file with IPv4 local zones
+/// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
+// Obtain file path in user's file system and read CSV file with IPv4 local zones
 readFile(browser.runtime.getURL("ipv4.dat"))
 	.then(_res => {
 		//Parse loaded CSV and store it in prepared variable
@@ -102,7 +145,7 @@ readFile(browser.runtime.getURL("ipv4.dat"))
 		console.log(_error );
 	});
 
-/// Obtain file path in user's file system and read CSV file with IPv6 local zones
+// Obtain file path in user's file system and read CSV file with IPv6 local zones
 readFile(browser.runtime.getURL("ipv6.dat"))
 	.then(_res => {
 		//Parse loaded CSV and store it in prepared variable
@@ -111,19 +154,28 @@ readFile(browser.runtime.getURL("ipv6.dat"))
 	.catch(_error => {
 		console.log(_error );
 	});
+/// \endcond
 
-/// Checks validity of IPv4 addresses,
-/// returns TRUE if the url matches IPv4 regex
-/// FALSE otherwise
+/**
+ * Checks validity of IPv4 addresses.
+ *
+ * \param url An URL that may or may not contains an IPv4 address instead of a domain name.
+ *
+ * Returns TRUE if the url matches IPv4 regex, FALSE otherwise.
+ */
 function isIPV4(url)
 {
 	var reg = new RegExp("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
 	return reg.test(url);
 }
 
-/// Checks validity IPV6 address
-/// Returns TRUE, if URL is valid IPV6 address
-/// FALSE otherwise
+/**
+ * Checks validity IPV6 address.
+ *
+ * \param url An URL that may or may not contains an IPv6 address instead of a domain name.
+ *
+ * Returns TRUE, if URL is valid IPV6 address, FALSE otherwise.
+ */
 function isIPV6(url)
 {
 	url = url.substring(1, url.length - 1);
@@ -131,10 +183,15 @@ function isIPV6(url)
 	return reg.test(url);
 }
 
-/// Checks whether the ipAddr is found in IPv4 localZones
-/// Returns TRUE if ipAddr exists in localZones fetched from IANA
-/// FALSE otherwise
-/// This function should only be called on valid IPv4 address
+/**
+ * Checks whether the ipAddr is found in IPv4 localZones.
+ * If the IPv4 address is found in any IPv4 local zone, it means that this IPv4 address is private.
+ * IPv4 local zone is e.g. 192.168.000.000/16.
+ *
+ * \param ipAddr Valid IPv4 address.
+ *
+ * Returns TRUE if ipAddr exists in localZones fetched from IANA, FALSE otherwise.
+ */
 function isIPV4Private(ipAddr)
 {
 	//Split IP address on dots, obtain 4 numbers	
@@ -169,10 +226,15 @@ function isIPV4Private(ipAddr)
 	return false;
 }
 
-/// Checks whether the ipAddr is found in IPv6 localZones
-/// Returns TRUE if ipAddr exists in localZones fetched from IANA
-/// FALSE otherwise
-/// This function should only be called on valid IPv6 address
+/**
+ * Checks whether the ipAddr is found in IPv6 localZones.
+ * If the IPv6 address is found in any IPv6 local zone, it means that this IPv6 address is private.
+ * IPv6 local zone is e.g. fe80::/10.
+ *
+ * \param ipAddr Valid IPv6 address.
+ *
+ * Returns TRUE if ipAddr exists in localZones fetched from IANA, FALSE otherwise.
+ */
 function isIPV6Private(ipAddr)
 {
 	//Expand shorten IPv6 addresses to full length
@@ -203,12 +265,15 @@ function isIPV6Private(ipAddr)
 	return false;
 }
 
-/// Function for parsing CSV files obtained from IANA
-/// Strips .IN-ADDR and .IP6 from zones and comma delimiter,
-/// merges them into array by CSV rows
-/// Arguments: csv - CSV obtained from IANA
-/// 			 ipv4 - bool, saying whether the csv is IPv4 CSV or IPv6
-/// Returns: Array of parsed CSV values
+/**
+ * Function for parsing CSV files obtained from IANA.
+ * It strips .IN-ADDR and .IP6 from zones and comma delimiter, merges them into array by CSV rows.
+ *
+ * \param csv CSV obtained from IANA.
+ * \param ipv4 Boolean, saying whether the csv is IPv4 CSV or IPv6.
+ *
+ * Returns an array of parsed CSV values.
+ */
 function parseCSV(csv, ipv4)
 {
 	//converting into array
@@ -251,10 +316,14 @@ function parseCSV(csv, ipv4)
 	}
 }
 
-/// Auxillary function for parsing CSV files
-/// Converts CSV to array
-/// strData - loaded CSV file
-/// Returns array containing CSV rows
+/**
+ * Auxillary function for parsing CSV files.
+ * Converts CSV to array.
+ *
+ * \param strData Loaded CSV file as a string.
+ *
+ * Returns array containing CSV rows.
+ */
 function CSVToArray(strData){
 	// Create a regular expression to parse the CSV values.
 	var objPattern = new RegExp(
@@ -299,10 +368,13 @@ function CSVToArray(strData){
 	return( csvData );
 }
 
-/// Function for expanding shorten ipv6 addresses
-/// Takes valid ipv6 address in ip6addr argument
-/// Returns expanded ipv6 address in string
-/// This function should be only called on valid IPv6 address
+/**
+ * Function for expanding shorten ipv6 addresses.
+ * 
+ * \param ip6addr Valid ipv6 address.
+ *
+ * Returns expanded ipv6 address in string.
+ */
 function expandIPV6(ip6addr)
 {
 	ip6addr = ip6addr.substring(1, ip6addr.length - 1);
@@ -351,7 +423,13 @@ function expandIPV6(ip6addr)
 	return addrToReturn;
 }
 
-//Check if the hostname or any of it's domains is whitelisted
+/**
+ * Check if the hostname or any of it's domains is whitelisted.
+ *
+ * \param hostname Any hostname (subdomains allowed).
+ *
+ * Returns TRUE when domain (or subdomain) is whitelisted, FALSE otherwise.
+ */
 function checkWhitelist(hostname)
 {
 	//Calling a function from url.js
@@ -365,14 +443,16 @@ function checkWhitelist(hostname)
 	}
 	return false;
 }
-//
-/// Creates and presents notification to the user
-/// works with webExtensions notification API
-/// Creates notification about blocked request
-/// Arguments:
-/// 	origin - origin of the request
-/// 	target - target of the request
-/// 	resource - type of the resource
+
+/**
+ * Creates and presents notification to the user.
+ * Works with webExtensions notification API.
+ * Creates notification about blocked request.
+ *
+ * \param origin Origin of the request.
+ * \param target Target of the request.
+ * \param resource Type of the resource.
+ */
 function notifyBlockedRequest(origin, target, resource) {
 	browser.notifications.create({
 		"type": "basic",
@@ -382,11 +462,14 @@ function notifyBlockedRequest(origin, target, resource) {
 	});
 }
 
-/// Event listener hooked up to webExtensions onMessage event
-/// Receives full message in message,
-/// sender of the message in sender,
-/// function for sending response in sendResponse
-/// Does appropriate action based on message
+/**
+ * Event listener hooked up to webExtensions onMessage event.
+ * Does appropriate action based on message (e.g. Turn on/off the NBS, add/remove a site to/from whitelist, ...).
+ * 
+ * \param message Receives full message.
+ * \param sender Sender of the message.
+ * \param sendResponse Function for sending response.
+ */
 function commonMessageListener(message, sender, sendResponse)
 {
 	//Message came from options.js, updated whitelist
