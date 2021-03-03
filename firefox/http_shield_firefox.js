@@ -39,7 +39,7 @@ browser.runtime.onMessage.addListener(messageListener);
 /**
  * The event listener, hooked up to webRequest onBeforeSendHeaders event.
  * Receives detail of HTTP request in requestDetail.
- * Catches the request, analyzes it's origin and target URLs and blocks it/permits it based
+ * Catches the request, analyzes its origin and target URLs and blocks it/permits it based
  * on their IP adresses. Requests coming from public IP ranges targeting the private IPs are
  * blocked by default. Others are permitted by default.
  *
