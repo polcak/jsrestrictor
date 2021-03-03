@@ -27,6 +27,9 @@
  *
  * This file contains webRequest API listeners. These listeners handle HTTP requests in the "before send headers" phase
  * and handle messages (on message event).
+ *
+ * NBS for Firefox uses the DNS web extension API to resolve domain names. As the domain names are
+ * cached and needs to be resolved without NBS, the performance impact should be negligible.
  */
 
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
