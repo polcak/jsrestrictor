@@ -1,7 +1,7 @@
 {
-  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár",
+  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár, Matyáš Szabó",
   "background": {
-      "scripts": ["helpers.js", "session_hash.js", "update.js", "url.js", WRAPPING, "code_builders.js", "levels.js", "background.js", "level_cache.js", "http_shield_firefox.js", "http_shield_common.js"]
+      "scripts": ["helpers.js", "session_hash.js", "update.js", "url.js", WRAPPING, "code_builders.js", "levels.js", "background.js", "utils.js", "formlock.js", "level_cache.js", "http_shield_firefox.js", "http_shield_common.js"]
   },
   "browser_action": {
     "browser_style": true,

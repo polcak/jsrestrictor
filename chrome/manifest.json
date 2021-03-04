@@ -1,7 +1,7 @@
 {
-  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár",
+  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár, Matyáš Szabó",
   "background": {
-      "scripts": ["helpers.js", "session_hash.js", "update.js", "url.js", WRAPPING, "code_builders.js", "levels.js", "background.js", "level_cache.js", "http_shield_chrome.js", "http_shield_common.js"],
+      "scripts": ["helpers.js", "session_hash.js", "update.js", "url.js", WRAPPING, "code_builders.js", "levels.js", "background.js", "utils.js", "formlock.js", "level_cache.js", "http_shield_chrome.js", "http_shield_common.js"],
       "persistent": true
   },
   "browser_action": {
@@ -40,7 +40,7 @@
   "manifest_version": 2,
   "name": "JavaScript Restrictor",
   "options_page": "options.html",
-  "permissions": ["storage", "tabs",  "webRequest", "webRequestBlocking", "<all_urls>", "notifications"],
+  "permissions": ["storage", "tabs",  "webRequest", "webRequestBlocking", "<all_urls>", "notifications", "contextMenus", "browsingData", "webNavigation"],
   "short_name": "JSR",
   "version": "0.4.6"
 }
