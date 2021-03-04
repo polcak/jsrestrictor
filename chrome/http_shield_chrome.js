@@ -105,6 +105,7 @@ function beforeSendHeadersListener(requestDetail) {
 	//Host found among blocked hosts, cancel HTTPS request right away
 	if (sourceUrl.hostname in blockedHosts)
 	{
+		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
 		return {cancel:true};
 	}
 	
@@ -309,7 +310,24 @@ function onResponseStartedListener(responseDetails)
 		sourceUrl.hostname = wwwRemove(sourceUrl.hostname);
 		// Suspected of attacking, other HTTP requests by this host will be blocked.
 		if(isRequestFromPublicToPrivateNet(sourceUrl.hostname, targetUrl.hostname)) {
+			notifyBlockedHost(sourceUrl.hostname);
 			blockedHosts[sourceUrl.hostname] = true;
 		}
 	}
+}
+
+/**
+ * Creates and presents notification to the user.
+ * Works with webExtensions notification API.
+ * Creates notification about blocked host.
+ *
+ * \param host Host added to the black-list (blockedHosts).
+ */
+function notifyBlockedHost(host) {
+	browser.notifications.create({
+		"type": "basic",
+		"iconUrl": browser.extension.getURL("img/icon-48.png"),
+		"title": "Network boundary shield blocked suspicious host!",
+		"message": `Host ${host} send suspicious request and therefore was added to black-list and all other HTTP request by this host will be blocked.\n\nIf you want to allow web requests from ${host}, please, go to the JS Restrictor settings and add an exception.`
+	});
 }
