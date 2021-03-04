@@ -31,7 +31,7 @@ Copy-Item ".\firefox_JSR.zip" -Destination ".\tests\common_files\JSR\firefox_JSR
 $JSRPath = Get-Location
 
 # Get path to chrome.exe.
-$Chrome = "C:\Program Files (x86)\Google\Chrome\Application"
+$Chrome = "C:\Program Files\Google\Chrome\Application"
 if (-Not (Test-Path $Chrome\chrome.exe -PathType Leaf)) {
 	Write-Host
 	$Chrome = Read-Host -Prompt 'Enter path into directory, where is chrome.exe stored'
