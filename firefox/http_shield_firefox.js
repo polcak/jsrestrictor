@@ -27,6 +27,9 @@
  *
  * This file contains webRequest API listeners. These listeners handle HTTP requests in the "before send headers" phase
  * and handle messages (on message event).
+ *
+ * NBS for Firefox uses the DNS web extension API to resolve domain names. As the domain names are
+ * cached and needs to be resolved without NBS, the performance impact should be negligible.
  */
 
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
@@ -36,7 +39,7 @@ browser.runtime.onMessage.addListener(messageListener);
 /**
  * The event listener, hooked up to webRequest onBeforeSendHeaders event.
  * Receives detail of HTTP request in requestDetail.
- * Catches the request, analyzes it's origin and target URLs and blocks it/permits it based
+ * Catches the request, analyzes its origin and target URLs and blocks it/permits it based
  * on their IP adresses. Requests coming from public IP ranges targeting the private IPs are
  * blocked by default. Others are permitted by default.
  *

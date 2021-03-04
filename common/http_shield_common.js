@@ -24,20 +24,28 @@
  *
  * \brief The Network Boundary Shield (NBS) is a protection against attacks from an external network (the Internet)
  * to an internal network - especially against a reconnaissance attacks when a web browser is abused as a proxy.
- *
- * The NBS functionality is based on filtering HTTP requests. The Network Boundary Shield use webRequest API to handle HTTP requests. Requests processing is blocking.
- * This means that each HTTP request is paused before it is sent, analyzed and allowed or blocked if it is suspicious.
- * An example of attack prevention thanks to the NBS: If the public website requests a resource from the internal network (e.g. the company's router logo),
- * this HTTP request will be blocked by NBS. After installing the NBS, HTTP requests with the direction public -> private network are not allowed.
- * 
- * The NBS has only a small impact on the web browser performance. The only impact is given by the need to parse each HTTP request.
- *
- * More information about the Network Boundary Shield can be obtained from the master thesis by Ing. Pohnera: https://www.vutbr.cz/studenti/zav-prace/detail/129272.
- *
- * An example of an attack from which the shield protects is described in the report:
+ * See, for example, the ForcePoint report https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf,
  * https://www.forcepoint.com/blog/x-labs/attacking-internal-network-public-internet-using-browser-proxy.
+ *
+ * The NBS functionality is based on filtering HTTP requests. The Network Boundary Shield uses blocking webRequest API to handle HTTP requests.
+ * This means that processing of each HTTP request is paused before it is analyzed and allowed (if it seems benign) or blocked (if it is suspicious).
+ *
+ * The main goal of NBS is to prevent attacks like a public website requests a resource from the
+ * internal network (e.g. the logo of the manufacturer of the local router); NBS will detect that
+ * a web page hosted on the public Internet tries to connect to a local IP address. NBS blocks only
+ * HTTP requests from a web page hosted on a public IP address to a private network resource. The
+ * user can allow specific web pages to access local resources (e.g. when using Intranet services).
+ *
+ * NBS uses CSV files provided by IANA
+ * (https://www.iana.org/assignments/locally-served-dns-zones/locally-served-dns-zones.xml) to
+ * determine public and local IP address prefixes. Both IPv4 and IPv6 is supported. The CSV files
+ * are downloaded during the $(PROJECT_NAME) building process.
+ * 
+ * The NBS has only a small impact on the web browser performance. The impact differs for each implementation.
+ *
+ * More information about the Network Boundary Shield can be obtained from the master thesis by Pavel Pohner: https://www.vutbr.cz/studenti/zav-prace/detail/129272 (in Czech).
  */
- 
+
  /** \file
  *
  * \brief This file contains common functions for Network Boundary Shield.
@@ -109,7 +117,7 @@ browser.storage.sync.get(["requestShieldOn"], function(result){
  *
  * \param _path String with a fully-qualified URL. E.g.: moz-extension://2c127fa4-62c7-7e4f-90e5-472b45eecfdc/beasts/frog.dat
  *
- * The function returns promise for returning content of the file as a string.
+ * \returns promise for returning content of the file as a string.
  */
 let readFile = (_path) => {
 	return new Promise((resolve, reject) => {
@@ -161,7 +169,7 @@ readFile(browser.runtime.getURL("ipv6.dat"))
  *
  * \param url An URL that may or may not contains an IPv4 address instead of a domain name.
  *
- * Returns TRUE if the url matches IPv4 regex, FALSE otherwise.
+ * \returns TRUE if the url matches IPv4 regex, FALSE otherwise.
  */
 function isIPV4(url)
 {
@@ -174,7 +182,7 @@ function isIPV4(url)
  *
  * \param url An URL that may or may not contains an IPv6 address instead of a domain name.
  *
- * Returns TRUE, if URL is valid IPV6 address, FALSE otherwise.
+ * \returns TRUE, if URL is valid IPV6 address, FALSE otherwise.
  */
 function isIPV6(url)
 {
@@ -190,7 +198,7 @@ function isIPV6(url)
  *
  * \param ipAddr Valid IPv4 address.
  *
- * Returns TRUE if ipAddr exists in localZones fetched from IANA, FALSE otherwise.
+ * \returns TRUE if ipAddr exists in localZones fetched from IANA, FALSE otherwise.
  */
 function isIPV4Private(ipAddr)
 {
@@ -233,7 +241,7 @@ function isIPV4Private(ipAddr)
  *
  * \param ipAddr Valid IPv6 address.
  *
- * Returns TRUE if ipAddr exists in localZones fetched from IANA, FALSE otherwise.
+ * \returns TRUE if ipAddr exists in localZones fetched from IANA, FALSE otherwise.
  */
 function isIPV6Private(ipAddr)
 {
@@ -272,7 +280,7 @@ function isIPV6Private(ipAddr)
  * \param csv CSV obtained from IANA.
  * \param ipv4 Boolean, saying whether the csv is IPv4 CSV or IPv6.
  *
- * Returns an array of parsed CSV values.
+ * \returns an array of parsed CSV values.
  */
 function parseCSV(csv, ipv4)
 {
@@ -322,7 +330,7 @@ function parseCSV(csv, ipv4)
  *
  * \param strData Loaded CSV file as a string.
  *
- * Returns array containing CSV rows.
+ * \returns array containing CSV rows.
  */
 function CSVToArray(strData){
 	// Create a regular expression to parse the CSV values.
@@ -373,7 +381,7 @@ function CSVToArray(strData){
  * 
  * \param ip6addr Valid ipv6 address.
  *
- * Returns expanded ipv6 address in string.
+ * \returns expanded ipv6 address in string.
  */
 function expandIPV6(ip6addr)
 {
@@ -428,7 +436,7 @@ function expandIPV6(ip6addr)
  *
  * \param hostname Any hostname (subdomains allowed).
  *
- * Returns TRUE when domain (or subdomain) is whitelisted, FALSE otherwise.
+ * \returns TRUE when domain (or subdomain) is whitelisted, FALSE otherwise.
  */
 function checkWhitelist(hostname)
 {

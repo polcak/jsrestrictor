@@ -27,12 +27,26 @@
  *
  * This file contains webRequest API listeners. These listeners handle HTTP requests in two different phases
  * (before send headers, on response started) and handle messages (on message event).
+ *
+ * Chromium-based web browsers do not provide DNS web extension API to translate a domain name to
+ * the IP address. NBS creates a dnsCache that is filled during a processing of the first request
+ * to each domain.
+ *
+ * * The resolved IP address for a domain is found during onResponseStarted event listener (and not
+ *   blocked),
+ * * Once known requests from public IP address to local IP address are blocked during
+ *   onBeforeSendHeaders event listener.
+ *
+ * \bug  This means:
+ * * If multiple requests are performed in parallel before the first one reaches onResponseStarted,
+ *   all requests go through.
+ * * If the attacker creates multiple domain names pointing to the same IP address and each domain
+ *   name is used just once (or used in parallel as mentioned above), the domain name is not blocked.
  */
- 
+
 /**
  * \brief Custom DNS cache created based on previous requests.
  *
- * Chromium-based web browsers do not provide DNS API to translate a domain name to the IP address.
  * This object dnsCache serves as a custom DNS cache that is filled from HTTP responces that have already been received.
  * When a new HTTP request is sent, the listener beforeSendHeadersListener looks at the domain name (from this HTTP request) in the dnsCache object.
  * If IP address (or addresses) are find for current domain name, this IP address (or addresses) are returned from listener and
@@ -42,10 +56,12 @@ var dnsCache = new Object();
 
 
 /**
- * The event listener, hooked up to webRequest onBeforeSendHeaders event.
+ * \brief The event listener, hooked up to webRequest onBeforeSendHeaders event.
+ *
  * The listener catches all requests, analyzes them, does blocking. Requests coming from public IP ranges targeting the private IPs are
  * blocked by default. Others are permitted by default.
- * Not possible to merge implementation of this function with implementation for Firefox,
+ *
+ * \note It is not possible to merge implementation of this function with implementation for Firefox,
  * because Chrome does not support async listerners for blocking requests
  * This function must not be asynchronous for Chrome.
  * See more: https://stackoverflow.com/questions/47910732/browserextension-webrequest-onbeforerequest-return-promise
@@ -184,7 +200,8 @@ function beforeSendHeadersListener(requestDetail) {
 
 
 /**
- * The event listener, hooked up to the webExtensions onMessage event.
+ * \brief The event listener, hooked up to the webExtension onMessage event.
+ *
  * The listener sends message response which contains information if the current site is whitelisted or not.
  * 
  * \param message Receives full message.
@@ -214,7 +231,8 @@ function messageListener(message, sender, sendResponse)
 }
 
 /**
- * The event listener, hooked up to webRequest onResponseStarted event.
+ * \brief The event listener, hooked up to webRequest onResponseStarted event.
+ *
  * The listener analyzes a HTTP response and get an ip address and a hostname (a domain name) from the response.
  * This listener is filling the custom dnsCache object from the obtained IP address and the domain name.
  * In Chrome, custom DNS cache has to be created because Chrome does not have DNS API.
