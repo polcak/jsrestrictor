@@ -88,6 +88,7 @@ function beforeSendHeadersListener(requestDetail) {
 	//Host found among blocked hosts, cancel HTTPS request right away
 	if (sourceUrl.hostname in blockedHosts)
 	{
+		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
 		return {cancel:true};
 	}
 	
@@ -290,6 +291,7 @@ function onResponseStartedListener(responseDetails)
 		sourceUrl.hostname = wwwRemove(sourceUrl.hostname);
 		// Suspected of attacking, other HTTP requests by this host will be blocked.
 		if(isRequestFromPublicToPrivateNet(sourceUrl.hostname, targetUrl.hostname)) {
+			notifyBlockedHost(sourceUrl.hostname);
 			blockedHosts[sourceUrl.hostname] = true;
 		}
 	}
