@@ -1,6 +1,10 @@
 
 # Release history
 
+## 0.4.6
+
+* NBS improvements for Chromium-based browsers: block a host after detecting the first suspicious HTTP request from the public to the private network.
+
 ## 0.4.5
 
 * Add wrapper of MediaDevices.prototype.enumerateDevices
