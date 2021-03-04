@@ -3,7 +3,7 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2020  Pavel Pohner
+//  Copyright (C) 2021  Pavel Pohner, Martin Bednář
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,21 +19,68 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-// Implementation of HTTP webRequest shield, file: http_shield_chrome.js
-// Contains Chrome specific functions
-// Event handlers for webRequest API, notifications and messaging
+/** \file
+ *
+ * \brief This file contains Chrome specific functions for Network Boundary Shield.
+ *
+ * \ingroup NBS
+ *
+ * This file contains webRequest API listeners. These listeners handle HTTP requests in two different phases
+ * (before send headers, on response started) and handle messages (on message event).
+ *
+ * Chromium-based web browsers do not provide DNS web extension API to translate a domain name to
+ * the IP address. NBS creates a dnsCache that is filled during a processing of the first request
+ * to each domain.
+ *
+ * * The resolved IP address for a domain is found during onResponseStarted event listener (and not
+ *   blocked),
+ * * Once known requests from public IP address to local IP address are blocked during
+ *   onBeforeSendHeaders event listener.
+ *
+ * Additionally, if a domain initiates an attack, it is detected and registered in the blockedHosts
+ * associative array. All successive requests by such hosts are blocked until the extension is
+ * reloaded or the host whitelisted.
+ *
+ * \bug If multiple requests are performed in parallel before the first one reaches onResponseStarted,
+ *   all requests go through.
+ */
 
-
-/// Custom DNS cache created based on previous requests.
+/**
+ * \brief Custom DNS cache (associtive array) created based on previous requests.
+ *
+ * This object dnsCache serves as a custom DNS cache that is filled from HTTP responces that have already been received.
+ * When a new HTTP request is sent, the listener beforeSendHeadersListener looks at the domain name (from this HTTP request) in the dnsCache object.
+ * If IP address (or addresses) are find for current domain name, this IP address (or addresses) are returned from listener and
+ * domain name is successfully translated like by a DNS resolver.
+ */
 var dnsCache = new Object();
 
+/**
+ * \brief Associtive array of hosts, that are currently among blocked hosts.
+ *
+ * Once a host sends an HTTP request from the public to the private network, it gets to the blocked hosts.
+ * Other HTTP queries from this guest will be blocked regardless of whether they are going to a public or private network.
+ * This more stringent measure only applies to Chrome-based web browsers.
+ * This is because Chrome-based web browsers can't resolve a domain name to an IP address using the DNS API before sending HTTP request.
+ * If one HTTP request is in the direction from the public to the internal network,
+ * all other requests are also considered offensive because it is not possible to verify the opposite (missing DNS API), and other HTTP requests will be blocked.
+ */
+var blockedHosts = new Object();
 
-/// webRequest event listener, hooked to onBeforeSendHeaders event
-/// Catches all requests, analyzes them, does blocking
-/// Not possible to merge implementation of this function with implementation for Firefox,
-/// because Chrome does not support async listerners for blocking requests
-/// This function must not be asynchronous for Chrome.
-/// See more: https://stackoverflow.com/questions/47910732/browserextension-webrequest-onbeforerequest-return-promise
+
+/**
+ * \brief The event listener, hooked up to webRequest onBeforeSendHeaders event.
+ *
+ * The listener catches all requests, analyzes them, does blocking. Requests coming from public IP ranges targeting the private IPs are
+ * blocked by default. Others are permitted by default.
+ *
+ * \note It is not possible to merge implementation of this function with implementation for Firefox,
+ * because Chrome does not support async listerners for blocking requests
+ * This function must not be asynchronous for Chrome.
+ * See more: https://stackoverflow.com/questions/47910732/browserextension-webrequest-onbeforerequest-return-promise
+ *
+ * \param requestDetail Details of HTTP request.
+ */
 function beforeSendHeadersListener(requestDetail) {
 
 	//If either of information is undefined, permit it
@@ -49,31 +96,62 @@ function beforeSendHeadersListener(requestDetail) {
 	//Removing www. from hostname, so the hostnames are uniform
 	targetUrl.hostname = wwwRemove(targetUrl.hostname);
 
-	var targetIP;
-	var sourceIP;
-	var isSourcePrivate = false;
-	var isDestinationPrivate = false;
-
 	//Host found among user's trusted hosts, allow it right away
 	if (checkWhitelist(sourceUrl.hostname))
 	{
 		return {cancel:false};
 	}
 
+	//Host found among blocked hosts, cancel HTTPS request right away
+	if (sourceUrl.hostname in blockedHosts)
+	{
+		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
+		return {cancel:true};
+	}
+	
+	//Blocking direction Public -> Private
+	if (isRequestFromPublicToPrivateNet(sourceUrl.hostname, targetUrl.hostname))
+	{
+		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
+		return {cancel:true}
+	}
+	else //Permitting others
+	{
+		return {cancel: false};
+	}
+}
+
+/**
+ * \brief Based on the provided hostnames, the function analyzes whether the HTTP request is going from the public to the private network.
+ *
+ * First, each hostname is translated to an IP address (based on the own DNS cache), if the hostname is not already an IP address.
+ * Subsequently, it is analyzed whether the IP addresses are from the public or private range based on the locally served DNS zones loaded from IANA.
+ *
+ * \param sourceHostname Hostname without "www" from HTTP request source URL.
+ * \param targetHostname Hostname without "www" from HTTP request target URL.
+ *
+ * Returns TRUE when HTTP request is going from the public to the private network, FALSE otherwise.
+ */
+function isRequestFromPublicToPrivateNet(sourceHostname, targetHostname) {
+	var targetIP;
+	var sourceIP;
+	var isSourcePrivate = false;
+	var isDestinationPrivate = false;
+	
 	//Checking type of SOURCE URL
-	if (isIPV4(sourceUrl.hostname)) //SOURCE is IPV4 adddr
+	if (isIPV4(sourceHostname)) //SOURCE is IPV4 adddr
 	{
 		//Checking privacy of IPv4
-		if (isIPV4Private(sourceUrl.hostname))
+		if (isIPV4Private(sourceHostname))
 		{
 			//Source is IPv4 private
 			isSourcePrivate = true;
 		}
 	}
-	else if(isIPV6(sourceUrl.hostname)) //SOURCE is IPV6
+	else if(isIPV6(sourceHostname)) //SOURCE is IPV6
 	{
 		//Checking privacy of IPv6
-		if (isIPV6Private(sourceUrl.hostname))
+		if (isIPV6Private(sourceHostname))
 		{
 			//Source is IPv6 private
 			isSourcePrivate = true;
@@ -82,9 +160,9 @@ function beforeSendHeadersListener(requestDetail) {
 	else //SOURCE is hostname
 	{
 		//Search the DNS cache for the source domain
-		if (dnsCache[sourceUrl.hostname] !== undefined) {
+		if (dnsCache[sourceHostname] !== undefined) {
 			//More IPs could have been found, for each of them
-			for (let ip of dnsCache[sourceUrl.hostname])
+			for (let ip of dnsCache[sourceHostname])
 			{
 				//Check whether it's IPv4
 				if (isIPV4(ip))
@@ -107,19 +185,19 @@ function beforeSendHeadersListener(requestDetail) {
 		}
 	}
 
-	//Analyzing targetUrl
+	//Analyzing targetHostname
 	//Check IPv4/IPv6 and privacy
-	if (isIPV4(targetUrl.hostname))
+	if (isIPV4(targetHostname))
 	{
-		if (isIPV4Private(targetUrl.hostname))
+		if (isIPV4Private(targetHostname))
 		{
 			isDestinationPrivate = true;
 
 		}
 	}
-	else if(isIPV6(targetUrl.hostname))
+	else if(isIPV6(targetHostname))
 	{
-		if (isIPV6Private(targetUrl.hostname))
+		if (isIPV6Private(targetHostname))
 		{
 			isDestinationPrivate = true;
 		}
@@ -127,9 +205,9 @@ function beforeSendHeadersListener(requestDetail) {
 	else //Target is hostname
 	{
 		//Search the DNS cache for the target domain
-		if (dnsCache[targetUrl.hostname] !== undefined) {
+		if (dnsCache[targetHostname] !== undefined) {
 			//More IPs could have been found, for each of them
-			for (let ip of dnsCache[targetUrl.hostname])
+			for (let ip of dnsCache[targetHostname])
 			{
 				//Check whether it's IPv4
 				if (isIPV4(ip))
@@ -152,23 +230,21 @@ function beforeSendHeadersListener(requestDetail) {
 		}
 	}
 	
-	//Blocking direction Public -> Private
-	if (!isSourcePrivate && isDestinationPrivate)
-	{
-		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
-		return {cancel:true}
-	}
-	else //Permitting others
-	{
-		return {cancel: false};
-	}
+	//Return if is direction Public -> Private	
+	return (!isSourcePrivate && isDestinationPrivate);
 }
 
 
-/// webRequest event listener, hooked to onMessage event
-/// obtains message string in message, message sender in sender
-/// and function for sending response in sendResponse
-/// Does approriate action based on message text
+/**
+ * \brief The event listener, hooked up to the webExtension onMessage event.
+ *
+ * The listener sends message response which contains information if the current site is whitelisted or not.
+ * 
+ * \param message Receives full message.
+ * \param sender Sender of the message.
+ * \param sendResponse Function for sending response.
+ *
+ */
 function messageListener(message, sender, sendResponse)
 {
 	//Message came from popup,js, asking whether is this site whitelisted
@@ -190,12 +266,17 @@ function messageListener(message, sender, sendResponse)
 	}
 }
 
-
-/// webRequest event listener, hooked to onResponseStarted event
-/// analyze HTTP response
-/// get ip address and hostname (domain) from response
-/// creating custom dns cache in object dnsCache from obtained ip address and domain
-/// In Chrome, custom DNS cache has to be created because Chrome does not have dns API.
+/**
+ * \brief The event listener, hooked up to webRequest onResponseStarted event.
+ *
+ * The listener analyzes a HTTP response and get an ip address and a hostname (a domain name) from the response.
+ * This listener is filling the custom dnsCache object from the obtained IP address and the domain name.
+ * In Chrome, custom DNS cache has to be created because Chrome does not have DNS API.
+ * This listener also adds suspicious guests to blocked ones.
+ * Once a host sends an HTTP request from the public to the private network, it gets to the blocked hosts.
+ *
+ * \param responseDetails Details of HTTP response. responseDetails contains desired combination of an IP address and a corresponding domain name.
+ */
 function onResponseStartedListener(responseDetails)
 {
 	//It's neccessary to have both properities defined, otherwise the response can't be analyzed.
@@ -220,4 +301,33 @@ function onResponseStartedListener(responseDetails)
 			dnsCache[targetUrl.hostname].push(responseDetails.ip);
 		}
 	}
+	
+	//Analyze request direction only when responseDetails.initiator is defined.
+	//When responseDetails.initiator is undefined, can not analyze request direction.
+	if(responseDetails.initiator !== undefined) {
+		var sourceUrl = new URL(responseDetails.initiator);
+		//Removing www. from hostname, so the hostnames are uniform
+		sourceUrl.hostname = wwwRemove(sourceUrl.hostname);
+		// Suspected of attacking, other HTTP requests by this host will be blocked.
+		if(isRequestFromPublicToPrivateNet(sourceUrl.hostname, targetUrl.hostname)) {
+			notifyBlockedHost(sourceUrl.hostname);
+			blockedHosts[sourceUrl.hostname] = true;
+		}
+	}
+}
+
+/**
+ * Creates and presents notification to the user.
+ * Works with webExtensions notification API.
+ * Creates notification about blocked host.
+ *
+ * \param host Host added to the black-list (blockedHosts).
+ */
+function notifyBlockedHost(host) {
+	browser.notifications.create({
+		"type": "basic",
+		"iconUrl": browser.extension.getURL("img/icon-48.png"),
+		"title": "Network boundary shield blocked suspicious host!",
+		"message": `Host ${host} send suspicious request and therefore was added to black-list and all other HTTP request by this host will be blocked.\n\nIf you want to allow web requests from ${host}, please, go to the JS Restrictor settings and add an exception.`
+	});
 }

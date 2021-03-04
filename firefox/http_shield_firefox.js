@@ -3,7 +3,7 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2020  Pavel Pohner
+//  Copyright (C) 2021  Pavel Pohner, Martin Bednář
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,22 +19,34 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-/// Implementation of HTTP webRequest shield, file: http_shield_firefox.js
-/// Contains Firefox specific functions
-/// Event handlers for webRequest API, notifications and messaging
+/** \file
+ *
+ * \brief This file contains Firefox specific functions for Network Boundary Shield.
+ *
+ * \ingroup NBS
+ *
+ * This file contains webRequest API listeners. These listeners handle HTTP requests in the "before send headers" phase
+ * and handle messages (on message event).
+ *
+ * NBS for Firefox uses the DNS web extension API to resolve domain names. As the domain names are
+ * cached and needs to be resolved without NBS, the performance impact should be negligible.
+ */
 
-
+/// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 browser.runtime.onMessage.addListener(messageListener);
+/// \endcond
 
-
-/// webRequest event listener
-/// Listens to onBeforeSendHeaders event, receives detail of HTTP request in requestDetail
-/// Catches the request, analyzes it's origin and target URLs and blocks it/permits it based
-/// on their IP adresses. Requests coming from public IP ranges targeting the private IPs are
-/// blocked by default. Others are permitted by default.
+/**
+ * The event listener, hooked up to webRequest onBeforeSendHeaders event.
+ * Receives detail of HTTP request in requestDetail.
+ * Catches the request, analyzes its origin and target URLs and blocks it/permits it based
+ * on their IP adresses. Requests coming from public IP ranges targeting the private IPs are
+ * blocked by default. Others are permitted by default.
+ *
+ * \param requestDetail Details of HTTP request.
+ */
 async function beforeSendHeadersListener(requestDetail)
 {
-
 	//If either of information is undefined, permit it
 	//originUrl happens to be undefined for the first request of the page loading the document itself
 	if (requestDetail.originUrl === undefined || requestDetail.url === undefined || requestDetail.originUrl === "null" || requestDetail.url === "null")
@@ -175,11 +187,15 @@ async function beforeSendHeadersListener(requestDetail)
 	}
 }
 
-/// Event listener hooked up to webExtensions onMessage event
-/// Receives full message in message,
-/// sender of the message in sender,
-/// function for sending response in sendResponse
-/// Does appropriate action based on message
+/**
+ * The event listener, hooked up to webExtensions onMessage event.
+ * The listener sends message response which contains information if the current site is whitelisted or not.
+ * 
+ * \param message Receives full message.
+ * \param sender Sender of the message.
+ * \param sendResponse Function for sending response.
+ *
+ */
 function messageListener(message, sender, sendResponse)
 {
 	//Message came from popup,js, asking whether is this site whitelisted
