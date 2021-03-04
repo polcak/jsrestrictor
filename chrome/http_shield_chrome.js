@@ -37,11 +37,12 @@
  * * Once known requests from public IP address to local IP address are blocked during
  *   onBeforeSendHeaders event listener.
  *
- * \bug  This means:
- * * If multiple requests are performed in parallel before the first one reaches onResponseStarted,
+ * Additionally, if a domain initiates an attack, it is detected and registered in the blockedHosts
+ * associative array. All successive requests by such hosts are blocked until the extension is
+ * reloaded or the host whitelisted.
+ *
+ * \bug If multiple requests are performed in parallel before the first one reaches onResponseStarted,
  *   all requests go through.
- * * If the attacker creates multiple domain names pointing to the same IP address and each domain
- *   name is used just once (or used in parallel as mentioned above), the domain name is not blocked.
  */
 
 /**
