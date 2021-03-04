@@ -5,7 +5,7 @@ firefox: firefox_JSR.zip
 chrome: chrome_JSR.zip
 
 COMMON_FILES = $(shell find common/) \
-			   LICENSE \
+			   LICENSES/ \
 			   Makefile \
 			   $(shell find firefox/) \
 			   $(shell find chrome/)
@@ -21,7 +21,7 @@ get_csv:
 	@rm -rf $*_JSR/ $@
 	@cp -r common/ $*_JSR/
 	@cp -r $*/* $*_JSR/
-	@cp LICENSE $*_JSR/
+	@cp -r LICENSES $*_JSR/
 	@./fix_manifest.sh $*_JSR/manifest.json
 	@rm -f $*_JSR/.*.sw[pno]
 	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
