@@ -30,7 +30,7 @@
  */
  
 /**
- * \brief Custom DNS cache created based on previous requests.
+ * \brief Custom DNS cache (associtive array) created based on previous requests.
  *
  * Chromium-based web browsers do not provide DNS API to translate a domain name to the IP address.
  * This object dnsCache serves as a custom DNS cache that is filled from HTTP responces that have already been received.
@@ -39,6 +39,18 @@
  * domain name is successfully translated like by a DNS resolver.
  */
 var dnsCache = new Object();
+
+/**
+ * \brief Associtive array of hosts, that are currently among blocked hosts.
+ *
+ * Once a host sends an HTTP request from the public to the private network, it gets to the blocked hosts.
+ * Other HTTP queries from this guest will be blocked regardless of whether they are going to a public or private network.
+ * This more stringent measure only applies to Chrome-based web browsers.
+ * This is because Chrome-based web browsers can't resolve a domain name to an IP address using the DNS API before sending HTTP request.
+ * If one HTTP request is in the direction from the public to the internal network,
+ * all other requests are also considered offensive because it is not possible to verify the opposite (missing DNS API), and other HTTP requests will be blocked.
+ */
+var blockedHosts = new Object();
 
 
 /**
@@ -67,31 +79,61 @@ function beforeSendHeadersListener(requestDetail) {
 	//Removing www. from hostname, so the hostnames are uniform
 	targetUrl.hostname = wwwRemove(targetUrl.hostname);
 
-	var targetIP;
-	var sourceIP;
-	var isSourcePrivate = false;
-	var isDestinationPrivate = false;
-
 	//Host found among user's trusted hosts, allow it right away
 	if (checkWhitelist(sourceUrl.hostname))
 	{
 		return {cancel:false};
 	}
 
+	//Host found among blocked hosts, cancel HTTPS request right away
+	if (sourceUrl.hostname in blockedHosts)
+	{
+		return {cancel:true};
+	}
+	
+	//Blocking direction Public -> Private
+	if (isRequestFromPublicToPrivateNet(sourceUrl.hostname, targetUrl.hostname))
+	{
+		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
+		return {cancel:true}
+	}
+	else //Permitting others
+	{
+		return {cancel: false};
+	}
+}
+
+/**
+ * \brief Based on the provided hostnames, the function analyzes whether the HTTP request is going from the public to the private network.
+ *
+ * First, each hostname is translated to an IP address (based on the own DNS cache), if the hostname is not already an IP address.
+ * Subsequently, it is analyzed whether the IP addresses are from the public or private range based on the locally served DNS zones loaded from IANA.
+ *
+ * \param sourceHostname Hostname without "www" from HTTP request source URL.
+ * \param targetHostname Hostname without "www" from HTTP request target URL.
+ *
+ * Returns TRUE when HTTP request is going from the public to the private network, FALSE otherwise.
+ */
+function isRequestFromPublicToPrivateNet(sourceHostname, targetHostname) {
+	var targetIP;
+	var sourceIP;
+	var isSourcePrivate = false;
+	var isDestinationPrivate = false;
+	
 	//Checking type of SOURCE URL
-	if (isIPV4(sourceUrl.hostname)) //SOURCE is IPV4 adddr
+	if (isIPV4(sourceHostname)) //SOURCE is IPV4 adddr
 	{
 		//Checking privacy of IPv4
-		if (isIPV4Private(sourceUrl.hostname))
+		if (isIPV4Private(sourceHostname))
 		{
 			//Source is IPv4 private
 			isSourcePrivate = true;
 		}
 	}
-	else if(isIPV6(sourceUrl.hostname)) //SOURCE is IPV6
+	else if(isIPV6(sourceHostname)) //SOURCE is IPV6
 	{
 		//Checking privacy of IPv6
-		if (isIPV6Private(sourceUrl.hostname))
+		if (isIPV6Private(sourceHostname))
 		{
 			//Source is IPv6 private
 			isSourcePrivate = true;
@@ -100,9 +142,9 @@ function beforeSendHeadersListener(requestDetail) {
 	else //SOURCE is hostname
 	{
 		//Search the DNS cache for the source domain
-		if (dnsCache[sourceUrl.hostname] !== undefined) {
+		if (dnsCache[sourceHostname] !== undefined) {
 			//More IPs could have been found, for each of them
-			for (let ip of dnsCache[sourceUrl.hostname])
+			for (let ip of dnsCache[sourceHostname])
 			{
 				//Check whether it's IPv4
 				if (isIPV4(ip))
@@ -125,19 +167,19 @@ function beforeSendHeadersListener(requestDetail) {
 		}
 	}
 
-	//Analyzing targetUrl
+	//Analyzing targetHostname
 	//Check IPv4/IPv6 and privacy
-	if (isIPV4(targetUrl.hostname))
+	if (isIPV4(targetHostname))
 	{
-		if (isIPV4Private(targetUrl.hostname))
+		if (isIPV4Private(targetHostname))
 		{
 			isDestinationPrivate = true;
 
 		}
 	}
-	else if(isIPV6(targetUrl.hostname))
+	else if(isIPV6(targetHostname))
 	{
-		if (isIPV6Private(targetUrl.hostname))
+		if (isIPV6Private(targetHostname))
 		{
 			isDestinationPrivate = true;
 		}
@@ -145,9 +187,9 @@ function beforeSendHeadersListener(requestDetail) {
 	else //Target is hostname
 	{
 		//Search the DNS cache for the target domain
-		if (dnsCache[targetUrl.hostname] !== undefined) {
+		if (dnsCache[targetHostname] !== undefined) {
 			//More IPs could have been found, for each of them
-			for (let ip of dnsCache[targetUrl.hostname])
+			for (let ip of dnsCache[targetHostname])
 			{
 				//Check whether it's IPv4
 				if (isIPV4(ip))
@@ -170,16 +212,8 @@ function beforeSendHeadersListener(requestDetail) {
 		}
 	}
 	
-	//Blocking direction Public -> Private
-	if (!isSourcePrivate && isDestinationPrivate)
-	{
-		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
-		return {cancel:true}
-	}
-	else //Permitting others
-	{
-		return {cancel: false};
-	}
+	//Return if is direction Public -> Private	
+	return (!isSourcePrivate && isDestinationPrivate);
 }
 
 
@@ -218,6 +252,8 @@ function messageListener(message, sender, sendResponse)
  * The listener analyzes a HTTP response and get an ip address and a hostname (a domain name) from the response.
  * This listener is filling the custom dnsCache object from the obtained IP address and the domain name.
  * In Chrome, custom DNS cache has to be created because Chrome does not have DNS API.
+ * This listener also adds suspicious guests to blocked ones.
+ * Once a host sends an HTTP request from the public to the private network, it gets to the blocked hosts.
  *
  * \param responseDetails Details of HTTP response. responseDetails contains desired combination of an IP address and a corresponding domain name.
  */
@@ -229,6 +265,9 @@ function onResponseStartedListener(responseDetails)
 		return;
 	}
 	
+	var sourceUrl = new URL(requestDetail.initiator);
+	//Removing www. from hostname, so the hostnames are uniform
+	sourceUrl.hostname = wwwRemove(sourceUrl.hostname);
 	var targetUrl = new URL(responseDetails.url);
 	//Removing www. from hostname, so the hostnames are uniform.
 	targetUrl.hostname = wwwRemove(targetUrl.hostname);
@@ -244,5 +283,10 @@ function onResponseStartedListener(responseDetails)
 			//Push new IP address if it does not already exist.
 			dnsCache[targetUrl.hostname].push(responseDetails.ip);
 		}
+	}
+	
+	// Suspected of attacking, other HTTP requests by this host will be blocked.
+	if(isRequestFromPublicToPrivateNet(sourceUrl.hostname, targetUrl.hostname)) {
+		blockedHosts[sourceUrl.hostname] = true;
 	}
 }
