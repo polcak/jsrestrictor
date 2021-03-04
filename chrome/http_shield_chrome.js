@@ -284,9 +284,6 @@ function onResponseStartedListener(responseDetails)
 		return;
 	}
 	
-	var sourceUrl = new URL(requestDetail.initiator);
-	//Removing www. from hostname, so the hostnames are uniform
-	sourceUrl.hostname = wwwRemove(sourceUrl.hostname);
 	var targetUrl = new URL(responseDetails.url);
 	//Removing www. from hostname, so the hostnames are uniform.
 	targetUrl.hostname = wwwRemove(targetUrl.hostname);
@@ -304,8 +301,15 @@ function onResponseStartedListener(responseDetails)
 		}
 	}
 	
-	// Suspected of attacking, other HTTP requests by this host will be blocked.
-	if(isRequestFromPublicToPrivateNet(sourceUrl.hostname, targetUrl.hostname)) {
-		blockedHosts[sourceUrl.hostname] = true;
+	//Analyze request direction only when responseDetails.initiator is defined.
+	//When responseDetails.initiator is undefined, can not analyze request direction.
+	if(responseDetails.initiator !== undefined) {
+		var sourceUrl = new URL(responseDetails.initiator);
+		//Removing www. from hostname, so the hostnames are uniform
+		sourceUrl.hostname = wwwRemove(sourceUrl.hostname);
+		// Suspected of attacking, other HTTP requests by this host will be blocked.
+		if(isRequestFromPublicToPrivateNet(sourceUrl.hostname, targetUrl.hostname)) {
+			blockedHosts[sourceUrl.hostname] = true;
+		}
 	}
 }
