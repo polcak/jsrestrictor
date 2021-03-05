@@ -198,3 +198,51 @@ Of course the wrappers need to be compiled to JavaScript before inserting the co
 ## Register new wrapper to be used by the extension in a level or available in the GUI.
 
 See `levels.js` and its list `wrapping_groups.groups`. Once you add your wrapper to an existing group or create a new group, the wrapper becomes available in the built-in levels containing the group and in the GUI for custom levels.
+
+## Describe the wrapper for Doygen documentation
+
+Describe what the wrapper tries to accomplish and its approach:
+
+* Add Doxygen comment at the top of the file with the following structure:
+
+```js
+/** \file
+ * \brief This file contains wrappers for the X API (link to the standard or MDN)
+ * \ingroup wrappers
+ *
+ * Put at least one paragraph describing the goal of the wrapper. Describe a possible attack vector.
+ * Link to further resources/readings.
+ *
+ * Describe the options of the wrapper. Mention examples when a user should want to use the
+ *  available options.
+ *
+ * Describe any \note, \bug ór use other suitable Doxygen commands
+ * (https://www.doxygen.nl/manual/commands.html)
+ */
+```
+
+* Describe helping functions and `wrapping_function_body`
+ * Use Doxygen command `\fn fake wrapped.object` for each `wrapping_function_body`
+ * Use the following structure for function comments:
+
+```js
+/**
+ * \brief Short description
+ *
+ * \param X Descripton
+ * \param Y Descripton
+ *
+ * \returns Description
+ *
+ * Main description of the aim of the function, algorithm, etc.
+ *
+ * Describe any \note, \bug ór use other suitable Doxygen commands
+ * (https://www.doxygen.nl/manual/commands.html)
+ */
+```
+
+## Write unit tests or integgration tests for the wrapper
+
+Follow instructions for [unit testing](md_tests_unit_tests_README.html) and
+[integration testing](md_tests_integration_tests_README.html) (see the `tests` directory in the
+repository).
