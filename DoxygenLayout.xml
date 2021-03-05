@@ -14,7 +14,8 @@
 			<tab type="usergroup" title="Basic info for developers">
 				<tab type="user" url="md_CODING_STYLE.html" title="Coding style"/>
 				<tab type="user" url="md_docs_build.html" title="How to build the extension"/>
-				<tab type="user" url="@ref wrappers" title="The wrappers"/>
+				<tab type="user" url="md_docs_new_wrapper.html" title="How to write a new wrapper?"/>
+				<tab type="user" url="@ref wrappers" title="Docs for existing wrappers"/>
 			</tab>
 			<tab type="user" url="md_docs_credits.html" title="Credits"/>
 		</tab>
