@@ -41,7 +41,7 @@
  * inspired by the algorithms created by Brave Software <https://brave.com>
  * available at https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/core/execution_context/execution_context.cc.)
  *
- * Note that both approaches are detectable by a fingerprinter that checks if a predetermined audio
+ * \note Both approaches are detectable by a fingerprinter that checks if a predetermined audio
  * is the same as the read one. Nevertheless, the aim of the wrappers is
  * to limit the finerprintability.
  *
@@ -51,51 +51,70 @@
  * Create private namespace
  */
 (function() {
-	/** @var String audioFarble.
-	 * Contains functions for modyfing audio data according to chosen level of protection -
-	 * (0) - replace by white noise (range <0,0.1>) based on domain key
-	 * (1) - multiply array by fudge factor based on domain key
-	 *
+	/**
+	 * \brief makes number from substring of given string - should work as reinterpret_cast
+	 * \param str String
+	 * \param length Number specifying substring length
 	 */
-	var audioFarble = `
-		function strToUint(str, length){
-			var sub = str.substring(0,length);
-			var ret = "";
-			for (var i = sub.length-1; i >= 0; i--) {
-					ret += ((sub[i].charCodeAt(0)).toString(2).padStart(8, "0"));
+	function strToUint(str, length){
+		var sub = str.substring(0,length);
+		var ret = "";
+		for (var i = sub.length-1; i >= 0; i--) {
+				ret += ((sub[i].charCodeAt(0)).toString(2).padStart(8, "0"));
+		}
+		return "0b"+ret;
+	};
+	/**
+	 * \brief shifts number bits to pick new number
+	 * \param v number to shift
+	 */
+	function lfsr_next32(v) {
+		return ((v >>> 1) | (((v << 30) ^ (v << 29)) & (~(~0 << 31) << 30)));
+	};
+	/**
+	 * \brief seeded pseudo random sequence using lfsr_next32
+	 * \param seed Number used as seed at first call
+	 */
+	function pseudoRandomSequence(seed){
+		if (typeof this.v == 'undefined'){
+				this.v = seed;
 			}
-			return "0b"+ret;
-		}
-		function lfsr_next32(v) {
-			return ((v >>> 1) | (((v << 30) ^ (v << 29)) & (~(~0 << 31) << 30)));
-		}
-		function PseudoRandomSequence(seed){
-			if (typeof this.v == 'undefined'){
-					this.v = seed;
-				}
-			const maxUInt32n = 4294967295;
-			this.v = lfsr_next32(this.v);
-			return ((this.v>>>0) / maxUInt32n) / 10;
-		}
-		var fudge = BigInt(strToUint(domainHash,8))*1000n;
-		var maxUInt64 = 18446744073709551615n;
-		var fudge_factor = 0.99 + (Number(fudge / maxUInt64) / 100000);
+		const maxUInt32n = 4294967295;
+		this.v = lfsr_next32(this.v);
+		return ((this.v>>>0) / maxUInt32n) / 10;
+	};
+	/**
+	 * \brief Modifies audio data
+	 *
+	 * \param arr typed array with data - Uint8Array or Float32Array
+	 *
+	 * Depending on level chosen this function modifies arr content:
+	 *	* (0) - multiplies values by fudge factor based on domain key
+	 *	* (1) - replace values by white noise based on domain key
+	 */
+	function audioFarble(arr){
 		if(args[0] == 0){
-			function farble(arr){
-				for (var i = 0; i < arr.length; i++) {
-					arr[i] = arr[i]*fudge_factor;
-				}
+			var fudge = BigInt(strToUint(domainHash,8))*1000n;
+			var maxUInt64 = 18446744073709551615n;
+			var fudge_factor = 0.99 + (Number(fudge / maxUInt64) / 100000);
+			for (var i = 0; i < arr.length; i++) {
+				arr[i] = arr[i]*fudge_factor;
 			}
 		}
 		else if(args[0] == 1){
-			var seed = Number(strToUint(domainHash,4));
-			function farble(arr){
-				for (var i = 0; i < arr.length; i++) {
-					arr[i] = PseudoRandomSequence(seed);
-				}
+		var seed = Number(strToUint(domainHash,4));
+			for (var i = 0; i < arr.length; i++) {
+				arr[i] = pseudoRandomSequence(seed);
 			}
 		}
-	`;
+	};
+	/** @var String audioFarbleBody.
+	 *
+	 * Contains functions for modyfing audio data according to chosen level of protection -
+	 * (0) - replace by white noise (range <0,0.1>) based on domain key
+	 * (1) - multiply array by fudge factor based on domain key
+	 */
+	var audioFarbleBody = strToUint + lfsr_next32 + pseudoRandomSequence + audioFarble;
 	var wrappers = [
 		{
 			parent_object: "AudioBuffer.prototype",
@@ -106,18 +125,18 @@
 					wrapped_name: "origGetChannelData",
 				}
 			],
-			helping_code: audioFarble,
+			helping_code: audioFarbleBody,
 			original_function: "parent.AudioBuffer.prototype.getChannelData",
 			wrapping_function_args: "channel",
 			/** \fn fake AudioBuffer.prototype.getChannelData
 			 * \brief Returns modified channel data.
 			 *
 			 * Calls original function, which returns array with result, then calls function
-			 * farble with returned array as argument - which changes array values according to chosen level.
+			 * audioFarble with returned array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
 				var floatArr = origGetChannelData.call(this, channel);
-				farble(floatArr);
+				audioFarble(floatArr);
 				return floatArr;
 			`,
 		},
@@ -130,18 +149,18 @@
 					wrapped_name: "origCopyFromChannel",
 				}
 			],
-			helping_code: audioFarble,
+			helping_code: audioFarbleBody,
 			original_function: "parent.AudioBuffer.prototype.copyFromChannel",
 			wrapping_function_args: "destination, channel, start",
 			/** \fn fake AudioBuffer.prototype.copyFromChannel
 			 * \brief Modifies destination array after calling original function.
 			 *
 			 * Calls original function, which writes data to destination array, then calls function
-			 * farble with destination array as argument - which changes array values according to chosen level.
+			 * audioFarble with destination array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
 				origCopyFromChannel.call(this, destination, channel, start);
-				farble(destination);
+				audioFarble(destination);
 			`,
 		},
 		{
@@ -153,17 +172,17 @@
 					wrapped_name: "origGetByteTimeDomainData",
 				}
 			],
-			helping_code:audioFarble,
+			helping_code:audioFarbleBody,
 			wrapping_function_args: "destination",
 			/** \fn fake AnalyserNode.prototype.getByteTimeDomainData
 			 * \brief Modifies destination array after calling original function.
 			 *
 			 * Calls original function, which writes data to destination array, then calls function
-			 * farble with destination array as argument - which changes array values according to chosen level.
+			 * audioFarble with destination array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
 				origGetByteTimeDomainData.call(this, destination);
-				farble(destination);
+				audioFarble(destination);
 			`,
 		},
 		{
@@ -175,17 +194,17 @@
 					wrapped_name: "origGetFloatTimeDomainData",
 				}
 			],
-			helping_code:audioFarble,
+			helping_code:audioFarbleBody,
 			wrapping_function_args: "destination",
 			/** \fn fake AnalyserNode.prototype.getFloatTimeDomainData
 			 * \brief Modifies destination array after calling original function.
 			 *
 			 * Calls original function, which writes data to destination array, then calls function
-			 * farble with destination array as argument - which changes array values according to chosen level.
+			 * audioFarble with destination array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
 				origGetFloatTimeDomainData.call(this, destination);
-				farble(destination);
+				audioFarble(destination);
 			`,
 		},
 		{
@@ -197,17 +216,17 @@
 					wrapped_name: "origGetByteFrequencyData",
 				}
 			],
-			helping_code:audioFarble,
+			helping_code:audioFarbleBody,
 			wrapping_function_args: "destination",
 			/** \fn fake AnalyserNode.prototype.getByteFrequencyData
 			 * \brief Modifies destination array after calling original function.
 			 *
 			 * Calls original function, which writes data to destination array, then calls function
-			 * farble with destination array as argument - which changes array values according to chosen level.
+			 * audioFarble with destination array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
 				origGetByteFrequencyData.call(this, destination);
-				farble(destination);
+				audioFarble(destination);
 			`,
 		},
 		{
@@ -219,17 +238,17 @@
 					wrapped_name: "origGetFloatFrequencyData",
 				}
 			],
-			helping_code:audioFarble,
+			helping_code:audioFarbleBody,
 			wrapping_function_args: "destination",
 			/** \fn fake AnalyserNode.prototype.getFloatFrequencyData
 			 * \brief Modifies destination array after calling original function.
 			 *
 			 * Calls original function, which writes data to destination array, then calls function
-			 * farble with destination array as argument - which changes array values according to chosen level.
+			 * audioFarble with destination array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
 				origGetFloatFrequencyData.call(this, destination);
-				farble(destination);
+				audioFarble(destination);
 			`,
 		}
 	];
