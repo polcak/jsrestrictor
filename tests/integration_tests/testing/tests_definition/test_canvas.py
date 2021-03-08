@@ -23,6 +23,10 @@ from values_getters import is_canvas_spoofed
 
 
 ## Test canvas - if canvas is spoofed: Reading from canvas returns white image.
+##
+## This test fails in Google Chrome on JSR level 3 - expected failure because of known bug:
+## selenium.common.exceptions.JavascriptException: Message: javascript error:
+## Failed to execute 'getRandomValues' on 'Crypto': parameter 1 is not of type 'ArrayBufferView'.
 def test_canvas(browser, expected):
     is_spoofed = is_canvas_spoofed(browser.driver)
     if is_spoofed == "ERROR":

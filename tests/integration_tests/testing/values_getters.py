@@ -99,6 +99,10 @@ def get_referrer(driver):
 #
 #  Draw 3 elements to canvas and then get canvas data and test if data is spoofed.
 #  Spoofed canvas means that canvas is represented by array with only 0 values.
+##
+## This getter return "ERROR" in Google Chrome on JSR level 3 because of known bug:
+## selenium.common.exceptions.JavascriptException: Message: javascript error:
+## Failed to execute 'getRandomValues' on 'Crypto': parameter 1 is not of type 'ArrayBufferView'.
 def is_canvas_spoofed(driver):
     try:
         driver.get(get_config("testing_page"))
