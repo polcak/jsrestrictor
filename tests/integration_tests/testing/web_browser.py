@@ -64,7 +64,6 @@ class Browser:
             WebDriverWait(self.driver, 10).until(
                 ec.presence_of_element_located((By.ID, 'extensions-value-btn'))
             )
-            self.driver.find_element_by_id('extensions-value-btn').click()
             for elem in self.driver.find_element_by_id('extensions-value').text.splitlines():
                 if 'JavaScript Restrictor' in elem:
                     self._jsr_options_page = "chrome-extension://" + elem.split(':')[0][:-1] + "/options.html"
