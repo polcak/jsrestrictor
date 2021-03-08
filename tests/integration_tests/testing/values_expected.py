@@ -188,6 +188,6 @@ level3 = TestedValues(
     time={'value': 'REAL VALUE',
           'accuracy': 1.0},
     performance={'value': 'REAL VALUE',
-                 'accuracy': 1000},
+                 'accuracy': 1},
     protect_canvas=True
 )
