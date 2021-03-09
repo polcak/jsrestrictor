@@ -51,7 +51,7 @@
  * Level 1 is trying to return as little information as possible while being consistent across domains and sessions.
  * This level can cause breakage on majority of websites using WebGL.
  *
- * Also note that both approaches are detectable by a fingerprinter that checks if a predetermined image
+ * \note Both approaches are detectable by a fingerprinter that checks if a predetermined image
  * is the same as the read one or if specific function returns expected value.
  * Nevertheless, the aim of the wrappers is to limit the finerprintability.
  *
@@ -60,117 +60,110 @@
  * Create private namespace
  */
 (function() {
-	/** @var String farbleWebGLparam
+	function farbleGLint(number) {
+		var ret = 0;
+		if(number > 0){
+			ret = number - (Number(prng().toString().slice(2,10)) % 2);
+		}
+		return ret;
+	}
+	function randomString(length) {
+		var ret = "";
+		var charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		for ( var i = 0; i < length; i++ ) {
+				ret += charSet.charAt(Math.floor(prng() * charSet.length));
+		}
+		return ret;
+	}
+	/**
 	 * \brief Modifies WebGLRenderingContext.getParameter return value for some specific parameters, original value for the rest
 	 *
-	 * \param pname GLEnum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
+	 * \param pname GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 *
-	 * Also contains helping functions farbleGLint and randomString which are used in farbleWebGLparam
 	 * Depending on level chosen this function returns:
 	 *	* (0) - depending on type - either changed original number or random string
 	 *	* (1) - bottom value depending on parameter [null, 0, empty string, random string]
 	 */
-	var farbleWebGLparam = `
-		function farbleGLint(number){
-			var ret = 0;
-			if(number > 0){
-				ret = number - (Number(prng().toString().slice(2,10)) % 2);
+	function farbleGetParameter(ctx, pname) {
+		if(args[0]===1) {
+			var ret;
+			switch (pname) {
+				case 0x1F02:
+				case 0x1F01:
+				case 0x1F00:
+				case 0x8B8C:
+					ret = "";
+					break;
+				case 0x8F36:
+				case 0x8F37:
+				case 0x8CA6:
+					ret = null;
+					break;
+				case 0x8A2B:
+				case 0x8B4A:
+				case 0x9122:
+				case 0x8B4B:
+				case 0x8C8A:
+				case 0x8B49:
+				case 0x8A2D:
+				case 0x9125:
+				case 0x8A2F:
+				case 0x8A2E:
+				case 0x8A31:
+				case 0x8A33:
+				case 0x8A30:
+					ret = 0;
+					break;
+				case 0x9245:
+					ret = vendor;
+					break;
+				case 0x9246:
+					ret = renderer;
+					break;
+				default:
+					ret = origGetParameter.call(ctx, pname);
 			}
 			return ret;
 		}
-		function randomString(length) {
-			var ret = "";
-			var charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-			for ( var i = 0; i < length; i++ ) {
-					ret += charSet.charAt(Math.floor(prng() * charSet.length));
+		else if(args[0]===0) {
+			var ret;
+			switch (pname) {
+				case 0x8B4A:
+				case 0x8A2B:
+				case 0x9122:
+				case 0x8B4B:
+				case 0x8C8A:
+				case 0x8B49:
+				case 0x8A2D:
+				case 0x9125:
+				case 0x8A2F:
+				case 0x8A2E:
+				case 0x8A31:
+				case 0x8A33:
+				case 0x8869:
+				case 0x8DFB:
+				case 0x8B4C:
+				case 0x0D33:
+				case 0x851C:
+				case 0x8073:
+				case 0x88FF:
+					var result = origGetParameter.call(ctx, pname);
+					ret = farbleGLint(result);
+					break;
+				case 0x9245:
+					ret = vendor;
+					break;
+				case 0x9246:
+					ret = renderer;
+					break;
+				default:
+					ret = origGetParameter.call(ctx, pname);
 			}
 			return ret;
 		}
-		var vendor = randomString(8);
-		var renderer = randomString(8);
-		if(args[0]===1){
-			function farbleWebGLparam(ctx, pname){
-				var ret;
-				switch (pname) {
-					case 0x1F02:
-					case 0x1F01:
-					case 0x1F00:
-					case 0x8B8C:
-						ret = "";
-						break;
-					case 0x8F36:
-					case 0x8F37:
-					case 0x8CA6:
-						ret = null;
-						break;
-					case 0x8A2B:
-					case 0x8B4A:
-					case 0x9122:
-					case 0x8B4B:
-					case 0x8C8A:
-					case 0x8B49:
-					case 0x8A2D:
-					case 0x9125:
-					case 0x8A2F:
-					case 0x8A2E:
-					case 0x8A31:
-					case 0x8A33:
-					case 0x8A30:
-						ret = 0;
-						break;
-					case 0x9245:
-						ret = vendor;
-						break;
-					case 0x9246:
-						ret = renderer;
-						break;
-					default:
-						ret = origGetParameter.call(ctx, pname);
-				}
-				return ret;
-			}
-		}
-		else if(args[0]===0){
-			function farbleWebGLparam(ctx, pname){
-				var ret;
-				switch (pname) {
-					case 0x8B4A:
-					case 0x8A2B:
-					case 0x9122:
-					case 0x8B4B:
-					case 0x8C8A:
-					case 0x8B49:
-					case 0x8A2D:
-					case 0x9125:
-					case 0x8A2F:
-					case 0x8A2E:
-					case 0x8A31:
-					case 0x8A33:
-					case 0x8869:
-					case 0x8DFB:
-					case 0x8B4C:
-					case 0x0D33:
-					case 0x851C:
-					case 0x8073:
-					case 0x88FF:
-						var result = origGetParameter.call(ctx, pname);
-						ret = farbleGLint(result);
-						break;
-					case 0x9245:
-						ret = vendor;
-						break;
-					case 0x9246:
-						ret = renderer;
-						break;
-					default:
-						ret = origGetParameter.call(ctx, pname);
-				}
-				return ret;
-			}
-		}
-	`;
-	/** @var String farbleNull
+	};
+	/**
 	 * \brief Modifies return value
 	 *
 	 * \param name String name of original function
@@ -181,16 +174,15 @@
 	 *	* (0) - original value
 	 *	* (1) - null
 	 */
-	var farbleNull = `
-		function farbleNull(name, ctx, ...fcarg){
-			if(args[0]===1){
-				return null;
-			}
-			else if(args[0]===0){
-				return eval(name+".call(ctx, ...fcarg);");
-			}
-		}`;
-	/** @var String farbleZero
+	function farbleNull(name, ctx, ...fcarg) {
+		if(args[0]===1) {
+			return null;
+		}
+		else if(args[0]===0) {
+			return eval(name+".call(ctx, ...fcarg);");
+		}
+	};
+	/**
 	 * \brief Modifies return value
 	 *
 	 * \param name String name of original function
@@ -201,16 +193,15 @@
 	 *	* (0) - original value
 	 *	* (1) - zero
 	 */
-	var farbleZero = `
-		function farbleZero(name, ctx, ...fcarg){
-			if(args[0]===1){
-				return 0;
-			}
-			else if(args[0]===0){
-				return eval(name+".call(ctx, ...fcarg);");
-			}
-		}`;
-	/** @var String farbleMinusOne
+	function farbleZero(name, ctx, ...fcarg) {
+		if(args[0]===1) {
+			return 0;
+		}
+		else if(args[0]===0) {
+			return eval(name+".call(ctx, ...fcarg);");
+		}
+	};
+	/**
 	 * \brief Modifies return value
 	 *
 	 * \param name String name of original function
@@ -221,16 +212,15 @@
 	 *	* (0) - original value
 	 *	* (1) - minus one
 	 */
-	var farbleMinusOne = `
-		function farbleMinusOne(name, ctx, ...fcarg){
-			if(args[0]===1){
-				return -1;
-			}
-			else if(args[0]===0){
-				return eval(name+".call(ctx, ...fcarg);");
-			}
-		}`;
-	/** @var String farbleNullArray
+	function farbleMinusOne(name, ctx, ...fcarg) {
+		if(args[0]===1) {
+			return -1;
+		}
+		else if(args[0]===0) {
+			return eval(name+".call(ctx, ...fcarg);");
+		}
+	};
+	/**
 	 * \brief Modifies return value
 	 *
 	 * \param name String name of original function
@@ -241,37 +231,36 @@
 	 *	* (0) - original value
 	 *	* (1) - empty array
 	 */
-	var farbleNullArray = `
-		function farbleNullArray(name, ctx, ...fcarg){
-			if(args[0]===1){
-				return [];
-			}
-			else if(args[0]===0){
-				return eval(name+".call(ctx, ...fcarg);");
-			}
-		}`;
-	var farbleGetPrecisionFormat = `
-		function farbleGetPrecisionFormat(ctx, ...fcarg){
-			if(args[0]===1){
-				var ret = Object.create(WebGLShaderPrecisionFormat.prototype);
-				Object.defineProperties(ret, {
-					rangeMin:{
-						value:0
-					},
-					rangeMax:{
-						value:0
-					},
-					precision:{
-						value:0
-					}
-				});
-				return ret;
-			}
-			else if(args[0]===0){
-				return origGetShaderPrecisionFormat.call(ctx, ...fcarg);
-			}
-		}`;
-	/** @var String farbleGetActives
+	function farbleNullArray(name, ctx, ...fcarg) {
+		if(args[0]===1) {
+			return [];
+		}
+		else if(args[0]===0) {
+			return eval(name+".call(ctx, ...fcarg);");
+		}
+	};
+
+	function farbleGetPrecisionFormat(ctx, ...fcarg) {
+		if(args[0]===1) {
+			var ret = Object.create(WebGLShaderPrecisionFormat.prototype);
+			Object.defineProperties(ret, {
+				rangeMin:{
+					value:0
+				},
+				rangeMax:{
+					value:0
+				},
+				precision:{
+					value:0
+				}
+			});
+			return ret;
+		}
+		else if(args[0]===0) {
+			return origGetShaderPrecisionFormat.call(ctx, ...fcarg);
+		}
+	};
+	/**
 	 * \brief Modifies return value
 	 *
 	 * \param name String name of original function
@@ -282,184 +271,238 @@
 	 *	* (0) - original value
 	 *	* (1) - WebGLActiveInfo object with empty attributes
 	 */
-	var farbleGetActives = `
-		function farbleGetActives(name, ctx, ...fcarg){
-			if(args[0]===1){
-				var ret = Object.create(WebGLActiveInfo.prototype);
-				Object.defineProperties(ret, {
-					name:{
-						value:""
-					},
-					type:{
-						value:5124
-					},
-					size:{
-						value:0
-					}
-				});
-				return ret;
-			}
-			else if(args[0]===0){
-				return eval(name+".call(ctx, ...fcarg);");
-			}
-		}`;
-	var farbleGetFramebufferAttachmentParameter = `
-		function farbleGetFramebufferAttachmentParameter(ctx, target, attachment, pname){
-			if(args[0]===0){
-				return origFrameBufferAttachmentParameter.call(ctx, target, attachment, pname);
-			}
-			else if(args[0]===1){
-				var ret = null;
-				switch (pname) {
-					case 0x8CD2:
-					case 0x8212:
-					case 0x8213:
-					case 0x8214:
-					case 0x8215:
-					case 0x8216:
-					case 0x8217:
-					case 0x8CD4:
-					case 0x8CD0:
-						ret = 0;
-						break;
-					case 0x8CD3:
-						ret = 34069;
-						break;
-					case 0x8210:
-						ret = 9729;
-						break;
-					case 0x8211:
-						ret = 5124;
-						break;
+	function farbleGetActives(name, ctx, ...fcarg) {
+		if(args[0]===1) {
+			var ret = Object.create(WebGLActiveInfo.prototype);
+			Object.defineProperties(ret, {
+				name:{
+					value:""
+				},
+				type:{
+					value:5124
+				},
+				size:{
+					value:0
 				}
-				return ret;
-			}
+			});
+			return ret;
 		}
-	`;
-	var farbleGetVertexAttrib = `
-		function farbleGetVertexAttrib(ctx, index, pname){
-			if(args[0]===0){
-				return origGetVertexAttrib.call(ctx, index, pname);
-			}
-			else if(args[0]===1){
-				var ret = null;
-				switch (pname) {
-					case 0x8622:
-					case 0x886A:
-					case 0x88FD:
-						ret = false;
-						break;
-					case 0x8623:
-					case 0x8624:
-					case 0x88FE:
-						ret = 0;
-						break;
-					case 0x8625:
-						ret = 5120;
-						break;
-					case 0x8626:
-						ret = new Float32Array([0,0,0,0]);
-						break;
-				}
-				return ret;
-			}
+		else if(args[0]===0) {
+			return eval(name+".call(ctx, ...fcarg);");
 		}
-	`;
-	var farbleGetBufferParameter = `
-		function farbleGetBufferParameter(ctx, target, pname){
-			if(args[0]===0){
-				return origGetBufferParameter.call(ctx, target, pname);
-			}
-			else if(args[0]===1){
-				var ret = null;
-				switch (pname) {
-					case 0x8764:
-						ret = 0;
-						break;
-					case 0x8765:
-						ret = 35044;
-						break;
-				}
-				return ret;
-			}
+	};
+	/**
+	 * \brief Modifies return value
+	 *
+	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
+	 * \param target GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
+ 	 * \param attachment GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
+	 * \param pname GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
+	 *
+	 * Depending on level chosen this function returns:
+	 *	* (0) - original value
+	 *	* (1) - bottom value (0, 34069, 9729, 5124)
+	 */
+	function farbleGetFramebufferAttachmentParameter(ctx, target, attachment, pname) {
+		if(args[0]===0) {
+			return origFrameBufferAttachmentParameter.call(ctx, target, attachment, pname);
 		}
-	`;
-	var farbleGetShaderParameter = `
-		function farbleGetShaderParameter(ctx, shader, pname){
-			if(args[0]===0){
-				return origGetShaderParameter.call(ctx, shader, pname);
+		else if(args[0]===1) {
+			var ret = null;
+			switch (pname) {
+				case 0x8CD2:
+				case 0x8212:
+				case 0x8213:
+				case 0x8214:
+				case 0x8215:
+				case 0x8216:
+				case 0x8217:
+				case 0x8CD4:
+				case 0x8CD0:
+					ret = 0;
+					break;
+				case 0x8CD3:
+					ret = 34069;
+					break;
+				case 0x8210:
+					ret = 9729;
+					break;
+				case 0x8211:
+					ret = 5124;
+					break;
 			}
-			else if(args[0]===1){
-				var ret = null;
-				switch (pname) {
-					case 0x8B80:
-					case 0x8B81:
-						ret = false;
-						break;
-					case 0x8B4F:
-						ret = 35633;
-						break;
-				}
-				return ret;
-			}
+			return ret;
 		}
-	`;
-	var farbleGetRenderbufferParameter = `
-		function farbleGetRenderbufferParameter(ctx, target, pname){
-			if(args[0]===0){
-				return origGetRenderbufferParameter.call(ctx, target, pname);
-			}
-			else if(args[0]===1){
-				var ret = null;
-				switch (pname) {
-					case 0x8D42:
-					case 0x8D43:
-					case 0x8D50:
-					case 0x8D51:
-					case 0x8D52:
-					case 0x8D53:
-					case 0x8D54:
-					case 0x8D55:
-					case 0x8CAB:
-						ret = 0;
-						break;
-					case 0x8D44:
-						ret = 32854;
-						break;
-				}
-				return ret;
-			}
+	};
+	/**
+	 * \brief Modifies return value
+	 *
+	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
+	 * \param index GLuint specifying index
+	 * \param pname GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
+	 *
+	 * Depending on level chosen this function returns:
+	 *	* (0) - original value
+	 *	* (1) - bottom value (false, 0, 5120, empty Float32Array)
+	 */
+	function farbleGetVertexAttrib(ctx, index, pname) {
+		if(args[0]===0) {
+			return origGetVertexAttrib.call(ctx, index, pname);
 		}
-	`;
-	var farbleGetProgramParameter = `
-		function farbleGetProgramParameter(ctx, program, pname){
-			if(args[0]===0){
-				return origGetProgramParameter.call(ctx, program, pname);
+		else if(args[0]===1) {
+			var ret = null;
+			switch (pname) {
+				case 0x8622:
+				case 0x886A:
+				case 0x88FD:
+					ret = false;
+					break;
+				case 0x8623:
+				case 0x8624:
+				case 0x88FE:
+					ret = 0;
+					break;
+				case 0x8625:
+					ret = 5120;
+					break;
+				case 0x8626:
+					ret = new Float32Array([0,0,0,0]);
+					break;
 			}
-			else if(args[0]===1){
-				var ret = null;
-				switch (pname) {
-					case 0x8B80:
-					case 0x8B82:
-					case 0x8B83:
-						ret = false;
-						break;
-					case 0x8B85:
-					case 0x8B89:
-					case 0x8B86:
-					case 0x8C83:
-					case 0x8A36:
-						ret = 0;
-						break;
-					case 0x8C7F:
-						ret = 35981;
-						break;
-				}
-				return ret;
-			}
+			return ret;
 		}
-	`;
-	/** @var String farblePixels
+	};
+	/**
+	 * \brief Modifies return value
+	 *
+	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
+	 * \param target GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
+	 * \param pname GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
+	 *
+	 * Depending on level chosen this function returns:
+	 *	* (0) - original value
+	 *	* (1) - bottom value (0, 35044)
+	 */
+	function farbleGetBufferParameter(ctx, target, pname) {
+		if(args[0]===0) {
+			return origGetBufferParameter.call(ctx, target, pname);
+		}
+		else if(args[0]===1) {
+			var ret = null;
+			switch (pname) {
+				case 0x8764:
+					ret = 0;
+					break;
+				case 0x8765:
+					ret = 35044;
+					break;
+			}
+			return ret;
+		}
+	};
+	/**
+	 * \brief Modifies return value
+	 *
+	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
+	 * \param program WebGLShader object (https://developer.mozilla.org/en-US/docs/Web/API/WebGLShader)
+	 * \param pname GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
+	 *
+	 * Depending on level chosen this function returns:
+	 *	* (0) - original value
+	 *	* (1) - bottom value (false, 35633)
+	 */
+	function farbleGetShaderParameter(ctx, shader, pname) {
+		if(args[0]===0) {
+			return origGetShaderParameter.call(ctx, shader, pname);
+		}
+		else if(args[0]===1) {
+			var ret = null;
+			switch (pname) {
+				case 0x8B80:
+				case 0x8B81:
+					ret = false;
+					break;
+				case 0x8B4F:
+					ret = 35633;
+					break;
+			}
+			return ret;
+		}
+	};
+	/**
+	 * \brief Modifies return value
+	 *
+	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
+	 * \param target GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
+	 * \param pname GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
+	 *
+	 * Depending on level chosen this function returns:
+	 *	* (0) - original value
+	 *	* (1) - bottom value (0, 32854)
+	 */
+	function farbleGetRenderbufferParameter(ctx, target, pname) {
+		if(args[0]===0) {
+			return origGetRenderbufferParameter.call(ctx, target, pname);
+		}
+		else if(args[0]===1) {
+			var ret = null;
+			switch (pname) {
+				case 0x8D42:
+				case 0x8D43:
+				case 0x8D50:
+				case 0x8D51:
+				case 0x8D52:
+				case 0x8D53:
+				case 0x8D54:
+				case 0x8D55:
+				case 0x8CAB:
+					ret = 0;
+					break;
+				case 0x8D44:
+					ret = 32854;
+					break;
+			}
+			return ret;
+		}
+	};
+	/**
+	 * \brief Modifies return value
+	 *
+	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
+	 * \param program WebGLProgram object (https://developer.mozilla.org/en-US/docs/Web/API/WebGLProgram)
+	 * \param pname GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
+	 *
+	 * Depending on level chosen this function returns:
+	 *	* (0) - original value
+	 *	* (1) - bottom value (false, 0, 35981)
+	 */
+	function farbleGetProgramParameter(ctx, program, pname) {
+		if(args[0]===0) {
+			return origGetProgramParameter.call(ctx, program, pname);
+		}
+		else if(args[0]===1) {
+			var ret = null;
+			switch (pname) {
+				case 0x8B80:
+				case 0x8B82:
+				case 0x8B83:
+					ret = false;
+					break;
+				case 0x8B85:
+				case 0x8B89:
+				case 0x8B86:
+				case 0x8C83:
+				case 0x8A36:
+					ret = 0;
+					break;
+				case 0x8C7F:
+					ret = 35981;
+					break;
+			}
+			return ret;
+		}
+	};
+	/**
 	 * \brief Modifies pixels array
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
@@ -472,38 +515,31 @@
 	 * \param pixels typed array to return result
 	 * \param offset optional offset
 	 *
-	 * Also contains helping function lfsr_next which is used to determine which pixels are changed
 	 * Depending on level chosen this function returns to pixels array:
 	 *	* (0) - slightly changed image data according to domain and session keys
 	 *	* (1) - empty array
 	 */
-	var farblePixels = `
-		function lfsr_next(v) {
-			return BigInt.asUintN(64, ((v >> 1n) | (((v << 62n) ^ (v << 61n)) & (~(~0n << 63n) << 62n))));
+	function farblePixels(ctx, x, y, width, height, format, type, pixels, offset) {
+		if(args[0]===1) {
+			return;
 		}
-		function farblePixels(ctx, x, y, width, height, format, type, pixels, offset) {
-			if(args[0]===1){
-				return;
-			}
-			else if(args[0]===0){
-				origReadPixels.call(ctx, x, y, width, height, format, type, pixels, offset);
-				var pixel_count = BigInt(width * height);
-				var channel = domainHash[0].charCodeAt(0) % 3;
-				var canvas_key = domainHash;
-				var v = BigInt(sessionHash);
-
-				for (let i = 0; i < 32; i++) {
-					var bit = canvas_key[i];
-					for (let j = 8; j >= 0; j--) {
-						var pixel_index = (4 * Number(v % pixel_count) + channel);
-						pixels[pixel_index] = pixels[pixel_index] ^ (bit & 0x1);
-						bit = bit >> 1;
-						v = lfsr_next(v);
-					}
+		else if(args[0]===0) {
+			origReadPixels.call(ctx, x, y, width, height, format, type, pixels, offset);
+			var pixel_count = BigInt(width * height);
+			var channel = domainHash[0].charCodeAt(0) % 3;
+			var canvas_key = domainHash;
+			var v = BigInt(sessionHash);
+			for (let i = 0; i < 32; i++) {
+				var bit = canvas_key[i];
+				for (let j = 8; j >= 0; j--) {
+					var pixel_index = (4 * Number(v % pixel_count) + channel);
+					pixels[pixel_index] = pixels[pixel_index] ^ (bit & 0x1);
+					bit = bit >> 1;
+					v = lfsr_next(v);
 				}
 			}
-			return;
-		}`;
+		}
+	};
  	var wrappers = [
 		{
 			parent_object: "WebGLRenderingContext.prototype",
@@ -514,7 +550,10 @@
 					wrapped_name: "origGetParameter",
 				}
 			],
-			helping_code: farbleWebGLparam,
+			helping_code: farbleGLint + randomString +`
+				var vendor = randomString(8);
+				var renderer = randomString(8);`+
+				farbleGetParameter,
 			original_function: "parent.WebGLRenderingContext.prototype.getParameter",
 			wrapping_function_args: "constant",
 			/** \fn fake WebGLRenderingContext.prototype.getParameter
@@ -525,7 +564,7 @@
 			 *	* (1) - bottom value depending on parameter [null, 0, empty string, random string]
 			 */
 			wrapping_function_body: `
-				return farbleWebGLparam(this,constant);
+				return farbleGetParameter(this,constant);
 			`,
 		},
 		{
@@ -537,7 +576,10 @@
 					wrapped_name: "origGetParameter",
 				}
 			],
-			helping_code: farbleWebGLparam,
+			helping_code: farbleGLint + randomString +`
+				var vendor = randomString(8);
+				var renderer = randomString(8);`+
+				farbleGetParameter,
 			original_function: "parent.WebGL2RenderingContext.prototype.getParameter",
 			wrapping_function_args: "constant",
 			/** \fn fake WebGL2RenderingContext.prototype.getParameter
@@ -548,7 +590,7 @@
 			 *	* (1) - bottom value depending on parameter [null, 0, empty string, random string]
 			 */
 			wrapping_function_body: `
-				return farbleWebGLparam(this,constant);
+				return farbleGetParameter(this, constant);
 			`,
 		},
 		{
@@ -721,7 +763,7 @@
 					wrapped_name: "origReadPixels",
 				}
 			],
-			helping_code: farblePixels,
+			helping_code: lfsr_next + farblePixels,
 			original_function: "parent.WebGLRenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGLRenderingContext.prototype.readPixels
@@ -744,7 +786,7 @@
 					wrapped_name: "origReadPixels",
 				}
 			],
-			helping_code: farblePixels,
+			helping_code: lfsr_next + farblePixels,
 			original_function: "parent.WebGL2RenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGL2RenderingContext.prototype.readPixels

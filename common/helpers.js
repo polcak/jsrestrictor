@@ -71,3 +71,11 @@ function generateId(len = 32) {
 function wwwRemove(hostname) {
 	return String(hostname).replace(/^www\./,'');
 }
+
+/**
+ * \brief shifts number bits to pick new number
+ * \param v BigInt number to shift
+ */
+function lfsr_next(v) {
+	return BigInt.asUintN(64, ((v >> 1n) | (((v << 62n) ^ (v << 61n)) & (~(~0n << 63n) << 62n))));
+}
