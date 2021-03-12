@@ -55,7 +55,7 @@ var wrapping_groups = {
 		{
 			name: "time_precision",
 			description: "Manipulate the time precision provided by Date and performance",
-			description2: [],
+			description2: ["If you enable Geolocation API wrapping below, timestamps provided by the Geolocation API will be wrapped as well"],
 			options: [
 				{
 					description: "Manipulate time to",
@@ -232,6 +232,57 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "geolocation",
+			description: "Geolocation API wrapping",
+			description2: [],
+			options: [
+				{
+					description: "Location obfuscation",
+					ui_elem: "select",
+					name: "locationObfuscationType",
+					default: 0,
+					data_type: "Number",
+					options: [
+						{
+							value: 0,
+							description: "Turn location services off",
+						},
+						//{
+						//	value: 1,
+						//	description: "Use the position below",
+						//},
+						{
+							value: 2,
+							description: "Use accuracy of hundreds of meters",
+						},
+						{
+							value: 3,
+							description: "Use accuracy of kilometers",
+						},
+						{
+							value: 4,
+							description: "Use accuracy of tens of kilometers",
+						},
+						{
+							value: 5,
+							description: "Use accuracy of hundreds of kilometers",
+						},
+						{
+							value: -1,
+							description: "Provide accurate data (use when you really need to provide exact location)",
+						},
+					],
+				},
+			],
+			wrappers: [
+				// GPS
+				"navigator.geolocation",
+				"navigator.geolocation.getCurrentPosition",
+				"navigator.geolocation.watchPosition",
+				"navigator.geolocation.clearWatch"
+			],
+		},
+		{
 			name: "battery",
 			description: "Disable Battery status API",
 			description2: [],
@@ -328,6 +379,8 @@ var level_1 = {
 	"time_precision_randomize": false,
 	"hardware": true,
 	"battery": true,
+	"geolocation": true,
+	"geolocation_locationObfuscationType": 2,
 };
 
 var level_2 = {
@@ -340,6 +393,8 @@ var level_2 = {
 	"hardware": true,
 	"battery": true,
 	"htmlcanvaselement": true,
+	"geolocation": true,
+	"geolocation_locationObfuscationType": 3,
 };
 
 var level_3 = {
@@ -363,6 +418,8 @@ var level_3 = {
 	"webworker": true,
 	"webworker_approach_polyfill": true,
 	"webworker_approach_slow": false,
+	"geolocation": true,
+	"geolocation_locationObfuscationType": 0,
 };
 
 // Level aliases
@@ -435,7 +492,11 @@ function setDefaultLevel(level) {
 }
 
 function saveDomainLevels() {
-	browser.storage.sync.set({domains: domains});
+	tobesaved = {};
+	for (k in domains) {
+		tobesaved[k] = {level_id: domains[k].level_id};
+	}
+	browser.storage.sync.set({domains: tobesaved});
 }
 
 function getCurrentLevelJSON(url) {

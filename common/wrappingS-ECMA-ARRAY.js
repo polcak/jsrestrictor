@@ -435,7 +435,7 @@ function getBigIntDecorator(wrapped, doMapping) {
 		}
 		let result = BigInt('0x' + hex.join(''));
 		if (binArray[0] >= 128) {
-			return result - BigInt("18446744073709551615") - BigInt("1");
+			return result - 18446744073709551615n - 1n;
 		}
 		return result
 	}
@@ -453,8 +453,8 @@ function setBigIntDecorator(wrapped, doMapping) {
 			return wrapped.apply(this, arguments)
 		}
 		const endian = arguments[2];
-		if (value < BigInt("0")) {
-			value = BigInt("18446744073709551615") + value + BigInt("1");
+		if (value < 0n) {
+			value = 18446744073709551615n + value + 1n;
 		}
 		let hex = BigInt(value).toString(16);
 		if (hex.length % 2) {

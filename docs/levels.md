@@ -11,8 +11,8 @@ NBS is active independently on the levels defined below. If necessary, you can w
 
 ### Level 1
 
-* **Manipulate the time precision provided by Date and performance: --** *ON*
-    * Round time to: *hundredths of a second (1.230 -- Date, 1230 -- performance)*
+* **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
+    * Round time to: *hundredths of a second (1.230 -- Date, 1230 -- performance, Geolocation API)*
 * **Protect against canvas fingerprinting --** *OFF*
 * **Spoof hardware information to the most popular HW --** *ON*
     * JS navigator.deviceMemory: *4* (not applied if the browser does not support the property, e.g.
@@ -22,11 +22,12 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Protect against ArrayBuffer exploitation --** *OFF*
 * **Protect against SharedArrayBuffer exploitation --** *OFF*
 * **Protect against WebWorker exploitation --** *OFF*
+* **Limit Geolocation API --** *Use accuracy of hundreds of meters*
 * **Disable Battery status API --** *ON*
 
 ### Level 2
-* **Manipulate the time precision provided by Date and performance --** *ON*
-    * Round time to: *tenths of a second (1.200 -- Date, 1200 -- performance)*
+* **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
+    * Round time to: *tenths of a second (1.200 -- Date, 1200 -- performance, Geolocation API)*
 * **Protect against canvas fingerprinting: --** *ON*
     * Reading from canvas returns white image.
 * **Spoof hardware information to the most popular HW --** *ON*
@@ -36,10 +37,11 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Protect against ArrayBuffer exploitation --** *OFF*
 * **Protect against SharedArrayBuffer exploitation --** *OFF*
 * **Protect against WebWorker exploitation --** *OFF*
+* **Limit Geolocation API --** *Use accuracy of kilometers*
 * **Disable Battery status API --** *ON*
 
 ### Level 3
-* **Manipulate the time precision provided by Date and performance --** *ON*
+* **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
     * Round time to: *full seconds (1.000 -- Date, 1000 -- performance)*
 		* *Randomize time*
 * **Protect against canvas fingerprinting: --** *ON*
@@ -54,5 +56,6 @@ NBS is active independently on the levels defined below. If necessary, you can w
     * *Block SharedArrayBuffer* -- SharedArrayBuffer provided by the browser is not available to page scripts at all.
 * **Protect against WebWorker exploitation --** *ON*
     * *Remove real parallelism* -- Use Worker polyfill instead of the native Worker.
+* **Limit Geolocation API --** *Disabled*
 * **Disable Battery status API --** *ON*
 

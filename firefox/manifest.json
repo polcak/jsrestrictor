@@ -1,5 +1,5 @@
 {
-  "author": "Libor Polčák, Martin Timko, Pavel Pohner, Peter Horňák",
+  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák",
   "background": {
       "scripts": ["helpers.js", "update.js", "url.js", WRAPPING, "code_builders.js", "levels.js", "background.js", "level_cache.js", "http_shield_firefox.js", "http_shield_common.js"]
   },
@@ -45,7 +45,7 @@
   },
   "permissions": ["storage", "tabs",  "webRequest", "webRequestBlocking", "dns", "<all_urls>", "notifications"],
   "short_name": "JSR",
-  "version": "0.3.2",
+  "version": "0.4",
   "browser_specific_settings": {
     "gecko": {
         "id": "jsr@javascriptrestrictor",
