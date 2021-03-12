@@ -4,6 +4,7 @@
 //  internet.
 //
 //  Copyright (C) 2020  Libor Polcak
+//  Copyright (C) 2021  Matus Svancar
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -24,7 +25,20 @@ browser.runtime.sendMessage({
 		message: "get wrapping for URL",
 		url: window.location.href
 	},
+	/// prepend domain and session hashes
 	function handleResponse(reply) {
-		injectScript(reply.code, reply.wrappers, reply.ffbug1267027);
+		browser.storage.local.get(["sessionHash", "visitedDomains"], function(storageData) {
+			domains = storageData.visitedDomains;
+			sessionHash = storageData.sessionHash
+			if (!domains[location.origin]) {
+				domains[location.origin] = generateId();
+				browser.storage.local.set({
+					"visitedDomains": domains
+				})
+			};
+			var tempCode = `var domainHash = "${domains[location.origin]}";var sessionHash ="${sessionHash}";`+alea+`var prng = new alea("${domains[location.origin]}");`+ reply.code;
+			reply.code = `(function() {${tempCode}})();`;
+			injectScript(reply.code, reply.wrappers, reply.ffbug1267027);
+		});
 	}
 );

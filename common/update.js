@@ -4,7 +4,7 @@
 //  internet.
 //
 //  Copyright (C) 2019  Martin Timko
-//  Copyright (C) 2019  Libor Polcak
+//  Copyright (C) 2019-20021  Libor Polcak
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ if ((typeof browser) === "undefined") {
 
 function installUpdate() {
 	/**
-	 * 0.3 storage
+	 * 0.3+ storage
 	 *  {
 	 *    __default__: 2, // Default protection level
 	 *    version: 2.2,     // The version of this storage
@@ -44,6 +44,11 @@ function installUpdate() {
 	 *      }
 	 *	  whitelistedHosts: {} // associative array of hosts that are removed from http protection control (hostname => boolean)
 	 *	  requestShieldOn: {} // Boolean, if it's TRUE or undefined, the http request protection is turned on,  if it's FALSE, the protection si turned off
+	 *
+	 *------local
+	 *		sessionHash: {}, // 64bit session hash
+	 *		visitedDomains: {} // associative array of domain hashes (domain name => 32 byte hash)
+	 *
 	 */
 	browser.storage.sync.get(null, function (item) {
 		if (!item.hasOwnProperty("version") || (item.version < 2.1)) {
@@ -129,6 +134,19 @@ function installUpdate() {
 				}
 			}
 			item.version = 2.4;
+		}
+		if (item.version == 2.4) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.htmlcanvaselement) {
+					l.htmlcanvaselement_method = 1;
+					l.audiobuffer = true;
+					l.audiobuffer_method = 0;
+					l.webgl = true;
+					l.webgl_method = 0;
+				}
+			}
+			item.version = 2.5;
 		}
 		browser.storage.sync.set(item);
 	});

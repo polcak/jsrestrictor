@@ -3,8 +3,9 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2019  Libor Polcak
+//  Copyright (C) 2019-2021  Libor Polcak
 //  Copyright (C) 2019  Martin Timko
+//  Copyright (C) 2021  Matus Svancar
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -98,13 +99,108 @@ var wrapping_groups = {
 		{
 			name: "htmlcanvaselement",
 			description: "Protect against canvas fingerprinting",
-			description2: ["Canvas returns white image data by modifiing canvas.toDataURL(), canvas.toBlob() and CanvasRenderingContext2D.getImageData functions",],
-			options: [],
+			description2: ["Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData, OffscreenCanvas.convertToBlob() return modified image data to prevent fingerprinting",],
+			options: [
+				{
+				description: "farbling type",
+				ui_elem: "select",
+				name: "method",
+				default: 0,
+				data_type: "Number",
+				options: [
+					{
+						value: 0,
+						description: "Alter image data based on domain and session hashes",
+					},
+					{
+						value: 1,
+						description: "Replace by white image",
+					}
+				],
+			}
+		],
 			wrappers: [
 				// H-C
 				"CanvasRenderingContext2D.prototype.getImageData",
 				"HTMLCanvasElement.prototype.toBlob",
 				"HTMLCanvasElement.prototype.toDataURL",
+				"OffscreenCanvas.prototype.convertToBlob"
+			],
+		},
+		{
+			name: "audiobuffer",
+			description: "Protect against audio fingerprinting",
+			description2: ["Functions AudioBuffer.getChannelData() and AudioBuffer.copyFromChannel() are modified to alter audio data based on domain key"],
+			options: [
+				{
+					description: "farbling type",
+					ui_elem: "select",
+					name: "method",
+					default: 0,
+					data_type: "Number",
+					options: [
+						{
+							value: 0,
+							description: "Add amplitude noise based on domain hash",
+						},
+						{
+							value: 1,
+							description: "Replace by white noise based on domain hash",
+						}
+					],
+				}
+			],
+			wrappers: [
+				// AUDIO
+				"AudioBuffer.prototype.getChannelData",
+				"AudioBuffer.prototype.copyFromChannel",
+				"AnalyserNode.prototype.getByteTimeDomainData",
+				"AnalyserNode.prototype.getFloatTimeDomainData",
+				"AnalyserNode.prototype.getByteFrequencyData",
+				"AnalyserNode.prototype.getFloatFrequencyData"
+			],
+		},
+		{
+			name: "webgl",
+			description: "Protect against wegbl fingerprinting",
+			description2: [],
+			options: [{
+				description: "farbling type",
+				ui_elem: "select",
+				name: "method",
+				default: 0,
+				data_type: "Number",
+				options: [
+					{
+						value: 0,
+						description: "Generate random numbers/strings based on domain hash",
+					},
+					{
+						value: 1,
+						description: "Return bottom values (null, empty string)",
+					}
+				],
+			}],
+			wrappers: [
+				// WEGBL
+				"WebGLRenderingContext.prototype.getParameter",
+				"WebGL2RenderingContext.prototype.getParameter",
+				"WebGLRenderingContext.prototype.getFramebufferAttachmentParameter",
+				"WebGLRenderingContext.prototype.getActiveAttrib",
+				"WebGLRenderingContext.prototype.getActiveUniform",
+				"WebGLRenderingContext.prototype.getAttribLocation",
+				"WebGLRenderingContext.prototype.getBufferParameter",
+				"WebGLRenderingContext.prototype.getProgramParameter",
+				"WebGLRenderingContext.prototype.getRenderbufferParameter",
+				"WebGLRenderingContext.prototype.getShaderParameter",
+				"WebGLRenderingContext.prototype.getShaderPrecisionFormat",
+				"WebGLRenderingContext.prototype.getTexParameter",
+				"WebGLRenderingContext.prototype.getUniformLocation",
+				"WebGLRenderingContext.prototype.getVertexAttribOffset",
+				"WebGLRenderingContext.prototype.getSupportedExtensions",
+				"WebGLRenderingContext.prototype.getExtension",
+				"WebGLRenderingContext.prototype.readPixels",
+				"WebGL2RenderingContext.prototype.readPixels"
 			],
 		},
 		{
@@ -415,6 +511,11 @@ var level_2 = {
 	"hardware": true,
 	"battery": true,
 	"htmlcanvaselement": true,
+	"htmlcanvaselement_method": 1,
+	"audiobuffer": true,
+	"audiobuffer_method": 0,
+	"webgl": true,
+	"webgl_method": 1,
 	"enumerateDevices": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
@@ -431,6 +532,11 @@ var level_3 = {
 	"hardware": true,
 	"battery": true,
 	"htmlcanvaselement": true,
+	"htmlcanvaselement_method": 1,
+	"audiobuffer": true,
+	"audiobuffer_method": 0,
+	"webgl": true,
+	"webgl_method": 1,
 	"enumerateDevices": true,
 	"xhr": true,
 	"xhr_behaviour_block": false,

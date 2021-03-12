@@ -4,6 +4,7 @@
 //  internet.
 //
 //  Copyright (C) 2020  Libor Polcak
+//  Copyright (C) 2021  Matus Svancar
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,6 +32,13 @@ function escape(str) {
 }
 
 /**
+ * Transform byte to Hex value
+ */
+function byteToHex(byte) {
+  return ('0' + byte.toString(16)).slice(-2);
+}
+
+/**
  * Generate random 32-bit number.
  */
 function gen_random32() {
@@ -40,8 +48,34 @@ function gen_random32() {
 }
 
 /**
+ * Generate random 64-bit number.
+ */
+function gen_random64() {
+  var array = new Uint32Array(2);
+  window.crypto.getRandomValues(array);
+  return BigInt("" + array[0] + array[1]);
+}
+
+/**
+ * Generate random hash - default length is 32 bytes.
+ */
+function generateId(len = 32) {
+  var arr = new Uint8Array(len / 2);
+  window.crypto.getRandomValues(arr);
+  return Array.from(arr, byteToHex).join("");
+}
+
+/**
  * Remove "www." at the beggining of the given hostname.
  */
 function wwwRemove(hostname) {
 	return String(hostname).replace(/^www\./,'');
+}
+
+/**
+ * \brief shifts number bits to pick new number
+ * \param v BigInt number to shift
+ */
+function lfsr_next(v) {
+	return BigInt.asUintN(64, ((v >> 1n) | (((v << 62n) ^ (v << 61n)) & (~(~0n << 63n) << 62n))));
 }
