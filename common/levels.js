@@ -626,7 +626,11 @@ function setDefaultLevel(level) {
 function saveDomainLevels() {
 	tobesaved = {};
 	for (k in domains) {
-		tobesaved[k] = {level_id: domains[k].level_id};
+		let level_id = domains[k].level_id;
+		if (k[k.length - 1] === ".") {
+			k = k.substring(0, k.length-1);
+		}
+		tobesaved[k] = {level_id: level_id};
 	}
 	browser.storage.sync.set({domains: tobesaved});
 }
