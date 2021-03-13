@@ -203,3 +203,13 @@ def get_gps_toString(driver):
     output['navigator.geolocation.watchPosition.toString()'] = driver.execute_script("return navigator.geolocation.watchPosition.toString()")
     output['navigator.geolocation.clearWatch.toString()'] = driver.execute_script("return navigator.geolocation.clearWatch.toString()")
     return output
+
+
+## Get canvas.getContext.toString().
+#
+#  Only executing javascript and geting returned values. Testing page with canvas is needed.
+def get_canvas_toString(driver):
+    driver.get(get_config("testing_page"))
+    output = {}
+    output['canvas.getContext.toString()'] = driver.execute_script("var canvas = document.getElementById('canvas1'); return canvas.getContext.toString()")
+    return output

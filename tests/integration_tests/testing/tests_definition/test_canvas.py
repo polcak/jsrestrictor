@@ -19,7 +19,18 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-from values_getters import is_canvas_spoofed
+import pytest
+
+from values_getters import is_canvas_spoofed, get_canvas_toString
+
+
+## Setup method - it is run before canvas tests execution starts.
+#
+#  This setup method initialize variable canvas_toString that contains method canvas.getContext.toString() and
+#  this variable is provided to canvas_toString test and the method canvas.getContext.toString() in the variable is compared with real value.
+@pytest.fixture(scope='module', autouse=True)
+def canvas_toString(browser):
+	return get_canvas_toString(browser.driver)
 
 
 ## Test canvas - if canvas is spoofed: Reading from canvas returns white image.
@@ -37,3 +48,9 @@ def test_canvas(browser, expected):
             assert is_spoofed
         else:
             assert not is_spoofed
+
+
+## Test method canvas.getContext.toString(). It should be always unchanged by JSR.
+def test_canvas_toString(browser, canvas_toString):
+    for method in canvas_toString:
+        assert canvas_toString[method] == browser.real.canvas_toString[method]
