@@ -26,6 +26,7 @@ import random
 
 from math_operations import is_in_accuracy
 from configuration import get_config
+from values_getters import get_time_toString
 
 
 ## Setup method - it is run before time tests execution starts.
@@ -35,6 +36,15 @@ from configuration import get_config
 @pytest.fixture(scope='module', autouse=True)
 def load_test_page(browser):
     browser.driver.get(get_config("testing_page"))
+
+
+## Setup method - it is run before time tests execution starts.
+#
+#  This setup method initialize variable time_toString that contains Date methods.toString() and
+#  this variable is provided to time_toString test and the methods.toString() in the variable are compared with real values.
+@pytest.fixture(scope='module', autouse=True)
+def time_toString(browser):
+	return get_time_toString(browser.driver)
 
 
 ## Test hours.
@@ -47,3 +57,9 @@ def test_hours_minutes_seconds(browser):
     # Values do not have to be strictly equal.
     # A deviation of less than 4 is tolerated.
     assert abs(js_time - p_time) < 4
+
+
+## Test Date methods.toString(). They should be always unchanged by JSR.
+def test_time_toString(browser, time_toString):
+    for method in time_toString:
+        assert time_toString[method] == browser.real.time_toString[method]

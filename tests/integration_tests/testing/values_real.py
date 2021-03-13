@@ -54,6 +54,7 @@ def init(driver):
         hardware_concurrency=device['hardwareConcurrency'],
         referrer=values_getters.get_referrer(driver),
         time=None,
+        time_toString=values_getters.get_time_toString(driver),
         performance=None,
         protect_canvas=None
     )

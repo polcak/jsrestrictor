@@ -67,6 +67,7 @@ level0 = TestedValues(
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 'EXACTLY'},
+    time_toString='REAL VALUE',
     performance={'value': 'REAL VALUE',
                  'accuracy': 'EXACTLY'},
     protect_canvas=False
@@ -107,6 +108,7 @@ level1 = TestedValues(
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 0.01},
+    time_toString='REAL VALUE',
     performance={'value': 'REAL VALUE',
                  'accuracy': 10},
     protect_canvas=False
@@ -147,6 +149,7 @@ level2 = TestedValues(
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 0.1},
+    time_toString='REAL VALUE',
     performance={'value': 'REAL VALUE',
                  'accuracy': 100},
     protect_canvas=True
@@ -187,6 +190,7 @@ level3 = TestedValues(
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 1.0},
+    time_toString='REAL VALUE',
     performance={'value': 'REAL VALUE',
                  'accuracy': 1},
     protect_canvas=True

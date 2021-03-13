@@ -116,3 +116,60 @@ def is_canvas_spoofed(driver):
         return "ERROR"
     else:
         return is_spoofed
+
+
+## Get Date methods.toString().
+#
+#  Only executing javascript and geting returned values. No support page is needed.
+def get_time_toString(driver):
+    output = {}
+    output['Date.toString()'] = driver.execute_script("return Date.toString()")
+    output['Date.now.toString()'] = driver.execute_script("return Date.now.toString()")
+    output['Date.parse.toString()'] = driver.execute_script("return Date.parse.toString()")
+    output['Date.UTC.toString()'] = driver.execute_script("return Date.UTC.toString()")
+    output['Date.prototype.getDate.toString()'] = driver.execute_script("let d = new Date(); return d.getDate.toString()")
+    output['Date.prototype.getDay.toString()'] = driver.execute_script("let d = new Date(); return d.getDay.toString()")
+    output['Date.prototype.getFullYear.toString()'] = driver.execute_script("let d = new Date(); return d.getFullYear.toString()")
+    output['Date.prototype.getHours.toString()'] = driver.execute_script("let d = new Date(); return d.getHours.toString()")
+    output['Date.prototype.getMilliseconds.toString()'] = driver.execute_script("let d = new Date(); return d.getMilliseconds.toString()")
+    output['Date.prototype.getMinutes.toString()'] = driver.execute_script("let d = new Date(); return d.getMinutes.toString()")
+    output['Date.prototype.getMonth.toString()'] = driver.execute_script("let d = new Date(); return d.getMonth.toString()")
+    output['Date.prototype.getSeconds.toString()'] = driver.execute_script("let d = new Date(); return d.getSeconds.toString()")
+    output['Date.prototype.getTime.toString()'] = driver.execute_script("let d = new Date(); return d.getTime.toString()")
+    output['Date.prototype.getTimezoneOffset.toString()'] = driver.execute_script("let d = new Date(); return d.getTimezoneOffset.toString()")
+    output['Date.prototype.getUTCDate.toString()'] = driver.execute_script("let d = new Date(); return d.getUTCDate.toString()")
+    output['Date.prototype.getUTCDay.toString()'] = driver.execute_script("let d = new Date(); return d.getUTCDay.toString()")
+    output['Date.prototype.getUTCFullYear.toString()'] = driver.execute_script("let d = new Date(); return d.getUTCFullYear.toString()")
+    output['Date.prototype.getUTCHours.toString()'] = driver.execute_script("let d = new Date(); return d.getUTCHours.toString()")
+    output['Date.prototype.getUTCMilliseconds.toString()'] = driver.execute_script("let d = new Date(); return d.getUTCMilliseconds.toString()")
+    output['Date.prototype.getUTCMinutes.toString()'] = driver.execute_script("let d = new Date(); return d.getUTCMinutes.toString()")
+    output['Date.prototype.getUTCMonth.toString()'] = driver.execute_script("let d = new Date(); return d.getUTCMonth.toString()")
+    output['Date.prototype.getUTCSeconds.toString()'] = driver.execute_script("let d = new Date(); return d.getUTCSeconds.toString()")
+    output['Date.prototype.getYear.toString()'] = driver.execute_script("let d = new Date(); return d.getYear.toString()")
+    output['Date.prototype.setDate.toString()'] = driver.execute_script("let d = new Date(); return d.setDate.toString()")
+    output['Date.prototype.setFullYear.toString()'] = driver.execute_script("let d = new Date(); return d.setFullYear.toString()")
+    output['Date.prototype.setHours.toString()'] = driver.execute_script("let d = new Date(); return d.setHours.toString()")
+    output['Date.prototype.setMilliseconds.toString()'] = driver.execute_script("let d = new Date(); return d.setMilliseconds.toString()")
+    output['Date.prototype.setMinutes.toString()'] = driver.execute_script("let d = new Date(); return d.setMinutes.toString()")
+    output['Date.prototype.setMonth.toString()'] = driver.execute_script("let d = new Date(); return d.setMonth.toString()")
+    output['Date.prototype.setSeconds.toString()'] = driver.execute_script("let d = new Date(); return d.setSeconds.toString()")
+    output['Date.prototype.setTime.toString()'] = driver.execute_script("let d = new Date(); return d.setTime.toString()")
+    output['Date.prototype.setUTCDate.toString()'] = driver.execute_script("let d = new Date(); return d.setUTCDate.toString()")
+    output['Date.prototype.setUTCFullYear.toString()'] = driver.execute_script("let d = new Date(); return d.setUTCFullYear.toString()")
+    output['Date.prototype.setUTCHours.toString()'] = driver.execute_script("let d = new Date(); return d.setUTCHours.toString()")
+    output['Date.prototype.setUTCMilliseconds.toString()'] = driver.execute_script("let d = new Date(); return d.setUTCMilliseconds.toString()")
+    output['Date.prototype.setUTCMinutes.toString()'] = driver.execute_script("let d = new Date(); return d.setUTCMinutes.toString()")
+    output['Date.prototype.setUTCMonth.toString()'] = driver.execute_script("let d = new Date(); return d.setUTCMonth.toString()")
+    output['Date.prototype.setUTCSeconds.toString()'] = driver.execute_script("let d = new Date(); return d.setUTCSeconds.toString()")
+    output['Date.prototype.setYear.toString()'] = driver.execute_script("let d = new Date(); return d.setYear.toString()")
+    output['Date.prototype.toDateString.toString()'] = driver.execute_script("let d = new Date(); return d.toDateString.toString()")
+    output['Date.prototype.toISOString.toString()'] = driver.execute_script("let d = new Date(); return d.toISOString.toString()")
+    output['Date.prototype.toJSON.toString()'] = driver.execute_script("let d = new Date(); return d.toJSON.toString()")
+    output['Date.prototype.toGMTString.toString()'] = driver.execute_script("let d = new Date(); return d.toGMTString.toString()")
+    output['Date.prototype.toLocaleDateString.toString()'] = driver.execute_script("let d = new Date(); return d.toLocaleDateString.toString()")
+    output['Date.prototype.toLocaleString.toString()'] = driver.execute_script("let d = new Date(); return d.toLocaleString.toString()")
+    output['Date.prototype.toString.toString()'] = driver.execute_script("let d = new Date(); return d.toString.toString()")
+    output['Date.prototype.toTimeString.toString()'] = driver.execute_script("let d = new Date(); return d.toTimeString.toString()")
+    output['Date.prototype.toUTCString.toString()'] = driver.execute_script("let d = new Date(); return d.toUTCString.toString()")
+    output['Date.prototype.valueOf.toString()'] = driver.execute_script("let d = new Date(); return d.valueOf.toString()")
+    return output
