@@ -50,6 +50,7 @@ def init(driver):
         longitude=position['longitude'],
         speed=position['speed'],
         timestamp=None,
+        gps_toString=values_getters.get_gps_toString(driver),
         device_memory=device['deviceMemory'],
         hardware_concurrency=device['hardwareConcurrency'],
         referrer=values_getters.get_referrer(driver),

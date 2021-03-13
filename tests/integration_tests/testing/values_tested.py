@@ -55,7 +55,8 @@ class Geolocation:
                  latitude,
                  longitude,
                  speed,
-                 timestamp):
+                 timestamp,
+                 toString):
         self.accuracy = accuracy
         self.altitude = altitude
         self.altitudeAccurac = altitude_accurac
@@ -64,6 +65,7 @@ class Geolocation:
         self.longitude = longitude
         self.speed = speed
         self.timestamp = timestamp
+        self.toString = toString
 
 
 ## Variables about device that are checked during testing.
@@ -96,6 +98,7 @@ class TestedValues:
                  longitude,
                  speed,
                  timestamp,
+                 gps_toString,
 
                  device_memory,
                  hardware_concurrency,
@@ -126,7 +129,8 @@ class TestedValues:
             latitude,
             longitude,
             speed,
-            timestamp
+            timestamp,
+            gps_toString
         )
         self.device = Device(
             device_memory,

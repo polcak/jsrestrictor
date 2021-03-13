@@ -22,7 +22,7 @@
 import pytest
 from time import time
 
-from values_getters import get_position
+from values_getters import get_position, get_gps_toString
 from math_operations import is_in_accuracy
 
 ## Setup method - it is run before gps tests execution starts.
@@ -46,6 +46,15 @@ def position(browser):
     except:
         print("\nCan not read GPS data.")
     return position
+
+
+## Setup method - it is run before gps tests execution starts.
+#
+#  This setup method initialize variable gps_toString that contains gps methods.toString() and
+#  this variable is provided to gps_toString test and the methods.toString() in the variable are compared with real values.
+@pytest.fixture(scope='module', autouse=True)
+def gps_toString(browser):
+	return get_gps_toString(browser.driver)
 
 
 ## Test accuracy of the latitude and longitude properties in meters.
@@ -205,3 +214,9 @@ def test_timestamp(position, expected):
     else:
         # Should be spoofed value.
         assert position['timestamp'] == expected.geolocation.timestamp['value']
+
+
+## Test gps methods.toString(). They should be always unchanged by JSR.
+def test_gps_toString(browser, gps_toString):
+    for method in gps_toString:
+        assert gps_toString[method] == browser.real.geolocation.toString[method]
