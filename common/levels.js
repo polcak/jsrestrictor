@@ -204,6 +204,37 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "plugins",
+			description: "Protect against plugin fingerprinting",
+			description2: [],
+			default: true,
+			options: [{
+				description: "farbling type",
+				ui_elem: "select",
+				name: "method",
+				default: 0,
+				data_type: "Number",
+				options: [
+					{
+						value: 0,
+						description: "Edit current and add two fake plugins",
+					},
+					{
+						value: 1,
+						description: "Return two fake plugins",
+					},
+					{
+						value: 2,
+						description: "Return empty"
+					}
+				],
+			}],
+			wrappers: [
+				// WINDOW-NAME
+				"navigator.plugins",
+			],
+		},
+		{
 			name: "enumerateDevices",
 			description: "Hide multimedia devices. Consequently, prevent fingerprinting based on the multimedia devices connected to the computer",
 			description2: [],
@@ -516,6 +547,8 @@ var level_2 = {
 	"audiobuffer_method": 0,
 	"webgl": true,
 	"webgl_method": 1,
+	"plugins": true,
+	"plugins_method": 1,
 	"enumerateDevices": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
@@ -537,6 +570,8 @@ var level_3 = {
 	"audiobuffer_method": 0,
 	"webgl": true,
 	"webgl_method": 1,
+	"plugins": true,
+	"plugins_method": 1,
 	"enumerateDevices": true,
 	"xhr": true,
 	"xhr_behaviour_block": false,

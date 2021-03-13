@@ -67,14 +67,6 @@
 		}
 		return ret;
 	}
-	function randomString(length) {
-		var ret = "";
-		var charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-		for ( var i = 0; i < length; i++ ) {
-				ret += charSet.charAt(Math.floor(prng() * charSet.length));
-		}
-		return ret;
-	}
 	/**
 	 * \brief Modifies WebGLRenderingContext.getParameter return value for some specific parameters, original value for the rest
 	 *

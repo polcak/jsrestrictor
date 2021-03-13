@@ -79,3 +79,26 @@ function wwwRemove(hostname) {
 function lfsr_next(v) {
 	return BigInt.asUintN(64, ((v >> 1n) | (((v << 62n) ^ (v << 61n)) & (~(~0n << 63n) << 62n))));
 }
+/**
+ * \brief generates pseudorandom string based on domain key
+ * \param Number length of generated string
+ */
+function randomString(length) {
+	var ret = "";
+	var charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_ ";
+	for ( var i = 0; i < length; i++ ) {
+			ret += charSet.charAt(Math.floor(prng() * charSet.length));
+	}
+	return ret;
+}
+/** \brief shuffle given array according to domain key
+ * \param array input array
+ *
+ * Fisher–Yates shuffle algorithm - Richard Durstenfeld's version
+ */
+function shuffleArray(array) {
+	for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(prng() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+	}
+}
