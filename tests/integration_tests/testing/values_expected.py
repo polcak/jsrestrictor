@@ -70,6 +70,7 @@ level0 = TestedValues(
     time_toString='REAL VALUE',
     performance={'value': 'REAL VALUE',
                  'accuracy': 'EXACTLY'},
+    performance_toString='REAL VALUE',
     protect_canvas=False
 )
 
@@ -111,6 +112,7 @@ level1 = TestedValues(
     time_toString='REAL VALUE',
     performance={'value': 'REAL VALUE',
                  'accuracy': 10},
+    performance_toString='REAL VALUE',
     protect_canvas=False
 )
 
@@ -152,6 +154,7 @@ level2 = TestedValues(
     time_toString='REAL VALUE',
     performance={'value': 'REAL VALUE',
                  'accuracy': 100},
+    performance_toString='REAL VALUE',
     protect_canvas=True
 )
 
@@ -193,5 +196,6 @@ level3 = TestedValues(
     time_toString='REAL VALUE',
     performance={'value': 'REAL VALUE',
                  'accuracy': 1},
+    performance_toString='REAL VALUE',
     protect_canvas=True
 )

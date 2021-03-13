@@ -56,5 +56,6 @@ def init(driver):
         time=None,
         time_toString=values_getters.get_time_toString(driver),
         performance=None,
+        performance_toString=values_getters.get_performance_toString(driver),
         protect_canvas=None
     )

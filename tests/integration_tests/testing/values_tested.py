@@ -104,6 +104,7 @@ class TestedValues:
                  time,
                  time_toString,
                  performance,
+                 performance_toString,
                  protect_canvas
                  ):
         self.navigator = Navigator(
@@ -135,4 +136,5 @@ class TestedValues:
         self.time = time
         self.time_toString = time_toString
         self.performance = performance
+        self.performance_toString = performance_toString
         self.protect_canvas = protect_canvas

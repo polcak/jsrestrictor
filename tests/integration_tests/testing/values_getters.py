@@ -173,3 +173,22 @@ def get_time_toString(driver):
     output['Date.prototype.toUTCString.toString()'] = driver.execute_script("let d = new Date(); return d.toUTCString.toString()")
     output['Date.prototype.valueOf.toString()'] = driver.execute_script("let d = new Date(); return d.valueOf.toString()")
     return output
+
+
+## Get performance methods.toString().
+#
+#  Only executing javascript and geting returned values. No support page is needed.
+def get_performance_toString(driver):
+    output = {}
+    output['performance.now.toString()'] = driver.execute_script("return performance.now.toString()")
+    output['performance.clearMarks.toString()'] = driver.execute_script("return performance.clearMarks.toString()")
+    output['performance.clearMeasures.toString()'] = driver.execute_script("return performance.clearMeasures.toString()")
+    output['performance.clearResourceTimings.toString()'] = driver.execute_script("return performance.clearResourceTimings.toString()")
+    output['performance.getEntries.toString()'] = driver.execute_script("return performance.getEntries.toString()")
+    output['performance.getEntriesByName.toString()'] = driver.execute_script("return performance.getEntriesByName.toString()")
+    output['performance.getEntriesByType.toString()'] = driver.execute_script("return performance.getEntriesByType.toString()")
+    output['performance.mark.toString()'] = driver.execute_script("return performance.mark.toString()")
+    output['performance.measure.toString()'] = driver.execute_script("return performance.measure.toString()")
+    output['performance.setResourceTimingBufferSize.toString()'] = driver.execute_script("return performance.setResourceTimingBufferSize.toString()")
+    output['performance.toJSON.toString()'] = driver.execute_script("return performance.toJSON.toString()")
+    return output
