@@ -124,7 +124,9 @@ var wrapping_groups = {
 				"CanvasRenderingContext2D.prototype.getImageData",
 				"HTMLCanvasElement.prototype.toBlob",
 				"HTMLCanvasElement.prototype.toDataURL",
-				"OffscreenCanvas.prototype.convertToBlob"
+				"OffscreenCanvas.prototype.convertToBlob",
+				"CanvasRenderingContext2D.prototype.isPointInStroke",
+				"CanvasRenderingContext2D.prototype.isPointInPath"
 			],
 		},
 		{
