@@ -4,6 +4,7 @@
 //  internet.
 //
 //  Copyright (C) 2021  Libor Polcak
+//  Copyright (C) 2021  Matus Svancar
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,15 +24,34 @@
  * Create private namespace
  */
 (function() {
+
+	function farbleEnumerateDevices(){
+		if(args[0]==0){
+			return devices;
+		}
+		else if(args[0]==1){
+			return new Promise((resolve) => resolve([]));
+		}
+	}
 	var wrappers = [
 		{
 			parent_object: "MediaDevices.prototype",
 			parent_object_property: "enumerateDevices",
-			wrapped_objects: [],
-			helping_code: "",
+			wrapped_objects: [{
+					original_name: "MediaDevices.prototype.enumerateDevices",
+					wrapped_name: "origEnumerateDevices",
+				}],
+			helping_code: farbleEnumerateDevices+shuffleArray+`
+				if(args[0]==0){
+					var devices = origEnumerateDevices.call(navigator.mediaDevices);
+					ret.then(function(result) {
+						shuffleArray(result);
+					});
+				}
+				`,
 			wrapping_function_args: "",
 			wrapping_function_body: `
-				return new Promise((resolve) => resolve([]));
+				return farbleEnumerateDevices();
 				`,
 		},
 	]

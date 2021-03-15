@@ -238,7 +238,23 @@ var wrapping_groups = {
 			name: "enumerateDevices",
 			description: "Hide multimedia devices. Consequently, prevent fingerprinting based on the multimedia devices connected to the computer",
 			description2: [],
-			options: [],
+			options: [{
+				description: "farbling type",
+				ui_elem: "select",
+				name: "method",
+				default: 0,
+				data_type: "Number",
+				options: [
+					{
+						value: 0,
+						description: "Randomize order",
+					},
+					{
+						value: 1,
+						description: "Return empty promise"
+					}
+				],
+			}],
 			wrappers: [
 				// MCS
 				"MediaDevices.prototype.enumerateDevices",
@@ -571,6 +587,7 @@ var level_2 = {
 	"plugins": true,
 	"plugins_method": 1,
 	"enumerateDevices": true,
+	"enumerateDevices_method": 2,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
 	"windowname": true,
@@ -595,6 +612,7 @@ var level_3 = {
 	"plugins": true,
 	"plugins_method": 1,
 	"enumerateDevices": true,
+	"enumerateDevices_method": 2,
 	"xhr": true,
 	"xhr_behaviour_block": false,
 	"xhr_behaviour_ask": true,
