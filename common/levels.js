@@ -251,7 +251,27 @@ var wrapping_groups = {
 				navigator.deviceMemory !== undefined ? "navigator.deviceMemory: 4" : "",
 				"navigator.hardwareConcurrency: 2",
 			],
-			options: [],
+			options: [{
+				description: "farbling type",
+				ui_elem: "select",
+				name: "method",
+				default: 0,
+				data_type: "Number",
+				options: [
+					{
+						value: 0,
+						description: "Return random valid value between minimum and real value",
+					},
+					{
+						value: 1,
+						description: "Return random valid value between minimum and 8.0",
+					},
+					{
+						value: 2,
+						description: "Return 4 for navigator.deviceMemory and 2 for navigator.hardwareConcurrency"
+					}
+				],
+			}],
 			wrappers: [
 				// HTML-LS
 				"navigator.hardwareConcurrency",
@@ -540,6 +560,7 @@ var level_2 = {
 	"time_precision_precision": 1,
 	"time_precision_randomize": false,
 	"hardware": true,
+	"hardware_method": 2,
 	"battery": true,
 	"htmlcanvaselement": true,
 	"htmlcanvaselement_method": 1,
@@ -563,6 +584,7 @@ var level_3 = {
 	"time_precision_precision": 0,
 	"time_precision_randomize": true,
 	"hardware": true,
+	"hardware_method": 2,
 	"battery": true,
 	"htmlcanvaselement": true,
 	"htmlcanvaselement_method": 1,
