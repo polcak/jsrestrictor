@@ -131,8 +131,10 @@ function build_code_ffbug(wrapper, ...args) {
 		code += `Object.setPrototypeOf(tobeexported, ${wrapper.wrapper_prototype});
 		`;
 	}
-	code += `exportFunction(tobeexported, ${wrapper.parent_object}, {defineAs: '${wrapper.parent_object_property}'});
-	`
+	if (wrapper.wrapping_function_body) {
+		code += `exportFunction(tobeexported, ${wrapper.parent_object}, {defineAs: '${wrapper.parent_object_property}'});
+		`
+	}
 	if (wrapper["post_wrapping_code"] !== undefined) {
 		for (code_spec of wrapper["post_wrapping_code"]) {
 			code += post_wrapping_functions[code_spec.code_type](code_spec);
