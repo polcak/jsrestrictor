@@ -30,8 +30,8 @@
  */
 
 var lock_domains = [];
-//var lockTab = null;
 var blocked = [];
+var backup = {};
 
 /**
  * Blocks request to third party domains except for the lock domains
@@ -58,7 +58,90 @@ browser.webRequest.onBeforeRequest.addListener(
 	["blocking"] 
 );
 
+var lock_tab = 0;
+var unlockUrl = "";
+var unlockMsg = "";
+
+/**
+ * Backs up cookies for the locked domain
+ * @param cookies_url URL to which the cookies should be related
+ * @returns Promise which resolves to array of cookies
+ */
+function backup_cookies(cookies_url){
+	return new Promise(
+		function(resolve, reject){
+			let cookie_backup = [];
+			browser.cookies.getAll({url : cookies_url}).then((Cookies) => {
+				//reduction because not all cookie parameters can be used in set()
+				for (let cookie of Cookies){
+					let reduced_cookie = {
+						domain : cookie.domain,
+						httpOnly : cookie.httpOnly,
+						name : cookie.name,
+						path : cookie.path,
+						secure : cookie.secure,
+						sameSite : cookie.sameSite,
+						secure : cookie.secure,
+						storeId : cookie.storeId,
+						url : cookies_url,
+						value : cookie.value
+					}
+					if (!cookie.session){
+						reduced_cookie.expirationDate = cookie.expirationDate;
+					}
+					if (cookie.firstPartyIsolate){
+						reduced_cookie.firstPartyIsolate = cookie.firstPartyIsolate;
+					}
+					cookie_backup.push(reduced_cookie);
+				}
+				resolve(cookie_backup);
+			});
+		}
+	);
+}
+
+/**
+ * Restores cookies which were backed up on lock
+ * @returns Promise which resolves after the restoration is done
+ */
+function restore_cookies(){
+	return new Promise(
+		function(resolve, reject){
+			let cookies_restored = 0;
+			if (backup.cookies.length == 0){
+				resolve();
+			}
+			for (let cookie in backup.cookies){
+				browser.cookies.set(backup.cookies[cookie]).then(() => {
+					cookies_restored++;
+					if(cookies_restored == backup.cookies.length){
+						resolve();
+					}
+				});
+			}
+		}
+	);
+}
+
 var started = null;
+
+/**
+ * Sends a restore message to data_backup.js with storages to be restored
+ * then notifies the user about blocked requests to other domains
+ */
+function refresh_lock_tab() {
+	browser.tabs.sendMessage(lock_tab, {"msg": "RestoreStorage", "data": backup}, () => {
+		restore_cookies().then(() => {
+			started = null;
+			browser.notifications.create({
+				"type": "basic",
+				"iconUrl": browser.extension.getURL("img/icon-48.png"),
+				"title": "Form safety info:",
+				"message": `${unlockMsg}`
+			}); 
+		});
+	});
+};
 
 /**
  * CLEARING STORAGES OF POTENTIAL LEAKS
@@ -74,7 +157,6 @@ function clear_new_data(callback) {
 			since: started
 		  }, {
 			cache: true,
-			cookies: true,
 			downloads: true,
 			formData: true,
 			history: true,
@@ -84,15 +166,20 @@ function clear_new_data(callback) {
 			serverBoundCertificates: true,
 			serviceWorkers: true
 		  }).then(() => {
-				//firefox doesn't support removing localStorage using since other than 0
+				/* Firefox doesn't support removing localStorage using since other than 0
+				 * Added cookies too here because we are backing them up anyway
+				 */
+				let url = new URL(unlockUrl);
 				browser.browsingData.remove({
-					since: 0
+					since: 0,
+					hostnames : [url.hostname] 
 				},{
-					localStorage: true
+					localStorage: true,
+					cookies: true
 				});	
-			  	callback();
+			  	refresh_lock_tab();
 			}, (error) => {
-			  console.error(error);
+				console.error(error);
 		  });
 	}
 }
@@ -139,29 +226,28 @@ function click_handler(info, tab) {
 			for (b in blocked) {
 				msg += get_hostname(blocked[b]) + "\n";
 			}
+			unlockMsg = msg
 			browser.browserAction.setTitle({title: "Form locking"});
 			browser.menus.update("lock", {"title": "Set LOCK"});
 			lock_domains = [];
 			blocked = [];				
 			var old_url = tab.url.split("?")[0]; 
-			browser.tabs.executeScript(tab.id, {code: `window.location.href='about:blank';`}, function(tab) {
-				var callback = function () {
-					browser.tabs.update(tab.id, {url: old_url});
-					started = null;
-					browser.notifications.create({
-						"type": "basic",
-						"iconUrl": browser.extension.getURL("img/icon-48.png"),
-						"title": "Form safety info:",
-						"message": `${msg}`
-					}); 
-				};
-				clear_new_data(callback);  
+			unlockUrl = old_url;
+			lock_tab = tab.id;
+			browser.tabs.executeScript(tab.id, {code: `window.location.href='${old_url}';`}, function(tab) {
+				clear_new_data();  
 			});			
 		}
 		else {
+			browser.tabs.sendMessage(tab.id, {"msg": "BackupStorage", "url": url}, function(payload) {
+				backup_cookies(tab.url).then((saved_cookies) => {
+					backup = payload.backup;
+					backup.cookies = saved_cookies;
+				});
+			});
 			// Set LOCK
-			browser.tabs.sendMessage(tab.id, {"msg": "FLGetClickedForm", "url": url}).then(payload=> {
-				if (payload !== null) {					
+			browser.tabs.sendMessage(tab.id, {"msg": "FLGetClickedForm", "url": url}).then((payload) => {
+				if (payload !== null) {
 					started = (new Date()).getTime();
 					// Page url and the form url
 					var first = get_root_domain(get_hostname(tab.url));

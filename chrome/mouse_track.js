@@ -63,8 +63,9 @@ document.addEventListener("mousedown", function(event) {
 }, true);
 
 /**
- * Listens to messages from click_handler in formlock.js and responds with
- * submit method and domain of form to be locked  
+ * Listens to messages from click_handler in formlock.js and responds either with
+ * submit method and domain of form to be locked or with stored data to be backed
+ * up
  */
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) { 
 	// Retrive the clicked form for locking

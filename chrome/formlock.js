@@ -30,8 +30,8 @@
  */
 
 var lock_domains = [];
-//var lockTab = null;
 var blocked = [];
+var backup = {}
 
 /**
  * Blocks request to third party domains except for the lock domains
@@ -57,35 +57,126 @@ browser.webRequest.onBeforeRequest.addListener(
 	["blocking"] 
 );
 
+var lock_tab = 0;
+var unlockUrl = "";
+var unlockMsg = "";
+
+/**
+ * Backs up cookies for the locked domain
+ * @param cookies_url URL to which the cookies should be related
+ * @returns Promise which resolves to array of cookies
+ */
+function backup_cookies(cookies_url){
+	return new Promise(
+		function(resolve, reject){
+			let cookie_backup = [];
+			chrome.cookies.getAll({url : cookies_url}, (Cookies) => {
+				//reduction because not all cookie parameters can be used in set()
+				for (let cookie of Cookies){
+					let reduced_cookie = {
+						domain : cookie.domain,
+						httpOnly : cookie.httpOnly,
+						name : cookie.name,
+						path : cookie.path,
+						secure : cookie.secure,
+						sameSite : cookie.sameSite,
+						secure : cookie.secure,
+						storeId : cookie.storeId,
+						url : cookies_url,
+						value : cookie.value
+					}
+					if (!cookie.session){
+						reduced_cookie.expirationDate = cookie.expirationDate;
+					}
+					cookie_backup.push(reduced_cookie);
+				}
+				resolve(cookie_backup);
+			});
+		}
+	);
+}
+
+/**
+ * Restores cookies which were backed up on lock
+ * @returns Promise which resolves after the restoration is done
+ */
+function restore_cookies(){
+	return new Promise(
+		function(resolve, reject){
+			let cookies_restored = 0;
+			if(backup.cookies.length == 0){
+				resolve();
+			}
+			for (let cookie in backup.cookies){
+				chrome.cookies.set(backup.cookies[cookie], () => {
+					cookies_restored++;
+					if(cookies_restored == backup.cookies.length){
+						resolve();
+					}
+				});
+			}
+		}
+	);
+}
+
+/**
+ * Refreshes the tab on which a form was locked
+ * Sends a restore message to data_backup.js with storages and indexed databases to be restored
+ * then notifies the user about blocked requests to other domains
+ */
+function refresh_lock_tab(){
+	restore_cookies().then(() => {
+		browser.tabs.sendMessage(lock_tab, {"msg": "RestoreStorage", "data": backup}, () => {
+			browser.tabs.update(lock_tab, {url: unlockUrl}, (tab) => {
+				started = null;
+				alert(unlockMsg); 
+			});
+		});
+	});
+}
+
 /**
  * CLEARING STORAGES OF POTENTIAL LEAKS
- * @param callback function which refreshes the page
+ * This function is a modified version of the original function from Formlock.
+ * ^Remove was changed to delete as few data from other domains as possible
+ * ^Added data restoration message for the locked domain
  */
 var started = null;
-function clear_new_data(callback) {   
+function clear_new_data() {   
 	if (started !== null) {
 		browser.browsingData.remove({
-			"since": started
+			"since": started,
+			"origins": [`${unlockUrl}`]
 		  }, {
-			"appcache": true,
-			"cache": true,
+			"cacheStorage": true,
 			"cookies": true,
-			"downloads": true,
 			"fileSystems": true,
-			"formData": true,
-			"history": true,
 			"indexedDB": true,
 			"localStorage": true,
-			"pluginData": true,
-			"passwords": true,
+			"serviceWorkers": true,
 			"webSQL": true
-		  }, callback);
+		  }, () => {
+			//clearing items which cannot be cleared with origins argument
+			browser.browsingData.remove({
+				"since": started
+			}, {
+				"passwords": true,
+				"appcache": true,
+				"cache": true,
+				"downloads": true,
+				"formData": true,
+				"history": true,
+				"pluginData": true
+			}, refresh_lock_tab);
+		  });
 	}
 }
 
 /**
  * (1) Process the menu clicks
- * \todo close new opened tabs? or tabs of the same domain?
+ * This function is a modified version of the original function from Formlock.
+ * ^Backup of storage and cookies from locked page was added
+ * \todo close new opened tabs? or tabs of the same domain? 
  */
 var click_handler = function(info, tab) {
 	var url = info.frameUrl ? info.frameUrl : info.pageUrl;
@@ -112,26 +203,32 @@ var click_handler = function(info, tab) {
 	// Set the lock for one domain allowed
 	if (info.menuItemId === "lock") {	
 		if (lock_domains.length > 0) {
+			//Restore saved data
 			// Remove LOCK
 			var msg = "Unlocked. Third-party requests blocked " + blocked.length + ":\n";
 			for (b in blocked) {
 				msg += get_hostname(blocked[b]) + "\n";
 			}
+			unlockMsg = msg;
 			browser.browserAction.setTitle({title: "FormLock"});
 			browser.contextMenus.update("lock", {"title": "Set LOCK"});
 			lock_domains = [];
 			blocked = [];				
 			var old_url = tab.url.split("?")[0]; 
-			browser.tabs.executeScript(tab.id, {code: "window.location.href='about:blank';"}, function(tab) {
-				var callback = function () {
-					browser.tabs.update(tab.id, {url: old_url});
-					started = null;
-					alert(msg); 
-				};
-				clear_new_data(callback);  
-			});			
+			unlockUrl = old_url;
+			lock_tab = tab.id;
+			
+			browser.tabs.executeScript(tab.id, {code: `window.location.href=${old_url};`}, function(tab) {
+				clear_new_data(); 
+			});
 		}
 		else {
+			browser.tabs.sendMessage(tab.id, {"msg": "BackupStorage", "url": url}, function(payload) {
+				backup_cookies(tab.url).then((saved_cookies) => {
+					backup = payload.backup;
+					backup.cookies = saved_cookies;
+				});
+			});
 			// Set LOCK
 			browser.tabs.sendMessage(tab.id, {"msg": "FLGetClickedForm", "url": url}, function(payload) {
 				if (payload !== null) {					
@@ -144,6 +241,7 @@ var click_handler = function(info, tab) {
 						lock_domains.push(second);
 					}
 					browser.browserAction.setTitle({title: lock_domains.join("\n")})
+					
 					alert("Locked. Requests are allowed to only:\n" + lock_domains.join("\n"));  
 					browser.contextMenus.update("lock", {"title": "Remove LOCK"});  
 				}
@@ -175,7 +273,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 /** 
  * INTERCEPTS PAGE SCRIPTS ON A NEW URL LOADED
  * This function is a modified version of the original function from Formlock.
- * A check was added so that the scripts aren't injected into forbidden pages which would cause errors
+ * ^A check was added so that the scripts aren't injected into forbidden pages which would cause errors
  */
 browser.webNavigation.onCompleted.addListener(function(o) {
 	//Prevent needless injection attempts into irrelevant pages

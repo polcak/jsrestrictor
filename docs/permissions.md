@@ -9,6 +9,7 @@
  * **contextMenus --** *used for creation of a context menu allowing the user to lock/unlock a certain form* 
  * **browsingData --** *used for removal of data stored during the lock of a form*
  * **webNavigation --** *allows form locking code to inject code*
-
+ * **cookies --** *allows restoration of cookies after form unlock*
+ 
 *JavaScript Resctictor* does **not** collect any data about users.
 
