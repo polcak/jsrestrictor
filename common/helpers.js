@@ -81,11 +81,13 @@ function lfsr_next(v) {
 }
 /**
  * \brief generates pseudorandom string based on domain key
- * \param Number length of generated string
+ * \param length Number length of generated string
+ * \param charSetEnum Number enum choosing charset
  */
-function randomString(length) {
+function randomString(length, charSetEnum) {
 	var ret = "";
-	var charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_ ";
+	var charSets = ["abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_ ", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/"];
+	var charSet = charSets[charSetEnum];
 	for ( var i = 0; i < length; i++ ) {
 			ret += charSet.charAt(Math.floor(prng() * charSet.length));
 	}

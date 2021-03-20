@@ -51,7 +51,7 @@
         value: ""
       },
       description:{
-        value:  randomString(32)
+        value:  randomString(32, 0)
       },
       enabledPlugin:{
         value: null
@@ -88,13 +88,13 @@
         value: mime
       },
       name:{
-        value: randomString(nameLength)
+        value: randomString(nameLength, 0)
       },
       filename:{
-        value: randomString(filenameLength),
+        value: randomString(filenameLength, 0)
       },
       description:{
-        value:  randomString(descLength)
+        value:  randomString(descLength, 0)
       },
       version:{
         value: null
@@ -199,7 +199,7 @@
         value: name
       },
       filename:{
-        value: randomString(32),
+        value: randomString(32, 0),
       },
       description:{
         value:  description

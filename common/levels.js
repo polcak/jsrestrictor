@@ -253,6 +253,10 @@ var wrapping_groups = {
 					},
 					{
 						value: 1,
+						description: "Add 0-4 fake devices and randomize order",
+					},
+					{
+						value: 2,
 						description: "Return empty promise"
 					}
 				],

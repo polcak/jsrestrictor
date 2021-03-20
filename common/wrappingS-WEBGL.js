@@ -543,8 +543,8 @@
 				}
 			],
 			helping_code: farbleGLint + randomString +`
-				var vendor = randomString(8);
-				var renderer = randomString(8);`+
+				var vendor = randomString(8, 0);
+				var renderer = randomString(8, 0);`+
 				farbleGetParameter,
 			original_function: "parent.WebGLRenderingContext.prototype.getParameter",
 			wrapping_function_args: "constant",
@@ -569,8 +569,8 @@
 				}
 			],
 			helping_code: farbleGLint + randomString +`
-				var vendor = randomString(8);
-				var renderer = randomString(8);`+
+				var vendor = randomString(8, 0);
+				var renderer = randomString(8, 0);`+
 				farbleGetParameter,
 			original_function: "parent.WebGL2RenderingContext.prototype.getParameter",
 			wrapping_function_args: "constant",
