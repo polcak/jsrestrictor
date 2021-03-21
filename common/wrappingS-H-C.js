@@ -311,7 +311,7 @@
 						return (ret && ((prng()*20) > 1));
 					}
 					else if(approach === 1){
-						return false;
+						return origIsPointInPath.call(ctx, ...args);
 					}
 				};
 			`,
@@ -349,7 +349,7 @@
 						return (ret && ((prng()*20) > 1));
 					}
 					else if(approach === 1){
-						return false;
+						return origIsPointInStroke.call(ctx, ...args);
 					}
 				};
 			`,
