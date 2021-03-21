@@ -99,7 +99,10 @@ var wrapping_groups = {
 		{
 			name: "htmlcanvaselement",
 			description: "Protect against canvas fingerprinting",
-			description2: ["Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData, OffscreenCanvas.convertToBlob() return modified image data to prevent fingerprinting",],
+			description2: [
+				"Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() return modified image data to prevent fingerprinting",
+				"CanvasRenderingContext2D.isPointInStroke() and CanvasRenderingContext2D.isPointInPath() are modified to lie with probability"
+			],
 			options: [
 				{
 				description: "farbling type",
@@ -132,7 +135,9 @@ var wrapping_groups = {
 		{
 			name: "audiobuffer",
 			description: "Protect against audio fingerprinting",
-			description2: ["Functions AudioBuffer.getChannelData() and AudioBuffer.copyFromChannel() are modified to alter audio data based on domain key"],
+			description2: [
+				"Functions AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() and AnalyserNode.getFloatFrequencyData() are modified to alter audio data based on domain key"
+			],
 			options: [
 				{
 					description: "farbling type",
@@ -165,7 +170,11 @@ var wrapping_groups = {
 		{
 			name: "webgl",
 			description: "Protect against wegbl fingerprinting",
-			description2: [],
+			description2: [
+				"Function WebGLRenderingContext.getParameter() returns modified/bottom values for certain parameters",
+				"WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() and .getExtension() return modified values",
+				"Function WebGLRenderingContext.readPixels() returns modified image data to prevent fingerprinting"
+		],
 			options: [{
 				description: "farbling type",
 				ui_elem: "select",
@@ -175,11 +184,11 @@ var wrapping_groups = {
 				options: [
 					{
 						value: 0,
-						description: "Generate random numbers/strings based on domain hash",
+						description: "Generate random numbers/strings based on domain hash, modified canvas",
 					},
 					{
 						value: 1,
-						description: "Return bottom values (null, empty string)",
+						description: "Return bottom values (null, empty string), empty canvas",
 					}
 				],
 			}],
@@ -232,14 +241,16 @@ var wrapping_groups = {
 				],
 			}],
 			wrappers: [
-				// WINDOW-NAME
+				// NP
 				"navigator.plugins",
 			],
 		},
 		{
 			name: "enumerateDevices",
-			description: "Hide multimedia devices. Consequently, prevent fingerprinting based on the multimedia devices connected to the computer",
-			description2: [],
+			description: "Prevent fingerprinting based on the multimedia devices connected to the computer",
+			description2: [
+				"Function MediaDevices.enumerateDevices() is modified to return empty or modified result"
+		],
 			options: [{
 				description: "farbling type",
 				ui_elem: "select",
@@ -270,8 +281,7 @@ var wrapping_groups = {
 			name: "hardware",
 			description: "Spoof hardware information to the most popular HW",
 			description2: [
-				navigator.deviceMemory !== undefined ? "navigator.deviceMemory: 4" : "",
-				"navigator.hardwareConcurrency: 2",
+				"Getters navigator.deviceMemory and navigator.hardwareConcurrency return modified values",
 			],
 			options: [{
 				description: "farbling type",
