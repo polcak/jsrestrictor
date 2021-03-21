@@ -60,6 +60,12 @@
  * Create private namespace
  */
 (function() {
+  /**
+	 * \brief subtract one from given number with ~50% probability and return it
+	 *
+	 * \param number original Number value to edit
+	 *
+	 */
 	function farbleGLint(number) {
 		var ret = 0;
 		if(number > 0){
@@ -231,7 +237,16 @@
 			return eval(name+".call(ctx, ...fcarg);");
 		}
 	};
-
+  /**
+	 * \brief Modifies return value
+	 *
+	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
+	 * \param ...fcarg delegated arguments depending on function
+	 *
+	 * Depending on level chosen this function returns:
+	 *	* (0) - original value
+	 *	* (1) - WebGLShaderPrecisionFormat object with empty attributes
+	 */
 	function farbleGetPrecisionFormat(ctx, ...fcarg) {
 		if(args[0]===1) {
 			var ret = Object.create(WebGLShaderPrecisionFormat.prototype);
