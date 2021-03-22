@@ -238,6 +238,13 @@
 					wrapped_objects: [],
 					parent_object: "navigator",
 					parent_object_property: "hardwareConcurrency",
+					/**  \brief replaces navigator.hardwareConcurrency getter
+					 *
+					 * Depending on level chosen this property returns:
+					 *	* (0) - random valid value from range [2 - real value]
+					 *	* (1) - random valid value from range [2 - 8]
+					 *	* (2) - 2
+					 */
 					wrapped_properties: [
 						{
 							property_name: "get",
