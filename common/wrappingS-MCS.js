@@ -19,12 +19,44 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
+//  Alternatively, the contents of this file may be used under the terms
+//  of the Mozilla Public License, v. 2.0, as described below:
+//
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this file,
+//  You can obtain one at http://mozilla.org/MPL/2.0/.
+//
+//  Copyright (c) 2020 The Brave Authors.
+
+/** \file
+ * This file contains wrapper for MediaDevices.enumerateDevices https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices
+ * \ingroup wrappers
+ *
+ * The goal is to prevent fingerprinting by modifying return value of enumerateDevices.
+ *
+ * This wrapper operates with three levels of protection:
+ *	* (0) - return promise with suffled array
+ *	* (1) - return promise with shuffled array with additional 0-4 fake devices
+ *	* (2) - return empty promise
+ *
+ *
+ * Shuffling approach is inspired by the algorithms created by Brave Software <https://brave.com>
+ * available at https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/modules/mediastream/media_devices.cc
+ *
+ */
+/*
 
 /*
  * Create private namespace
  */
 (function() {
-
+	/**
+	 * \brief change reurn value of enumerateDevices
+	 *
+	 * Depending on level chosen this function returns:
+	 *	* (0,1) - promise with modified device array
+	 *	* (2) - empty promise
+	 */
 	function farbleEnumerateDevices(){
 		if(args[0] == 0 || args[0] == 1){
 			return devices;
@@ -33,6 +65,11 @@
 			return new Promise((resolve) => resolve([]));
 		}
 	}
+	/**
+	 * \brief create and return MediaDeviceInfo object
+	 *
+	 * \param browserEnum enum specifying browser 0 - Chrome 1 - Firefox
+	 */
 	function fakeDevice(browserEnum){
 		var kinds = ["videoinput", "audioinput", "audiooutput"];
 		var deviceId = browserEnum == 1 ? randomString(43, browserEnum)+ "=" : "";
@@ -53,6 +90,11 @@
 		});
 		return ret;
 	}
+	/**
+	 * \brief return random string for MediaDeviceInfo parameters
+	 *
+	 * \param browserEnum enum specifying browser 0 - Chrome 1 - Firefox
+	 */
 	function deviceRandomString(browserEnum) {
 		var ret = "";
 		var lengths = [64, 43];
@@ -96,6 +138,14 @@
 				}
 				`,
 			wrapping_function_args: "",
+			/** \fn fake MediaDevices.prototype.enumerateDevices
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - promise with shuffled array
+			 *	* (1) - promise with shuffled array with additional 0-4 fake devices
+			 *	* (2) - empty promise
+			 */
 			wrapping_function_body: `
 				return farbleEnumerateDevices();
 				`,
