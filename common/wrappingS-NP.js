@@ -28,12 +28,20 @@
 //  Copyright (c) 2020 The Brave Authors.
 
 /** \file
- * This file contains wrappers for NavigatorPlugins.plugins https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/plugins
+ * This file contains wrappers for NavigatorPlugins
+ * * https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/plugins
+ * * https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/mimeTypes
  * \ingroup wrappers
  *
+ * The goal is to prevent fingerprinting by modifying value returned by getters navigator.plugins and navigator.mimeTypes
+ *
+ * This wrapper operates with three levels of protection:
+ *	* (0) - replace by shuffled edited PluginArray with two added fake plugins, edited MimeTypeArray
+ *	* (1) - replace by shuffled PluginArray with two fake plugins, empty MimeTypeArray
+ *	* (2) - replace by empty PluginArray and MimeTypeArray
  *
  * These approaches are inspired by the algorithms created by Brave Software <https://brave.com>
- * available at https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc)
+ * available at https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
  *
  */
 
@@ -41,6 +49,10 @@
  * Create private namespace
  */
 (function() {
+  /**
+   * \brief create and return fake MimeType object
+   *
+   */
   function fakeMime(){
     var ret = Object.create(MimeType.prototype);
     Object.defineProperties(ret, {
@@ -59,6 +71,12 @@
     });
     return ret;
   }
+  /**
+	 * \brief create and return fake MimeType object created from given mime and plugin
+	 *
+	 * \param mime original MimeType object https://developer.mozilla.org/en-US/docs/Web/API/MimeType
+   * \param plugin original Plugin object https://developer.mozilla.org/en-US/docs/Web/API/Plugin
+	 */
   function farbleMime(mime, plugin){
     var ret = Object.create(MimeType.prototype);
     Object.defineProperties(ret, {
@@ -77,6 +95,13 @@
     });
     return ret;
   }
+  /**
+   * \brief create and return fake Plugin object
+   *
+   * \param descLength enum specifying browser 0 - Chrome 1 - Firefox
+   * \param filenameLength enum specifying browser 0 - Chrome 1 - Firefox
+   * \param nameLength enum specifying browser 0 - Chrome 1 - Firefox
+   */
   function fakePlugin(descLength, filenameLength, nameLength){
     var ret = Object.create(Plugin.prototype);
     var mime = fakeMime();
@@ -107,7 +132,11 @@
     ret.__proto__.namedItem = namedItem;
     return ret;
   }
-
+  /**
+	 * \brief create and return fake PluginArray object containing given plugins
+	 *
+	 * \param plugins array of Plugin objects https://developer.mozilla.org/en-US/docs/Web/API/Plugin
+	 */
   function fakePluginArray(plugins){
     var ret = Object.create(PluginArray.prototype);
     var count = 0;
@@ -128,7 +157,11 @@
     ret.__proto__.refresh = refresh;
     return ret;
   }
-
+  /**
+   * \brief create and return fake MimeTypeArray object
+   *
+   * \param plugins PluginArray object https://developer.mozilla.org/en-US/docs/Web/API/PluginArray
+   */
   function fakeMimeTypeArray(plugins){
     var ret = Object.create(MimeTypeArray.prototype);
     ret.__proto__.item = item;
@@ -166,6 +199,13 @@
   function refresh(){
     return undefined;
   }
+  /**
+   * \brief create modified Plugin object from given plugin
+   *
+   * \param plugin original Plugin object https://developer.mozilla.org/en-US/docs/Web/API/Plugin
+   *
+   * Replaces words in name and description parameters in PDF plugins (default plugins in most browsers)
+   */
   function farblePlugin(plugin){
     var chrome = ["Chrome ", "Chromium ", "Web ", "Browser ", "OpenSource ", "Online ", "JavaScript ", ""];
     var pdf = ["PDF ", "Portable Document Format ", "portable-document-format ", "document ", "doc ", "PDF and PS ", "com.adobe.pdf "];
@@ -248,6 +288,13 @@
 					parent_object: "navigator",
 					parent_object_property: "plugins",
 					wrapped_objects: [],
+					/** \brief replaces navigator.plugins getter
+					 *
+					 * Depending on level chosen this property returns:
+					 *	* (0) - shuffled PluginArray object with modified original plugins and two fake plugins
+					 *	* (1) - shuffled PluginArray object with two fake Plugins
+					 *	* (2) - empty PluginArray object
+					 */
 					wrapped_properties: [
 						{
 							property_name: "get",
@@ -263,6 +310,12 @@
 					parent_object: "navigator",
 					parent_object_property: "mimeTypes",
 					wrapped_objects: [],
+					/**  \brief replaces navigator.plugins getter
+					 *
+					 * Depending on level chosen this property returns:
+					 *	* (0) - modified MimeTypeArray with links to updated Plugins
+					 *	* (1,2) - empty MimeTypeArray object
+					 */
 					wrapped_properties: [
 						{
 							property_name: "get",
