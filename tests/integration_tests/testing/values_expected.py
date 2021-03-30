@@ -69,7 +69,8 @@ level0 = TestedValues(
           'accuracy': 'EXACTLY'},
     performance={'value': 'REAL VALUE',
                  'accuracy': 'EXACTLY'},
-    protect_canvas=False
+    protect_canvas=False,
+    methods_toString='REAL VALUE'
 )
 
 ## Expected values for default level 1 of JSR.
@@ -111,7 +112,8 @@ level1 = TestedValues(
           'accuracy': 0.01},
     performance={'value': 'REAL VALUE',
                  'accuracy': 10},
-    protect_canvas=False
+    protect_canvas=False,
+    methods_toString='REAL VALUE'
 )
 
 ## Expected values for default level 2 of JSR.
@@ -153,7 +155,8 @@ level2 = TestedValues(
           'accuracy': 0.1},
     performance={'value': 'REAL VALUE',
                  'accuracy': 100},
-    protect_canvas=True
+    protect_canvas=True,
+    methods_toString='REAL VALUE'
 )
 
 ## Expected values for default level 3 of JSR.
@@ -185,5 +188,6 @@ level3 = TestedValues(
           'accuracy': 1.0},
     performance={'value': 'REAL VALUE',
                  'accuracy': 1},
-    protect_canvas=True
+    protect_canvas=True,
+    methods_toString='REAL VALUE'
 )
