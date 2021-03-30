@@ -57,7 +57,7 @@
     <tab type="examples" visible="yes" title="" intro=""/>  
     <tab type="pages" visible="yes" title="" intro=""/>
 		<tab type="usergroup" title="Blog">
-			<tab type="user" url="md_docs_support.html" title="We received support from NGI0 PET Fund"/>
+			<tab type="user" url="md_docs_blogarticles_support.html" title="We received support from NGI0 PET Fund"/>
 		</tab>
   </navindex>
 
