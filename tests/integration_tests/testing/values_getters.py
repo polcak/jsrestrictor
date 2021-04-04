@@ -124,6 +124,7 @@ def is_canvas_spoofed(driver):
 def get_imageData_canvas(driver, name):
     try:
         driver.get(get_config("testing_page"))
+        sleep(1)
         img = driver.execute_script("var canvas = document.getElementById('"+name+"'); return canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data")
     except:
         return "ERROR"
@@ -134,7 +135,7 @@ def get_imageData_canvas(driver, name):
 def get_dataURL_canvas(driver, name):
     try:
         driver.get(get_config("testing_page"))
-        sleep(0.5)
+        sleep(1)
         img = driver.execute_script("var canvas = document.getElementById('"+name+"'); return canvas.toDataURL()")
     except:
         return "ERROR"
@@ -145,6 +146,7 @@ def get_dataURL_canvas(driver, name):
 def get_blob_canvas(driver, name):
     try:
         driver.get(get_config("testing_page"))
+        sleep(1)
         img = driver.execute_script("var canvas = document.getElementById('"+name+"'); return new Promise(function(resolve, reject) { canvas.toBlob(function(blob) { resolve(blob.arrayBuffer().then(a => Array.from(new Int8Array(a))))})});")
     except:
         return "ERROR"
@@ -210,7 +212,7 @@ def get_webgl_precisions(driver, name):
 def get_audio(driver):
     driver.get(get_config("testing_page"))
     driver.find_element_by_xpath("//button[text()='Test audio']").click()
-    sleep(1.5)
+    sleep(3)
     audio = {'get_channel': driver.execute_script("return document.getElementById('channel_data_result').innerHTML;"),
              'copy_channel': driver.execute_script("return document.getElementById('copy_result').innerHTML;"),
              'byte_time_domain': driver.execute_script("return document.getElementById('byte_time_result').innerHTML;"),

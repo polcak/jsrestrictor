@@ -232,7 +232,6 @@ var wrapping_groups = {
 			name: "plugins",
 			description: "Protect against plugin fingerprinting",
 			description2: [],
-			default: true,
 			options: [{
 				description: "farbling type",
 				ui_elem: "select",
@@ -617,7 +616,7 @@ var level_2 = {
 	"plugins": true,
 	"plugins_method": 1,
 	"enumerateDevices": true,
-	"enumerateDevices_method": 2,
+	"enumerateDevices_method": 1,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
 	"windowname": true,
