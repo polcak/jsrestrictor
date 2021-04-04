@@ -623,6 +623,29 @@
 				return farbleNullArray("origGetSupportedExtensions", this, ...args);
 			`,
 		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getSupportedExtensions",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getSupportedExtensions",
+					wrapped_name: "origGetSupportedExtensions",
+				}
+			],
+			helping_code: farbleNullArray,
+			original_function: "parent.WebGL2RenderingContext.prototype.getSupportedExtensions",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getSupportedExtensions
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - empty array
+			 */
+			wrapping_function_body: `
+				return farbleNullArray("origGetSupportedExtensions", this, ...args);
+			`,
+		},
 		{
 			parent_object: "WebGLRenderingContext.prototype",
 			parent_object_property: "getActiveAttrib",
@@ -636,6 +659,29 @@
 			original_function: "parent.WebGLRenderingContext.prototype.getActiveAttrib",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getActiveAttrib
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - WebGLActiveInfo object with empty attributes
+			 */
+			wrapping_function_body: `
+				return farbleGetActives("origGetActiveAttrib", this, ...args);
+			`,
+		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getActiveAttrib",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getActiveAttrib",
+					wrapped_name: "origGetActiveAttrib",
+				}
+			],
+			helping_code: farbleGetActives,
+			original_function: "parent.WebGL2RenderingContext.prototype.getActiveAttrib",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getActiveAttrib
 			 * \brief Modifies return value
 			 *
 			 * Depending on level chosen this function returns:
@@ -669,6 +715,29 @@
 				return farbleNull("origGetExtension", this, ...args);
 			`,
 		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getExtension",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getExtension",
+					wrapped_name: "origGetExtension",
+				}
+			],
+			helping_code: farbleNull,
+			original_function: "parent.WebGL2RenderingContext.prototype.getExtension",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getExtension
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - null
+			 */
+			wrapping_function_body: `
+				return farbleNull("origGetExtension", this, ...args);
+			`,
+		},
 		{
 			parent_object: "WebGLRenderingContext.prototype",
 			parent_object_property: "getActiveUniform",
@@ -682,6 +751,29 @@
 			original_function: "parent.WebGLRenderingContext.prototype.getActiveUniform",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getActiveUniform
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - WebGLActiveInfo object with empty attributes
+			 */
+			wrapping_function_body: `
+				return farbleGetActives("origGetActiveUniform", this, ...args);
+			`,
+		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getActiveUniform",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getActiveUniform",
+					wrapped_name: "origGetActiveUniform",
+				}
+			],
+			helping_code: farbleGetActives,
+			original_function: "parent.WebGL2RenderingContext.prototype.getActiveUniform",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getActiveUniform
 			 * \brief Modifies return value
 			 *
 			 * Depending on level chosen this function returns:
@@ -715,6 +807,29 @@
 				return farbleNull("oriGetUniformLocation", this, ...args);
 			`,
 		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getUniformLocation",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getUniformLocation",
+					wrapped_name: "oriGetUniformLocation",
+				}
+			],
+			helping_code: farbleNull,
+			original_function: "parent.WebGL2RenderingContext.prototype.getUniformLocation",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getUniformLocation
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - null
+			 */
+			wrapping_function_body: `
+				return farbleNull("oriGetUniformLocation", this, ...args);
+			`,
+		},
 		{
 			parent_object: "WebGLRenderingContext.prototype",
 			parent_object_property: "getAttribLocation",
@@ -738,6 +853,29 @@
 				return farbleMinusOne("origGetAttribLocation", this, ...args);
 			`,
 		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getAttribLocation",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getAttribLocation",
+					wrapped_name: "origGetAttribLocation",
+				}
+			],
+			helping_code: farbleMinusOne,
+			original_function: "parent.WebGL2RenderingContext.prototype.getAttribLocation",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getAttribLocation
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - minus one
+			 */
+			wrapping_function_body: `
+				return farbleMinusOne("origGetAttribLocation", this, ...args);
+			`,
+		},
 		{
 			parent_object: "WebGLRenderingContext.prototype",
 			parent_object_property: "getVertexAttribOffset",
@@ -751,6 +889,29 @@
 			original_function: "parent.WebGLRenderingContext.prototype.getVertexAttribOffset",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getVertexAttribOffset
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - zero
+			 */
+			wrapping_function_body: `
+				return farbleZero("origGetVertexAttribOffset", this, ...args);
+			`,
+		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getVertexAttribOffset",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getVertexAttribOffset",
+					wrapped_name: "origGetVertexAttribOffset",
+				}
+			],
+			helping_code: farbleZero,
+			original_function: "parent.WebGL2RenderingContext.prototype.getVertexAttribOffset",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getVertexAttribOffset
 			 * \brief Modifies return value
 			 *
 			 * Depending on level chosen this function returns:
@@ -830,6 +991,29 @@
 				return farbleGetFramebufferAttachmentParameter(this, ...args);
 			`,
 		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getFramebufferAttachmentParameter",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getFramebufferAttachmentParameter",
+					wrapped_name: "origGetFramebufferAttachmentParameter",
+				}
+			],
+			helping_code: farbleGetFramebufferAttachmentParameter,
+			original_function: "parent.WebGL2RenderingContext.prototype.getFramebufferAttachmentParameter",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getFramebufferAttachmentParameter
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - bottom value depending on parameter [34069, 9729, 5124, 0]
+			 */
+			wrapping_function_body: `
+				return farbleGetFramebufferAttachmentParameter(this, ...args);
+			`,
+		},
 		{
 			parent_object: "WebGLRenderingContext.prototype",
 			parent_object_property: "getBufferParameter",
@@ -843,6 +1027,29 @@
 			original_function: "parent.WebGLRenderingContext.prototype.getBufferParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getBufferParameter
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - bottom value depending on parameter [35044, 0]
+			 */
+			wrapping_function_body: `
+				return farbleGetBufferParameter(this, ...args);
+			`,
+		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getBufferParameter",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getBufferParameter",
+					wrapped_name: "origGetBufferParameter",
+				}
+			],
+			helping_code: farbleGetBufferParameter,
+			original_function: "parent.WebGL2RenderingContext.prototype.getBufferParameter",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getBufferParameter
 			 * \brief Modifies return value
 			 *
 			 * Depending on level chosen this function returns:
@@ -876,6 +1083,29 @@
 				return farbleGetProgramParameter(this, ...args);
 			`,
 		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getProgramParameter",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getProgramParameter",
+					wrapped_name: "origGetProgramParameter",
+				}
+			],
+			helping_code: farbleGetProgramParameter,
+			original_function: "parent.WebGL2RenderingContext.prototype.getProgramParameter",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getProgramParameter
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - bottom value depending on parameter [false, 35981, 0]
+			 */
+			wrapping_function_body: `
+				return farbleGetProgramParameter(this, ...args);
+			`,
+		},
 		{
 			parent_object: "WebGLRenderingContext.prototype",
 			parent_object_property: "getRenderbufferParameter",
@@ -889,6 +1119,29 @@
 			original_function: "parent.WebGLRenderingContext.prototype.getRenderbufferParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getRenderbufferParameter
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - bottom value depending on parameter [32854, 0]
+			 */
+			wrapping_function_body: `
+				return farbleGetRenderbufferParameter(this, ...args);
+			`,
+		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getRenderbufferParameter",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getRenderbufferParameter",
+					wrapped_name: "origGetRenderbufferParameter",
+				}
+			],
+			helping_code: farbleGetRenderbufferParameter,
+			original_function: "parent.WebGL2RenderingContext.prototype.getRenderbufferParameter",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getRenderbufferParameter
 			 * \brief Modifies return value
 			 *
 			 * Depending on level chosen this function returns:
@@ -922,6 +1175,29 @@
 				return farbleGetShaderParameter(this, ...args);
 			`,
 		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getShaderParameter",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getShaderParameter",
+					wrapped_name: "origGetShaderParameter",
+				}
+			],
+			helping_code: farbleGetShaderParameter,
+			original_function: "parent.WebGL2RenderingContext.prototype.getShaderParameter",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getShaderParameter
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - bottom value depending on parameter [35633, false]
+			 */
+			wrapping_function_body: `
+				return farbleGetShaderParameter(this, ...args);
+			`,
+		},
 		{
 			parent_object: "WebGLRenderingContext.prototype",
 			parent_object_property: "getVertexAttrib",
@@ -935,6 +1211,29 @@
 			original_function: "parent.WebGLRenderingContext.prototype.getVertexAttrib",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getVertexAttrib
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - bottom value depending on parameter [null, 0, false, 5120, empty array]
+			 */
+			wrapping_function_body: `
+				return farbleGetVertexAttrib(this, ...args);
+			`,
+		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getVertexAttrib",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getVertexAttrib",
+					wrapped_name: "origGetVertexAttrib",
+				}
+			],
+			helping_code: farbleGetVertexAttrib,
+			original_function: "parent.WebGL2RenderingContext.prototype.getVertexAttrib",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getVertexAttrib
 			 * \brief Modifies return value
 			 *
 			 * Depending on level chosen this function returns:
@@ -968,6 +1267,29 @@
 				return farbleZero("origGetUniform", this, ...args);
 			`,
 		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getUniform",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getUniform",
+					wrapped_name: "origGetUniform",
+				}
+			],
+			helping_code: farbleZero,
+			original_function: "parent.WebGL2RenderingContext.prototype.getUniform",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getUniform
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - zero
+			 */
+			wrapping_function_body: `
+				return farbleZero("origGetUniform", this, ...args);
+			`,
+		},
 		{
 			parent_object: "WebGLRenderingContext.prototype",
 			parent_object_property: "getTexParameter",
@@ -981,6 +1303,29 @@
 			original_function: "parent.WebGLRenderingContext.prototype.getTexParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getTexParameter
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - null - as if error has occured
+			 */
+			wrapping_function_body: `
+				return farbleNull("origGetTexParameter", this, ...args);
+			`,
+		},
+    {
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getTexParameter",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getTexParameter",
+					wrapped_name: "origGetTexParameter",
+				}
+			],
+			helping_code: farbleNull,
+			original_function: "parent.WebGL2RenderingContext.prototype.getTexParameter",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getTexParameter
 			 * \brief Modifies return value
 			 *
 			 * Depending on level chosen this function returns:
@@ -1009,6 +1354,29 @@
 			 * Depending on level chosen this function returns:
 			 *	* (0) - original return value
 			 *	* (1) - WebGLShaderPrecisionFormat object with empty attributes
+			 */
+			wrapping_function_body: `
+				return farbleGetPrecisionFormat(this, ...args);
+			`,
+		},
+		{
+			parent_object: "WebGL2RenderingContext.prototype",
+			parent_object_property: "getShaderPrecisionFormat",
+			wrapped_objects: [
+				{
+					original_name: "WebGL2RenderingContext.prototype.getShaderPrecisionFormat",
+					wrapped_name: "origGetShaderPrecisionFormat",
+				}
+			],
+			helping_code: farbleGetPrecisionFormat,
+			original_function: "parent.WebGL2RenderingContext.prototype.getShaderPrecisionFormat",
+			wrapping_function_args: "...args",
+			/** \fn fake WebGL2RenderingContext.prototype.getShaderPrecisionFormat
+			 * \brief Modifies return value
+			 *
+			 * Depending on level chosen this function returns:
+			 *	* (0) - original return value
+			 *	* (1) - WebGL2ShaderPrecisionFormat object with empty attributes
 			 */
 			wrapping_function_body: `
 				return farbleGetPrecisionFormat(this, ...args);
