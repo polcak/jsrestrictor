@@ -4,6 +4,7 @@
 #  internet.
 #
 #  Copyright (C) 2020  Martin Bednar
+#  Copyright (C) 2021  Matus Svancar
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -33,7 +34,9 @@ class Navigator:
                  languages,
                  do_not_track,
                  cookie_enabled,
-                 oscpu):
+                 oscpu,
+                 plugins,
+                 mimeTypes):
         self.userAgent = user_agent
         self.appVersion = app_version
         self.platform = platform
@@ -43,6 +46,8 @@ class Navigator:
         self.doNotTrack = do_not_track
         self.cookieEnabled = cookie_enabled
         self.oscpu = oscpu
+        self.plugins = plugins
+        self.mimeTypes = mimeTypes
 
 
 ## Variables about geolocation that are checked during testing.
@@ -74,6 +79,21 @@ class Device:
         self.deviceMemory = device_memory
         self.hardwareConcurrency = hardware_concurrency
 
+## Variables about audio that are checked during testing.
+class Audio:
+    def __init__(self,
+                 get_channel,
+                 copy_channel,
+                 byte_time_domain,
+                 float_time_domain,
+                 byte_frequency,
+                 float_frequency):
+        self.get_channel = get_channel
+        self.copy_channel = copy_channel
+        self.byte_time_domain = byte_time_domain
+        self.float_time_domain = float_time_domain
+        self.byte_frequency = byte_frequency
+        self.float_frequency = float_frequency
 
 ## All variables that are checked during testing.
 class TestedValues:
@@ -87,6 +107,8 @@ class TestedValues:
                  do_not_track,
                  cookie_enabled,
                  oscpu,
+                 plugins,
+                 mimeTypes,
 
                  gps_accuracy,
                  altitude,
@@ -100,10 +122,27 @@ class TestedValues:
                  device_memory,
                  hardware_concurrency,
 
+                 get_channel,
+                 copy_channel,
+                 byte_time_domain,
+                 float_time_domain,
+                 byte_frequency,
+                 float_frequency,
+
                  referrer,
                  time,
                  performance,
-                 protect_canvas
+                 protect_canvas,
+
+                 canvas_imageData,
+                 canvas_dataURL,
+                 canvas_blob,
+
+                 webgl_parameters,
+
+                 webgl_precisions,
+                 webgl_pixels,
+                 webgl_dataURL
                  ):
         self.navigator = Navigator(
             user_agent,
@@ -114,7 +153,9 @@ class TestedValues:
             languages,
             do_not_track,
             cookie_enabled,
-            oscpu
+            oscpu,
+            plugins,
+            mimeTypes
         )
         self.geolocation = Geolocation(
             gps_accuracy,
@@ -130,7 +171,23 @@ class TestedValues:
             device_memory,
             hardware_concurrency
         )
+        self.audio = Audio(
+            get_channel,
+            copy_channel,
+            byte_time_domain,
+            float_time_domain,
+            byte_frequency,
+            float_frequency
+        )
+
         self.referrer = referrer
         self.time = time
         self.performance = performance
         self.protect_canvas = protect_canvas
+        self.canvas_imageData = canvas_imageData
+        self.canvas_dataURL = canvas_dataURL
+        self.canvas_blob = canvas_blob
+        self.webgl_parameters = webgl_parameters
+        self.webgl_precisions = webgl_precisions
+        self.webgl_pixels = webgl_pixels
+        self.webgl_dataURL = webgl_dataURL
