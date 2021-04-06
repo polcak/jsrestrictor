@@ -25,19 +25,6 @@
  */
 
 /**
- * Shows notification with given message
- * @param msg message to be displayed
- */
-function show_notification(msg){
-    browser.notifications.create({
-        "type": "basic",
-        "iconUrl": browser.extension.getURL("img/icon-48.png"),
-        "title": "Data restoration:",
-        "message": `${msg}`
-    });
-}
-
-/**
  * Fetches all keys and their values from given store using a cursor
  * @param object_store IDBObjectStore instance of store to be backed up
  * @returns Promise which resolves to array of all items in store including keys or rejects on error
@@ -142,7 +129,7 @@ async function backup_databases(){
 		});
 	}
     if(db_fail){
-        show_notification("Failures occured during data backup.\nData after unlock may be inconsistent.");
+        show_notification("Data restoration" ,"Failures occured during data backup.\nData after unlock may be inconsistent.");
     }
 	return index_DBs;
 }
@@ -331,7 +318,7 @@ async function restore_databases(databases){
 		});
 	}
     if(restore_fails){
-        show_notification("Database restoration ran into errors.\nStored data may be incosistent.");
+        show_notification("Data restoration" ,"Database restoration ran into errors.\nStored data may be incosistent.");
     }
 }
 

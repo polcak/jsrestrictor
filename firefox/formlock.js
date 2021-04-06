@@ -59,8 +59,8 @@ browser.webRequest.onBeforeRequest.addListener(
 );
 
 var lock_tab = 0;
-var unlockUrl = "";
-var unlockMsg = "";
+var unlock_url = "";
+var unlock_msg = "";
 
 /**
  * Backs up cookies for the locked domain
@@ -133,12 +133,7 @@ function refresh_lock_tab() {
 	browser.tabs.sendMessage(lock_tab, {"msg": "RestoreStorage", "data": backup}, () => {
 		restore_cookies().then(() => {
 			started = null;
-			browser.notifications.create({
-				"type": "basic",
-				"iconUrl": browser.extension.getURL("img/icon-48.png"),
-				"title": "Form safety info:",
-				"message": `${unlockMsg}`
-			}); 
+			show_notification("Form safety", unlock_msg); 
 		});
 	});
 };
@@ -169,7 +164,7 @@ function clear_new_data(callback) {
 				/* Firefox doesn't support removing localStorage using since other than 0
 				 * Added cookies too here because we are backing them up anyway
 				 */
-				let url = new URL(unlockUrl);
+				let url = new URL(unlock_url);
 				browser.browsingData.remove({
 					since: 0,
 					hostnames : [url.hostname] 
@@ -222,19 +217,17 @@ function click_handler(info, tab) {
 	if (info.menuItemId === "lock") {	
 		if (lock_domains.length > 0) {
 			// Remove LOCK
-			var msg = "Form unlocked. Third-party requests blocked " + blocked.length + ":\n";
+			unlock_msg = "Form unlocked. Third-party requests blocked " + blocked.length + ":\n";
 			for (b in blocked) {
-				msg += get_hostname(blocked[b]) + "\n";
+				unlock_msg += get_hostname(blocked[b]) + "\n";
 			}
-			unlockMsg = msg
 			browser.browserAction.setTitle({title: "Form locking"});
 			browser.menus.update("lock", {"title": "Set LOCK"});
 			lock_domains = [];
 			blocked = [];				
-			var old_url = tab.url.split("?")[0]; 
-			unlockUrl = old_url;
+			unlock_url = tab.url.split("?")[0]; 
 			lock_tab = tab.id;
-			browser.tabs.executeScript(tab.id, {code: `window.location.href='${old_url}';`}, function(tab) {
+			browser.tabs.executeScript(tab.id, {code: `window.location.href='${unlock_url}';`}, function(tab) {
 				clear_new_data();  
 			});			
 		}
@@ -257,12 +250,7 @@ function click_handler(info, tab) {
 						lock_domains.push(second);
 					}
 					browser.browserAction.setTitle({title: lock_domains.join("\n")})
-					browser.notifications.create({
-						"type": "basic",
-						"iconUrl": browser.extension.getURL("img/icon-48.png"),
-						"title": "Form safety info:",
-						"message": `Locked. Requests are allowed only to:\n ${lock_domains}\n`
-					});
+					show_notification("Form safety", "Locked. Requests are allowed to only:\n" + lock_domains.join("\n"));  
 					browser.menus.update("lock", {"title": "Remove LOCK"});  
 				}
 			});

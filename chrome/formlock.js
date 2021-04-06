@@ -46,6 +46,10 @@ browser.webRequest.onBeforeRequest.addListener(
 			if (lock_domains.indexOf(current_domain) !== -1) {
 				f_cancel = false;
 			}
+
+			if (details.url.indexOf("chrome-extension://") === 0){
+				f_cancel = false;
+			}
 		
 			if (f_cancel) {
 				blocked.push(details.url);
@@ -58,8 +62,8 @@ browser.webRequest.onBeforeRequest.addListener(
 );
 
 var lock_tab = 0;
-var unlockUrl = "";
-var unlockMsg = "";
+var unlock_url = "";
+var unlock_msg = "";
 
 /**
  * Backs up cookies for the locked domain
@@ -127,9 +131,9 @@ function restore_cookies(){
 function refresh_lock_tab(){
 	restore_cookies().then(() => {
 		browser.tabs.sendMessage(lock_tab, {"msg": "RestoreStorage", "data": backup}, () => {
-			browser.tabs.update(lock_tab, {url: unlockUrl}, (tab) => {
+			browser.tabs.update(lock_tab, {url: unlock_url}, (tab) => {
 				started = null;
-				alert(unlockMsg); 
+				show_notification("Form safety", unlock_msg); 
 			});
 		});
 	});
@@ -146,7 +150,7 @@ function clear_new_data() {
 	if (started !== null) {
 		browser.browsingData.remove({
 			"since": started,
-			"origins": [`${unlockUrl}`]
+			"origins": [`${unlock_url}`]
 		  }, {
 			"cacheStorage": true,
 			"cookies": true,
@@ -195,7 +199,7 @@ var click_handler = function(info, tab) {
 
 				if (violation === "") violation = "Looks safe.";
 				
-				alert(violation);
+				show_notification("Form safety", violation);
 			}
 		});
 	}
@@ -205,20 +209,18 @@ var click_handler = function(info, tab) {
 		if (lock_domains.length > 0) {
 			//Restore saved data
 			// Remove LOCK
-			var msg = "Unlocked. Third-party requests blocked " + blocked.length + ":\n";
+			unlock_msg = "Unlocked. Third-party requests blocked " + blocked.length + ":\n";
 			for (b in blocked) {
-				msg += get_hostname(blocked[b]) + "\n";
+				unlock_msg += get_hostname(blocked[b]) + "\n";
 			}
-			unlockMsg = msg;
 			browser.browserAction.setTitle({title: "FormLock"});
 			browser.contextMenus.update("lock", {"title": "Set LOCK"});
 			lock_domains = [];
 			blocked = [];				
-			var old_url = tab.url.split("?")[0]; 
-			unlockUrl = old_url;
+			unlock_url = tab.url.split("?")[0]; 
 			lock_tab = tab.id;
 			
-			browser.tabs.executeScript(tab.id, {code: `window.location.href=${old_url};`}, function(tab) {
+			browser.tabs.executeScript(tab.id, {code: `window.location.href=${unlock_url};`}, function(tab) {
 				clear_new_data(); 
 			});
 		}
@@ -241,8 +243,7 @@ var click_handler = function(info, tab) {
 						lock_domains.push(second);
 					}
 					browser.browserAction.setTitle({title: lock_domains.join("\n")})
-					
-					alert("Locked. Requests are allowed to only:\n" + lock_domains.join("\n"));  
+					show_notification("Form safety", "Locked. Requests are allowed to only:\n" + lock_domains.join("\n"));  
 					browser.contextMenus.update("lock", {"title": "Remove LOCK"});  
 				}
 			});

@@ -29,6 +29,20 @@
  * to it's usage in this project as long as he was mentioned in original files.
  */
 
+/**
+ * Shows notification with given message and title
+ * @param title title of the message
+ * @param msg message to be displayed
+ */
+ function show_notification(title ,msg){
+    browser.notifications.create({
+        "type": "basic",
+        "iconUrl": browser.extension.getURL("img/icon-48.png"),
+        "title": `${title}`,
+        "message": `${msg}`
+    });
+}
+
 var get_hostname = function(url) {
 	var a = document.createElement('a');
 	a.href = url;
