@@ -31,32 +31,41 @@
 
 var lock_domains = [];
 var blocked = [];
-var backup = {}
+var backup = {};
+
+/**
+ * Blocking of web requests
+ * Created separately so that the listener could be added and
+ * removed during JSR level changes
+ * @param details Page details passed by onBeforeRequest 
+ * @returns \{cancel : false} if request 
+ */
+function request_blocking(details) {
+	var f_cancel = false;
+	if (lock_domains.length > 0) {
+		f_cancel = true;
+		var current_domain = get_root_domain(get_hostname(details.url));
+		if (lock_domains.indexOf(current_domain) !== -1) {
+			f_cancel = false;
+		}
+
+		if (details.url.indexOf("chrome-extension://") === 0){
+			f_cancel = false;
+		}
+	
+		if (f_cancel) {
+			blocked.push(details.url);
+		}
+	}
+	return {cancel: f_cancel};
+}
 
 /**
  * Blocks request to third party domains except for the lock domains
  * \todo change global blocking to per tab/frame based!
  */
 browser.webRequest.onBeforeRequest.addListener(
-	function(details) {
-		var f_cancel = false;
-		if (lock_domains.length > 0) {
-			f_cancel = true;
-			var current_domain = get_root_domain(get_hostname(details.url));
-			if (lock_domains.indexOf(current_domain) !== -1) {
-				f_cancel = false;
-			}
-
-			if (details.url.indexOf("chrome-extension://") === 0){
-				f_cancel = false;
-			}
-		
-			if (f_cancel) {
-				blocked.push(details.url);
-			}
-		}
-		return {cancel: f_cancel};
-	},
+	request_blocking,
 	{urls: ["<all_urls>"]},
 	["blocking"] 
 );
@@ -214,7 +223,7 @@ var click_handler = function(info, tab) {
 				unlock_msg += get_hostname(blocked[b]) + "\n";
 			}
 			browser.browserAction.setTitle({title: "FormLock"});
-			browser.contextMenus.update("lock", {"title": "Set LOCK"});
+			browser.contextMenus.update("lock", {"title": "Set Lock"});
 			lock_domains = [];
 			blocked = [];				
 			unlock_url = tab.url.split("?")[0]; 
@@ -244,21 +253,37 @@ var click_handler = function(info, tab) {
 					}
 					browser.browserAction.setTitle({title: lock_domains.join("\n")})
 					show_notification("Form safety", "Locked. Requests are allowed to only:\n" + lock_domains.join("\n"));  
-					browser.contextMenus.update("lock", {"title": "Remove LOCK"});  
+					browser.contextMenus.update("lock", {"title": "Remove Lock"});  
 				}
 			});
 		}   
 	}
 }; 
 
-// (2) Register the menu items
-browser.contextMenus.create({"title": "Form locking", "contexts": ["all"], "id": "Formstery"});
-browser.contextMenus.create({"title": "Submit method: undefined", "contexts": ["all"], "parentId": "Formstery", id: "submitMethod"});
-browser.contextMenus.create({"title": "Submits to: undefined", "contexts": ["all"], "parentId": "Formstery", id: "submitTo"});
-browser.contextMenus.create({"type": "separator", "contexts": ["all"], "parentId": "Formstery"});
-browser.contextMenus.create({"title": "Explain sharing risks.", "contexts": ["all"], "parentId": "Formstery", "id": "explainRisks", "onclick": click_handler});
-browser.contextMenus.create({"type": "separator", "contexts": ["all"], "parentId": "Formstery"});
-browser.contextMenus.create({"title": "Set LOCK", "contexts": ["all"], "parentId": "Formstery", "id": "lock", "onclick": click_handler}); 
+var menu_created = true;
+/**
+ * Creates context menu for form locking
+ */
+function create_context_menu(){
+	// (2) Register the menu items
+	menu_created = true;
+	let lock_text = "";
+	if (lock_domains.length > 0){
+		lock_text = "Remove Lock";
+	}
+	else {
+		lock_text = "Set Lock";
+	}
+	browser.contextMenus.create({"title": "Form locking", "contexts": ["all"], "id": "Formstery"});
+	browser.contextMenus.create({"title": "Submit method: undefined", "contexts": ["all"], "parentId": "Formstery", id: "submitMethod"});
+	browser.contextMenus.create({"title": "Submits to: undefined", "contexts": ["all"], "parentId": "Formstery", id: "submitTo"});
+	browser.contextMenus.create({"type": "separator", "contexts": ["all"], "parentId": "Formstery"});
+	browser.contextMenus.create({"title": "Explain sharing risks.", "contexts": ["all"], "parentId": "Formstery", "id": "explainRisks", "onclick": click_handler});
+	browser.contextMenus.create({"type": "separator", "contexts": ["all"], "parentId": "Formstery"});
+	browser.contextMenus.create({"title": lock_text, "contexts": ["all"], "parentId": "Formstery", "id": "lock", "onclick": click_handler}); 
+}
+
+create_context_menu();
 
 /**
  * UPDATES THE CONTEXT MENU WITH CURRENT FORM'S INFO
@@ -271,12 +296,58 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	}
 });
 
+/**
+ * Checks security level associated with page and creates or removes context menu
+ * Created so that context menu would be removed or added when user switched between
+ * pages with different security levels
+ * @param tab_url URL of the active tab
+ */
+ function decide_context_menu(tab_url){
+	if (!tab_url){
+		return;
+	}
+	let curr_level = getCurrentLevelJSON(tab_url)[0];
+	if (curr_level["level_id"] === "0"){
+		if (menu_created){
+			menu_created = false;
+			browser.contextMenus.remove("Formstery", () => {});
+		}
+	}
+	else {
+		//recreate context menu and restart blocking
+		if (!menu_created){
+			create_context_menu();
+			menu_created = true;
+		}
+	}
+}
+
+browser.tabs.onActivated.addListener((tab) => {
+	browser.tabs.query({active : true, currentWindow : true}, (active_tab) => {
+		decide_context_menu(active_tab[0].url)
+	});
+});
+
 /** 
  * INTERCEPTS PAGE SCRIPTS ON A NEW URL LOADED
  * This function is a modified version of the original function from Formlock.
  * ^A check was added so that the scripts aren't injected into forbidden pages which would cause errors
+ * ^JSR security level check in order to not inject pages on level 0
  */
 browser.webNavigation.onCompleted.addListener(function(o) {
+	//Do not inject when security level is 0
+	decide_context_menu(o.url);
+	let curr_level = getCurrentLevelJSON(o.url)[0];
+	if (curr_level["level_id"] === "0"){
+		//If user changed the level during lock then clear lock data to prevent blocking
+		if (lock_domains.length > 0 && o.tabId == lock_tab){
+			lock_domains = [];
+			blocked = [];
+			backup = {};
+		}
+		return;
+	}
+
 	//Prevent needless injection attempts into irrelevant pages
 	if(o.url.indexOf("chrome\:\/\/") != -1 || o.url === "about:blank"){
 		return;
