@@ -40,24 +40,22 @@ var backup = {};
  * @param details Page details passed by onBeforeRequest 
  * @returns \{cancel : false} if request 
  */
- function request_blocking(details) {
-	var f_cancel = false;
+function request_blocking(details) {
 	if (lock_domains.length > 0) {
-		f_cancel = true;
+		if (details.tabId != lock_tab){
+			return {cancel : false};
+		}
 		var current_domain = get_root_domain(get_hostname(details.url));
 		if (lock_domains.indexOf(current_domain) !== -1) {
-			f_cancel = false;
-		}
-
-		if (details.url.indexOf("chrome-extension://") === 0){
-			f_cancel = false;
+			return {cancel : false};
 		}
 	
-		if (f_cancel) {
+		if (!blocked.includes(details.url)){
 			blocked.push(details.url);
 		}
+		return {cancel : true};
 	}
-	return {cancel: f_cancel};
+	return {cancel : false};
 }
 
 /**
@@ -238,7 +236,6 @@ function click_handler(info, tab) {
 			lock_domains = [];
 			blocked = [];				
 			unlock_url = tab.url.split("?")[0]; 
-			lock_tab = tab.id;
 			browser.tabs.executeScript(tab.id, {code: `window.location.href='${unlock_url}';`}, function(tab) {
 				clear_new_data();  
 			});			
@@ -257,6 +254,7 @@ function click_handler(info, tab) {
 					// Page url and the form url
 					var first = get_root_domain(get_hostname(tab.url));
 					var second = get_root_domain(payload.domain);
+					lock_tab = tab.id;
 					lock_domains.push(first);
 					if (first !== second) {
 						lock_domains.push(second);
