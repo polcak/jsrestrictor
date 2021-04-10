@@ -29,7 +29,7 @@
  * to it's usage in this project as long as he was mentioned in original files.
  */
 
-if ((typeof browser) === "undefined") {
+ if ((typeof browser) === "undefined") {
 	var browser = chrome;
 }
 
@@ -63,9 +63,8 @@ document.addEventListener("mousedown", function(event) {
 }, true);
 
 /**
- * Listens to messages from click_handler in formlock.js and responds either with
- * submit method and domain of form to be locked or with stored data to be backed
- * up
+ * Listens to messages from click_handler in formlock.js and responds with
+ * submit method and domain of form to be locked  
  */
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) { 
 	// Retrive the clicked form for locking
