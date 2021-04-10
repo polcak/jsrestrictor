@@ -83,16 +83,3 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		clicked_element2 = null;
 	}
 });
-
-//Alerts user to any changes in browser's storage
-browser.storage.onChanged.addListener(function(changes, namespace) {
-		for (key in changes) {
-		  var storageChange = changes[key];
-		  alert('Storage key "%s" in namespace "%s" changed. ' +
-					  'Old value was "%s", new value is "%s".',
-					  key,
-					  namespace,
-					  storageChange.oldValue,
-					  storageChange.newValue);
-		}
-});
