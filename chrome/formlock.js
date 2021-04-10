@@ -336,52 +336,54 @@ browser.tabs.onActivated.addListener((tab) => {
  * ^A check was added so that the scripts aren't injected into forbidden pages which would cause errors
  * ^JSR security level check in order to not inject pages on level 0
  */
-browser.webNavigation.onCompleted.addListener(function(o) {
+ browser.webNavigation.onCompleted.addListener(function(tab) {
 	//Do not inject when security level is 0
-	decide_context_menu(o.url);
-	let curr_level = getCurrentLevelJSON(o.url)[0];
-	if (curr_level["level_id"] === "0"){
-		//If user changed the level during lock then clear lock data to prevent blocking
-		if (lock_domains.length > 0 && o.tabId == lock_tab){
-			lock_domains = [];
-			blocked = [];
-			backup = {};
+	browser.tabs.get(tab.tabId, (tab_info) => {
+		decide_context_menu(tab_info.url);
+		let curr_level = getCurrentLevelJSON(tab_info.url)[0];
+		if (curr_level["level_id"] === "0"){
+			//If user changed the level during lock then clear lock data to prevent blocking
+			if (lock_domains.length > 0 && tab_info.tabId == lock_tab){
+				lock_domains = [];
+				blocked = [];
+				backup = {};
+			}
+			return;
 		}
-		return;
-	}
-
-	//Prevent needless injection attempts into irrelevant pages
-	if(o.url.indexOf("chrome\:\/\/") != -1 || o.url === "about:blank"){
-		return;
-	}
 	
-	// (1) Monitoring mouse events
-	browser.tabs.executeScript(o.tabId, {file: "utils.js", allFrames: true}, function(tab) {
-		// UTILS ->
-		browser.tabs.executeScript(o.tabId, {
-				allFrames: true,
-				file: "mouse_track.js"
-		});
-		// <- UTILS
-	});
-	
-	// (2) Highlighting risky forms
-	browser.tabs.executeScript(o.tabId, {file: "utils.js", allFrames: true}, function(tab) {
-		// UTILS ->
-		browser.tabs.get(o.tabId, function(tab) { 
-			// Passing the tab URL
-			browser.tabs.executeScript(o.tabId, { 
-				allFrames: true,
-				code: "var taburl = \"" + tab.url + "\";"
-			}, 
-			function() {
-				// Main code
-				browser.tabs.executeScript(o.tabId, {
+		//Prevent needless injection attempts into irrelevant pages
+		if(tab.url.indexOf("chrome\:\/\/") != -1 || tab.url === "about:blank"){
+			return;
+		}
+		
+		// (1) Monitoring mouse events
+		browser.tabs.executeScript(tab.tabId, {file: "utils.js", allFrames: true}, function(Tab) {
+			// UTILS ->
+			browser.tabs.executeScript(tab.tabId, {
 					allFrames: true,
-					file: "form_check.js"
-				});
+					file: "mouse_track.js"
 			});
-		}); 
-		// <- UTILS
+			// <- UTILS
+		});
+		
+		// (2) Highlighting risky forms
+		browser.tabs.executeScript(tab.tabId, {file: "utils.js", allFrames: true}, function(Tab) {
+			// UTILS ->
+			browser.tabs.get(tab.tabId, function(Tab) { 
+				// Passing the tab URL
+				browser.tabs.executeScript(tab.tabId, { 
+					allFrames: true,
+					code: "var taburl = \"" + tab.url + "\";"
+				}, 
+				function() {
+					// Main code
+					browser.tabs.executeScript(tab.tabId, {
+						allFrames: true,
+						file: "form_check.js"
+					});
+				});
+			}); 
+			// <- UTILS
+		});
 	});
 });
