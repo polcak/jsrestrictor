@@ -359,6 +359,16 @@ browser.tabs.onActivated.addListener((tab) => {
 	});
 });
 
+//Removes tabId from injected pages if the user navigated elsewhere on injected tab
+browser.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) => {
+	if (changeInfo.status === "loading"){
+		if (injected_tabs.includes(tabId)) {
+			const index = injected_tabs.indexOf(tabId);
+			injected_tabs.splice(index, 1);
+		}
+	}
+});
+
 /** 
  * INTERCEPTS PAGE SCRIPTS ON A NEW URL LOADED
  * This function is a modified version of the original function from Formlock

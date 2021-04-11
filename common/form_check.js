@@ -43,7 +43,7 @@ function check_forms() {
 	for (var f = 0; f < document.forms.length; ++f) {
 		let curr_form = document.forms[f];
 		//Skip search bars
-		if (curr_form.role == "search") {
+		if (curr_form.getAttribute("role") == "search") {
 			continue;
 		}
 		var current_url = get_root_domain(get_hostname(curr_form.getAttribute('action')));
