@@ -295,12 +295,25 @@ create_context_menu();
 
 /**
  * UPDATES THE CONTEXT MENU WITH CURRENT FORM'S INFO
- * \todo consider reliability and usability of this approach!
+ * Also shows notification when the content script form_check.js found a potentially
+ * unsafe form
  */
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.req === "FLClickedForm") {	  
 		browser.menus.update("submitMethod", {"title": "Submit method: " + request.method});
 		browser.menus.update("submitTo", {"title": "Submits to: " + get_root_domain(request.domain)});
+	}
+	else if (request.msg === "ViolationFound") {
+		let tab_level = getCurrentLevelJSON(request.url)[0];
+		if (tab_level["level_id"] === "0") {
+			return;
+		}
+		else {
+			let msg = "We've found a potentially unsafe form on this page.\n"
+			msg += "If you need to fill out any sensitive information then we suggest you use the form lock feature"
+			msg += "(Right click on the form, Set lock, submit the form then Remove lock)";
+			show_notification("Form safety", msg);
+		}
 	}
 });
 
@@ -330,9 +343,19 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	}
 }
 
+var injected_tabs = [];
+
+/**
+ * Listens to the change of active tab
+ * Also if the tab is injected with form_check then sends message to check
+ * vulnerability of forms
+ */
 browser.tabs.onActivated.addListener((tab) => {
 	browser.tabs.query({active : true, currentWindow : true}).then((active_tab) => {
 		decide_context_menu(active_tab[0].url);
+		if (injected_tabs.includes(active_tab[0].id)) {
+			browser.tabs.sendMessage(active_tab[0].id, {msg : "CheckForms"});
+		}
 	});
 });
 
@@ -341,25 +364,37 @@ browser.tabs.onActivated.addListener((tab) => {
  * This function is a modified version of the original function from Formlock
  * A check was added so that the scripts aren't injected into forbidden pages which would cause errors
  */
- browser.webNavigation.onCompleted.addListener(function(tab) {
+browser.webNavigation.onCompleted.addListener(function(tab) {
 	//Do not inject when security level is 0
 	browser.tabs.get(tab.tabId).then((tab_info) => {
 		decide_context_menu(tab_info.url);
 		let curr_level = getCurrentLevelJSON(tab_info.url)[0];
 		if (curr_level["level_id"] === "0"){
 			//If user changed the level during lock then clear lock data to prevent blocking
-			if (lock_domains.length > 0 && tab_info.tabId == lock_tab){
+			if (lock_domains.length > 0 && tab.tabId == lock_tab){
 				lock_domains = [];
 				blocked = [];
 				backup = {};
+			}
+			//If tab was previously injected but lvl changed to 0
+			if (injected_tabs.includes(tab.tabId)) {
+				const index = injected_tabs.indexOf(tab.tabId);
+				injected_tabs.splice(index, 1);
 			}
 			return;
 		}
 	
 		//Prevent needless injection attempts into irrelevant pages
-		if(tab.url.indexOf("about\:") != -1 || tab.url === "about:blank"){
+		if(tab.url.indexOf("about\:") != -1 || tab.url === "about:blank" ||
+		   tab.url.indexOf("chrome\:\/\/") != -1){
 			return;
 		}
+
+		//Do not inject the same tab repeatedly
+		if (injected_tabs.includes(tab.tabId)) {
+			return;
+		}
+		injected_tabs.push(tab.tabId);
 		
 		// (1) Monitoring mouse events
 		browser.tabs.executeScript(tab.tabId, {file: "utils.js", allFrames: true}, function(Tab) {

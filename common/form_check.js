@@ -32,25 +32,38 @@
 // Using global URL of the current tab
 var global_url = get_root_domain(get_hostname(taburl));
 
-// Iterate over all forms
-for (var f = 0; f < document.forms.length; ++f) {
-
-	var current_url = get_root_domain(get_hostname(document.forms[f].getAttribute('action')));
-
-	var violation = "";
-	
-	if (global_url !== current_url) {
-		violation += "> Third-party: " + current_url + "\n";
+/**
+ * Checks whether this page contains any unsafe forms
+ * Loops through all forms on page and if any uses GET method or has action
+ * attribute different than the tab url then sends a message to formlock.js
+ */
+function check_forms() {
+	let violation = false;
+	// Iterate over all forms
+	for (var f = 0; f < document.forms.length; ++f) {
+		var current_url = get_root_domain(get_hostname(document.forms[f].getAttribute('action')));
+		
+		if (global_url !== current_url) {
+			violation = true;
+		}
+		
+		if (document.forms[f].method === "get") {
+			violation = true;
+		}
 	}
-	
-	if (document.forms[f].method === "get") {
-		violation += "> Submit with GET\n";
-	}
-	/**
-	 * If violations were found then colour the border red
-	 * This will be changed to notifications in future commits
-	 */
-	if (violation !== "") {   
-		document.forms[f].style.border = "medium solid red"; 
+	if (violation) {   
+		browser.runtime.sendMessage({msg : "ViolationFound", url : document.URL});
 	}
 }
+
+check_forms();
+
+/**
+ * Listens to form check requests from formlock.js
+ */
+browser.runtime.onMessage.addListener(function(request, sender, sendResponse) { 
+	// Retrive the clicked form for locking
+	if (request.msg == "CheckForms") {
+		check_forms();
+	}
+});
