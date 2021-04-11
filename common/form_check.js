@@ -41,7 +41,12 @@ function check_forms() {
 	let violation = false;
 	// Iterate over all forms
 	for (var f = 0; f < document.forms.length; ++f) {
-		var current_url = get_root_domain(get_hostname(document.forms[f].getAttribute('action')));
+		let curr_form = document.forms[f];
+		//Skip search bars
+		if (curr_form.role == "search") {
+			continue;
+		}
+		var current_url = get_root_domain(get_hostname(curr_form.getAttribute('action')));
 		
 		if (global_url !== current_url) {
 			violation = true;
