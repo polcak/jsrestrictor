@@ -305,7 +305,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	}
 	else if (request.msg === "ViolationFound") {
 		let tab_level = getCurrentLevelJSON(request.url)[0];
-		if (tab_level["level_id"] === "0") {
+		if (tab_level.formlock !== true) {
 			return;
 		}
 		else {
@@ -328,7 +328,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		return;
 	}
 	let curr_level = getCurrentLevelJSON(tab_url)[0];
-	if (curr_level["level_id"] === "0"){
+	if (curr_level.formlock !== true){
 		if (menu_created){
 			menu_created = false;
 			browser.menus.remove("Formstery", () => {});
@@ -379,7 +379,7 @@ browser.webNavigation.onCompleted.addListener(function(tab) {
 	browser.tabs.get(tab.tabId).then((tab_info) => {
 		decide_context_menu(tab_info.url);
 		let curr_level = getCurrentLevelJSON(tab_info.url)[0];
-		if (curr_level["level_id"] === "0"){
+		if (curr_level.formlock !== true){
 			//If user changed the level during lock then clear lock data to prevent blocking
 			if (lock_domains.length > 0 && tab.tabId == lock_tab){
 				lock_domains = [];

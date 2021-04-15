@@ -7,6 +7,7 @@
 //  Copyright (C) 2019  Martin Timko
 //  Copyright (C) 2020  Peter Hornak
 //	Copyright (C) 2020  Pavel Pohner
+//  Copyright (C) 2021  Matyas Szabo
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -140,7 +141,12 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 		</div>
 
 		${create_wrapping_groups_html()}
-		
+
+		<div class="main-section">
+			<input type="checkbox" id="formlock"></input>
+			<span class="section-header">Enable form security notifications and locking</span>
+		</div>
+
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
@@ -170,6 +176,9 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 			new_level[property] = convertor(elem[value_getter]);
 		};
 
+		if (document.getElementById("formlock").checked){
+			new_level["formlock"] = true;
+		}
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
 			if (new_level.level_id.length > 3) {
 				alert("Level ID too long, provide 3 characters or less");
