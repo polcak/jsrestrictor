@@ -134,6 +134,17 @@ function restore_cookies(){
 	);
 }
 
+var tabs_tb_closed = [];
+
+/**
+ * Closes all tabs that were opened during form lock
+ */
+function close_new_tabs() {
+	browser.tabs.remove(tabs_tb_closed, () => {
+		tabs_tb_closed = [];
+	});
+}
+
 /**
  * Refreshes the tab on which a form was locked
  * Sends a restore message to data_backup.js with storages and indexed databases to be restored
@@ -227,7 +238,8 @@ var click_handler = function(info, tab) {
 			browser.browserAction.setTitle({title: "FormLock"});
 			browser.contextMenus.update("lock", {"title": "Set Lock"});
 			lock_domains = [];
-			blocked = [];				
+			blocked = [];
+			close_new_tabs();			
 			unlock_url = tab.url.split("?")[0]; 
 			
 			browser.tabs.executeScript(tab.id, {code: `window.location.href=${unlock_url};`}, function(tab) {
@@ -303,10 +315,12 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			return;
 		}
 		else {
-			let msg = "We've found a potentially unsafe form on this page.\n"
-			msg += "If you need to fill out any sensitive information then we suggest you use the form lock feature"
-			msg += "(Right click on the form, Set lock, submit the form then Remove lock)";
-			show_notification("Form safety", msg);
+			if (lock_domains.length === 0) {
+				let msg = "We've found a potentially unsafe form on this page.\n"
+				msg += "If you need to fill out any sensitive information then we suggest you use the form lock feature"
+				msg += "(Right click on the form, Set lock, submit the form then Remove lock)";
+				show_notification("Form safety", msg);
+			}
 		}
 	}
 });
@@ -363,6 +377,26 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) => {
 	}
 });
 
+/**
+ * Saves IDs of tabs that were opened during lock
+ */
+browser.tabs.onCreated.addListener((tab) => {
+	if (lock_domains.length > 0){
+		tabs_tb_closed.push(tab.id);
+	}
+});
+
+/**
+ * Excludes closed tabes from tabs to be closed after lock
+ * Made purely so that close_new_tabs() wouldn't fail
+ */
+browser.tabs.onRemoved.addListener((tabId) => {
+	if (tabs_tb_closed.includes(tabId)){
+		const index = tabs_tb_closed.indexOf(tabId);
+		tabs_tb_closed.splice(index, 1);
+	}
+});
+
 /** 
  * INTERCEPTS PAGE SCRIPTS ON A NEW URL LOADED
  * This function is a modified version of the original function from Formlock.
@@ -377,6 +411,7 @@ browser.webNavigation.onCompleted.addListener(function(tab) {
 		if (curr_level.formlock !== true){
 			//If user changed the level during lock then clear lock data to prevent blocking
 			if (lock_domains.length > 0 && tab.tabId == lock_tab){
+				close_new_tabs();
 				lock_domains = [];
 				blocked = [];
 				backup = {};
