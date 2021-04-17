@@ -29,10 +29,27 @@ button {
 	height: 50px;
 }
 
-#demo-image {
+#demo-image , #fp-image{
 	display: none;
 }
 
 canvas {
 	border: 1px solid #000000;
+}
+
+.flex {
+	display: flex;
+}
+.flex *{
+ padding-right: 10px;
+}
+.hide{
+	display:none;
+}
+#precisionList li span {
+	float: left;
+	width: 320px;
+}
+#audio_results div {
+	overflow: hidden;
 }
