@@ -32,6 +32,25 @@
 // Using global URL of the current tab
 var global_url = get_root_domain(get_hostname(taburl));
 
+let safe_types = ["button", "color", "reset", "submit", "hidden"];
+/**
+ * Checks if an input element is of an unsafe type
+ * Throws an exception if the type is unsafe
+ * Safe types are considered to be button, color, reset, submit and hidden
+ * @param element HTML element 
+ */
+function check_element(element) {
+	if(element.nodeName == "INPUT") {
+		if (!safe_types.includes(element.getAttribute("type"))){
+			console.log(`Unsafe type is ${element.getAttribute("type")}`);
+			throw 'unsafe';
+		}
+	}
+	for (let node in element.childNodes){
+		check_element(element.childNodes[node]);
+	}
+}
+
 /**
  * Checks whether this page contains any unsafe forms
  * Loops through all forms on page and if any uses GET method or has action
@@ -44,6 +63,15 @@ function check_forms() {
 		let curr_form = document.forms[f];
 		//Skip search bars
 		if (curr_form.getAttribute("role") == "search") {
+			continue;
+		}
+		try {
+			check_element(curr_form);
+		} catch (error) {
+			violation = true;
+		}
+		//No violation means that there are no inputs of worthy value
+		if (!violation) {
 			continue;
 		}
 		var current_url = get_root_domain(get_hostname(curr_form.getAttribute('action')));
