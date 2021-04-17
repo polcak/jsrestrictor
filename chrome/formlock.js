@@ -72,7 +72,7 @@ browser.webRequest.onBeforeRequest.addListener(
 	["blocking"] 
 );
 
-var lock_tab = 0;
+var lock_tab = -1;
 var unlock_url = "";
 var unlock_msg = "";
 
@@ -378,11 +378,18 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) => {
 });
 
 /**
- * Saves IDs of tabs that were opened during lock
+ * Saves IDs of tabs that were opened during lock 
+ * Also prevents lock tab from opening more tabs
  */
 browser.tabs.onCreated.addListener((tab) => {
 	if (lock_domains.length > 0){
-		tabs_tb_closed.push(tab.id);
+		//Prevent the locked tab from opening more tabs
+		if (tab.openerTabId == lock_tab) {
+			browser.tabs.remove(tab.id);
+		}
+		else {
+			tabs_tb_closed.push(tab.id);
+		}
 	}
 });
 

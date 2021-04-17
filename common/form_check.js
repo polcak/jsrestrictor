@@ -42,7 +42,6 @@ let safe_types = ["button", "color", "reset", "submit", "hidden"];
 function check_element(element) {
 	if(element.nodeName == "INPUT") {
 		if (!safe_types.includes(element.getAttribute("type"))){
-			console.log(`Unsafe type is ${element.getAttribute("type")}`);
 			throw 'unsafe';
 		}
 	}
