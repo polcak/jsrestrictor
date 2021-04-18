@@ -59,6 +59,7 @@ function check_forms() {
 	let violation = false;
 	// Iterate over all forms
 	for (var f = 0; f < document.forms.length; ++f) {
+		let susceptible = false;
 		let curr_form = document.forms[f];
 		//Skip search bars
 		if (curr_form.getAttribute("role") == "search") {
@@ -67,10 +68,10 @@ function check_forms() {
 		try {
 			check_element(curr_form);
 		} catch (error) {
-			violation = true;
+			susceptible = true;
 		}
 		//No violation means that there are no inputs of worthy value
-		if (!violation) {
+		if (!susceptible) {
 			continue;
 		}
 		var current_url = get_root_domain(get_hostname(curr_form.getAttribute('action')));
