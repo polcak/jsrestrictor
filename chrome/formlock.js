@@ -134,17 +134,6 @@ function restore_cookies(){
 	);
 }
 
-var tabs_tb_closed = [];
-
-/**
- * Closes all tabs that were opened during form lock
- */
-function close_new_tabs() {
-	browser.tabs.remove(tabs_tb_closed, () => {
-		tabs_tb_closed = [];
-	});
-}
-
 /**
  * Refreshes the tab on which a form was locked
  * Sends a restore message to data_backup.js with storages and indexed databases to be restored
@@ -239,7 +228,6 @@ var click_handler = function(info, tab) {
 			browser.contextMenus.update("lock", {"title": "Set Lock"});
 			lock_domains = [];
 			blocked = [];
-			close_new_tabs();			
 			unlock_url = tab.url.split("?")[0]; 
 			
 			browser.tabs.executeScript(tab.id, {code: `window.location.href=${unlock_url};`}, function(tab) {
@@ -258,6 +246,11 @@ var click_handler = function(info, tab) {
 				if (payload !== null) {					
 					started = (new Date()).getTime();
 					// Page url and the form url
+					if (!payload){
+						show_notification("Form security",
+						"No form detected. If you are sure that one is present then try again on an input field");
+						return;
+					}
 					var first = get_root_domain(get_hostname(tab.url));
 					var second = get_root_domain(payload.domain);
 					lock_tab = tab.id;
@@ -378,31 +371,21 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) => {
 });
 
 /**
- * Saves IDs of tabs that were opened during lock 
- * Also prevents lock tab from opening more tabs
+ * Prevents lock tab from opening more tabs
  */
 browser.tabs.onCreated.addListener((tab) => {
 	if (lock_domains.length > 0){
-		//Prevent the locked tab from opening more tabs
+		/* Prevent the locked tab from opening more tabs
+		 * Also prevents user on lock_tab to open new tabs
+		 */
 		if (tab.openerTabId == lock_tab) {
 			browser.tabs.remove(tab.id);
-		}
-		else {
-			tabs_tb_closed.push(tab.id);
+			show_notification("Form security", 
+			"Opening new tabs from the locked tab is disabled during form lock for security reasons");
 		}
 	}
 });
 
-/**
- * Excludes closed tabes from tabs to be closed after lock
- * Made purely so that close_new_tabs() wouldn't fail
- */
-browser.tabs.onRemoved.addListener((tabId) => {
-	if (tabs_tb_closed.includes(tabId)){
-		const index = tabs_tb_closed.indexOf(tabId);
-		tabs_tb_closed.splice(index, 1);
-	}
-});
 
 /** 
  * INTERCEPTS PAGE SCRIPTS ON A NEW URL LOADED
@@ -418,7 +401,6 @@ browser.webNavigation.onCompleted.addListener(function(tab) {
 		if (curr_level.formlock !== true){
 			//If user changed the level during lock then clear lock data to prevent blocking
 			if (lock_domains.length > 0 && tab.tabId == lock_tab){
-				close_new_tabs();
 				lock_domains = [];
 				blocked = [];
 				backup = {};
