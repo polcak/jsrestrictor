@@ -32,7 +32,7 @@
 // Using global URL of the current tab
 var global_url = get_root_domain(get_hostname(taburl));
 
-let safe_types = ["button", "color", "reset", "submit", "hidden"];
+var safe_types = ["button", "color", "reset", "submit", "hidden"];
 /**
  * Checks if an input element is of an unsafe type
  * Throws an exception if the type is unsafe
@@ -54,6 +54,9 @@ function check_element(element) {
  * Checks whether this page contains any unsafe forms
  * Loops through all forms on page and if any uses GET method or has action
  * attribute different than the tab url then sends a message to formlock.js
+ * This function is a modified version of the original function from Formlock
+ * ^Forms are not highlighted as not to make JSR detectable
+ * ^Criteria for unsage forms was tweaked in order to allow search bars and such
  */
 function check_forms() {
 	let violation = false;

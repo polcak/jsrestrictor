@@ -22,7 +22,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-/**\file formlock.js
+/**\file formlock_common.js
  * Background script for form locking
  * This script is a modified version of background.js from Formlock
  * (https://github.com/ostarov/Formlock). The author Oleksii Starov has agreed
@@ -33,20 +33,36 @@ var lock_domains = [];
 var blocked = [];
 var backup = {};
 
+var lock_tab = -1;
+var unlock_url = "";
+var unlock_msg = "";
+
+var is_chrome = false;
+if (browser === chrome) {
+    is_chrome = true;
+    browser.menus = browser.contextMenus;
+}
+
 /**
  * Blocking of web requests
+ * This function is a modified version of the original function from Formlock
+ * ^Added tab based blocking
  * Created separately so that the listener could be added and
  * removed during JSR level changes
  * @param details Page details passed by onBeforeRequest 
  * @returns \{cancel : false} if request 
  */
-function request_blocking(details) {
+ function request_blocking(details) {
 	if (lock_domains.length > 0) {
 		if (details.tabId != lock_tab){
 			return {cancel : false};
 		}
 		var current_domain = get_root_domain(get_hostname(details.url));
 		if (lock_domains.indexOf(current_domain) !== -1) {
+			return {cancel : false};
+		}
+
+		if (details.url.indexOf("chrome-extension://") === 0){
 			return {cancel : false};
 		}
 	
@@ -60,135 +76,12 @@ function request_blocking(details) {
 
 /**
  * Blocks request to third party domains except for the lock domains
- * \todo change global blocking to per tab/frame based!
  */
 browser.webRequest.onBeforeRequest.addListener(
 	request_blocking,
 	{urls: ["<all_urls>"]},
 	["blocking"] 
 );
-
-var lock_tab = -1;
-var unlock_url = "";
-var unlock_msg = "";
-
-/**
- * Backs up cookies for the locked domain
- * @param cookies_url URL to which the cookies should be related
- * @returns Promise which resolves to array of cookies
- */
-function backup_cookies(cookies_url){
-	return new Promise(
-		function(resolve, reject){
-			let cookie_backup = [];
-			browser.cookies.getAll({url : cookies_url}).then((Cookies) => {
-				//reduction because not all cookie parameters can be used in set()
-				for (let cookie of Cookies){
-					let reduced_cookie = {
-						domain : cookie.domain,
-						httpOnly : cookie.httpOnly,
-						name : cookie.name,
-						path : cookie.path,
-						secure : cookie.secure,
-						sameSite : cookie.sameSite,
-						secure : cookie.secure,
-						storeId : cookie.storeId,
-						url : cookies_url,
-						value : cookie.value
-					}
-					if (!cookie.session){
-						reduced_cookie.expirationDate = cookie.expirationDate;
-					}
-					if (cookie.firstPartyIsolate){
-						reduced_cookie.firstPartyIsolate = cookie.firstPartyIsolate;
-					}
-					cookie_backup.push(reduced_cookie);
-				}
-				resolve(cookie_backup);
-			});
-		}
-	);
-}
-
-/**
- * Restores cookies which were backed up on lock
- * @returns Promise which resolves after the restoration is done
- */
-function restore_cookies(){
-	return new Promise(
-		function(resolve, reject){
-			let cookies_restored = 0;
-			if (backup.cookies.length == 0){
-				resolve();
-			}
-			for (let cookie in backup.cookies){
-				browser.cookies.set(backup.cookies[cookie]).then(() => {
-					cookies_restored++;
-					if(cookies_restored == backup.cookies.length){
-						resolve();
-					}
-				});
-			}
-		}
-	);
-}
-
-var started = null;
-
-
-/**
- * Sends a restore message to data_backup.js with storages to be restored
- * then notifies the user about blocked requests to other domains
- */
-function refresh_lock_tab() {
-	browser.tabs.sendMessage(lock_tab, {"msg": "RestoreStorage", "data": backup}, () => {
-		restore_cookies().then(() => {
-			started = null;
-			show_notification("Form safety", unlock_msg); 
-		});
-	});
-};
-
-/**
- * CLEARING STORAGES OF POTENTIAL LEAKS
- * @param callback function which refreshes the page
- * This function is a modified version of the original function from Formlock
- * ^Changed items in the list to match:
- * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/browsingData/DataTypeSet
- * ^Changed the code to handle the returned promise in Firefox version
- */
-function clear_new_data(callback) {   
-	if (started !== null) {
-		browser.browsingData.remove({
-			since: started
-		  }, {
-			cache: true,
-			downloads: true,
-			formData: true,
-			history: true,
-			indexedDB: true,
-			pluginData: true,
-			passwords: true,
-			serverBoundCertificates: true,
-			serviceWorkers: true
-		  }).then(() => {
-				/* Firefox doesn't support removing localStorage using since other than 0
-				 * Added cookies too here because we are backing them up anyway
-				 */
-				let url = new URL(unlock_url);
-				browser.browsingData.remove({
-					since: 0,
-					hostnames : [url.hostname] 
-				},{
-					localStorage: true,
-					cookies: true
-				});	
-			  	refresh_lock_tab();
-			}, (error) => {
-				console.error(error);
-		  });
-	}
-}
 
 /**
  * (1) Process the menu clicks
@@ -197,7 +90,7 @@ function clear_new_data(callback) {
  * ^Changed message sending to be more on par with Mozilla documentation
  * ^Replaced alerts with notifications because Firefox doesn't allow alert in bg scripts 
  */
-function click_handler(info, tab) {
+ function click_handler(info, tab) {
 	var url = info.frameUrl ? info.frameUrl : info.pageUrl;
 	
 	// Explain the form risks option
@@ -249,7 +142,7 @@ function click_handler(info, tab) {
 				});
 			});
 			// Set LOCK
-			browser.tabs.sendMessage(tab.id, {"msg": "FLGetClickedForm", "url": url}).then((payload) => {
+			browser.tabs.sendMessage(tab.id, {"msg": "FLGetClickedForm", "url": url}, (payload) => {
 				if (payload !== null) {
 					started = (new Date()).getTime();
 					// Page url and the form url
@@ -274,11 +167,12 @@ function click_handler(info, tab) {
 	}
 };
 
-var menu_created = true;
+var menu_created = false;
+
 /**
  * Creates context menu for form locking
  */
-function create_context_menu(){
+ function create_context_menu(){
 	// (2) Register the menu items
 	menu_created = true;
 	let lock_text = "";
@@ -296,34 +190,6 @@ function create_context_menu(){
 	browser.menus.create({"type": "separator", "contexts": ["all"], "parentId": "Formstery"});
 	browser.menus.create({"title": lock_text, "contexts": ["all"], "parentId": "Formstery", "id": "lock", "onclick": click_handler}); 
 }
-
-create_context_menu();
-
-/**
- * UPDATES THE CONTEXT MENU WITH CURRENT FORM'S INFO
- * Also shows notification when the content script form_check.js found a potentially
- * unsafe form
- */
-browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-	if (request.req === "FLClickedForm") {	  
-		browser.menus.update("submitMethod", {"title": "Submit method: " + request.method});
-		browser.menus.update("submitTo", {"title": "Submits to: " + get_root_domain(request.domain)});
-	}
-	else if (request.msg === "ViolationFound") {
-		let tab_level = getCurrentLevelJSON(request.url)[0];
-		if (tab_level.formlock !== true) {
-			return;
-		}
-		else {
-			if (lock_domains.length === 0) {
-				let msg = "We've found a potentially unsafe form on this page.\n"
-				msg += "If you need to fill out any sensitive information then we suggest you use the form lock feature"
-				msg += "(Right click on the form, Set lock, submit the form then Remove lock)";
-				show_notification("Form safety", msg);
-			}	
-		}
-	}
-});
 
 /**
  * Checks security level associated with page and creates or removes context menu
@@ -351,6 +217,33 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	}
 }
 
+/**
+ * UPDATES THE CONTEXT MENU WITH CURRENT FORM'S INFO
+ * This function is a modified version of the original function from Formlock
+ * ^shows notification when the content script form_check.js found a potentially
+ * unsafe form
+ */
+ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+	if (request.req === "FLClickedForm") {	  
+		browser.contextMenus.update("submitMethod", {"title": "Submit method: " + request.method});
+		browser.contextMenus.update("submitTo", {"title": "Submits to: " + get_root_domain(request.domain)});
+	}
+	else if (request.msg === "ViolationFound") {
+		let tab_level = getCurrentLevelJSON(request.url)[0];
+		if (tab_level.formlock !== true) {
+			return;
+		}
+		else {
+			if (lock_domains.length === 0) {
+				let msg = "We've found a potentially unsafe form on this page.\n"
+				msg += "If you need to fill out any sensitive information then we suggest you use the form lock feature"
+				msg += "(Right click on the form, Set lock, submit the form then Remove lock)";
+				show_notification("Form safety", msg);
+			}
+		}
+	}
+});
+
 var injected_tabs = [];
 
 /**
@@ -359,7 +252,7 @@ var injected_tabs = [];
  * vulnerability of forms
  */
 browser.tabs.onActivated.addListener((tab) => {
-	browser.tabs.query({active : true, currentWindow : true}).then((active_tab) => {
+	browser.tabs.query({active : true, currentWindow : true}, (active_tab) => {
 		decide_context_menu(active_tab[0].url);
 		if (injected_tabs.includes(active_tab[0].id)) {
 			browser.tabs.sendMessage(active_tab[0].id, {msg : "CheckForms"});
@@ -387,80 +280,99 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) => {
 		 */
 		if (tab.openerTabId == lock_tab) {
 			browser.tabs.remove(tab.id);
-			show_notification("Form security", 
-			"Opening new tabs from the locked tab is disabled during form lock for security reasons");
+			//Chromium also blocks user opened tabs, therefore this message
+            if (is_chrome){
+                show_notification("Form security", 
+                "Opening new tabs from the locked tab is disabled during form lock for security reasons");
+            }
 		}
 	}
 });
 
+/**
+ * Checks for page JSR level and injects code
+ * @param tab_info Contains url of the tab
+ * @param tab Original tab object, used because tab_info id caused errors
+ */
+function handle_tab(tab_info, tab) {
+    decide_context_menu(tab_info.url);
+    let curr_level = getCurrentLevelJSON(tab_info.url)[0];
+    if (curr_level.formlock !== true){
+        //If user changed the level during lock then clear lock data to prevent blocking
+        if (lock_domains.length > 0 && tab.tabId == lock_tab){
+            lock_domains = [];
+            blocked = [];
+            backup = {};
+        }
+        //If tab was previously injected but lvl changed to 0
+        if (injected_tabs.includes(tab.tabId)) {
+            const index = injected_tabs.indexOf(tab.tabId);
+            injected_tabs.splice(index, 1);
+        }
+        return;
+    }
+
+    //Prevent needless injection attempts into irrelevant pages
+    if(tab.url.indexOf("about\:") != -1 || tab.url === "about:blank" ||
+        tab.url.indexOf("chrome\:\/\/") != -1){
+        return;
+    }
+    //Do not inject the same tab repeatedly
+    if (!injected_tabs.includes(tab.tabId)) {
+        injected_tabs.push(tab.tabId);
+    }
+    
+    // (1) Monitoring mouse events
+    browser.tabs.executeScript(tab.tabId, {file: "utils.js", allFrames: true}, function(Tab) {
+        // UTILS ->
+        browser.tabs.executeScript(tab.tabId, {
+                allFrames: true,
+                file: "mouse_track.js"
+        });
+        // <- UTILS
+    });
+    
+    // (2) Highlighting risky forms
+    browser.tabs.executeScript(tab.tabId, {file: "utils.js", allFrames: true}, function(Tab) {
+        // UTILS ->
+        browser.tabs.get(tab.tabId, function(Tab) {
+            // Passing the tab URL
+            browser.tabs.executeScript(tab.tabId, {
+                allFrames: true,
+                code: "var taburl = \"" + tab.url + "\";"
+            }, 
+            function() {
+                // Main code
+                browser.tabs.executeScript(tab.tabId, {
+                    allFrames: true,
+                    file: "form_check.js"
+                });
+            });
+        }); 
+        // <- UTILS
+    });
+}
 
 /** 
  * INTERCEPTS PAGE SCRIPTS ON A NEW URL LOADED
- * This function is a modified version of the original function from Formlock
- * A check was added so that the scripts aren't injected into forbidden pages which would cause errors
+ * This function is a modified version of the original function from Formlock.
+ * ^A check was added so that the scripts aren't injected into forbidden pages which would cause errors
+ * ^JSR security level check in order to not inject pages on level 0
  */
-browser.webNavigation.onCompleted.addListener(function(tab) {
+ browser.webNavigation.onCompleted.addListener(function(tab) {
 	//Do not inject when security level is 0
-	browser.tabs.get(tab.tabId).then((tab_info) => {
-		decide_context_menu(tab_info.url);
-		let curr_level = getCurrentLevelJSON(tab_info.url)[0];
-		if (curr_level.formlock !== true){
-			//If user changed the level during lock then clear lock data to prevent blocking
-			if (lock_domains.length > 0 && tab.tabId == lock_tab){
-				lock_domains = [];
-				blocked = [];
-				backup = {};
-			}
-			//If tab was previously injected but lvl changed to 0
-			if (injected_tabs.includes(tab.tabId)) {
-				const index = injected_tabs.indexOf(tab.tabId);
-				injected_tabs.splice(index, 1);
-			}
-			return;
-		}
-	
-		//Prevent needless injection attempts into irrelevant pages
-		if(tab.url.indexOf("about\:") != -1 || tab.url === "about:blank" ||
-		   tab.url.indexOf("chrome\:\/\/") != -1){
-			return;
-		}
-
-		//Do not inject the same tab repeatedly
-		if (injected_tabs.includes(tab.tabId)) {
-			return;
-		}
-		injected_tabs.push(tab.tabId);
-		
-		// (1) Monitoring mouse events
-		browser.tabs.executeScript(tab.tabId, {file: "utils.js", allFrames: true}, function(Tab) {
-			// UTILS ->
-			browser.tabs.executeScript(tab.tabId, {
-					allFrames: true,
-					file: "mouse_track.js"
-			});
-			// <- UTILS
-		});
-		
-		// (2) Highlighting risky forms
-		browser.tabs.executeScript(tab.tabId, {file: "utils.js", allFrames: true}, function(Tab) {
-			// UTILS ->
-			browser.tabs.get(tab.tabId, function(Tab) { 
-				// Passing the tab URL
-				browser.tabs.executeScript(tab.tabId, { 
-					allFrames: true,
-					code: "var taburl = \"" + tab.url + "\";"
-				}, 
-				function() {
-					// Main code
-					browser.tabs.executeScript(tab.tabId, {
-						allFrames: true,
-						file: "form_check.js"
-					});
-				});
-			}); 
-			// <- UTILS
-		});
-	}, (error_msg) => {
-		console.log(error_msg)
-	});
+    if (is_chrome) {
+        //Chrome
+        browser.tabs.get(tab.tabId, (tab_info) => {
+            handle_tab(tab_info, tab);
+        });
+    }
+    else {
+        //Firefox
+        browser.tabs.get(tab.tabId).then((tab_info) => {
+            handle_tab(tab_info, tab);
+        }, (error_msg) => {
+            console.log(error_msg)
+        });
+    }
 });
