@@ -70,9 +70,11 @@ class Geolocation:
 class Device:
     def __init__(self,
                  device_memory,
-                 hardware_concurrency):
+                 hardware_concurrency,
+                 IOdevices):
         self.deviceMemory = device_memory
         self.hardwareConcurrency = hardware_concurrency
+        self.IOdevices = IOdevices
 
 
 ## All variables that are checked during testing.
@@ -99,6 +101,7 @@ class TestedValues:
 
                  device_memory,
                  hardware_concurrency,
+                 IOdevices,
 
                  referrer,
                  time,
@@ -129,7 +132,8 @@ class TestedValues:
         )
         self.device = Device(
             device_memory,
-            hardware_concurrency
+            hardware_concurrency,
+            IOdevices
         )
         self.referrer = referrer
         self.time = time
