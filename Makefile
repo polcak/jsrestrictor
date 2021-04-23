@@ -37,7 +37,10 @@ get_csv:
 	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
 
 docs:
-	PROJECT_NAME="${PROJECT_NAME}" doxygen < doxyfile
+	PROJECT_NAME="${PROJECT_NAME}" doxygen -T < doxyfile
+
+serve-docs:
+	cd doxygen/html; python3 -m http.server
 
 clean:
 	rm -rf firefox_JSR.zip
