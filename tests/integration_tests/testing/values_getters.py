@@ -79,6 +79,25 @@ def get_device(driver):
     return device
 
 
+## Get IO devices.
+#
+#  Only executing javascript and geting returned values. No support page is needed.
+def get_IOdevices(driver):
+    return driver.execute_async_script("""
+        var callback = arguments[arguments.length - 1];
+
+        navigator.mediaDevices.enumerateDevices()
+            .then(function(devices) {
+                callback(devices);
+            });
+        
+        /* Set timeout for getting IO devices. If no timeout is set, driver would be waiting forever. */
+        setTimeout(function(){
+          callback("ERROR");
+        }, 5000);
+    """)
+
+
 ## Get referrer - where the page was navigated from.
 #
 #  In this case, webpage amiunique.org is opened through test page and referrer on page amiunique.org is returned.
