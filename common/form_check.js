@@ -51,55 +51,55 @@ function check_element(element) {
 }
 
 /**
- * Checks whether this page contains any unsafe forms
- * Loops through all forms on page and if any uses GET method or has action
- * attribute different than the tab url then sends a message to formlock.js
+ * Checks whether given form is safe or not
+ * checks if form uses GET method or has action attribute different than
+ * the tab url then sends a message to formlock.js
  * This function is a modified version of the original function from Formlock
  * ^Forms are not highlighted as not to make JSR detectable
- * ^Criteria for unsage forms was tweaked in order to allow search bars and such
+ * ^Criteria for unsafe forms was tweaked in order to allow search bars and such
+ * @param curr_form form object
  */
-function check_forms() {
-	let violation = false;
-	// Iterate over all forms
-	for (var f = 0; f < document.forms.length; ++f) {
-		let susceptible = false;
-		let curr_form = document.forms[f];
-		//Skip search bars
-		if (curr_form.getAttribute("role") == "search") {
-			continue;
-		}
-		try {
-			check_element(curr_form);
-		} catch (error) {
-			susceptible = true;
-		}
-		//No violation means that there are no inputs of worthy value
-		if (!susceptible) {
-			continue;
-		}
+function check_form(curr_form) {
+	//Skip search bars
+	if (curr_form.getAttribute("role") == "search") {
+		return;
+	}
+	try {
+		check_element(curr_form);
+	} catch (error) {
+		susceptible = true;
+	}
+	//No violation means that there are no inputs of worthy value
+	if (!susceptible) {
+		return;
+	}
+	curr_form.addEventListener("focusin", () => {
+		let violation = false;
 		var current_url = get_root_domain(get_hostname(curr_form.getAttribute('action')));
-		
+	
 		if (global_url !== current_url) {
 			violation = true;
 		}
 		
-		if (document.forms[f].method === "get") {
+		if (curr_form.method === "get") {
 			violation = true;
 		}
-	}
-	if (violation) {   
-		browser.runtime.sendMessage({msg : "ViolationFound", url : document.URL});
-	}
+	
+		if (violation) {   
+			browser.runtime.sendMessage({msg : "ViolationFound", url : document.URL});
+		}
+	});
 }
 
-check_forms();
+for (var f = 0; f < document.forms.length; ++f) {
+	let susceptible = false;
+	let curr_form = document.forms[f];
+	check_form(curr_form);
+}
 
 /**
- * Listens to form check requests from formlock.js
+ * Sends message to formlock_common.js to reallow form safety notifications on this tab
  */
-browser.runtime.onMessage.addListener(function(request, sender, sendResponse) { 
-	// Retrive the clicked form for locking
-	if (request.msg == "CheckForms") {
-		check_forms();
-	}
+window.addEventListener("beforeunload", () => {
+	browser.runtime.sendMessage({msg : "ReallowNotifs"});
 });

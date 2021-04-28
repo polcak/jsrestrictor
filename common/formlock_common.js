@@ -217,6 +217,8 @@ var menu_created = false;
 	}
 }
 
+var tabs_notified = [];
+
 /**
  * UPDATES THE CONTEXT MENU WITH CURRENT FORM'S INFO
  * This function is a modified version of the original function from Formlock
@@ -234,31 +236,26 @@ var menu_created = false;
 			return;
 		}
 		else {
-			if (lock_domains.length === 0) {
-				let msg = "We've found a potentially unsafe form on this page.\n"
-				msg += "If you need to fill out any sensitive information then we suggest you use the form lock feature"
-				msg += "(Right click on the form, Set lock, submit the form then Remove lock)";
-				show_notification("Form safety", msg);
+			if (!tabs_notified.includes(sender.tab.id)) {
+				tabs_notified.push(sender.tab.id);
 			}
+			else {
+				return;
+			}
+			let msg = `You've clicked on a potentially unsafe form.\n
+If you need to fill out any sensitive information then we suggest you use the form lock feature (Right click on the form, Set lock, submit the form then Remove lock)`;
+			show_notification("Form safety", msg);
+		}
+	}
+	else if (request.msg === "ReallowNotifs") {
+		if (tabs_notified.includes(sender.tab.id)) {
+			const index = tabs_notified.indexOf(sender.tab.id);
+			tabs_notified.splice(index, 1);
 		}
 	}
 });
 
 var injected_tabs = [];
-
-/**
- * Listens to the change of active tab
- * Also if the tab is injected with form_check then sends message to check
- * vulnerability of forms
- */
-browser.tabs.onActivated.addListener((tab) => {
-	browser.tabs.query({active : true, currentWindow : true}, (active_tab) => {
-		decide_context_menu(active_tab[0].url);
-		if (injected_tabs.includes(active_tab[0].id)) {
-			browser.tabs.sendMessage(active_tab[0].id, {msg : "CheckForms"});
-		}
-	});
-});
 
 //Removes tabId from injected pages if the user navigated elsewhere on injected tab
 browser.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) => {
