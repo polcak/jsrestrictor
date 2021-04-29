@@ -60,6 +60,7 @@ function check_element(element) {
  * @param curr_form form object
  */
 function check_form(curr_form) {
+	let susceptible = false;
 	//Skip search bars
 	if (curr_form.getAttribute("role") == "search") {
 		return;
@@ -74,25 +75,27 @@ function check_form(curr_form) {
 		return;
 	}
 	curr_form.addEventListener("focusin", () => {
-		let violation = false;
+		let violation_msg = "";
 		var current_url = get_root_domain(get_hostname(curr_form.getAttribute('action')));
 	
 		if (global_url !== current_url) {
-			violation = true;
+			violation_msg += "Form submits to third party\n";
 		}
 		
 		if (curr_form.method === "get") {
-			violation = true;
+			violation_msg += "Form uses GET submition method";
 		}
 	
-		if (violation) {   
-			browser.runtime.sendMessage({msg : "ViolationFound", url : document.URL});
+		if (violation_msg) {
+			browser.runtime.sendMessage({msg : "ViolationFound", document_url : document.URL, action_url : current_url, violation : violation_msg});
 		}
+	});
+	curr_form.addEventListener("submit", () => {
+		//browser.runtime.sendMessage({msg : "UnlockForm"});
 	});
 }
 
 for (var f = 0; f < document.forms.length; ++f) {
-	let susceptible = false;
 	let curr_form = document.forms[f];
 	check_form(curr_form);
 }

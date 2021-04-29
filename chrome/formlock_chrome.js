@@ -94,10 +94,13 @@ function restore_cookies(){
  */
 function refresh_lock_tab(){
 	restore_cookies().then(() => {
-		browser.tabs.sendMessage(lock_tab, {"msg": "RestoreStorage", "data": backup}, () => {
-			browser.tabs.update(lock_tab, {url: unlock_url}, (tab) => {
+		browser.tabs.update(lock_tab, {url: unlock_url}, (tab) => {
+			browser.tabs.sendMessage(lock_tab, {"msg": "RestoreStorage", "data": backup}, () => {
 				started = null;
-				show_notification("Form safety", unlock_msg); 
+				show_notification("Form safety", unlock_msg);
+				lock_tab = -1;
+				lock_domains = [];
+				blocked = [];	
 			});
 		});
 	});

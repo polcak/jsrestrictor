@@ -64,7 +64,7 @@ function restore_data(data){
  * up
  */
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) { 
-    if (request.msg == "BackupStorage" && document.URL == request.url) {
+    if (request.msg == "BackupStorage") {
         let data = backup_storages();
 		sendResponse({backup: data});
     }

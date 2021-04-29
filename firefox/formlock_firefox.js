@@ -98,7 +98,10 @@ function refresh_lock_tab() {
 	browser.tabs.sendMessage(lock_tab, {"msg": "RestoreStorage", "data": backup}, () => {
 		restore_cookies().then(() => {
 			started = null;
-			show_notification("Form safety", unlock_msg); 
+			show_notification("Form safety", unlock_msg);
+			lock_tab = -1;
+			lock_domains = [];
+			blocked = [];	
 		});
 	});
 };

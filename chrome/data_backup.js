@@ -328,6 +328,9 @@ async function restore_databases(databases){
  * @param data JSON with data to be restored, includes storages, cookies and indexed databases
  */
 async function restore_data(data){
+	// Preventive clear due to a bug during testing
+	localStorage.clear();
+	sessionStorage.clear();
 	//Restoration of pre-lock items
 	for (let key in data.local){
 		localStorage.setItem(key, data.local[key]);
@@ -344,7 +347,7 @@ async function restore_data(data){
  * up
  */
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) { 
-    if (request.msg == "BackupStorage" && document.URL == request.url) {
+    if (request.msg == "BackupStorage") {
         let data = backup_storages();
 		backup_databases().then((dbs) => {
 			data.indexed_DBs = dbs;
