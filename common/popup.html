@@ -25,15 +25,28 @@
 
 	<section id="http_shield_whitelist">
 	<h3>Network boundary shield</h3>
-	<p id="shield_off_message"></p>
+	<p class="message_off" id="shield_off_message"></p>
 	<div id="http_shield_switch_wrapper">
-			<label id="switch-label">Shield enabled for this site:</label>
+			<label class="switch-label">Shield enabled for this site:</label>
 			<label class="switch">
 				<input id="switch-checkbox" type="checkbox" checked>
-				<span class="slider"></span>
+				<span id="http_slider" class="slider"></span>
 		</label>
 	</div>
 	</section>
+
+ 	<section id="formlock_whitelist">
+		<h3>Formlock</h3>
+		<p class="message_off" id="formlock_off_message"></p>
+		<div id="formlock_switch_wrapper">
+				<label class="switch-label">Block 3rd party requests during form submition:</label>
+				<label class="switch">
+					<input id="switch-formlock-checkbox" type="checkbox" checked>
+					<span id="formlock_slider" class="slider"></span>
+			</label>
+		</div>
+	</section>
+
 
 </body>
 

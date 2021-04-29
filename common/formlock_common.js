@@ -43,14 +43,52 @@ if (browser === chrome) {
 }
 
 // Keeps Formlock setting for all visited sites
-var FL_settings = [];
+var FL_whitelist = new Object();
 
+function sync_whitelist() {
+	browser.storage.sync.get(["FL_whitelist"], function(result){
+		if (result.FL_whitelist) {
+			FL_whitelist = result.FL_whitelist;
+		}
+	});
+}
 
-browser.storage.sync.get(["FL_settings"], function(result){
-	if (result.FL_settings != undefined) {
-		FL_settings = result.FL_settings;
+sync_whitelist();
+
+function update_settings(action, site) {
+	if (action == "add_whitelisted") {
+		if (FL_whitelist[site] != undefined){
+			FL_whitelist[site] = true;
+		}
+		else {
+			FL_whitelist[site] = true;
+		}
 	}
-});
+	else if (action == "remove_whitelisted") {
+		if (FL_whitelist[site] != undefined){
+			delete FL_whitelist[site];
+		}
+	}
+	browser.storage.sync.set({"FL_whitelist": FL_whitelist}, (val) => {
+		console.log(`FL_whitelist set to ${val} while var is ${FL_whitelist}`);
+	});
+}
+
+function is_domain_whitelisted(domain) {
+	domain = new URL(domain);
+	domain = wwwRemove(domain.hostname);
+	if (FL_whitelist[domain] == undefined) {
+		return false;
+	}
+	else {
+		if (FL_whitelist[domain] == true) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+}
 
 /**
  * Blocking of web requests
@@ -61,17 +99,26 @@ browser.storage.sync.get(["FL_settings"], function(result){
  * @param details Page details passed by onBeforeRequest 
  * @returns \{cancel : false} if request 
  */
- function request_blocking(details) {
+function request_blocking(details) {
 	if (lock_domains.length > 0) {
 		if (details.tabId != lock_tab){
 			return {cancel : false};
 		}
-		var current_domain = get_root_domain(get_hostname(details.url));
-		if (lock_domains.indexOf(current_domain) !== -1) {
+
+		current_domain = new URL(details.url);
+		current_domain = wwwRemove(current_domain.hostname);
+
+		if (is_domain_whitelisted(details.url)) {
 			return {cancel : false};
 		}
 
-		if (details.url.indexOf("chrome-extension://") === 0){
+		for (let domain of lock_domains) {
+			if (extractSubDomains(current_domain).includes(domain)) {
+				return {cancel : false};
+			}
+		}
+
+		if (details.url.indexOf("extension") === 0){
 			return {cancel : false};
 		}
 	
@@ -125,11 +172,12 @@ function lock_form(document_url, action_url, tab_id) {
 
 			started = (new Date()).getTime();
 			// Page url and the form url
-			var first = get_root_domain(get_hostname(document_url));
+			var first = new URL(document_url);
+			first = wwwRemove(first.hostname);
 			var second = action_url;
 			lock_tab = tab_id;
 			lock_domains.push(first);
-			if (first !== second) {
+			if (!(extractSubDomains(second).includes(first))) {
 				lock_domains.push(second);
 			}
 			browser.browserAction.setTitle({title: lock_domains.join("\n")})
@@ -154,8 +202,10 @@ var tabs_notified = [];
 		}
 		else {
 			if (sender.tab.id != lock_tab) {
+				if (is_domain_whitelisted(sender.tab.url)) {
+					return;
+				}
 				lock_tab = sender.tab.id;
-				console.log(`lock tab is: ${lock_tab}`);
 				lock_form(request.document_url, request.action_url, sender.tab.id);
 			}
 			if (!tabs_notified.includes(sender.tab.id)) {
@@ -169,14 +219,30 @@ Form safety violations are:\n${request.violation}`;
 			show_notification("Form safety", msg);
 		}
 	}
-	else if (request.msg === "UnlockForm") {
-		unlock_form(sender.tab.url);
-	}
 	else if (request.msg === "ReallowNotifs") {
 		if (tabs_notified.includes(sender.tab.id)) {
 			const index = tabs_notified.indexOf(sender.tab.id);
 			tabs_notified.splice(index, 1);
 		}
+	}
+	// From popup.js
+	else if (request.message == "formlock add whitelisted site") {
+		update_settings("add_whitelisted", request.site, null);
+	}
+	else if (request.message == "formlock remove whitelisted site") {
+		update_settings("remove_whitelisted", request.site, null);
+	}
+	else if (request.message == "are 3rd party requests blocked on this site?") {
+		if (is_domain_whitelisted(request.site)) {
+			sendResponse("no");
+		}
+		else {
+			sendResponse("yes");
+		}
+	}
+	// From options.js
+	else if (request.message == "FL_whitelist updated") {
+		sync_whitelist();
 	}
 });
 

@@ -90,9 +90,6 @@ function check_form(curr_form) {
 			browser.runtime.sendMessage({msg : "ViolationFound", document_url : document.URL, action_url : current_url, violation : violation_msg});
 		}
 	});
-	curr_form.addEventListener("submit", () => {
-		//browser.runtime.sendMessage({msg : "UnlockForm"});
-	});
 }
 
 for (var f = 0; f < document.forms.length; ++f) {

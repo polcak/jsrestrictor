@@ -158,7 +158,13 @@ section.content {
 	flex-direction: column;
 }
 
-#whitelist-select
+#formlock-config
+{
+	display:flex;
+	flex-direction: column;
+}
+
+.whitelist-selects
 {
 	width:40%;
 	max-width: 400px;
@@ -168,7 +174,7 @@ section.content {
 	margin-top: 3px;
 }
 
-#whitelist-input
+.whitelist-inputs
 {
 	width: 39.5%;
 	max-width: 394px;
