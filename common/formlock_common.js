@@ -36,6 +36,7 @@ var backup = {};
 var lock_tab = -1;
 var unlock_url = "";
 var unlock_msg = "";
+var lock_form_id = -1;
 
 var is_chrome = false;
 if (browser === chrome) {
@@ -69,9 +70,7 @@ function update_settings(action, site) {
 			delete FL_whitelist[site];
 		}
 	}
-	browser.storage.sync.set({"FL_whitelist": FL_whitelist}, (val) => {
-		console.log(`FL_whitelist set to ${val} while var is ${FL_whitelist}`);
-	});
+	browser.storage.sync.set({"FL_whitelist": FL_whitelist});
 }
 
 function is_domain_whitelisted(domain) {
@@ -152,9 +151,7 @@ function unlock_form(tab_url) {
 	}
 	browser.browserAction.setTitle({title: "Form locking"});
 	unlock_url = tab_url.split("?")[0];
-	browser.tabs.executeScript(lock_tab, {code: `window.location.href='${unlock_url}';`}, function(tab) {
-		clear_new_data();
-	});
+	clear_new_data();
 }
 
 /**
@@ -177,13 +174,25 @@ function lock_form(document_url, action_url, tab_id) {
 			var second = action_url;
 			lock_tab = tab_id;
 			lock_domains.push(first);
-			if (!(extractSubDomains(second).includes(first))) {
+			if (!(extractSubDomains(first).includes(second))) {
 				lock_domains.push(second);
 			}
 			browser.browserAction.setTitle({title: lock_domains.join("\n")})
 			show_notification("Form safety", "Locked. Requests are allowed to only:\n" + lock_domains.join("\n"));  
 		});
 	});
+}
+
+function update_lock(document_url, action_url, form_id) {
+	lock_form_id = form_id;
+	// Page url and the form url
+	var first = new URL(document_url);
+	first = wwwRemove(first.hostname);
+	var second = action_url;
+	lock_domains.push(first);
+	if (!(extractSubDomains(second).includes(first))) {
+		lock_domains.push(second);
+	}
 }
 
 var tabs_notified = [];
@@ -206,7 +215,13 @@ var tabs_notified = [];
 					return;
 				}
 				lock_tab = sender.tab.id;
+				lock_form_id = request.form_id;
 				lock_form(request.document_url, request.action_url, sender.tab.id);
+			}
+			else {
+				if (request.form_id != lock_form_id) {
+					update_lock(request.document_url, request.action_url, request.form_id);
+				}
 			}
 			if (!tabs_notified.includes(sender.tab.id)) {
 				tabs_notified.push(sender.tab.id);

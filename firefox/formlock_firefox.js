@@ -95,13 +95,15 @@ function restore_cookies(){
  * then notifies the user about blocked requests to other domains
  */
 function refresh_lock_tab() {
-	browser.tabs.sendMessage(lock_tab, {"msg": "RestoreStorage", "data": backup}, () => {
-		restore_cookies().then(() => {
-			started = null;
-			show_notification("Form safety", unlock_msg);
-			lock_tab = -1;
-			lock_domains = [];
-			blocked = [];	
+	browser.tabs.executeScript(lock_tab, {code: `window.location.href='${unlock_url}';`}, function(tab) {
+		browser.tabs.sendMessage(lock_tab, {"msg": "RestoreStorage", "data": backup}, () => {
+			restore_cookies().then(() => {
+				started = null;
+				show_notification("Form safety", unlock_msg);
+				lock_tab = -1;
+				lock_domains = [];
+				blocked = [];	
+			});
 		});
 	});
 };
