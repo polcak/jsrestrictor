@@ -211,12 +211,11 @@ var tabs_notified = [];
 		}
 		else {
 			if (sender.tab.id != lock_tab) {
-				if (is_domain_whitelisted(sender.tab.url)) {
-					return;
+				if (!is_domain_whitelisted(sender.tab.url)) {
+					lock_tab = sender.tab.id;
+					lock_form_id = request.form_id;
+					lock_form(request.document_url, request.action_url, sender.tab.id);
 				}
-				lock_tab = sender.tab.id;
-				lock_form_id = request.form_id;
-				lock_form(request.document_url, request.action_url, sender.tab.id);
 			}
 			else {
 				if (request.form_id != lock_form_id) {
