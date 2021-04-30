@@ -1,8 +1,14 @@
 {
-  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Giorgio Maone",
+  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár, Giorgio Maone",
   "background": {
       "scripts": [
+        "nscl/lib/browser-polyfill.js",
+        "nscl/lib/sha256.js",
+        "nscl/common/log.js",
+        "nscl/common/uuid.js",
+        "nscl/service/DocStartInjection.js",
         "helpers.js",
+        "session_hash.js",
         "update.js",
         "url.js",
         WRAPPING,
@@ -32,10 +38,14 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
+      "all_frames": true,
+      "match_about_blank": true,
+      "match_origin_as_fallback": true,
       "js": [
         "nscl/lib/browser-polyfill.js",
-        "helpers.js",
         "nscl/content/patchWindow.js",
+        "alea.js",
+        "helpers.js",
         "inject.js",
         "document_start.js"
       ],
@@ -62,6 +72,7 @@
     "tabs",
     "webRequest",
     "webRequestBlocking",
+    "webNavigation",
     "<all_urls>",
     "notifications"
   ],
