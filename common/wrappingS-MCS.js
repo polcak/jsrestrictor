@@ -88,6 +88,7 @@
 				value: ""
 			}
 		});
+		ret.__proto__.toJSON = JSON.stringify;
 		return ret;
 	}
 	/**
