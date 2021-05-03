@@ -62,6 +62,7 @@ def init(driver):
         float_time_domain=audio['float_time_domain'],
         byte_frequency=audio['byte_frequency'],
         float_frequency=audio['float_frequency'],
+        IOdevices=values_getters.get_IOdevices(driver),
         referrer=values_getters.get_referrer(driver),
         time=None,
         performance=None,
@@ -72,5 +73,6 @@ def init(driver):
         webgl_parameters = values_getters.get_webgl_params(driver,"webglCanvas"),
         webgl_precisions=values_getters.get_webgl_precisions(driver,"webglCanvas"),
         webgl_pixels=values_getters.get_webgl_pixels(driver,"webglCanvas"),
-        webgl_dataURL=values_getters.get_dataURL_canvas(driver,"webglCanvas")
+        webgl_dataURL=values_getters.get_dataURL_canvas(driver,"webglCanvas"),
+        methods_toString=values_getters.get_methods_toString(driver)
     )

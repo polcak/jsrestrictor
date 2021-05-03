@@ -3,7 +3,7 @@
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
-#  Copyright (C) 2020  Martin Bednar
+#  Copyright (C) 2021  Martin Bednar
 #  Copyright (C) 2021  Matus Svancar
 #
 #  This program is free software: you can redistribute it and/or modify
@@ -66,6 +66,7 @@ level0 = TestedValues(
                    BrowserType.CHROME: 'REAL VALUE',
                    'value':'REAL VALUE'},
     hardware_concurrency={'value':'REAL VALUE'},
+    IOdevices='REAL VALUE',
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 'EXACTLY'},
@@ -86,7 +87,8 @@ level0 = TestedValues(
     webgl_parameters = 'REAL VALUE',
     webgl_precisions = 'REAL VALUE',
     webgl_pixels = 'REAL VALUE',
-    webgl_dataURL = 'REAL VALUE'
+    webgl_dataURL = 'REAL VALUE',
+    methods_toString='REAL VALUE'
 )
 
 ## Expected values for default level 1 of JSR.
@@ -111,8 +113,10 @@ level1 = TestedValues(
     heading={'value': 'REAL VALUE',
              'accuracy': 10},
     latitude={'value': 'REAL VALUE',
+              # Use accuracy of hundreds of meters. It means maximally +- 0.01 degree from the real position. Look at: https://www.nhc.noaa.gov/gccalc.shtml
               'accuracy': 0.01},
     longitude={'value': 'REAL VALUE',
+               # Use accuracy of hundreds of meters. It means maximally +- 0.01 degree from the real position. Look at: https://www.nhc.noaa.gov/gccalc.shtml
                'accuracy': 0.01},
     speed={'value': 'REAL VALUE',
            'accuracy': 10},
@@ -123,6 +127,7 @@ level1 = TestedValues(
                    'value':'REAL VALUE'},
     hardware_concurrency={'value':'SPOOF VALUE',
                           'valid_values': [2]},
+    IOdevices='REAL VALUE',
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 0.01},
@@ -143,7 +148,8 @@ level1 = TestedValues(
     webgl_parameters = 'REAL VALUE',
     webgl_precisions = 'REAL VALUE',
     webgl_pixels = 'REAL VALUE',
-    webgl_dataURL = 'REAL VALUE'
+    webgl_dataURL = 'REAL VALUE',
+    methods_toString='REAL VALUE'
 )
 
 ## Expected values for default level 2 of JSR.
@@ -168,8 +174,10 @@ level2 = TestedValues(
     heading={'value': 'REAL VALUE',
              'accuracy': 100},
     latitude={'value': 'REAL VALUE',
+              # Use accuracy of kilometers. It means maximally +- 0.1 degree from the real position. Look at: https://www.nhc.noaa.gov/gccalc.shtml
               'accuracy': 0.1},
     longitude={'value': 'REAL VALUE',
+               # Use accuracy of kilometers. It means maximally +- 0.1 degree from the real position. Look at: https://www.nhc.noaa.gov/gccalc.shtml
                'accuracy': 0.1},
     speed={'value': 'REAL VALUE',
            'accuracy': 100},
@@ -180,6 +188,7 @@ level2 = TestedValues(
                    'value':'REAL VALUE'},
     hardware_concurrency={'value':'SPOOF VALUE',
                           'valid_values': [2]},
+    IOdevices=0,
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 0.1},
@@ -200,7 +209,8 @@ level2 = TestedValues(
     webgl_parameters = 'ZERO VALUE',
     webgl_precisions = 'SPOOF VALUE',
     webgl_pixels = 'SPOOF VALUE',
-    webgl_dataURL = 'SPOOF VALUE'
+    webgl_dataURL = 'SPOOF VALUE',
+    methods_toString='REAL VALUE'
 )
 
 ## Expected values for default level 3 of JSR.
@@ -216,27 +226,20 @@ level3 = TestedValues(
     do_not_track='REAL VALUE',
     cookie_enabled='REAL VALUE',
     oscpu='REAL VALUE',
-    gps_accuracy={'value': '0',
-                  'accuracy': 'EXACTLY'},
-    altitude={'value': '0',
-              'accuracy': 'EXACTLY'},
-    altitude_accurac={'value': '0',
-                      'accuracy': 'EXACTLY'},
-    heading={'value': 'REAL VALUE',
-             'accuracy': 100},
-    latitude={'value': 'REAL VALUE',
-              'accuracy': 0.1},
-    longitude={'value': 'REAL VALUE',
-               'accuracy': 0.1},
-    speed={'value': 'REAL VALUE',
-           'accuracy': 100},
-    timestamp={'value': '0',
-               'accuracy': 'EXACTLY'},
+    gps_accuracy={'value': "null"},
+    altitude={'value': "null"},
+    altitude_accurac={'value': "null"},
+    heading={'value': "null"},
+    latitude={'value': "null"},
+    longitude={'value': "null"},
+    speed={'value': "null"},
+    timestamp={'value': "null"},
     device_memory={BrowserType.FIREFOX: None,
                    BrowserType.CHROME: 4,
                    'value':'REAL VALUE'},
     hardware_concurrency={'value':'SPOOF VALUE',
                           'valid_values': [2]},
+    IOdevices=0,
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 1.0},
@@ -257,7 +260,8 @@ level3 = TestedValues(
     webgl_parameters = 'ZERO VALUE',
     webgl_precisions = 'SPOOF VALUE',
     webgl_pixels = 'SPOOF VALUE',
-    webgl_dataURL = 'SPOOF VALUE'
+    webgl_dataURL = 'SPOOF VALUE',
+    methods_toString='REAL VALUE'
 )
 
 ## Expected values for default level 2 of JSR.
@@ -295,6 +299,7 @@ level4 = TestedValues(
                    'valid_values': [None,0.25,0.5,1,2,4,8]},
     hardware_concurrency={'value':'SPOOF VALUE',
                           'valid_values': [2,3,4,5,6,7,8]},
+    IOdevices=0,
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 0.1},
@@ -315,6 +320,6 @@ level4 = TestedValues(
     webgl_parameters = 'SPOOF VALUE',
     webgl_precisions = 'REAL VALUE',
     webgl_pixels = 'SPOOF VALUE',
-    webgl_dataURL = 'SPOOF VALUE'
-
+    webgl_dataURL = 'SPOOF VALUE',
+    methods_toString='REAL VALUE'
 )

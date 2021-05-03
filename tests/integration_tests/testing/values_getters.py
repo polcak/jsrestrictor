@@ -82,6 +82,25 @@ def get_device(driver):
     return device
 
 
+## Get IO devices.
+#
+#  Only executing javascript and geting returned values. No support page is needed.
+def get_IOdevices(driver):
+    return driver.execute_async_script("""
+        var callback = arguments[arguments.length - 1];
+
+        navigator.mediaDevices.enumerateDevices()
+            .then(function(devices) {
+                callback(devices);
+            });
+
+        /* Set timeout for getting IO devices. If no timeout is set, driver would be waiting forever. */
+        setTimeout(function(){
+          callback("ERROR");
+        }, 5000);
+    """)
+
+
 ## Get referrer - where the page was navigated from.
 #
 #  In this case, webpage amiunique.org is opened through test page and referrer on page amiunique.org is returned.
@@ -220,3 +239,143 @@ def get_audio(driver):
              'byte_frequency': driver.execute_script("return document.getElementById('byte_frequency_result').innerHTML;"),
              'float_frequency': driver.execute_script("return document.getElementById('float_frequency_result').innerHTML;")}
     return audio
+
+## Get methods.toString().
+#
+#  Only executing javascript and geting returned values. Testing page is needed.
+def get_methods_toString(driver):
+	APIs = {
+		"Date": {
+			"static_methods": [
+				"now",
+				"parse",
+				"UTC"
+			],
+			"instance_methods": {
+				"getDate",
+				"getDay",
+				"getFullYear",
+				"getHours",
+				"getMilliseconds",
+				"getMinutes",
+				"getMonth",
+				"getSeconds",
+				"getTime",
+				"getTimezoneOffset",
+				"getUTCDate",
+				"getUTCDay",
+				"getUTCFullYear",
+				"getUTCHours",
+				"getUTCMilliseconds",
+				"getUTCMinutes",
+				"getUTCMonth",
+				"getUTCSeconds",
+				"getYear",
+				"setDate",
+				"setFullYear",
+				"setHours",
+				"setMilliseconds",
+				"setMinutes",
+				"setMonth",
+				"setSeconds",
+				"setTime",
+				"setUTCDate",
+				"setUTCFullYear",
+				"setUTCHours",
+				"setUTCMilliseconds",
+				"setUTCMinutes",
+				"setUTCMonth",
+				"setUTCSeconds",
+				"setYear",
+				"toDateString",
+				"toISOString",
+				"toJSON",
+				"toGMTString",
+				"toLocaleDateString",
+				"toLocaleString",
+				"toString",
+				"toTimeString",
+				"toUTCString",
+				"valueOf"
+			}
+		},
+		"performance": {
+			"static_methods": [
+				"now",
+				"clearMarks",
+				"clearMeasures",
+				"clearResourceTimings",
+				"getEntries",
+				"getEntriesByName",
+				"getEntriesByType",
+				"mark",
+				"measure",
+				"setResourceTimingBufferSize",
+				"toJSON"
+			]
+		},
+		"navigator": {
+			"static_methods": [
+				"getCurrentPosition",
+				"watchPosition",
+				"clearWatch"
+			]
+		},
+		"canvas": {
+			"inject_code": "var canvas = document.getElementById('canvas1');",
+			"static_methods": [
+				"getContext"
+			]
+		}
+	}
+
+	driver.get(get_config("testing_page"))
+
+	output = {}
+
+
+	for API in APIs:
+		if 'static_methods' in APIs[API]:
+			inject_code = ""
+			if 'inject_code' in APIs[API]:
+				inject_code = APIs[API]['inject_code']
+
+			for method in APIs[API]['static_methods']:
+				method_toString = ""
+				try:
+					method_toString = driver.execute_script(inject_code + "return " + API + "." + method + ".toString()")
+				except:
+					output[API + '.' + method] = None
+				else:
+					output[API + '.' + method] = method_toString
+
+
+		if 'instance_methods' in APIs[API]:
+			constructor_toString = ""
+			try:
+				constructor_toString = driver.execute_script("return " + API + ".toString()")
+			except:
+				output[API] = None
+			else:
+				output[API] = constructor_toString
+
+
+			for method in APIs[API]['instance_methods']:
+				method_toString = ""
+				try:
+					method_toString = driver.execute_script("return " + API + "." + method + ".toString()")
+				except:
+					output[API + '.prototype.' + method] = None
+				else:
+					output[API + '.prototype.' + method] = method_toString
+
+
+				method_toString = ""
+				try:
+					method_toString = driver.execute_script("return new " + API + "()." + method + ".toString()")
+				except:
+					output[API + '.' + method] = None
+				else:
+					output[API + '.' + method] = method_toString
+
+	return output

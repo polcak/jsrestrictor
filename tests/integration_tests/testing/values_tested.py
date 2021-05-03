@@ -75,9 +75,11 @@ class Geolocation:
 class Device:
     def __init__(self,
                  device_memory,
-                 hardware_concurrency):
+                 hardware_concurrency,
+                 IOdevices):
         self.deviceMemory = device_memory
         self.hardwareConcurrency = hardware_concurrency
+        self.IOdevices = IOdevices
 
 ## Variables about audio that are checked during testing.
 class Audio:
@@ -121,6 +123,7 @@ class TestedValues:
 
                  device_memory,
                  hardware_concurrency,
+                 IOdevices,
 
                  get_channel,
                  copy_channel,
@@ -142,7 +145,8 @@ class TestedValues:
 
                  webgl_precisions,
                  webgl_pixels,
-                 webgl_dataURL
+                 webgl_dataURL,
+                 methods_toString
                  ):
         self.navigator = Navigator(
             user_agent,
@@ -169,7 +173,8 @@ class TestedValues:
         )
         self.device = Device(
             device_memory,
-            hardware_concurrency
+            hardware_concurrency,
+            IOdevices
         )
         self.audio = Audio(
             get_channel,
@@ -191,3 +196,4 @@ class TestedValues:
         self.webgl_precisions = webgl_precisions
         self.webgl_pixels = webgl_pixels
         self.webgl_dataURL = webgl_dataURL
+        self.methods_toString = methods_toString
