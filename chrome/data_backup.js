@@ -129,7 +129,7 @@ async function backup_databases(){
 		});
 	}
     if(db_fail){
-        show_notification("Data restoration" ,"Failures occured during data backup.\nData after unlock may be inconsistent.");
+        console.log("Data restoration" ,"Failures occured during data backup.\nData after unlock may be inconsistent.");
     }
 	return index_DBs;
 }
@@ -318,33 +318,29 @@ async function restore_databases(databases){
 		});
 	}
     if(restore_fails){
-        show_notification("Data restoration" ,"Database restoration ran into errors.\nStored data may be incosistent.");
+        console.log("Data restoration" ,"Database restoration ran into errors.\nStored data may be incosistent.");
     }
 }
 
 /**
- * Restores values saved on start of lock
- * \todo rethink cookie saving - maybe use the API? - consider their lifetimes
- * @param data JSON with data to be restored, includes storages, cookies and indexed databases
+ * Restores storage values saved on start of lock
+ * @param session backup of sessionStorage values 
+ * @param local backup of localStorage values 
  */
-async function restore_data(data){
-	// Preventive clear due to a bug during testing
-	localStorage.clear();
-	sessionStorage.clear();
+function restore_storages(session, local){
 	//Restoration of pre-lock items
-	for (let key in data.local){
-		localStorage.setItem(key, data.local[key]);
+	for (let key in local){
+		localStorage.setItem(key, local[key]);
 	}
-	for (let key in data.session){
-		sessionStorage.setItem(key, data.session[key]);
+	for (let key in session){
+		sessionStorage.setItem(key, session[key]);
 	}
-    await restore_databases(data.indexed_DBs);
 }
 
 /**
- * Listens to messages from click_handler in formlock.js and responds either with
- * submit method and domain of form to be locked or with stored data to be backed
- * up
+ * Listens to messages from formlock_chrome.js and formlock_common.js and responds 
+ * either with submit method and domain of form to be locked or with  stored data to
+ * be backed up
  */
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) { 
     if (request.msg == "BackupStorage") {
@@ -356,7 +352,11 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         return true;
     }
     else if (request.msg == "RestoreStorage") {
-        restore_data(request.data).then(() => {
+        restore_storages(request.session, request.local);
+        sendResponse();
+    }
+	else if (request.msg == "RestoreDatabases") {
+        restore_databases(request.indexed_DBs).then(() => {
             sendResponse();
         });
         return true;

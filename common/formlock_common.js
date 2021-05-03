@@ -32,6 +32,8 @@
 var lock_domains = [];
 var blocked = [];
 var backup = {};
+var started = null;
+var refreshed = false;
 
 var lock_tab = -1;
 var unlock_url = "";
@@ -144,6 +146,7 @@ browser.webRequest.onBeforeRequest.addListener(
  * @param tab_url URL of the tab to be refreshed
  */
 function unlock_form(tab_url) {
+	refreshed = true;
 	// Remove LOCK
 	unlock_msg = "Form unlocked. Third-party requests blocked " + blocked.length + ":\n";
 	for (b in blocked) {
@@ -297,7 +300,7 @@ function handle_tab(tab_info, tab) {
     }
 
 	// Unlock form if user landed on a new page after submit or refreshed
-	if (tab.tabId == lock_tab) {
+	if (tab.tabId == lock_tab && !refreshed) {
 		unlock_form(tab_info.url);
 	}
 

@@ -89,19 +89,22 @@ function restore_cookies(){
 
 /**
  * Refreshes the tab on which a form was locked
- * Sends a restore message to data_backup.js with storages and indexed databases to be restored
+ * Sends a restore messages to data_backup.js with storages and indexed databases to be restored
  * then notifies the user about blocked requests to other domains
  */
 function refresh_lock_tab(){
-	browser.tabs.executeScript(lock_tab, {code: `window.location.href='${unlock_url}';`}, function(tab) {
-		browser.tabs.update(lock_tab, {url: unlock_url}, (tab) => {
-			restore_cookies().then(() => {
-				browser.tabs.sendMessage(lock_tab, {"msg": "RestoreStorage", "data": backup}, () => {
-					started = null;
-					show_notification("Form safety", unlock_msg);
-					lock_tab = -1;
-					lock_domains = [];
-					blocked = [];	
+	browser.tabs.sendMessage(lock_tab, {"msg": "RestoreDatabases", "indexed_DBs" : backup.indexed_DBs}, () => {
+		browser.tabs.executeScript(lock_tab, {code: `window.location.href='${unlock_url}';`}, function(tab) {
+			browser.tabs.update(lock_tab, {url: unlock_url}, (tab) => {
+				restore_cookies().then(() => {
+					browser.tabs.sendMessage(lock_tab, {"msg": "RestoreStorage", "local": backup.local, "session": backup.session}, () => {
+						started = null;
+						show_notification("Form safety", unlock_msg);
+						lock_tab = -1;
+						lock_domains = [];
+						blocked = [];
+						refreshed = false;
+					});
 				});
 			});
 		});
@@ -115,7 +118,7 @@ var started = null;
  * ^Remove was changed to delete as few data from other domains as possible
  * ^Added data restoration message for the locked domain
  */
-function clear_new_data() {   
+function clear_new_data() {
 	if (started !== null) {
 		browser.browsingData.remove({
 			"since": started,

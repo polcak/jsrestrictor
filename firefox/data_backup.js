@@ -45,23 +45,25 @@ function backup_storages(){
 }
 
 /**
- * Restores values saved on start of lock
- * @param data JSON with data to be restored, includes storages, cookies and indexed databases
+ * Restores storage values saved on start of lock
+ * @param session backup of sessionStorage values 
+ * @param local backup of localStorage values 
  */
-function restore_data(data){
+ function restore_storages(session, local){
+	// Preventive clear due to a bug during testing
 	//Restoration of pre-lock items
-	for (let key in data.local){
-		localStorage.setItem(key, data.local[key]);
+	for (let key in local){
+		localStorage.setItem(key, local[key]);
 	}
-	for (let key in data.session){
-		sessionStorage.setItem(key, data.session[key]);
+	for (let key in session){
+		sessionStorage.setItem(key, session[key]);
 	}
 }
 
 /**
- * Listens to messages from click_handler in formlock.js and responds either with
- * submit method and domain of form to be locked or with stored data to be backed
- * up
+ * Listens to messages from formlock_firefox.js and formlock_common.js and responds 
+ * either with submit method and domain of form to be locked or with  stored data to
+ * be backed up
  */
 browser.runtime.onMessage.addListener(function(request, sender, sendResponse) { 
     if (request.msg == "BackupStorage") {
@@ -69,7 +71,7 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		sendResponse({backup: data});
     }
     else if (request.msg == "RestoreStorage") {
-        restore_data(request.data)
+        restore_storages(request.session, request.local);
         sendResponse();
     }
 });
