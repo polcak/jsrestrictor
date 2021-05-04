@@ -99,7 +99,10 @@ var wrapping_groups = {
 		{
 			name: "htmlcanvaselement",
 			description: "Protect against canvas fingerprinting",
-			description2: ["Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData, OffscreenCanvas.convertToBlob() return modified image data to prevent fingerprinting",],
+			description2: [
+				"Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() return modified image data to prevent fingerprinting",
+				"CanvasRenderingContext2D.isPointInStroke() and CanvasRenderingContext2D.isPointInPath() are modified to lie with probability"
+			],
 			options: [
 				{
 				description: "farbling type",
@@ -124,13 +127,17 @@ var wrapping_groups = {
 				"CanvasRenderingContext2D.prototype.getImageData",
 				"HTMLCanvasElement.prototype.toBlob",
 				"HTMLCanvasElement.prototype.toDataURL",
-				"OffscreenCanvas.prototype.convertToBlob"
+				"OffscreenCanvas.prototype.convertToBlob",
+				"CanvasRenderingContext2D.prototype.isPointInStroke",
+				"CanvasRenderingContext2D.prototype.isPointInPath"
 			],
 		},
 		{
 			name: "audiobuffer",
 			description: "Protect against audio fingerprinting",
-			description2: ["Functions AudioBuffer.getChannelData() and AudioBuffer.copyFromChannel() are modified to alter audio data based on domain key"],
+			description2: [
+				"Functions AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() and AnalyserNode.getFloatFrequencyData() are modified to alter audio data based on domain key"
+			],
 			options: [
 				{
 					description: "farbling type",
@@ -163,6 +170,67 @@ var wrapping_groups = {
 		{
 			name: "webgl",
 			description: "Protect against wegbl fingerprinting",
+			description2: [
+				"Function WebGLRenderingContext.getParameter() returns modified/bottom values for certain parameters",
+				"WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() and .getExtension() return modified values",
+				"Function WebGLRenderingContext.readPixels() returns modified image data to prevent fingerprinting"
+		],
+			options: [{
+				description: "farbling type",
+				ui_elem: "select",
+				name: "method",
+				default: 0,
+				data_type: "Number",
+				options: [
+					{
+						value: 0,
+						description: "Generate random numbers/strings based on domain hash, modified canvas",
+					},
+					{
+						value: 1,
+						description: "Return bottom values (null, empty string), empty canvas",
+					}
+				],
+			}],
+			wrappers: [
+				// WEGBL
+				"WebGLRenderingContext.prototype.getParameter",
+				"WebGL2RenderingContext.prototype.getParameter",
+				"WebGLRenderingContext.prototype.getFramebufferAttachmentParameter",
+				"WebGL2RenderingContext.prototype.getFramebufferAttachmentParameter",
+				"WebGLRenderingContext.prototype.getActiveAttrib",
+				"WebGL2RenderingContext.prototype.getActiveAttrib",
+				"WebGLRenderingContext.prototype.getActiveUniform",
+				"WebGL2RenderingContext.prototype.getActiveUniform",
+				"WebGLRenderingContext.prototype.getAttribLocation",
+				"WebGL2RenderingContext.prototype.getAttribLocation",
+				"WebGLRenderingContext.prototype.getBufferParameter",
+				"WebGL2RenderingContext.prototype.getBufferParameter",
+				"WebGLRenderingContext.prototype.getProgramParameter",
+				"WebGL2RenderingContext.prototype.getProgramParameter",
+				"WebGLRenderingContext.prototype.getRenderbufferParameter",
+				"WebGL2RenderingContext.prototype.getRenderbufferParameter",
+				"WebGLRenderingContext.prototype.getShaderParameter",
+				"WebGL2RenderingContext.prototype.getShaderParameter",
+				"WebGLRenderingContext.prototype.getShaderPrecisionFormat",
+				"WebGL2RenderingContext.prototype.getShaderPrecisionFormat",
+				"WebGLRenderingContext.prototype.getTexParameter",
+				"WebGL2RenderingContext.prototype.getTexParameter",
+				"WebGLRenderingContext.prototype.getUniformLocation",
+				"WebGL2RenderingContext.prototype.getUniformLocation",
+				"WebGLRenderingContext.prototype.getVertexAttribOffset",
+				"WebGL2RenderingContext.prototype.getVertexAttribOffset",
+				"WebGLRenderingContext.prototype.getSupportedExtensions",
+				"WebGL2RenderingContext.prototype.getSupportedExtensions",
+				"WebGLRenderingContext.prototype.getExtension",
+				"WebGL2RenderingContext.prototype.getExtension",
+				"WebGLRenderingContext.prototype.readPixels",
+				"WebGL2RenderingContext.prototype.readPixels"
+			],
+		},
+		{
+			name: "plugins",
+			description: "Protect against plugin fingerprinting",
 			description2: [],
 			options: [{
 				description: "farbling type",
@@ -173,41 +241,50 @@ var wrapping_groups = {
 				options: [
 					{
 						value: 0,
-						description: "Generate random numbers/strings based on domain hash",
+						description: "Edit current and add two fake plugins",
 					},
 					{
 						value: 1,
-						description: "Return bottom values (null, empty string)",
+						description: "Return two fake plugins",
+					},
+					{
+						value: 2,
+						description: "Return empty"
 					}
 				],
 			}],
 			wrappers: [
-				// WEGBL
-				"WebGLRenderingContext.prototype.getParameter",
-				"WebGL2RenderingContext.prototype.getParameter",
-				"WebGLRenderingContext.prototype.getFramebufferAttachmentParameter",
-				"WebGLRenderingContext.prototype.getActiveAttrib",
-				"WebGLRenderingContext.prototype.getActiveUniform",
-				"WebGLRenderingContext.prototype.getAttribLocation",
-				"WebGLRenderingContext.prototype.getBufferParameter",
-				"WebGLRenderingContext.prototype.getProgramParameter",
-				"WebGLRenderingContext.prototype.getRenderbufferParameter",
-				"WebGLRenderingContext.prototype.getShaderParameter",
-				"WebGLRenderingContext.prototype.getShaderPrecisionFormat",
-				"WebGLRenderingContext.prototype.getTexParameter",
-				"WebGLRenderingContext.prototype.getUniformLocation",
-				"WebGLRenderingContext.prototype.getVertexAttribOffset",
-				"WebGLRenderingContext.prototype.getSupportedExtensions",
-				"WebGLRenderingContext.prototype.getExtension",
-				"WebGLRenderingContext.prototype.readPixels",
-				"WebGL2RenderingContext.prototype.readPixels"
+				// NP
+				"navigator.plugins",
 			],
 		},
 		{
 			name: "enumerateDevices",
-			description: "Hide multimedia devices. Consequently, prevent fingerprinting based on the multimedia devices connected to the computer",
-			description2: [],
-			options: [],
+			description: "Prevent fingerprinting based on the multimedia devices connected to the computer",
+			description2: [
+				"Function MediaDevices.enumerateDevices() is modified to return empty or modified result"
+		],
+			options: [{
+				description: "farbling type",
+				ui_elem: "select",
+				name: "method",
+				default: 0,
+				data_type: "Number",
+				options: [
+					{
+						value: 0,
+						description: "Randomize order",
+					},
+					{
+						value: 1,
+						description: "Add 0-4 fake devices and randomize order",
+					},
+					{
+						value: 2,
+						description: "Return empty promise"
+					}
+				],
+			}],
 			wrappers: [
 				// MCS
 				"MediaDevices.prototype.enumerateDevices",
@@ -217,10 +294,29 @@ var wrapping_groups = {
 			name: "hardware",
 			description: "Spoof hardware information to the most popular HW",
 			description2: [
-				navigator.deviceMemory !== undefined ? "navigator.deviceMemory: 4" : "",
-				"navigator.hardwareConcurrency: 2",
+				"Getters navigator.deviceMemory and navigator.hardwareConcurrency return modified values",
 			],
-			options: [],
+			options: [{
+				description: "farbling type",
+				ui_elem: "select",
+				name: "method",
+				default: 0,
+				data_type: "Number",
+				options: [
+					{
+						value: 0,
+						description: "Return random valid value between minimum and real value",
+					},
+					{
+						value: 1,
+						description: "Return random valid value between minimum and 8.0",
+					},
+					{
+						value: 2,
+						description: "Return 4 for navigator.deviceMemory and 2 for navigator.hardwareConcurrency"
+					}
+				],
+			}],
 			wrappers: [
 				// HTML-LS
 				"navigator.hardwareConcurrency",
@@ -509,6 +605,7 @@ var level_2 = {
 	"time_precision_precision": 1,
 	"time_precision_randomize": false,
 	"hardware": true,
+	"hardware_method": 2,
 	"battery": true,
 	"htmlcanvaselement": true,
 	"htmlcanvaselement_method": 1,
@@ -516,7 +613,10 @@ var level_2 = {
 	"audiobuffer_method": 0,
 	"webgl": true,
 	"webgl_method": 1,
+	"plugins": true,
+	"plugins_method": 1,
 	"enumerateDevices": true,
+	"enumerateDevices_method": 1,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
 	"windowname": true,
@@ -530,6 +630,7 @@ var level_3 = {
 	"time_precision_precision": 0,
 	"time_precision_randomize": true,
 	"hardware": true,
+	"hardware_method": 2,
 	"battery": true,
 	"htmlcanvaselement": true,
 	"htmlcanvaselement_method": 1,
@@ -537,7 +638,10 @@ var level_3 = {
 	"audiobuffer_method": 0,
 	"webgl": true,
 	"webgl_method": 1,
+	"plugins": true,
+	"plugins_method": 1,
 	"enumerateDevices": true,
+	"enumerateDevices_method": 2,
 	"xhr": true,
 	"xhr_behaviour_block": false,
 	"xhr_behaviour_ask": true,

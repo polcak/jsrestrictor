@@ -147,7 +147,7 @@ var build_code = function(wrapper, ...args) {
 		delete_properties: generate_delete_properties,
 		assign: generate_assignement,
 	};
-	var code = `if (${wrapper.parent_object} === undefined) {return;}`;
+	var code = `try {if (${wrapper.parent_object} === undefined) {return;}} catch (e) {return; /* It seems that the parent object does not exist */ }`;
 	for (wrapped of wrapper.wrapped_objects) {
 		code += `
 			var ${wrapped.wrapped_name} = ${wrapped.original_name};

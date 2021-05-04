@@ -4,6 +4,7 @@
 #  internet.
 #
 #  Copyright (C) 2020  Martin Bednar
+#  Copyright (C) 2021  Matus Svancar
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -103,3 +104,20 @@ def test_oscpu(browser, navigator, expected):
         assert navigator['oscpu'] == browser.real.navigator.oscpu
     else:
         assert navigator['oscpu'] == expected.navigator.oscpu
+
+## Test plugins
+def test_plugins(browser, navigator, expected):
+    if expected.navigator.plugins == 'SPOOF VALUE':
+        assert navigator['plugins'] != browser.real.navigator.plugins
+    else:
+        assert navigator['plugins'] == browser.real.navigator.plugins
+
+## Test mimeTypes
+def test_mime_types(browser, navigator, expected):
+    if expected.navigator.mimeTypes == 'SPOOF VALUE':
+        if navigator['mimeTypes'] == browser.real.navigator.mimeTypes:
+            assert navigator['mimeTypes'] == []
+        else:
+            assert True
+    else:
+        assert navigator['mimeTypes'] == browser.real.navigator.mimeTypes

@@ -296,7 +296,83 @@
 				return origConvertToBlob.call(fake, ...args);
 			`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
-		}
+		},
+		{
+			parent_object: "CanvasRenderingContext2D.prototype",
+			parent_object_property: "isPointInPath",
+			wrapped_objects: [{
+				original_name: "CanvasRenderingContext2D.prototype.isPointInPath",
+				wrapped_name: "origIsPointInPath",
+			}],
+			helping_code: helping_code + `
+				function farbleIsPointInPath(ctx, ...args){
+					if(approach === 0){
+						var ret = origIsPointInPath.call(ctx, ...args);
+						return (ret && ((prng()*20) > 1));
+					}
+					else if(approach === 1){
+						return origIsPointInPath.call(ctx, ...args);
+					}
+				};
+			`,
+			wrapping_code_function_name: "wrapping",
+			wrapping_code_function_params: "parent",
+			wrapping_code_function_call_window: true,
+			original_function: "parent.CanvasRenderingContext2D.prototype.isPointInPath",
+			replace_original_function: true,
+			wrapping_function_args: "...args",
+			/** \fn fake CanvasRenderingContext2D.prototype.isPointInPath
+			 * \brief Returns modified result
+			 *
+			 * Either returns false or original function return value which is changed to false with 1/20 probability
+			 *
+			 * \bug Changing value with probability has some issues:
+			 * * multiple calls with the same pixel can return different values
+			 * * inconsistencies among adjacent pixels
+			 */
+			wrapping_function_body: `
+				return farbleIsPointInPath(this, ...args);
+			`,
+			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
+		},
+		{
+			parent_object: "CanvasRenderingContext2D.prototype",
+			parent_object_property: "isPointInStroke",
+			wrapped_objects: [{
+				original_name: "CanvasRenderingContext2D.prototype.isPointInStroke",
+				wrapped_name: "origIsPointInStroke",
+			}],
+			helping_code: helping_code + `
+				function farbleIsPointInStroke(ctx, ...args){
+					if(approach === 0){
+						var ret = origIsPointInStroke.call(ctx, ...args);
+						return (ret && ((prng()*20) > 1));
+					}
+					else if(approach === 1){
+						return origIsPointInStroke.call(ctx, ...args);
+					}
+				};
+			`,
+			wrapping_code_function_name: "wrapping",
+			wrapping_code_function_params: "parent",
+			wrapping_code_function_call_window: true,
+			original_function: "parent.CanvasRenderingContext2D.prototype.isPointInStroke",
+			replace_original_function: true,
+			wrapping_function_args: "...args",
+			/** \fn fake CanvasRenderingContext2D.prototype.isPointInStroke
+			 * \brief Returns modified result
+			 *
+			 * Either returns false or original function return value which is changed to false with 1/20 probability
+			 *
+			 * \bug Changing value with probability has some issues:
+			 * * multiple calls with the same pixel can return different values
+			 * * inconsistencies among adjacent pixels
+			 */
+			wrapping_function_body: `
+				return farbleIsPointInStroke(this, ...args);
+			`,
+			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
+		},
 	]
 	add_wrappers(wrappers);
 })();
