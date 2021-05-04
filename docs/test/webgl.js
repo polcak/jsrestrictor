@@ -84,7 +84,7 @@ function test_webgl_canvas(gl) {
 		gl.uniform2f(prog.offsetUniform, 1, 1);
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, buff.numItems);
 	} catch (e) {
-		alert(e);
+		console.log(e);
 	}
 	try {
 		var res = document.getElementById('webglResultCanvas1');
@@ -94,7 +94,7 @@ function test_webgl_canvas(gl) {
 		// imageData need to be flipped, because readPixels reads backwards
 		flip(imgdata, ctx.canvas);
 	} catch (e) {
-		alert(e);
+		console.log(e);
 	}
 	try {
 		var res = document.getElementById('webglResultCanvas2');
@@ -105,7 +105,7 @@ function test_webgl_canvas(gl) {
 		};
 		img.src = gl.canvas.toDataURL();
 	} catch (e) {
-		alert(e);
+		console.log(e);
 	}
 }
 
