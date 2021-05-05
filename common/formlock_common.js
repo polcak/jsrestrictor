@@ -328,8 +328,8 @@ var tabs_notified = [];
  */
  browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.req === "FLClickedForm") {	  
-		browser.contextMenus.update("submitMethod", {"title": "Submit method: " + request.method});
-		browser.contextMenus.update("submitTo", {"title": "Submits to: " + get_root_domain(request.domain)});
+		browser.menus.update("submitMethod", {"title": "Submit method: " + request.method});
+		browser.menus.update("submitTo", {"title": "Submits to: " + get_root_domain(request.domain)});
 		if (lock_domains.length > 0) {
 			browser.menus.update("lock", {"title": "Remove Lock"});  
 		}
