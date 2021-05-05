@@ -38,11 +38,12 @@ var refreshed = false;
 var lock_tab = -1;
 var unlock_url = "";
 var unlock_msg = "";
-var lock_form_id = -1;
+var clicked_form_id = -2;
 
 var is_chrome = false;
 if (browser === chrome) {
     is_chrome = true;
+	browser.menus = browser.contextMenus;
 }
 
 // Keeps Formlock setting for all visited sites
@@ -154,7 +155,18 @@ function unlock_form(tab_url) {
 	}
 	browser.browserAction.setTitle({title: "Form locking"});
 	unlock_url = tab_url.split("?")[0];
+	browser.menus.update("lock", {"title": "Set Lock"});
 	clear_new_data();
+}
+
+function soft_unlock() {
+	started = null;
+	show_notification("Form safety", "Form was softly unlocked");
+	lock_tab = -1;
+	lock_domains = [];
+	blocked = [];
+	refreshed = false;
+	browser.menus.update("lock", {"title": "Set Lock"});
 }
 
 /**
@@ -177,24 +189,132 @@ function lock_form(document_url, action_url, tab_id) {
 			var second = action_url;
 			lock_tab = tab_id;
 			lock_domains.push(first);
-			if (!(extractSubDomains(first).includes(second))) {
+			let sub_doms = extractSubDomains(first);
+			if (!(sub_doms.includes(second))) {
 				lock_domains.push(second);
 			}
 			browser.browserAction.setTitle({title: lock_domains.join("\n")})
-			show_notification("Form safety", "Locked. Requests are allowed to only:\n" + lock_domains.join("\n"));  
+			show_notification("Form safety", "Locked. Requests are allowed to only:\n" + lock_domains.join("\n")); 
+			browser.menus.update("lock", {"title": "Remove Lock"});  
 		});
 	});
 }
 
-function update_lock(document_url, action_url, form_id) {
-	lock_form_id = form_id;
+/**
+ * (1) Process the menu clicks
+ * This function is a modified version of the original function from Formlock
+ * ^Changed message sending to be more on par with Mozilla documentation
+ * ^Replaced alerts with notifications because Firefox doesn't allow alert in bg scripts 
+ */
+ function click_handler(info, tab) {
+	var url = info.frameUrl ? info.frameUrl : info.pageUrl;
+	
+	// Explain the form risks option
+	if (info.menu_item_id === "explainRisks") {   
+		browser.tabs.sendMessage(tab.id, {"msg": "FLGetClickedForm", "url": url}).then(payload => {
+			if (payload !== null) {
+				var violation = "";
+
+				var global_url = get_root_domain(get_hostname(tab.url));
+				var current_url = get_root_domain(payload.domain);
+
+				if (global_url !== current_url) violation += "> Submits to third-party: " + current_url + "\n"; 
+				if (payload.method === "get") violation += "> Submits with GET\n";
+
+				if (violation === "") violation = "This form appears to be safe";
+				
+				browser.notifications.create({
+					"type": "basic",
+					"iconUrl": browser.extension.getURL("img/icon-48.png"),
+					"title": "Form safety info:",
+					"message": `${violation}`
+				});
+			}
+		});
+	}
+	
+	// Set the lock for one domain allowed
+	if (info.menuItemId === "lock") {	
+		if (lock_domains.length > 0) {
+			unlock_form(url);			
+		}
+		else {
+			// Set LOCK
+			browser.tabs.sendMessage(tab.id, {"msg": "FLGetClickedForm", "url": url}, (payload) => {
+				if (!payload){
+					show_notification("Form security",
+					"No form detected. If you are sure that one is present then try again on an input field");
+					return;
+				}
+				if (!lock_domains.includes(payload.domain)) {
+					lock_form(tab.url, payload.domain, tab.id) 
+				}
+			});
+		}   
+	}
+};
+
+function update_lock(document_url, action_url) {
 	// Page url and the form url
 	var first = new URL(document_url);
 	first = wwwRemove(first.hostname);
 	var second = action_url;
-	lock_domains.push(first);
-	if (!(extractSubDomains(second).includes(first))) {
+	if (!(lock_domains.includes(first))){
+		lock_domains.push(first);
+	}
+	if (!(lock_domains.includes(second))) {
 		lock_domains.push(second);
+	}
+}
+
+var menu_created = false;
+
+/**
+ * Creates context menu for form locking
+ */
+ function create_context_menu(){
+	// (2) Register the menu items
+	menu_created = true;
+	let lock_text = "";
+	if (lock_domains.length > 0){
+		lock_text = "Remove Lock";
+	}
+	else {
+		lock_text = "Set Lock";
+	}
+	browser.menus.create({"title": "Form locking", "contexts": ["all"], "id": "Formstery"});
+	browser.menus.create({"title": "Submit method: undefined", "contexts": ["all"], "parentId": "Formstery", id: "submitMethod"});
+	browser.menus.create({"title": "Submits to: undefined", "contexts": ["all"], "parentId": "Formstery", id: "submitTo"});
+	browser.menus.create({"type": "separator", "contexts": ["all"], "parentId": "Formstery"});
+	browser.menus.create({"title": "Explain sharing risks.", "contexts": ["all"], "parentId": "Formstery", "id": "explainRisks", "onclick": click_handler});
+	browser.menus.create({"type": "separator", "contexts": ["all"], "parentId": "Formstery"});
+	browser.menus.create({"title": lock_text, "contexts": ["all"], "parentId": "Formstery", "id": "lock", "onclick": click_handler}); 
+	browser.menus.create({"title": "Unlock without refresh", "contexts": ["all"], "parentId": "Formstery", "id": "SoftUnlock", "onclick": soft_unlock});
+}
+
+/**
+ * Checks security level associated with page and creates or removes context menu
+ * Created so that context menu would be removed or added when user switched between
+ * pages with different security levels
+ * @param tab_url URL of the active tab
+ */
+ function decide_context_menu(tab_url){
+	if (!tab_url){
+		return;
+	}
+	let curr_level = getCurrentLevelJSON(tab_url)[0];
+	if (curr_level.formlock !== true){
+		if (menu_created){
+			menu_created = false;
+			browser.menus.remove("Formstery", () => {});
+		}
+	}
+	else {
+		//recreate context menu and restart blocking
+		if (!menu_created){
+			create_context_menu();
+			menu_created = true;
+		}
 	}
 }
 
@@ -207,7 +327,17 @@ var tabs_notified = [];
  * unsafe form
  */
  browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-	if (request.msg === "ViolationFound") {
+	if (request.req === "FLClickedForm") {	  
+		browser.contextMenus.update("submitMethod", {"title": "Submit method: " + request.method});
+		browser.contextMenus.update("submitTo", {"title": "Submits to: " + get_root_domain(request.domain)});
+		if (lock_domains.length > 0) {
+			browser.menus.update("lock", {"title": "Remove Lock"});  
+		}
+		else {
+			browser.menus.update("lock", {"title": "Set Lock"});
+		}
+	}
+	else if (request.msg === "ViolationFound") {
 		let tab_level = getCurrentLevelJSON(request.document_url)[0];
 		if (tab_level.formlock !== true) {
 			return;
@@ -216,13 +346,12 @@ var tabs_notified = [];
 			if (sender.tab.id != lock_tab) {
 				if (!is_domain_whitelisted(sender.tab.url)) {
 					lock_tab = sender.tab.id;
-					lock_form_id = request.form_id;
 					lock_form(request.document_url, request.action_url, sender.tab.id);
 				}
 			}
 			else {
-				if (request.form_id != lock_form_id) {
-					update_lock(request.document_url, request.action_url, request.form_id);
+				if ((!lock_domains.includes(request.action_url)) && (lock_domains.length > 0)) {
+					update_lock(request.document_url, request.action_url);
 				}
 			}
 			if (!tabs_notified.includes(sender.tab.id)) {
@@ -289,6 +418,7 @@ You can lift the lock by refreshing the page`);
  * @param tab Original tab object, used because tab_info id caused errors
  */
 function handle_tab(tab_info, tab) {
+	decide_context_menu(tab_info.url);
 	let curr_level = getCurrentLevelJSON(tab_info.url)[0];
     if (curr_level.formlock !== true){
         //If user changed the level during lock then clear lock data to prevent blocking

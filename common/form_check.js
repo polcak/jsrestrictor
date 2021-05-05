@@ -53,14 +53,13 @@ function check_element(element) {
 /**
  * Checks whether given form is safe or not
  * checks if form uses GET method or has action attribute different than
- * the tab url then sends a message to formlock.js
+ * the tab url then sends a message to formlock_common.js
  * This function is a modified version of the original function from Formlock
  * ^Forms are not highlighted as not to make JSR detectable
  * ^Criteria for unsafe forms was tweaked in order to allow search bars and such
  * @param curr_form form object
- * @param order acts as ID
  */
-function check_form(curr_form, order) {
+function check_form(curr_form) {
 	let susceptible = false;
 	//Skip search bars
 	if (curr_form.getAttribute("role") == "search") {
@@ -88,14 +87,14 @@ function check_form(curr_form, order) {
 		}
 	
 		if (violation_msg) {
-			browser.runtime.sendMessage({msg : "ViolationFound", document_url : document.URL, action_url : current_url, violation : violation_msg, form_id : order});
+			browser.runtime.sendMessage({msg : "ViolationFound", document_url : document.URL, action_url : current_url, violation : violation_msg});
 		}
 	});
 }
 
 for (var f = 0; f < document.forms.length; ++f) {
 	let curr_form = document.forms[f];
-	check_form(curr_form, f);
+	check_form(curr_form);
 }
 
 /**
