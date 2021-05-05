@@ -453,20 +453,17 @@ function handle_tab(tab_info, tab) {
     // (2) Highlighting risky forms
     browser.tabs.executeScript(tab.tabId, {file: "utils.js", allFrames: true}, function(Tab) {
         // UTILS ->
-        browser.tabs.get(tab.tabId, function(Tab) {
-            // Passing the tab URL
-            browser.tabs.executeScript(tab.tabId, {
-                allFrames: true,
-                code: "var taburl = \"" + tab.url + "\";"
-            }, 
-            function() {
-                // Main code
-                browser.tabs.executeScript(tab.tabId, {
-                    allFrames: true,
-                    file: "form_check.js"
-                });
-            });
-        }); 
+		browser.tabs.executeScript(tab.tabId, {
+			allFrames: true,
+			code: "var taburl = \"" + tab_info.url + "\";"
+		}, 
+		function() {
+			// Main code
+			browser.tabs.executeScript(tab.tabId, {
+				allFrames: true,
+				file: "form_check.js"
+			});
+		});
         // <- UTILS
     });
 }
