@@ -131,18 +131,17 @@ function clear_new_data(callback) {
 			pluginData: true,
 			passwords: true,
 			serverBoundCertificates: true,
-			serviceWorkers: true
+			serviceWorkers: true,
+			cookies: true
 		  }).then(() => {
 				/* Firefox doesn't support removing localStorage using since other than 0
 				 * Added cookies too here because we are backing them up anyway
 				 */
 				let url = new URL(unlock_url);
 				browser.browsingData.remove({
-					since: 0,
-					hostnames : [url.hostname] 
+					since: 0
 				},{
 					localStorage: true,
-					cookies: true
 				});	
 			  	refresh_lock_tab();
 			}, (error) => {
