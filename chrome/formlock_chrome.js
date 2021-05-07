@@ -121,7 +121,8 @@ var started = null;
 function clear_new_data() {
 	if (started !== null) {
 		browser.browsingData.remove({
-			"since": started
+			"since": started,
+			"origins": [`${unlock_url}`]
 		  }, {
 			"cacheStorage": true,
 			"cookies": true,
@@ -129,14 +130,20 @@ function clear_new_data() {
 			"indexedDB": true,
 			"localStorage": true,
 			"serviceWorkers": true,
-			"webSQL": true,
-			"passwords": true,
-			"appcache": true,
-			"cache": true,
-			"downloads": true,
-			"formData": true,
-			"history": true,
-			"pluginData": true
-		  },refresh_lock_tab);
+			"webSQL": true
+		  }, () => {
+			//clearing items which cannot be cleared with origins argument
+			browser.browsingData.remove({
+				"since": started
+			}, {
+				"passwords": true,
+				"appcache": true,
+				"cache": true,
+				"downloads": true,
+				"formData": true,
+				"history": true,
+				"pluginData": true
+			}, refresh_lock_tab);
+		  });
 	}
 }
