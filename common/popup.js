@@ -6,6 +6,7 @@
 //  Copyright (C) 2019  Martin Timko
 //  Copyright (C) 2019  Libor Polcak
 //  Copyright (C) 2020  Pavel Pohner
+//  Copyright (C) 2021  Matyas Szabo
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -113,13 +114,14 @@ document.getElementById('controls').addEventListener('click', function (e) {
 });
 
 window.addEventListener("load", function() {
-	load_on_off_switch();
+	load_on_off_switches();
 });
 
 document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200)});
+document.getElementById("formlock_slider").addEventListener("click", () => {setTimeout(control_formlock, 200)});
 
 /// Load switch state from storage for current site
-function load_on_off_switch()
+function load_on_off_switches()
 {
 	var checkbox = document.getElementById("switch-checkbox");
 
@@ -153,6 +155,31 @@ function load_on_off_switch()
 			});
 		}
 	});
+
+	var FL_checkbox = document.getElementById("switch-formlock-checkbox");
+
+	browser.tabs.query({currentWindow: true, active: true}, function (tabs) {
+		let curr_level = getCurrentLevelJSON(tabs[0].url)[0];
+		if (curr_level.formlock !== true){
+			document.getElementById("formlock_switch_wrapper").style.display = "none";
+			document.getElementById("formlock_off_message").innerHTML = "Formlock is turned off on this website";
+		}
+		else {
+			var currentHost = new URL(tabs[0].url);
+			currentHost = wwwRemove(currentHost.hostname);
+			browser.runtime.sendMessage({message : "are 3rd party requests blocked on this site?", site : tabs[0].url}, function (response) {
+				//Check or uncheck the slider
+				if (response === "no")
+				{
+					FL_checkbox.checked = false;
+				}
+				else
+				{
+					FL_checkbox.checked = true;
+				}
+			});
+		}
+	});
 }
 
 /// Event handler for On/off switch
@@ -180,4 +207,28 @@ function control_whitelist()
 	showRefreshPageOption();
 }
 
+// Event handler for On/off Formlock switch
+// This function is a copy of the one above
+function control_formlock()
+{
+	var checkbox = document.getElementById("switch-formlock-checkbox");
 
+	var currentHost = "";
+	//Obtain current site URL
+	browser.tabs.query({currentWindow: true, active: true}, function (tabs) {
+		//Obtain hostname
+		currentHost = new URL(tabs[0].url);
+		currentHost = wwwRemove(currentHost.hostname);
+		//Send approriate message based on slider's state
+		if (!checkbox.checked)	//Turn ON
+		{
+			browser.runtime.sendMessage({message:"formlock add whitelisted site", site:currentHost}, function (response) {});
+		}
+		else
+		{
+			browser.runtime.sendMessage({message:"formlock remove whitelisted site", site:currentHost},
+				function (response) {});
+		}
+	});
+	showRefreshPageOption();
+}

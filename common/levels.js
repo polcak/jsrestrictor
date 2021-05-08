@@ -6,6 +6,7 @@
 //  Copyright (C) 2019-2021  Libor Polcak
 //  Copyright (C) 2019  Martin Timko
 //  Copyright (C) 2021  Matus Svancar
+//  Copyright (C) 2021  Matyas Szabo
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -520,6 +521,7 @@ var level_2 = {
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
 	"windowname": true,
+	"formlock" : true,
 };
 
 var level_3 = {
@@ -552,6 +554,7 @@ var level_3 = {
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 0,
 	"windowname": true,
+	"formlock" : true
 };
 
 // Level aliases

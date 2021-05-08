@@ -4,7 +4,8 @@ body {
 	grid-template-areas:
 		"logo   jsr    controls"
 		"levels levels levels"
-		"whitelist whitelist whitelist";
+		"whitelist whitelist whitelist"
+		"f_whitelist f_whitelist f_whitelist";
 	grid-gap: 3em;
 	padding: 1em;
 	margin: 1em;
@@ -74,7 +75,7 @@ h3 {
 	padding: 0.7ex;
 	border: 2px solid grey;
 	border-radius: 0.5ex;
-	//display: inline-block;
+	display: inline-block;
 	margin-top: 1.3ex;
 	margin-left: 2ex;
 }
@@ -90,7 +91,11 @@ h3 {
 	grid-area:whitelist;
 }
 
-#shield_off_message{
+#formlock_whitelist{
+	grid-area:f_whitelist;
+}
+
+.message_off{
 	font-size: large;
 }
 
@@ -158,7 +163,7 @@ input:checked + .slider:before {
 	color:black;
 }
 
-#switch-label
+.switch-label
 {
 	text-align: center;
 	vertical-align: middle;

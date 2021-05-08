@@ -79,15 +79,46 @@
 		<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
 	</p>
   	<div>
-	  	<input id="whitelist-input" type="text" name="whitelist-hostname" placeholder="example.com">
+	  	<input class="whitelist-inputs" id="whitelist-input" type="text" name="whitelist-hostname" placeholder="example.com">
 			<button id="whitelist-add-button" class="jsr-button">Deactivate the Network boundary shield
 				for the domain</button>
 	</div>
-  	<select id="whitelist-select" name="sometext" size="5" multiple>
+  	<select class="whitelist-selects" id="whitelist-select" name="sometext" size="5" multiple>
 
 	</select>
 	<div>
 		<button id="whitelist-remove-button" class="jsr-button">Reactivate the Network boundary shield
+			for the selected domains</button>
+	</div>
+  </div>
+
+  <div id="formlock-config">
+	<h2>Formlock</h2>
+	<p>
+		Formlock is enabled on levels 2 and 3. It warns users about forms which either use the GET method
+		or submit to third parties using the action parameter. It blocks 3rd party requests during form filling 
+		and submission and restores the page to it's state before filling of the form. It excludes search forms and forms consisting
+		only of button inputs in order to prevent warning spamming.
+	</p>
+	<p>
+		You can disable Formlock by adding the domain (e.g. example.com) to the
+		list below. 3rd party requests during form submission won't be blocked on the 
+		domains listed bellow. To selectively deactivate Formlock, insert the domains to the list (excluding "www", but including all other domains eg. ".com").
+	</p>
+	<p>
+		Please note, that these domain names are checked with domain hierarchy, so whitelisting
+		<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
+	</p>
+  	<div>
+	  	<input class="whitelist-inputs" id="FL_whitelist-input" type="text" name="whitelist-hostname" placeholder="example.com">
+			<button id="FL_whitelist-add-button" class="jsr-button">Deactivate Formlock
+				for the domain</button>
+	</div>
+  	<select class="whitelist-selects" id="FL_whitelist-select" name="sometext" size="5" multiple>
+
+	</select>
+	<div>
+		<button id="FL_whitelist-remove-button" class="jsr-button">Reactivate Formlock
 			for the selected domains</button>
 	</div>
   </div>

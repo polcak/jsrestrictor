@@ -7,6 +7,7 @@
 //  Copyright (C) 2019  Martin Timko
 //  Copyright (C) 2020  Peter Hornak
 //	Copyright (C) 2020  Pavel Pohner
+//  Copyright (C) 2021  Matyas Szabo
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -140,7 +141,12 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 		</div>
 
 		${create_wrapping_groups_html()}
-		
+
+		<div class="main-section">
+			<input type="checkbox" id="formlock"></input>
+			<span class="section-header">Enable form security notifications and locking</span>
+		</div>
+
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
@@ -170,6 +176,9 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 			new_level[property] = convertor(elem[value_getter]);
 		};
 
+		if (document.getElementById("formlock").checked){
+			new_level["formlock"] = true;
+		}
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
 			if (new_level.level_id.length > 3) {
 				alert("Level ID too long, provide 3 characters or less");
@@ -305,6 +314,8 @@ document.getElementById("new_level").addEventListener("click",
 
 document.getElementById("whitelist-add-button").addEventListener("click", () => add_to_whitelist());
 document.getElementById("whitelist-remove-button").addEventListener("click", () => remove_from_whitelist());
+document.getElementById("FL_whitelist-add-button").addEventListener("click", () => add_to_FL_whitelist());
+document.getElementById("FL_whitelist-remove-button").addEventListener("click", () => remove_from_FL_whitelist());
 document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_http_request_shield, 200)});
 
 function add_to_whitelist()
@@ -314,6 +325,35 @@ function add_to_whitelist()
 	if (to_whitelist.trim() !== '')
 	{
 		var listbox = document.getElementById("whitelist-select");
+		//Check if it's not in whitelist already
+		for (var i = 0; i < listbox.length; i++)
+		{
+			if (to_whitelist == listbox.options[i].text)
+			{
+				alert("Hostname is already in the whitelist.");
+				return;
+			}
+		}
+		//Insert it
+		listbox.options[listbox.options.length] = new Option(to_whitelist, to_whitelist);
+		//Update background
+		update_whitelist(listbox);
+
+	}
+	else
+	{
+		alert("Please fill in the hostname first.");
+	}
+
+}
+
+function add_to_FL_whitelist()
+{	
+	//obtain input value
+	var to_whitelist = document.getElementById("FL_whitelist-input").value;
+	if (to_whitelist.trim() !== '')
+	{
+		var listbox = document.getElementById("FL_whitelist-select");
 		//Check if it's not in whitelist already
 		for (var i = 0; i < listbox.length; i++)
 		{
@@ -350,19 +390,38 @@ function remove_from_whitelist()
 	update_whitelist(listbox);
 }
 
+function remove_from_FL_whitelist() {
+	var listbox = document.getElementById("FL_whitelist-select");
+	var selectedIndexes = getSelectValues(listbox);
+
+	var j = 0;
+	for (var i = 0; i < selectedIndexes.length; i++)
+	{
+		listbox.remove(selectedIndexes[i]-j);
+		j++;
+	}
+	update_whitelist(listbox);
+}
+
 function update_whitelist(listbox)
 {
 	//Create new associative array
 	var whitelistedHosts = new Object();
 	//Obtain all whitelisted hosts from listbox
 	for (var i = 0; i < listbox.length; i++)
-		{
-			whitelistedHosts[listbox.options[i].text] = true;
-		}
+	{
+		whitelistedHosts[listbox.options[i].text] = true;
+	}
+	if (listbox.getAttribute("id") == "FL_whitelist-select") {
+		browser.storage.sync.set({"FL_whitelist":whitelistedHosts});
+		sendMessage({message:"FL_whitelist updated"});
+	}
+	else {
 		//Overwrite the whitelist in storage
 		browser.storage.sync.set({"whitelistedHosts":whitelistedHosts});
 		//Send message to background to update whitelist from storage
 		sendMessage({message:"whitelist updated"});
+	}
 }
 
 function sendMessage(message)
@@ -391,8 +450,9 @@ function getSelectValues(select)
 function loadWhitelist()
 {	
 	var listbox = document.getElementById("whitelist-select");
+	var FL_listbox = document.getElementById("FL_whitelist-select");
 	//Get the whitelist
-	browser.storage.sync.get(["whitelistedHosts"], function(result)
+	browser.storage.sync.get(["whitelistedHosts", "FL_whitelist"], function(result)
 	{
 		if (result.whitelistedHosts != undefined)
       	{
@@ -402,6 +462,13 @@ function loadWhitelist()
 	        	listbox.options[it++] = new Option(key, key);
 			}, result.whitelistedHosts);
   		}
+		if (result.FL_whitelist != undefined) {
+			//Create list box options for each item
+			var it = 0;
+			Object.keys(result.FL_whitelist).forEach(function(key, index) {
+				FL_listbox.options[it++] = new Option(key, key);
+			}, result.FL_whitelist);
+		}
 	});
 }
 //Function called on window load, obtains whether is the protection on or off
