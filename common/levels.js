@@ -293,6 +293,17 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "analytics",
+			description: "Prevent sending analytics through Beacon API",
+			description2: [],
+			default: true,
+			options: [],
+			wrappers: [
+				// BEACON
+				"navigator.sendBeacon",
+			],
+		},
+		{
 			name: "battery",
 			description: "Disable Battery status API",
 			description2: [],
@@ -402,6 +413,7 @@ var level_1 = {
 	"battery": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 2,
+	"analytics": true,
 	"windowname": true,
 };
 
@@ -418,6 +430,7 @@ var level_2 = {
 	"enumerateDevices": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
+	"analytics": true,
 	"windowname": true,
 };
 
@@ -445,6 +458,7 @@ var level_3 = {
 	"webworker_approach_slow": false,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 0,
+	"analytics": true,
 	"windowname": true,
 };
 
