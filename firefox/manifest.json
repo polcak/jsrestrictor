@@ -22,7 +22,8 @@
     {
       "matches": ["<all_urls>"],
       "js": ["alea.js", "helpers.js", "browser.js", "inject.js", WRAPPING, "code_builders.js", "ffbug1267027.js", "document_start.js"],
-      "run_at": "document_start"
+      "run_at": "document_start",
+      "all_frames": true
     }
   ],
   "description": "Extension for increasing security and privacy level of the user.",
