@@ -26,6 +26,7 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Limit Geolocation API --** *Use accuracy of hundreds of meters*
 * **Disable Battery status API --** *ON*
 * **window.name --** *Clear with each page load*
+* **navigator.sendBeacon --** *Do not send anything and return true*
 
 ### Level 2
 * **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
@@ -43,6 +44,7 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Limit Geolocation API --** *Use accuracy of kilometers*
 * **Disable Battery status API --** *ON*
 * **window.name --** *Clear with each page load*
+* **navigator.sendBeacon --** *Do not send anything and return true*
 
 ### Level 3
 * **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
@@ -64,4 +66,5 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Limit Geolocation API --** *Disabled*
 * **Disable Battery status API --** *ON*
 * **window.name --** *Clear with each page load*
+* **navigator.sendBeacon --** *Do not send anything and return true*
 

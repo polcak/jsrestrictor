@@ -33,6 +33,7 @@ WebGLRenderingContext.getVertexAttribOffset, WebGLRenderingContext.getSupportedE
 	API. JSR also modifies the timestamps provided by Geolocation API in consistency with its time
 	precision settings.
 * **window.name** provides a very simple cross-origin tracking method of the same tab, see https://github.com/polcak/jsrestrictor/issues/72, https://developer.mozilla.org/en-US/docs/Web/API/Window/name,	https://2019.www.torproject.org/projects/torbrowser/design/,	https://bugzilla.mozilla.org/show_bug.cgi?id=444222, and https://html.spec.whatwg.org/#history-traversal. JSR provides an option to remove any `window.name` content on each page load.
+* **navigator.sendBeacon** is an API desinged for analytics. JSR provides an option to disable the API. The call returns success but nothing is sent to any web server.
 
 JavaScript Restrictor provides four in-built levels of protection:
 
