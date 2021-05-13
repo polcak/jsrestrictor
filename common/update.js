@@ -130,6 +130,16 @@ function installUpdate() {
 			}
 			item.version = 2.4;
 		}
+		if (item.version < 2.6) {
+			// No Beacon API (analytics) wrapping below 2.6
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.windowname || l.battery || l.geolocation || l.enumerateDevices || l.time_precision || l.hardware) {
+					l.analytics = true;
+				}
+			}
+			item.version = 2.6;
+		}
 		browser.storage.sync.set(item);
 	});
 }
