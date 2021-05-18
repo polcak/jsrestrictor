@@ -46,14 +46,18 @@ def IOdevices(browser):
 def test_device_memory(browser, device, expected):
 	if expected.device.deviceMemory[browser.type] == 'REAL VALUE':
 		assert device['deviceMemory'] == browser.real.device.deviceMemory
+	elif expected.device.deviceMemory['value'] == 'SPOOF VALUE':
+		assert device['deviceMemory'] in expected.device.deviceMemory['valid_values']
 	else:
 		assert device['deviceMemory'] == expected.device.deviceMemory[browser.type]
 
 
 ## Test hardware concurrency.
 def test_hardware_concurrency(browser, device, expected):
-	if expected.device.hardwareConcurrency == 'REAL VALUE':
+	if expected.device.hardwareConcurrency['value'] == 'REAL VALUE':
 		assert device['hardwareConcurrency'] == browser.real.device.hardwareConcurrency
+	elif expected.device.hardwareConcurrency['value'] == 'SPOOF VALUE':
+		assert device['hardwareConcurrency'] in expected.device.hardwareConcurrency['valid_values']
 	else:
 		assert device['hardwareConcurrency'] == expected.device.hardwareConcurrency
 

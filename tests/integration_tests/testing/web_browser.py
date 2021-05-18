@@ -27,6 +27,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.select import Select
 
 from web_browser_type import BrowserType
 import values_real
@@ -40,6 +41,35 @@ from configuration import get_config
 #  Methods are sometimes divided based on browser type - same operations are made differently in different browser.
 #  Created browser object offers uniform way how to work with every browser.
 class Browser:
+
+    ## manually create testing level for Brave like fingerprinting protection in JSR options
+    def define_test_level(self):
+        sleep(1)
+        self.driver.get(self._jsr_options_page)
+        self.driver.find_element_by_id('new_level').click()
+        sleep(1)
+        self.driver.find_element_by_id('level_text').send_keys("4")
+        self.driver.find_element_by_id('level_id').send_keys("4")
+        self.driver.find_element_by_id('level_description').send_keys("Brave like protection")
+        self.driver.find_element_by_id('time_precision').click()
+        select_tpm = Select(self.driver.find_element_by_id("time_precision_precision"))
+        select_tpm.select_by_index(1)
+        self.driver.find_element_by_id('htmlcanvaselement').click()
+        self.driver.find_element_by_id('audiobuffer').click()
+        self.driver.find_element_by_id('webgl').click()
+        self.driver.find_element_by_id('plugins').click()
+        self.driver.find_element_by_id('enumerateDevices').click()
+        select_em = Select(self.driver.find_element_by_id("enumerateDevices_method"))
+        select_em.select_by_index(1)
+        self.driver.find_element_by_id('hardware').click()
+        select_hw = Select(self.driver.find_element_by_id("hardware_method"))
+        select_hw.select_by_index(1)
+        self.driver.find_element_by_id('webworker').click()
+        self.driver.find_element_by_id('geolocation').click()
+        select_gl = Select(self.driver.find_element_by_id("geolocation_locationObfuscationType"))
+        select_gl.select_by_index(3)
+        self.driver.find_element_by_id('save').click()
+
     ## Find URL of JSR option page after JSR was installed to browser.
     def find_options_jsr_page_url(self):
         sleep(1)
@@ -79,6 +109,7 @@ class Browser:
             self.real = values_real.init(self.driver)
             self.driver.install_addon(get_config("firefox_jsr_extension"), temporary=True)
             self.find_options_jsr_page_url()
+            self.define_test_level()
         elif type == BrowserType.CHROME:
             driver_tmp = webdriver.Chrome(executable_path=get_config("chrome_driver"))
             self.real = values_real.init(driver_tmp)
@@ -88,6 +119,7 @@ class Browser:
             options.add_extension(get_config("chrome_jsr_extension"))
             self.driver = webdriver.Chrome(executable_path=get_config("chrome_driver"), options=options)
             self.find_options_jsr_page_url()
+            self.define_test_level()
 
     ## Get current level of JSR in browser.
     @property

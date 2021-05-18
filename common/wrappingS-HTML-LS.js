@@ -5,6 +5,7 @@
 //
 //  Copyright (C) 2019  Libor Polcak
 //  Copyright (C) 2020  Peter Hornak
+//  Copyright (C) 2021  Matus Svancar
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -219,6 +220,16 @@
 			parent_object: "navigator",
 			parent_object_property: "hardwareConcurrency",
 			wrapped_objects: [],
+			helping_code: `
+				var ret = 2;
+				if(args[0]==0){
+					var realValue = navigator.hardwareConcurrency;
+					ret = Math.floor(2+prng()*(realValue-2));
+				}
+				else if(args[0]==1){
+					ret = Math.floor(2+(prng()*6));
+				}
+			`,
 			post_wrapping_code: [
 				{
 					code_type: "object_properties",
@@ -227,12 +238,19 @@
 					wrapped_objects: [],
 					parent_object: "navigator",
 					parent_object_property: "hardwareConcurrency",
+					/**  \brief replaces navigator.hardwareConcurrency getter
+					 *
+					 * Depending on level chosen this property returns:
+					 *	* (0) - random valid value from range [2 - real value]
+					 *	* (1) - random valid value from range [2 - 8]
+					 *	* (2) - 2
+					 */
 					wrapped_properties: [
 						{
 							property_name: "get",
 							property_value: `
 								function() {
-									return 2;
+									return ret;
 								}`,
 						},
 					],
