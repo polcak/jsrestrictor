@@ -38,6 +38,7 @@ get_csv:
 
 docs:
 	PROJECT_NAME="${PROJECT_NAME}" doxygen -T < doxyfile
+	cp -f templates/html/main.css doxygen/html/
 
 serve-docs:
 	cd doxygen/html; python3 -m http.server
