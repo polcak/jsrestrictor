@@ -66,7 +66,7 @@ def test_hardware_concurrency(browser, device, expected):
 def test_IOdevices(browser, IOdevices, expected):
 	if expected.device.IOdevices == 'REAL VALUE':
 		assert len(IOdevices) == len(browser.real.device.IOdevices)
-		for device in IOdevices:
-			assert any(realIOdevice['deviceId'] == device['deviceId'] for realIOdevice in browser.real.device.IOdevices)
+		for i in range(len(IOdevices)):
+			assert IOdevices[i]['kind'] == browser.real.device.IOdevices[i]['kind']
 	else:
 		assert len(IOdevices) == expected.device.IOdevices
