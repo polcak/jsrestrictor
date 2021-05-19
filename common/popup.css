@@ -4,14 +4,14 @@ body {
 	grid-template-areas:
 		"logo   jsr    controls"
 		"levels levels levels"
+		"detect detect detect"
 		"whitelist whitelist whitelist";
-	grid-gap: 3em;
-	padding: 1em;
-	margin: 1em;
+	grid-gap: 1em 3em;
+	padding: 1.5em 2em;
 }
 
 h3 {
-	font-size: 3ex;
+	font-size: medium;
 }
 
 #logo {
@@ -35,7 +35,7 @@ h3 {
 }
 
 #current-site {
-	font-size: large;
+	font-size: 11pt;
 }
 
 #level-select {
@@ -46,10 +46,10 @@ h3 {
 
 .level {
 	font-weight: bold;
-	font-size: large;
+	font-size: medium;
 	color: #4a4a4a;
-	margin: 0.7ex;
-	padding: 0.7ex;
+	margin: 0.6ex;
+	padding: 0.6ex;
 	border: 2px solid grey;
 	border-radius: 0.5ex;
 }
@@ -90,6 +90,10 @@ h3 {
 	grid-area:whitelist;
 }
 
+#fp_detection_setting{
+	grid-area:detect;
+}
+
 #shield_off_message{
 	font-size: large;
 }
@@ -101,6 +105,7 @@ h3 {
 	width: 60px;
 	height: 34px;
 	margin-left: 3px;
+	margin-top: 5px;
 }
 
 /* Hide default HTML checkbox */
@@ -161,7 +166,5 @@ input:checked + .slider:before {
 #switch-label
 {
 	text-align: center;
-	vertical-align: middle;
-	font-size:14pt;
-	padding-top:5px;
+	font-size:11pt;
 }

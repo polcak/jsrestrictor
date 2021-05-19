@@ -126,7 +126,7 @@
 				}
 			],
 			helping_code: audioFarbleBody,
-			original_function: "parent.AudioBuffer.prototype.getChannelData",
+			original_function: "AudioBuffer.prototype.getChannelData",
 			wrapping_function_args: "channel",
 			/** \fn fake AudioBuffer.prototype.getChannelData
 			 * \brief Returns modified channel data.
@@ -150,7 +150,7 @@
 				}
 			],
 			helping_code: audioFarbleBody,
-			original_function: "parent.AudioBuffer.prototype.copyFromChannel",
+			original_function: "AudioBuffer.prototype.copyFromChannel",
 			wrapping_function_args: "destination, channel, start",
 			/** \fn fake AudioBuffer.prototype.copyFromChannel
 			 * \brief Modifies destination array after calling original function.

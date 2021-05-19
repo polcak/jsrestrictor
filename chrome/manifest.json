@@ -1,7 +1,7 @@
 {
-  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár",
+  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár, Marek Saloň",
   "background": {
-      "scripts": ["helpers.js", "session_hash.js", "update.js", "url.js", WRAPPING, "code_builders.js", "levels.js", "background.js", "level_cache.js", "http_shield_chrome.js", "http_shield_common.js"],
+      "scripts": ["helpers.js", "session_hash.js", "update.js", "url.js", WRAPPING, "fp_code_builders.js", "code_builders.js", "fp_detect_background.js", "levels.js", "background.js", "level_cache.js", "http_shield_chrome.js", "http_shield_common.js"],
       "persistent": true
   },
   "browser_action": {
@@ -21,7 +21,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": [ "alea.js", "helpers.js", "browser.js", "inject.js", "document_start.js"],
+      "js": [ "alea.js", "helpers.js", "browser.js", "inject.js", "fp_detect_content.js", "document_start.js"],
       "run_at": "document_start",
       "all_frames": true,
       "match_about_blank": true
@@ -42,7 +42,7 @@
   "manifest_version": 2,
   "name": "JavaScript Restrictor",
   "options_page": "options.html",
-  "permissions": ["storage", "tabs",  "webRequest", "webRequestBlocking", "<all_urls>", "notifications"],
+  "permissions": ["storage", "tabs",  "webRequest", "webRequestBlocking", "<all_urls>", "notifications", "browsingData"],
   "short_name": "JSR",
   "version": "0.4.6"
 }

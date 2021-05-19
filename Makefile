@@ -25,6 +25,7 @@ get_csv:
 	@cp -r $*/* $*_JSR/
 	@cp -r LICENSES $*_JSR/
 	@./fix_manifest.sh $*_JSR/manifest.json
+	@cp common/wrappingX* $*_JSR/
 	@rm -f $*_JSR/.*.sw[pno]
 	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
 
@@ -38,6 +39,7 @@ clean:
 	rm -rf chrome_JSR
 	rm -rf common/ipv4.dat
 	rm -rf common/ipv6.dat
+	rm -rf common/wrappingX*
 	rm -rf ipv4.csv
 	rm -rf ipv6.csv
 	rm -rf doxygen/
