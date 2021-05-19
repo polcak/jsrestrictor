@@ -561,7 +561,7 @@
 				var vendor = randomString(8, 0);
 				var renderer = randomString(8, 0);`+
 				farbleGetParameter,
-			original_function: "parent.WebGLRenderingContext.prototype.getParameter",
+			original_function: "WebGLRenderingContext.prototype.getParameter",
 			wrapping_function_args: "constant",
 			/** \fn fake WebGLRenderingContext.prototype.getParameter
 			 * \brief Modifies return value for some specific parameters, original value for the rest
@@ -587,7 +587,7 @@
 				var vendor = randomString(8, 0);
 				var renderer = randomString(8, 0);`+
 				farbleGetParameter,
-			original_function: "parent.WebGL2RenderingContext.prototype.getParameter",
+			original_function: "WebGL2RenderingContext.prototype.getParameter",
 			wrapping_function_args: "constant",
 			/** \fn fake WebGL2RenderingContext.prototype.getParameter
 			 * \brief Modifies return value for some specific parameters, original value for the rest
@@ -610,7 +610,7 @@
 				}
 			],
 			helping_code: farbleNullArray,
-			original_function: "parent.WebGLRenderingContext.prototype.getSupportedExtensions",
+			original_function: "WebGLRenderingContext.prototype.getSupportedExtensions",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getSupportedExtensions
 			 * \brief Modifies return value
@@ -633,7 +633,7 @@
 				}
 			],
 			helping_code: farbleNullArray,
-			original_function: "parent.WebGL2RenderingContext.prototype.getSupportedExtensions",
+			original_function: "WebGL2RenderingContext.prototype.getSupportedExtensions",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getSupportedExtensions
 			 * \brief Modifies return value
@@ -656,7 +656,7 @@
 				}
 			],
 			helping_code: farbleGetActives,
-			original_function: "parent.WebGLRenderingContext.prototype.getActiveAttrib",
+			original_function: "WebGLRenderingContext.prototype.getActiveAttrib",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getActiveAttrib
 			 * \brief Modifies return value
@@ -679,7 +679,7 @@
 				}
 			],
 			helping_code: farbleGetActives,
-			original_function: "parent.WebGL2RenderingContext.prototype.getActiveAttrib",
+			original_function: "WebGL2RenderingContext.prototype.getActiveAttrib",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getActiveAttrib
 			 * \brief Modifies return value
@@ -702,7 +702,7 @@
 				}
 			],
 			helping_code: farbleNull,
-			original_function: "parent.WebGLRenderingContext.prototype.getExtension",
+			original_function: "WebGLRenderingContext.prototype.getExtension",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getExtension
 			 * \brief Modifies return value
@@ -725,7 +725,7 @@
 				}
 			],
 			helping_code: farbleNull,
-			original_function: "parent.WebGL2RenderingContext.prototype.getExtension",
+			original_function: "WebGL2RenderingContext.prototype.getExtension",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getExtension
 			 * \brief Modifies return value
@@ -748,7 +748,7 @@
 				}
 			],
 			helping_code: farbleGetActives,
-			original_function: "parent.WebGLRenderingContext.prototype.getActiveUniform",
+			original_function: "WebGLRenderingContext.prototype.getActiveUniform",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getActiveUniform
 			 * \brief Modifies return value
@@ -771,7 +771,7 @@
 				}
 			],
 			helping_code: farbleGetActives,
-			original_function: "parent.WebGL2RenderingContext.prototype.getActiveUniform",
+			original_function: "WebGL2RenderingContext.prototype.getActiveUniform",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getActiveUniform
 			 * \brief Modifies return value
@@ -794,7 +794,7 @@
 				}
 			],
 			helping_code: farbleNull,
-			original_function: "parent.WebGLRenderingContext.prototype.getUniformLocation",
+			original_function: "WebGLRenderingContext.prototype.getUniformLocation",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getUniformLocation
 			 * \brief Modifies return value
@@ -817,7 +817,7 @@
 				}
 			],
 			helping_code: farbleNull,
-			original_function: "parent.WebGL2RenderingContext.prototype.getUniformLocation",
+			original_function: "WebGL2RenderingContext.prototype.getUniformLocation",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getUniformLocation
 			 * \brief Modifies return value
@@ -840,7 +840,7 @@
 				}
 			],
 			helping_code: farbleMinusOne,
-			original_function: "parent.WebGLRenderingContext.prototype.getAttribLocation",
+			original_function: "WebGLRenderingContext.prototype.getAttribLocation",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getAttribLocation
 			 * \brief Modifies return value
@@ -863,7 +863,7 @@
 				}
 			],
 			helping_code: farbleMinusOne,
-			original_function: "parent.WebGL2RenderingContext.prototype.getAttribLocation",
+			original_function: "WebGL2RenderingContext.prototype.getAttribLocation",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getAttribLocation
 			 * \brief Modifies return value
@@ -886,7 +886,7 @@
 				}
 			],
 			helping_code: farbleZero,
-			original_function: "parent.WebGLRenderingContext.prototype.getVertexAttribOffset",
+			original_function: "WebGLRenderingContext.prototype.getVertexAttribOffset",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getVertexAttribOffset
 			 * \brief Modifies return value
@@ -909,7 +909,7 @@
 				}
 			],
 			helping_code: farbleZero,
-			original_function: "parent.WebGL2RenderingContext.prototype.getVertexAttribOffset",
+			original_function: "WebGL2RenderingContext.prototype.getVertexAttribOffset",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getVertexAttribOffset
 			 * \brief Modifies return value
@@ -932,7 +932,7 @@
 				}
 			],
 			helping_code: lfsr_next + farblePixels,
-			original_function: "parent.WebGLRenderingContext.prototype.readPixels",
+			original_function: "WebGLRenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGLRenderingContext.prototype.readPixels
 			 * \brief Modifies array which contains result of readPixels
@@ -955,7 +955,7 @@
 				}
 			],
 			helping_code: lfsr_next + farblePixels,
-			original_function: "parent.WebGL2RenderingContext.prototype.readPixels",
+			original_function: "WebGL2RenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGL2RenderingContext.prototype.readPixels
 			 * \brief Modifies array which contains result of readPixels
@@ -978,7 +978,7 @@
 				}
 			],
 			helping_code: farbleGetFramebufferAttachmentParameter,
-			original_function: "parent.WebGLRenderingContext.prototype.getFramebufferAttachmentParameter",
+			original_function: "WebGLRenderingContext.prototype.getFramebufferAttachmentParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getFramebufferAttachmentParameter
 			 * \brief Modifies return value
@@ -1001,7 +1001,7 @@
 				}
 			],
 			helping_code: farbleGetFramebufferAttachmentParameter,
-			original_function: "parent.WebGL2RenderingContext.prototype.getFramebufferAttachmentParameter",
+			original_function: "WebGL2RenderingContext.prototype.getFramebufferAttachmentParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getFramebufferAttachmentParameter
 			 * \brief Modifies return value
@@ -1024,7 +1024,7 @@
 				}
 			],
 			helping_code: farbleGetBufferParameter,
-			original_function: "parent.WebGLRenderingContext.prototype.getBufferParameter",
+			original_function: "WebGLRenderingContext.prototype.getBufferParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getBufferParameter
 			 * \brief Modifies return value
@@ -1047,7 +1047,7 @@
 				}
 			],
 			helping_code: farbleGetBufferParameter,
-			original_function: "parent.WebGL2RenderingContext.prototype.getBufferParameter",
+			original_function: "WebGL2RenderingContext.prototype.getBufferParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getBufferParameter
 			 * \brief Modifies return value
@@ -1070,7 +1070,7 @@
 				}
 			],
 			helping_code: farbleGetProgramParameter,
-			original_function: "parent.WebGLRenderingContext.prototype.getProgramParameter",
+			original_function: "WebGLRenderingContext.prototype.getProgramParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getProgramParameter
 			 * \brief Modifies return value
@@ -1093,7 +1093,7 @@
 				}
 			],
 			helping_code: farbleGetProgramParameter,
-			original_function: "parent.WebGL2RenderingContext.prototype.getProgramParameter",
+			original_function: "WebGL2RenderingContext.prototype.getProgramParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getProgramParameter
 			 * \brief Modifies return value
@@ -1116,7 +1116,7 @@
 				}
 			],
 			helping_code: farbleGetRenderbufferParameter,
-			original_function: "parent.WebGLRenderingContext.prototype.getRenderbufferParameter",
+			original_function: "WebGLRenderingContext.prototype.getRenderbufferParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getRenderbufferParameter
 			 * \brief Modifies return value
@@ -1139,7 +1139,7 @@
 				}
 			],
 			helping_code: farbleGetRenderbufferParameter,
-			original_function: "parent.WebGL2RenderingContext.prototype.getRenderbufferParameter",
+			original_function: "WebGL2RenderingContext.prototype.getRenderbufferParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getRenderbufferParameter
 			 * \brief Modifies return value
@@ -1162,7 +1162,7 @@
 				}
 			],
 			helping_code: farbleGetShaderParameter,
-			original_function: "parent.WebGLRenderingContext.prototype.getShaderParameter",
+			original_function: "WebGLRenderingContext.prototype.getShaderParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getShaderParameter
 			 * \brief Modifies return value
@@ -1185,7 +1185,7 @@
 				}
 			],
 			helping_code: farbleGetShaderParameter,
-			original_function: "parent.WebGL2RenderingContext.prototype.getShaderParameter",
+			original_function: "WebGL2RenderingContext.prototype.getShaderParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getShaderParameter
 			 * \brief Modifies return value
@@ -1208,7 +1208,7 @@
 				}
 			],
 			helping_code: farbleGetVertexAttrib,
-			original_function: "parent.WebGLRenderingContext.prototype.getVertexAttrib",
+			original_function: "WebGLRenderingContext.prototype.getVertexAttrib",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getVertexAttrib
 			 * \brief Modifies return value
@@ -1231,7 +1231,7 @@
 				}
 			],
 			helping_code: farbleGetVertexAttrib,
-			original_function: "parent.WebGL2RenderingContext.prototype.getVertexAttrib",
+			original_function: "WebGL2RenderingContext.prototype.getVertexAttrib",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getVertexAttrib
 			 * \brief Modifies return value
@@ -1254,7 +1254,7 @@
 				}
 			],
 			helping_code: farbleZero,
-			original_function: "parent.WebGLRenderingContext.prototype.getUniform",
+			original_function: "WebGLRenderingContext.prototype.getUniform",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getUniform
 			 * \brief Modifies return value
@@ -1277,7 +1277,7 @@
 				}
 			],
 			helping_code: farbleZero,
-			original_function: "parent.WebGL2RenderingContext.prototype.getUniform",
+			original_function: "WebGL2RenderingContext.prototype.getUniform",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getUniform
 			 * \brief Modifies return value
@@ -1300,7 +1300,7 @@
 				}
 			],
 			helping_code: farbleNull,
-			original_function: "parent.WebGLRenderingContext.prototype.getTexParameter",
+			original_function: "WebGLRenderingContext.prototype.getTexParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getTexParameter
 			 * \brief Modifies return value
@@ -1323,7 +1323,7 @@
 				}
 			],
 			helping_code: farbleNull,
-			original_function: "parent.WebGL2RenderingContext.prototype.getTexParameter",
+			original_function: "WebGL2RenderingContext.prototype.getTexParameter",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getTexParameter
 			 * \brief Modifies return value
@@ -1346,7 +1346,7 @@
 				}
 			],
 			helping_code: farbleGetPrecisionFormat,
-			original_function: "parent.WebGLRenderingContext.prototype.getShaderPrecisionFormat",
+			original_function: "WebGLRenderingContext.prototype.getShaderPrecisionFormat",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGLRenderingContext.prototype.getShaderPrecisionFormat
 			 * \brief Modifies return value
@@ -1369,7 +1369,7 @@
 				}
 			],
 			helping_code: farbleGetPrecisionFormat,
-			original_function: "parent.WebGL2RenderingContext.prototype.getShaderPrecisionFormat",
+			original_function: "WebGL2RenderingContext.prototype.getShaderPrecisionFormat",
 			wrapping_function_args: "...args",
 			/** \fn fake WebGL2RenderingContext.prototype.getShaderPrecisionFormat
 			 * \brief Modifies return value

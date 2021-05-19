@@ -6,6 +6,7 @@
 //  Copyright (C) 2019  Martin Timko
 //  Copyright (C) 2019  Libor Polcak
 //  Copyright (C) 2020  Pavel Pohner
+//  Copyright (C) 2021  Marek Saloň
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -113,10 +114,23 @@ document.getElementById('controls').addEventListener('click', function (e) {
 });
 
 window.addEventListener("load", function() {
+	load_fp_switch();
 	load_on_off_switch();
 });
 
 document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200)});
+document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_fp_detection, 200)});
+
+/// Load switch FPD state from storage 
+function load_fp_switch()
+{
+	var checkbox = document.getElementById("fp-switch-checkbox");
+
+	browser.storage.sync.get(["fpDetectionOn"], function(result)
+	{
+		checkbox.checked = result.fpDetectionOn
+	});
+}
 
 /// Load switch state from storage for current site
 function load_on_off_switch()
@@ -153,6 +167,15 @@ function load_on_off_switch()
 			});
 		}
 	});
+}
+
+/// Event handler for On/off switch
+function control_fp_detection()
+{
+	var checkbox = document.getElementById("fp-switch-checkbox");
+
+	browser.storage.sync.set({fpDetectionOn: checkbox.checked});
+	browser.runtime.sendMessage({purpose:"fpd-state-change", enabled: checkbox.checked});
 }
 
 /// Event handler for On/off switch
