@@ -50,7 +50,7 @@ function installUpdate() {
 	 *		visitedDomains: {} // associative array of domain hashes (domain name => 32 byte hash)
 	 *
 	 */
-	browser.storage.sync.get(null, function (item) {
+	browser.storage.sync.get(null).then(function (item) {
 		if (!item.hasOwnProperty("version") || (item.version < 2.1)) {
 			browser.storage.sync.clear();
 			console.log("All JavaScript Restrictor data cleared! Unfortunately, we do not migrate settings from versions bellow 0.3.");

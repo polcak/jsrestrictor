@@ -79,7 +79,7 @@ var localIPV6DNSZones;
 var doNotBlockHosts = new Object();
 
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
-browser.storage.sync.get(["whitelistedHosts"], function(result){
+browser.storage.sync.get(["whitelistedHosts"]).then(function(result){
 		if (result.whitelistedHosts != undefined)
 			doNotBlockHosts = result.whitelistedHosts;
 	});
@@ -89,7 +89,7 @@ browser.runtime.onMessage.addListener(commonMessageListener);
 browser.runtime.onMessage.addListener(messageListener);
 
 /// Check the storage for requestShieldOn object
-browser.storage.sync.get(["requestShieldOn"], function(result){
+browser.storage.sync.get(["requestShieldOn"]).then(function(result){
 	//If found object is true or undefined, turn the requestShieldOn
 	if (result.requestShieldOn == undefined || result.requestShieldOn)
 	{
@@ -471,20 +471,37 @@ function notifyBlockedRequest(origin, target, resource) {
 }
 
 /**
+ * \brief The event listener, hooked up to the webExtension onMessage event.
+ *
+ * The listener sends message response which contains information if the current site is whitelisted or not.
+ * 
+ * \param message Receives full message (destructured as {message, site}).
+ * \param sender Sender of the message.
+ */
+ function messageListener({message, site}, sender)
+ {
+	 //Message came from popup,js, asking whether is this site whitelisted
+	 if (message === "is current site whitelisted?")
+	 {
+		 return Promise.resolve(`current site is ${checkWhitelist(site) ? '' : 'not '} whitelisted`);
+	 }
+ }
+ 
+
+/**
  * Event listener hooked up to webExtensions onMessage event.
  * Does appropriate action based on message (e.g. Turn on/off the NBS, add/remove a site to/from whitelist, ...).
  * 
  * \param message Receives full message.
  * \param sender Sender of the message.
- * \param sendResponse Function for sending response.
  */
-function commonMessageListener(message, sender, sendResponse)
+function commonMessageListener(message, sender)
 {
 	//Message came from options.js, updated whitelist
 	if (message.message === "whitelist updated")
 	{
 		//actualize current doNotBlockHosts from storage
-		browser.storage.sync.get(["whitelistedHosts"], function(result){
+		browser.storage.sync.get(["whitelistedHosts"]).then(function(result){
 			doNotBlockHosts = result.whitelistedHosts;
 		});
 	}

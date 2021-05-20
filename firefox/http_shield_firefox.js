@@ -32,10 +32,6 @@
  * cached and needs to be resolved without NBS, the performance impact should be negligible.
  */
 
-/// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
-browser.runtime.onMessage.addListener(messageListener);
-/// \endcond
-
 /**
  * The event listener, hooked up to webRequest onBeforeSendHeaders event.
  * Receives detail of HTTP request in requestDetail.
@@ -184,33 +180,5 @@ async function beforeSendHeadersListener(requestDetail)
 	else //Permitting others
 	{
 		return {cancel: false};
-	}
-}
-
-/**
- * The event listener, hooked up to webExtensions onMessage event.
- * The listener sends message response which contains information if the current site is whitelisted or not.
- * 
- * \param message Receives full message.
- * \param sender Sender of the message.
- * \param sendResponse Function for sending response.
- *
- */
-function messageListener(message, sender, sendResponse)
-{
-	//Message came from popup,js, asking whether is this site whitelisted
-	if (message.message === "is current site whitelisted?")
-	{
-		//Read the current hostname
-		var currentHost = message.site;
-		//Response with appropriate message
-		if (checkWhitelist(currentHost))
-		{
-			return Promise.resolve("current site is whitelisted");
-		}
-		else
-		{
-			return Promise.resolve("current site is not whitelisted");
-		}
 	}
 }

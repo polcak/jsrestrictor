@@ -730,10 +730,10 @@ function updateLevels(res) {
 	orig_levels_updated_callbacks.forEach((it) => it());
 	levels_initialised = true;
 }
-browser.storage.sync.get(null, updateLevels);
+browser.storage.sync.get(null).then(updateLevels);
 
 function changedLevels(changed, area) {
-	browser.storage.sync.get(null, updateLevels);
+	browser.storage.sync.get(null).then(updateLevels);
 }
 browser.storage.onChanged.addListener(changedLevels);
 

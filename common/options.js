@@ -195,7 +195,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 					}
 				}
 			}
-			browser.storage.sync.get("custom_levels", updateLevels.bind(null, new_level));
+			browser.storage.sync.get("custom_levels", updateLevels.bind(null).then(new_level));
 		}
 		else {
 			alert("Please provide all required fields: ID, Name, and Decription");
@@ -219,7 +219,7 @@ function restore_level(id, level_params) {
 		var lielem = document.getElementById(`li-${id}`);
 		lielem.classList.remove("undo");
 	}
-	browser.storage.sync.get("custom_levels", restoreLevel);
+	browser.storage.sync.get("custom_levels").then(restoreLevel);
 }
 
 function show_existing_level(levelsEl, level) {
@@ -276,7 +276,7 @@ function remove_level(id) {
 		delete custom_levels[id];
 		browser.storage.sync.set({"custom_levels": custom_levels});
 	}
-	browser.storage.sync.get("custom_levels", remove_level);
+	browser.storage.sync.get("custom_levels").then(remove_level);
 }
 
 function insert_levels() {
@@ -392,7 +392,7 @@ function loadWhitelist()
 {	
 	var listbox = document.getElementById("whitelist-select");
 	//Get the whitelist
-	browser.storage.sync.get(["whitelistedHosts"], function(result)
+	browser.storage.sync.get(["whitelistedHosts"]).then(function(result)
 	{
 		if (result.whitelistedHosts != undefined)
       	{
@@ -409,7 +409,7 @@ function load_on_off_switch()
 {
 	var checkbox = document.getElementById("switch-checkbox");
 	//Obtain the information from storage
-	browser.storage.sync.get(["requestShieldOn"], function(result)
+	browser.storage.sync.get(["requestShieldOn"]).then(function(result)
 	{
 		//Check the box
 		if (result.requestShieldOn || result.requestShieldOn == undefined)
