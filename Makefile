@@ -43,6 +43,12 @@ docs:
 serve-docs:
 	cd doxygen/html; python3 -m http.server
 
+deploy-docs: docs
+	rsync -e "ssh -p 22" -P -rvzc doxygen/html/ manufactura@opal5.opalstack.com:~/apps/js-shield/ --cvs-exclude
+
+dry-deploy-docs: docs
+	rsync -n -e "ssh -p 22" -P -rvzc doxygen/html/ manufactura@opal5.opalstack.com:~/apps/js-shield/ --cvs-exclude
+
 clean:
 	rm -rf firefox_JSR.zip
 	rm -rf firefox_JSR
