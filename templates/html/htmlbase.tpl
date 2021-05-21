@@ -158,6 +158,21 @@ var searchBox = new SearchBox("searchBox", "{{ page.relPath }}search",false,'{{ 
 
 </div><!-- top -->
 {% block splitbar %}
+
+<div id="nav-sidebar">
+
+  <ul>
+    <li><a href="">About</a></li>
+    <li><a href="/md_docs__includes_stores.html">Installing</a></li>
+    <li><a href="/md_docs_versions.html">Release History</a></li>
+    <li>Developer notes</a></li>
+    <ul>
+      <li><a href="">About</a></li>
+    </ul>
+  </ul>
+
+</div>
+
 {% if config.GENERATE_TREEVIEW %}
 <div id="side-nav" class="ui-resizable side-nav-resizable">
   <div id="nav-tree">

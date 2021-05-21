@@ -54,4 +54,4 @@ clean:
 	rm -rf ipv6.csv
 	rm -rf doxygen/
 
-PHONY: docs serve-docs
+.PHONY: docs serve-docs
