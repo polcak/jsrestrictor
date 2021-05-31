@@ -195,7 +195,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 					}
 				}
 			}
-			browser.storage.sync.get("custom_levels", updateLevels.bind(null).then(new_level));
+			browser.storage.sync.get("custom_levels").then(updateLevels.bind(null, new_level));
 		}
 		else {
 			alert("Please provide all required fields: ID, Name, and Decription");
