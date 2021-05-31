@@ -70,6 +70,8 @@ def init(driver):
         canvas_imageData=values_getters.get_imageData_canvas(driver,"canvasx"),
         canvas_dataURL=values_getters.get_dataURL_canvas(driver,"canvasx"),
         canvas_blob=values_getters.get_blob_canvas(driver,"canvasx"),
+        canvas_point_path=None,
+        canvas_point_stroke=None,
         webgl_parameters = values_getters.get_webgl_params(driver,"webglCanvas"),
         webgl_precisions=values_getters.get_webgl_precisions(driver,"webglCanvas"),
         webgl_pixels=values_getters.get_webgl_pixels(driver,"webglCanvas"),

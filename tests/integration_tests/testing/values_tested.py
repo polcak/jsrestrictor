@@ -140,6 +140,8 @@ class TestedValues:
                  canvas_imageData,
                  canvas_dataURL,
                  canvas_blob,
+                 canvas_point_path,
+                 canvas_point_stroke,
 
                  webgl_parameters,
 
@@ -192,6 +194,8 @@ class TestedValues:
         self.canvas_imageData = canvas_imageData
         self.canvas_dataURL = canvas_dataURL
         self.canvas_blob = canvas_blob
+        self.canvas_point_path = canvas_point_path
+        self.canvas_point_stroke = canvas_point_stroke
         self.webgl_parameters = webgl_parameters
         self.webgl_precisions = webgl_precisions
         self.webgl_pixels = webgl_pixels
