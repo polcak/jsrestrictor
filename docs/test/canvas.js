@@ -9,6 +9,7 @@ function writeLineToCanvas(canvasId) {
 
 	// add line to canvas
 	var context = myCanvas.getContext("2d");
+	context.beginPath();
 	context.moveTo(x1, y1);
 	context.lineTo(x2, y2);
 	context.stroke();
@@ -89,8 +90,14 @@ function writeImageToCanvas(canvasId) {
 
 function getData(canvasId) {
 	var myCanvas = document.getElementById(canvasId);
+	const image = new Image();
+	var context = myCanvas.getContext("2d");
 
-	canvasData = myCanvas.toDataURL();
+	image.onload = function() {
+	    context.drawImage(image, 0, 0);
+	}
+	image.src = myCanvas.toDataURL();
+	context.clearRect(0, 0, myCanvas.width, myCanvas.height);
 
 	document.getElementById("canvasUp").innerHTML = "Canvas frame";
 	setTimeout(function(){ document.getElementById("canvasUp").innerHTML = "Canvas frame updated"; }, 300);
