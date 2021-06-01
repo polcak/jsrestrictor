@@ -234,38 +234,6 @@ function isRequestFromPublicToPrivateNet(sourceHostname, targetHostname) {
 	return (!isSourcePrivate && isDestinationPrivate);
 }
 
-
-/**
- * \brief The event listener, hooked up to the webExtension onMessage event.
- *
- * The listener sends message response which contains information if the current site is whitelisted or not.
- * 
- * \param message Receives full message.
- * \param sender Sender of the message.
- * \param sendResponse Function for sending response.
- *
- */
-function messageListener(message, sender, sendResponse)
-{
-	//Message came from popup,js, asking whether is this site whitelisted
-	if (message.message === "is current site whitelisted?")
-	{
-		//Read the current hostname
-		var currentHost = message.site;
-		//Response with appropriate message
-		if (checkWhitelist(currentHost))
-		{
-			sendResponse("current site is whitelisted");
-			return true;
-		}
-		else
-		{
-			sendResponse("current site is not whitelisted");
-			return true;
-		}
-	}
-}
-
 /**
  * \brief The event listener, hooked up to webRequest onResponseStarted event.
  *

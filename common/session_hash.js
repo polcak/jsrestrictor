@@ -19,18 +19,19 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-if ((typeof browser) === "undefined") {
-  var browser = chrome;
-}
-
-
-browser.storage.local.remove("visitedDomains");
-browser.storage.local.remove("sessionHash");
-var visitedDomains = {};
-visitedDomains[location.origin] = generateId();
-browser.storage.local.set({
-  "visitedDomains": visitedDomains
-});
-browser.storage.local.set({
-  "sessionHash": gen_random64().toString()
-});
+var Hashes = {
+  sessionHash: gen_random64().toString(),
+  visitedDomains: {},
+  getFor(url) {
+    if (!url.origin) url = new URL(url);
+	  let {origin} = url;
+    let domainHash = this.visitedDomains[origin];
+	  if (!domainHash) {
+		  domainHash = this.visitedDomains[origin] = generateId();
+	  }
+    return {
+      sessionHash: this.sessionHash,
+      domainHash,
+    };
+  }
+};

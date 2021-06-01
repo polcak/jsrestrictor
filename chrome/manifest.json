@@ -1,7 +1,24 @@
 {
-  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár",
+  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár, Giorgio Maone",
   "background": {
-      "scripts": ["helpers.js", "session_hash.js", "update.js", "url.js", WRAPPING, "code_builders.js", "levels.js", "background.js", "level_cache.js", "http_shield_chrome.js", "http_shield_common.js"],
+      "scripts": [
+        "nscl/lib/browser-polyfill.js",
+        "nscl/lib/sha256.js",
+        "nscl/common/log.js",
+        "nscl/common/uuid.js",
+        "nscl/service/DocStartInjection.js",
+        "helpers.js",
+        "session_hash.js",
+        "update.js",
+        "url.js",
+        WRAPPING,
+        "code_builders.js",
+        "levels.js",
+        "background.js",
+        "level_cache.js",
+        "http_shield_chrome.js",
+        "http_shield_common.js"
+      ],
       "persistent": true
   },
   "browser_action": {
@@ -21,10 +38,18 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": [ "alea.js", "helpers.js", "browser.js", "inject.js", "document_start.js"],
-      "run_at": "document_start",
       "all_frames": true,
-      "match_about_blank": true
+      "match_about_blank": true,
+      "match_origin_as_fallback": true,
+      "js": [
+        "nscl/lib/browser-polyfill.js",
+        "nscl/content/patchWindow.js",
+        "alea.js",
+        "helpers.js",
+        "inject.js",
+        "document_start.js"
+      ],
+      "run_at": "document_start"
     }
   ],
   "description": "Extension for increasing security and privacy level of the user.",
@@ -42,7 +67,15 @@
   "manifest_version": 2,
   "name": "JavaScript Restrictor",
   "options_page": "options.html",
-  "permissions": ["storage", "tabs",  "webRequest", "webRequestBlocking", "<all_urls>", "notifications"],
+  "permissions": [
+    "storage",
+    "tabs",
+    "webRequest",
+    "webRequestBlocking",
+    "webNavigation",
+    "<all_urls>",
+    "notifications"
+  ],
   "short_name": "JSR",
   "version": "0.4.6"
 }

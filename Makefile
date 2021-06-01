@@ -25,6 +25,7 @@ get_csv:
 	@cp -r $*/* $*_JSR/
 	@cp -r LICENSES $*_JSR/
 	@./fix_manifest.sh $*_JSR/manifest.json
+	@nscl/include.sh $*_JSR
 	@rm -f $*_JSR/.*.sw[pno]
 	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
 

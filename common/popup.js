@@ -57,7 +57,7 @@ var queryInfo = {
   active: true,
   currentWindow: true
 };
-browser.tabs.query(queryInfo, function(tabs) {
+browser.tabs.query(queryInfo).then(function(tabs) {
 	let tab = tabs[0];
 	url = new URL(tab.url);
 	// remove www
@@ -118,65 +118,36 @@ window.addEventListener("load", function() {
 
 document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200)});
 
-/// Load switch state from storage for current site
-function load_on_off_switch()
-{
-	var checkbox = document.getElementById("switch-checkbox");
+async function getCurrentSite() {
+	let tabs = await browser.tabs.query({currentWindow: true, active: true});
+	//Obtain hostname	
+	return wwwRemove(new URL(tabs[0].url).hostname);
+}
 
-	browser.storage.sync.get(["requestShieldOn"], function(result)
+/// Load switch state from storage for current site
+async function load_on_off_switch()
+{
+	let {requestShieldOn} = await browser.storage.sync.get(["requestShieldOn"]);
+	if (requestShieldOn === false)
 	{
-		if (result.requestShieldOn === false)
-		{
-			document.getElementById("http_shield_switch_wrapper").style.display = "none";
-			document.getElementById("shield_off_message").innerHTML = "Network boundary shield is currently off.";
-		}	
-		else
-		{
-			var currentHost = "";
-			//Obtain URL of the current site
-			browser.tabs.query({currentWindow: true, active: true}, function (tabs) {
-				//Obtain hostname
-				currentHost = new URL(tabs[0].url);
-				currentHost = wwwRemove(currentHost.hostname);
-				//Ask background whether is this site whitelisted or not
-				browser.runtime.sendMessage({message:"is current site whitelisted?", site:currentHost}, function (response) {
-					//Check or uncheck the slider
-					if (response === "current site is whitelisted")
-					{
-						checkbox.checked = false;
-					}
-					else
-					{
-						checkbox.checked = true;
-					}
-				});
-			});
-		}
-	});
+		document.getElementById("http_shield_switch_wrapper").style.display = "none";
+		document.getElementById("shield_off_message").innerHTML = "Network boundary shield is currently off.";
+	}	
+	else
+	{
+		let site = await getCurrentSite();
+		//Ask background whether is this site whitelisted or not
+		let response = await browser.runtime.sendMessage({message: "is current site whitelisted?", site});
+		document.getElementById("switch-checkbox").checked = response !== "current site is whitelisted";
+	}
 }
 
 /// Event handler for On/off switch
-function control_whitelist()
+async function control_whitelist()
 {
-	var checkbox = document.getElementById("switch-checkbox");
-
-	var currentHost = "";
-	//Obtain current site URL
-	browser.tabs.query({currentWindow: true, active: true}, function (tabs) {
-		//Obtain hostname
-		currentHost = new URL(tabs[0].url);
-		currentHost = wwwRemove(currentHost.hostname);
-		//Send approriate message based on slider's state
-		if (!checkbox.checked)	//Turn ON
-		{
-			browser.runtime.sendMessage({message:"add site to whitelist", site:currentHost}, function (response) {});
-		}
-		else
-		{
-			browser.runtime.sendMessage({message:"remove site from whitelist", site:currentHost},
-				function (response) {});
-		}
-	});
+	let site = await getCurrentSite();
+	let message = `${document.getElementById("switch-checkbox").checked ? "remove" : "add"} site to whitelist`;
+	browser.runtime.sendMessage({message, site});
 	showRefreshPageOption();
 }
 

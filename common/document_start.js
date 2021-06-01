@@ -20,25 +20,28 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-/// Get current level configuration from the background script
-browser.runtime.sendMessage({
-		message: "get wrapping for URL",
-		url: window.location.href
-	},
-	/// prepend domain and session hashes
-	function handleResponse(reply) {
-		browser.storage.local.get(["sessionHash", "visitedDomains"], function(storageData) {
-			domains = storageData.visitedDomains;
-			sessionHash = storageData.sessionHash
-			if (!domains[location.origin]) {
-				domains[location.origin] = generateId();
-				browser.storage.local.set({
-					"visitedDomains": domains
-				})
-			};
-			var tempCode = `var domainHash = "${domains[location.origin]}";var sessionHash ="${sessionHash}";`+alea+`var prng = new alea("${domains[location.origin]}");`+ reply.code;
-			reply.code = `(function() {${tempCode}})();`;
-			injectScript(reply.code, reply.wrappers, reply.ffbug1267027);
-		});
-	}
-);
+function configureInjection({code, wrappers, ffbug1267027, domainHash, sessionHash}) {
+  console.debug("configureInjection", new Error().stack, document.readyState);
+	configureInjection = () => false; // one shot
+	var aleaCode = `(() => {
+	var domainHash = ${JSON.stringify(domainHash)};
+	var sessionHash = ${JSON.stringify(sessionHash)};
+	${alea}
+	var prng = new alea(domainHash);
+	${code}
+	})()`;
+	
+	injectScript(aleaCode, wrappers, ffbug1267027);
+	return true;
+}
+if ("configuration" in window) {
+	console.debug("Early configuration found!", configuration);
+	configureInjection(configuration);
+} else {
+	/// Get current level configuration from the background script
+	browser.runtime.sendMessage({
+			message: "get wrapping for URL",
+			url: window.location.href
+		}
+	).then(c => configureInjection(c));
+}
