@@ -7,5 +7,6 @@
  * **dns --** *used for resoluting DNS queries in Firefox version of HTTP request shield*
  * **notifications--** *used for notifying user on blocked HTTP requests/hosts*
 
-*JavaScript Resctictor* does **not** collect any data about users.
+*JavaScript Resctictor* stores all configuration data in the browser or in the user account. It does
+not upload any data to our servers.
 
