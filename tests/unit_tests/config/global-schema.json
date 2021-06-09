@@ -128,6 +128,26 @@
 								}
 							]
 						},
+						"replace_in_src": {
+							"type": "array",
+							"items": [
+								{
+									"type": "object",
+									"properties": {
+										"origin": {
+											"type": "string"
+										},
+										"new": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"origin",
+										"new"
+									]
+								}
+							]
+						},
 						"inject_code_to_src": {
 							"type": "object",
 							"properties": {

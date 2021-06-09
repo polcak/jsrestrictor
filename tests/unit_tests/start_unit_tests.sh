@@ -124,6 +124,21 @@ for k in $(jq '.scripts | keys | .[]' ./config/global.json); do
 	fi
 	
 	
+	# Replace source code if required.
+	replace_in_src=$(jq -r '.replace_in_src' <<< "$script")
+	
+	if [[ $replace_in_src != "null" ]] ;
+	then
+		for l in $(jq '.replace_in_src | keys | .[]' <<< "$script"); do
+			# Get current replacement.
+			replacement=$(jq ".replace_in_src[$l]" <<< "$script")
+			origin=$(jq -r ".origin" <<< "$replacement")
+			new=$(jq -r ".new" <<< "$replacement")
+			sed -i "s/$origin/$new/" ./tmp/$source_script_name
+		done
+	fi
+	
+	
 	# Get code for injecting.
 	inject_code=$(jq -r '.inject_code_to_src' <<< "$script")
 	if [[ $inject_code != "null" ]] ;
