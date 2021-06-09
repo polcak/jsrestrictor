@@ -139,6 +139,12 @@
 					]
 				}
 			],
+			"replace_in_src": [
+				{
+					"origin": "browser.storage.sync.get(null).then(updateLevels);",
+					"new": "browser.storage.sync.get(null);"
+				}
+			],
 			"inject_code_to_src": 
 			{
 				"begin": "function gen_random32() { return 0.2 * 4294967295; }",
