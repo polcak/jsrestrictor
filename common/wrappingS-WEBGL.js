@@ -66,10 +66,11 @@
 	 * \param number original Number value to edit
 	 *
 	 */
-	function farbleGLint(number) {
+	function farbleGLint(number, pname) {
 		var ret = 0;
 		if(number > 0){
-			ret = number - (Number(prng().toString().slice(2,10)) % 2);
+      var temp = (Number("0x"+domainHash.slice(26,domainHash.length))^pname)%3;
+			ret = number - (temp >= 1 ? 1:0);
 		}
 		return ret;
 	}
@@ -147,7 +148,7 @@
 				case 0x8073:
 				case 0x88FF:
 					var result = origGetParameter.call(ctx, pname);
-					ret = farbleGLint(result);
+					ret = farbleGLint(result, pname);
 					break;
 				case 0x9245:
 					ret = vendor;
@@ -164,7 +165,7 @@
 	/**
 	 * \brief Modifies return value
 	 *
-	 * \param name String name of original function
+	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param ...fcarg delegated arguments depending on function
 	 *
@@ -177,13 +178,13 @@
 			return null;
 		}
 		else if(args[0]===0) {
-			return eval(name+".call(ctx, ...fcarg);");
+			return name.call(ctx, ...fcarg);
 		}
 	};
 	/**
 	 * \brief Modifies return value
 	 *
-	 * \param name String name of original function
+	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param ...fcarg delegated arguments depending on function
 	 *
@@ -196,13 +197,13 @@
 			return 0;
 		}
 		else if(args[0]===0) {
-			return eval(name+".call(ctx, ...fcarg);");
+			return name.call(ctx, ...fcarg);
 		}
 	};
 	/**
 	 * \brief Modifies return value
 	 *
-	 * \param name String name of original function
+	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param ...fcarg delegated arguments depending on function
 	 *
@@ -215,13 +216,13 @@
 			return -1;
 		}
 		else if(args[0]===0) {
-			return eval(name+".call(ctx, ...fcarg);");
+			return  name.call(ctx, ...fcarg);
 		}
 	};
 	/**
 	 * \brief Modifies return value
 	 *
-	 * \param name String name of original function
+	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param ...fcarg delegated arguments depending on function
 	 *
@@ -234,7 +235,7 @@
 			return [];
 		}
 		else if(args[0]===0) {
-			return eval(name+".call(ctx, ...fcarg);");
+			return  name.call(ctx, ...fcarg);
 		}
 	};
   /**
@@ -270,7 +271,7 @@
 	/**
 	 * \brief Modifies return value
 	 *
-	 * \param name String name of original function
+	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param ...fcarg delegated arguments depending on function
 	 *
@@ -295,7 +296,7 @@
 			return ret;
 		}
 		else if(args[0]===0) {
-			return eval(name+".call(ctx, ...fcarg);");
+			return name.call(ctx, ...fcarg);
 		}
 	};
 	/**
@@ -620,7 +621,7 @@
 			 *	* (1) - empty array
 			 */
 			wrapping_function_body: `
-				return farbleNullArray("origGetSupportedExtensions", this, ...args);
+				return farbleNullArray(origGetSupportedExtensions, this, ...args);
 			`,
 		},
     {
@@ -643,7 +644,7 @@
 			 *	* (1) - empty array
 			 */
 			wrapping_function_body: `
-				return farbleNullArray("origGetSupportedExtensions", this, ...args);
+				return farbleNullArray(origGetSupportedExtensions, this, ...args);
 			`,
 		},
 		{
@@ -666,7 +667,7 @@
 			 *	* (1) - WebGLActiveInfo object with empty attributes
 			 */
 			wrapping_function_body: `
-				return farbleGetActives("origGetActiveAttrib", this, ...args);
+				return farbleGetActives(origGetActiveAttrib, this, ...args);
 			`,
 		},
     {
@@ -689,7 +690,7 @@
 			 *	* (1) - WebGLActiveInfo object with empty attributes
 			 */
 			wrapping_function_body: `
-				return farbleGetActives("origGetActiveAttrib", this, ...args);
+				return farbleGetActives(origGetActiveAttrib, this, ...args);
 			`,
 		},
 		{
@@ -712,7 +713,7 @@
 			 *	* (1) - null
 			 */
 			wrapping_function_body: `
-				return farbleNull("origGetExtension", this, ...args);
+				return farbleNull(origGetExtension, this, ...args);
 			`,
 		},
     {
@@ -735,7 +736,7 @@
 			 *	* (1) - null
 			 */
 			wrapping_function_body: `
-				return farbleNull("origGetExtension", this, ...args);
+				return farbleNull(origGetExtension, this, ...args);
 			`,
 		},
 		{
@@ -758,7 +759,7 @@
 			 *	* (1) - WebGLActiveInfo object with empty attributes
 			 */
 			wrapping_function_body: `
-				return farbleGetActives("origGetActiveUniform", this, ...args);
+				return farbleGetActives(origGetActiveUniform, this, ...args);
 			`,
 		},
     {
@@ -781,7 +782,7 @@
 			 *	* (1) - WebGLActiveInfo object with empty attributes
 			 */
 			wrapping_function_body: `
-				return farbleGetActives("origGetActiveUniform", this, ...args);
+				return farbleGetActives(origGetActiveUniform, this, ...args);
 			`,
 		},
 		{
@@ -804,7 +805,7 @@
 			 *	* (1) - null
 			 */
 			wrapping_function_body: `
-				return farbleNull("oriGetUniformLocation", this, ...args);
+				return farbleNull(oriGetUniformLocation, this, ...args);
 			`,
 		},
     {
@@ -827,7 +828,7 @@
 			 *	* (1) - null
 			 */
 			wrapping_function_body: `
-				return farbleNull("oriGetUniformLocation", this, ...args);
+				return farbleNull(oriGetUniformLocation, this, ...args);
 			`,
 		},
 		{
@@ -850,7 +851,7 @@
 			 *	* (1) - minus one
 			 */
 			wrapping_function_body: `
-				return farbleMinusOne("origGetAttribLocation", this, ...args);
+				return farbleMinusOne(origGetAttribLocation, this, ...args);
 			`,
 		},
     {
@@ -873,7 +874,7 @@
 			 *	* (1) - minus one
 			 */
 			wrapping_function_body: `
-				return farbleMinusOne("origGetAttribLocation", this, ...args);
+				return farbleMinusOne(origGetAttribLocation, this, ...args);
 			`,
 		},
 		{
@@ -1310,7 +1311,7 @@
 			 *	* (1) - null - as if error has occured
 			 */
 			wrapping_function_body: `
-				return farbleNull("origGetTexParameter", this, ...args);
+				return farbleNull(origGetTexParameter, this, ...args);
 			`,
 		},
     {
@@ -1333,7 +1334,7 @@
 			 *	* (1) - null - as if error has occured
 			 */
 			wrapping_function_body: `
-				return farbleNull("origGetTexParameter", this, ...args);
+				return farbleNull(origGetTexParameter, this, ...args);
 			`,
 		},
 		{

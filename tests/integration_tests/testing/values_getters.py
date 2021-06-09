@@ -172,6 +172,39 @@ def get_blob_canvas(driver, name):
     else:
         return img
 
+## returns output of HTMLCanvasElement.toDataURL where name is id of chosen canvas
+def get_point_in_path(driver, name):
+    try:
+        driver.get(get_config("testing_page"))
+        sleep(0.3)
+        img = driver.execute_script("var ret = true; var canvas = document.getElementById('"+name+"');var ctx = canvas.getContext('2d');"
+                                    "const circle = new Path2D();circle.arc(100, 75, 50, 0, 2 * Math.PI);"
+                                    "for (var i = 0; i < 200; i++) {"
+                                          "ret = ret && ctx.isPointInPath(circle, 100, 100) "
+                                      "}"
+                                    "return ret")
+    except:
+        return "ERROR"
+    else:
+        return img
+
+## returns output of HTMLCanvasElement.toDataURL where name is id of chosen canvas
+def get_point_in_stroke(driver, name):
+    try:
+        driver.get(get_config("testing_page"))
+        sleep(0.3)
+        img = driver.execute_script("var ret = true; var canvas = document.getElementById('"+name+"');var ctx = canvas.getContext('2d');"
+                                    "const ellipse = new Path2D(); ellipse.ellipse(100, 75, 40, 60, Math.PI * .25, 0, 2 * Math.PI);"
+                                    "ctx.lineWidth = 20;"
+                                    "for (var i = 0; i < 200; i++) {"
+                                          "ret = ret && ctx.isPointInStroke(ellipse, 100, 25) "
+                                      "}"
+                                    "return ret")
+    except:
+        return "ERROR"
+    else:
+        return img
+
 ## returns object with various attributes returned by WebGLRenderingContext.getParameter
 def get_webgl_params(driver, name):
     driver.get(get_config("testing_page"))

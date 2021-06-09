@@ -24,6 +24,8 @@ from values_getters import is_canvas_spoofed
 from values_getters import get_dataURL_canvas
 from values_getters import get_imageData_canvas
 from values_getters import get_blob_canvas
+from values_getters import get_point_in_path
+from values_getters import get_point_in_stroke
 
 
 ## Test canvas - if canvas is spoofed: Reading from canvas returns white image.
@@ -76,3 +78,25 @@ def test_to_blob(browser, expected):
             assert image != browser.real.canvas_blob
         else:
             assert image == browser.real.canvas_blob
+
+def test_is_point_in_path(browser, expected):
+    point = get_point_in_path(browser.driver,"canvas4")
+    if point == "ERROR":
+        print("\n isPointInPath error.")
+        assert False
+    else:
+        if expected.canvas_point_path == 'SPOOF VALUE':
+            assert point == False
+        else:
+            assert point == True
+
+def test_is_point_in_stroke(browser, expected):
+    point = get_point_in_stroke(browser.driver,"canvas5")
+    if point == "ERROR":
+        print("\n isPointInStroke error.")
+        assert False
+    else:
+        if expected.canvas_point_stroke == 'SPOOF VALUE':
+            assert point == False
+        else:
+            assert point == True
