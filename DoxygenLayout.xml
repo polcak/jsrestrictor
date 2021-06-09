@@ -59,6 +59,7 @@
 		<tab type="usergroup" title="Blog">
 			<tab type="user" url="md_docs_blogarticles_support.html" title="We received support from NGI0 PET Fund"/>
 			<tab type="user" url="md_docs_blogarticles_crawling.html" title="Measurement of JavaScript API usage on the web"/>
+			<tab type="user" url="md_docs_blogarticles_localportscanning.html" title="How JavaScript restrictor prevents other parties from sniffing on your local applications?"/>
 		</tab>
   </navindex>
 
