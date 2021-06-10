@@ -55,13 +55,6 @@
  * functions for reading and parsing CSV files, and functions for identifying and processing IP addresses and checking IP ranges.
  */
 
-//Chrome compatibility
-/// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
-if ((typeof browser) === "undefined") {
-	var browser = chrome;
-}
-/// \endcond
-
 /**
  * Locally served IPV4 DNS zones loaded from IANA.
  */

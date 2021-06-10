@@ -21,11 +21,6 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-//Chrome compatibility
-if ((typeof browser) === "undefined") {
-	var browser = chrome;
-}
-
 var tab_levels = {};
 var tab_urls = {};
 var current_level = {level_id: "?"};

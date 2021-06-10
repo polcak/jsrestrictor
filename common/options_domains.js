@@ -22,11 +22,6 @@
 //
 
 
-//Chrome compatibility
-if ((typeof browser) === "undefined") {
-	var browser = chrome;
-}
-
 function escape(str)
 {
 	var map =

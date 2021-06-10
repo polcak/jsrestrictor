@@ -21,10 +21,6 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-if ((typeof browser) === "undefined") {
-	var browser = chrome;
-}
-
 /**
  * Wrapping groups
  *

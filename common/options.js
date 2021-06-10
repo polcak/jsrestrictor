@@ -24,11 +24,6 @@
 //
 
 
-//Chrome compatibility
-if ((typeof browser) === "undefined") {
-	var browser = chrome;
-}
-
 /// A map where to look for the values in HTML elements
 const html_element_value_source = {
 	"select": "value",
