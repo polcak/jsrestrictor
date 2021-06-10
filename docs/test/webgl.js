@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Matúš Švancár
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 var gl;
 var shaderTypes = ["FRAGMENT_SHADER", "VERTEX_SHADER"];
 var precisionTypes = ["LOW_FLOAT", "MEDIUM_FLOAT", "HIGH_FLOAT", "LOW_INT", "MEDIUM_INT", "HIGH_INT"];

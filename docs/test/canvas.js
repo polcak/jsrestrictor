@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2019 Martin Timko
+// SPDX-FileCopyrightText: 2021 Matúš Švancár
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 function writeLineToCanvas(canvasId) {
 	var myCanvas = document.getElementById(canvasId);
 

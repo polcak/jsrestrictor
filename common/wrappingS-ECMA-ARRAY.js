@@ -1,9 +1,10 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2020  Peter Hornak
+/** \file
+ * \brief Wrappers for arrays from the ECMA standard library
+ *
+ *  \author Copyright (C) 2020  Peter Hornak
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -24,7 +25,7 @@
  */
 
 
-/// This function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+/// \see This function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
 function packIEEE754(v, ebits, fbits) {
 	var bias = (1 << (ebits - 1)) - 1;
 
@@ -111,7 +112,7 @@ function packIEEE754(v, ebits, fbits) {
 	return bytes;
 }
 
-/// This function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+/// \see This function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
 function unpackIEEE754(bytes, ebits, fbits) {
 	// Bytes to bits
 	var bits = [], i, j, b, str,
@@ -147,22 +148,22 @@ function unpackIEEE754(bytes, ebits, fbits) {
 	}
 }
 
-/// Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+/// \see Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
 function unpackF64(b) {
 	return unpackIEEE754(b, 11, 52);
 }
 
-/// Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+/// \see Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
 function packF64(v) {
 	return packIEEE754(v, 11, 52);
 }
 
-/// Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+/// \see Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
 function unpackF32(b) {
 	return unpackIEEE754(b, 8, 23);
 }
 
-/// Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+/// \see Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
 function packF32(v) {
 	return packIEEE754(v, 8, 23);
 }

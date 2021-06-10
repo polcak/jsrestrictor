@@ -1,3 +1,10 @@
+# SPDX-FileCopyrightText: 2019 Martin Timko
+# SPDX-FileCopyrightText: 2019-2021 Libor Polčák
+# SPDX-FileCopyrightText: 2020 Peter Horňák
+# SPDX-FileCopyrightText: 2021 Giorgio Maone
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 all: firefox chrome
 
 .PHONY: firefox chrome clean get_csv docs

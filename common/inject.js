@@ -1,9 +1,10 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Libor Polcak
+/** \file
+ * \brief Inject code to page scripts
+ *
+ *  \author Copyright (C) 2019  Libor Polcak
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,10 +27,10 @@
  * This function is a modified version of the similar function from
  * Privacy Badger <https://www.eff.org/privacybadger>
  * https://github.com/EFForg/privacybadger/blob/master/src/js/utils.js
- * Copyright (C) 2014 Electronic Frontier Foundation
+ * \copyright Copyright (C) 2014 Electronic Frontier Foundation
  *
  * Derived from Adblock Plus
- * Copyright (C) 2006-2013 Eyeo GmbH
+ * \copyright Copyright (C) 2006-2013 Eyeo GmbH
  *
  * Privacy Badger is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as

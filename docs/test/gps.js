@@ -1,3 +1,9 @@
+// SPDX-FileCopyrightText: 2019 Martin Timko
+// SPDX-FileCopyrightText: 2020 Peter Marko
+// SPDX-FileCopyrightText: 2020 Libor Polčák
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 var gettingGPSDataInterval;
 var id;
 

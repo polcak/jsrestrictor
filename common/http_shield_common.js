@@ -1,9 +1,11 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2021  Pavel Pohner, Martin Bednář
+/** \file
+ * \brief This file contains common functions for Network Boundary Shield.
+ *
+ *  \author Copyright (C) 2020  Pavel Pohner
+ *  \author Copyright (C) 2020-2021 Martin Bednář
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -47,9 +49,6 @@
  */
 
  /** \file
- *
- * \brief This file contains common functions for Network Boundary Shield.
- *
  * \ingroup NBS
  *
  * This file contains basic logic of the NBS, NBS global variables and objects,

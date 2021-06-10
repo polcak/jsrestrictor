@@ -1,9 +1,12 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2020  Martin Bednar, Libor Polcak
+/** \file
+ * \brief This file contains wrapper that clears the window.name property
+ *
+ * \see https://developer.mozilla.org/en-US/docs/Web/API/Window/name
+ *
+ *  \author Copyright (C) 2020  Martin Bednar, Libor Polcak
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +23,6 @@
 //
 
 /** \file
- * \brief This file contains wrapper that clears the window.name property (https://developer.mozilla.org/en-US/docs/Web/API/Window/name)
  * \ingroup wrappers
  *
  * `window.name` prvides a simple cross-origin tracking method of the same tab:
@@ -31,10 +33,10 @@
  *
  * Go to completely different web site and window.name stays the same.
  *
- * See also https://2019.www.torproject.org/projects/torbrowser/design/ and a library build on
+ * \see https://2019.www.torproject.org/projects/torbrowser/design/ provides a library build on
  * top of `window.name`: https://www.thomasfrank.se/sessionvars.html.
  *
- * See also https://html.spec.whatwg.org/#history-traversal; this feature should not be ncessary
+ * \see https://html.spec.whatwg.org/#history-traversal; this feature should not be ncessary
  * for Firefox 86 or newer https://bugzilla.mozilla.org/show_bug.cgi?id=444222.
  */
 

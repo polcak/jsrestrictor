@@ -1,9 +1,12 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2021  Libor Polcak
+/** \file
+ * \brief Wrappers for that disables the Beacon API.
+ *
+ * \see https://www.w3.org/TR/beacon/
+ *
+ *  \author Copyright (C) 2021  Libor Polcak
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +23,6 @@
 //
 
 /** \file
- * \brief This file contains wrapper that disables the Beacon API.
  * \ingroup wrappers
  *
  * The navigator.sendBeacon() method asynchronously sends a small

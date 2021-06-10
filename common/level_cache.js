@@ -1,10 +1,11 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2020  Libor Polcak
-//
+/** \file
+ * \brief Handle domain-specific levels
+ *
+ * \author Copyright (C) 2020  Libor Polcak
+ * \author Copyright (C) 2021  Giorgio Maone
+ *
+ * \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
@@ -72,12 +73,12 @@ function contentScriptLevelSetter(message) {
 }
 browser.runtime.onMessage.addListener(contentScriptLevelSetter);
 
-// depends on /nscl/service/DocStartInjection.js
 
 /**
  * Register a dynamic content script to be ran for early configuration and
  * injection of the wrapper, hopefully before of the asynchronous 
  * message listener above
+ * \see Depends on /nscl/service/DocStartInjection.js
  */
 DocStartInjection.register(async ({url, frameId, tabId}) => {
 	let configuration = await getContentConfiguration(url);

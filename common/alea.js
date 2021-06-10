@@ -1,8 +1,14 @@
-// A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010
-// http://baagoe.com/en/RandomMusings/javascript/
-// https://github.com/nquinlan/better-random-numbers-for-javascript-mirror
-// Original work is under MIT license -
-
+/** \file
+* \brief A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010
+*
+* This code is available at
+* http://baagoe.com/en/RandomMusings/javascript/
+* https://github.com/nquinlan/better-random-numbers-for-javascript-mirror
+*
+* SPDX-License-Identifier: MIT
+* \license Original work is under MIT license
+*/
+//
 // Copyright (C) 2010 by Johannes Baagøe <baagoe@baagoe.org>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy

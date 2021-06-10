@@ -1,10 +1,16 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Libor Polcak
-//  Copyright (C) 2021  Matus Svancar
+/** \file
+ * \brief This file contains wrappers for Canvas-related calls
+ *
+ * \see https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
+ * \see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+ * \see https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas
+ *
+ *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2021  Matus Svancar
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ *  \license SPDX-License-Identifier: MPL-2.0
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,13 +32,9 @@
 //  License, v. 2.0. If a copy of the MPL was not distributed with this file,
 //  You can obtain one at http://mozilla.org/MPL/2.0/.
 //
-//  Copyright (c) 2020 The Brave Authors.
+//  \copyright Copyright (c) 2020 The Brave Authors.
 
 /** \file
- * This file contains wrappers for Canvas-related calls
- *  * https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
- *  * https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
- *  * https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas
  *
  * The goal is to prevent fingerprinting by modifying the values that can be read from the canvas.
  * So the visual content of wrapped canvases as displayed on the screen is the same as intended.

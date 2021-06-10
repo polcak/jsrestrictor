@@ -1,0 +1,82 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: jsrestrictor
+Upstream-Contact: Libor Polcak <polcak@fit.vutbr.cz>
+Source: https://github.com/polcak/jsrestrictor
+
+# Files that we think are not copyrightable 
+Files: .gitignore .gitmodules tests/common_files/webbrowser_drivers/DOWNLOAD WEB DRIVERS HERE.md tests/unit_tests/package-lock.json tests/unit_tests/package.json
+Copyright: Not copyrightable
+License: CC0-1.0
+
+# Testing
+Files: tests/integration_tests/README.md tests/system_tests/README.md tests/unit_tests/README.md
+Copyright: 2020 Martin Bednář
+License: GPL-3.0-or-later
+
+Files: tests/unit_tests/config/global-example.json tests/unit_tests/config/global-schema.json tests/unit_tests/config/global.json tests/unit_tests/config/jasmine.json
+Copyright: 2020-2021 Martin Bednář
+License: GPL-3.0-or-later
+
+# Images used by the extension
+Files: *common/img/icon-* *common/img/settings-* common/img/trash*
+Copyright: 2019 Martin Timko 
+License: GPL-3.0-or-later
+
+# Other images and icons
+Files: logos_images/*.png logos_images/*.psd logos_images/*.jpg
+Copyright: 2019 Martin Timko 
+License: GPL-3.0-or-later
+
+# Web page layout
+Files: docs/_config.yml docs/_includes/* docs/_layouts/*
+Copyright: 2019-2020 Libor Polčák
+License: GPL-3.0-or-later
+
+# Web page content
+Files: docs/index.md docs/build.md docs/credits.md docs/permissions.md docs/blog.md docs/style.css docs/versions.md
+Copyright: 2019-2021 Libor Polčák
+License: GPL-3.0-or-later
+
+Files: docs/levels.md
+Copyright: 2019 Martin Timko
+Copyright: 2019-2021 Libor Polčák
+License: GPL-3.0-or-later
+
+Files: docs/new_wrapper.md
+Copyright: 2020-2021 Libor Polčák
+License: GPL-3.0-or-later
+
+# Blog articles
+Files: docs/blogarticles/support.md
+Copyright: 2021 Libor Polčák
+License: GPL-3.0-or-later
+
+Files: docs/blogarticles/crawling.md
+Copyright: 2021  Marek Schauer, Libor Polčák
+License: GPL-3.0-or-later
+
+Files: docs/blogarticles/crawling/*.png
+Copyright: 2021 Marek Schauer
+License: GPL-3.0-or-later
+
+Files: docs/blogarticles/localportscanning.md
+Copyright: 2021 Libor Polčák, Martin Bednář
+License: GPL-3.0-or-later
+
+Files: docs/blogarticles/localportscanning/*.png
+Copyright: 2021 Martin Bednář
+License: GPL-3.0-or-later
+
+Files: docs/blogarticles/farbling.md
+Copyright: 2021 Matúš Švancár, Libor Polčák
+License: GPL-3.0-or-later
+
+# Web page tests
+Files: docs/test/demo_image.png
+Copyright: 2019 Martin Timko
+License: GPL-3.0-or-later
+
+# Doxygen
+Files: doxyfile
+Copyright: 2021 Libor Polčák
+License: GPL-3.0-or-later
