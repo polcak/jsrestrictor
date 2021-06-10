@@ -1,12 +1,12 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019-2021  Libor Polcak
-//  Copyright (C) 2019  Martin Timko
-//  Copyright (C) 2021  Matus Svancar
-//
+/** \file
+ * \brief Operations and data structures connected to protection levels
+ *
+ *  \author Copyright (C) 2019-2021  Libor Polcak
+ *  \author Copyright (C) 2019  Martin Timko
+ *  \author Copyright (C) 2021  Matus Svancar
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ /*
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or

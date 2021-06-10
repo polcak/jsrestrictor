@@ -1,10 +1,14 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Libor Polcak
-//  Copyright (C) 2021  Matus Svancar
+/** \file
+ * \brief Wrappers for navigator.deviceMemory property
+ *
+ * \see https://xhr.spec.whatwg.org/
+ *
+ *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2021  Matus Svancar
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ *  \license SPDX-License-Identifier: MPL-2.0
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,7 +30,7 @@
 //  License, v. 2.0. If a copy of the MPL was not distributed with this file,
 //  You can obtain one at http://mozilla.org/MPL/2.0/.
 //
-//  Copyright (c) 2020 The Brave Authors.
+//  \copyright Copyright (c) 2020 The Brave Authors.
 
 /** \file
  * This file contains wrapper for navigator.deviceMemory https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory

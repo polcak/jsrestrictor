@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Matúš Švancár
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 function getUserAgent(){
   var userAgent = navigator.userAgent;
   var appVersion = navigator.appVersion;

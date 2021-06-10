@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2021 Libor Polčák
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 let ul = document.getElementById("enumerateDevices");
 
 function appendLi(text)
