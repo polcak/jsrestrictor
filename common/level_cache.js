@@ -57,7 +57,7 @@ function getContentConfiguration(url) {
 /**
  * Messaging with content script.
  *
- * @message The message from consent script.
+ * @message The message from content script.
  *
  * Returns the promise with the message returned to the content script.
  */
@@ -76,7 +76,7 @@ browser.runtime.onMessage.addListener(contentScriptLevelSetter);
 
 /**
  * Register a dynamic content script to be ran for early configuration and
- * injection of the wrapper, hopefully before of the asyncronous 
+ * injection of the wrapper, hopefully before of the asynchronous 
  * message listener above
  */
 DocStartInjection.register(async ({url, frameId, tabId}) => {
