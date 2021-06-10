@@ -274,7 +274,8 @@ level3 = TestedValues(
     methods_toString='REAL VALUE'
 )
 
-## Expected values for default level 2 of JSR.
+## Expected values for custom level 4 of JSR.
+## The hard-coded configuration of the level 4 is defined in the file web_browser.py in function define_test_level.
 level4 = TestedValues(
     user_agent={BrowserType.FIREFOX: 'REAL VALUE',
                 BrowserType.CHROME: 'REAL VALUE'},
@@ -296,9 +297,11 @@ level4 = TestedValues(
     heading={'value': 'REAL VALUE',
              'accuracy': 100},
     latitude={'value': 'REAL VALUE',
-              'accuracy': 0.1},
+              # Use accuracy of tens of kilometers. It means maximally +- 1 degree from the real position. Look at: https://www.nhc.noaa.gov/gccalc.shtml
+              'accuracy': 1},
     longitude={'value': 'REAL VALUE',
-               'accuracy': 0.1},
+              # Use accuracy of tens of kilometers. It means maximally +- 1 degree from the real position. Look at: https://www.nhc.noaa.gov/gccalc.shtml
+              'accuracy': 1},
     speed={'value': 'REAL VALUE',
            'accuracy': 100},
     timestamp={'value': 'REAL VALUE',
