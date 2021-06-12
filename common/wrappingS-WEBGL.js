@@ -66,9 +66,10 @@
  */
 (function() {
   /**
-	 * \brief subtract one from given number with ~50% probability and return it
+	 * \brief subtract one from given number with ~50% probability relative to given enum and return it
 	 *
 	 * \param number original Number value to edit
+   * \param pname enum of argument given to getParameter
 	 *
 	 */
 	function farbleGLint(number, pname) {
@@ -168,7 +169,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns null or output of given function
 	 *
 	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
@@ -187,7 +188,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns 0 or output of given function
 	 *
 	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
@@ -206,7 +207,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns -1 or output of given function
 	 *
 	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
@@ -225,7 +226,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns [] or output of given function
 	 *
 	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
@@ -244,7 +245,7 @@
 		}
 	};
   /**
-	 * \brief Modifies return value
+	 * \brief Returns empty WebGLShaderPrecisionFormat object or real value
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param ...fcarg delegated arguments depending on function
@@ -274,7 +275,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief  Returns empty WebGLActiveInfo object or real value
 	 *
 	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
@@ -305,7 +306,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns modified WebGLRenderingContext.getFramebufferAttachmentParameter output for some specific parameters, original value for the rest
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param target GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
@@ -348,7 +349,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns modified WebGLRenderingContext.getVertexAttrib output for some specific parameters, original value for the rest
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param index GLuint specifying index
@@ -386,7 +387,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns modified WebGLRenderingContext.getBufferParameter output for some specific parameters, original value for the rest
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param target GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
@@ -414,7 +415,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns modified WebGLRenderingContext.getShaderParameter output for some specific parameters, original value for the rest
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param program WebGLShader object (https://developer.mozilla.org/en-US/docs/Web/API/WebGLShader)
@@ -443,7 +444,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns modified WebGLRenderingContext.getRenderbufferParameter output for some specific parameters, original value for the rest
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param target GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
@@ -479,7 +480,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns modified WebGLRenderingContext.getProgramParameter output for some specific parameters, original value for the rest
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param program WebGLProgram object (https://developer.mozilla.org/en-US/docs/Web/API/WebGLProgram)
