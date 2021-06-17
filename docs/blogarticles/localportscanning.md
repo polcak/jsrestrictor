@@ -1,4 +1,6 @@
-# How JavaScript Restrictor prevents other parties from sniffing on your local applications?
+---
+title: How JavaScript Restrictor prevents other parties from sniffing on your local applications?
+---
 
 We recently found a [blog post](https://blog.nem.ec/2020/05/24/ebay-port-scanning/) about
 ThreatMetrix Inc. (a part of LexisNexis) scanning locally open ports for about 30,000 web
