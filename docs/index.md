@@ -2,11 +2,17 @@
 
 A JS-enabled web page can access any of the APIs that a web browser provides. The user has only a limited control and some APIs cannot be restricted by the user easily. JavaScript Restrictor aims to improve the user control of the web browser. Similarly to a firewall that controls the network traffic, JavaScript Restrictor controls the APIs provided by the browser. The goal is to improve the privacy and security of the user running the extension.
 
+## Installation
+
 JavaScript Restrictor (JSR) is a browser extension with support for multiple browsers: [Firefox](https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/), [Google Chrome](https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb), and [Opera](https://addons.opera.com/en/extensions/details/javascript-restrictor/). The extension also works with Brave, Microsoft Edge, and most likely any Chromium-based browser. [Let us know](https://github.com/polcak/jsrestrictor/issues) if you want to add the extension to additional store.
+
+## Goals
 
 Various websites collect information about users without their awareness. The collected information is used to track users. Malicious websites can fingerprint user browsers or computers. JavaScript Restrictor protects the user by restricting or modifying several web browser APIs used to create side-channels and identify the user, the browser or the computer. JavaScript Restrictor can block access to JavaScript objects, functions and properties or provide a less precise implementation of their functionality, for example, by modifying or spoofing values returned by the JS calls. The goal is to mislead websites by providing false data or no data at all.
 
 Another goal of the extension is not to break the visited websites. As the deployment of JavaScript only websites rise, it is necessary to fine-tune the API available to the websites to prevent unsolicited tracking and protect against data thefts.
+
+### Protected APIs
 
 JavaScript Restrictor currently supports modifying and restricting the following APIs (for more details visit [levels of protection page](https://polcak.github.io/jsrestrictor/levels.html)):
 
@@ -37,6 +43,8 @@ WebGLRenderingContext.getVertexAttribOffset, WebGLRenderingContext.getSupportedE
 
 Note that the spoofing and rounding actions performed by the extension can break the functionality of a website (e.g. Netflix). Please [report to us](https://github.com/polcak/jsrestrictor/issues) any malfunction websites that do not track users.
 
+### Levels of Protection
+
 JavaScript Restrictor provides four in-built levels of protection:
 
 * 0 - the functionality of the extension is turned off. All web pages are displayed as intended without any interaction from JavaScript Restrictor.
@@ -50,6 +58,8 @@ For more accurate description of the restrictions see [levels of protection page
 
 The default level of protection can be set by a popup (clicking on JSR icon) or through options of the extension. Specific level of protection for specific domains can be set in options by adding them to the list of websites with specific level of protection. This can be done also by a popup during a visit of the website.
 
+## Contributing
+
 If you have any questions or you have spotted a bug, please [let us know](https://github.com/polcak/jsrestrictor/issues).
 
 If you would like to give us [feedback](https://github.com/polcak/jsrestrictor/issues), we would really appreciate it.
@@ -57,6 +67,6 @@ If you would like to give us [feedback](https://github.com/polcak/jsrestrictor/i
 Once you install the extension, see the [test page](test/test.html) for the working demo on how the
 extension can help in restricting JS capabilities.
 
-**LICENSE INFORMATION**
+## License Information
 
 This project is available as open source under the terms of the GPL 3.0 or later. However, some elements are being licensed under MIT license and MPL 2.0 license. For accurate information, please check individual files. As well as for accurate information regarding copyrights.
