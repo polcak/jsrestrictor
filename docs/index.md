@@ -35,6 +35,8 @@ WebGLRenderingContext.getVertexAttribOffset, WebGLRenderingContext.getSupportedE
 * **window.name** provides a very simple cross-origin tracking method of the same tab, see https://github.com/polcak/jsrestrictor/issues/72, https://developer.mozilla.org/en-US/docs/Web/API/Window/name,	https://2019.www.torproject.org/projects/torbrowser/design/,	https://bugzilla.mozilla.org/show_bug.cgi?id=444222, and https://html.spec.whatwg.org/#history-traversal. JSR provides an option to remove any `window.name` content on each page load.
 * **navigator.sendBeacon** is an API desinged for analytics. JSR provides an option to disable the API. The call returns success but nothing is sent to any web server.
 
+Note that the spoofing and rounding actions performed by the extension can break the functionality of a website (e.g. Netflix). Please [report to us](https://github.com/polcak/jsrestrictor/issues) any malfunction websites that do not track users.
+
 JavaScript Restrictor provides four in-built levels of protection:
 
 * 0 - the functionality of the extension is turned off. All web pages are displayed as intended without any interaction from JavaScript Restrictor.
@@ -45,8 +47,6 @@ JavaScript Restrictor provides four in-built levels of protection:
 * 3 - maximal level of protection: enable all functionality.
 
 For more accurate description of the restrictions see [levels of protection page](https://polcak.github.io/jsrestrictor/levels.html).
-
-Note that the spoofing and rounding actions performed by the extension can break the functionality of a website (e.g. Netflix). Please [report to us](https://github.com/polcak/jsrestrictor/issues) any malfunction websites that do not track users.
 
 The default level of protection can be set by a popup (clicking on JSR icon) or through options of the extension. Specific level of protection for specific domains can be set in options by adding them to the list of websites with specific level of protection. This can be done also by a popup during a visit of the website.
 
