@@ -170,7 +170,7 @@ function packF32(v) {
 
 function constructDecorator(wrapped) {
 	return function () {
-		const res = wrapped.apply(originalF, arguments);
+		const res = forPage(wrapped).apply(originalF, arguments);
 		return replacementF(res);
 	}
 }
@@ -192,7 +192,7 @@ function offsetDecorator(wrapped, type, proxyRef, offsetF) {
 		if (type === 3) {
 			res = new this.__proto__.constructor(this)[wrapped.name.split(' ')[1]]()
 		} else {
-			res = wrapped.apply(this, arguments);
+			res = forPage(wrapped).apply(this, arguments);
 		}
 		// Create copy of new arr
 		let secArr = [];
@@ -248,16 +248,18 @@ var proxyHandler = `{
 		var random_idx = Math.floor(Math.random() * target['length']);
 		// Load random index from array
 		var rand_val = target[random_idx];
+		/*
 		let proto_keys = ['buffer', 'byteLength', 'byteOffset', 'length'];
 		if (proto_keys.indexOf(key) >= 0) {
 			return target[key];
 		}
+		*/
 		// offsetF argument needs to be in array range
 		if (typeof key !== 'symbol' && Number(key) >= 0 && Number(key) < target.length) {
 			key = offsetF(key)
 		}
-		let value = Reflect.get(...arguments);
-		return typeof value == 'function' ? value.bind(target) : value;
+		let value = target[key]
+		return typeof value == 'function' ? forPage(value.bind(forPage(target))) : typeof value === "object" ? forPage(value) : value;
 	},
 	set(target, key, value) {
 		var random_idx = Math.floor(Math.random() * (target['length']));
@@ -267,7 +269,7 @@ var proxyHandler = `{
 		if (typeof key !== 'symbol' && Number(key) >= 0 && Number(key) < target.length) {
 			key = offsetF(key)
 		}
-		return Reflect.set(...arguments);
+		return target[key] = value;
 	}
 }`;
 
@@ -552,7 +554,7 @@ function redefineDataViewFunctions(target, offsetF, doMapping) {
 		}
 	}
 	let _target = target;
-	var proxy = new newProxy(_data, ${proxyHandler});
+	var proxy = new newProxy(forPage(_data), forPage(${proxyHandler}));
 	// Proxy has to support all methods, original object supports.
 	${offsetDecorator};
 	${redefineNewArrayFunctions};
@@ -634,7 +636,7 @@ function redefineDataViewFunctions(target, offsetF, doMapping) {
 		wrapped_objects: [],
 		helping_code:`
 		let doMapping = args[0];
-		var proxyHandler = ${proxyHandler};
+		var proxyHandler = forPage(${proxyHandler});
 		function gcd(x, y) {
 		while(y) {
 			var t = y;
@@ -646,16 +648,16 @@ function redefineDataViewFunctions(target, offsetF, doMapping) {
 
 		const is_proxy = Symbol('is_proxy');
 		const originalProxy = Proxy;
-		var proxyHandler = {
+		var proxyHandler = forPage({
 			has (target, key) {
 				return (is_proxy === key) || (key in target);
 			}
-		};
-		let newProxy = new Proxy(Proxy, {
-			construct(target, args) {
-				return new originalProxy(new target(...args), proxyHandler);
-			}
 		});
+		let newProxy = new Proxy(Proxy, forPage({
+			construct(target, args) {
+				return new originalProxy(new target(...args), forPage(proxyHandler));
+			}
+		}));
 		`,
 		wrapping_function_args: `target`,
 		wrapping_function_body: common_function_body,

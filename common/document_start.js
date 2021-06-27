@@ -38,7 +38,7 @@ function configureInjection({code, wrappers, ffbug1267027, domainHash, sessionHa
 	var prng = new alea(domainHash);
 	${code}
 	})()`;
-	
+
 	wrappersPort = patchWindow(aleaCode);
 	return true;
 }
