@@ -43,6 +43,7 @@
       "match_origin_as_fallback": true,
       "js": [
         "nscl/lib/browser-polyfill.js",
+        "nscl/common/uuid.js",
         "nscl/content/patchWindow.js",
         "nscl/lib/sha256.js",
         "alea.js",

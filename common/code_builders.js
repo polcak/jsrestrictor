@@ -23,7 +23,7 @@
  * Create IIFE to wrap the code in closure
  */
 function enclose_wrapping(code, ...args) {
-	return `try{(function(...args) {${code}})(${args});} catch {}`;
+	return `try{(function(...args) {${code}})(${args});} catch (e) {console.error(e)}`;
 }
 
 /**
@@ -43,8 +43,14 @@ function enclose_wrapping2(code, name, params, call_with_window) {
  * a function in the page context.
  */
 function define_page_context_function(wrapper) {
-	var originalF = wrapper["original_function"] || `${wrapper.parent_object}.${wrapper.parent_object_property}`;
-	return enclose_wrapping2(`var originalF = ${originalF};
+	let {parent_object, parent_object_property, original_function, replace_original_function} = wrapper;
+	if (replace_original_function) {
+		let lastDot = original_function.lastIndexOf(".");
+		parent_object = original_function.substring(0, lastDot);
+		parent_object_property = original_function.substring(lastDot + 1);
+	}
+	let originalF = original_function || `${parent_object}.${parent_object_property}`;
+	return enclose_wrapping2(`let originalF = ${originalF};
 			var replacementF = function(${wrapper.wrapping_function_args}) {
 				// This comment is needed to correctly differentiate wrappers with the same body
 				// by the toString() wrapper
@@ -53,7 +59,7 @@ function define_page_context_function(wrapper) {
 				// ${gen_random32()}
 				${wrapper.wrapping_function_body}
 			};
-			${wrapper.replace_original_function ? wrapper.original_function : `${wrapper.parent_object}.${wrapper.parent_object_property}`} = replacementF;
+			exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
 			original_functions[replacementF.toString()] = originalF.toString();
 			${wrapper.post_replacement_code || ''}
 	`, wrapper.wrapping_code_function_name, wrapper.wrapping_code_function_params, wrapper.wrapping_code_function_call_window);
@@ -63,8 +69,10 @@ function define_page_context_function(wrapper) {
  * This function creates code that assigns an already defined function to given property.
  */
 function generate_assign_function_code(code_spec_obj) {
-	return `${code_spec_obj.parent_object}.${code_spec_obj.parent_object_property} = ${code_spec_obj.export_function_name};
-	`
+	return `exportFunction(${code_spec_obj.export_function_name}, 
+		${code_spec_obj.parent_object},
+		{defineAs: '${code_spec_obj.parent_object_property}'});
+	`;
 }
 
 /**
@@ -174,9 +182,11 @@ var build_code = function(wrapper, ...args) {
 		}
 	}
 	if (wrapper["wrapper_prototype"] !== undefined) {
-		code += `Object.setPrototypeOf(${wrapper.parent_object}.${wrapper.parent_object_property},
-				${wrapper.wrapper_prototype});
-		`
+		let target = `${wrapper.parent_object}.${wrapper.parent_object_property}`;
+		let source = wrapper.wrapper_prototype;
+		code += `if (${target.prototype} !== ${source.prototype}) { // prevent cyclic __proto__ errors on Proxy
+			Object.setPrototypeOf(${target}, ${source});
+		}`;
 	}
 	code += `
 		if (!${wrapper.nofreeze}) {
@@ -196,7 +206,9 @@ function wrap_code(wrappers) {
 		return; // Nothing to wrap
 	}
 	var code = `(function() {
+		var window = unwrappedWindow;
 		var original_functions = {};
+		with(unwrappedWindow) {
 		`;
 	for (tobewrapped of wrappers) {
 		try {
@@ -207,6 +219,7 @@ function wrap_code(wrappers) {
 		}
 	}
 	code += `
+			}
 			var originalToStringF = Function.prototype.toString;
 			var originalToStringStr = Function.prototype.toString();
 			Function.prototype.toString = function() {

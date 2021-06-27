@@ -40,6 +40,7 @@
       "all_frames": true,
       "match_about_blank": true,
       "js": [
+        "nscl/common/uuid.js",
         "nscl/content/patchWindow.js",
         "nscl/lib/sha256.js",
         "alea.js",
