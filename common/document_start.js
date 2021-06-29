@@ -22,17 +22,16 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-function configureInjection({code, wrappers, ffbug1267027, domainHash, sessionHash}) {
+function configureInjection({code, wrappers, ffbug1267027, domainHash}) {
   console.debug("configureInjection", new Error().stack, document.readyState);
 	configureInjection = () => false; // one shot
 	var aleaCode = `(() => {
 	var domainHash = ${JSON.stringify(domainHash)};
-	var sessionHash = ${JSON.stringify(sessionHash)};
 	${alea}
 	var prng = new alea(domainHash);
 	${code}
 	})()`;
-	
+
 	injectScript(aleaCode, wrappers, ffbug1267027);
 	return true;
 }

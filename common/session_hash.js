@@ -35,8 +35,7 @@ var Hashes = {
 		  domainHash = this.visitedDomains[[origin,isPrivate]] = hmac.hex();
 	  }
     return {
-      sessionHash: isPrivate ? this.sessionHashIncognito : this.sessionHash,
-      domainHash,
+      domainHash
     };
   }
 };

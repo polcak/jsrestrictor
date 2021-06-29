@@ -38,12 +38,11 @@ function getContentConfiguration(url, isPrivate) {
 	return new Promise(resolve => {
 		function resolve_promise() {
 			var page_level = getCurrentLevelJSON(url);
-			let {sessionHash, domainHash} = Hashes.getFor(url, isPrivate);
+			let {domainHash} = Hashes.getFor(url, isPrivate);
 			resolve({
 				code: page_level[1],
 				wrappers: page_level[0].wrappers,
 				ffbug1267027: domains_bug1267027[url],
-				sessionHash,
 				domainHash,
 			});
 		}
