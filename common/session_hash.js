@@ -22,17 +22,20 @@
 //
 
 var Hashes = {
-  sessionHash: gen_random64().toString(),
-  visitedDomains: {},
-  getFor(url) {
+  sessionHash : gen_random64().toString(),
+  sessionHashIncognito : gen_random64().toString(),
+  visitedDomains : {},
+  getFor(url, isPrivate){
     if (!url.origin) url = new URL(url);
 	  let {origin} = url;
-    let domainHash = this.visitedDomains[origin];
+    let domainHash = this.visitedDomains[[origin,isPrivate]];
 	  if (!domainHash) {
-		  domainHash = this.visitedDomains[origin] = generateId();
+		  let hmac = isPrivate ? sha256.hmac.create(this.sessionHashIncognito) : sha256.hmac.create(this.sessionHash);
+		  hmac.update(url.origin);
+		  domainHash = this.visitedDomains[[origin,isPrivate]] = hmac.hex();
 	  }
     return {
-      sessionHash: this.sessionHash,
+      sessionHash: isPrivate ? this.sessionHashIncognito : this.sessionHash,
       domainHash,
     };
   }

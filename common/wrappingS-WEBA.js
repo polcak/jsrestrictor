@@ -56,19 +56,6 @@
  */
 (function() {
 	/**
-	 * \brief makes number from substring of given string - should work as reinterpret_cast
-	 * \param str String
-	 * \param length Number specifying substring length
-	 */
-	function strToUint(str, length){
-		var sub = str.substring(0,length);
-		var ret = "";
-		for (var i = sub.length-1; i >= 0; i--) {
-				ret += ((sub[i].charCodeAt(0)).toString(2).padStart(8, "0"));
-		}
-		return "0b"+ret;
-	};
-	/**
 	 * \brief shifts number bits to pick new number
 	 * \param v number to shift
 	 */

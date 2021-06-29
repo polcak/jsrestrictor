@@ -43,6 +43,7 @@ if ("configuration" in window) {
 	/// Get current level configuration from the background script
 	browser.runtime.sendMessage({
 			message: "get wrapping for URL",
+			isPrivate: browser.extension.inIncognitoContext,
 			url: window.location.href
 		}
 	).then(c => configureInjection(c));

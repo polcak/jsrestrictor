@@ -542,7 +542,7 @@
 			var pixel_count = BigInt(width * height);
 			var channel = domainHash[0].charCodeAt(0) % 3;
 			var canvas_key = domainHash;
-			var v = BigInt(sessionHash);
+			var v = BigInt(strToUint(domainHash,8));
 			for (let i = 0; i < 32; i++) {
 				var bit = canvas_key[i];
 				for (let j = 8; j >= 0; j--) {
@@ -938,7 +938,7 @@
 					wrapped_name: "origReadPixels",
 				}
 			],
-			helping_code: lfsr_next + farblePixels,
+			helping_code: lfsr_next + strToUint + farblePixels,
 			original_function: "parent.WebGLRenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGLRenderingContext.prototype.readPixels
@@ -961,7 +961,7 @@
 					wrapped_name: "origReadPixels",
 				}
 			],
-			helping_code: lfsr_next + farblePixels,
+			helping_code: lfsr_next + strToUint + farblePixels,
 			original_function: "parent.WebGL2RenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGL2RenderingContext.prototype.readPixels
