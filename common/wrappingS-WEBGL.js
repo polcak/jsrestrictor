@@ -75,8 +75,8 @@
 	function farbleGLint(number, pname) {
 		var ret = 0;
 		if(number > 0){
-      var temp = (Number("0x"+domainHash.slice(26,domainHash.length))^pname)%3;
-			ret = number - (temp >= 1 ? 1:0);
+      var temp = (Number("0x"+domainHash.slice(29,domainHash.length-28))^pname)%3;
+			ret = number - (temp == 1 ? 1:0);
 		}
 		return ret;
 	}
