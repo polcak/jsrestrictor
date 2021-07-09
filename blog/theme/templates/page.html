@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <h2>{{page.title}}</h2>
+
+  {{ page.content }}
+
+  {# source link #}
+  {# <p><a href="{{ page.relPath }}{{ compound.sourceFileName }}{{ config.HTML_FILE_EXTENSION }}">{{ tr.gotoSourceCode }}</a></p> #}
+
+{% endblock %}

@@ -1,0 +1,383 @@
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/Inter-Regular.woff2?v=3.13") format("woff2"),
+       url("../fonts/Inter-Regular.woff?v=3.13") format("woff");
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/Inter-Bold.woff2?v=3.13") format("woff2"),
+       url("../fonts/Inter-Bold.woff?v=3.13") format("woff");
+}
+
+@font-face {
+    font-family: 'Oxygen Mono';
+    src: url('OxygenMono-Regular.woff2') format('woff2'),
+        url('OxygenMono-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+  --main-font: 'Inter', Roboto, Helvetica, Arial, sans-serif;
+  --code-font: 'Oxygen Mono', 'Roboto Mono', monospace;
+  --text-color: #383E42;
+  --link-color: #e76f51;
+  --link-color-rgb: 231, 111, 81;
+  --darkgreen: #264653;
+  --ghost-white: #FBF9FF;
+  --lightgray: #fefae0;
+  --mg-xlarge: 2rem;
+  --mg-large: 1.5rem;
+  --mg-medium: 1rem;
+  --mg-small: 0.5rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+}
+
+body {
+  color: var(--text-color);
+  font-family: var(--main-font);
+  font-weight: 400;
+  font-size: 1em;
+  line-height: 1.45;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration-color: var(--link-color);
+}
+
+a:hover {
+}
+
+a[href*="//"]:not([href*="jsr.manufacturaindependente.org"]):after{
+  content: "↗";
+  color: var(--link-color);
+  font-size: 70%;
+  font-weight: 700;
+  vertical-align: super;
+}
+
+
+img {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+code,
+pre {
+  font-family: var(--code-font);
+}
+
+code {
+  background-color: var(--lightgray);
+  font-size: 0.875rem;
+  font-weight: 400;
+  padding: 0.25em 0.5em;
+  display: inline-block;
+  position: relative;
+}
+
+code a.el {
+  background-color: rgba(var(--link-color-rgb), 0.3);
+  border-bottom: 0;
+  padding: 0.25em 0.5em;
+  margin: -0.25em -0.5em;
+}
+
+code a.el::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Typography
+*/
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2.5rem; }
+h3 { font-size: 2rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
+.contents h1 { font-size: 2rem; }
+.contents h2 { font-size: 1.75rem; }
+.contents h3 { font-size: 1.5rem; }
+.contents h4 { font-size: 1.25rem; }
+.contents h5 { font-size: 1.125rem; }
+
+.contents h1:not(:first-child),
+.contents h2:not(:first-child),
+.contents h3:not(:first-child),
+.contents h4:not(:first-child),
+.contents h5:not(:first-child),
+.contents h6:not(:first-child) { margin-top: var(--mg-xlarge); }
+
+.contents h1:not(:last-child),
+.contents h2:not(:last-child),
+.contents h3:not(:last-child),
+.contents h4:not(:last-child),
+.contents h5:not(:last-child),
+.contents h6:not(:last-child) { margin-bottom: var(--mg-medium); }
+
+.contents h2 + h3:not(:last-child) {
+  margin-top: calc(-1 * var(--mg-small));
+  color: aqua;
+}
+
+.highlight {
+  font-size: 115%;
+}
+
+
+/* General layout
+*/
+
+.container {
+  width: auto;
+  max-width: 1344px;
+  margin: 0 auto;
+  position: relative;
+  padding: var(--mg-xlarge) 0;
+}
+
+#topheader {}
+
+.topheader_inner {
+  display: grid;
+  grid-gap: 1em;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+#projectlogo a {
+  border-bottom: 0;
+}
+
+#projectlogo img {
+  display: block;
+  height: 80px;
+}
+
+.content-wrapper {
+  display: grid;
+  grid-gap: 1em 2em;
+  grid-template-columns: 0.3fr 1fr;
+}
+
+.sidebar #side-nav { /* doxygen generated nav */
+  margin-top: var(--mg-xlarge);
+  font-size: 90%;
+}
+
+#main-content .header {
+  margin-bottom: var(--mg-large);
+  line-height: 1;
+}
+
+.page-footer {
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: var(--ghost-white);
+  background-color: var(--darkgreen);
+}
+
+.page-footer a {
+  color: var(--ghost-white);
+}
+
+.page-footer .credits {
+  text-align: right;
+}
+
+.contents {
+  max-width: 48rem;
+  padding-bottom: var(--mg-large);
+}
+
+.textblock {
+  margin-bottom: var(--mg-large);
+}
+
+a.anchor:empty {
+  display: none;
+}
+
+.contents a { /*
+  white-space: nowrap;*/
+}
+
+.contents p {
+}
+
+p:not(:last-child),
+.contents p:not(:last-child) {
+  margin-bottom: var(--mg-large);
+}
+
+.contents ul:not(:last-child),
+.contents ol:not(:last-child) {
+  margin-bottom: var(--mg-large);
+}
+
+.contents ul li {
+  list-style-type: disc;
+}
+
+.contents li {
+  margin-top: var(--mg-small);
+  margin-left: var(--mg-medium);
+}
+
+.contents li:first-child {
+  margin-top: calc(-1 * var(--mg-medium)); /* margin-top = 0.5rem */
+}
+
+.contents li li {
+  margin-left: var(--mg-medium);
+}
+
+/* Columns
+  based in Bulma columns component
+  https://github.com/jgthms/bulma/blob/master/sass/grid/columns.sass
+*/
+
+.columns {
+  display: flex;
+  margin-left: -(var(--mg-medium));
+  margin-right: -(var(--mg-medium));
+  margin-top: -(var(--mg-medium));
+}
+
+.columns:not(:last-child) {
+  margin-bottom: var(--mg-medium);
+}
+
+.column {
+  display: block;
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding: var(--mg-medium);
+}
+
+@media screen and (max-width: 48rem) { /* mobile up to 768px */
+
+  .columns {
+    display: block;
+  }
+
+}
+
+/* Navigation
+*/
+
+.menu {
+  font-size: 0.85rem;
+}
+
+.menu-heading strong {
+  color: var(--darkgreen);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.menu-heading:not(:last-child) {
+    margin-bottom: var(--mg-medium);
+}
+
+.menu-list {
+  list-style: none;
+  line-height: 1;
+}
+
+.menu-list li:not(:last-child) {
+}
+
+.menu-list a {
+  color: var(--link-color);
+  text-decoration: none;
+  display: block;
+  padding: 0.25em 0;
+  border-bottom: 0;
+}
+
+.menu-list a:hover {
+
+}
+
+.menu-list li ul {
+  margin: var(--mg-small) 0;
+}
+
+/* Doxygen's code block rendering
+*/
+
+.fragment {
+  font-family: var(--code-font);
+  background-color: var(--lightgray);
+  font-size: 0.875rem;
+  font-weight: 400;
+  padding: 0.15em 0.5em;
+  display: block;
+}
+
+.fragment:not(:last-child) {
+  margin-bottom: var(--mg-medium);
+}
+
+.fragment > * {
+  white-space: nowrap;
+}
+
+.contents dl.reflist {
+
+}
+
+.contents dl.reflist dt {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.contents dl.reflist dt:not(:first-child) {
+  margin-top: var(--mg-large);
+}
+
+.contents dl.reflist dd {
+  margin-left: var(--mg-medium);
+  margin-top: var(--mg-small);
+}
+
+.contents dl.reflist dd ul:not(:last-child) {
+  margin-bottom: var(--mg-medium);
+}
+
+.contents dl.reflist dd li {
+  list-style-type: disc;
+  margin-left: var(--mg-medium);
+  margin-top: var(--mg-small);
+}
+
+/* Hide the old doxygen menu, it's switchable with a keypress */
+#side-nav {
+  display: none;
