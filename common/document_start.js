@@ -22,11 +22,11 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-function configureInjection({code, wrappers, ffbug1267027, domainHash}) {
+function configureInjection({code, wrappers, ffbug1267027, domainHash, domainHashIncognito}) {
   console.debug("configureInjection", new Error().stack, document.readyState);
 	configureInjection = () => false; // one shot
 	var aleaCode = `(() => {
-	var domainHash = ${JSON.stringify(domainHash)};
+	var domainHash =  ${browser.extension.inIncognitoContext? JSON.stringify(domainHashIncognito) : JSON.stringify(domainHash)} ;
 	${alea}
 	var prng = new alea(domainHash);
 	${code}
@@ -42,7 +42,6 @@ if ("configuration" in window) {
 	/// Get current level configuration from the background script
 	browser.runtime.sendMessage({
 			message: "get wrapping for URL",
-			isPrivate: browser.extension.inIncognitoContext,
 			url: window.location.href
 		}
 	).then(c => configureInjection(c));

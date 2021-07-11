@@ -21,21 +21,33 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+/**
+ * Object for generating and caching domain/session hashes
+ * getFor method used to get domain hashes from given url
+ *
+ * \note cached visited domains with related keys are only deleted after end of the session
+ */
 var Hashes = {
   sessionHash : gen_random64().toString(),
   sessionHashIncognito : gen_random64().toString(),
   visitedDomains : {},
-  getFor(url, isPrivate){
+  getFor(url){
     if (!url.origin) url = new URL(url);
 	  let {origin} = url;
-    let domainHash = this.visitedDomains[[origin,isPrivate]];
+	  let domainHash = this.visitedDomains[origin]?.regular;
+	  let domainHashIncognito = this.visitedDomains[origin]?.incognito;
 	  if (!domainHash) {
-		  let hmac = isPrivate ? sha256.hmac.create(this.sessionHashIncognito) : sha256.hmac.create(this.sessionHash);
+		  let hmacIncognito = sha256.hmac.create(this.sessionHashIncognito);
+		  let hmac = sha256.hmac.create(this.sessionHash);
 		  hmac.update(url.origin);
-		  domainHash = this.visitedDomains[[origin,isPrivate]] = hmac.hex();
+		  domainHash = hmac.hex();
+		  hmacIncognito.update(url.origin);
+		  domainHashIncognito = hmacIncognito.hex();
+		  this.visitedDomains[origin] = {regular: domainHash, incognito: domainHashIncognito};
 	  }
     return {
-      domainHash
+      domainHash,
+      domainHashIncognito
     };
   }
 };

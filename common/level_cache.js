@@ -38,12 +38,13 @@ function getContentConfiguration(url, isPrivate) {
 	return new Promise(resolve => {
 		function resolve_promise() {
 			var page_level = getCurrentLevelJSON(url);
-			let {domainHash} = Hashes.getFor(url, isPrivate);
+			let {domainHash, domainHashIncognito} = Hashes.getFor(url);
 			resolve({
 				code: page_level[1],
 				wrappers: page_level[0].wrappers,
 				ffbug1267027: domains_bug1267027[url],
 				domainHash,
+				domainHashIncognito
 			});
 		}
 		if (levels_initialised === true) {
@@ -65,7 +66,7 @@ function getContentConfiguration(url, isPrivate) {
 function contentScriptLevelSetter(message) {
 	switch (message.message) {
 	  case "get wrapping for URL":
-			return getContentConfiguration(message.url, message.isPrivate)
+			return getContentConfiguration(message.url)
 		case "ffbug1267027":
 			domains_bug1267027[message.url] = message.present;
 			break;
@@ -79,11 +80,9 @@ browser.runtime.onMessage.addListener(contentScriptLevelSetter);
  * injection of the wrapper, hopefully before of the asynchronous
  * message listener above
  * \see Depends on /nscl/service/DocStartInjection.js
- * \bug waiting for browser.windows.getCurrent() causes errors on some websites (tested on https://coveryourtracks.eff.org/)
  */
 DocStartInjection.register(async ({url, frameId, tabId}) => {
-	let win = await browser.windows.getCurrent({populate:false});
-	let configuration = await getContentConfiguration(url, win.incognito);
+	let configuration = await getContentConfiguration(url);
 	if (configuration) {
 		return `
 		window.configuration = ${JSON.stringify(configuration)};
