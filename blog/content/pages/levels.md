@@ -1,3 +1,9 @@
+Title: Protection levels
+Date: 2021-01-01 12:00
+Slug: levels
+Authors: Libor Polčák
+Summary: How to configure
+
 # The configuration of the extension
 
 ## Network Boundary Shield (NBS)
@@ -67,4 +73,3 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Disable Battery status API --** *ON*
 * **window.name --** *Clear with each page load*
 * **navigator.sendBeacon --** *Do not send anything and return true*
-
