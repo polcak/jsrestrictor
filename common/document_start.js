@@ -22,11 +22,16 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-function configureInjection({code, wrappers, ffbug1267027, domainHash, domainHashIncognito}) {
+function configureInjection({code, wrappers, ffbug1267027, domainHash}) {
   console.debug("configureInjection", new Error().stack, document.readyState);
 	configureInjection = () => false; // one shot
+	if(browser.extension.inIncognitoContext){
+		var hash = sha256.create();
+		hash.update(JSON.stringify(domainHash));
+		domainHash = hash.hex();
+	}
 	var aleaCode = `(() => {
-	var domainHash =  ${browser.extension.inIncognitoContext? JSON.stringify(domainHashIncognito) : JSON.stringify(domainHash)} ;
+	var domainHash =  ${JSON.stringify(domainHash)};
 	${alea}
 	var prng = new alea(domainHash);
 	${code}

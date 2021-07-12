@@ -29,25 +29,19 @@
  */
 var Hashes = {
   sessionHash : gen_random64().toString(),
-  sessionHashIncognito : gen_random64().toString(),
   visitedDomains : {},
   getFor(url){
     if (!url.origin) url = new URL(url);
 	  let {origin} = url;
-	  let domainHash = this.visitedDomains[origin]?.regular;
-	  let domainHashIncognito = this.visitedDomains[origin]?.incognito;
+	  let domainHash = this.visitedDomains[origin];
 	  if (!domainHash) {
-		  let hmacIncognito = sha256.hmac.create(this.sessionHashIncognito);
 		  let hmac = sha256.hmac.create(this.sessionHash);
 		  hmac.update(url.origin);
 		  domainHash = hmac.hex();
-		  hmacIncognito.update(url.origin);
-		  domainHashIncognito = hmacIncognito.hex();
-		  this.visitedDomains[origin] = {regular: domainHash, incognito: domainHashIncognito};
+		  this.visitedDomains[origin] = domainHash;
 	  }
     return {
-      domainHash,
-      domainHashIncognito
+      domainHash
     };
   }
 };

@@ -41,6 +41,7 @@
       "match_about_blank": true,
       "js": [
         "nscl/content/patchWindow.js",
+        "nscl/lib/sha256.js",
         "alea.js",
         "helpers.js",
         "inject.js",

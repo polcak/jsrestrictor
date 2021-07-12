@@ -34,17 +34,16 @@ var domains_bug1267027 = {};
  */
 
 
-function getContentConfiguration(url, isPrivate) {
+function getContentConfiguration(url) {
 	return new Promise(resolve => {
 		function resolve_promise() {
 			var page_level = getCurrentLevelJSON(url);
-			let {domainHash, domainHashIncognito} = Hashes.getFor(url);
+			let {domainHash} = Hashes.getFor(url);
 			resolve({
 				code: page_level[1],
 				wrappers: page_level[0].wrappers,
 				ffbug1267027: domains_bug1267027[url],
-				domainHash,
-				domainHashIncognito
+				domainHash
 			});
 		}
 		if (levels_initialised === true) {
