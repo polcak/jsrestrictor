@@ -2,14 +2,16 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>{{ SITENAME }}: {{ title }}</title>
-<meta name="description" content="{{ DESCRIPTION }}">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="generator" content="Pelican">
+  <meta charset="utf-8">
+  <title>{{ SITENAME }}: {{ title }}</title>
+  <meta name="description" content="{{ DESCRIPTION }}">
 
-<link href="/theme/css/minireset.min.css" rel="stylesheet">
-<link href="/theme/css/main.css" rel="stylesheet">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Pelican">
+
+  <link href="/theme/css/minireset.min.css" rel="stylesheet">
+  <link href="/theme/css/main.css" rel="stylesheet">
 </head>
 {% endblock %}
 
@@ -100,8 +102,11 @@
 {% block content %}
 {% endblock %}
 
-{% block footer %}
+</section><!-- /#main-content -->
+</div><!-- /.content-wrapper.container -->
+
 <footer class="page-footer">
+{% block footer %}
   <div class="container">
     <!-- copied from docs/_includes/footer.html -->
     <div class="columns">
@@ -127,7 +132,8 @@
       </div>
     </div><!-- /.columns -->
   </div>
+  {% endblock %}
 </footer>
+
 </body>
 </html>
-{% endblock %}
