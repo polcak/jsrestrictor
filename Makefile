@@ -36,19 +36,6 @@ get_csv:
 	@rm -f $*_JSR/.*.sw[pno]
 	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
 
-docs:
-	PROJECT_NAME="${PROJECT_NAME}" doxygen -T < doxyfile
-	cp -f templates/html/main.css doxygen/html/
-
-serve-docs:
-	cd doxygen/html; python3 -m http.server
-
-deploy-docs: docs
-	rsync -e "ssh -p 22" -P -rvzc doxygen/html/ manufactura@opal5.opalstack.com:~/apps/js-shield/ --cvs-exclude
-
-dry-deploy-docs: docs
-	rsync -n -e "ssh -p 22" -P -rvzc doxygen/html/ manufactura@opal5.opalstack.com:~/apps/js-shield/ --cvs-exclude
-
 clean:
 	rm -rf firefox_JSR.zip
 	rm -rf firefox_JSR
@@ -60,4 +47,21 @@ clean:
 	rm -rf ipv6.csv
 	rm -rf doxygen/
 
-.PHONY: docs serve-docs
+### Docs ###
+
+SITE_DIR=`pwd`/blog/
+ACTIVATE=. ${SITE_DIR}.env/bin/activate
+
+docs:
+	cd ${SITE_DIR} && make html
+
+serve-docs:
+	cd ${SITE_DIR} && make devserver
+
+deploy-docs: docs
+	rsync -e "ssh -p 22" -P -rvzc ${SITE_DIR}/output/ manufactura@opal5.opalstack.com:~/apps/js-shield/ --cvs-exclude
+
+dry-deploy-docs: docs
+	rsync -n -e "ssh -p 22" -P -rvzc ${SITE_DIR}/output/ manufactura@opal5.opalstack.com:~/apps/js-shield/ --cvs-exclude
+
+.PHONY: docs serve-docs deploy-docs dry-deploy-docs
