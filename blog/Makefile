@@ -49,6 +49,9 @@ install:
 	virtualenv .env --python=/usr/bin/python3
 	$(ACTIVATE); pip install -r requirements.txt
 
+extract:
+	$(ACTIVATE); python extract_comments.py
+
 html:
 	$(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
 
@@ -74,4 +77,4 @@ publish:
 	$(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(PUBLISHCONF)" $(PELICANOPTS)
 
 
-.PHONY: html help clean regenerate serve serve-global devserver publish 
+.PHONY: html help clean regenerate serve serve-global devserver publish

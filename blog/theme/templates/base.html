@@ -52,6 +52,7 @@
           <li><a href="/md_LICENSE.html">License</a></li>
         </ul>
       <li class="menu-heading">
+        <!--
         <strong><a href="/group__wrappers.html">Key protection</a></strong>
         <ul>
           <li><a href="/group__NBS.html">Network Boundary Shield</a></li>
@@ -71,6 +72,13 @@
           <li><a href="/wrappingS-PT2_8js.html">PT2</a></li>
           <li><a href="/wrappingS-WEBA_8js.html">WebAudio</a></li>
           <li><a href="/pages/webgl.html">WebGL</a></li>
+        </ul>
+        -->
+        <strong>Key protection</strong>
+        <ul>
+          {% for page in pages if page.category == "wrappers "%}
+          <li><a href="{{ SITEURL }}/{{ page.url }}">{{ page.title }}</a></li>
+          {% endfor %}
         </ul>
       </li>
       <li class="menu-heading">
