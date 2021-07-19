@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 
+{% set title = page.title %}
+
 {% block content %}
-
-  <h2>{{page.title}}</h2>
-
   {{ page.content }}
 
   {# source link #}

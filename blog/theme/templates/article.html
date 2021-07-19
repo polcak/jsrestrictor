@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% set title = article.title %}
 
   <header>
   {% block title %}
     <h2 class="entry-title">{{ article.title }}</h2>
   {% endblock %}
   </header>
+
+{% block content %}
 
   {{ article.content }}
 
