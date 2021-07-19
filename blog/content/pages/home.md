@@ -1,5 +1,6 @@
 Title: Home page
 save_as: index.html
+Template: home
 
 <section class="hero block">
   <div class="hero-body">
