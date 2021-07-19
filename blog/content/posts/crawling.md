@@ -38,7 +38,7 @@ carried in 2016. Since then many new
 APIs were specified and implemented in web browsers, see the figure below
 (based on data from [Can I Use? website](https://caniuse.com/)).
 
-![Progress of Web APIs amount implemented in distinct browsers in time.](crawling/apis.png)
+![Progress of Web APIs amount implemented in distinct browsers in time.]({attach}/images/crawling-apis.png)
 
 ## Methodology proposal
 
@@ -68,7 +68,7 @@ calls for 30 seconds on each page to wait of API calls performed during the page
 Results of our measurements should also provide information about the
 JavaScript APIs, that were probably used in a manner, that is not
 necessary for a page to be working and is very likely used in a way,
-that the user would not find useful. To achieve this, 
+that the user would not find useful. To achieve this,
 
 We will run our
 measurements on every page in two different modes. Firstly, we will
@@ -123,14 +123,14 @@ calls.
 To provide a Web API Manager the list of JavaScript APIs members we need
 a list of supported APIs. The APIs implemented in Mozilla Firefox are available as [IDL files](https://searchfox.org/mozilla-central/source/dom/webidl).
 
-### Meassurement tools
+### Measurement tools
 
 The figure below shows a simplified
 illustration of the measurement platform. There is OpenWPM in the middle of the
 architecture. OpenWPM orchestrates
 Selenium and Mozilla Firefox with the proxy-based intercepting Web API Manager.
 
-![image](crawling/architecture.png)
+![image]({attach}/images/crawling-architecture.png)
 
 ## The impact on JSR
 
