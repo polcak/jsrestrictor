@@ -10,6 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="Pelican">
 
+  <link href="/theme/css/fork-awesome.min.css" rel="stylesheet">
   <link href="/theme/css/minireset.min.css" rel="stylesheet">
   <link href="/theme/css/main.css" rel="stylesheet">
 </head>
@@ -18,7 +19,6 @@
 <body>
 <header id="topheader" class="container">
 {% block titlearea %}
-<div class="topheader_inner">
   <h1 id="projectlogo">
     <a href="/">
       <img alt="Logo" src="/theme/images/logo.png">
@@ -28,7 +28,6 @@
      <h2 id="projectname">{{ SITENAME }} </h2>
      <p id="projectbrief">{{ DESCRIPTION }}</p>
  </div>
-</div><!-- /.topheader_inner -->
 {% endblock %}
 </header><!-- /#topheader -->
 
@@ -99,21 +98,13 @@
 
 <section id="main-content">
 
-<header class="header">
-{% block title %}
-  <div class="headertitle">
-    <h2 class="title">{{ title }}</h2>
-  </div>
-{% endblock %}
-</header>
-
 {% block content %}
 {% endblock %}
 
 </section><!-- /#main-content -->
 </div><!-- /.content-wrapper.container -->
 
-<footer class="page-footer">
+<footer class="footer">
 {% block footer %}
   <div class="container">
     <!-- copied from docs/_includes/footer.html -->

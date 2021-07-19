@@ -2,8 +2,12 @@
 
 {% block content %}
 
-  <h2>{{ article.title }}</h2>
-  
+  <header>
+  {% block title %}
+    <h2 class="entry-title">{{ article.title }}</h2>
+  {% endblock %}
+  </header>
+
   {{ article.content }}
 
   {# source link #}

@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section id="content">
+<section>
 
 <ul id="post-list">
 {% for article in articles_page.object_list %}
         <li><article class="hentry">
-                <header> <h2 class="entry-title"><a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags }}">{{ article.title }}</a></h2> </header>
+                <header>
+                  <h2 class="entry-title">
+                    <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags }}">{{ article.title }}</a>
+                  </h2>
+                </header>
                 <footer class="post-info">
                     <time class="published" datetime="{{ article.date.isoformat() }}"> {{ article.locale_date }} </time>
                     <address class="vcard author">By
@@ -24,5 +28,5 @@
     {% include 'pagination.html' %}
 {% endif %}
 
-</section><!-- /#content -->
+</section>
 {% endblock content %}
