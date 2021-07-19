@@ -1,6 +1,5 @@
 Title: Release History
 Date: 2021-01-01 12:00
-Slug: changelog
 Authors: Libor Polčák
 Summary: Project changelog
 
