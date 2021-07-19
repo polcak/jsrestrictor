@@ -10,7 +10,17 @@ DEFAULT_DATE = "fs"  # use a default date to stop Pelican complaints on pages
 PAGE_PATHS = ["pages", "wrappers"]
 THEME = "./theme/"
 
+# Use static page as index (home.md) and move blog index to blog/
 INDEX_SAVE_AS = "blog/index.html"
+# Settings for clean URLs
+ARTICLE_URL = "{slug}/"
+ARTICLE_SAVE_AS = "{slug}/index.html"
+PAGE_URL = "{slug}/"
+PAGE_SAVE_AS = "{slug}/index.html"
+DRAFT_URL = "private/{slug}/"
+DRAFT_SAVE_AS = "private/{slug}/index.html"
+DRAFT_LANG_URL = "private/{slug}-{lang}/"
+DRAFT_LANG_SAVE_AS = "private/{slug}-{lang}/index.html"
 
 PATH = "content"
 
