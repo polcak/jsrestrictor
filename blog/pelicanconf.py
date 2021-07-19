@@ -10,6 +10,7 @@ DEFAULT_DATE = "fs"  # use a default date to stop Pelican complaints on pages
 PAGE_PATHS = ["pages", "wrappers"]
 THEME = "./theme/"
 
+INDEX_SAVE_AS = "blog/index.html"
 
 PATH = "content"
 
