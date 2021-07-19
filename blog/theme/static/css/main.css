@@ -155,7 +155,11 @@ ol:not(:last-child) {
 
 #projectlogo img {
   display: block;
-  height: 80px;
+  height: 60px;
+}
+
+#topheader p strong {
+  display: block;
 }
 
 .content-wrapper {
@@ -214,6 +218,26 @@ ol:not(:last-child) {
 .block:not(:last-child) {
   margin-bottom: var(--mg-large);
 }
+
+/* Helper classes
+*/
+
+.has-text-centered {
+  text-align: center !important;
+}
+
+.has-text-justified {
+  text-align: justify !important;
+}
+
+.has-text-left {
+  text-align: left !important;
+}
+
+.has-text-right {
+  text-align: right !important;
+}
+
 
 /* Navigation
 */
@@ -301,7 +325,6 @@ a.button {
   font-size: 1.5rem;
 }
 
-
 .buttons {
   align-items: center;
   display: flex;
@@ -339,6 +362,10 @@ a.button {
 
 .buttons.are-large .button:not(.is-small):not(.is-normal):not(.is-medium) {
   font-size: 1.5rem;
+}
+
+.buttons.is-centered {
+  justify-content: center;
 }
 
 

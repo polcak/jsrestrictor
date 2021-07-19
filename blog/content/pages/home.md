@@ -1,11 +1,11 @@
-Title: Home page
+Title: Home
 save_as: index.html
 Template: home
 
 <section class="hero block">
   <div class="hero-body">
     <h2>
-      JS Rescriptor, an extension to help you safely navigate
+      Rescriptor, an extension to help you safely navigate
       the web, keeping harmful Javascript at bay
     </h2>
 
@@ -13,9 +13,9 @@ Template: home
 threats from JavaScript, including fingerprinting, tracking, and data
 collection!</p>
 
-    <div class="block download">
+    <div class="block has-text-centered">
       <h5>Download</h5>
-      <p class="buttons are-medium">
+      <p class="buttons are-medium is-centered">
         <a class="button" href="https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/">
           <i class="fa fa-firefox" aria-hidden="true"></i> Firefox
         </a>

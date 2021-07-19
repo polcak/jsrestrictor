@@ -26,14 +26,14 @@
       <img alt="Logo" src="/theme/images/logo.png">
     </a>
   </h1>
- <div>
-     <h2 id="projectname">{{ SITENAME }} </h2>
-     <p id="projectbrief">{{ DESCRIPTION }}</p>
- </div>
+ <p>
+     <strong>{{ SITENAME }} </strong>
+     <span>{{ DESCRIPTION }}</span>
+ </p>
 {% endblock %}
 </header><!-- /#topheader -->
 
-<div class="content-wrapper container">
+<div {% if title == "Home" %} id="home" {% endif %} class="content-wrapper container">
 
 {% block sidebar %}
 <div class="sidebar">

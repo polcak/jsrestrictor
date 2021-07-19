@@ -3,6 +3,13 @@
 {% set title = page.title %}
 
 {% block content %}
+
+  <header>
+  {% block title %}
+    <h2 class="entry-title">{{ page.title }}</h2>
+  {% endblock %}
+  </header>
+
   {{ page.content }}
 
   {# source link #}
