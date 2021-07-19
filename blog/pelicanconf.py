@@ -10,6 +10,9 @@ DEFAULT_DATE = "fs"  # use a default date to stop Pelican complaints on pages
 PAGE_PATHS = ["pages", "wrappers"]
 THEME = "./theme/"
 
+# Use filenames as the base for slugs (default is post title)
+SLUGIFY_SOURCE = "basename"
+
 # Use static page as index (home.md) and move blog index to blog/
 INDEX_SAVE_AS = "blog/index.html"
 # Settings for clean URLs
