@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% set title = article.title %}
+
+  <header>
+  {% block title %}
+    <h2 class="entry-title">{{ article.title }}</h2>
+  {% endblock %}
+  </header>
+
+{% block content %}
+
+  {{ article.content }}
+
+  {# source link #}
+  {# <p><a href="{{ page.relPath }}{{ compound.sourceFileName }}{{ config.HTML_FILE_EXTENSION }}">{{ tr.gotoSourceCode }}</a></p> #}
+
+{% endblock %}

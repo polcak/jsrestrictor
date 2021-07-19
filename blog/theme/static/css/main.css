@@ -197,40 +197,10 @@ ol:not(:last-child) {
   margin-left: var(--mg-medium);
 }
 
-/* Columns
-  based in Bulma's columns component
-  https://github.com/jgthms/bulma/blob/master/sass/grid/columns.sass
-*/
-
-.columns {
-  display: flex;
-  margin-left: -(var(--mg-medium));
-  margin-right: -(var(--mg-medium));
-  margin-top: -(var(--mg-medium));
-}
-
-.columns:not(:last-child) {
-  margin-bottom: var(--mg-medium);
-}
-
-.column {
-  display: block;
-  flex-basis: 0;
-  flex-grow: 1;
-  flex-shrink: 1;
-  padding: var(--mg-medium);
-}
-
-@media screen and (max-width: 48rem) { /* mobile up to 768px */
-
-  .columns {
-    display: block;
-  }
-
-}
 
 /* Hero
   based in Bulma's hero component
+  https://github.com/jgthms/bulma/blob/master/sass/grid/columns.sass
 */
 
 .hero {
@@ -238,6 +208,7 @@ ol:not(:last-child) {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-content: center;
 }
 
 .block:not(:last-child) {

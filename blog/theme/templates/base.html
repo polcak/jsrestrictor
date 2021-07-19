@@ -13,6 +13,7 @@
 
   <link href="/theme/css/fork-awesome.min.css" rel="stylesheet">
   <link href="/theme/css/minireset.min.css" rel="stylesheet">
+  <link href="/theme/css/bulma_grid.css" rel="stylesheet">
   <link href="/theme/css/main.css" rel="stylesheet">
 </head>
 {% endblock %}
@@ -34,6 +35,7 @@
 
 <div class="content-wrapper container">
 
+{% block sidebar %}
 <div class="sidebar">
   <!-- new navigation -->
   <nav class="menu">
@@ -96,6 +98,7 @@
     </ul>
   </nav><!-- /.menu -->
 </div><!-- /.sidebar -->
+{% endblock %}
 
 <section id="main-content">
 
