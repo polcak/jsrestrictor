@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  {# }<title>{{ SITENAME }}: {% if page %}{{ page.title }}{% else %}{{ article.title }}{% endif %}</title> #}
   <title>{{ SITENAME }}: {{ title }}</title>
   <meta name="description" content="{{ DESCRIPTION }}">
 
@@ -100,15 +101,14 @@
 <section id="main-content">
 
 <header class="header">
-{% block title %}
   <div class="headertitle">
     <h2 class="title">{{ title }}</h2>
   </div>
-{% endblock %}
 </header>
 
 {% block content %}
 {% endblock %}
+NONONO
 
 </section><!-- /#main-content -->
 </div><!-- /.content-wrapper.container -->
