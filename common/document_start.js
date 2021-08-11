@@ -22,7 +22,9 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-function configureInjection({code, wrappers, ffbug1267027, domainHash}) {
+var wrappersPort;
+
+function configureInjection({code, wrappers, ffbug1267027, domainHash, sessionHash}) {
   console.debug("configureInjection", new Error().stack, document.readyState);
 	configureInjection = () => false; // one shot
 	if(browser.extension.inIncognitoContext){
@@ -37,7 +39,7 @@ function configureInjection({code, wrappers, ffbug1267027, domainHash}) {
 	${code}
 	})()`;
 
-	injectScript(aleaCode, wrappers, ffbug1267027);
+	wrappersPort = patchWindow(aleaCode);
 	return true;
 }
 if ("configuration" in window) {

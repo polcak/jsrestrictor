@@ -66,7 +66,7 @@
 			return devices;
 		}
 		else if(args[0] == 2){
-			return new Promise((resolve) => resolve([]));
+			return ObjForPage.promise([]);
 		}
 	}
 	/**
@@ -122,7 +122,7 @@
 					wrapped_name: "origEnumerateDevices",
 				}],
 			helping_code: farbleEnumerateDevices+shuffleArray+deviceRandomString+randomString+fakeDevice+`
-				if(args[0]==0){
+			  if(args[0]==0){
 					var devices = origEnumerateDevices.call(navigator.mediaDevices);
 					devices.then(function(result) {
 						shuffleArray(result);

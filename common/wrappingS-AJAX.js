@@ -40,7 +40,7 @@
 			wrapping_function_body: `
 					var currentXMLHttpRequestObject = new originalXMLHttpRequest();
 					var originalXMLHttpRequestOpenFunction = currentXMLHttpRequestObject.open;
-					currentXMLHttpRequestObject.open = function(...args) {
+					currentXMLHttpRequestObject.open = exportFunction(function(...args) {
 						if (blockEveryXMLHttpRequest || (confirmEveryXMLHttpRequest && !confirm('There is a XMLHttpRequest on URL ' + args[1] + '. Do you want to continue?'))) {
 							currentXMLHttpRequestObject.send = function () {}; // Prevents throwing an exception
 							return undefined;
@@ -48,7 +48,7 @@
 						else {
 							return originalXMLHttpRequestOpenFunction.call(this, ...args);
 						}
-					};
+					}, currentXMLHttpRequestObject, {defineAs: "open"});
 					return currentXMLHttpRequestObject;
 				`,
 		},

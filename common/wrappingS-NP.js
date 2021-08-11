@@ -182,6 +182,7 @@
         }
       }
     }
+
     Object.defineProperty(ret, 'length', {
       value: counter
     });

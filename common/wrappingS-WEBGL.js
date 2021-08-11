@@ -238,7 +238,7 @@
 	 */
 	function farbleNullArray(name, ctx, ...fcarg) {
 		if(args[0]===1) {
-			return [];
+			return new window.Array;
 		}
 		else if(args[0]===0) {
 			return  name.call(ctx, ...fcarg);
