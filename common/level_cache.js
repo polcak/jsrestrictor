@@ -29,7 +29,8 @@ var domains_bug1267027 = {};
 /**
  * Returns the a Promise which resolves to the configuration
  * for the current level to be used by the content script for injection
- * @param {url} string 
+ * @param {url} string
+ * @param isPrivate bool specifying incognito mode
  */
 
 
@@ -37,13 +38,12 @@ function getContentConfiguration(url) {
 	return new Promise(resolve => {
 		function resolve_promise() {
 			var page_level = getCurrentLevelJSON(url);
-			let {sessionHash, domainHash} = Hashes.getFor(url);
+			let {domainHash} = Hashes.getFor(url);
 			resolve({
 				code: page_level[1],
 				wrappers: page_level[0].wrappers,
 				ffbug1267027: domains_bug1267027[url],
-				sessionHash,
-				domainHash,
+				domainHash
 			});
 		}
 		if (levels_initialised === true) {
@@ -76,7 +76,7 @@ browser.runtime.onMessage.addListener(contentScriptLevelSetter);
 
 /**
  * Register a dynamic content script to be ran for early configuration and
- * injection of the wrapper, hopefully before of the asynchronous 
+ * injection of the wrapper, hopefully before of the asynchronous
  * message listener above
  * \see Depends on /nscl/service/DocStartInjection.js
  */

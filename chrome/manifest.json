@@ -44,6 +44,7 @@
       "js": [
         "nscl/lib/browser-polyfill.js",
         "nscl/content/patchWindow.js",
+        "nscl/lib/sha256.js",
         "alea.js",
         "helpers.js",
         "inject.js",

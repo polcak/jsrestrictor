@@ -111,6 +111,8 @@ def test_oscpu(browser, navigator, expected):
 def test_plugins(browser, navigator, expected):
     if expected.navigator.plugins == 'SPOOF VALUE':
         assert navigator['plugins'] != browser.real.navigator.plugins
+    elif expected.navigator.plugins == 'ZERO VALUE':
+        assert len(navigator['plugins']) == 0
     else:
         assert navigator['plugins'] == browser.real.navigator.plugins
 

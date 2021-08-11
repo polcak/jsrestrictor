@@ -71,4 +71,4 @@ def test_IOdevices(browser, IOdevices, expected):
 		for i in range(len(IOdevices)):
 			assert IOdevices[i]['kind'] == browser.real.device.IOdevices[i]['kind']
 	else:
-		assert len(IOdevices) == expected.device.IOdevices
+		assert len(IOdevices) in expected.device.IOdevices
