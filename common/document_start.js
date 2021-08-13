@@ -24,7 +24,7 @@
 
 var wrappersPort;
 
-function configureInjection({code, wrappers, ffbug1267027, domainHash, sessionHash}) {
+function configureInjection({code, wrappers, domainHash, sessionHash}) {
   console.debug("configureInjection", new Error().stack, document.readyState);
 	configureInjection = () => false; // one shot
 	if(browser.extension.inIncognitoContext){
