@@ -45,10 +45,8 @@
         "nscl/lib/sha256.js",
         "alea.js",
         "helpers.js",
-        "inject.js",
         WRAPPING,
         "code_builders.js",
-        "ffbug1267027.js",
         "document_start.js"],
       "run_at": "document_start"
     }

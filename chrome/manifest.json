@@ -48,7 +48,6 @@
         "nscl/lib/sha256.js",
         "alea.js",
         "helpers.js",
-        "inject.js",
         "document_start.js"
       ],
       "run_at": "document_start"
