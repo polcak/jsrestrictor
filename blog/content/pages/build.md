@@ -1,27 +1,23 @@
-Title: Build JSR from scratch
-Date: 2021-01-01 12:00
-Slug: building
-Authors: Libor Polčák
-Summary: Short version for index and feeds
+Title: Building from scratch
 
-## GNU/Linux and Apple Mac OS
+### GNU/Linux and Mac OS
 
 1. Go to the project repository: [https://github.com/polcak/jsrestrictor](https://github.com/polcak/jsrestrictor).
-2. Download the desired branch, e.g. as zip archive.
-3. Unpack the zip archive.
-4. Run `git submodule update`
-5. Run `make`.
+1. Download the desired branch, e.g. as zip archive.
+1. Unpack the zip archive.
+1. Run `git submodule update`
+1. Run `make`.
 	* You will need common software, such as `zip`, `wget`, `bash`, `awk`, `sed`.
-6. Import the extension to the browser.
+1. Import the extension to the browser.
 	* Firefox: [https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/)
 		* Use the file `firefox_JSR.zip` created by `make`.
 	* Chromium-based browsers:
 		1. Open `chrome://extensions`.
-		2. Enable developper mode.
-		3. Click `Load unpacked`.
-		4. Import the `chrome_JSR/` directory created by `make`.
+		1. Enable developper mode.
+		1. Click `Load unpacked`.
+		1. Import the `chrome_JSR/` directory created by `make`.
 
-## Windows
+### Windows
 
 1. Install Windows Subsystem for Linux (WSL): [https://docs.microsoft.com/en-us/windows/wsl/install-win10](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 2. Go to the project repository: [https://github.com/polcak/jsrestrictor](https://github.com/polcak/jsrestrictor).

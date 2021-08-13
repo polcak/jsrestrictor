@@ -1,10 +1,4 @@
-Title: Release History
-Date: 2021-01-01 12:00
-Authors: Libor Polčák
-Summary: Project changelog
-
-
-# Release history
+Title: Release history
 
 ## 0.4.7
 
