@@ -113,17 +113,8 @@
     {% block footer %}
     <div class="container">
       <!-- copied from docs/_includes/footer.html -->
-      <div class="columns">
-        <div class="column">
-          <p>
-            This project was funded through the NGI0 PET Fund, a fund established by NLnet with financial support
-            from the European Commission's Next Generation Internet programme, under the aegis of DG
-            Communications Networks, Content and Technology under grant agreement No 825310 as
-            <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a href="https://nlnet.nl/project/JavascriptShield/">JavaScript Shield</a> projects. This
-            project was supported by the <a href="https://www.fit.vut.cz/research/project/1063/.en">MV CR VI20172020062 project</a>.
-          </p>
-        </div>
-        <div class="column">
+      <div class="grid">
+        <div class="license">
           <p>View the source code at <a href="https://pagure.io/JS-Shield/JS-Shield">Pagure.io</a>.</p>
           <p>
             This program is free software: you can redistribute it and/or modify
@@ -133,7 +124,44 @@
             (at your option) any later version.
           </p>
         </div>
-      </div><!-- /.columns -->
+        <div class="supporters">
+          <p>
+            This project was funded through the NGI0 PET Fund, a fund established by NLnet with financial support
+            from the European Commission's Next Generation Internet programme, under the aegis of DG
+            Communications Networks, Content and Technology under grant agreement No 825310 as
+            <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a href="https://nlnet.nl/project/JavascriptShield/">JavaScript Shield</a> projects. This
+            project was supported by the <a href="https://www.fit.vut.cz/research/project/1063/.en">MV CR VI20172020062 project</a>.
+          </p>
+        </div>
+        <div class="credits">
+          <ul>
+            <li>
+              <strong>Developers</strong>
+              <ul>
+                <li><a href="https://www.fit.vutbr.cz/~polcak">Libor Polčák</a></li>
+                <li>Martin Bednář</li>
+                <li>Giorgio Maone</li>
+                <li>Zbyněk Červinka</li>
+                <li>Martin Timko</li>
+                <li>Pavel Pohner</li>
+                <li>Pater Horňák</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Design and website development</strong>
+              <a href="manufacturaindependente.org/">Manufactura Independente</a>
+            </li>
+            <li>
+              <strong>Coordination</strong>
+              <ul>
+                <li>John Hsieh</li>
+                <li>Michael McMahon</li>
+                <li>Ruben Rodriguez</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div><!-- /.grid -->
     </div>
     {% endblock %}
   </footer>

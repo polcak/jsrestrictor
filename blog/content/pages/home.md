@@ -14,16 +14,15 @@ threats from JavaScript, including fingerprinting, tracking, and data
 collection!</p>
 
     <div class="block has-text-centered">
-      <h5>Download</h5>
       <p class="buttons are-medium is-centered">
         <a class="button" href="https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/">
-          <i class="fa fa-firefox" aria-hidden="true"></i> Firefox
+          <i class="fa fa-firefox" aria-hidden="true"></i> Install in Firefox
         </a>
         <a class="button" href="https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb">
-          <i class="fa fa-chrome" aria-hidden="true"></i> Google Chrome
+          <i class="fa fa-chrome" aria-hidden="true"></i> Install in Chrome
         </a>
         <a class="button" href="https://addons.opera.com/en/extensions/details/javascript-restrictor/">
-          <i class="fa fa-opera" aria-hidden="true"></i> Opera
+          <i class="fa fa-opera" aria-hidden="true"></i> Install in Opera
         </a>
       </p>
     </div>
@@ -36,7 +35,7 @@ collection!</p>
   <div class="grid">
     <article>
       <header>
-        <h3>What is jShelter?</h3>
+        <h4>What is jShelter?</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across
@@ -47,7 +46,7 @@ collection!</p>
     </article>
     <article>
       <header>
-        <h3>How does it work?</h3>
+        <h4>How does it work?</h4>
       </header>
       <div>
         <p>JavaScript Shield adds a
@@ -60,7 +59,7 @@ collection!</p>
     </article>
     <article>
       <header>
-        <h3>How is it different from X, Y and Z?</h3>
+        <h4>How is it different from X, Y and Z?</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across
@@ -71,7 +70,7 @@ collection!</p>
     </article>
     <article>
       <header>
-        <h3>Who's behind this project?</h3>
+        <h4>Who's behind this project?</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across
@@ -87,7 +86,7 @@ collection!</p>
   <div class="grid">
     <article>
       <header>
-        <h3>How can I help?</h3>
+        <h4>How can I help?</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across
@@ -99,7 +98,7 @@ collection!</p>
 
     <article>
       <header>
-        <h3>I found a bug!</h3>
+        <h4>I found a bug!</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across
@@ -111,7 +110,7 @@ collection!</p>
 
     <article>
       <header>
-        <h3>What is the license?</h3>
+        <h4>What is the license?</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across
