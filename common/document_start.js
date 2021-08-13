@@ -28,6 +28,11 @@ function configureInjection({code, wrappers, ffbug1267027, domainHash, sessionHa
   console.debug("configureInjection", new Error().stack, document.readyState);
 	configureInjection = () => false; // one shot
 	if(browser.extension.inIncognitoContext){
+		// Redefine the domainHash for incognito context:
+		// Compute the SHA256 hash of the original hash so that the incognito hash is:
+		// * significantly different to the original domainHash,
+		// * computationally difficult to revert,
+		// * the same for all incognito windows (for the same domain).
 		var hash = sha256.create();
 		hash.update(JSON.stringify(domainHash));
 		domainHash = hash.hex();
