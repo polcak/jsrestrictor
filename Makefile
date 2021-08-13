@@ -53,7 +53,9 @@ SITE_DIR=`pwd`/blog/
 ACTIVATE=. ${SITE_DIR}.env/bin/activate
 
 docs:
-	cd ${SITE_DIR} && make html
+	cp -f docs/build.md docs/credits.md docs/levels.md docs/permissions.md docs/versions.md docs/license.md ${SITE_DIR}content/pages
+	cp -f docs/new-wrapper.md ${SITE_DIR}content/pages/developer
+	${ACTIVATE}; cd ${SITE_DIR} && python extract_comments.py && make html
 
 serve-docs:
 	cd ${SITE_DIR} && make devserver

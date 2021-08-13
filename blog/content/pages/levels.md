@@ -1,10 +1,4 @@
 Title: Protection levels
-Date: 2021-01-01 12:00
-Slug: levels
-Authors: Libor Polčák
-Summary: How to configure
-
-# The configuration of the extension
 
 ## Network Boundary Shield (NBS)
 

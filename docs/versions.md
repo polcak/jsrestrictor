@@ -1,5 +1,4 @@
-
-# Release history
+Title: Release history
 
 ## 0.4.7
 

@@ -1,6 +1,6 @@
-# How to write a new wrapper?
+Title: How to write a new wrapper
 
-The primary focus of JSR is to provide security and privacy oriented wrappers of JavaScript APIs. As some of the code is very similar for each wrapper, we use a unified approach to describe wrappers. The approach is described below. This approach also helps to automatically modify `toString` conversions of the wrapped APIs, i.e. a correctly written wrapper creates a modified function but `wrapper.toString()` returns the original string. Finally, this approach also helps in generating code dealing with the [Firefox bug described in #25](https://github.com/polcak/jsrestrictor/issues/25).
+The primary focus of jShelter is to provide security and privacy oriented wrappers of JavaScript APIs. As some of the code is very similar for each wrapper, we use a unified approach to describe wrappers. The approach is described below. This approach also helps to automatically modify `toString` conversions of the wrapped APIs, i.e. a correctly written wrapper creates a modified function but `wrapper.toString()` returns the original string. Finally, this approach also helps in generating code dealing with the [Firefox bug described in #25](https://github.com/polcak/jShelterestrictor/issues/25).
 
 ## File structure
 
@@ -12,7 +12,7 @@ The primary focus of JSR is to provide security and privacy oriented wrappers of
 
 ## Naming conventions
 
-JSR adopted the naming conventions of the [Web API Manager](https://github.com/pes10k/web-api-manager/tree/master/sources/standards). See the paper:
+jShelter adopted the naming conventions of the [Web API Manager](https://github.com/pes10k/web-api-manager/tree/master/sources/standards). See the paper:
 
 Peter Snyder, Cynthia Taylor, and Chris Kanich, “[Most Websites Don’t Need to Vibrate: A Cost–Benefit Approach to Improving Browser Security](https://arxiv.org/abs/1708.08510),” in Proceedings of the [2017 ACM Conference on Computer and Communications Security](https://www.sigsac.org/ccs/CCS2017/), 2017.
 
@@ -89,7 +89,7 @@ You can make the generation of the post wrapping code generation conditional by 
 ```
 (`enableGeolocation` is a Booloean variable)
 
-Currently JSR supports additional wrapping of:
+Currently jShelter supports additional wrapping of:
 
 * Definition of a function (used, for example, to reintroduce `Date.now()` function to the wrapped
   `Date` object)
