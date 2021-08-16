@@ -4,25 +4,25 @@ Template: home
 
 <section class="hero block">
   <div class="hero-body">
-    <h2>
-      jShelter, an extension to help you safely navigate
-      the web, keeping harmful Javascript at bay
-    </h2>
+    <h3 class="has-text-centered">
+      jShelter
+    </h3>
 
-    <p>An anti-malware Web browser extension to mitigate potential
+    <p class="has-text-centered">An anti-malware Web browser extension to mitigate potential
 threats from JavaScript, including fingerprinting, tracking, and data
 collection!</p>
 
     <div class="block has-text-centered">
+      <p>Install now</p>
       <p class="buttons are-medium is-centered">
         <a class="button" href="https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/">
-          <i class="fa fa-firefox" aria-hidden="true"></i> Install in Firefox
+          <i class="fa fa-firefox" aria-hidden="true"></i> Firefox
         </a>
         <a class="button" href="https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb">
-          <i class="fa fa-chrome" aria-hidden="true"></i> Install in Chrome
+          <i class="fa fa-chrome" aria-hidden="true"></i> Chrome
         </a>
         <a class="button" href="https://addons.opera.com/en/extensions/details/javascript-restrictor/">
-          <i class="fa fa-opera" aria-hidden="true"></i> Install in Opera
+          <i class="fa fa-opera" aria-hidden="true"></i> Opera
         </a>
       </p>
     </div>
