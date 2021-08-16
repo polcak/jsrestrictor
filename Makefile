@@ -49,7 +49,7 @@ clean:
 
 ### Docs ###
 
-SITE_DIR=`pwd`/blog/
+SITE_DIR=`pwd`/website/
 ACTIVATE=. ${SITE_DIR}.env/bin/activate
 
 docs:

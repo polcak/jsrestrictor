@@ -58,3 +58,15 @@ I18N_SUBSITES = {
         "DESCRIPTION": "A extensão para navegar em segurança",
     }
 }
+
+# custom Jinja2 filter
+# https://siongui.github.io/2017/01/08/pelican-get-single-page-or-article-by-slug-metadata-in-theme/
+def get_by_slug(objs, slug):
+    for obj in objs:
+        if obj.slug == slug:
+            return obj
+
+
+JINJA_FILTERS = {
+    "get_by_slug": get_by_slug,
+}

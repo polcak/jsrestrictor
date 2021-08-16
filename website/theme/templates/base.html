@@ -44,39 +44,16 @@
           <li class="menu-heading">
             <strong>{{ SITENAME }}</strong>
             <ul>
-              <li><a href="/">Home</a></li>
-              <li><a href="/blog/">Blog</a></li>
-              <li><a href="/install/">Installing</a></li>
-              <li><a href="/drivers/">Download browser drivers</a></li>
-              <li><a href="/permissions/">Required permissions</a></li>
-              <li><a href="/configure/">Configuring</a></li>
-              <li><a href="/versions/">Release history</a></li>
-              <li><a href="/credits/">Credits</a></li>
-              <li><a href="/license/">License</a></li>
+              <li><a href="{{ SITEURL }}/">Home</a></li>
+              <li><a href="{{ SITEURL }}/blog/">Blog</a></li>
+              {% for pagename in ['install', 'drivers', 'permissions', 'configure', 'versions', 'credits', 'license'] %}
+              {% set page = (pages|get_by_slug(pagename)) %}
+              {% if page %}
+              <li><a href="{{ SITEURL }}/{{ pagename }}/">{{ page.title }}</a></li>
+              {% endif %}
+              {% endfor %}
             </ul>
           <li class="menu-heading">
-            <!--
-        <strong><a href="/group__wrappers.html">Key protection</a></strong>
-        <ul>
-          <li><a href="/group__NBS.html">Network Boundary Shield</a></li>
-          <li><a href="/wrappingS-AJAX_8js.html">AJAX</a></li>
-          <li><a href="/wrappingS-BATTERY-CR_8js.html">Battery level</a></li>
-          <li><a href="/wrappingS-BE_8js.html">Beacon API</a></li>
-          <li><a href="/wrappingS-DM_8js.html">Device memory</a></li>
-          <li><a href="/wrappingS-ECMA-ARRAY_8js.html">ECMAscript arrays</a></li>
-          <li><a href="/wrappingS-ECMA-DATE_8js.html">ECMAscript date</a></li>
-          <li><a href="/wrappingS-ECMA-SHARED_8js.html">ECMA shared buffers</a></li>
-          <li><a href="/wrappingS-GEO_8js.html">Geolocation</a></li>
-          <li><a href="/wrappingS-H-C_8js.html">HTML Canvas</a></li>
-          <li><a href="/wrappingS-HRT_8js.html">HTML Performance</a></li>
-          <li><a href="/wrappingS-HTML-LS_8js.html">HTML Workers</a></li>
-          <li><a href="/wrappingS-HTML_8js.html">HTML window name</a></li>
-          <li><a href="/wrappingS-MCS_8js.html">Media devices</a></li>
-          <li><a href="/wrappingS-PT2_8js.html">PT2</a></li>
-          <li><a href="/wrappingS-WEBA_8js.html">WebAudio</a></li>
-          <li><a href="/pages/webgl.html">WebGL</a></li>
-        </ul>
-        -->
             <strong>Key protection</strong>
             <ul>
               {% for page in pages if page.category == "wrappers "%}
@@ -87,13 +64,12 @@
           <li class="menu-heading">
             <strong>Developer notes</strong>
             <ul>
-              <li><a href="/issues/">Known issues</a></li>
-              <li><a href="/build/">Building from scratch</a></li>
-              <li><a href="/new-wrapper/">Making a new wrapper</a></li>
-              <li><a href="/unit-tests/">Running unit tests</a></li>
-              <li><a href="/integration-tests/">Running integration tests</a></li>
-              <li><a href="/system-tests/">Running system tests</a></li>
-              <li><a href="/coding-style/">Coding style</a></li>
+              {% for pagename in ['issues', 'build', 'new-wrapper', 'unit-tests', 'integration-tests', 'system-tests', 'coding-style'] %}
+              {% set page = (pages|get_by_slug(pagename)) %}
+              {% if page %}
+              <li><a href="{{ SITEURL }}/{{ pagename }}/">{{ page.title }}</a></li>
+              {% endif %}
+              {% endfor %}
             </ul>
           </li>
         </ul>
