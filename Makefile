@@ -46,24 +46,3 @@ clean:
 	rm -rf ipv4.csv
 	rm -rf ipv6.csv
 	rm -rf doxygen/
-
-### Docs ###
-
-SITE_DIR=`pwd`/website/
-ACTIVATE=. ${SITE_DIR}.env/bin/activate
-
-docs:
-	cp -f docs/build.md docs/credits.md docs/levels.md docs/permissions.md docs/versions.md docs/license.md ${SITE_DIR}content/pages
-	cp -f docs/new-wrapper.md ${SITE_DIR}content/pages/developer
-	${ACTIVATE}; cd ${SITE_DIR} && python extract_comments.py && make html
-
-serve-docs:
-	cd ${SITE_DIR} && make devserver
-
-deploy-docs: docs
-	rsync -e "ssh -p 22" -P -rvzc ${SITE_DIR}/output/ manufactura@opal5.opalstack.com:~/apps/js-shield/ --cvs-exclude
-
-dry-deploy-docs: docs
-	rsync -n -e "ssh -p 22" -P -rvzc ${SITE_DIR}/output/ manufactura@opal5.opalstack.com:~/apps/js-shield/ --cvs-exclude
-
-.PHONY: docs serve-docs deploy-docs dry-deploy-docs

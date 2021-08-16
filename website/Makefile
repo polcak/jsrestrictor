@@ -53,6 +53,9 @@ extract:
 	$(ACTIVATE); python extract_comments.py
 
 html:
+	cd ../docs; cp -f build.md credits.md levels.md permissions.md versions.md license.md ../website/content/pages
+	cd ../docs; cp -f new-wrapper.md ../website/content/pages/developer
+	$(ACTIVATE); python extract_comments.py
 	$(ACTIVATE); $(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
 
 clean:
@@ -76,5 +79,10 @@ devserver-global:
 publish:
 	$(ACTIVATE); $(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(PUBLISHCONF)" $(PELICANOPTS)
 
+deploy: html
+	rsync -e "ssh -p 22" -P -rvzc output/ manufactura@opal5.opalstack.com:~/apps/js-shield/ --cvs-exclude
+
+dry-deploy: html
+	rsync -n -e "ssh -p 22" -P -rvzc output/ manufactura@opal5.opalstack.com:~/apps/js-shield/ --cvs-exclude
 
 .PHONY: html help clean regenerate serve serve-global devserver publish
