@@ -117,6 +117,19 @@
 		];
 	}
 
+	const DEF_CANVAS_COPY = `
+		let canvasCopy = ctx => {
+			let {width, height} = ctx.canvas;
+			let fake = document.createElement("canvas");
+			fake.setAttribute("width", width);
+			fake.setAttribute("height", height);
+			let stx = fake.getContext("2d");
+			let imageData = window.CanvasRenderingContext2D.prototype.getImageData.call(ctx, 0, 0, width, height);
+			stx.putImageData(imageData, 0, 0);
+			return fake;
+		};
+	`;
+
 	/** @var String helping_code.
 	 * Selects if the canvas should be cleared (1) or a fake image should be created based on session
 	 * and domain keys (0).
@@ -146,13 +159,8 @@
 			wrapping_function_body: `
 				var ctx = this.getContext("2d");
 				if(ctx){
-					var fake = document.createElement("canvas");
-					fake.setAttribute("width", this.width);
-					fake.setAttribute("height", this.height);
-					var stx = fake.getContext("2d");
-					var imageData = ctx.getImageData(0, 0, this.width, this.height);
-					stx.putImageData(imageData, 0, 0);
-					return origToDataURL.call(fake, ...args);
+					${DEF_CANVAS_COPY}
+					return origToDataURL.call(canvasCopy(ctx), ...args);
 				}
 				else {
 					var ctx = this.getContext("webgl2", {preserveDrawingBuffer: true}) ||
@@ -166,7 +174,7 @@
 					  fake.setAttribute("height", this.height);
 					  var stx = fake.getContext("2d");
 					  stx.drawImage(ctx.canvas, 0, 0);
-					  return fake.toDataURL();
+					  return HTMLCanvasElement.prototype.toDataURL.call(fake);
           }
 				}
 				`,
@@ -256,14 +264,8 @@
 			 * CanvasRenderingContext2D.getImageData() that detemines the result.
 			 */
 			wrapping_function_body: `
-				var ctx = this.getContext("2d");
-				var fake = document.createElement("canvas");
-				fake.setAttribute("width", this.width);
-				fake.setAttribute("height", this.height);
-				var stx = fake.getContext("2d");
-				var imageData = ctx.getImageData(0,0,this.width,this.height);
-				stx.putImageData(imageData, 0, 0);
-				return origToBlob.call(fake, ...args);
+				${DEF_CANVAS_COPY}
+				return origToBlob.call(canvasCopy(this.getContext("2d")), ...args);
 			`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
@@ -288,14 +290,8 @@
 			 * CanvasRenderingContext2D.getImageData() that detemines the result.
 			 */
 			wrapping_function_body: `
-				var ctx = this.getContext("2d");
-				var fake = document.createElement("canvas");
-				fake.setAttribute("width", this.width);
-				fake.setAttribute("height", this.height);
-				var stx = fake.getContext("2d");
-				var imageData = ctx.getImageData(0,0,this.width,this.height);
-				stx.putImageData(imageData, 0, 0);
-				return origConvertToBlob.call(fake, ...args);
+			${DEF_CANVAS_COPY}
+			return origConvertToBlob.call(canvasCopy(this.getContext("2d")), ...args);
 			`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
