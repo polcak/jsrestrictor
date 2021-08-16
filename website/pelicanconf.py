@@ -13,6 +13,14 @@ THEME = "./theme/"
 # Use filenames as the base for slugs (default is post title)
 SLUGIFY_SOURCE = "basename"
 
+DEFAULT_METADATA = {"lang": "en"}
+PATH_METADATA = r"translations/(?P<lang>..)/.*"
+"""
+EXTRA_PATH_METADATA = {
+    "translations/pt_PT": {"lang": "pt"},
+}
+"""
+
 # Use static page as index (home.md) and move blog index to blog/
 INDEX_SAVE_AS = "blog/index.html"
 # Settings for clean URLs
@@ -42,3 +50,11 @@ DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
 # RELATIVE_URLS = True
+
+PLUGIN_PATHS = ["plugins"]
+PLUGINS = ["i18n_subsites"]
+I18N_SUBSITES = {
+    "pt": {
+        "DESCRIPTION": "A extensão para navegar em segurança",
+    }
+}
