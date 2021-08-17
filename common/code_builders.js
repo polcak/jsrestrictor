@@ -51,16 +51,10 @@ function define_page_context_function(wrapper) {
 	}
 	let originalF = original_function || `${parent_object}.${parent_object_property}`;
 	return enclose_wrapping2(`let originalF = ${originalF};
-			var replacementF = function(${wrapper.wrapping_function_args}) {
-				// This comment is needed to correctly differentiate wrappers with the same body
-				// by the toString() wrapper
-				// ${wrapper.parent_object}.${wrapper.parent_object_property} - ${wrapper.original_function}
-				// Prevent fingerprintability of the extension by toString behaviour
-				// ${gen_random32()}
+			let replacementF = function(${wrapper.wrapping_function_args}) {
 				${wrapper.wrapping_function_body}
 			};
 			exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
-			original_functions[replacementF.toString()] = originalF.toString();
 			${wrapper.post_replacement_code || ''}
 	`, wrapper.wrapping_code_function_name, wrapper.wrapping_code_function_params, wrapper.wrapping_code_function_call_window);
 }
@@ -105,9 +99,6 @@ function generate_object_properties(code_spec_obj) {
 			originalPDF = descriptor["${wrap_spec.property_name}"];
 			replacementPD = ${wrap_spec.property_value};
 			descriptor["${wrap_spec.property_name}"] = replacementPD;
-			if (replacementPD instanceof Function) {
-				original_functions[replacementPD.toString()] = originalPDF.toString();
-			}
 		`;
 	}
 	code += `ObjForPage.defineProperty(${code_spec_obj.parent_object},
@@ -216,7 +207,6 @@ function wrap_code(wrappers) {
 	};
 
 	let code = (w => {
-		let original_functions = {};
 		let xrayWindow = window;
 		let ObjForPage, forPage;
 		{
@@ -275,19 +265,6 @@ function wrap_code(wrappers) {
 				// cleanup environment if necessary
 			}
 
-			let originalToStringF = Function.prototype.toString;
-			let originalToStringStr = Function.prototype.toString();
-			Function.prototype.toString = function() {
-				var currentString = originalToStringF.call(this);
-				var originalStr = original_functions[currentString];
-				if (originalStr !== undefined) {
-					return originalStr;
-				}
-				else {
-					return currentString;
-				}
-			};
-			original_functions[Function.prototype.toString.toString()] = originalToStringStr;
 		}
 	}).toString().replace('// WRAPPERS //',
 		wrappers.map(build)
