@@ -60,62 +60,6 @@
  * Create private namespace
  */
 (function() {
-	/** \fn fake create_post_wrappers
-	 * \brief This function is used to prevent access to unwrapped APIs through iframes.
-	 *
-	 * \param The object to wrap like HTMLIFrameElement.prototype
-	 */
-	function create_post_wrappers(parent_object) {
-		return [{
-				code_type: "object_properties",
-				parent_object: parent_object,
-				parent_object_property: "contentWindow",
-				wrapped_objects: [{
-					original_name: "Object.getOwnPropertyDescriptor(HTMLIFrameElement.prototype, 'contentWindow')['get'];",
-					wrapped_name: "cw",
-				}],
-				wrapped_properties: [{
-					property_name: "get",
-					property_value: `
-								function() {
-									var parent=cw.call(this);
-									try {
-										parent.HTMLCanvasElement;
-									}
-									catch(d) {
-										return; // HTMLIFrameElement.contentWindow properties could not be accessed anyway
-									}
-									wrapping(parent);
-									return parent;
-								}`,
-				}],
-			},
-			{
-				code_type: "object_properties",
-				parent_object: parent_object,
-				parent_object_property: "contentDocument",
-				wrapped_objects: [{
-					original_name: "Object.getOwnPropertyDescriptor(HTMLIFrameElement.prototype, 'contentDocument')['get'];",
-					wrapped_name: "cd",
-				}, ],
-				wrapped_properties: [{
-					property_name: "get",
-					property_value: `
-								function() {
-									var parent=cw.call(this);
-									try{
-										parent.HTMLCanvasElement;
-									}
-									catch(d) {
-										return; // HTMLIFrameElement.contentDocument properties could not be accessed anywaya
-									}
-									wrapping(parent);
-									return cd.call(this);
-								}`,
-				}, ],
-			},
-		];
-	}
 
 	const DEF_CANVAS_COPY = `
 		let canvasCopy = ctx => {
@@ -178,7 +122,6 @@
           }
 				}
 				`,
-			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 		{
 			parent_object: "CanvasRenderingContext2D.prototype",
@@ -241,7 +184,6 @@
 				farble(this,stx);
 				return origGetImageData.call(stx, sx, sy, sw, sh);
 			`,
-			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 		{
 			parent_object: "HTMLCanvasElement.prototype",
@@ -267,7 +209,6 @@
 				${DEF_CANVAS_COPY}
 				return origToBlob.call(canvasCopy(this.getContext("2d")), ...args);
 			`,
-			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 		{
 			parent_object: "OffscreenCanvas.prototype",
@@ -293,7 +234,6 @@
 			${DEF_CANVAS_COPY}
 			return origConvertToBlob.call(canvasCopy(this.getContext("2d")), ...args);
 			`,
-			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 		{
 			parent_object: "CanvasRenderingContext2D.prototype",
@@ -331,7 +271,6 @@
 			wrapping_function_body: `
 				return farbleIsPointInPath(this, ...args);
 			`,
-			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 		{
 			parent_object: "CanvasRenderingContext2D.prototype",
@@ -369,7 +308,6 @@
 			wrapping_function_body: `
 				return farbleIsPointInStroke(this, ...args);
 			`,
-			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 	]
 	add_wrappers(wrappers);
