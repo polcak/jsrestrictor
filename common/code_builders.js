@@ -83,14 +83,23 @@ function generate_object_properties(code_spec_obj) {
 	for (assign of code_spec_obj.wrapped_objects) {
 		code += `var ${assign.wrapped_name} = window.${assign.original_name};`;
 	}
-	code += `descriptor = Object.getOwnPropertyDescriptor(
-			${code_spec_obj.parent_object}, "${code_spec_obj.parent_object_property}");
-		if (descriptor === undefined) {
-			descriptor = { // Originally not a descriptor
+	code += `
+	{
+		let obj = ${code_spec_obj.parent_object};
+		let prop = "${code_spec_obj.parent_object_property}";
+		let descriptor = Object.getOwnPropertyDescriptor(obj, prop);
+		if (!descriptor) {
+			// let's traverse the prototype chain in search of this property
+			for (let proto = Object.getPrototypeOf(obj); proto; proto = Object.getPrototypeOf(obj)) {
+				if (descriptor = Object.getOwnPropertyDescriptor(proto, prop)) {
+					obj = proto.wrappedJSObject || proto;
+					break;
+				}
+			}
+			descriptor ||= { // Originally not a descriptor
 				get: ${code_spec_obj.parent_object}.${code_spec_obj.parent_object_property},
-				set: undefined,
-				configurable: false,
 				enumerable: true,
+				configurable: true,
 			};
 		}
 	`
@@ -103,7 +112,7 @@ function generate_object_properties(code_spec_obj) {
 	}
 	code += `ObjForPage.defineProperty(${code_spec_obj.parent_object},
 		"${code_spec_obj.parent_object_property}", descriptor);
-	`;
+	}`;
 	return code;
 }
 
