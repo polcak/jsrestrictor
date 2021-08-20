@@ -97,7 +97,6 @@ function generate_object_properties(code_spec_obj) {
 				}
 			}
 			descriptor ||= { // Originally not a descriptor
-				get: ${code_spec_obj.parent_object}.${code_spec_obj.parent_object_property},
 				enumerable: true,
 				configurable: true,
 			};
