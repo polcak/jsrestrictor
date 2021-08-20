@@ -72,7 +72,7 @@ prototype identifier provided by `wrapper_prototype`.
 * `replace_original_function` is used to control which function should be replaced
 * `post_replacement_code` Allows to provide additional code with the access to the original function
    and to the wrapped function
-* `nofreeze` if set to `true` causes the API not to be freeed. Use this option with caution and make sure that the wrapping is not deletable.
+* `freeze` if set to `true` causes the API to be freezed. It should not be necessary if the wrapping is performed at the right level of the object's prototype chain (i.e. where the property to be modified was originally defined, i.e. usually in the object's prototype). Use this option with caution, only if strictly needed, because native APIs are configurable (otherwise our wrapping couldn't work) and therefore freezing them introduces a "weirdness", exploitable for fingerprinting.
 * `post_wrapping_code` is a list of additional wrapping objects with a similar structure to the
   wrappers, see the section bellow.
 

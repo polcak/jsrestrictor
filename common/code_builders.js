@@ -188,7 +188,7 @@ var build_code = function(wrapper, ...args) {
 		}`;
 	}
 	code += `
-		if (!${wrapper.nofreeze}) {
+		if (${wrapper.freeze}) {
 			Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});
 		}
 	`;
