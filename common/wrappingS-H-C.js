@@ -136,33 +136,33 @@
 				}
 				var farble = function(context, fake) {
 					if(approach === 1){
-					fake.fillStyle = "white";
-					fake.fillRect(0, 0, context.canvas.width, context.canvas.height);
-					return;
-				}
-				else if(approach === 0){
-					const width = context.canvas.width;
-					const height = context.canvas.height;
-					var imageData = origGetImageData.call(context, 0, 0, width, height);
-					fake.putImageData(imageData, 0, 0);
-					var fakeData = origGetImageData.call(fake, 0, 0, width, height);
-					var pixel_count = BigInt(width * height);
-					var channel = domainHash[0].charCodeAt(0) % 3;
-					var canvas_key = domainHash;
-					var v = BigInt(strToUint(domainHash,8));
-
-					for (let i = 0; i < 32; i++) {
-						var bit = canvas_key[i];
-						for (let j = 8; j >= 0; j--) {
-							var pixel_index = (4 * Number(v % pixel_count) + channel);
-							fakeData.data[pixel_index] = fakeData.data[pixel_index] ^ (bit & 0x1);
-							bit = bit >> 1;
-							v = lfsr_next(v);
-						}
+						fake.fillStyle = "white";
+						fake.fillRect(0, 0, context.canvas.width, context.canvas.height);
+						return;
 					}
-					fake.putImageData(fakeData, 0, 0);
-				}
-			};`,
+					else if(approach === 0){
+						const width = context.canvas.width;
+						const height = context.canvas.height;
+						var imageData = origGetImageData.call(context, 0, 0, width, height);
+						fake.putImageData(imageData, 0, 0);
+						var fakeData = origGetImageData.call(fake, 0, 0, width, height);
+						var pixel_count = BigInt(width * height);
+						var channel = domainHash[0].charCodeAt(0) % 3;
+						var canvas_key = domainHash;
+						var v = BigInt(strToUint(domainHash,8));
+
+						for (let i = 0; i < 32; i++) {
+							var bit = canvas_key[i];
+							for (let j = 8; j >= 0; j--) {
+								var pixel_index = (4 * Number(v % pixel_count) + channel);
+								fakeData.data[pixel_index] = fakeData.data[pixel_index] ^ (bit & 0x1);
+								bit = bit >> 1;
+								v = lfsr_next(v);
+							}
+						}
+						fake.putImageData(fakeData, 0, 0);
+					}
+				};`,
 			wrapping_code_function_name: "wrapping",
 			wrapping_code_function_params: "parent",
 			wrapping_code_function_call_window: true,
