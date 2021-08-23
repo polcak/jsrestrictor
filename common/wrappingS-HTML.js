@@ -50,7 +50,6 @@
 			parent_object_property: "name",
 			wrapped_objects: [],
 			helping_code: "window.name = '';",
-			nofreeze: true,
 		},
 	]
 	add_wrappers(wrappers);

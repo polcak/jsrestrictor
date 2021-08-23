@@ -108,7 +108,7 @@
 			  var pos = {
     			coords: originalPositionObject.coords,
 			    timestamp: geoTimestamp // Limit the timestamp accuracy
-			  };	
+			  };
 				successCallback(pos);
 				return;
 			}
@@ -223,7 +223,6 @@
 					delete_properties: ["geolocation"],
 				}
 			],
-			nofreeze: true,
 		},
 		{
 			parent_object: "navigator.geolocation",
@@ -280,7 +279,7 @@
 				  	var pos = {
     					coords: originalPositionObject.coords,
 				  	  timestamp: geoTimestamp
-				  	};	
+				  	};
 						successCallback(pos);
 					}
 					originalWatchPosition.call(this, wrappedSuccessCallback, errorCallback, origOptions);

@@ -21,12 +21,6 @@
 //
 
 /**
- * Keep list of domains that are known (not) to be affected by the
- * Firefox bug 1267027.
- */
-var domains_bug1267027 = {};
-
-/**
  * Returns the a Promise which resolves to the configuration
  * for the current level to be used by the content script for injection
  * @param {url} string
@@ -42,7 +36,6 @@ function getContentConfiguration(url) {
 			resolve({
 				code: page_level[1],
 				wrappers: page_level[0].wrappers,
-				ffbug1267027: domains_bug1267027[url],
 				domainHash
 			});
 		}
@@ -66,9 +59,6 @@ function contentScriptLevelSetter(message) {
 	switch (message.message) {
 	  case "get wrapping for URL":
 			return getContentConfiguration(message.url)
-		case "ffbug1267027":
-			domains_bug1267027[message.url] = message.present;
-			break;
 	}
 }
 browser.runtime.onMessage.addListener(contentScriptLevelSetter);
