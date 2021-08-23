@@ -20,23 +20,32 @@
 {% endblock %}
 
 <body>
-  <header id="topheader" class="container">
-    {% block titlearea %}
-    <h1 id="projectlogo">
-      <a href="/">
-        <img alt="Logo" src="/theme/images/logo.png">
-      </a>
-    </h1>
-    <p>
-      <strong>{{ SITENAME }} </strong>
-      <span>{{ DESCRIPTION }}</span>
-    </p>
-    {% endblock %}
-  </header><!-- /#topheader -->
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+        <a class="navbar-item" href="/">
+          {% block titlearea %}
+            <img alt="jShelter" src="/theme/images/logo.png">
+            <p>
+              <strong>{{ SITENAME }} </strong>
+              <span>{{ DESCRIPTION }}</span>
+            </p>
+          {% endblock %}
+        </a>
+      </div>
+    </div><!-- /.container-->
+  </nav>
 
   <div {% if title == "Home" %} id="home" {% endif %} class="content-wrapper container">
 
     {% block sidebar %}
+    <div class="sidebar-overlay"></div>
     <div class="sidebar">
       <!-- new navigation -->
       <nav class="menu">
@@ -141,6 +150,21 @@
     </div>
     {% endblock %}
   </footer>
+
+  <script>
+
+    // mobile navigation
+    var navBurguer = document.getElementsByClassName('navbar-burger')[0];
+    var sidebarNav = document.getElementsByClassName('sidebar')[0];
+    var sidebarOverlay = document.getElementsByClassName('sidebar-overlay')[0];
+
+    navBurguer.onclick = function() {
+      navBurguer.classList.toggle('is-active');
+      sidebarNav.classList.toggle('is-shown');
+      sidebarOverlay.classList.toggle('is-shown');
+    }
+
+  </script>
 
 </body>
 
