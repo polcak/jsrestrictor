@@ -1,7 +1,7 @@
-Title: Home
+Title: Início
 Template: home
-save_as: index.html
 URL:
+save_as: pt/index.html
 
 <section class="hero block">
   <div class="hero-body">
@@ -9,12 +9,10 @@ URL:
       jShelter
     </h3>
 
-    <p class="has-text-centered">An anti-malware Web browser extension to mitigate potential
-threats from JavaScript, including fingerprinting, tracking, and data
-collection!</p>
+    <p class="has-text-centered">Uma extensão anti-malware para o seu browser, dedicada a mitigar potenciais ameaças via Javascript, como fingerprinting, tracking e armazenamento de dados pessoais!</p>
 
     <div class="block has-text-centered">
-      <p>Install now</p>
+      <p>Instalar já</p>
       <p class="buttons are-medium is-centered">
         <a class="button" href="https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/">
           <i class="fa fa-firefox" aria-hidden="true"></i> Firefox
@@ -36,7 +34,7 @@ collection!</p>
   <div class="grid">
     <article>
       <header>
-        <h4>What is jShelter?</h4>
+        <h4>O que é o jShelter?</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across
@@ -47,7 +45,7 @@ collection!</p>
     </article>
     <article>
       <header>
-        <h4>How does it work?</h4>
+        <h4>Como funciona?</h4>
       </header>
       <div>
         <p>JavaScript Shield adds a
@@ -60,7 +58,7 @@ collection!</p>
     </article>
     <article>
       <header>
-        <h4>How is it different from X, Y and Z?</h4>
+        <h4>Qual é a diferença entre o jShelter e X, Y ou Z?</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across
@@ -71,7 +69,7 @@ collection!</p>
     </article>
     <article>
       <header>
-        <h4>Who's behind this project?</h4>
+        <h4>Quem está por trás deste projeto?</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across
@@ -87,7 +85,7 @@ collection!</p>
   <div class="grid">
     <article>
       <header>
-        <h4>How can I help?</h4>
+        <h4>Como posso ajudar?</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across
@@ -99,7 +97,7 @@ collection!</p>
 
     <article>
       <header>
-        <h4>I found a bug!</h4>
+        <h4>Encontrei um bug!</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across
@@ -111,7 +109,7 @@ collection!</p>
 
     <article>
       <header>
-        <h4>What is the license?</h4>
+        <h4>Quais são os termos da licença?</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across

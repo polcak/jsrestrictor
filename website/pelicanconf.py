@@ -9,17 +9,13 @@ SITEURL = ""
 DEFAULT_DATE = "fs"  # use a default date to stop Pelican complaints on pages
 PAGE_PATHS = ["pages", "wrappers"]
 THEME = "./theme/"
+DIRECT_TEMPLATES = []
 
 # Use filenames as the base for slugs (default is post title)
 SLUGIFY_SOURCE = "basename"
 
 DEFAULT_METADATA = {"lang": "en"}
-PATH_METADATA = r"translations/(?P<lang>..)/.*"
-"""
-EXTRA_PATH_METADATA = {
-    "translations/pt_PT": {"lang": "pt"},
-}
-"""
+PATH_METADATA = r"(pages|posts|wrappers)/(?P<lang>..)/.*"
 
 # Use static page as index (home.md) and move blog index to blog/
 INDEX_SAVE_AS = "blog/index.html"
@@ -28,6 +24,8 @@ ARTICLE_URL = "{slug}/"
 ARTICLE_SAVE_AS = "{slug}/index.html"
 PAGE_URL = "{slug}/"
 PAGE_SAVE_AS = "{slug}/index.html"
+PAGE_LANG_URL = "{lang}/{slug}/"
+PAGE_LANG_SAVE_AS = "{lang}/{slug}.html"
 DRAFT_URL = "private/{slug}/"
 DRAFT_SAVE_AS = "private/{slug}/index.html"
 DRAFT_LANG_URL = "private/{slug}-{lang}/"
@@ -53,6 +51,7 @@ DEFAULT_PAGINATION = 10
 
 PLUGIN_PATHS = ["plugins"]
 PLUGINS = ["i18n_subsites"]
+I18N_UNTRANSLATED_PAGES = "remove"  # needed to avoid index overwrites
 I18N_SUBSITES = {
     "pt": {
         "DESCRIPTION": "A extensão para navegar em segurança",

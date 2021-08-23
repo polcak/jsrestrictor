@@ -53,7 +53,8 @@
           <li class="menu-heading">
             <strong>{{ SITENAME }}</strong>
             <ul>
-              <li><a href="{{ SITEURL }}/">Home</a></li>
+              {% set page = (pages|get_by_slug('home')) %}
+              <li><a href="{{ SITEURL }}/">{{ page.title }}</a></li>
               <li><a href="{{ SITEURL }}/blog/">Blog</a></li>
               {% for pagename in ['install', 'drivers', 'permissions', 'configure', 'versions', 'credits', 'license'] %}
               {% set page = (pages|get_by_slug(pagename)) %}
