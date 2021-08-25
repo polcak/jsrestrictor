@@ -58,7 +58,7 @@
 			wrapped_objects: [],
 			helping_code: "",
 			wrapping_function_body: `
-					return [];
+					return new window.Array();
 				`,
 		},
 	]
