@@ -22,6 +22,8 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	<script type="text/javascript" src="xmlhttprequest.js"></script>
 	<script type="text/javascript" src="hw.js"></script>
 	<script type="text/javascript" src="enumerateDevices.js" defer></script>
+	<script language="javascript" src="iframe.js" defer></script>
+	<script language="javascript" src="poc.js" defer></script>
 	<link rel="stylesheet" type="text/css" href="global.css">
 </head>
 <body onload="initClock(); updatePerformanceLabelEvery(200); getHW();">
@@ -209,5 +211,26 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	<h2>window.XMLHttpRequest example</h2>
 	<button onclick="runRequest();">Run XMLHttpRequest on a test URL</button>
 	<p id="placeToOutput" type="text/x-frozen-html"></p>
+	<br><br><br><hr>
+
+	<h2>Wrappers and iframes</h2>
+	<p>Iframes can be misused to evade wrappers. Prior to 0.5, jShelter limited some wrappers but not
+	all. To be fully protected, you should see <tt>[native code]</tt> as a body
+	of all displayed functions. Note that you should see the same content even if you do not use any
+	extension that modifies the calls. We want not to be distinguishable even if fully protected to
+	limit fingerprinting.</p>
+	<h3>JavaScript executed in the main page</h3>
+	<span id="iframe_result"></span>
+
+
+	<h3>JavaScript executed in a regular iframe</h3>
+	<iframe src="iframe.html" id="regular_iframe">
+	</iframe>
+	<span id="regular"></span>
+
+	<h3>JavaScript executed in a same origin iframe</h3>
+	<iframe sandbox="allow-same-origin" src="iframe.html" id="poc_iframe">
+	</iframe>
+	<span id="poc"></span>
 </body>
 </html>
