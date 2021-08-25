@@ -2,18 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-function getUserAgent(){
-  var userAgent = navigator.userAgent;
-  var appVersion = navigator.appVersion;
-  var vendor = navigator.vendor;
-  var doNotTrack = navigator.doNotTrack? "True": "False";
-  document.getElementById('userAgent').innerHTML += userAgent;
-  document.getElementById('appVersion').innerHTML += appVersion ;
-  document.getElementById('browserVendor').innerHTML += vendor ;
-  document.getElementById('doNotTrack').innerHTML += doNotTrack;
-
-}
-
 function getPlugins(){
   var plugins = navigator.plugins;
   var mimeTypes = navigator.mimeTypes;
@@ -34,7 +22,6 @@ function getPlugins(){
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  getUserAgent();
   setTimeout(function() {
     getPlugins();
   }, 100);
