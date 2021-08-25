@@ -32,19 +32,22 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	<h1>jShelter Test Page</h1>
 	<hr>
 
-	<h2>window.Date example</h2>
+	<h2>High precision timer sources</h2>
 	<div id="content-wrapper">
+		<strong>Date object</strong>
 		<span id="hours">00</span>:
 		<span id="minutes">00</span>:
-		<span id="seconds">00</span>:
+		<span id="seconds">00</span>.
 		<span id="milliseconds">000</span>
 	</div>
-	<br><br><br><hr>
-
-
-	<h2>window.performance example</h2>
 	<div id="content-wrapper">
+		<strong>performance.now</strong>
 		<span>Current performance is: <span id="current-performance">-</span></span>
+	</div>
+	<div id="content-wrapper">
+		<strong>Events</strong>
+		<div><span>Timestamp of an event created during page load is: <span id="orig-event">-</span></span></div>
+		<div><span>Timestamp of a recent event is: <span id="current-event">-</span></span></div>
 	</div>
 	<br><br><br><hr>
 
