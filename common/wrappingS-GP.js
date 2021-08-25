@@ -48,9 +48,31 @@
  * mitigate the event to fire and consequently, it is possible that an
  * adversary can learn that a gamepad was (dis)connected but there was no
  * change in the result of the navigator.getGamepads() API.
+ *
+ * The gamepad representing object carries a timestamp of the last change of
+ * the gamepad. As we allow wrapping of several ways to obtain timestamps,
+ * we need to provide the same precision for the Gamepad object.
  */
 
 (function() {
+	var remember_past_ts_values = `var precision = args[0];
+				var doNoise = args[1];
+				var pastValues = {};
+				${rounding_function}
+				${noise_function}
+				var mitigationF = rounding_function;
+				if (doNoise === true){
+					mitigationF = function(value, precision) {
+						let params = [value, precision];
+						if (params in pastValues) {
+							return pastValues[params];
+						}
+						let result = noise_function(...params);
+						pastValues[params] = result;
+						return result;
+					}
+				}
+			`;
 	var wrappers = [
 		{
 			parent_object: "navigator",
@@ -60,6 +82,37 @@
 			wrapping_function_body: `
 					return new window.Array();
 				`,
+		},
+		{
+			/**
+			 * \see https://developer.mozilla.org/en-US/docs/Web/API/Gamepad/timestamp
+			 * \note that at the time of the writing of the prototype, the timestamp
+			 * property was not supported by any browser.
+			 */
+			parent_object: "Gamepad.prototype",
+			parent_object_property: "timestamp",
+			wrapped_objects: [],
+			helping_code: remember_past_ts_values + `let origGet = Object.getOwnPropertyDescriptor(Event.prototype, "timeStamp").get`,
+			post_wrapping_code: [
+				{
+					code_type: "object_properties",
+					parent_object: "Gamepad.prototype",
+					parent_object_property: "timestamp",
+					wrapped_objects: [],
+					/**  \brief replaces Gamepad.timestamp getter to create
+					 * a timestamp with the desired precision.
+					 */
+					wrapped_properties: [
+						{
+							property_name: "get",
+							property_value: `
+								function() {
+									return mitigationF(origGet.call(this), precision);
+								}`,
+						},
+					],
+				}
+			],
 		},
 	]
 	add_wrappers(wrappers);
