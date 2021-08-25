@@ -90,6 +90,8 @@ var wrapping_groups = {
 				"PerformanceEntry.prototype",
 				// ECMA
 				"window.Date",
+				// DOM
+				"Event.prototype.timeStamp",
 			],
 		},
 		{
