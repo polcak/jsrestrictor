@@ -92,6 +92,8 @@ var wrapping_groups = {
 				"window.Date",
 				// DOM
 				"Event.prototype.timeStamp",
+				// GP
+				"Gamepad.prototype.timestamp",
 			],
 		},
 		{
