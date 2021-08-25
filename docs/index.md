@@ -38,6 +38,8 @@ WebGLRenderingContext.getVertexAttribOffset, WebGLRenderingContext.getSupportedE
 	to share the exact position. JSR allows the user to limit the precission of the API or disable the
 	API. JSR also modifies the timestamps provided by Geolocation API in consistency with its time
 	precision settings.
+* **[Gamepad API](https://w3c.github.io/gamepad/) (navigator.getGamepads())**: fingerprinters were
+	[observed](https://github.com/uiowa-irl/FP-Inspector/blob/master/Data/potential_fingerprinting_APIs.md) to fingerprint users based on the gamepads connected to the computer. As we expect that the majority of the users does not have a gamepad connected, we provide only a single mitigation - the wrapped APIs returns an empty list.
 * **window.name** provides a very simple cross-origin tracking method of the same tab, see https://github.com/polcak/jsrestrictor/issues/72, https://developer.mozilla.org/en-US/docs/Web/API/Window/name,	https://2019.www.torproject.org/projects/torbrowser/design/,	https://bugzilla.mozilla.org/show_bug.cgi?id=444222, and https://html.spec.whatwg.org/#history-traversal. JSR provides an option to remove any `window.name` content on each page load.
 * **navigator.sendBeacon** is an API desinged for analytics. JSR provides an option to disable the API. The call returns success but nothing is sent to any web server.
 
