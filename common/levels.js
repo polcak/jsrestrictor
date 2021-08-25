@@ -481,6 +481,17 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "gamepads",
+			description: "Prevent websites from learning information on local gamepads",
+			description2: [],
+			default: true,
+			options: [],
+			wrappers: [
+				// GAMEPAD
+				"navigator.getGamepads",
+			],
+		},
+		{
 			name: "analytics",
 			description: "Prevent sending analytics through Beacon API",
 			description2: [],
@@ -627,6 +638,7 @@ var level_2 = {
 	"enumerateDevices_method": 1,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
+	"gamepads": true,
 	"analytics": true,
 	"windowname": true,
 };
@@ -664,6 +676,7 @@ var level_3 = {
 	"webworker_approach_slow": false,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 0,
+	"gamepads": true,
 	"analytics": true,
 	"windowname": true,
 };
