@@ -25,8 +25,11 @@ get_csv:
 	wget -q -N https://www.iana.org/assignments/locally-served-dns-zones/ipv6.csv
 	cp ipv6.csv common/ipv6.dat
 
+submodules:
+	git submodule init
+	git submodule update
 
-%_JSR.zip: $(COMMON_FILES) get_csv
+%_JSR.zip: $(COMMON_FILES) get_csv submodules
 	@rm -rf $*_JSR/ $@
 	@cp -r common/ $*_JSR/
 	@cp -r $*/* $*_JSR/
