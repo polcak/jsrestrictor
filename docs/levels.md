@@ -11,7 +11,7 @@ NBS is active independently on the levels defined below. If necessary, you can w
 
 ### Level 1
 
-* **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
+* **Manipulate the time precision provided by Date, performance, events, gamepads, and Geolocation API --** *ON*
     * Round time to: *hundredths of a second (1.230 -- Date, 1230 -- performance, Geolocation API)*
 * **Protect against canvas fingerprinting --** *OFF*
 * **List of microphones and cameras: --** *original*
@@ -24,12 +24,13 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Protect against SharedArrayBuffer exploitation --** *OFF*
 * **Protect against WebWorker exploitation --** *OFF*
 * **Limit Geolocation API --** *Use accuracy of hundreds of meters*
+* **Gamepad API --** *List all attached gamepads*
 * **navigator.sendBeacon --** *Do not send anything and return true*
 * **Disable Battery status API --** *ON*
 * **window.name --** *Clear with each page load*
 
 ### Level 2
-* **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
+* **Manipulate the time precision provided by Date, performance, events, gamepads, and Geolocation API --** *ON*
     * Round time to: *tenths of a second (1.200 -- Date, 1200 -- performance, Geolocation API)*
 * **Protect against canvas fingerprinting: --** *ON*
     * Reading from canvas returns white image.
@@ -42,12 +43,13 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Protect against SharedArrayBuffer exploitation --** *OFF*
 * **Protect against WebWorker exploitation --** *OFF*
 * **Limit Geolocation API --** *Use accuracy of kilometers*
+* **Gamepad API --** *Hide all attached gamepads*
 * **navigator.sendBeacon --** *Do not send anything and return true*
 * **Disable Battery status API --** *ON*
 * **window.name --** *Clear with each page load*
 
 ### Level 3
-* **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
+* **Manipulate the time precision provided by Date, performance, events, gamepads, and Geolocation API --** *ON*
     * Round time to: *full seconds (1.000 -- Date, 1000 -- performance)*
 		* *Randomize time*
 * **Protect against canvas fingerprinting: --** *ON*
@@ -64,6 +66,7 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Protect against WebWorker exploitation --** *ON*
     * *Remove real parallelism* -- Use Worker polyfill instead of the native Worker.
 * **Limit Geolocation API --** *Disabled*
+* **Gamepad API --** *Hide all attached gamepads*
 * **navigator.sendBeacon --** *Do not send anything and return true*
 * **Disable Battery status API --** *ON*
 * **window.name --** *Clear with each page load*
