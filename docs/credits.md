@@ -17,11 +17,17 @@ Pavel Pohner developed the Network Boundary Scanner as a part of his master's th
 Pater Horňák ported functionality from [Chrome Zero](https://github.com/IAIK/ChromeZero) as a part
 of his bachelor thesis. He also provided several small fixes to the code base.
 
+Matúš Švancár ported Farbling anti-fingerprinting measures from the Brave browser as a part of his [master's thesis](https://www.fit.vut.cz/study/thesis/23310/).
+
+We thank all other minor contributors of the project that are not listed in this section.
+
 # Key ideas
 
-The development of this extension is influenced by the paper [JavaScript Zero: Real JavaScript and Zero Side-Channel Attacks](https://graz.pure.elsevier.com/de/publications/javascript-zero-real-javascript-and-zero-side-channel-attacks). It appeared during the work of Zbyněk Červinka and provided basically the same approach to restrict APIs as was at the time developped by Zbyněk Červinka.
+The development of this extension is influenced by the paper [JavaScript Zero: Real JavaScript and Zero Side-Channel Attacks](https://graz.pure.elsevier.com/de/publications/javascript-zero-real-javascript-and-zero-side-channel-attacks). It appeared during the work of Zbyněk Červinka and provided basically the same approach to restrict APIs as was at the time developed by Zbyněk Červinka.
 
 The [Force Point report](https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf) was a key inspiration for the development of the Network Boundary Shield.
+
+Some of the fingerprinting counter-measures are inspired by [Farbling of the Brave browser](blogarticles/farbling.md).
 
 # Borrowed code
 
