@@ -24,9 +24,9 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Protect against SharedArrayBuffer exploitation --** *OFF*
 * **Protect against WebWorker exploitation --** *OFF*
 * **Limit Geolocation API --** *Use accuracy of hundreds of meters*
+* **navigator.sendBeacon --** *Do not send anything and return true*
 * **Disable Battery status API --** *ON*
 * **window.name --** *Clear with each page load*
-* **navigator.sendBeacon --** *Do not send anything and return true*
 
 ### Level 2
 * **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
@@ -42,9 +42,9 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Protect against SharedArrayBuffer exploitation --** *OFF*
 * **Protect against WebWorker exploitation --** *OFF*
 * **Limit Geolocation API --** *Use accuracy of kilometers*
+* **navigator.sendBeacon --** *Do not send anything and return true*
 * **Disable Battery status API --** *ON*
 * **window.name --** *Clear with each page load*
-* **navigator.sendBeacon --** *Do not send anything and return true*
 
 ### Level 3
 * **Manipulate the time precision provided by Date, performance, and Geolocation API --** *ON*
@@ -64,7 +64,7 @@ NBS is active independently on the levels defined below. If necessary, you can w
 * **Protect against WebWorker exploitation --** *ON*
     * *Remove real parallelism* -- Use Worker polyfill instead of the native Worker.
 * **Limit Geolocation API --** *Disabled*
+* **navigator.sendBeacon --** *Do not send anything and return true*
 * **Disable Battery status API --** *ON*
 * **window.name --** *Clear with each page load*
-* **navigator.sendBeacon --** *Do not send anything and return true*
 
