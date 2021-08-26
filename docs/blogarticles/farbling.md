@@ -75,7 +75,7 @@ See the [GitHub issue](https://github.com/brave/brave-browser/issues/10808) for 
 
 Our goal was to extend JSR anti-fingerprinting protections with similar measures to those available in Brave's Farbling.
 We decided to implement Brave Farbling with minor tweaks. As Brave is an open-source project based on [Chromium](https://www.chromium.org/Home), core changes are available in the public [repository](https://github.com/brave/brave-core). Furthermore, as Brave is licensed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/) license, its countermeasures can be ported to JSR.
-Similarly to Brave, JSR utilises session and domain hashes. Nevertheless, we ported only those changes that an extension can reasonably apply. So we do not plan to change system fonts as the true set of fonts can leak in several ways (e.g., CSS, canvas). We will keep a close eye on anti-fingerprining techniquest applied by Brave in the future.
+Similarly to Brave, JSR utilises session and domain hashes (currently, we use a different domain hash based on origin, however, we consider switching to the eTLD+1 approach used by Brave). Nevertheless, we ported only those changes that an extension can reasonably apply. So we do not plan to change system fonts as the true set of fonts can leak in several ways (e.g., CSS, canvas). We will keep a close eye on anti-fingerprining techniquest applied by Brave in the future.
 
 Former JSR defences were left as an option so user can choose which protection they want. For example, for **Canvas API**, JSR retains the old defence that returns a white image, but it is also possible to use Farbling and slightly modify the image.
 
