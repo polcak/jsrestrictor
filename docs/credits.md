@@ -19,6 +19,8 @@ of his bachelor thesis. He also provided several small fixes to the code base.
 
 Matúš Švancár ported Farbling anti-fingerprinting measures from the Brave browser as a part of his [master's thesis](https://www.fit.vut.cz/study/thesis/23310/).
 
+We thank all other minor contributors of the project that are not listed in this section.
+
 # Key ideas
 
 The development of this extension is influenced by the paper [JavaScript Zero: Real JavaScript and Zero Side-Channel Attacks](https://graz.pure.elsevier.com/de/publications/javascript-zero-real-javascript-and-zero-side-channel-attacks). It appeared during the work of Zbyněk Červinka and provided basically the same approach to restrict APIs as was at the time developed by Zbyněk Červinka.
