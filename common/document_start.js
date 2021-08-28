@@ -25,7 +25,6 @@
 var wrappersPort;
 
 function configureInjection({code, wrappers, domainHash, sessionHash}) {
-  console.debug("configureInjection", new Error().stack, document.readyState);
 	configureInjection = () => false; // one shot
 	if(browser.extension.inIncognitoContext){
 		var hash = sha256.create();
@@ -38,9 +37,13 @@ function configureInjection({code, wrappers, domainHash, sessionHash}) {
 	var prng = new alea(domainHash);
 	${code}
 	})()`;
-
-	wrappersPort = patchWindow(aleaCode);
-	return true;
+	try {
+		wrappersPort = patchWindow(aleaCode);
+		return true;
+	} catch (e) {
+		console.error(e, `Trying to run\n${aleaCode}`)
+	}
+	return false;
 }
 if ("configuration" in window) {
 	console.debug("Early configuration found!", configuration);
