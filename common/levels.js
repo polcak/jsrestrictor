@@ -345,7 +345,8 @@ var wrapping_groups = {
 			],
 			wrappers: [
 				// AJAX
-				"window.XMLHttpRequest",
+				"XMLHttpRequest.prototype.open",
+				"XMLHttpRequest.prototype.send",
 			],
 		},
 		{
