@@ -160,7 +160,7 @@ ol:not(:last-child) {
   display: grid;
   grid-gap: var(--mg-medium) var(--mg-xlarge);
   grid-template-columns: auto 1fr;
-  margin-top: var(--mg-xlarge);
+  padding-top: calc(2 * var(--mg-xlarge));
 }
 
 @media screen and (max-width: 375px) {
@@ -224,14 +224,6 @@ ol:not(:last-child) {
 
 /* Navbar
 */
-
-/* #topheader {
-  display: grid;
-  grid-gap: 1em;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  padding-bottom: 0;
-}*/
 
 .navbar {
   font-size: 1rem;
@@ -345,7 +337,7 @@ ol:not(:last-child) {
     transition: transform 0.5s ease;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    background: #fff;
+    background: var(--ghost-white);
     padding: var(--mg-xlarge) var(--mg-medium);
   }
 
@@ -354,20 +346,38 @@ ol:not(:last-child) {
     z-index: 15;
   }
 
-  .navbar-burger {
-    cursor: pointer;
-    display: block;
-    height: 3.25rem;
-    position: relative;
-    width: 3.25rem;
+  .sidebar.is-shown strong.logo img {
+    display: none;
   }
 
+  .sidebar.is-shown strong.logo::before {
+    content: "JShelter";
+    color: var(--text-color);
+    font-weight: 700;
+    text-transform: uppercase;
+    display: block;
+  }
+
+  .navbar-burger {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: var(--mg-small) 0;
+  }
+
+  .navbar-burger div {
+    display: block;
+    height: 2rem;
+    position: relative;
+    width: 2rem;
+    border: 1px solid var(--ghost-white);
+  }
   .navbar-burger:hover {
     background-color: rgba(0,0,0,.05);
   }
 
   .navbar-burger span {
-    background-color: var(--text-color);
+    background-color: var(--ghost-white);
     display: block;
     height: 1px;
     left: calc(50% - 8px);
