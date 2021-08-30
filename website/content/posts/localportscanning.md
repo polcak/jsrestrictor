@@ -25,7 +25,7 @@ access. Having a remote desktop port open means that the computer may be used by
 We do not know what the real reason behind the scanning is. It might be one of the above, both, or a
 similar reason.
 
-## Ethical and legal issues
+### Ethical and legal issues
 
 Although it could be that the underlying intentions are benign and users actually do benefit from
 the scanning, the scanning raises some ethical issues.
@@ -58,7 +58,7 @@ for which purposes. From the [linked](https://blog.avast.com/why-is-ebay-port-sc
 Another GDPR issue might be data transfers to third countries. Data transfers of open ports may not be
 compatible with GDPR in the light of the [CJEU C-311/18](https://curia.europa.eu/juris/liste.jsf?num=C-311/18) decision if the information leaves EEA.
 
-## Why is not my browser protecting me from remote servers accessing local information?
+### Why is not my browser protecting me from remote servers accessing local information?
 
 OK, so even though the scanning could be legal, one can disagree that others should be allowed to sniff on
 local applications. So why does a browser leak the information?
@@ -70,7 +70,7 @@ such a port scanning script URL needs to match a rule in a block list. Once info
 misbehaving script becomes public, a rule can be added to a block list. However, this could take some time. Additional techniques like [DNS de-cloaking](https://blog.lukaszolejnik.com/large-scale-analysis-of-dns-based-tracking-evasion-broad-data-leaks-included/)
 need to be applied in this case.
 
-## Network Boundary Shield to the rescue
+### Network Boundary Shield to the rescue
 
 JSR contains a Network Boundary Shield (NBS) that blocks outgoing browser requests based on the observed behaviour, i.e. a
 page hosted on public internet tries to access local URLs.

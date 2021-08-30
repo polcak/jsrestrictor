@@ -3,16 +3,18 @@
 {% set title = page.title %}
 
 {% block content %}
-
+<article class="hentry page">
   <header>
   {% block title %}
     <h2 class="entry-title">{{ page.title }}</h2>
   {% endblock %}
   </header>
 
-  {{ page.content }}
+  <div class="entry-content">
+    {{ page.content }}
+  </div>
 
   {# source link #}
   {# <p><a href="{{ page.relPath }}{{ compound.sourceFileName }}{{ config.HTML_FILE_EXTENSION }}">{{ tr.gotoSourceCode }}</a></p> #}
-
+</article>
 {% endblock %}

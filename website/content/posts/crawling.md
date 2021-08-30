@@ -4,7 +4,7 @@ title: Measurement of JavaScript API usage on the web
 
 The world wide web is a complex environment. Web pages can access many APIs ranging from text formatting to access to nearby Bluetooth devices. While many APIs are used for legitimate purposes, some are misused to track and identify their users without their knowledge. In this paper, we propose a methodology to measure the usage of JavaScript APIs on the public web. The methodology consists of an automated visit of several thousand websites and intercepting JavaScript calls performed by the pages. We also provide a design and architecture of a measurement platform that can be used for an automated visit of a list of websites. The proposed platform is based on OpenWPM. The browser is instrumented by OpenWPM and a customized Web API Manager extension is responsible for capturing JavaScript API calls.
 
-## Introduction
+### Introduction
 
 Web browsers offer a wide range of possibilities. on the surface
 they _just_ display web pages, but under the hood, web
@@ -40,7 +40,7 @@ APIs were specified and implemented in web browsers, see the figure below
 
 ![Progress of Web APIs amount implemented in distinct browsers in time.]({attach}/images/crawling-apis.png)
 
-## Methodology proposal
+### Methodology proposal
 
 This section describes the methodology that we plan to use.
 This methodology is based on
@@ -75,7 +75,7 @@ measurements on every page in two different modes. Firstly, we will
 visit the page using the a browser withou adblocker. Later, we will also employ an adblocker.
 Hence, the study will show the difference API usage of regular pages and trackers.
 
-### The original study
+#### The original study
 
 The Snyders' study suggests that some of the JavaScript APIs are
 extremely popular and they are used on more than 90% of measured pages
@@ -101,7 +101,7 @@ JavaScript APIs were blocked in 90% of cases resulting in a fact that
 83% of APIs were used on less than 1% of websites when the page was
 visited with active blocking extension.
 
-### Web API Manager
+#### Web API Manager
 
 Web API Manager is a browser extension, that aims to block explicitly
 defined JavaScript APIs. It has been developed by Snyders in 2016 and
@@ -123,7 +123,7 @@ calls.
 To provide a Web API Manager the list of JavaScript APIs members we need
 a list of supported APIs. The APIs implemented in Mozilla Firefox are available as [IDL files](https://searchfox.org/mozilla-central/source/dom/webidl).
 
-### Measurement tools
+#### Measurement tools
 
 The figure below shows a simplified
 illustration of the measurement platform. There is OpenWPM in the middle of the
@@ -132,7 +132,7 @@ Selenium and Mozilla Firefox with the proxy-based intercepting Web API Manager.
 
 ![image]({attach}/images/crawling-architecture.png)
 
-## The impact on JSR
+### The impact on JSR
 
 Once we have data from our crawling study, we will compare the data with [another recent study](https://github.com/uiowa-irl/FP-Inspector/blob/master/Data/potential_fingerprinting_APIs.md). As already mentioned, we want to develop a fingerprinting detection based on  counting the number of different
 APIs employed by a page, especially APIs that are not frequently used for benign purposes. When

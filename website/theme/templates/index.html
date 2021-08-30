@@ -3,19 +3,21 @@
 {% set title = "Blog posts" %}
 
 {% block content %}
-<section>
+<section class="blog-index">
 
 {% for article in articles_page.object_list %}
         <article class="hentry">
-                <header>
-                  <h3 class="entry-title">
-                    <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags }}">{{ article.title }}</a>
-                  </h3>
-                </header>
-                <footer class="post-info">
-                    <time class="published" datetime="{{ article.date.isoformat() }}"> {{ article.locale_date }} </time>
-                </footer><!-- /.post-info -->
-                <div class="entry-content"> {{ article.summary }} </div><!-- /.entry-content -->
+          <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags }}">
+            <header>
+              <h3 class="entry-title">
+                {{ article.title }}
+              </h3>
+              <p class="entry-date">
+                <time class="published" datetime="{{ article.date.isoformat() }}"> {{ article.locale_date }}</time>
+              </p>
+            </header>
+            <div class="entry-content"> {{ article.summary | striptags }} </div><!-- /.entry-content -->
+          </a>
         </article>
 {% endfor %}
 

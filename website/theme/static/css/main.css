@@ -61,9 +61,11 @@ body {
 a {
   color: var(--text-color);
   text-decoration-color: var(--link-color);
+  transition: color 0.3s ease-in;
 }
 
 a:hover {
+  color: #4B5358; /*lighter text color shade */
 }
 
 a[href*="//"]:not([href*="jsr.manufacturaindependente.org"]):not(.button):after {
@@ -155,7 +157,7 @@ ol:not(:last-child) {
 }
 
 #main-content {
-  padding-bottom: calc(2 * var(--mg-xlarge));
+  padding: 0 var(--mg-medium) calc(2 * var(--mg-xlarge));
 }
 
 #main-content .header {
@@ -606,4 +608,47 @@ a.button {
 
 .grid article header {
   margin-bottom: var(--mg-medium);
+}
+
+/* Blog and article page
+*/
+
+.blog-index .hentry {
+  margin-bottom: var(--mg-xlarge);
+}
+
+.blog-index .hentry a {
+  text-decoration: none;
+  display: grid;
+  grid-gap: 0 var(--mg-xlarge);
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+}
+
+.blog-index .hentry a:hover {
+  color: var(--link-color);
+}
+
+.hentry.post,
+.hentry.page {
+  max-width: 42rem;
+}
+
+.hentry header {
+  margin-bottom: var(--mg-xlarge);
+}
+
+.blog-index .hentry header {
+  margin-bottom: var(--mg-medium);
+}
+
+.entry-date {
+  margin-bottom: var(--mg-small);
+  font-size: 85%;
+  opacity: 0.8;
+}
+
+.entry-title {
+  line-height: 1.1;
+  margin-top: 0;
+  margin-bottom: var(--mg-small) !important;
 }
