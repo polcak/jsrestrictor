@@ -39,11 +39,12 @@
 			helping_code: "var blockEveryXMLHttpRequest = args[0]; var confirmEveryXMLHttpRequest = args[1];",
 			wrapping_function_args: "...args",
 			wrapping_function_body: `
+					let {XHR_blocked} = WrapHelper.shared;
 					if (blockEveryXMLHttpRequest || (confirmEveryXMLHttpRequest && !confirm('There is a XMLHttpRequest on URL ' + args[1] + '. Do you want to continue?'))) {
-						shared.XHR_blocked.add(this);
+						XHR_blocked.add(this);
 						return [];
 					}
-					shared.XHR_blocked.delete(this);
+					XHR_blocked.delete(this);
 					return originalOpen.call(this, ...args);
 				`,
 		},
@@ -57,10 +58,10 @@
 				},
 			],
 
-			helping_code: "shared.XHR_blocked = new WeakSet();",
+			helping_code: "WrapHelper.shared.XHR_blocked = new WeakSet();",
 			wrapping_function_args: "...args",
 			wrapping_function_body: `
-					if (!shared.XHR_blocked.has(this)) return originalSend.call(this, ...args);
+					if (!WrapHelper.shared.XHR_blocked.has(this)) return originalSend.call(this, ...args);
 				`,
 		},
 	]

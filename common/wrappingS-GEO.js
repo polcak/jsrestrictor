@@ -182,7 +182,7 @@
 				__proto__: originalPositionObject.__proto__
 			};
 			previouslyReturnedCoords = clone(editedPositionObject.coords);
-			successCallback(ObjForPage.make(editedPositionObject));
+			successCallback(WrapHelper.forPage(editedPositionObject));
 		}
 	`;
 	/**
@@ -254,8 +254,8 @@
 					}
 				}
 				catch { /* Undefined or another error */}
-				let callback = ObjForPage.make(processOriginalGPSDataObject.bind(null, options.maximumAge));
-				options = ObjForPage.make(options);
+				let callback = WrapHelper.forPage(processOriginalGPSDataObject.bind(null, options.maximumAge));
+				options = WrapHelper.forPage(options);
 				originalGetCurrentPosition.call(this, callback, errorCallback, options);
 			`,
 		},

@@ -55,10 +55,10 @@ function define_page_context_function(wrapper) {
 			let replacementF = function(${wrapper.wrapping_function_args}) {
 				${wrapper.wrapping_function_body}
 			};
-			if (XRAY) {
+			if (WrapHelper.XRAY) {
 				let innerF = replacementF;
 				replacementF = function(...args) {
-					let ret = ObjForPage.make(innerF.call(this, ...args));
+					let ret = WrapHelper.forPage(innerF.call(this, ...args));
 					if (ret) {
 						try {
 							ret = ret.wrappedJSObject || ret;
@@ -83,7 +83,7 @@ function generate_assign_function_code(code_spec_obj) {
 }
 
 /**
- * This function wraps object properties using ObjForPage.defineProperties().
+ * This function wraps object properties using WrapHelper.defineProperties().
  */
 function generate_object_properties(code_spec_obj) {
 	var code = `
@@ -122,7 +122,7 @@ function generate_object_properties(code_spec_obj) {
 			descriptor["${wrap_spec.property_name}"] = replacementPD;
 		`;
 	}
-	code += `ObjForPage.defineProperty(${code_spec_obj.parent_object},
+	code += `WrapHelper.defineProperty(${code_spec_obj.parent_object},
 		"${code_spec_obj.parent_object_property}", descriptor);
 	}`;
 	return code;
@@ -139,7 +139,7 @@ function generate_delete_properties(code_spec_obj) {
 			if ("${prop}" in ${code_spec_obj.parent_object}) {
 				// Delete only properties that are available.
 				// The if should be safe to be deleted but it can possibly reduce fingerprintability
-				ObjForPage.defineProperty(
+				WrapHelper.defineProperty(
 					${code_spec_obj.parent_object},
 					"${prop}", {get: undefined, set: undefined, configurable: false, enumerable: false}
 				);
@@ -232,12 +232,9 @@ function wrap_code(wrappers) {
 
 		// cross-wrapper globals
 		let xrayWindow = window; // the "privileged" xray window wrapper in Firefox
-		let ObjForPage, forPage; // xray boundary helpers
-		let _forPage = x => x; // noop for testing
-		let shared = {}; // shared storage object for in inter-wrapper coordination
-		const XRAY = xrayWindow !== unwrappedWindow;
+		let WrapHelper; // xray boundary helper
 		{
-
+			const XRAY = xrayWindow !== unwrappedWindow;
 			let privilegedToPage = new WeakMap();
 			let pageReady = new WeakSet();
 
@@ -274,14 +271,14 @@ function wrap_code(wrappers) {
 				if (typeof d.value === "object") d.value = forPage(d.value);
 				return d;
 			};
-			let Proxy = unwrappedWindow.Proxy;
+			let OriginalProxy = unwrappedWindow.Proxy;
+			let Proxy = OriginalProxy;
 			if (XRAY) {
 				// automatically export Proxy construcor parameters
-				let OriginalProxy = unwrappedWindow.Proxy;
 				let proxyConstructorHandler =  forPage({
 					construct(targetConstructor, args) {
 						let [target, handler] = args.wrappedJSObject || args;
-						let selfProxy = !!(target === ObjForPage.Proxy && handler.construct);
+						let selfProxy = !!(target === WrapHelper.Proxy && handler.construct);
 						if (selfProxy) {
 							let {construct} = handler;
 							handler.construct = (target, args) => {
@@ -300,10 +297,18 @@ function wrap_code(wrappers) {
 				});
 				Proxy = new OriginalProxy(OriginalProxy, proxyConstructorHandler);
 			}
-			ObjForPage = {
-				make: forPage,
-				_make: _forPage,
-				promise,
+			WrapHelper = {
+				XRAY, // boolean, are we in a xray environment (i.e. on Firefox)?
+				shared: {}, // shared storage object for in inter-wrapper coordination
+
+				// XwrapHelper.forPage() can be used by "complex" proxies to explicitly
+				// prepare an object/function created in Firefox's sandboxed content script environment
+				// to be consumed/called from the page context (mostly useful to handle callback-based APIs),
+				// see the geolocation wrappers
+				forPage,
+				isForPage: obj => pageReady.has(obj),
+
+				// xray-aware Object creation helpers, mostly used transparently by the code builders
 				defineProperty(obj, prop, descriptor, ...args) {
 					if (obj.wrappedJSObject) obj = obj.wrappedJSObject;
 					return Object.defineProperty(obj, prop, fixProp(descriptor, prop, obj), ...args);
@@ -319,14 +324,17 @@ function wrap_code(wrappers) {
 					let obj = forPage(Object.create(proto && proto.wrappedJSObject || proto));
 					return descriptors ? this.defineProperties(obj, descriptors) && obj : obj;
 				},
+				// the original Proxy constructor
+				OriginalProxy,
+				// our xray-aware proxied Proxy constructor
 				Proxy,
-				isPageReady: obj => pageReady.has(obj)
 			};
+			Object.freeze(WrapHelper);
 		}
 
 		with(unwrappedWindow) {
 			let window = unwrappedWindow;
-			let {Proxy} = ObjForPage;
+			let {Proxy} = WrapHelper;
 			let {Promise, Object} = xrayWindow;
 			try {
 				// WRAPPERS //
@@ -339,7 +347,7 @@ function wrap_code(wrappers) {
 	}).toString().replace('// WRAPPERS //',
 		wrappers.map(build)
 		.join("\n")
-		.replace(/\bObject\.(create|definePropert)/g, "ObjForPage.$1"));
+		.replace(/\bObject\.(create|definePropert)/g, "WrapHelper.$1"));
 
 	return `(${code})();`;
 }
