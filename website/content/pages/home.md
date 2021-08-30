@@ -16,16 +16,17 @@ collection!</p>
     <div class="block has-text-centered">
       <p>Install now</p>
       <p class="buttons are-medium is-centered">
-        <a class="button" href="https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/">
+        <a id="download-firefox" class="button" href="https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/">
           <i class="fa fa-firefox" aria-hidden="true"></i> Firefox
         </a>
-        <a class="button" href="https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb">
+        <a id="download-chrome" class="button" href="https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb">
           <i class="fa fa-chrome" aria-hidden="true"></i> Chrome
         </a>
-        <a class="button" href="https://addons.opera.com/en/extensions/details/javascript-restrictor/">
+        <a id="download-opera" class="button" href="https://addons.opera.com/en/extensions/details/javascript-restrictor/">
           <i class="fa fa-opera" aria-hidden="true"></i> Opera
         </a>
       </p>
+      <p>Visit the <a href="/install">Install page</a> for other options</p>
     </div>
 
   </div><!-- /.hero-body -->
