@@ -17,6 +17,15 @@
 }
 
 @font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("../fonts/Inter-Black.woff2?v=3.13") format("woff2"),
+       url("../fonts/Inter-Black.woff?v=3.13") format("woff");
+}
+
+@font-face {
     font-family: 'Oxygen Mono';
     src: url('OxygenMono-Regular.woff2') format('woff2'),
         url('OxygenMono-Regular.woff') format('woff');
@@ -28,10 +37,9 @@
 :root {
   --main-font: 'Inter', Roboto, Helvetica, Arial, sans-serif;
   --code-font: 'Oxygen Mono', 'Roboto Mono', monospace;
-  --text-color: #383E42;
+  --text-color: #333333;
   --link-color: #e76f51;
   --link-color-rgb: 231, 111, 81;
-  --darkgreen: #264653;
   --ghost-white: #FBF9FF;
   --lightgray: #fefae0;
   --mg-xlarge: 2rem;
@@ -61,9 +69,11 @@ body {
 a {
   color: var(--text-color);
   text-decoration-color: var(--link-color);
+  transition: color 0.3s ease-in;
 }
 
 a:hover {
+  color: #4B5358; /*lighter text color shade */
 }
 
 a[href*="//"]:not([href*="jsr.manufacturaindependente.org"]):not(.button):after {
@@ -103,6 +113,10 @@ h3 { font-size: 2rem; }
 h4 { font-size: 1.5rem; }
 h5 { font-size: 1.25rem; }
 h6 { font-size: 1rem; }
+
+h3, h4, h5, h6 {
+  font-weight: 900;
+}
 
 h1:not(:first-child),
 h2:not(:first-child),
@@ -146,6 +160,7 @@ ol:not(:last-child) {
   display: grid;
   grid-gap: var(--mg-medium) var(--mg-xlarge);
   grid-template-columns: auto 1fr;
+  margin-top: var(--mg-xlarge);
 }
 
 @media screen and (max-width: 375px) {
@@ -155,7 +170,7 @@ ol:not(:last-child) {
 }
 
 #main-content {
-  padding-bottom: calc(2 * var(--mg-xlarge));
+  padding: 0 var(--mg-medium) calc(2 * var(--mg-xlarge));
 }
 
 #main-content .header {
@@ -167,7 +182,7 @@ ol:not(:last-child) {
   font-size: 0.85rem;
   line-height: 1.3;
   color: var(--ghost-white);
-  background-color: var(--darkgreen);
+  background-color: var(--text-color);
 }
 
 .footer a {
@@ -220,11 +235,17 @@ ol:not(:last-child) {
 
 .navbar {
   font-size: 1rem;
-  background-color: lightgray;
+  color: var(--ghost-white);
+  background-color: var(--text-color);
   min-height: 3.25rem;
   position: relative;
   padding: var(--mg-small) var(--mg-medium);
 }
+
+.navbar a {
+  color: var(--ghost-white);
+}
+
 
 .navbar .container {
   width: 100%;
@@ -261,6 +282,10 @@ ol:not(:last-child) {
 .navbar-brand p {
   line-height: 1;
   margin-left: var(--mg-medium);
+}
+
+.navbar-brand strong {
+  font-weight: 900;
 }
 
 .navbar-brand p span {
@@ -383,37 +408,22 @@ ol:not(:last-child) {
 @media screen and (min-width: 841px) {
 
   .navbar {
+    display: none;/*
     font-size: 1.125rem;
     display: flex;
     align-items: stretch;
-    padding: var(--mg-xlarge) calc(var(--mg-xlarge) * 2 );
+    padding: var(--mg-medium) calc(var(--mg-xlarge) * 2 );*/
   }
-
+/*
   .navbar-brand img {
     height: 48px;
   }
 
   .navbar-brand strong {
     display: block;
-  }
+    font-weight: 900;
+  }*/
 
-  .navbar-brand strong {
-    display: block;
-  }
-
-}
-
-/* Hero
-  based in Bulma's hero component
-  https://github.com/jgthms/bulma/blob/master/sass/grid/columns.sass
-*/
-
-.hero {
-  align-items: stretch;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-content: center;
 }
 
 .block:not(:first-child) {
@@ -457,9 +467,14 @@ ol:not(:last-child) {
 }
 
 .menu-heading strong {
-  color: var(--darkgreen);
+  color: var(--text-color);
   font-weight: 700;
   text-transform: uppercase;
+  display: block;
+}
+
+.menu-heading strong.logo img {
+  width: 120px;
 }
 
 .menu-heading:not(:last-child) {
@@ -576,10 +591,22 @@ a.button {
 /* Homepage
 */
 
-#home .hero {}
+
+/* Hero
+  based in Bulma's hero component
+  https://github.com/jgthms/bulma/blob/master/sass/grid/columns.sass
+*/
+
+/*.hero {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: center;
+}*/
 
 #home .hero-body {
-  padding: calc(2 * var(--mg-xlarge)) var(--mg-xlarge);
+  /*padding: calc(2 * var(--mg-xlarge)) var(--mg-xlarge);*/
 }
 
 #home .hero-body h3 + p {
@@ -606,4 +633,47 @@ a.button {
 
 .grid article header {
   margin-bottom: var(--mg-medium);
+}
+
+/* Blog and article page
+*/
+
+.blog-index .hentry {
+  margin-bottom: var(--mg-xlarge);
+}
+
+.blog-index .hentry a {
+  text-decoration: none;
+  display: grid;
+  grid-gap: 0 var(--mg-xlarge);
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+}
+
+.blog-index .hentry a:hover {
+  color: var(--link-color);
+}
+
+.hentry.post,
+.hentry.page {
+  max-width: 42rem;
+}
+
+.hentry header {
+  margin-bottom: var(--mg-xlarge);
+}
+
+.blog-index .hentry header {
+  margin-bottom: var(--mg-medium);
+}
+
+.entry-date {
+  margin-bottom: var(--mg-small);
+  font-size: 85%;
+  opacity: 0.8;
+}
+
+.entry-title {
+  line-height: 1.1;
+  margin-top: 0;
+  margin-bottom: var(--mg-small) !important;
 }
