@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 
-AUTHOR = "The jShelter team"
-SITENAME = "jShelter"
+AUTHOR = "The JShelter team"
+SITENAME = "JShelter"
 DESCRIPTION = "Your browser extension to keep you safe"
 SITEURL = ""
 

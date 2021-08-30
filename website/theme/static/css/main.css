@@ -520,12 +520,13 @@ ol:not(:last-child) {
 .button {
   color: rgba(var(--link-color-rgb), 0.9);
   background-color: #fff;
+  font-weight: 700;
   border: 2px solid rgba(var(--link-color-rgb), 0.9);
   cursor: pointer;
   justify-content: center;
   padding-bottom: calc(0.5em - 1px);
-  padding-left: 1em;
-  padding-right: 1em;
+  padding-left: var(--mg-medium);
+  padding-right: var(--mg-medium);
   padding-top: calc(0.5em - 1px);
   text-align: center;
   white-space: nowrap;
@@ -627,6 +628,18 @@ a.button {
 
 #home .block:not(:first-child) {
   padding: var(--mg-xlarge) 0;
+}
+
+.download-buttons span {
+  display: block;
+  font-size: 90%;
+  line-height: 1.1;
+  margin-bottom: var(--mg-small);
+}
+
+.download-buttons .button {
+  padding-left: calc( 2 * var(--mg-xlarge));
+  padding-right: calc( 2 * var(--mg-xlarge));
 }
 
 #about .grid {

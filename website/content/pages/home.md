@@ -14,15 +14,15 @@ threats from JavaScript, including fingerprinting, tracking, and data
 collection!</p>
 
     <div class="block has-text-centered">
-      <p>Install now</p>
-      <p class="buttons are-medium is-centered">
-        <a id="download-firefox" class="button" href="https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/">
+      <p class="download-buttons">
+        <span>Install now</span>
+        <a id="download-firefox" class="button is-medium" href="https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/">
           <i class="fa fa-firefox" aria-hidden="true"></i> Firefox
         </a>
-        <a id="download-chrome" class="button" href="https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb">
+        <a id="download-chrome" class="button is-medium" href="https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb">
           <i class="fa fa-chrome" aria-hidden="true"></i> Chrome
         </a>
-        <a id="download-opera" class="button" href="https://addons.opera.com/en/extensions/details/javascript-restrictor/">
+        <a id="download-opera" class="button is-medium" href="https://addons.opera.com/en/extensions/details/javascript-restrictor/">
           <i class="fa fa-opera" aria-hidden="true"></i> Opera
         </a>
       </p>
