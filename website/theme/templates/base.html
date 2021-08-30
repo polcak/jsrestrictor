@@ -31,7 +31,8 @@
         </a>
         <a class="navbar-item" href="/">
           {% block titlearea %}
-            <img alt="jShelter" src="/theme/images/logo.png">
+
+            <img src="/theme/images/jshelter-logo.svg" alt="JShelter">
             <p>
               <strong>{{ SITENAME }} </strong>
               <span>{{ DESCRIPTION }}</span>
@@ -51,7 +52,7 @@
       <nav class="menu">
         <ul class="menu-list">
           <li class="menu-heading">
-            <strong>{{ SITENAME }}</strong>
+            <strong class="logo"><img src="/theme/images/jshelter.svg" alt="{{ SITENAME }}"></strong>
             <ul>
               {% set page = (pages|get_by_slug('home')) %}
               <li><a href="{{ SITEURL }}/">{{ page.title }}</a></li>
