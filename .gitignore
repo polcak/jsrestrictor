@@ -8,6 +8,7 @@ ipv4.csv
 common/ipv4.dat
 ipv6.csv
 common/ipv6.dat
+common/wrappingX*
 doxygen/
 *.crx
 *.xpi

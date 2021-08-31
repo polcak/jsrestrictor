@@ -4,7 +4,7 @@
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
-#  Copyright (C) 2019  Libor Polcak
+#  Copyright (C) 2019  Libor Polcak, Marek Saloň
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -21,6 +21,17 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
+
+for f in ./common/fp_config/*.json
+do
+  CONFNAME=`basename $f .json`
+  cat $f > common/wrappingX-$CONFNAME.js
+
+  pushd common/
+   sed -i '1i (function() { var conf = `' wrappingX-$CONFNAME.js
+   echo '`;add_fp_config(conf, "'"$CONFNAME"'");})();' >> wrappingX-$CONFNAME.js
+  popd
+done
 
 pushd common/
 	WRAPPING=`ls wrapping*.js | sort | awk '{ print "\"" $0 "\"" }' | tr '\n' ',' |  sed 's/,$//'`
