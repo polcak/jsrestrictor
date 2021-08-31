@@ -170,7 +170,7 @@ function packF32(v) {
 
 function constructDecorator(wrapped) {
 	return function () {
-		const res = forPage(wrapped).apply(originalF, arguments);
+		const res = wrapped.apply(originalF, arguments);
 		return replacementF(res);
 	}
 }
@@ -192,7 +192,7 @@ function offsetDecorator(wrapped, type, proxyRef, offsetF) {
 		if (type === 3) {
 			res = new this.__proto__.constructor(this)[wrapped.name.split(' ')[1]]()
 		} else {
-			res = forPage(wrapped).apply(this, arguments);
+			res = wrapped.apply(this, arguments);
 		}
 		// Create copy of new arr
 		let secArr = [];
@@ -259,7 +259,7 @@ var proxyHandler = `{
 			key = offsetF(key)
 		}
 		let value = target[key]
-		return typeof value == 'function' ? forPage(value.bind(forPage(target))) : typeof value === "object" ? forPage(value) : value;
+		return typeof value == 'function' ? value.bind(target) : value;
 	},
 	set(target, key, value) {
 		var random_idx = Math.floor(Math.random() * (target['length']));
@@ -553,8 +553,7 @@ function redefineDataViewFunctions(target, offsetF, doMapping) {
 			_data[offsetF(i)] = arr[i];
 		}
 	}
-	let _target = target;
-	var proxy = new newProxy(forPage(_data), forPage(${proxyHandler}));
+	var proxy = new newProxy(_data, ${proxyHandler});
 	// Proxy has to support all methods, original object supports.
 	${offsetDecorator};
 	${redefineNewArrayFunctions};
@@ -636,7 +635,7 @@ function redefineDataViewFunctions(target, offsetF, doMapping) {
 		wrapped_objects: [],
 		helping_code:`
 		let doMapping = args[0];
-		var proxyHandler = forPage(${proxyHandler});
+		var proxyHandler = ${proxyHandler};
 		function gcd(x, y) {
 		while(y) {
 			var t = y;
@@ -648,16 +647,16 @@ function redefineDataViewFunctions(target, offsetF, doMapping) {
 
 		const is_proxy = Symbol('is_proxy');
 		const originalProxy = Proxy;
-		var proxyHandler = forPage({
+		var proxyHandler = {
 			has (target, key) {
 				return (is_proxy === key) || (key in target);
 			}
-		});
-		let newProxy = new Proxy(Proxy, forPage({
+	  };
+		let newProxy = new originalProxy(originalProxy, {
 			construct(target, args) {
-				return new originalProxy(new target(...args), forPage(proxyHandler));
+				return new originalProxy(new target(...args), proxyHandler);
 			}
-		}));
+		});
 		`,
 		wrapping_function_args: `target`,
 		wrapping_function_body: common_function_body,

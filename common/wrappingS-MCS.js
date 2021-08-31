@@ -66,7 +66,7 @@
 			return devices;
 		}
 		else if(args[0] == 2){
-			return ObjForPage.promise([]);
+			return Promise.resolve([]);
 		}
 	}
 	/**

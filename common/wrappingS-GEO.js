@@ -6,6 +6,7 @@
  *  \author Copyright (C) 2019  Martin Timko
  *  \author Copyright (C) 2020  Libor Polcak
  *  \author Copyright (C) 2020  Peter Marko
+ *  \author Copyright (C) 2021  Giorgio Maone
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -58,6 +59,8 @@
 		 * fingerprintablity.
 		 */
 		var previouslyReturnedCoords = undefined;
+		let clone = obj => Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+
 		/**
 		 * \brief Store the limit for the returned timestamps.
 		 *
@@ -105,18 +108,18 @@
 			expectedMaxAge = Math.min(3600000, expectedMaxAge);
 			geoTimestamp = Math.max(geoTimestamp, Date.now() - Math.random()*expectedMaxAge);
 			if (provideAccurateGeolocationData) {
-			  var pos = {
-    			coords: originalPositionObject.coords,
-			    timestamp: geoTimestamp // Limit the timestamp accuracy
-			  };
+				let pos = Object.create(GeolocationPosition.prototype, {
+					coords: { get: () => originalPositionObject.coords },
+				timestamp: { get: () => geoTimestamp } // Limit accuracy
+				});
 				successCallback(pos);
 				return;
 			}
 			if (previouslyReturnedCoords !== undefined) {
-				var pos = {
-					coords: previouslyReturnedCoords,
-					timestamp: geoTimestamp
-				};
+				let pos = Object.create(GeolocationPosition.prototype, {
+					coords: { get: () => clone(previouslyReturnedCoords) },
+					timestamp: { get: () => geoTimestamp },
+				});
 				successCallback(pos);
 				return;
 			}
@@ -178,9 +181,8 @@
 				timestamp: geoTimestamp,
 				__proto__: originalPositionObject.__proto__
 			};
-			Object.freeze(editedPositionObject.coords);
-			previouslyReturnedCoords = editedPositionObject.coords;
-			successCallback(editedPositionObject);
+			previouslyReturnedCoords = clone(editedPositionObject.coords);
+			successCallback(WrapHelper.forPage(editedPositionObject));
 		}
 	`;
 	/**
@@ -243,7 +245,7 @@
 				var options = {
 					enableHighAccuracy: false,
 				};
-				try {
+				if (origOptions) try {
 					if ("timeout" in origOptions) {
 						options.timeout = origOptions.timeout;
 					}
@@ -252,7 +254,9 @@
 					}
 				}
 				catch { /* Undefined or another error */}
-				originalGetCurrentPosition.call(this, processOriginalGPSDataObject.bind(null, options.maximumAge), errorCallback, options);
+				let callback = WrapHelper.forPage(processOriginalGPSDataObject.bind(null, options.maximumAge));
+				options = WrapHelper.forPage(options);
+				originalGetCurrentPosition.call(this, callback, errorCallback, options);
 			`,
 		},
 		{
@@ -276,10 +280,10 @@
 				if (provideAccurateGeolocationData) {
 					function wrappedSuccessCallback(originalPositionObject) {
 						geoTimestamp = Date.now(); // Limit the timestamp accuracy by calling possibly wrapped function
-				  	var pos = {
-    					coords: originalPositionObject.coords,
-				  	  timestamp: geoTimestamp
-				  	};
+						let pos = Object.create(originalPositionObject.__proto__, {
+							coords: originalPositionObject.coords,
+							timestamp: geoTimestamp
+						});
 						successCallback(pos);
 					}
 					originalWatchPosition.call(this, wrappedSuccessCallback, errorCallback, origOptions);

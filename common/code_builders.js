@@ -2,6 +2,7 @@
  * \brief Functions that build code that modifies JS evironment provided to page scripts
  *
  *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2021  Giorgio Maone
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -54,6 +55,18 @@ function define_page_context_function(wrapper) {
 			let replacementF = function(${wrapper.wrapping_function_args}) {
 				${wrapper.wrapping_function_body}
 			};
+			if (WrapHelper.XRAY) {
+				let innerF = replacementF;
+				replacementF = function(...args) {
+					let ret = WrapHelper.forPage(innerF.call(this, ...args));
+					if (ret) {
+						try {
+							ret = ret.wrappedJSObject || ret;
+						} catch (e) {}
+					}
+					return ret;
+				}
+			}
 			exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
 			${wrapper.post_replacement_code || ''}
 	`, wrapper.wrapping_code_function_name, wrapper.wrapping_code_function_params, wrapper.wrapping_code_function_call_window);
@@ -70,7 +83,7 @@ function generate_assign_function_code(code_spec_obj) {
 }
 
 /**
- * This function wraps object properties using ObjForPage.defineProperties().
+ * This function wraps object properties using WrapHelper.defineProperties().
  */
 function generate_object_properties(code_spec_obj) {
 	var code = `
@@ -80,7 +93,7 @@ function generate_object_properties(code_spec_obj) {
 			return;
 		}
 	`;
-	for (assign of code_spec_obj.wrapped_objects) {
+	for (let assign of code_spec_obj.wrapped_objects || []) {
 		code += `var ${assign.wrapped_name} = window.${assign.original_name};`;
 	}
 	code += `
@@ -102,14 +115,14 @@ function generate_object_properties(code_spec_obj) {
 			};
 		}
 	`
-	for (wrap_spec of code_spec_obj.wrapped_properties) {
+	for (let wrap_spec of code_spec_obj.wrapped_properties) {
 		code += `
 			originalPDF = descriptor["${wrap_spec.property_name}"];
 			replacementPD = ${wrap_spec.property_value};
 			descriptor["${wrap_spec.property_name}"] = replacementPD;
 		`;
 	}
-	code += `ObjForPage.defineProperty(${code_spec_obj.parent_object},
+	code += `WrapHelper.defineProperty(${code_spec_obj.parent_object},
 		"${code_spec_obj.parent_object_property}", descriptor);
 	}`;
 	return code;
@@ -126,7 +139,7 @@ function generate_delete_properties(code_spec_obj) {
 			if ("${prop}" in ${code_spec_obj.parent_object}) {
 				// Delete only properties that are available.
 				// The if should be safe to be deleted but it can possibly reduce fingerprintability
-				ObjForPage.defineProperty(
+				WrapHelper.defineProperty(
 					${code_spec_obj.parent_object},
 					"${prop}", {get: undefined, set: undefined, configurable: false, enumerable: false}
 				);
@@ -154,8 +167,9 @@ var build_code = function(wrapper, ...args) {
 		delete_properties: generate_delete_properties,
 		assign: generate_assignement,
 	};
+
 	var code = `try {if (${wrapper.parent_object} === undefined) {return;}} catch (e) {return; /* It seems that the parent object does not exist */ }`;
-	for (wrapped of wrapper.wrapped_objects) {
+	for (let wrapped of wrapper.wrapped_objects || []) {
 		code += `
 			var ${wrapped.wrapped_name} = window.${wrapped.original_name};
 			if (${wrapped.wrapped_name} === undefined) {
@@ -215,20 +229,36 @@ function wrap_code(wrappers) {
 	};
 
 	let code = (w => {
-		let xrayWindow = window;
-		let ObjForPage, forPage;
-		{
 
-			let pageStuff = new WeakSet();
+		// cross-wrapper globals
+		let xrayWindow = window; // the "privileged" xray window wrapper in Firefox
+		let WrapHelper; // xray boundary helper
+		{
+			const XRAY = xrayWindow !== unwrappedWindow;
+			let privilegedToPage = new WeakMap();
+			let pageReady = new WeakSet();
+
+			let promise =  obj =>	xrayWindow.Promise.resolve(obj).then(r => forPage(r));
 
 			forPage = obj => {
-				if (obj === null || pageStuff.has(obj)) return obj;
-				let ret = cloneInto(obj, unwrappedWindow, {cloneFunctions: true, wrapReflectors: true});
-				try {
-					pageStuff.add(ret);
-				} catch (e) {
-					// non-reference type?
+				if (typeof obj !== "object" && typeof obj !== "function" || obj === null
+					|| pageReady.has(obj)) return obj;
+				if (privilegedToPage.has(obj)) return privilegedToPage.get(obj); // keep clone identity
+				let ret = obj; // fallback
+				if (XRAY) {
+					try {
+						ret = typeof obj.then === "function" ? promise(obj) : cloneInto(obj, unwrappedWindow, {cloneFunctions: true, wrapReflectors: true});
+					} catch (e) {
+						// can't be cloned: must be a Proxy
+					}
+				} else {
+					// Chromium: just use patchWindow's exportFunction() to make our wrappers look like native functions
+					if (typeof obj === "function") {
+						ret = exportFunction(obj, unwrappedWindow);
+					}
 				}
+				pageReady.add(ret);
+				privilegedToPage.set(obj, ret);
 				return ret;
 			}
 
@@ -241,10 +271,44 @@ function wrap_code(wrappers) {
 				if (typeof d.value === "object") d.value = forPage(d.value);
 				return d;
 			};
+			let OriginalProxy = unwrappedWindow.Proxy;
+			let Proxy = OriginalProxy;
+			if (XRAY) {
+				// automatically export Proxy construcor parameters
+				let proxyConstructorHandler =  forPage({
+					construct(targetConstructor, args) {
+						let [target, handler] = args.wrappedJSObject || args;
+						let selfProxy = !!(target === WrapHelper.Proxy && handler.construct);
+						if (selfProxy) {
+							let {construct} = handler;
+							handler.construct = (target, args) => {
+								let proxy = construct(target, args.wrappedJSObject || args);
+								pageReady.add(proxy);
+								return proxy;
+							}
+						}
 
-			ObjForPage = {
-				make: obj => forPage(obj),
-				promise: obj => xrayWindow.Promise.resolve(forPage(obj)),
+						target = forPage(target);
+						handler = forPage(handler);
+						let proxy = new targetConstructor(target, handler);
+						pageReady.add(proxy);
+						return proxy;
+					},
+				});
+				Proxy = new OriginalProxy(OriginalProxy, proxyConstructorHandler);
+			}
+			WrapHelper = {
+				XRAY, // boolean, are we in a xray environment (i.e. on Firefox)?
+				shared: {}, // shared storage object for in inter-wrapper coordination
+
+				// XwrapHelper.forPage() can be used by "complex" proxies to explicitly
+				// prepare an object/function created in Firefox's sandboxed content script environment
+				// to be consumed/called from the page context (mostly useful to handle callback-based APIs),
+				// see the geolocation wrappers
+				forPage,
+				isForPage: obj => pageReady.has(obj),
+
+				// xray-aware Object creation helpers, mostly used transparently by the code builders
 				defineProperty(obj, prop, descriptor, ...args) {
 					if (obj.wrappedJSObject) obj = obj.wrappedJSObject;
 					return Object.defineProperty(obj, prop, fixProp(descriptor, prop, obj), ...args);
@@ -256,16 +320,22 @@ function wrap_code(wrappers) {
 					}
 					return Object.defineProperties(obj.wrappedJSObject || obj, descriptors, ...args);
 				},
-				create(proto, descriptor) {
-					let obj = forPage(Object.create(proto.wrappedJSObject || proto));
-					return descriptor ? this.defineProperties(obj, descriptors) && obj : obj;
-				}
+				create(proto, descriptors) {
+					let obj = forPage(Object.create(proto && proto.wrappedJSObject || proto));
+					return descriptors ? this.defineProperties(obj, descriptors) && obj : obj;
+				},
+				// the original Proxy constructor
+				OriginalProxy,
+				// our xray-aware proxied Proxy constructor
+				Proxy,
 			};
+			Object.freeze(WrapHelper);
 		}
 
 		with(unwrappedWindow) {
 			let window = unwrappedWindow;
-
+			let {Proxy} = WrapHelper;
+			let {Promise, Object} = xrayWindow;
 			try {
 				// WRAPPERS //
 
@@ -277,7 +347,7 @@ function wrap_code(wrappers) {
 	}).toString().replace('// WRAPPERS //',
 		wrappers.map(build)
 		.join("\n")
-		.replace(/\bObject\.(create|definePropert)/g, "ObjForPage.$1"));
+		.replace(/\bObject\.(create|definePropert)/g, "WrapHelper.$1"));
 
 	return `(${code})();`;
 }
