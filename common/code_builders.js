@@ -3,6 +3,7 @@
  *
  *  \author Copyright (C) 2019  Libor Polcak
  *  \author Copyright (C) 2021  Giorgio Maone
+ *  \author Copyright (C) 2021  Marek Saloň
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -236,6 +237,10 @@ var build_code = function(wrapper, ...args) {
 			Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});
 		}
 	`;
+
+	// make messages from this wrapper valid
+	code += `fp_enabled = true;`
+
 	return enclose_wrapping(code, ...args);
 };
 
@@ -262,6 +267,17 @@ function wrap_code(wrappers) {
 
 		// cross-wrapper globals
 		let xrayWindow = window; // the "privileged" xray window wrapper in Firefox
+		{
+			let {port} = env;
+			function updateCount(wrapperName, wrapperType, wrapperArgs, delta = 1) {
+				port.postMessage({
+					wrapperName,
+					wrapperType,
+					wrapperArgs,
+					delta
+				});
+			}
+		}
 		let WrapHelper; // xray boundary helper
 		{
 			const XRAY = (xrayWindow.top !== unwrappedWindow.top && typeof XPCNativeWrapper !== "undefined");

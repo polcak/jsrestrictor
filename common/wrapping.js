@@ -2,6 +2,7 @@
  * \brief Main file handling wrappers
  *
  *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2019  Marek Saloň
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
