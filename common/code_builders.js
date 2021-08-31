@@ -250,12 +250,23 @@ var build_code = function(wrapper, ...args) {
  * @param Array of wrapping arrays.
  */
 function wrap_code(wrappers) {
-	if (wrappers.length === 0) {
+	if (wrappers.length === 0 && fp_wrappers_length(wrappers) === 0) {
 		return; // Nothing to wrap
 	}
 
-	let build = wrapper => {
+	// get all implicit wrappers for FPD logging
+	var new_build_wrapping_code = fp_wrappers_create(wrappers);
+
+	let joinCode = code => {
+		return code.join("\n").replace(/\bObject\.(create|definePropert)/g, "WrapHelper.$1")
+	}
+
+	let build = (wrapper, fpd) => {
 		try {
+			if (fpd) {
+				// create code for implicit wrappers (FPD)
+				return build_code(new_build_wrapping_code[wrapper]);
+			}
 			return build_code(build_wrapping_code[wrapper[0]], wrapper.slice(1));
 		} catch (e) {
 			console.error(e);
@@ -533,16 +544,19 @@ function wrap_code(wrappers) {
 			let {Promise, Object, Array, JSON} = xrayWindow;
 			try {
 				// WRAPPERS //
+				
+				// auto-generated FPD wrappers
+				
+				// FPD //
 
 			} finally {
 				// cleanup environment if necessary
 			}
 
 		}
-	}).toString().replace('// WRAPPERS //',
-		wrappers.map(build)
-		.join("\n")
-		.replace(/\bObject\.(create|definePropert)/g, "WrapHelper.$1"));
+	}).toString()
+		.replace('// WRAPPERS //', joinCode(wrappers.map(x => build(x, false))))
+		.replace('// FPD //', joinCode(Object.keys(new_build_wrapping_code).map(x => build(x, true))));
 
 	return `(${code})();`;
 }
