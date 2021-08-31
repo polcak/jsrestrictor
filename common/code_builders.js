@@ -109,7 +109,8 @@ function generate_object_properties(code_spec_obj) {
 					break;
 				}
 			}
-			descriptor ||= { // Originally not a descriptor
+			if (!descriptor) descriptor = {
+				// Originally not a descriptor, fallback
 				enumerable: true,
 				configurable: true,
 			};
