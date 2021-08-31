@@ -614,6 +614,7 @@ var level_1 = {
 	"time_precision_precision": 2,
 	"time_precision_randomize": false,
 	"hardware": true,
+	"hardware_method": 0,
 	"battery": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 2,
