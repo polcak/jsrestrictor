@@ -10,6 +10,15 @@
 @font-face {
   font-family: 'Inter';
   font-style:  normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/Inter-SemiBold.woff2?v=3.13") format("woff2"),
+       url("../fonts/Inter-SemiBold.woff?v=3.13") format("woff");
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
   font-weight: 700;
   font-display: swap;
   src: url("../fonts/Inter-Bold.woff2?v=3.13") format("woff2"),
@@ -192,17 +201,24 @@ ol:not(:last-child) {
 .footer .grid {
   display: grid;
   grid-gap: var(--mg-large) var(--mg-medium);
-  grid-template-columns: 1fr 1fr auto;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
 }
 
-@media screen and (max-width: 375px) {
-  .footer .grid {
-    display: block;
-  }
+.footer img {
+  height: 40px;
+}
+
+.footer .credits {
+  display: flex;
+  align-items: start;
 }
 
 .footer .credits strong {
   display: block;
+}
+
+.footer .credits ul:first-child {
+  margin-right: var(--mg-xlarge);
 }
 
 .footer .credits ul ul {
@@ -477,14 +493,15 @@ ol:not(:last-child) {
 }
 
 .menu-heading strong {
-  color: var(--text-color);
+  color: var(--link-color);
   font-weight: 700;
   text-transform: uppercase;
   display: block;
 }
 
-.menu-heading strong.logo img {
-  width: 120px;
+.menu-heading .logo img {
+  max-height: 40px;
+  width: auto;
 }
 
 .menu-heading:not(:last-child) {
@@ -500,7 +517,7 @@ ol:not(:last-child) {
 }
 
 .menu-list a {
-  color: var(--link-color);
+  color: var(--text-color);
   text-decoration: none;
   display: block;
   padding: 0.25em 0;
@@ -508,18 +525,19 @@ ol:not(:last-child) {
 }
 
 .menu-list a:hover {
+  font-weight: 600;
 }
 
 .menu-list li ul {
-  margin: var(--mg-small) 0;
+  margin: calc(var(--mg-small) * 0.5) 0;
 }
 
 /* Buttons
 */
 
 .button {
-  color: rgba(var(--link-color-rgb), 0.9);
-  background-color: #fff;
+  color: #fff;
+  background-color: rgba(var(--link-color-rgb), 0.9);;
   font-weight: 700;
   border: 2px solid rgba(var(--link-color-rgb), 0.9);
   cursor: pointer;
@@ -530,12 +548,12 @@ ol:not(:last-child) {
   padding-top: calc(0.5em - 1px);
   text-align: center;
   white-space: nowrap;
-  transition: background-color 0.25s ease-out, color 0.25s ease-out;
+  transition: background-color 0.25s ease-out, border-color 0.25s ease-out;
   -webkit-appearance: none;
 }
 
 .button:hover {
-  color: rgba(var(--link-color-rgb), 1);
+  background-color: rgba(var(--link-color-rgb), 1);
   border-color: rgba(var(--link-color-rgb), 1);
 }
 
@@ -616,18 +634,31 @@ a.button {
   align-content: center;
 }*/
 
-#home .hero-body {
-  /*padding: calc(2 * var(--mg-xlarge)) var(--mg-xlarge);*/
+.hero {
+  background: rgba(224, 200, 66, 0.5) url('../images/crumbled-paper.png') no-repeat 0 0 / cover;
 }
 
-#home .hero-body h3 + p {
-  max-width: 70%;
+#home .hero {
+  padding: calc(2 * var(--mg-xlarge)) 0;
+}
+
+.hero .logo img {
+  max-height: 200px;
+  width: auto;
+}
+
+.hero .logo span {
+  display: block;
+}
+
+.hero .logo p {
+  max-width: 32em;
   margin-left: auto;
   margin-right: auto;
 }
 
-#home .block:not(:first-child) {
-  padding: var(--mg-xlarge) 0;
+p.download-buttons {
+  margin-bottom: var(--mg-small);
 }
 
 .download-buttons span {
@@ -640,6 +671,11 @@ a.button {
 .download-buttons .button {
   padding-left: calc( 2 * var(--mg-xlarge));
   padding-right: calc( 2 * var(--mg-xlarge));
+}
+
+.hero p.small {
+  font-size: 80%;
+  font-weight: 600;
 }
 
 #about .grid {

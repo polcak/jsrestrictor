@@ -5,28 +5,26 @@ URL:
 
 <section class="hero block">
   <div class="hero-body">
-    <h3 class="has-text-centered">
-      jShelter
-    </h3>
-
-    <p class="has-text-centered">An anti-malware Web browser extension to mitigate potential
-threats from JavaScript, including fingerprinting, tracking, and data
-collection!</p>
-
-    <div class="block has-text-centered">
+    <div class="logo block has-text-centered">
+      <h3>
+        <img src="/theme/images/jshelter-hero.svg" alt="{{ SITENAME }}">
+        <span>JShelter</span>
+      </h3>
+      <p>An anti-malware Web browser extension to mitigate potential
+  threats from JavaScript, including fingerprinting, tracking, and data
+  collection!</p>
       <p class="download-buttons">
-        <span>Install now</span>
         <a id="download-firefox" class="button is-medium" href="https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/">
-          <i class="fa fa-firefox" aria-hidden="true"></i> Firefox
+          <i class="fa fa-firefox" aria-hidden="true"></i> Install in Firefox
         </a>
         <a id="download-chrome" class="button is-medium" href="https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb">
-          <i class="fa fa-chrome" aria-hidden="true"></i> Chrome
+          <i class="fa fa-chrome" aria-hidden="true"></i> Install in Chrome
         </a>
         <a id="download-opera" class="button is-medium" href="https://addons.opera.com/en/extensions/details/javascript-restrictor/">
-          <i class="fa fa-opera" aria-hidden="true"></i> Opera
+          <i class="fa fa-opera" aria-hidden="true"></i> Install in Opera
         </a>
       </p>
-      <p>Visit the <a href="/install">Install page</a> for other options</p>
+      <p class="small">Visit the <a href="/install">Install page</a> for other options</p>
     </div>
 
   </div><!-- /.hero-body -->
