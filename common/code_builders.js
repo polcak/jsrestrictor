@@ -70,7 +70,10 @@ function define_page_context_function(wrapper) {
 	let originalF = original_function || `${parent_object}.${parent_object_property}`;
 	return enclose_wrapping2(`let originalF = ${originalF};
 			let replacementF = function(${wrapper.wrapping_function_args}) {
-				${create_counter_call(wrapper, "call")}
+				{
+					let args = Array.from(arguments).map(JSON.stringify);
+					${create_counter_call(wrapper, "call")}
+				}
 				${wrapper.wrapping_function_body}
 			};
 			if (WrapHelper.XRAY) {
