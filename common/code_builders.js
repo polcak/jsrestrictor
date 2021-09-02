@@ -41,6 +41,22 @@ function enclose_wrapping2(code, name, params, call_with_window) {
 }
 
 /**
+ * Create code containing call of API counting function.
+ */
+function create_counter_call(wrapper, type) {
+	let {parent_object, parent_object_property} = wrapper;
+	let updateCount = `${parent_object}.${parent_object_property}`;
+	
+	if ("update_count" in wrapper) {
+		if (typeof wrapper.update_count === "string") updateCount = wrapper.update_count;
+	}
+	
+	return updateCount ? `if (fp_enabled) {
+	updateCount(${JSON.stringify(updateCount)}, "${type}", args.map(x => JSON.stringify(x)));
+	}` : "";
+}
+
+/**
  * This function create code (as string) that creates code that can be used to inject (or overwrite)
  * a function in the page context.
  */
@@ -54,6 +70,7 @@ function define_page_context_function(wrapper) {
 	let originalF = original_function || `${parent_object}.${parent_object_property}`;
 	return enclose_wrapping2(`let originalF = ${originalF};
 			let replacementF = function(${wrapper.wrapping_function_args}) {
+				${create_counter_call(wrapper, "call")}
 				${wrapper.wrapping_function_body}
 			};
 			if (WrapHelper.XRAY) {
@@ -125,9 +142,23 @@ function generate_object_properties(code_spec_obj) {
 		}
 	`
 	for (let wrap_spec of code_spec_obj.wrapped_properties) {
+		var counting_wrapper = `
+			function(...args) {
+				${create_counter_call(code_spec_obj, wrap_spec.property_name)}
+
+				// checks type of underlying wrapper/definition and returns it (no changes to semantics)
+				if (typeof (${wrap_spec.property_value}) === 'function') {
+				 	return (${wrap_spec.property_value}).bind(this)(...args);
+				}
+				else {
+					return (${wrap_spec.property_value});
+				}
+			}
+		`;
+
 		code += `
 			originalPDF = descriptor["${wrap_spec.property_name}"];
-			replacementPD = ${wrap_spec.property_value};
+			replacementPD = ${counting_wrapper};
 			descriptor["${wrap_spec.property_name}"] = replacementPD;
 		`;
 	}
