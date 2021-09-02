@@ -4,6 +4,7 @@
  *  \author Copyright (C) 2020  Libor Polcak
  *  \author Copyright (C) 2021  Matus Svancar
  *  \author Copyright (C) 2021  Giorgio Maone
+ * 	\author Copyright (C) 2021  Marek Saloň
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -45,6 +46,27 @@ function configureInjection({code, wrappers, domainHash, sessionHash}) {
 	})()`;
 	try {
 		wrappersPort = patchWindow(aleaCode);
+
+		wrappersPort.onMessage = msg => {
+			if (msg.wrapperName) {
+				let {wrapperName, wrapperType, wrapperArgs, delta} = msg;
+				let count = wrapperAccessCounters.get(wrapperName) || 0;
+				wrapperAccessCounters.set(wrapperName, count + delta);
+				if (count % 100 === 0) console.debug("Updated access counts", wrapperAccessCounters);
+
+				// limit messages for performance reasons
+				if (count < 1000) {
+					// resend access information to FPD background script
+					browser.runtime.sendMessage({
+						purpose: "fp-detection",
+						resource: wrapperName,
+						type: wrapperType,
+						args: wrapperArgs,
+					});
+				}
+			}
+		}
+
 		return true;
 	} catch (e) {
 		console.error(e, `Trying to run\n${aleaCode}`)
