@@ -16,6 +16,7 @@
         WRAPPING,
         "fp_code_builders.js",
         "code_builders.js",
+        "fp_detect_background.js",
         "levels.js",
         "background.js",
         "level_cache.js",
@@ -79,7 +80,8 @@
     "webRequestBlocking",
     "webNavigation",
     "<all_urls>",
-    "notifications"
+    "notifications",
+    "browsingData"
   ],
   "short_name": "JSR",
   "version": "0.5.5"
