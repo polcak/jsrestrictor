@@ -21,37 +21,6 @@
 			]
 		},
 		{
-			"name": "browser",
-			"remove_custom_namespace": false,
-			"src_script_requirements": [
-				{
-					"type": "const",
-					"requirements": [
-						{
-							"import": "sinon-chrome",
-							"as": "chrome"
-						}
-					]
-				}
-			],
-			"test_script_requirements": [
-				{
-					"type": "const",
-					"requirements": [
-						{
-							"from": "./browser.js",
-							"objects": [
-								"browser"
-							]
-						}
-					]
-				}
-			],
-			"extra_exports": [
-				"browser"
-			]
-		},
-		{
 			"name": "url",
 			"remove_custom_namespace": false,
 			"src_script_requirements": [
@@ -79,7 +48,7 @@
 					"requirements": [
 						{
 							"import": "sinon-chrome",
-							"as": "chrome"
+							"as": "browser"
 						},
 						{
 							"import": "navigator",
@@ -232,7 +201,7 @@
 						},
 						{
 							"import": "sinon-chrome",
-							"as": "chrome"
+							"as": "browser"
 						}
 					]
 				}
