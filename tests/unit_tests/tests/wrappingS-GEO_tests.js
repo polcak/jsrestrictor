@@ -56,6 +56,22 @@ describe("GEO", function() {
 		});
 	});
 	describe("processOriginalGPSDataObject", function() {
+		var GeolocationPosition = function() {};
+		GeolocationPosition.prototype = {
+			coords: {
+				latitude: 0,
+				longitude: 0,
+				altitude: null,
+				accuracy: 0,
+				altitudeAccuracy: null,
+				heading: null,
+				speed: null,
+				__proto__: Object
+			},
+			timestamp: 0,
+			__proto__: Object
+		};
+			
 		var originalPositions = {
 			fit_vut: {
 				coords: {
@@ -308,8 +324,8 @@ describe("GEO", function() {
 		});
 		it("should return given coordinates when flag provideAccurateGeolocationData is set.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject);
 				eval(processOriginalGPSDataObject_globals);
+				eval(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = true;
 				var original_coords;
 				var changed_coords;
@@ -323,8 +339,8 @@ describe("GEO", function() {
 		});
 		it("should return changed timestamp when flag provideAccurateGeolocationData is set.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject);
 				eval(processOriginalGPSDataObject_globals);
+				eval(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = true;
 				var original_timestamp;
 				var changed_timestamp;
@@ -338,8 +354,8 @@ describe("GEO", function() {
 		});
 		it("should return given coordinates when previouslyReturnedCoords are set.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject);
 				eval(processOriginalGPSDataObject_globals);
+				eval(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = false;
 				var original_coords;
 				var changed_coords;
@@ -354,8 +370,8 @@ describe("GEO", function() {
 		});
 		it("should return changed timestamp when previouslyReturnedCoords are set.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject);
 				eval(processOriginalGPSDataObject_globals);
+				eval(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = false;
 				var original_timestamp;
 				var changed_timestamp;
@@ -370,8 +386,8 @@ describe("GEO", function() {
 		});
 		it("should return coords that are not equal to original coords.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject);
 				eval(processOriginalGPSDataObject_globals);
+				eval(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = false;
 				previouslyReturnedCoords = undefined;
 				var desiredAccuracyArray = [ 0.1, 1, 10, 100 ]
@@ -395,8 +411,8 @@ describe("GEO", function() {
 		// Required accuracy overview: https://github.com/polcak/jsrestrictor/blob/master/common/levels.js#L254
 		it("should return changed coords that are in required accuracy.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject);
 				eval(processOriginalGPSDataObject_globals);
+				eval(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = false;
 				previouslyReturnedCoords = undefined;
 				var desiredAccuracyArray = [ 0.1, 1, 10, 100 ]
@@ -422,8 +438,8 @@ describe("GEO", function() {
 		});
 		it("should return changed timestamp.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject);
 				eval(processOriginalGPSDataObject_globals);
+				eval(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = false;
 				previouslyReturnedCoords = undefined;
 				var desiredAccuracyArray = [ 0.1, 1, 10, 100 ]
@@ -442,8 +458,8 @@ describe("GEO", function() {
 		});
 		it("should not return nonsence coords.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject);
 				eval(processOriginalGPSDataObject_globals);
+				eval(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = false;
 				previouslyReturnedCoords = undefined;
 				var desiredAccuracyArray = [ 0.1, 1, 10, 100 ]

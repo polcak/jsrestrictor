@@ -256,7 +256,7 @@
 			],
 			"inject_code_to_src":
 			{
-				"begin": "function gen_random32() { return 0.2 * 4294967295; }"
+				"begin": "function gen_random32() { return 0.2 * 4294967295; } WrapHelper = { XRAY: false, shared: {}, forPage: function(param) {return param}, isForPage: obj => pageReady.has(obj), defineProperty: Object.defineProperty, defineProperties: Object.defineProperties, create: Object.create, OriginalProxy: Proxy, Proxy: Proxy };"
 			}
 		}
 	]
