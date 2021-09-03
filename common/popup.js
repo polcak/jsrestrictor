@@ -109,10 +109,21 @@ document.getElementById('controls').addEventListener('click', function (e) {
 });
 
 window.addEventListener("load", function() {
+	load_fp_switch();
 	load_on_off_switch();
 });
 
 document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200)});
+document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_fp_detection, 200)});
+
+/// Load switch FPD state from storage 
+function load_fp_switch()
+{
+	browser.storage.sync.get(["fpDetectionOn"]).then(function(result)
+	{
+		document.getElementById("fp-switch-checkbox").checked = result.fpDetectionOn
+	});
+}
 
 async function getCurrentSite() {
 	let tabs = await browser.tabs.query({currentWindow: true, active: true});
@@ -153,4 +164,11 @@ async function control_whitelist()
 	showRefreshPageOption();
 }
 
-
+/// Event handler for On/off switch
+function control_fp_detection()
+{
+	var checkbox = document.getElementById("fp-switch-checkbox");
+	browser.storage.sync.set({fpDetectionOn: checkbox.checked});
+	browser.runtime.sendMessage({purpose:"fpd-state-change", enabled: checkbox.checked});
+	showRefreshPageOption();
+}
