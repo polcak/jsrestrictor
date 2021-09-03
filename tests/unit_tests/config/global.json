@@ -3,6 +3,7 @@
 		{
 			"name": "helpers",
 			"remove_custom_namespace": false,
+			"let_to_var": false,
 			"src_script_requirements": [
 			],
 			"test_script_requirements": [
@@ -23,6 +24,7 @@
 		{
 			"name": "url",
 			"remove_custom_namespace": false,
+			"let_to_var": false,
 			"src_script_requirements": [
 			],
 			"test_script_requirements": [
@@ -42,6 +44,7 @@
 		{
 			"name": "levels",
 			"remove_custom_namespace": false,
+			"let_to_var": false,
 			"src_script_requirements": [
 				{
 					"type": "const",
@@ -123,6 +126,7 @@
 		{
 			"name": "code_builders",
 			"remove_custom_namespace": false,
+			"let_to_var": false,
 			"src_script_requirements": [
 				{
 					"type": "const",
@@ -167,6 +171,7 @@
 		{
 			"name": "wrapping",
 			"remove_custom_namespace": false,
+			"let_to_var": false,
 			"src_script_requirements": [
 			],
 			"test_script_requirements": [
@@ -189,6 +194,7 @@
 		{
 			"name": "background",
 			"remove_custom_namespace": false,
+			"let_to_var": false,
 			"src_script_requirements": [
 				{
 					"type": "const",
@@ -226,6 +232,7 @@
 		{
 			"name": "wrappingS-GEO",
 			"remove_custom_namespace": true,
+			"let_to_var": true,
 			"src_script_requirements": [
 				{
 					"type": "const",

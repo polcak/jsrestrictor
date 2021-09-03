@@ -125,6 +125,13 @@ for k in $(jq '.scripts | keys | .[]' ./config/global.json); do
 		sed -i -e "s/(function() {//" -e "s/})();//" -e "s/successCallback/return/" ./tmp/$source_script_name
 	fi
 	
+	# Modify source script - convert "let" variables to "var" variables if necessary.
+	let_to_var=$(jq -r '.let_to_var' <<< "$script")
+	if [ $let_to_var == "true" ]
+	then
+		sed -i -e "s/\<let\> /var /" ./tmp/$source_script_name
+	fi
+	
 	
 	# Replace source code if required.
 	replace_in_src=$(jq -r '.replace_in_src' <<< "$script")
