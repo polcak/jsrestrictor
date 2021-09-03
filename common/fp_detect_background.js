@@ -96,7 +96,7 @@ for (let groupsLevel in fp_levels.groups) {
 	processGroupsRecursive(fp_levels.groups[groupsLevel], groupsLevel);
 }
 // load enabled flag from storage
-browser.storage.sync.get(["fpDetectionOn"], function(result) {
+browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
 	fpDetectionEnabled = result.fpDetectionOn;
 });
 // take care of unsupported resources for cross-browser behaviour uniformity
@@ -592,6 +592,7 @@ browser.runtime.onMessage.addListener(function (record, sender) {
  * \param tabId Integer number representing ID of suspicious browser tab.
  */
  function notifyFingerprintBlocking(tabId) {
+	// TODO: notifications not working
 	browser.notifications.create({
 		"type": "basic",
 		"iconUrl": browser.extension.getURL("img/icon-48.png"),
@@ -609,7 +610,7 @@ var availableTabs = {};
 
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 // get state of all existing tabs
-browser.tabs.query({}, function(results) {
+browser.tabs.query({}).then(function(results) {
     results.forEach(function(tab) {
         availableTabs[tab.id] = tab;
     });
@@ -691,12 +692,13 @@ function cancelCallback(requestDetails) {
 			notifyFingerprintBlocking(requestDetails.tabId);
 		}
 		
+		// TODO:
 		// clear local and session storage (using content script) for every frame in this tab
-		if (requestDetails.tabId >= 0) {
-			browser.tabs.sendMessage(requestDetails.tabId, {
-				cleanStorage: true
-			});
-		}
+		// if (requestDetails.tabId >= 0) {
+		// 	browser.tabs.sendMessage(requestDetails.tabId, {
+		// 		cleanStorage: true
+		// 	});
+		// }
 	
 		// clear all browsing data for origin of tab url to prevent fingerprint caching
 		if (tabUrl) {
