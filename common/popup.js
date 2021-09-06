@@ -4,6 +4,7 @@
  *  \author Copyright (C) 2019  Martin Timko
  *  \author Copyright (C) 2019  Libor Polcak
  *  \author Copyright (C) 2020  Pavel Pohner
+ *  \author Copyright (C) 2021  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */

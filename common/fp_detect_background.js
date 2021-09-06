@@ -1,7 +1,7 @@
 /** \file
  * \brief Functions that help to automate process of building wrapping code for FPD module
  *
- *  \author Copyright (C) 2021  Marek Saloň
+ *  \author Copyright (C) 2021  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -592,10 +592,9 @@ browser.runtime.onMessage.addListener(function (record, sender) {
  * \param tabId Integer number representing ID of suspicious browser tab.
  */
  function notifyFingerprintBlocking(tabId) {
-	// TODO: notifications not working
 	browser.notifications.create({
 		"type": "basic",
-		"iconUrl": browser.extension.getURL("img/icon-48.png"),
+		"iconUrl": browser.runtime.getURL("img/icon-48.png"),
 		"title": "Fingerprinting activity detected!",
 		"message": `Blocking all subsequent requests.\n\n` +
 			`Page: ${availableTabs[tabId].title.slice(0, 30)}\n` +

@@ -4,7 +4,8 @@
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
-#  Copyright (C) 2019  Libor Polcak, Marek Saloň
+#  Copyright (C) 2019  Libor Polcak
+#  Copyright (C) 2021  Marek Salon
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #

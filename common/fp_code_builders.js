@@ -1,7 +1,7 @@
 /** \file
  * \brief Functions that help to automate process of building wrapping code for FPD module
  *
- *  \author Copyright (C) 2021  Marek Saloň
+ *  \author Copyright (C) 2021  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */

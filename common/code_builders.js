@@ -3,7 +3,7 @@
  *
  *  \author Copyright (C) 2019  Libor Polcak
  *  \author Copyright (C) 2021  Giorgio Maone
- *  \author Copyright (C) 2021  Marek Saloň
+ *  \author Copyright (C) 2021  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -71,7 +71,7 @@ function define_page_context_function(wrapper) {
 	return enclose_wrapping2(`let originalF = ${originalF};
 			let replacementF = function(${wrapper.wrapping_function_args}) {
 				{
-					let args = Array.from(arguments).map(JSON.stringify);
+					let args = [].slice.apply(arguments);
 					${create_counter_call(wrapper, "call")}
 				}
 				${wrapper.wrapping_function_body}
@@ -271,9 +271,6 @@ var build_code = function(wrapper, ...args) {
 			Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});
 		}
 	`;
-
-	// make messages from this wrapper valid
-	code += `fp_enabled = true;`
 
 	return enclose_wrapping(code, ...args);
 };
@@ -576,6 +573,10 @@ function wrap_code(wrappers) {
 			let window = unwrappedWindow;
 			let {Proxy} = WrapHelper;
 			let {Promise, Object, Array, JSON} = xrayWindow;
+			
+			// add flag variable that determines whether messages should be sent
+			let fp_enabled = false;
+			
 			try {
 				// WRAPPERS //
 				
@@ -587,6 +588,8 @@ function wrap_code(wrappers) {
 				// cleanup environment if necessary
 			}
 
+			// after injection code completed, allow messages (calls from wrappers won't be counted)
+			fp_enabled = true;
 		}
 	}).toString()
 		.replace('// WRAPPERS //', joinCode(wrappers.map(x => build(x, false))))
