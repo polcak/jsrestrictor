@@ -84,4 +84,16 @@ if ("configuration" in window) {
 			url: window.location.href
 		}
 	));
-};
+}
+
+/**
+ * Event listener that listens for background script messages.
+ *
+ * \param callback Function that clears localStorage and sessionStorage.
+ */
+ browser.runtime.onMessage.addListener(function (message) {
+    if (message.cleanStorage) { 
+        localStorage.clear();
+        sessionStorage.clear();
+    }
+});

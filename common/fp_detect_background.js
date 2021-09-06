@@ -691,13 +691,12 @@ function cancelCallback(requestDetails) {
 			notifyFingerprintBlocking(requestDetails.tabId);
 		}
 		
-		// TODO:
-		// clear local and session storage (using content script) for every frame in this tab
-		// if (requestDetails.tabId >= 0) {
-		// 	browser.tabs.sendMessage(requestDetails.tabId, {
-		// 		cleanStorage: true
-		// 	});
-		// }
+		// clear local and session storage (using content script) for every frame in this tab (required?)
+		if (requestDetails.tabId >= 0) {
+			browser.tabs.sendMessage(requestDetails.tabId, {
+				cleanStorage: true
+			});
+		}
 	
 		// clear all browsing data for origin of tab url to prevent fingerprint caching
 		if (tabUrl) {
