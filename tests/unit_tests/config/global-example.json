@@ -3,6 +3,7 @@
 		{
 			"name": "name of the source script without file extension (.js)",
 			"remove_custom_namespace": true "or" false,
+			"let_to_var": true "or" false,
 			"src_script_requirements": [
 				{
 					"type": "const or var or ...",
