@@ -94,6 +94,8 @@ var wrapping_groups = {
 				"Event.prototype.timeStamp",
 				// GP
 				"Gamepad.prototype.timestamp",
+				// VR
+				"VRFrameData.prototype.timestamp",
 			],
 		},
 		{
@@ -497,6 +499,19 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "vr",
+			description: "Prevent websites from learning information on local Virtual Reality displays",
+			description2: [],
+			default: true,
+			options: [],
+			wrappers: [
+				// VR
+				"navigator.activeVRDisplays",
+				// XR
+				"navigator.xr",
+			],
+		},
+		{
 			name: "analytics",
 			description: "Prevent sending analytics through Beacon API",
 			description2: [],
@@ -645,6 +660,7 @@ var level_2 = {
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
 	"gamepads": true,
+	"vr": true,
 	"analytics": true,
 	"windowname": true,
 };
@@ -683,6 +699,7 @@ var level_3 = {
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 0,
 	"gamepads": true,
+	"vr": true,
 	"analytics": true,
 	"windowname": true,
 };

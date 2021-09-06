@@ -175,6 +175,15 @@ function installUpdate() {
 			}
 			item.version = 2.9;
 		}
+		if (item.version < 2.10) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.gamepads) {
+					l.vr = true;
+				}
+			}
+			item.version = 2.10;
+		}
 		browser.storage.sync.set(item);
 	});
 }
