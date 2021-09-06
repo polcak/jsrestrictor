@@ -92,7 +92,7 @@
 			parent_object: "Gamepad.prototype",
 			parent_object_property: "timestamp",
 			wrapped_objects: [],
-			helping_code: remember_past_ts_values + `let origGet = Object.getOwnPropertyDescriptor(Event.prototype, "timeStamp").get`,
+			helping_code: remember_past_ts_values + `let origGet = Object.getOwnPropertyDescriptor(Gamepad.prototype, "timestamp").get`,
 			post_wrapping_code: [
 				{
 					code_type: "object_properties",
