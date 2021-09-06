@@ -2,9 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-let ul = document.getElementById("enumerateDevices");
-
-function appendLi(text)
+function appendLi(ul, text)
 {
 	let li = document.createElement("li");
 	li.innerText = text;
@@ -12,17 +10,40 @@ function appendLi(text)
 }
 
 if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-	appendLi("Your browser does not support enumerateDevices() so it does not leak IDs of cameras and microphones.");
+	appendLi(document.getElementById("enumerateDevices"), "Your browser does not support enumerateDevices() so it does not leak IDs of cameras and microphones.");
 }
 else {
+	let ul = document.getElementById("enumerateDevices");
 	navigator.mediaDevices.enumerateDevices()
 	.then(function(devices) {
-		appendLi(devices.length.toString() + " cameras and microphones detected");
+		appendLi(ul, devices.length.toString() + " cameras and microphones detected");
 		devices.forEach(function(device) {
-			appendLi(device.kind + ": " + device.label + " id = " + device.deviceId);
+			appendLi(ul, device.kind + ": " + device.label + " id = " + device.deviceId);
 		});
 	})
 	.catch(function(err) {
-		appendLi(err.name + ": " + err.message);
+		appendLi(ul, err.name + ": " + err.message);
 	});
+}
+
+if (navigator.getGamepads().length === 0) {
+	appendLi(document.getElementById("gamepads"), "Your browser does not report any attached gamepad.");
+}
+else {
+	let ul = document.getElementById("gamepads");
+	navigator.getGamepads().forEach(function(gp) {
+		appendLi(ul, gp.id);
+	});
+}
+
+if (!navigator.getVRDisplays) {
+	appendLi(document.getElementById("vr"), "Your browser does not report any attached VR set.");
+}
+
+
+if (!navigator.xr) {
+	document.getElementById("webxr").innerText = "Your browser does not support mixed reality and does not leak any identifying information from WebXR APIs.";
+}
+else {
+	document.getElementById("webxr").innerText = "Your browser is at risk to provide fingerprintable information from WebXR APIs.";
 }
