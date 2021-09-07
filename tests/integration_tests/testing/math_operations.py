@@ -30,7 +30,7 @@
 #  E.g.: is_in_accuracy(1654800, 10) => True
 #  E.g.: is_in_accuracy(1654800, 1000) => False
 def is_in_accuracy(number, accuracy):
-    number_str = str(int(number))[::-1]
+    number_str = str(int(float(number)))[::-1]
     accuracy_str = str(int(accuracy))[::-1]
     index = 0
     while accuracy_str[index] == '0':

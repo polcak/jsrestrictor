@@ -37,7 +37,7 @@ from configuration import get_config
 #  Javascript is called and returned values are processed and returned.
 
 
-## Get geolocation data through JST test page.
+## Get geolocation data through JSR test page.
 #
 #  Geolocation data is obtained asynchronously. Interaction with page is needed.
 #  We need element on page where geolocation data is shown after its loading.
