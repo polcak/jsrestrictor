@@ -1,9 +1,11 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2020  Pavel Pohner
+/** \file
+ * \brief This file contains Firefox-specific functions for Network Boundary Shield.
+ *
+ *  \author Copyright (C) 2020  Pavel Pohner
+ *  \author Copyright (C) 2020-2021 Martin Bednář
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,22 +21,30 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-/// Implementation of HTTP webRequest shield, file: http_shield_firefox.js
-/// Contains Firefox specific functions
-/// Event handlers for webRequest API, notifications and messaging
+/** \file
+ *
+ * \brief This file contains Firefox specific functions for Network Boundary Shield.
+ *
+ * \ingroup NBS
+ *
+ * This file contains webRequest API listeners. These listeners handle HTTP requests in the "before send headers" phase
+ * and handle messages (on message event).
+ *
+ * NBS for Firefox uses the DNS web extension API to resolve domain names. As the domain names are
+ * cached and needs to be resolved without NBS, the performance impact should be negligible.
+ */
 
-
-browser.runtime.onMessage.addListener(messageListener);
-
-
-/// webRequest event listener
-/// Listens to onBeforeSendHeaders event, receives detail of HTTP request in requestDetail
-/// Catches the request, analyzes it's origin and target URLs and blocks it/permits it based
-/// on their IP adresses. Requests coming from public IP ranges targeting the private IPs are
-/// blocked by default. Others are permitted by default.
+/**
+ * The event listener, hooked up to webRequest onBeforeSendHeaders event.
+ * Receives detail of HTTP request in requestDetail.
+ * Catches the request, analyzes its origin and target URLs and blocks it/permits it based
+ * on their IP adresses. Requests coming from public IP ranges targeting the private IPs are
+ * blocked by default. Others are permitted by default.
+ *
+ * \param requestDetail Details of HTTP request.
+ */
 async function beforeSendHeadersListener(requestDetail)
 {
-
 	//If either of information is undefined, permit it
 	//originUrl happens to be undefined for the first request of the page loading the document itself
 	if (requestDetail.originUrl === undefined || requestDetail.url === undefined || requestDetail.originUrl === "null" || requestDetail.url === "null")
@@ -172,29 +182,5 @@ async function beforeSendHeadersListener(requestDetail)
 	else //Permitting others
 	{
 		return {cancel: false};
-	}
-}
-
-/// Event listener hooked up to webExtensions onMessage event
-/// Receives full message in message,
-/// sender of the message in sender,
-/// function for sending response in sendResponse
-/// Does appropriate action based on message
-function messageListener(message, sender, sendResponse)
-{
-	//Message came from popup,js, asking whether is this site whitelisted
-	if (message.message === "is current site whitelisted?")
-	{
-		//Read the current hostname
-		var currentHost = message.site;
-		//Response with appropriate message
-		if (checkWhitelist(currentHost))
-		{
-			return Promise.resolve("current site is whitelisted");
-		}
-		else
-		{
-			return Promise.resolve("current site is not whitelisted");
-		}
 	}
 }

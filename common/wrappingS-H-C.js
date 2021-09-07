@@ -1,10 +1,16 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Libor Polcak
-//  Copyright (C) 2021  Matus Svancar
+/** \file
+ * \brief This file contains wrappers for Canvas-related calls
+ *
+ * \see https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
+ * \see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+ * \see https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas
+ *
+ *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2021  Matus Svancar
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ *  \license SPDX-License-Identifier: MPL-2.0
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,13 +32,9 @@
 //  License, v. 2.0. If a copy of the MPL was not distributed with this file,
 //  You can obtain one at http://mozilla.org/MPL/2.0/.
 //
-//  Copyright (c) 2020 The Brave Authors.
+//  \copyright Copyright (c) 2020 The Brave Authors.
 
 /** \file
- * This file contains wrappers for Canvas-related calls
- *  * https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
- *  * https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
- *  * https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas
  *
  * The goal is to prevent fingerprinting by modifying the values that can be read from the canvas.
  * So the visual content of wrapped canvases as displayed on the screen is the same as intended.
@@ -138,7 +140,8 @@
 			 * \brief Returns fake canvas content, see CanvasRenderingContext2D.prototype for more details.
 			 *
 			 * Internally creates a fake canvas of the same height and width as the original and calls
-			 * CanvasRenderingContext2D.getImageData() that detemines the result.
+			 * CanvasRenderingContext2D.getImageData() that determines the result. If canvas uses WebGLRenderingContext
+			 * the content is copied to new canvas using CanvasRenderingContext2D and function toDataURL is called on it.
 			 */
 			wrapping_function_body: `
 				var ctx = this.getContext("2d");
@@ -152,7 +155,19 @@
 					return origToDataURL.call(fake, ...args);
 				}
 				else {
-					return origToDataURL.call(this, ...args);
+					var ctx = this.getContext("webgl2", {preserveDrawingBuffer: true}) ||
+					  this.getContext("experimental-webgl2", {preserveDrawingBuffer: true}) ||
+					  this.getContext("webgl", {preserveDrawingBuffer: true}) ||
+					  this.getContext("experimental-webgl", {preserveDrawingBuffer: true}) ||
+					  this.getContext("moz-webgl", {preserveDrawingBuffer: true});
+					if(ctx){
+					  var fake = document.createElement("canvas");
+					  fake.setAttribute("width", this.width);
+					  fake.setAttribute("height", this.height);
+					  var stx = fake.getContext("2d");
+					  stx.drawImage(ctx.canvas, 0, 0);
+					  return fake.toDataURL();
+          }
 				}
 				`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
@@ -177,18 +192,9 @@
 				else if(approach === 0){
 					const width = context.canvas.width;
 					const height = context.canvas.height;
-					var imageData = origGetImageData.call(context,0, 0, width, height);
-					var fakeData = origGetImageData.call(fake,0, 0, width, height);
-
-					for (let i = 0; i < height; i++) {
-						for (let j = 0; j < width; j++) {
-							const n = ((i * (width * 4)) + (j * 4));
-							fakeData.data[n + 0] = imageData.data[n + 0];
-							fakeData.data[n + 1] = imageData.data[n + 1];
-							fakeData.data[n + 2] = imageData.data[n + 2];
-							fakeData.data[n + 3] = imageData.data[n + 3];
-						}
-					}
+					var imageData = origGetImageData.call(context, 0, 0, width, height);
+					fake.putImageData(imageData, 0, 0);
+					var fakeData = origGetImageData.call(fake, 0, 0, width, height);
 					var pixel_count = BigInt(width * height);
 					var channel = domainHash[0].charCodeAt(0) % 3;
 					var canvas_key = domainHash;
@@ -292,7 +298,83 @@
 				return origConvertToBlob.call(fake, ...args);
 			`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
-		}
+		},
+		{
+			parent_object: "CanvasRenderingContext2D.prototype",
+			parent_object_property: "isPointInPath",
+			wrapped_objects: [{
+				original_name: "CanvasRenderingContext2D.prototype.isPointInPath",
+				wrapped_name: "origIsPointInPath",
+			}],
+			helping_code: helping_code + `
+				function farbleIsPointInPath(ctx, ...args){
+					if(approach === 0){
+						var ret = origIsPointInPath.call(ctx, ...args);
+						return (ret && ((prng()*20) > 1));
+					}
+					else if(approach === 1){
+						return origIsPointInPath.call(ctx, ...args);
+					}
+				};
+			`,
+			wrapping_code_function_name: "wrapping",
+			wrapping_code_function_params: "parent",
+			wrapping_code_function_call_window: true,
+			original_function: "parent.CanvasRenderingContext2D.prototype.isPointInPath",
+			replace_original_function: true,
+			wrapping_function_args: "...args",
+			/** \fn fake CanvasRenderingContext2D.prototype.isPointInPath
+			 * \brief Returns modified result
+			 *
+			 * Either returns false or original function return value which is changed to false with 1/20 probability
+			 *
+			 * \bug Changing value with probability has some issues:
+			 * * multiple calls with the same pixel can return different values
+			 * * inconsistencies among adjacent pixels
+			 */
+			wrapping_function_body: `
+				return farbleIsPointInPath(this, ...args);
+			`,
+			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
+		},
+		{
+			parent_object: "CanvasRenderingContext2D.prototype",
+			parent_object_property: "isPointInStroke",
+			wrapped_objects: [{
+				original_name: "CanvasRenderingContext2D.prototype.isPointInStroke",
+				wrapped_name: "origIsPointInStroke",
+			}],
+			helping_code: helping_code + `
+				function farbleIsPointInStroke(ctx, ...args){
+					if(approach === 0){
+						var ret = origIsPointInStroke.call(ctx, ...args);
+						return (ret && ((prng()*20) > 1));
+					}
+					else if(approach === 1){
+						return origIsPointInStroke.call(ctx, ...args);
+					}
+				};
+			`,
+			wrapping_code_function_name: "wrapping",
+			wrapping_code_function_params: "parent",
+			wrapping_code_function_call_window: true,
+			original_function: "parent.CanvasRenderingContext2D.prototype.isPointInStroke",
+			replace_original_function: true,
+			wrapping_function_args: "...args",
+			/** \fn fake CanvasRenderingContext2D.prototype.isPointInStroke
+			 * \brief Returns modified result
+			 *
+			 * Either returns false or original function return value which is changed to false with 1/20 probability
+			 *
+			 * \bug Changing value with probability has some issues:
+			 * * multiple calls with the same pixel can return different values
+			 * * inconsistencies among adjacent pixels
+			 */
+			wrapping_function_body: `
+				return farbleIsPointInStroke(this, ...args);
+			`,
+			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
+		},
 	]
 	add_wrappers(wrappers);
 })();

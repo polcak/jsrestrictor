@@ -1,9 +1,10 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019-2020 Libor Polcak
+/** \file
+ * \brief Code for handling Firefox bug 1267027
+ *
+ *  \author Copyright (C) 2019-2021  Libor Polcak
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -131,8 +132,10 @@ function build_code_ffbug(wrapper, ...args) {
 		code += `Object.setPrototypeOf(tobeexported, ${wrapper.wrapper_prototype});
 		`;
 	}
-	code += `exportFunction(tobeexported, ${wrapper.parent_object}, {defineAs: '${wrapper.parent_object_property}'});
-	`
+	if (wrapper.wrapping_function_body) {
+		code += `exportFunction(tobeexported, ${wrapper.parent_object}, {defineAs: '${wrapper.parent_object_property}'});
+		`
+	}
 	if (wrapper["post_wrapping_code"] !== undefined) {
 		for (code_spec of wrapper["post_wrapping_code"]) {
 			code += post_wrapping_functions[code_spec.code_type](code_spec);

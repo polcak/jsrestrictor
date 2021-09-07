@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2019 Martin Timko
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 function updatePerformanceLabel() {
   // getHW();
   // getUserAgent();

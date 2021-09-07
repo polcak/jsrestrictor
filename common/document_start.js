@@ -1,10 +1,12 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2020  Libor Polcak
-//  Copyright (C) 2021  Matus Svancar
+/** \file
+ * \brief Main script launched when a page is being loaded by a browser
+ *
+ *  \author Copyright (C) 2020  Libor Polcak
+ *  \author Copyright (C) 2021  Matus Svancar
+ *  \author Copyright (C) 2021  Giorgio Maone
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,25 +22,28 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-/// Get current level configuration from the background script
-browser.runtime.sendMessage({
-		message: "get wrapping for URL",
-		url: window.location.href
-	},
-	/// prepend domain and session hashes
-	function handleResponse(reply) {
-		browser.storage.local.get(["sessionHash", "visitedDomains"], function(storageData) {
-			domains = storageData.visitedDomains;
-			sessionHash = storageData.sessionHash
-			if (!domains[location.origin]) {
-				domains[location.origin] = generateId();
-				browser.storage.local.set({
-					"visitedDomains": domains
-				})
-			};
-			var tempCode = `var domainHash = "${domains[location.origin]}";var sessionHash ="${sessionHash}";`+alea+`var prng = new alea("${domains[location.origin]}");`+ reply.code;
-			reply.code = `(function() {${tempCode}})();`;
-			injectScript(reply.code, reply.wrappers, reply.ffbug1267027);
-		});
-	}
-);
+function configureInjection({code, wrappers, ffbug1267027, domainHash, sessionHash}) {
+  console.debug("configureInjection", new Error().stack, document.readyState);
+	configureInjection = () => false; // one shot
+	var aleaCode = `(() => {
+	var domainHash = ${JSON.stringify(domainHash)};
+	var sessionHash = ${JSON.stringify(sessionHash)};
+	${alea}
+	var prng = new alea(domainHash);
+	${code}
+	})()`;
+	
+	injectScript(aleaCode, wrappers, ffbug1267027);
+	return true;
+}
+if ("configuration" in window) {
+	console.debug("Early configuration found!", configuration);
+	configureInjection(configuration);
+} else {
+	/// Get current level configuration from the background script
+	browser.runtime.sendMessage({
+			message: "get wrapping for URL",
+			url: window.location.href
+		}
+	).then(c => configureInjection(c));
+}

@@ -5,6 +5,8 @@
 #
 #  Copyright (C) 2020  Martin Bednar
 #
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -45,7 +47,7 @@ def main():
             # set jsr_level to given level
             my_browser.jsr_level = jsr_level
             # run set of tests
-            pytest.main(['-s', '--ignore=testing/tests_definition/test_gps.py'])
+            pytest.main(['-s'])
             output.print_testing_footer(browser_type, jsr_level)
         # Close browser.
         my_browser.quit()

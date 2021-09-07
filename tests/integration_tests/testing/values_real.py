@@ -4,6 +4,9 @@
 #  internet.
 #
 #  Copyright (C) 2020  Martin Bednar
+#  Copyright (C) 2021  Matus Svancar
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -32,6 +35,7 @@ def init(driver):
     position = values_getters.get_position(driver)
     navigator = values_getters.get_navigator(driver)
     device = values_getters.get_device(driver)
+    audio = values_getters.get_audio(driver)
     return TestedValues(
         user_agent=navigator['userAgent'],
         app_version=navigator['appVersion'],
@@ -42,6 +46,8 @@ def init(driver):
         cookie_enabled=navigator['cookieEnabled'],
         do_not_track=navigator['doNotTrack'],
         oscpu=navigator['oscpu'],
+        plugins=navigator['plugins'],
+        mimeTypes=navigator['mimeTypes'],
         gps_accuracy=position['accuracy'],
         altitude=position['altitude'],
         altitude_accurac=position['altitudeaccurac'],
@@ -52,8 +58,23 @@ def init(driver):
         timestamp=None,
         device_memory=device['deviceMemory'],
         hardware_concurrency=device['hardwareConcurrency'],
+        get_channel=audio['get_channel'],
+        copy_channel=audio['copy_channel'],
+        byte_time_domain=audio['byte_time_domain'],
+        float_time_domain=audio['float_time_domain'],
+        byte_frequency=audio['byte_frequency'],
+        float_frequency=audio['float_frequency'],
+        IOdevices=values_getters.get_IOdevices(driver),
         referrer=values_getters.get_referrer(driver),
         time=None,
         performance=None,
-        protect_canvas=None
+        protect_canvas=None,
+        canvas_imageData=values_getters.get_imageData_canvas(driver,"canvasx"),
+        canvas_dataURL=values_getters.get_dataURL_canvas(driver,"canvasx"),
+        canvas_blob=values_getters.get_blob_canvas(driver,"canvasx"),
+        webgl_parameters = values_getters.get_webgl_params(driver,"webglCanvas"),
+        webgl_precisions=values_getters.get_webgl_precisions(driver,"webglCanvas"),
+        webgl_pixels=values_getters.get_webgl_pixels(driver,"webglCanvas"),
+        webgl_dataURL=values_getters.get_dataURL_canvas(driver,"webglCanvas"),
+        methods_toString=values_getters.get_methods_toString(driver)
     )

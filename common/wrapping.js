@@ -1,9 +1,10 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Libor Polcak
+/** \file
+ * \brief Main file handling wrappers
+ *
+ *  \author Copyright (C) 2019  Libor Polcak
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,6 +19,23 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
+
+/**
+ * \defgroup wrappers The implemented wrappers
+ *
+ * \brief Wrappers are small pieces of code that modifies the original functionalty of a function,
+ * or property defined by standards.
+ *
+ * $(PROJECT_NAME) defines wrappers to modify the behaviour of the JavaScript environment. The
+ * purpose of the most of the wrappers can be divided into several categories:
+ *
+ * * Block APIs: some APIs are not generally needed and can be blocked for most of the pages.
+ * * Precision reduction: The returned value is too precise which might result into attacks on the
+ * browser or can be used to fingerprint users.
+ * * Hide information: Some APIs provide information that is not generally needed and can be hidden
+ * from most of the pages.
+ * * Provide fake information: We provide fake information mostly to confuse fingerprinters.
+ */
 
 /**
  * The object carrying all the wrappers

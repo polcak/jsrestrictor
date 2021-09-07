@@ -1,10 +1,11 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Martin Timko
-//  Copyright (C) 2019-20021  Libor Polcak
+/** \file
+ * \brief Code that updates configuration stored by the user after upgrades
+ *
+ *  \author Copyright (C) 2019  Martin Timko
+ *  \author Copyright (C) 2019-2021  Libor Polcak
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -50,7 +51,7 @@ function installUpdate() {
 	 *		visitedDomains: {} // associative array of domain hashes (domain name => 32 byte hash)
 	 *
 	 */
-	browser.storage.sync.get(null, function (item) {
+	browser.storage.sync.get(null).then(function (item) {
 		if (!item.hasOwnProperty("version") || (item.version < 2.1)) {
 			browser.storage.sync.clear();
 			console.log("All JavaScript Restrictor data cleared! Unfortunately, we do not migrate settings from versions bellow 0.3.");
@@ -135,7 +136,17 @@ function installUpdate() {
 			}
 			item.version = 2.4;
 		}
-		if (item.version == 2.4) {
+		if (item.version < 2.6) {
+			// No Beacon API (analytics) wrapping below 2.6
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.windowname || l.battery || l.geolocation || l.enumerateDevices || l.time_precision || l.hardware) {
+					l.analytics = true;
+				}
+			}
+			item.version = 2.6;
+		}
+		if (item.version < 2.7) {
 			for (level in item["custom_levels"]) {
 				let l = item["custom_levels"][level];
 				if (l.htmlcanvaselement) {
@@ -146,7 +157,7 @@ function installUpdate() {
 					l.webgl_method = 0;
 				}
 			}
-			item.version = 2.5;
+			item.version = 2.7;
 		}
 		browser.storage.sync.set(item);
 	});

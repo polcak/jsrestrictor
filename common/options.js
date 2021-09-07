@@ -1,12 +1,13 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Libor Polcak
-//  Copyright (C) 2019  Martin Timko
-//  Copyright (C) 2020  Peter Hornak
-//	Copyright (C) 2020  Pavel Pohner
+/** \file
+ * \brief Code that handles the configuration of the extension
+ *
+ *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2019  Martin Timko
+ *  \author Copyright (C) 2020  Peter Hornak
+ *  \author Copyright (C) 2020  Pavel Pohner
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -195,7 +196,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 					}
 				}
 			}
-			browser.storage.sync.get("custom_levels", updateLevels.bind(null, new_level));
+			browser.storage.sync.get("custom_levels").then(updateLevels.bind(null, new_level));
 		}
 		else {
 			alert("Please provide all required fields: ID, Name, and Decription");
@@ -219,7 +220,7 @@ function restore_level(id, level_params) {
 		var lielem = document.getElementById(`li-${id}`);
 		lielem.classList.remove("undo");
 	}
-	browser.storage.sync.get("custom_levels", restoreLevel);
+	browser.storage.sync.get("custom_levels").then(restoreLevel);
 }
 
 function show_existing_level(levelsEl, level) {
@@ -276,7 +277,7 @@ function remove_level(id) {
 		delete custom_levels[id];
 		browser.storage.sync.set({"custom_levels": custom_levels});
 	}
-	browser.storage.sync.get("custom_levels", remove_level);
+	browser.storage.sync.get("custom_levels").then(remove_level);
 }
 
 function insert_levels() {
@@ -392,7 +393,7 @@ function loadWhitelist()
 {	
 	var listbox = document.getElementById("whitelist-select");
 	//Get the whitelist
-	browser.storage.sync.get(["whitelistedHosts"], function(result)
+	browser.storage.sync.get(["whitelistedHosts"]).then(function(result)
 	{
 		if (result.whitelistedHosts != undefined)
       	{
@@ -409,7 +410,7 @@ function load_on_off_switch()
 {
 	var checkbox = document.getElementById("switch-checkbox");
 	//Obtain the information from storage
-	browser.storage.sync.get(["requestShieldOn"], function(result)
+	browser.storage.sync.get(["requestShieldOn"]).then(function(result)
 	{
 		//Check the box
 		if (result.requestShieldOn || result.requestShieldOn == undefined)

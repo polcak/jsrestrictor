@@ -3,7 +3,9 @@
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
-#  Copyright (C) 2020  Martin Bednar
+#  Copyright (C) 2021  Martin Bednar
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -24,6 +26,7 @@ from time import time
 
 from values_getters import get_position
 from math_operations import is_in_accuracy
+
 
 ## Setup method - it is run before gps tests execution starts.
 #
@@ -142,10 +145,10 @@ def test_latitude(browser, position, expected):
                 # A deviation of less than 1 degrees is tolerated.
                 assert abs(float(position['latitude']) - float(browser.real.geolocation.latitude)) < 1
             else:
-                latitude = round(float(position['latitude']), 3) * 1000
-                latitude_accuracy = expected.geolocation.latitude['accuracy'] * 1000
-                # Should be rounded real value in accuracy.
-                assert is_in_accuracy(latitude, latitude_accuracy)
+                real_latitude = float(browser.real.geolocation.latitude)
+                spoofed_latitude = float(position['latitude'])
+                max_allowed_deviation = expected.geolocation.latitude['accuracy']
+                assert abs(real_latitude - spoofed_latitude) < max_allowed_deviation
     else:
         # Should be spoofed value.
         assert position['latitude'] == expected.geolocation.latitude['value']
@@ -163,10 +166,10 @@ def test_longitude(browser, position, expected):
                 # A deviation of less than 1 degrees is tolerated.
                 assert abs(float(position['longitude']) - float(browser.real.geolocation.longitude)) < 1
             else:
-                longitude = round(float(position['longitude']), 3) * 1000
-                longitude_accuracy = expected.geolocation.longitude['accuracy'] * 1000
-                # Should be rounded real value in accuracy.
-                assert is_in_accuracy(longitude, longitude_accuracy)
+                real_longitude = float(browser.real.geolocation.longitude)
+                spoofed_longitude = float(position['longitude'])
+                max_allowed_deviation = expected.geolocation.longitude['accuracy']
+                assert abs(real_longitude - spoofed_longitude) < max_allowed_deviation
     else:
         # Should be spoofed value.
         assert position['longitude'] == expected.geolocation.longitude['value']

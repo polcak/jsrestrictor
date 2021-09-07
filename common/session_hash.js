@@ -1,9 +1,11 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2021  Matus Svancar
+/** \file
+ * \brief A cache for session and domain hashes, used for Farbling
+ *
+ *  \author Copyright (C) 2021  Matus Svancar
+ *  \author Copyright (C) 2021  Giorgio Maone
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,18 +21,19 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-if ((typeof browser) === "undefined") {
-  var browser = chrome;
-}
-
-
-browser.storage.local.remove("visitedDomains");
-browser.storage.local.remove("sessionHash");
-var visitedDomains = {};
-visitedDomains[location.origin] = generateId();
-browser.storage.local.set({
-  "visitedDomains": visitedDomains
-});
-browser.storage.local.set({
-  "sessionHash": gen_random64().toString()
-});
+var Hashes = {
+  sessionHash: gen_random64().toString(),
+  visitedDomains: {},
+  getFor(url) {
+    if (!url.origin) url = new URL(url);
+	  let {origin} = url;
+    let domainHash = this.visitedDomains[origin];
+	  if (!domainHash) {
+		  domainHash = this.visitedDomains[origin] = generateId();
+	  }
+    return {
+      sessionHash: this.sessionHash,
+      domainHash,
+    };
+  }
+};

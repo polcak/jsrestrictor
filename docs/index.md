@@ -13,8 +13,12 @@ JavaScript Restrictor currently supports modifying and restricting the following
 * **Network boundary shield** (NBS) prevents web pages to use the browser as a proxy between local network and the public Internet. See the [Force Point report](https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf) for an example of the attack. The protection encapsulates the WebRequest API, so it captures all outgoing requests including all elements created by JavaScript.
 * **window.Date object**, **window.performance.now()** and **window.PerformanceEntry** provide high-resolution timestamps that can be used to [idenfity the user](http://www.jucs.org/jucs_21_9/clock_skew_based_computer) or can be used for microarchitectural attacks and [timing attacks](https://lirias.kuleuven.be/retrieve/389086).
 * **HTMLCanvasElement**:  Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData, OffscreenCanvas.convertToBlob() return either - modified image data based on session and domain keys, making canvas fingerprint unique, or white image. Canvas element provides access to HW acceleration which may reveal the card and consequently be used as a fingerprinting source.
-* **AudioBuffer and AnalyserNode**:  Functions AudioBuffer.getChannelData(),AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() and AnalyserNode.getFloatFrequencyData() are modified to alter audio data based on domain key, or return white noise based on domain key, making audio fingerprint unique.
-* **WebGLRenderingContext**: Function WebGLRenderingContext.getParameter() is modified to return null or alter return values for certain arguments. WebGLRenderingContext.getFramebufferAttachmentParameter and others are modified to return bottom values (null, 0, empty string, etc).
+* **AudioBuffer and AnalyserNode**: These API can be used to create fingerprint by analysing audio signal. JSR modifies AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() and AnalyserNode.getFloatFrequencyData() to alter audio data based on domain key, or return white noise based on domain key, making audio fingerprint unique.
+* **WebGLRenderingContext**: WebGL parameters and functions can expose hardware and software uniqueness. JSR modifies function WebGLRenderingContext.getParameter() to return bottom values (null, 0, empty string, etc) or alter return values for certain arguments. WebGLRenderingContext.getActiveAttrib, WebGLRenderingContext.getActiveUniform,
+WebGLRenderingContext.getAttribLocation, WebGLRenderingContext.getBufferParameter, WebGLRenderingContext.getFramebufferAttachmentParameter,
+WebGLRenderingContext.getProgramParameter, WebGLRenderingContext.getRenderbufferParameter, WebGLRenderingContext.getShaderParameter,
+WebGLRenderingContext.getShaderPrecisionFormat, WebGLRenderingContext.getTexParameter, WebGLRenderingContext.getUniformLocation,
+WebGLRenderingContext.getVertexAttribOffset, WebGLRenderingContext.getSupportedExtensions, WebGLRenderingContext.getExtension are modified to return bottom values. WebGLRenderingContext.readPixels() is modified to return either empty image or modified image data based on session and domain keys.
 * **MediaDevices.prototype.enumerateDevices** provides a unique strings identifying cameras and
 	microphones. This strings can be used to fingerprint the user (user session).
 * **navigator.deviceMemory** or **navigator.hardwareConcurrency** can reveal hardware specification of the device.
@@ -29,6 +33,7 @@ JavaScript Restrictor currently supports modifying and restricting the following
 	API. JSR also modifies the timestamps provided by Geolocation API in consistency with its time
 	precision settings.
 * **window.name** provides a very simple cross-origin tracking method of the same tab, see https://github.com/polcak/jsrestrictor/issues/72, https://developer.mozilla.org/en-US/docs/Web/API/Window/name,	https://2019.www.torproject.org/projects/torbrowser/design/,	https://bugzilla.mozilla.org/show_bug.cgi?id=444222, and https://html.spec.whatwg.org/#history-traversal. JSR provides an option to remove any `window.name` content on each page load.
+* **navigator.sendBeacon** is an API desinged for analytics. JSR provides an option to disable the API. The call returns success but nothing is sent to any web server.
 
 JavaScript Restrictor provides four in-built levels of protection:
 
@@ -45,9 +50,13 @@ Note that the spoofing and rounding actions performed by the extension can break
 
 The default level of protection can be set by a popup (clicking on JSR icon) or through options of the extension. Specific level of protection for specific domains can be set in options by adding them to the list of websites with specific level of protection. This can be done also by a popup during a visit of the website.
 
-If you have any questions or you’ve spotted a bug, please [let us know](https://github.com/polcak/jsrestrictor/issues).
+If you have any questions or you have spotted a bug, please [let us know](https://github.com/polcak/jsrestrictor/issues).
 
 If you would like to give us [feedback](https://github.com/polcak/jsrestrictor/issues), we would really appreciate it.
 
 Once you install the extension, see the [test page](test/test.html) for the working demo on how the
 extension can help in restricting JS capabilities.
+
+**LICENSE INFORMATION**
+
+This project is available as open source under the terms of the GPL 3.0 or later. However, some elements are being licensed under MIT license and MPL 2.0 license. For accurate information, please check individual files. As well as for accurate information regarding copyrights.

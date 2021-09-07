@@ -1,10 +1,11 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2020  Libor Polcak
-//  Copyright (C) 2021  Matus Svancar
+/** \file
+ * \brief Simple functions that can be used by the extension
+ *
+ *  \author Copyright (C) 2020  Libor Polcak
+ *  \author Copyright (C) 2021  Matus Svancar
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -72,15 +73,35 @@ function wwwRemove(hostname) {
 	return String(hostname).replace(/^www\./,'');
 }
 
+/**
+ * \brief shifts number bits to pick new number
+ * \param v BigInt number to shift
+ */
 function lfsr_next(v) {
 	return BigInt.asUintN(64, ((v >> 1n) | (((v << 62n) ^ (v << 61n)) & (~(~0n << 63n) << 62n))));
 }
-
-function PseudoRandomSequence(seed) {
-	if ( typeof this.v == 'undefined' ) {
-		this.v = seed;
+/**
+ * \brief generates pseudorandom string based on domain key
+ * \param length Number length of generated string
+ * \param charSetEnum Number enum choosing charset
+ */
+function randomString(length, charSetEnum) {
+	var ret = "";
+	var charSets = ["abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_ ", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/"];
+	var charSet = charSets[charSetEnum];
+	for ( var i = 0; i < length; i++ ) {
+			ret += charSet.charAt(Math.floor(prng() * charSet.length));
 	}
-	const maxUInt64 = 18446744073709551615;
-	this.v = lfsr_next(this.v);
-	return (Number(this.v) / maxUInt64) / 10;
+	return ret;
+}
+/** \brief shuffle given array according to domain key
+ * \param array input array
+ *
+ * Fisher–Yates shuffle algorithm - Richard Durstenfeld's version
+ */
+function shuffleArray(array) {
+	for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(prng() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+	}
 }

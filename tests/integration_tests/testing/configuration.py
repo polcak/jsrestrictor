@@ -5,6 +5,8 @@
 #
 #  Copyright (C) 2020  Martin Bednar
 #
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -33,7 +35,7 @@ class __Config:
     # Browsers in which tests will be run.
     tested_browsers = [BrowserType.CHROME, BrowserType.FIREFOX]
     # Default levels of JSR which will be tested.
-    tested_jsr_levels = [0, 1, 2, 3]
+    tested_jsr_levels = [0, 1, 2, 3, 4]
 
 
 

@@ -4,6 +4,9 @@
 #  internet.
 #
 #  Copyright (C) 2020  Martin Bednar
+#  Copyright (C) 2021  Matus Svancar
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -49,3 +52,5 @@ def expected():
         return values_expected.level2
     elif get_shared_browser().jsr_level == 3:
         return values_expected.level3
+    elif get_shared_browser().jsr_level == 4:
+        return values_expected.level4

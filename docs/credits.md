@@ -1,7 +1,4 @@
----
----
-
-# Developpers
+# Developers
 
 [Libor Polčák](https://www.fit.vutbr.cz/~polcak) was behind an idea to implement a webextension that works as a firewall for JavaScript APIs. He is the current main maintainer. He received support for this project through the <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> project of NGI0 PET Fund, a fund established by NLnet with financial support
 		from the European Commission's Next Generation Internet programme, under the aegis of DG
@@ -21,3 +18,5 @@ of his bachelor thesis. He also provided several small fixes to the code base.
 # Key ideas
 
 The development of this extension is influenced by the paper [JavaScript Zero: Real JavaScript and Zero Side-Channel Attacks](https://graz.pure.elsevier.com/de/publications/javascript-zero-real-javascript-and-zero-side-channel-attacks). It appeared during the work of Zbyněk Červinka and provided basically the same approach to restrict APIs as was at the time developped by Zbyněk Červinka.
+
+The [Force Point report](https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf) was a key inspiration for the development of the Network Boundary Shield.

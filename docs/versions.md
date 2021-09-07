@@ -1,6 +1,16 @@
 
 # Release history
 
+## 0.4.7
+
+* Wrap Beacon API
+* Bugfix: inject content scripts to all iframes
+* Fix exception throwing in the code generator dealing with Firefox bug 1267027
+
+## 0.4.6
+
+* NBS improvements for Chromium-based browsers: block a host after detecting the first suspicious HTTP request from the public to the private network.
+
 ## 0.4.5
 
 * Add wrapper of MediaDevices.prototype.enumerateDevices
