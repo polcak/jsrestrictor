@@ -58,10 +58,17 @@ function define_page_context_function(wrapper) {
 			if (WrapHelper.XRAY) {
 				let innerF = replacementF;
 				replacementF = function(...args) {
+
+					// prepare callbacks
+					args = args.map(a => typeof a === "function" ? WrapHelper.pageAPI(a) : a);
+
 					let ret = WrapHelper.forPage(innerF.call(this, ...args));
 					if (ret) {
+						if (ret instanceof xrayWindow.Promise || ret instanceof unwrappedWindow.Promise) {
+							ret = Promise.resolve(ret);
+						}
 						try {
-							ret = ret.wrappedJSObject || ret;
+							ret = WrapHelper.unX(ret);
 						} catch (e) {}
 					}
 					return ret;
@@ -105,7 +112,7 @@ function generate_object_properties(code_spec_obj) {
 			// let's traverse the prototype chain in search of this property
 			for (let proto = Object.getPrototypeOf(obj); proto; proto = Object.getPrototypeOf(obj)) {
 				if (descriptor = Object.getOwnPropertyDescriptor(proto, prop)) {
-					obj = proto.wrappedJSObject || proto;
+					obj = WrapHelper.unX(obj);
 					break;
 				}
 			}
@@ -161,7 +168,7 @@ function generate_assignement(code_spec_obj) {
  * This function builds the wrapping code.
  */
 var build_code = function(wrapper, ...args) {
-	var post_wrapping_functions = {
+	let post_wrapping_functions = {
 		function_define: define_page_context_function,
 		function_export: generate_assign_function_code,
 		object_properties: generate_object_properties,
@@ -169,18 +176,35 @@ var build_code = function(wrapper, ...args) {
 		assign: generate_assignement,
 	};
 
-	var code = `try {if (${wrapper.parent_object} === undefined) {return;}} catch (e) {return; /* It seems that the parent object does not exist */ }`;
-	for (let wrapped of wrapper.wrapped_objects || []) {
-		code += `
-			var ${wrapped.wrapped_name} = window.${wrapped.original_name};
-			if (${wrapped.wrapped_name} === undefined) {
-				// Do not wrap an object that is not defined, e.g. because it is experimental feature.
-				// This should reduce fingerprintability.
-				return;
-			}
-		`;
+	let target = `${wrapper.parent_object}.${wrapper.parent_object_property}`;
+	let code;
+	{
+		// Do not wrap an object that is not defined, e.g. because it is experimental feature.
+		// This should reduce fingerprintability.
+		let objPath = [], undefChecks = [];
+		for (leaf of target.split('.')) {
+			objPath.push(leaf);
+			undefChecks.push(`typeof ${objPath.join('.')} === "undefined"`);
+		}
+
+    code = `
+		try {
+			if (${undefChecks.join(" || ")}) return;
+		} catch (e) {
+			return;
+		}`;
 	}
-	code += `${wrapper.helping_code || ''}`;
+
+	for (let {original_name = target, wrapped_name, callable_name} of wrapper.wrapped_objects || []) {
+		if (original_name !== target) code += `
+		if (typeof ${original_name} === undefined) return;
+		`;
+		if (wrapped_name) code += `var ${wrapped_name} = window.${original_name};`;
+		if (callable_name) code += `var ${callable_name} = WrapHelper.pageAPI(window.${original_name});`;
+	}
+	code += `
+		${wrapper.helping_code || ''}`;
+
 	if (wrapper.wrapping_function_body){
 		code += `${define_page_context_function(wrapper)}`;
 	}
@@ -196,7 +220,6 @@ var build_code = function(wrapper, ...args) {
 		}
 	}
 	if (wrapper["wrapper_prototype"] !== undefined) {
-		let target = `${wrapper.parent_object}.${wrapper.parent_object_property}`;
 		let source = wrapper.wrapper_prototype;
 		code += `if (${target.prototype} !== ${source.prototype}) { // prevent cyclic __proto__ errors on Proxy
 			Object.setPrototypeOf(${target}, ${source});
@@ -224,7 +247,7 @@ function wrap_code(wrappers) {
 		try {
 			return build_code(build_wrapping_code[wrapper[0]], wrapper.slice(1));
 		} catch (e) {
-			console.log(e);
+			console.error(e);
 			return "";
 		}
 	};
@@ -239,7 +262,7 @@ function wrap_code(wrappers) {
 			let privilegedToPage = new WeakMap();
 			let pageReady = new WeakSet();
 
-			let promise =  obj =>	xrayWindow.Promise.resolve(obj).then(r => forPage(r));
+			let promise =  obj =>	obj.then(r => forPage(r));
 
 			forPage = obj => {
 				if (typeof obj !== "object" && typeof obj !== "function" || obj === null
@@ -247,8 +270,28 @@ function wrap_code(wrappers) {
 				if (privilegedToPage.has(obj)) return privilegedToPage.get(obj); // keep clone identity
 				let ret = obj; // fallback
 				if (XRAY) {
+					if (obj instanceof xrayWindow.Promise) {
+						return promise(obj);
+					}
+					if (obj instanceof unwrappedWindow.Promise) {
+						return new xrayWindow.Promise((resolve, reject) => {
+								unwrappedWindow.Promise.prototype.then.call(obj,
+									forPage(r => {
+										if (r.wrappedJSObject && r.wrappedJSObject === unX(r)) {
+											r = unX(r)
+										} else r = forPage(r);
+										resolve(r);
+									}
+									), forPage(e => reject(e)))
+								});
+					}
 					try {
-						ret = typeof obj.then === "function" ? promise(obj) : cloneInto(obj, unwrappedWindow, {cloneFunctions: true, wrapReflectors: true});
+						if (obj.wrappedJSObject && obj.wrappedJSObject === unX(obj)) {
+							return obj;
+						}
+					} catch (e) {}
+					try {
+						ret = cloneInto(obj, unwrappedWindow, {cloneFunctions: true, wrapReflectors: true});
 					} catch (e) {
 						// can't be cloned: must be a Proxy
 					}
@@ -266,7 +309,8 @@ function wrap_code(wrappers) {
 			let fixProp = (d, prop, obj) => {
 				for (let accessor of ["set", "get"]) {
 					if (typeof d[accessor] === "function") {
-						d[accessor] = exportFunction(d[accessor], obj, {defineAs: `${accessor} ${prop}`});
+						let f = d[accessor];
+						d[accessor] = exportFunction(d[accessor], obj, {});
 					}
 				}
 				if (typeof d.value === "object") d.value = forPage(d.value);
@@ -274,16 +318,20 @@ function wrap_code(wrappers) {
 			};
 			let OriginalProxy = unwrappedWindow.Proxy;
 			let Proxy = OriginalProxy;
+			let pageAPI, unX;
 			if (XRAY) {
-				// automatically export Proxy construcor parameters
+
+				unX = o => XPCNativeWrapper.unwrap(o);
+
+				// automatically export Proxy constructor parameters
 				let proxyConstructorHandler =  forPage({
 					construct(targetConstructor, args) {
-						let [target, handler] = args.wrappedJSObject || args;
+						let [target, handler] = unX(args);
 						let selfProxy = !!(target === WrapHelper.Proxy && handler.construct);
 						if (selfProxy) {
 							let {construct} = handler;
 							handler.construct = (target, args) => {
-								let proxy = construct(target, args.wrappedJSObject || args);
+								let proxy = construct(target, unX(args));
 								pageReady.add(proxy);
 								return proxy;
 							}
@@ -297,7 +345,114 @@ function wrap_code(wrappers) {
 					},
 				});
 				Proxy = new OriginalProxy(OriginalProxy, proxyConstructorHandler);
+				let then;
+				let apiHandler = {
+					apply(target, thisArg, args) {
+						let pa = unX(args);
+						for (let j = pa.length; j-- > 0;) {
+							let a = pa[j];
+							if (a && unX(a) === a) {
+								pa[j] = forPage(a);
+							} else if (typeof a === "function") {
+								pa[j] = new Proxy(a, apiHandler);
+							}
+						}
+						console.debug("apiHandler call", target, thisArg, pa);
+						let ret = target.apply(thisArg, pa);
+						if (ret) {
+							console.debug("apiHandler ret", ret, ret instanceof Promise, ret instanceof unwrappedWindow.Promise, ret instanceof xrayWindow.Promise, ret.then);
+							if (ret instanceof xrayWindow.Promise) {
+							  then = then || (then = new Proxy(xrayWindow.Promise.prototype.then, apiHandler));
+								if (ret.wrappedJSObject) {
+									let p = unX(ret);
+									if (p === ret.wrappedJSObject) {
+										p.then = then
+										ret = p;
+									}
+								}
+							} else {
+								ret = forPage(ret);
+							}
+						}
+						return ret;
+					}
+				};
+
+
+
+				pageAPI = f => {
+					if (typeof f !== "function") return f;
+					return new Proxy(f, apiHandler);
+				}
+			} else {
+				pageAPI = unX = f => f;
 			}
+
+			let overlay;
+			{
+				let overlayProtos = new WeakMap();
+				let overlayObjects = new WeakMap();
+				overlay = (obj, data) => {
+					obj = unX(obj);
+					let proto = obj.__proto__;
+					let proxiedProps = overlayProtos.get(proto);
+					if (!proxiedProps) overlayProtos.set(proto, proxiedProps = {});
+					let props = Object.getOwnPropertyDescriptors(data);
+					for (let p in props) {
+						if (p in proxiedProps) continue;
+						for (let rootProto = proto; ;) {
+							let protoProps = Object.getOwnPropertyDescriptors(rootProto);
+							let protoProp = protoProps[p];
+							if (!protoProp) {
+								rootProto = rootProto.__proto__;
+								if (rootProto) continue;
+							}
+							if (protoProp) {
+								let original;
+								if (protoProp.get) {
+									let getterHandler =  forPage({
+										apply(target, thisArg, args) {
+											let obj = unX(thisArg);
+											if (overlayObjects.has(obj)) {
+												let data = overlayObjects.get(obj);
+												return forPage(data[p]);
+											}
+											return target.apply(thisArg, args);
+										}
+									});
+									let original = protoProp.get;
+									protoProp.get = new Proxy(protoProp.get, getterHandler);
+								} else if (typeof protoProp.value === "function") {
+									original = protoProp.value;
+									let methodHandler = forPage({
+										apply(target, thisArg, args) {
+											let obj = unX(thisArg);
+											if (overlayObjects.has(obj)) {
+												let data = overlayObjects.get(obj);
+												return forPage(data[p].apply(thisArg, args));
+											}
+											return target.apply(thisArg, args);
+										}
+									});
+									protoProp.value = new Proxy(protoProp.value, methodHandler);
+								} else {
+									protoProp = null;
+								}
+								if (protoProp) {
+									Reflect.defineProperty(rootProto, p, protoProp);
+									proxiedProps[p] = {rootProto, original, protoProp};
+									break;
+								}
+							}
+							Reflect.defineProperty(obj, p, forPage(props[p]));
+							break;
+						}
+					}
+					overlayObjects.set(obj, data);
+					return obj;
+				}
+			}
+
 			WrapHelper = {
 				XRAY, // boolean, are we in a xray environment (i.e. on Firefox)?
 				shared: {}, // shared storage object for in inter-wrapper coordination
@@ -307,24 +462,27 @@ function wrap_code(wrappers) {
 				// to be consumed/called from the page context (mostly useful to handle callback-based APIs),
 				// see the geolocation wrappers
 				forPage,
+				_forPage: x => x, // dummy for easily testing out the preparation
 				isForPage: obj => pageReady.has(obj),
-
+				unX, // safely waives xray wrappers
 				// xray-aware Object creation helpers, mostly used transparently by the code builders
 				defineProperty(obj, prop, descriptor, ...args) {
-					if (obj.wrappedJSObject) obj = obj.wrappedJSObject;
+					obj = unX(obj);
 					return Object.defineProperty(obj, prop, fixProp(descriptor, prop, obj), ...args);
 				},
 				defineProperties(obj, descriptors, ...args) {
-					if (obj.wrappedJSObject) obj = obj.wrappedJSObject;
+					obj = unX(obj);
 					for (let [prop, d] of Object.entries(descriptors)) {
-						fixProp(d, prop, obj);
+						descriptors[prop] = fixProp(d, prop, obj);
 					}
-					return Object.defineProperties(obj.wrappedJSObject || obj, descriptors, ...args);
+					return Object.defineProperties(obj, descriptors, ...args);
 				},
 				create(proto, descriptors) {
-					let obj = forPage(Object.create(proto && proto.wrappedJSObject || proto));
+					let obj = forPage(Object.create(unX(proto)));
 					return descriptors ? this.defineProperties(obj, descriptors) && obj : obj;
 				},
+				overlay,
+				pageAPI,
 				// the original Proxy constructor
 				OriginalProxy,
 				// our xray-aware proxied Proxy constructor
@@ -336,7 +494,7 @@ function wrap_code(wrappers) {
 		with(unwrappedWindow) {
 			let window = unwrappedWindow;
 			let {Proxy} = WrapHelper;
-			let {Promise, Object} = xrayWindow;
+			let {Promise, Object, Array, JSON} = xrayWindow;
 			try {
 				// WRAPPERS //
 
