@@ -35,6 +35,7 @@
 //  \copyright Copyright (c) 2020 The Brave Authors.
 
 /** \file
+ * \ingroup wrappers
  *
  * The goal is to prevent fingerprinting by modifying the values that can be read from the canvas.
  * So the visual content of wrapped canvases as displayed on the screen is the same as intended.
