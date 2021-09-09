@@ -25,8 +25,7 @@ import pytest
 from time import time
 
 from values_getters import get_position
-from math_operations import is_in_accuracy
-
+from math_operations import is_in_accuracy, calc_distance
 
 ## Setup method - it is run before gps tests execution starts.
 #
@@ -60,8 +59,20 @@ def test_accuracy(browser, position, expected):
         else:
             if expected.geolocation.accuracy['accuracy'] == 'EXACTLY':
                 # Values do not have to be strictly equal.
-                # A deviation of less than 50 meters is tolerated.
-                assert abs(float(position['accuracy']) - float(browser.real.geolocation.accuracy)) < 50
+                # A deviation of less than 200 meters is tolerated.
+                assert abs(float(position['accuracy']) - float(browser.real.geolocation.accuracy)) < 200
+                
+                # x is real position (position returned without JSR)
+                # y should be real position too (position returned with JSR level 0)
+                #
+                # It is clear that x and y will not be exact same values. This is due to the netural GPS inaccuracy.
+				# A small difference is tolerated.
+                # x.accuracy and y.accuracy will be probably different.
+                # But distance between x and y should be less than (x.accuracy + y.accuracy).               
+                assert calc_distance(float(browser.real.geolocation.latitude),
+                                    float(browser.real.geolocation.longitude),
+                                    float(position['latitude']),
+                                    float(position['longitude'])) < (float(browser.real.geolocation.accuracy) + float(position['accuracy']))
             else:
                 # Should be rounded real value in accuracy.
                 assert is_in_accuracy(position['accuracy'], expected.geolocation.accuracy['accuracy'])
