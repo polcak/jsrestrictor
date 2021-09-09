@@ -457,10 +457,13 @@ function wrap_code(wrappers) {
 				XRAY, // boolean, are we in a xray environment (i.e. on Firefox)?
 				shared: {}, // shared storage object for in inter-wrapper coordination
 
-				// XwrapHelper.forPage() can be used by "complex" proxies to explicitly
+				// WrapHelper.forPage() can be used by "complex" proxies to explicitly
 				// prepare an object/function created in Firefox's sandboxed content script environment
-				// to be consumed/called from the page context (mostly useful to handle callback-based APIs),
-				// see the geolocation wrappers
+				// to be consumed/called from the page context, and to make replacements for native
+				// objects and functions provided by the wrappers look as much native as possible.
+				// in most cases, however, this gets automated by the code builders replacing
+				// Object methods found in the wrapper sources with their WrapHelper counterparts
+				// and by proxying "callable_name" functions through WrapHelper.pageAPI().
 				forPage,
 				_forPage: x => x, // dummy for easily testing out the preparation
 				isForPage: obj => pageReady.has(obj),
@@ -481,7 +484,18 @@ function wrap_code(wrappers) {
 					let obj = forPage(Object.create(unX(proto)));
 					return descriptors ? this.defineProperties(obj, descriptors) && obj : obj;
 				},
+
+				// WrapHelper.overlay(obj, data)
+				// Proxies the prototype of the obj object in order to return the properties of the data object
+				// as if they were native properties (e.g. as if they were returned by getters on the prototype chain,
+				// rather than defined on the instance).
+				// This allows spoofing some native objects data in a less detectable / fingerprintable way than using
+				// Object.defineProperty(). See wrappingS-MCS.js for an example.
 				overlay,
+				// WrapHelper.pageAPI(f)
+				// Proxies the function/method f so that arguments and return values, and especially callbacks and
+				// Promise objects, are recursively managed in order to transparently marshal objects back
+				// and forth Firefox's sandbox for extensions and the page scripts.
 				pageAPI,
 				// the original Proxy constructor
 				OriginalProxy,
