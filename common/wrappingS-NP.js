@@ -313,7 +313,7 @@
 					parent_object: "navigator",
 					parent_object_property: "mimeTypes",
 					wrapped_objects: [],
-					/**  \brief replaces navigator.plugins getter
+					/**  \brief replaces navigator.mimeTypes getter
 					 *
 					 * Depending on level chosen this property returns:
 					 *	* (0) - modified MimeTypeArray with links to updated Plugins
