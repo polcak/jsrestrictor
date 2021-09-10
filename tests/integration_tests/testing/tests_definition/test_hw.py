@@ -72,5 +72,11 @@ def test_IOdevices(browser, IOdevices, expected):
 		assert len(IOdevices) == len(browser.real.device.IOdevices)
 		for i in range(len(IOdevices)):
 			assert IOdevices[i]['kind'] == browser.real.device.IOdevices[i]['kind']
+	elif expected.device.IOdevices == 'EMPTY':
+		if IOdevices == 'ERROR':
+			assert IOdevices == 'ERROR'
+		else:
+			assert IOdevices == []
+			assert len(IOdevices) == 0
 	else:
 		assert len(IOdevices) in expected.device.IOdevices

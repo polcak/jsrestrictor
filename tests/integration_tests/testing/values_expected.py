@@ -249,7 +249,7 @@ level3 = TestedValues(
                    'valid_values': {4}},
     hardware_concurrency={'value':'SPOOF VALUE',
                           'valid_values': {2}},
-    IOdevices= {0},
+    IOdevices= "EMPTY",
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 1.0},
