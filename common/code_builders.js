@@ -64,7 +64,7 @@ function define_page_context_function(wrapper) {
 
 					let ret = WrapHelper.forPage(innerF.call(this, ...args));
 					if (ret) {
-						if (ret instanceof xrayWindow.Promise || ret instanceof unwrappedWindow.Promise) {
+						if (ret instanceof xrayWindow.Promise || ret instanceof WrapHelper.unX(xrayWindow).Promise) {
 							ret = Promise.resolve(ret);
 						}
 						try {
@@ -273,9 +273,9 @@ function wrap_code(wrappers) {
 					if (obj instanceof xrayWindow.Promise) {
 						return promise(obj);
 					}
-					if (obj instanceof unwrappedWindow.Promise) {
+					if (obj instanceof unX(xrayWindow).Promise) {
 						return new xrayWindow.Promise((resolve, reject) => {
-								unwrappedWindow.Promise.prototype.then.call(obj,
+								unX(xrayWindow).Promise.prototype.then.call(obj,
 									forPage(r => {
 										if (r.wrappedJSObject && r.wrappedJSObject === unX(r)) {
 											r = unX(r)
@@ -291,14 +291,14 @@ function wrap_code(wrappers) {
 						}
 					} catch (e) {}
 					try {
-						ret = cloneInto(obj, unwrappedWindow, {cloneFunctions: true, wrapReflectors: true});
+						ret = cloneInto(obj, unX(xrayWindow), {cloneFunctions: true, wrapReflectors: true});
 					} catch (e) {
 						// can't be cloned: must be a Proxy
 					}
 				} else {
 					// Chromium: just use patchWindow's exportFunction() to make our wrappers look like native functions
 					if (typeof obj === "function") {
-						ret = exportFunction(obj, unwrappedWindow);
+						ret = exportFunction(obj, unX(xrayWindow));
 					}
 				}
 				pageReady.add(ret);
@@ -360,7 +360,7 @@ function wrap_code(wrappers) {
 						console.debug("apiHandler call", target, thisArg, pa);
 						let ret = target.apply(thisArg, pa);
 						if (ret) {
-							console.debug("apiHandler ret", ret, ret instanceof Promise, ret instanceof unwrappedWindow.Promise, ret instanceof xrayWindow.Promise, ret.then);
+							console.debug("apiHandler ret", ret, ret instanceof Promise, ret instanceof unX(xrayWindow).Promise, ret instanceof xrayWindow.Promise, ret.then);
 							if (ret instanceof xrayWindow.Promise) {
 							  then = then || (then = new Proxy(xrayWindow.Promise.prototype.then, apiHandler));
 								if (ret.wrappedJSObject) {
