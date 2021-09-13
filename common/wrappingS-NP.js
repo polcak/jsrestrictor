@@ -164,7 +164,7 @@
    *
    * \param plugins PluginArray object https://developer.mozilla.org/en-US/docs/Web/API/PluginArray
    */
-  function fakeMimeTypeArray(plugins){
+  function fakeMimeTypeArrayF(plugins){
     var ret = Object.create(MimeTypeArray.prototype);
     ret.__proto__.item = item;
     ret.__proto__.namedItem = namedItem;
@@ -261,7 +261,7 @@
   }
   var methods = item + namedItem + refresh + shuffleArray + randomString;
   var farbles = farblePlugin + farbleMime;
-  var fakes = fakeMime + fakePlugin + fakePluginArray + fakeMimeTypeArray;
+  var fakes = fakeMime + fakePlugin + fakePluginArray + fakeMimeTypeArrayF;
 	var wrappers = [
     {
 			parent_object: "navigator",
@@ -283,7 +283,7 @@
 					shuffleArray(buffer);
 				}
 				var fakePluginArray = fakePluginArray(buffer);
-				var fakeMimeTypeArray = fakeMimeTypeArray(fakePluginArray);
+				var fakeMimeTypeArray = fakeMimeTypeArrayF(fakePluginArray);
 			`,
 			post_wrapping_code: [
 				{
