@@ -21,6 +21,10 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+
+from math import radians, sin, cos, sqrt, atan2
+
+
 ## Check if number is in given accuracy and return True/False.
 #
 #  Function expects two number (int/float) or string(s) containing valid number(s).
@@ -30,7 +34,7 @@
 #  E.g.: is_in_accuracy(1654800, 10) => True
 #  E.g.: is_in_accuracy(1654800, 1000) => False
 def is_in_accuracy(number, accuracy):
-    number_str = str(int(number))[::-1]
+    number_str = str(int(float(number)))[::-1]
     accuracy_str = str(int(accuracy))[::-1]
     index = 0
     while accuracy_str[index] == '0':
@@ -40,3 +44,28 @@ def is_in_accuracy(number, accuracy):
                 return False
         index += 1
     return True
+
+
+## Calculate distance between two GEO coordinates (latitude and longitude) in meters.
+#
+#  Function expects two pairs of GEO coordinates. Coordinates have to be float or int type (not string).
+#  {lat1, lon1} is the first position.
+#  {lat2, lon2} is the second position.
+#  Function returns distance between two position on Earth in meters.
+#  The function takes into account the curved surface of the Earth.
+def calc_distance(lat1, lon1, lat2, lon2):
+    # approximate radius of earth in km
+    R = 6371.0
+	
+	# difference between longitude converted from degrees to radians
+    dlon = radians(lon2 - lon1)
+	# difference between latitude converted from degrees to radians
+    dlat = radians(lat2 - lat1)
+	
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    distance_km = R * c
+    distance_m = distance_km * 1000
+    
+    return distance_m

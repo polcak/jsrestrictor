@@ -107,21 +107,32 @@ def test_oscpu(browser, navigator, expected):
     else:
         assert navigator['oscpu'] == expected.navigator.oscpu
 
-## Test plugins
-def test_plugins(browser, navigator, expected):
-    if expected.navigator.plugins == 'SPOOF VALUE':
-        assert navigator['plugins'] != browser.real.navigator.plugins
-    elif expected.navigator.plugins == 'ZERO VALUE':
-        assert len(navigator['plugins']) == 0
+## Test plugins count
+def test_plugins_count(browser, navigator, expected):
+    if expected.navigator.plugins['count'] == 'REAL VALUE':
+        assert len(navigator['plugins']) == len(browser.real.navigator.plugins)
+    elif expected.navigator.plugins['count'] == 'PLUS_2':
+        assert len(navigator['plugins']) == len(browser.real.navigator.plugins) + 2
     else:
+        assert len(navigator['plugins']) == expected.navigator.plugins['count']
+
+## Test plugins array value
+def test_plugins(browser, navigator, expected):
+    if expected.navigator.plugins['value'] == 'REAL VALUE':
         assert navigator['plugins'] == browser.real.navigator.plugins
+    elif expected.navigator.plugins['value'] == 'EMPTY':
+        assert not navigator['plugins']
+    else:
+        assert navigator['plugins'] != browser.real.navigator.plugins
 
 ## Test mimeTypes
 def test_mime_types(browser, navigator, expected):
-    if expected.navigator.mimeTypes == 'SPOOF VALUE':
-        if navigator['mimeTypes'] == browser.real.navigator.mimeTypes:
+    if expected.navigator.mimeTypes == 'EMPTY':
+        assert navigator['mimeTypes'] == []
+    elif expected.navigator.mimeTypes == 'SPOOF VALUE':
+        if browser.real.navigator.mimeTypes == []:
             assert navigator['mimeTypes'] == []
         else:
-            assert True
+            assert navigator['mimeTypes'] != browser.real.navigator.mimeTypes
     else:
         assert navigator['mimeTypes'] == browser.real.navigator.mimeTypes
