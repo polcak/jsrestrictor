@@ -266,6 +266,7 @@
 		{
 			parent_object: "navigator",
 			parent_object_property: "plugins",
+			apply_if: "navigator.plugins.length > 0",
 			wrapped_objects: [],
 			helping_code:
 				methods + farbles + fakes +`
