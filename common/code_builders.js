@@ -183,8 +183,11 @@ var build_code = function(wrapper, ...args) {
 		// This should reduce fingerprintability.
 		let objPath = [], undefChecks = [];
 		for (leaf of target.split('.')) {
+			undefChecks.push(
+				objPath.length ? `!("${leaf}" in ${objPath.join('.')})` // avoids e.g. Event.prototype.timeStamp from throwing "Illegal invocation"
+											 : `typeof ${leaf} === "undefined"`
+			);
 			objPath.push(leaf);
-			undefChecks.push(`typeof ${objPath.join('.')} === "undefined"`);
 		}
 
     code = `
