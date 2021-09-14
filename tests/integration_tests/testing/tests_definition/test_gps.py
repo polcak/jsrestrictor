@@ -57,11 +57,7 @@ def test_accuracy(browser, position, expected):
             # If current value is null, real value has to be null too.
             assert position['accuracy'] == browser.real.geolocation.accuracy
         else:
-            if expected.geolocation.accuracy['accuracy'] == 'EXACTLY':
-                # Values do not have to be strictly equal.
-                # A deviation of less than 200 meters is tolerated.
-                assert abs(float(position['accuracy']) - float(browser.real.geolocation.accuracy)) < 200
-                
+            if expected.geolocation.accuracy['accuracy'] == 'EXACTLY':                
                 # x is real position (position returned without JSR)
                 # y should be real position too (position returned with JSR level 0)
                 #
