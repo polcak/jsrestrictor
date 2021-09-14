@@ -55,10 +55,22 @@
 		{
 			parent_object: "navigator",
 			parent_object_property: "getGamepads",
-			wrapped_objects: [],
+			wrapped_objects: [{
+				original_name: "navigator.getGamepads()",
+				wrapped_name: "origGamepads",
+			}],
 			helping_code: "",
 			wrapping_function_body: `
-					return new window.Array();
+					if (Array.isArray(origGamepads)) {
+						// e.g. Gecko
+						return new window.Array();
+					}
+					else {
+						// e.g. Chromium based
+						var l = new window.Object();
+						window.Object.setPrototypeOf(l, origGamepads.__proto__);
+						return l;
+					}
 				`,
 		},
 	]
