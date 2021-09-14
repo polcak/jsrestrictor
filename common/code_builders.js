@@ -186,8 +186,11 @@ var build_code = function(wrapper, ...args) {
 		// This should reduce fingerprintability.
 		let objPath = [], undefChecks = [];
 		for (leaf of target.split('.')) {
+			undefChecks.push(
+				objPath.length ? `!("${leaf}" in ${objPath.join('.')})` // avoids e.g. Event.prototype.timeStamp from throwing "Illegal invocation"
+											 : `typeof ${leaf} === "undefined"`
+			);
 			objPath.push(leaf);
-			undefChecks.push(`typeof ${objPath.join('.')} === "undefined"`);
 		}
 
     code += `
@@ -261,7 +264,7 @@ function wrap_code(wrappers) {
 		let xrayWindow = window; // the "privileged" xray window wrapper in Firefox
 		let WrapHelper; // xray boundary helper
 		{
-			const XRAY = xrayWindow !== unwrappedWindow;
+			const XRAY = (xrayWindow.top !== unwrappedWindow.top);
 			let privilegedToPage = new WeakMap();
 			let pageReady = new WeakSet();
 
