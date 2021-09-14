@@ -109,18 +109,18 @@ def test_oscpu(browser, navigator, expected):
 
 ## Test plugins count
 def test_plugins_count(browser, navigator, expected):
-    if expected.navigator.plugins['count'] == 'REAL VALUE':
+    if expected.navigator.plugins['count'][browser.type] == 'REAL VALUE':
         assert len(navigator['plugins']) == len(browser.real.navigator.plugins)
-    elif expected.navigator.plugins['count'] == 'PLUS_2':
+    elif expected.navigator.plugins['count'][browser.type] == 'PLUS_2':
         assert len(navigator['plugins']) == len(browser.real.navigator.plugins) + 2
     else:
-        assert len(navigator['plugins']) == expected.navigator.plugins['count']
+        assert len(navigator['plugins']) == expected.navigator.plugins['count'][browser.type]
 
 ## Test plugins array value
 def test_plugins(browser, navigator, expected):
-    if expected.navigator.plugins['value'] == 'REAL VALUE':
+    if expected.navigator.plugins['value'][browser.type] == 'REAL VALUE':
         assert navigator['plugins'] == browser.real.navigator.plugins
-    elif expected.navigator.plugins['value'] == 'EMPTY':
+    elif expected.navigator.plugins['value'][browser.type] == 'EMPTY':
         assert not navigator['plugins']
     else:
         assert navigator['plugins'] != browser.real.navigator.plugins
