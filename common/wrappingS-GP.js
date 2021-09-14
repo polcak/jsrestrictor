@@ -77,10 +77,31 @@
 		{
 			parent_object: "navigator",
 			parent_object_property: "getGamepads",
-			wrapped_objects: [],
+			wrapped_objects: [{
+				original_name: "navigator.getGamepads()",
+				wrapped_name: "origGamepads",
+			}],
 			helping_code: "",
 			wrapping_function_body: `
-					return new window.Array();
+					if (Array.isArray(origGamepads)) {
+						// e.g. Gecko
+						return new window.Array();
+					}
+					else {
+						// e.g. Chromium based
+						var l = new window.Object();
+						// Based on our experiments and web search results like
+						// https://stackoverflow.com/questions/41251051/is-the-html5-gamepad-api-limited-to-only-4-controllers
+						// https://stackoverflow.com/questions/32619456/navigator-getgamepads-return-an-array-of-undefineds
+						// we try to mimic common value of the property
+						l[0] = null;
+						l[1] = null;
+						l[2] = null;
+						l[3] = null;
+						l.length = 4;
+						window.Object.setPrototypeOf(l, origGamepads.__proto__);
+						return l;
+					}
 				`,
 		},
 		{
