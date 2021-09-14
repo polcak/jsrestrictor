@@ -46,6 +46,9 @@ Each wrapping object must have the following mandatory properties:
 * `parent_object` and `parent_object_property` are used to define the name of the wrapping
   (`parent_object.parent_object_property`) that is referenced by level wrappers. Additionally, it is
 used if `wrapper_prototype` is defined to provide the object name to have the prototype changed. Finally, `Object.freeze` can be optionally called on `parent_object.parent_object_property`.
+* `apply_if` optionally provides a condition that needs to be fullfilled to apply the wrapper. For
+	example if a wrapper should be applied only when an API already provides some information. For
+	example, `apply_if: "navigator.plugins.length > 0"`.
 * `wrapped_objects` is a list of objects, each having the following properties (1 mandatory, 2
 	optional, typically, wrappers use one of the optional names in the wrapper code to access the
 	original result of the call):

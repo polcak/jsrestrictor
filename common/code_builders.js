@@ -177,7 +177,10 @@ var build_code = function(wrapper, ...args) {
 	};
 
 	let target = `${wrapper.parent_object}.${wrapper.parent_object_property}`;
-	let code;
+	let code = "";
+	if (wrapper.apply_if !== undefined) {
+		code += `if (!(${wrapper.apply_if})) {return}`
+	}
 	{
 		// Do not wrap an object that is not defined, e.g. because it is experimental feature.
 		// This should reduce fingerprintability.
@@ -187,7 +190,7 @@ var build_code = function(wrapper, ...args) {
 			undefChecks.push(`typeof ${objPath.join('.')} === "undefined"`);
 		}
 
-    code = `
+    code += `
 		try {
 			if (${undefChecks.join(" || ")}) return;
 		} catch (e) {

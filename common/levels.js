@@ -257,7 +257,7 @@ var wrapping_groups = {
 			}],
 			wrappers: [
 				// NP
-				"navigator.plugins",
+				"navigator.plugins", // also modifies "navigator.mimeTypes",
 			],
 		},
 		{
