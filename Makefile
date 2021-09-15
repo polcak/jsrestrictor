@@ -37,6 +37,7 @@ submodules:
 	@./fix_manifest.sh $*_JSR/manifest.json
 	@nscl/include.sh $*_JSR
 	@rm -f $*_JSR/.*.sw[pno]
+	@find $*_JSR/ -name '*.license' -delete
 	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
 
 docs:
