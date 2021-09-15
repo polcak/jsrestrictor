@@ -51,7 +51,7 @@ var wrapping_groups = {
 	groups: [
 		{
 			name: "time_precision",
-			description: "Manipulate the time precision provided by Date and performance",
+			description: "Limit the precision of high resolution time stamps (Date, Performance, events, Gamepad API, Web VR API)",
 			description2: ["If you enable Geolocation API wrapping below, timestamps provided by the Geolocation API will be wrapped as well"],
 			options: [
 				{
@@ -90,6 +90,12 @@ var wrapping_groups = {
 				"PerformanceEntry.prototype",
 				// ECMA
 				"window.Date",
+				// DOM
+				"Event.prototype.timeStamp",
+				// GP
+				"Gamepad.prototype.timestamp",
+				// VR
+				"VRFrameData.prototype.timestamp",
 			],
 		},
 		{
@@ -251,7 +257,7 @@ var wrapping_groups = {
 			}],
 			wrappers: [
 				// NP
-				"navigator.plugins",
+				"navigator.plugins", // also modifies "navigator.mimeTypes",
 			],
 		},
 		{
@@ -345,7 +351,8 @@ var wrapping_groups = {
 			],
 			wrappers: [
 				// AJAX
-				"window.XMLHttpRequest",
+				"XMLHttpRequest.prototype.open",
+				"XMLHttpRequest.prototype.send",
 			],
 		},
 		{
@@ -481,6 +488,30 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "gamepads",
+			description: "Prevent websites from learning information on local gamepads",
+			description2: [],
+			default: true,
+			options: [],
+			wrappers: [
+				// GAMEPAD
+				"navigator.getGamepads",
+			],
+		},
+		{
+			name: "vr",
+			description: "Prevent websites from learning information on local Virtual Reality displays",
+			description2: [],
+			default: true,
+			options: [],
+			wrappers: [
+				// VR
+				"navigator.activeVRDisplays",
+				// XR
+				"navigator.xr",
+			],
+		},
+		{
 			name: "analytics",
 			description: "Prevent sending analytics through Beacon API",
 			description2: [],
@@ -598,6 +629,7 @@ var level_1 = {
 	"time_precision_precision": 2,
 	"time_precision_randomize": false,
 	"hardware": true,
+	"hardware_method": 0,
 	"battery": true,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 2,
@@ -613,20 +645,22 @@ var level_2 = {
 	"time_precision_precision": 1,
 	"time_precision_randomize": false,
 	"hardware": true,
-	"hardware_method": 2,
+	"hardware_method": 0,
 	"battery": true,
 	"htmlcanvaselement": true,
-	"htmlcanvaselement_method": 1,
+	"htmlcanvaselement_method": 0,
 	"audiobuffer": true,
 	"audiobuffer_method": 0,
 	"webgl": true,
-	"webgl_method": 1,
+	"webgl_method": 0,
 	"plugins": true,
-	"plugins_method": 1,
+	"plugins_method": 0,
 	"enumerateDevices": true,
 	"enumerateDevices_method": 1,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 3,
+	"gamepads": true,
+	"vr": true,
 	"analytics": true,
 	"windowname": true,
 };
@@ -644,11 +678,11 @@ var level_3 = {
 	"htmlcanvaselement": true,
 	"htmlcanvaselement_method": 1,
 	"audiobuffer": true,
-	"audiobuffer_method": 0,
+	"audiobuffer_method": 1,
 	"webgl": true,
 	"webgl_method": 1,
 	"plugins": true,
-	"plugins_method": 1,
+	"plugins_method": 2,
 	"enumerateDevices": true,
 	"enumerateDevices_method": 2,
 	"xhr": true,
@@ -664,6 +698,8 @@ var level_3 = {
 	"webworker_approach_slow": false,
 	"geolocation": true,
 	"geolocation_locationObfuscationType": 0,
+	"gamepads": true,
+	"vr": true,
 	"analytics": true,
 	"windowname": true,
 };

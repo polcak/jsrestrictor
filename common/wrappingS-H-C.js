@@ -35,6 +35,7 @@
 //  \copyright Copyright (c) 2020 The Brave Authors.
 
 /** \file
+ * \ingroup wrappers
  *
  * The goal is to prevent fingerprinting by modifying the values that can be read from the canvas.
  * So the visual content of wrapped canvases as displayed on the screen is the same as intended.
@@ -60,62 +61,19 @@
  * Create private namespace
  */
 (function() {
-	/** \fn fake create_post_wrappers
-	 * \brief This function is used to prevent access to unwrapped APIs through iframes.
-	 *
-	 * \param The object to wrap like HTMLIFrameElement.prototype
-	 */
-	function create_post_wrappers(parent_object) {
-		return [{
-				code_type: "object_properties",
-				parent_object: parent_object,
-				parent_object_property: "contentWindow",
-				wrapped_objects: [{
-					original_name: "Object.getOwnPropertyDescriptor(HTMLIFrameElement.prototype, 'contentWindow')['get'];",
-					wrapped_name: "cw",
-				}],
-				wrapped_properties: [{
-					property_name: "get",
-					property_value: `
-								function() {
-									var parent=cw.call(this);
-									try {
-										parent.HTMLCanvasElement;
-									}
-									catch(d) {
-										return; // HTMLIFrameElement.contentWindow properties could not be accessed anyway
-									}
-									wrapping(parent);
-									return parent;
-								}`,
-				}],
-			},
-			{
-				code_type: "object_properties",
-				parent_object: parent_object,
-				parent_object_property: "contentDocument",
-				wrapped_objects: [{
-					original_name: "Object.getOwnPropertyDescriptor(HTMLIFrameElement.prototype, 'contentDocument')['get'];",
-					wrapped_name: "cd",
-				}, ],
-				wrapped_properties: [{
-					property_name: "get",
-					property_value: `
-								function() {
-									var parent=cw.call(this);
-									try{
-										parent.HTMLCanvasElement;
-									}
-									catch(d) {
-										return; // HTMLIFrameElement.contentDocument properties could not be accessed anywaya
-									}
-									wrapping(parent);
-									return cd.call(this);
-								}`,
-				}, ],
-			},
-		];
-	}
+
+	const DEF_CANVAS_COPY = `
+		let canvasCopy = ctx => {
+			let {width, height} = ctx.canvas;
+			let fake = document.createElement("canvas");
+			fake.setAttribute("width", width);
+			fake.setAttribute("height", height);
+			let stx = fake.getContext("2d");
+			let imageData = window.CanvasRenderingContext2D.prototype.getImageData.call(ctx, 0, 0, width, height);
+			stx.putImageData(imageData, 0, 0);
+			return fake;
+		};
+	`;
 
 	/** @var String helping_code.
 	 * Selects if the canvas should be cleared (1) or a fake image should be created based on session
@@ -146,13 +104,8 @@
 			wrapping_function_body: `
 				var ctx = this.getContext("2d");
 				if(ctx){
-					var fake = document.createElement("canvas");
-					fake.setAttribute("width", this.width);
-					fake.setAttribute("height", this.height);
-					var stx = fake.getContext("2d");
-					var imageData = ctx.getImageData(0, 0, this.width, this.height);
-					stx.putImageData(imageData, 0, 0);
-					return origToDataURL.call(fake, ...args);
+					${DEF_CANVAS_COPY}
+					return origToDataURL.call(canvasCopy(ctx), ...args);
 				}
 				else {
 					var ctx = this.getContext("webgl2", {preserveDrawingBuffer: true}) ||
@@ -166,11 +119,10 @@
 					  fake.setAttribute("height", this.height);
 					  var stx = fake.getContext("2d");
 					  stx.drawImage(ctx.canvas, 0, 0);
-					  return fake.toDataURL();
+					  return HTMLCanvasElement.prototype.toDataURL.call(fake);
           }
 				}
 				`,
-			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 		{
 			parent_object: "CanvasRenderingContext2D.prototype",
@@ -179,39 +131,39 @@
 				original_name: "CanvasRenderingContext2D.prototype.getImageData",
 				wrapped_name: "origGetImageData",
 			}],
-			helping_code: helping_code + `
+			helping_code: helping_code + strToUint + `
 				function lfsr_next(v) {
 					return BigInt.asUintN(64, ((v >> 1n) | (((v << 62n) ^ (v << 61n)) & (~(~0n << 63n) << 62n))));
 				}
 				var farble = function(context, fake) {
 					if(approach === 1){
-					fake.fillStyle = "white";
-					fake.fillRect(0, 0, context.canvas.width, context.canvas.height);
-					return;
-				}
-				else if(approach === 0){
-					const width = context.canvas.width;
-					const height = context.canvas.height;
-					var imageData = origGetImageData.call(context, 0, 0, width, height);
-					fake.putImageData(imageData, 0, 0);
-					var fakeData = origGetImageData.call(fake, 0, 0, width, height);
-					var pixel_count = BigInt(width * height);
-					var channel = domainHash[0].charCodeAt(0) % 3;
-					var canvas_key = domainHash;
-					var v = BigInt(sessionHash);
-
-					for (let i = 0; i < 32; i++) {
-						var bit = canvas_key[i];
-						for (let j = 8; j >= 0; j--) {
-							var pixel_index = (4 * Number(v % pixel_count) + channel);
-							fakeData.data[pixel_index] = fakeData.data[pixel_index] ^ (bit & 0x1);
-							bit = bit >> 1;
-							v = lfsr_next(v);
-						}
+						fake.fillStyle = "white";
+						fake.fillRect(0, 0, context.canvas.width, context.canvas.height);
+						return;
 					}
-					fake.putImageData(fakeData, 0, 0);
-				}
-			};`,
+					else if(approach === 0){
+						const width = context.canvas.width;
+						const height = context.canvas.height;
+						var imageData = origGetImageData.call(context, 0, 0, width, height);
+						fake.putImageData(imageData, 0, 0);
+						var fakeData = origGetImageData.call(fake, 0, 0, width, height);
+						var pixel_count = BigInt(width * height);
+						var channel = domainHash[0].charCodeAt(0) % 3;
+						var canvas_key = domainHash;
+						var v = BigInt(strToUint(domainHash,8));
+
+						for (let i = 0; i < 32; i++) {
+							var bit = canvas_key[i];
+							for (let j = 8; j >= 0; j--) {
+								var pixel_index = (4 * Number(v % pixel_count) + channel);
+								fakeData.data[pixel_index] = fakeData.data[pixel_index] ^ (bit & 0x1);
+								bit = bit >> 1;
+								v = lfsr_next(v);
+							}
+						}
+						fake.putImageData(fakeData, 0, 0);
+					}
+				};`,
 			wrapping_code_function_name: "wrapping",
 			wrapping_code_function_params: "parent",
 			wrapping_code_function_call_window: true,
@@ -233,7 +185,6 @@
 				farble(this,stx);
 				return origGetImageData.call(stx, sx, sy, sw, sh);
 			`,
-			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 		{
 			parent_object: "HTMLCanvasElement.prototype",
@@ -256,16 +207,9 @@
 			 * CanvasRenderingContext2D.getImageData() that detemines the result.
 			 */
 			wrapping_function_body: `
-				var ctx = this.getContext("2d");
-				var fake = document.createElement("canvas");
-				fake.setAttribute("width", this.width);
-				fake.setAttribute("height", this.height);
-				var stx = fake.getContext("2d");
-				var imageData = ctx.getImageData(0,0,this.width,this.height);
-				stx.putImageData(imageData, 0, 0);
-				return origToBlob.call(fake, ...args);
+				${DEF_CANVAS_COPY}
+				return origToBlob.call(canvasCopy(this.getContext("2d")), ...args);
 			`,
-			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 		{
 			parent_object: "OffscreenCanvas.prototype",
@@ -288,16 +232,9 @@
 			 * CanvasRenderingContext2D.getImageData() that detemines the result.
 			 */
 			wrapping_function_body: `
-				var ctx = this.getContext("2d");
-				var fake = document.createElement("canvas");
-				fake.setAttribute("width", this.width);
-				fake.setAttribute("height", this.height);
-				var stx = fake.getContext("2d");
-				var imageData = ctx.getImageData(0,0,this.width,this.height);
-				stx.putImageData(imageData, 0, 0);
-				return origConvertToBlob.call(fake, ...args);
+			${DEF_CANVAS_COPY}
+			return origConvertToBlob.call(canvasCopy(this.getContext("2d")), ...args);
 			`,
-			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 		{
 			parent_object: "CanvasRenderingContext2D.prototype",
@@ -313,7 +250,7 @@
 						return (ret && ((prng()*20) > 1));
 					}
 					else if(approach === 1){
-						return origIsPointInPath.call(ctx, ...args);
+						return false;
 					}
 				};
 			`,
@@ -335,7 +272,6 @@
 			wrapping_function_body: `
 				return farbleIsPointInPath(this, ...args);
 			`,
-			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 		{
 			parent_object: "CanvasRenderingContext2D.prototype",
@@ -351,7 +287,7 @@
 						return (ret && ((prng()*20) > 1));
 					}
 					else if(approach === 1){
-						return origIsPointInStroke.call(ctx, ...args);
+						return false;
 					}
 				};
 			`,
@@ -373,7 +309,6 @@
 			wrapping_function_body: `
 				return farbleIsPointInStroke(this, ...args);
 			`,
-			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
 	]
 	add_wrappers(wrappers);

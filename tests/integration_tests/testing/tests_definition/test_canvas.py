@@ -82,23 +82,23 @@ def test_to_blob(browser, expected):
             assert image == browser.real.canvas_blob
 
 def test_is_point_in_path(browser, expected):
-    point = get_point_in_path(browser.driver,"canvas4")
+    point = get_point_in_path(browser.driver,"canvas4", (expected.canvas_point_path == 'FALSE VALUE'))
     if point == "ERROR":
         print("\n isPointInPath error.")
         assert False
     else:
-        if expected.canvas_point_path == 'SPOOF VALUE':
+        if expected.canvas_point_path in {'SPOOF VALUE','FALSE VALUE'}:
             assert point == False
         else:
             assert point == True
 
 def test_is_point_in_stroke(browser, expected):
-    point = get_point_in_stroke(browser.driver,"canvas5")
+    point = get_point_in_stroke(browser.driver,"canvas5", (expected.canvas_point_stroke == 'FALSE VALUE'))
     if point == "ERROR":
         print("\n isPointInStroke error.")
         assert False
     else:
-        if expected.canvas_point_stroke == 'SPOOF VALUE':
+        if expected.canvas_point_stroke in {'SPOOF VALUE','FALSE VALUE'} :
             assert point == False
         else:
             assert point == True

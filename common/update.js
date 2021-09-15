@@ -41,9 +41,6 @@ function installUpdate() {
 	 *	  whitelistedHosts: {} // associative array of hosts that are removed from http protection control (hostname => boolean)
 	 *	  requestShieldOn: {} // Boolean, if it's TRUE or undefined, the http request protection is turned on,  if it's FALSE, the protection si turned off
 	 *
-	 *------local
-	 *		sessionHash: {}, // 64bit session hash
-	 *		visitedDomains: {} // associative array of domain hashes (domain name => 32 byte hash)
 	 *
 	 */
 	browser.storage.sync.get(null).then(function (item) {
@@ -153,6 +150,39 @@ function installUpdate() {
 				}
 			}
 			item.version = 2.7;
+		}
+		if (item.version < 2.8) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.htmlcanvaselement) {
+					l.plugins = true;
+					if (l.htmlcanvaselement_method == 0) {
+						l.plugins_method = 0;
+					}
+					else {
+						l.plugins_method = 2;
+					}
+				}
+			}
+			item.version = 2.8;
+		}
+		if (item.version < 2.9) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.analytics) {
+					l.gamepads = true;
+				}
+			}
+			item.version = 2.9;
+		}
+		if (item.version < 2.10) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.gamepads) {
+					l.vr = true;
+				}
+			}
+			item.version = 2.10;
 		}
 		browser.storage.sync.set(item);
 	});

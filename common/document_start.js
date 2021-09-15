@@ -22,19 +22,33 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-function configureInjection({code, wrappers, ffbug1267027, domainHash, sessionHash}) {
-  console.debug("configureInjection", new Error().stack, document.readyState);
+var wrappersPort;
+
+function configureInjection({code, wrappers, domainHash, sessionHash}) {
 	configureInjection = () => false; // one shot
+	if(browser.extension.inIncognitoContext){
+		// Redefine the domainHash for incognito context:
+		// Compute the SHA256 hash of the original hash so that the incognito hash is:
+		// * significantly different to the original domainHash,
+		// * computationally difficult to revert,
+		// * the same for all incognito windows (for the same domain).
+		var hash = sha256.create();
+		hash.update(JSON.stringify(domainHash));
+		domainHash = hash.hex();
+	}
 	var aleaCode = `(() => {
-	var domainHash = ${JSON.stringify(domainHash)};
-	var sessionHash = ${JSON.stringify(sessionHash)};
+	var domainHash =  ${JSON.stringify(domainHash)};
 	${alea}
 	var prng = new alea(domainHash);
 	${code}
 	})()`;
-	
-	injectScript(aleaCode, wrappers, ffbug1267027);
-	return true;
+	try {
+		wrappersPort = patchWindow(aleaCode);
+		return true;
+	} catch (e) {
+		console.error(e, `Trying to run\n${aleaCode}`)
+	}
+	return false;
 }
 if ("configuration" in window) {
 	console.debug("Early configuration found!", configuration);

@@ -67,7 +67,7 @@ Download the correct GeckoDriver to folder `../common_files/webbrowser_drivers` 
 
 1. Install Windows Subsystem for Linux (WSL): https://docs.microsoft.com/en-us/windows/wsl/install-win10.
 
-2. Convert EOL in the script `fix_manifest.sh` (in the root directory of JSR project) from Windows (CR LF) to Unix (LF) - you can use the tool `dos2unix` in WSL to convert CR LF to LF.
+2. Convert EOL in the scripts `fix_manifest.sh` (in the root directory of JSR project) and `nscl/include.sh` from Windows (CR LF) to Unix (LF) - you can use the tool `dos2unix` in WSL to convert CR LF to LF.
 
 3. Open root directory of JSR project in WSL and run command `make`.
 
