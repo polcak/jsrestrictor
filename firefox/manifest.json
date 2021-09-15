@@ -80,7 +80,7 @@
     "notifications"
   ],
   "short_name": "JSR",
-  "version": "0.4.6",
+  "version": "0.5",
   "browser_specific_settings": {
     "gecko": {
         "id": "jsr@javascriptrestrictor",
