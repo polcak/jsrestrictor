@@ -264,7 +264,7 @@ function wrap_code(wrappers) {
 		let xrayWindow = window; // the "privileged" xray window wrapper in Firefox
 		let WrapHelper; // xray boundary helper
 		{
-			const XRAY = (xrayWindow.top !== unwrappedWindow.top);
+			const XRAY = (xrayWindow.top !== unwrappedWindow.top && typeof XPCNativeWrapper !== "undefined");
 			let privilegedToPage = new WeakMap();
 			let pageReady = new WeakSet();
 
