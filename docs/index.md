@@ -72,4 +72,6 @@ extension can help in restricting JS capabilities.
 
 ## License Information
 
-This project is available as open source under the terms of the GPL 3.0 or later. However, some elements are being licensed under MIT license and MPL 2.0 license. For accurate information, please check individual files. As well as for accurate information regarding copyrights.
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+General Public License as published by the Free Software Foundation, either [version
+3](https://www.gnu.org/licenses/gpl-3.0) of the License, or (at your option) any later version.
