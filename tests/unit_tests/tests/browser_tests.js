@@ -3,7 +3,9 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2019  Libor Polcak
+//  Copyright (C) 2020 Martin Bednar
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -11,7 +13,7 @@
 //  (at your option) any later version.
 //
 //  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  but WITHOUT ANY WARRANTY; without ev1267027en the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU General Public License for more details.
 //
@@ -19,18 +21,10 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+/// <reference path="../../common/browser.js">
 
-/*
- * Check if we are running in Firefox or not
- */
-var running_in_firefox = (function() {
-	if ((typeof browser) !== "undefined") {
-	  return true;
-	} else {
-	  return false;
-	}
-})();
-
-if ((typeof browser) === "undefined") {
-	var browser = chrome;
-}
+describe("Browser", function() {
+	it("should be defined.",function() {
+		expect(browser).toBeDefined();
+	});
+});

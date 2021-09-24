@@ -3,10 +3,11 @@ body {
 	background-color: white;
 	display: grid;
 	grid-template-columns: 10em 1fr;
+	grid-template-rows: auto auto 1fr auto;
 	grid-template-areas: 
 	      "logo     content"
+	      "install  content"
 	      "menu     content"
-	      "versions content"
 	      "footer   footer";
 	grid-gap: 3em;
 }
@@ -20,8 +21,8 @@ nav.menu {
 section.content {
 	grid-area: content;
 }
-section.versions {
-	grid-area: versions;
+section.install {
+	grid-area: install;
 }
 footer {
 	grid-area: footer;
@@ -32,10 +33,10 @@ footer {
 		/*  Redefine the grid into a single column layout. */
 		grid-template-columns: 1fr;
 		grid-template-areas: 
+			"install"
 			"content"
 			"menu"
 			"logo"
-			"versions"
 			"footer";
 	}
 }
@@ -44,9 +45,10 @@ footer {
 	body {
 		/*  Redefine the grid into a three column layout with empty space on the left and right. */
 		grid-template-columns: 1fr 10em 1000px 10% 1fr;
+		grid-template-rows: auto 1fr auto;
 		grid-template-areas: 
 			"left-empty menu content logo     right-empty"
-			"left-empty menu content versions right-empty"
+			"left-empty menu content install  right-empty"
 			"left-empty menu footer  footer   right-empty"
 	}
 	section.logo {
@@ -60,35 +62,35 @@ section.logo img {
 	margin-right: auto;
 }
 
-nav.menu {
+.menu {
 	font-family: sans-serif;
 }
 
 @media (min-width: 601px) {
-	nav.menu {
+	.menu {
 		padding-top: 3em;
 	}
 }
 
-nav.menu ul {
+.menu ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
 
-nav.menu {
+.menu {
 	background-color: #f7e032;
 }
 
-nav.menu ul ul {
+.menu ul ul {
 	padding-left: 1em;
 }
 
-nav.menu ul p:after {
+.menu ul p:after {
 	content: "  »";
 }
 
-nav.menu ul a:visited, nav.menu ul a, nav.menu ul p {
+.menu ul a:visited, .menu ul a, .menu h2 {
 	color: black;
 	display: block;
 	text-decoration: none;
@@ -99,19 +101,9 @@ nav.menu ul a:visited, nav.menu ul a, nav.menu ul p {
 	margin: 0;
 }
 
-nav.menu ul a:hover {
+.menu ul a:hover {
 	color: #f7e032;
 	background-color: #6c6216;
-}
-
-.versions {
-	background-color: #f7e032;
-	padding: 1em;
-}
-
-.versions ul {
-	margin: 0.3em;
-	padding: 0;
 }
 
 section.content {

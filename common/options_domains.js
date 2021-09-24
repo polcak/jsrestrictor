@@ -1,10 +1,11 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Libor Polcak
-//  Copyright (C) 2019  Martin Timko
+/** \file
+ * \brief Code that handles domain-specific levels handling in options
+ *
+ *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2019  Martin Timko
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,10 +21,6 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-
-if ((typeof chrome) !== "undefined") {
-  var browser = chrome;
-}
 
 function escape(str)
 {
@@ -72,7 +69,7 @@ function show_domain_level(levelsEl, domain) {
 			</span>
 			<select id="dl-change-${escape(domain)}"></select>
 			<span id="li-exist-group-${escape(domain)}">
-				<button id="overwrite-dl-${escape(domain)}">Overwrite</button>
+				<button id="overwrite-dl-${escape(domain)}">Save</button>
 				<button id="delete-dl-${escape(domain)}">Remove</button>
 			</span>
 			<span id="li-removed-group-${escape(domain)}" class="hidden">

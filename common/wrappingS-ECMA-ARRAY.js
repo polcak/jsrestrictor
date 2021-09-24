@@ -1,9 +1,10 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2020  Peter Hornak
+/** \file
+ * \brief Wrappers for arrays from the ECMA standard library
+ *
+ *  \author Copyright (C) 2020  Peter Hornak
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -24,7 +25,7 @@
  */
 
 
-/// This function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+/// \see This function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
 function packIEEE754(v, ebits, fbits) {
 	var bias = (1 << (ebits - 1)) - 1;
 
@@ -111,7 +112,7 @@ function packIEEE754(v, ebits, fbits) {
 	return bytes;
 }
 
-/// This function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+/// \see This function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
 function unpackIEEE754(bytes, ebits, fbits) {
 	// Bytes to bits
 	var bits = [], i, j, b, str,
@@ -147,22 +148,22 @@ function unpackIEEE754(bytes, ebits, fbits) {
 	}
 }
 
-/// Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+/// \see Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
 function unpackF64(b) {
 	return unpackIEEE754(b, 11, 52);
 }
 
-/// Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+/// \see Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
 function packF64(v) {
 	return packIEEE754(v, 11, 52);
 }
 
-/// Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+/// \see Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
 function unpackF32(b) {
 	return unpackIEEE754(b, 8, 23);
 }
 
-/// Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
+/// \see Function was adopted from https://github.com/inexorabletash/polyfill/blob/master/typedarray.js under MIT licence.
 function packF32(v) {
 	return packIEEE754(v, 8, 23);
 }
@@ -247,15 +248,17 @@ var proxyHandler = `{
 		var random_idx = Math.floor(Math.random() * target['length']);
 		// Load random index from array
 		var rand_val = target[random_idx];
+		/*
 		let proto_keys = ['buffer', 'byteLength', 'byteOffset', 'length'];
 		if (proto_keys.indexOf(key) >= 0) {
 			return target[key];
 		}
+		*/
 		// offsetF argument needs to be in array range
 		if (typeof key !== 'symbol' && Number(key) >= 0 && Number(key) < target.length) {
 			key = offsetF(key)
 		}
-		let value = Reflect.get(...arguments);
+		let value = target[key]
 		return typeof value == 'function' ? value.bind(target) : value;
 	},
 	set(target, key, value) {
@@ -266,7 +269,7 @@ var proxyHandler = `{
 		if (typeof key !== 'symbol' && Number(key) >= 0 && Number(key) < target.length) {
 			key = offsetF(key)
 		}
-		return Reflect.set(...arguments);
+		return target[key] = value;
 	}
 }`;
 
@@ -550,7 +553,6 @@ function redefineDataViewFunctions(target, offsetF, doMapping) {
 			_data[offsetF(i)] = arr[i];
 		}
 	}
-	let _target = target;
 	var proxy = new newProxy(_data, ${proxyHandler});
 	// Proxy has to support all methods, original object supports.
 	${offsetDecorator};
@@ -649,8 +651,8 @@ function redefineDataViewFunctions(target, offsetF, doMapping) {
 			has (target, key) {
 				return (is_proxy === key) || (key in target);
 			}
-		};
-		let newProxy = new Proxy(Proxy, {
+	  };
+		let newProxy = new originalProxy(originalProxy, {
 			construct(target, args) {
 				return new originalProxy(new target(...args), proxyHandler);
 			}

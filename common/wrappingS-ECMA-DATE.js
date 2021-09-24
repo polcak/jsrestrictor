@@ -1,10 +1,11 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Libor Polcak
-//  Copyright (C) 2020  Peter Hornak
+/** \file
+ * \brief Wrappers for the Date object
+ *
+ *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2020  Peter Hornak
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,7 +37,6 @@
 			],
 			helping_code: rounding_function + noise_function +
 				`
-				var lastValue = 0;
 				var precision = args[0];
 				var doNoise = args[1];
 				var func = rounding_function;
@@ -68,7 +68,31 @@
 					parent_object: "window.Date",
 					parent_object_property: "now",
 					wrapping_function_args: "",
-					wrapping_function_body: "return func(originalDateConstructor.now.call(Date), precision);",
+					wrapping_function_body: "return func(originalF.call(Date), precision);",
+				},
+				{
+					code_type: "function_export",
+					parent_object: "window.Date",
+					parent_object_property: "parse",
+					export_function_name: "originalDateConstructor.parse",
+				},
+				{
+					code_type: "function_export",
+					parent_object: "window.Date",
+					parent_object_property: "UTC",
+					export_function_name: "originalDateConstructor.UTC",
+				},
+				{
+					code_type: "assign",
+					parent_object: "window.Date",
+					parent_object_property: "prototype",
+					value: "originalDateConstructor.prototype",
+				},
+				{
+					code_type: "assign",
+					parent_object: "window.Date.prototype",
+					parent_object_property: "constructor",
+					value: "window.Date",
 				},
 			]
 		},

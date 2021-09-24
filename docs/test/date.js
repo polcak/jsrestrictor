@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2019 Martin Timko
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 function pad(whatToPad, howManyDigits) {
 
   var inputString = whatToPad.toString();
@@ -40,3 +44,13 @@ function initClock() {
   window.setInterval("updateClock()", 1);
 }
 
+window.addEventListener("DOMContentLoaded", function () {
+	let origEventEl = document.getElementById("orig-event");
+	let currentEventEl = document.getElementById("current-event");
+	let origEvent = new Event("test");
+  setInterval(function() {
+		let currentEvent = new Event("test");
+		origEventEl.innerHTML = origEvent.timeStamp;
+		currentEventEl.innerHTML = currentEvent.timeStamp;
+  }, 100);
+});

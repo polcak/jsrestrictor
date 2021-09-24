@@ -1,10 +1,12 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 #  JavaScript Restrictor is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
 #  Copyright (C) 2019  Libor Polcak
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by

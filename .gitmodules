@@ -1,0 +1,3 @@
+[submodule "nscl"]
+	path = nscl
+	url = https://github.com/hackademix/nscl.git

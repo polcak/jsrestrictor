@@ -1,10 +1,12 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Martin Timko
-//  Copyright (C) 2019  Libor Polcak
+/** \file
+ * \brief JS code for pop up
+ *
+ *  \author Copyright (C) 2019  Martin Timko
+ *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2020  Pavel Pohner
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,9 +24,19 @@
 
 const fadeOut = "0.3";
 const fadeIn = "1.0";
-
 var myAddon = new URL(browser.runtime.getURL ('./')); // get my extension / addon url
 var url; // "www.example.com"
+
+/**
+ * Enable the refresh page option.
+ */
+function showRefreshPageOption() {
+	document.getElementById('set-level-on').innerHTML = "<a href='' id='refresh-page'>Refresh page</a>";
+	document.getElementById('refresh-page').addEventListener('click', function (e) {
+		browser.tabs.reload();
+		window.close();
+	});
+}
 
 /**
  * Visaully highlights the active level.
@@ -33,11 +45,7 @@ function changeActiveLevel(activeEl) {
 	Array.prototype.forEach.call(document.getElementsByClassName("level_control"),
 		(el) => el.classList.remove("active"));
 	activeEl.classList.add("active");
-	document.getElementById('set-level-on').innerHTML = "<a href='' id='refresh-page'>Refresh page</a>";
-	document.getElementById('refresh-page').addEventListener('click', function (e) {
-		browser.tabs.reload();
-		window.close();
-	});
+	showRefreshPageOption();
 }
 
 //find url of current tab where popup showed
@@ -45,11 +53,11 @@ var queryInfo = {
   active: true,
   currentWindow: true
 };
-browser.tabs.query(queryInfo, function(tabs) {
+browser.tabs.query(queryInfo).then(function(tabs) {
 	let tab = tabs[0];
 	url = new URL(tab.url);
 	// remove www
-	url.hostname = url.hostname.replace(/^www\./,'');
+	url.hostname = wwwRemove(url.hostname);
 	if (url.hostname == "" || url.hostname == myAddon.hostname || url.hostname == "newtab") {
 		document.getElementById("current_site_level_settings").style.opacity = fadeOut;
 		return;
@@ -99,3 +107,44 @@ document.getElementById('controls').addEventListener('click', function (e) {
 	browser.runtime.openOptionsPage();
 	window.close();
 });
+
+window.addEventListener("load", function() {
+	load_on_off_switch();
+});
+
+document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200)});
+
+async function getCurrentSite() {
+	let tabs = await browser.tabs.query({currentWindow: true, active: true});
+	//Obtain hostname	
+	return wwwRemove(new URL(tabs[0].url).hostname);
+}
+
+/// Load switch state from storage for current site
+async function load_on_off_switch()
+{
+	let {requestShieldOn} = await browser.storage.sync.get(["requestShieldOn"]);
+	if (requestShieldOn === false)
+	{
+		document.getElementById("http_shield_switch_wrapper").style.display = "none";
+		document.getElementById("shield_off_message").innerHTML = "Network boundary shield is currently off.";
+	}	
+	else
+	{
+		let site = await getCurrentSite();
+		//Ask background whether is this site whitelisted or not
+		let response = await browser.runtime.sendMessage({message: "is current site whitelisted?", site});
+		document.getElementById("switch-checkbox").checked = response !== "current site is whitelisted";
+	}
+}
+
+/// Event handler for On/off switch
+async function control_whitelist()
+{
+	let site = await getCurrentSite();
+	let message = `${document.getElementById("switch-checkbox").checked ? "remove" : "add"} site to whitelist`;
+	browser.runtime.sendMessage({message, site});
+	showRefreshPageOption();
+}
+
+

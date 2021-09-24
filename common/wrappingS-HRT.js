@@ -1,10 +1,13 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Libor Polcak
-//  Copyright (C) 2020  Peter Hornak
+/** \file
+ * \brief Wrappers for High Resolution Time (Level 2) standard
+ *
+ * \see https://w3c.github.io/hr-time/
+ *
+ *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2020  Peter Hornak
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -24,20 +27,6 @@
  * Create private namespace
  */
 (function() {
-	function changePropertyPrototype(name) {
-		let descriptor = Object.getOwnPropertyDescriptor(PerformanceEntry.prototype, name);
-		let originalF = descriptor['get'];
-		let replacementF = function() {
-			let originalVal = originalF.call(this, ...arguments);
-			return func(originalVal, precision);
-			// Replace this when injecting, to differ between startTime and duration functions
-			'__name__';
-		};
-		descriptor['get'] = replacementF;
-		original_functions[replacementF.toString()] = originalF.toString();
-		Object.defineProperty(PerformanceEntry.prototype, name, descriptor);
-	}
-
 	var wrappers = [
 		{
 			parent_object: "Performance.prototype",
@@ -48,42 +37,17 @@
 					wrapped_name: "origNow",
 				}
 			],
-			helping_code: rounding_function + "var precision = args[0];",
-			wrapping_function_args: "",
-			wrapping_function_body: `
-					var originalPerformanceValue = origNow.call(window.performance);
-					return rounding_function(originalPerformanceValue, precision);
 			helping_code: rounding_function + noise_function + `
 				let precision = args[0];
 				let doNoise = args[1];
-				let lastValue = 0;
 			`,
 			wrapping_function_args: "",
 			wrapping_function_body: `
 					var originalPerformanceValue = origNow.call(window.performance);
-					var func = rounding_function;
-					if (doNoise === true){
-						func = noise_function
-					}
-					return func(originalPerformanceValue, precision);
-				`
+					var limit_precision = doNoise ? noise_function : rounding_function;
+					return limit_precision(originalPerformanceValue, precision);
+			`,
 		},
-		{
-			parent_object: "window",
-			parent_object_property: "PerformanceEntry",
-			wrapped_objects: [],
-			helping_code: rounding_function + noise_function + `
-			let precision = args[0];
-			let doNoise = args[1];
-			let lastValue = 0;
-			var func = rounding_function;
-			if (doNoise === true){
-				func = noise_function
-			}
-			(${changePropertyPrototype.toString().split("__name__").join('"startTime"')})('startTime');
-			(${changePropertyPrototype.toString().split("__name__").join('"duration"')})('duration');
-			`
-		}
 	];
 	add_wrappers(wrappers);
 })();

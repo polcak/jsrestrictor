@@ -1,10 +1,11 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Libor Polcak
-//  Copyright (C) 2019  Martin Timko
+/** \file
+ * \brief Main background script
+ *
+ *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2019  Martin Timko
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,12 +21,8 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-// either way, set browser var as chrome
-if ((typeof chrome) !== "undefined") {
-  var browser = chrome;
-}
-
 var tab_levels = {};
+var tab_urls = {};
 var current_level = {level_id: "?"};
 
 function updateBadge(level) {
@@ -40,12 +37,13 @@ var queryInfo = {
 
 // get level for updated tab
 function tabUpdate(tabid, changeInfo) {
-	var url = changeInfo["url"];
+	var url = changeInfo["url"] || tab_urls[tabid];
 	if (url === undefined) {
 		return;
 	}
-	current_level = getCurrentLevelJSON(url);
+	current_level = getCurrentLevelJSON(url)[0];
 	tab_levels[tabid] = current_level;
+	tab_urls[tabid] = url;
 	updateBadge(current_level);
 }
 // get level for activated tab
@@ -57,10 +55,12 @@ function tabActivate(activeInfo) {
 browser.tabs.onUpdated.addListener(tabUpdate);     // reload tab
 browser.tabs.onActivated.addListener(tabActivate); // change tab
 
+// Communication channels
+
 /**
- * Communication channels
+ * Create a port to popup window
  *
- * Currently, we need to communicate only with popups. Mostly because
+ * The communication cannels are mostly used  because
  * browser.runtime.getBackgroundPage() does not work as expected. See
  * also https://bugzilla.mozilla.org/show_bug.cgi?id=1329304.
  */

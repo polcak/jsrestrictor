@@ -1,10 +1,12 @@
-//
-//  JavaScript Restrictor is a browser extension which increases level
-//  of security, anonymity and privacy of the user while browsing the
-//  internet.
-//
-//  Copyright (C) 2019  Libor Polcak
-//  Copyright (C) 2020  Peter Hornak
+/** \file
+ * \brief Wrappers for Workers
+ *
+ *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2020  Peter Hornak
+ *  \author Copyright (C) 2021  Matus Svancar
+ *
+ *  \license SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,7 +27,7 @@
  */
 (function() {
 	var polyfillBody = `
-	// This polyfill was adopted from https://github.com/nolanlawson/pseudo-worker under Apache License 2.0 and modified.
+	/// This polyfill was adopted from https://github.com/nolanlawson/pseudo-worker under Apache License 2.0 and modified.
 	function doEval(self, __pseudoworker_script) {
 		/* jshint unused:false */
 		(function () {
@@ -218,16 +220,43 @@
 		{
 			parent_object: "navigator",
 			parent_object_property: "hardwareConcurrency",
-			wrapped_objects: [
+			wrapped_objects: [],
+			helping_code: `
+				var ret = 2;
+				if(args[0]==0){
+					var realValue = navigator.hardwareConcurrency;
+					ret = Math.floor(2+prng()*(realValue-2));
+				}
+				else if(args[0]==1){
+					ret = Math.floor(2+(prng()*6));
+				}
+			`,
+			post_wrapping_code: [
 				{
+					code_type: "object_properties",
 					original_name: "navigator.hardwareConcurrency",
 					wrapped_name: "origConcurrency",
+					wrapped_objects: [],
+					parent_object: "navigator",
+					parent_object_property: "hardwareConcurrency",
+					/**  \brief replaces navigator.hardwareConcurrency getter
+					 *
+					 * Depending on level chosen this property returns:
+					 *	* (0) - random valid value from range [2 - real value]
+					 *	* (1) - random valid value from range [2 - 8]
+					 *	* (2) - 2
+					 */
+					wrapped_properties: [
+						{
+							property_name: "get",
+							property_value: `
+								function() {
+									return ret;
+								}`,
+						},
+					],
 				}
 			],
-			wrapping_function_args: "",
-			wrapping_function_body: `
-					return 2;
-				`
 		},
 		{
 			parent_object: "window",
