@@ -28,18 +28,25 @@
 			parent_object: "navigator",
 			parent_object_property: "getBattery",
 			wrapped_objects: [],
-			helping_code: `
-				if (navigator.getBattery === undefined) {
-					return;
+			post_wrapping_code: [
+				{
+					code_type: "delete_properties",
+					parent_object: "navigator",
+					delete_properties: ["getBattery"],
 				}
-			`,
-			original_function: "navigator.getBattery",
-			wrapping_function_body: `
-					return undefined; 
-				`,
-			post_replacement_code: `
-				delete BatteryManager;
-			`
+			],
+		},
+		{
+			parent_object: "window",
+			parent_object_property: "BatteryManager",
+			wrapped_objects: [],
+			post_wrapping_code: [
+				{
+					code_type: "delete_properties",
+					parent_object: "window",
+					delete_properties: ["BatteryManager"],
+				}
+			],
 		},
 	];
 	add_wrappers(wrappers);
