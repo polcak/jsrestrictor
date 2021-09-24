@@ -3,7 +3,7 @@
  *
  * \see https://www.w3.org/TR/battery-status/
  *
- *  \author Copyright (C) 2020  Peter Hornak
+ *  \author Copyright (C) 2021 Libor Polčák
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
