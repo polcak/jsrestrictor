@@ -1,6 +1,7 @@
 /*
  * SPDX-FileCopyrightText: 2021 2019 Libor Polčák
  * SPDX-FileCopyrightText: 2021 2019 Martin Timko
+ * SPDX-FileCopyrightText: 2021 2021 Giorgio Maone
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -104,6 +105,8 @@ h3 {
 
 /* The switch - the box around the slider */
 .switch {
+	--off-bg: #888;
+	--on-bg: #8af;
 	position: relative;
 	display: inline-block;
 	width: 60px;
@@ -116,10 +119,10 @@ h3 {
 	opacity: 0;
 	width: 0;
 	height: 0;
-	
+
 }
 
-/* The slider */
+/* ON/OFF slider */
 .slider {
 	position: absolute;
 	cursor: pointer;
@@ -127,13 +130,13 @@ h3 {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: red;
+	background-color: var(--off-bg);
 	-webkit-transition: .4s;
 	transition: .4s;
 	font-size:10pt;
 	text-align: center;
 	vertical-align: middle;
-	line-height: 25px;	
+	line-height: 25px;
 }
 
 .slider:before {
@@ -147,22 +150,22 @@ h3 {
 	-webkit-transition: .4s;
 	transition: .4s;
 	color: gray;
-	content:"NO";
+	content:"OFF";
 }
 
 input:checked + .slider {
-	background-color: rgb(247,224,50);
+	background-color:  var(--on-bg);
 }
 
 input:focus + .slider {
-	box-shadow: 0 0 1px rgb(247,224,50);
+	box-shadow: 0 0 1px var(--on-bg);
 }
 
 input:checked + .slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
-	content:"YES";
+	content:"ON";
 	color:black;
 }
 
