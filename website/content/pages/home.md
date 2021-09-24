@@ -6,7 +6,7 @@ URL:
 <section class="hero block">
   <div class="hero-body">
     <h3 class="has-text-centered">
-      jShelter
+      JShelter
     </h3>
 
     <p class="has-text-centered">An anti-malware Web browser extension to mitigate potential
@@ -37,7 +37,7 @@ collection!</p>
   <div class="grid">
     <article>
       <header>
-        <h4>What is jShelter?</h4>
+        <h4>What is JShelter?</h4>
       </header>
       <div>
         <p>Accessing cookies, performing fingerprinting to track users across

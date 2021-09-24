@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 
-AUTHOR = "The jShelter team"
-SITENAME = "jShelter"
+AUTHOR = "The JShelter team"
+SITENAME = "JShelter"
 DESCRIPTION = "Your browser extension to keep you safe"
 SITEURL = ""
 
 DEFAULT_DATE = "fs"  # use a default date to stop Pelican complaints on pages
 PAGE_PATHS = ["pages", "wrappers"]
 THEME = "./theme/"
-DIRECT_TEMPLATES = ['index']
+DIRECT_TEMPLATES = ["index"]
 
 # Use filenames as the base for slugs (default is post title)
 SLUGIFY_SOURCE = "basename"
