@@ -25,14 +25,16 @@
     <div class="container">
       <div class="navbar-brand">
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
+          <div>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </div>
         </a>
         <a class="navbar-item" href="/">
           {% block titlearea %}
 
-            <img src="/theme/images/jshelter-logo.svg" alt="JShelter">
+            <img src="/theme/images/jshelter-logo.svg" alt="{{ SITENAME }}">
             <p>
               <strong>{{ SITENAME }} </strong>
               <span>{{ DESCRIPTION }}</span>
@@ -52,7 +54,9 @@
       <nav class="menu">
         <ul class="menu-list">
           <li class="menu-heading">
-            <strong class="logo"><img src="/theme/images/jshelter.svg" alt="{{ SITENAME }}"></strong>
+            <a href="{{ SITEURL }}/" class="logo">
+              <img src="/theme/images/jshelter-horizontal.svg" alt="{{ SITENAME }}">
+            </a>
             <ul>
               {% set page = (pages|get_by_slug('home')) %}
               <li><a href="{{ SITEURL }}/">{{ page.title }}</a></li>
@@ -98,9 +102,18 @@
 
   <footer class="footer">
     {% block footer %}
-    <div class="container">
+    <div class="container grid">
       <!-- copied from docs/_includes/footer.html -->
-      <div class="grid">
+        <div class="supporters">
+          <p>
+            This project was funded through the NGI0 PET Fund, a fund established by NLnet with financial support
+            from the European Commission's Next Generation Internet programme, under the aegis of DG
+            Communications Networks, Content and Technology under grant agreement No 825310 as
+            <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a href="https://nlnet.nl/project/JavascriptShield/">JavaScript Shield</a> projects. This
+            project was supported by the <a href="https://www.fit.vut.cz/research/project/1063/.en">MV CR VI20172020062 project</a>.
+          </p>
+          <p><img src="/theme/images/nlnet-logo.svg" alt="NLnet logo"></p>
+        </div>
         <div class="license">
           <p>View the source code at <a href="https://pagure.io/JS-Shield/JS-Shield">Pagure.io</a>.</p>
           <p>
@@ -109,15 +122,6 @@
             the Free Software Foundation, either
             <a href="https://www.gnu.org/licenses/gpl-3.0">version 3</a> of the License, or
             (at your option) any later version.
-          </p>
-        </div>
-        <div class="supporters">
-          <p>
-            This project was funded through the NGI0 PET Fund, a fund established by NLnet with financial support
-            from the European Commission's Next Generation Internet programme, under the aegis of DG
-            Communications Networks, Content and Technology under grant agreement No 825310 as
-            <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a href="https://nlnet.nl/project/JavascriptShield/">JavaScript Shield</a> projects. This
-            project was supported by the <a href="https://www.fit.vut.cz/research/project/1063/.en">MV CR VI20172020062 project</a>.
           </p>
         </div>
         <div class="credits">
@@ -134,6 +138,8 @@
                 <li>Pater Horňák</li>
               </ul>
             </li>
+          </ul>
+          <ul>
             <li>
               <strong>FSF team</strong>
               <ul>
@@ -148,8 +154,7 @@
             </li>
           </ul>
         </div>
-      </div><!-- /.grid -->
-    </div>
+    </div><!-- /.container.grid -->
     {% endblock %}
   </footer>
 
