@@ -171,7 +171,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "webgl",
-			description: "Protect against wegbl fingerprinting",
+			description: "Protect against WEBGL fingerprinting",
 			description2: [
 				"Function WebGLRenderingContext.getParameter() returns modified/bottom values for certain parameters",
 				"WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() and .getExtension() return modified values",
@@ -195,7 +195,7 @@ var wrapping_groups = {
 				],
 			}],
 			wrappers: [
-				// WEGBL
+				// WEBGL
 				"WebGLRenderingContext.prototype.getParameter",
 				"WebGL2RenderingContext.prototype.getParameter",
 				"WebGLRenderingContext.prototype.getFramebufferAttachmentParameter",
