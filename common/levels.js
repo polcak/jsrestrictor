@@ -531,6 +531,7 @@ var wrapping_groups = {
 			wrappers: [
 				// BATTERY
 				"navigator.getBattery",
+				"window.BatteryManager",
 			],
 		},
 		{
