@@ -138,11 +138,12 @@ h3 {
 
 /* The switch - the box around the slider */
 .switch {
-	--off-bg: #888;
-	--on-bg: #8af;
+	--bg-color: white;
+	--off-color: gray;
+	--on-color:black;
 	position: relative;
 	display: inline-block;
-	width: 60px;
+	width: 64px;
 	height: 34px;
 	margin-left: 3px;
 }
@@ -163,10 +164,11 @@ h3 {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: var(--off-bg);
+	background-color: var(--off-color);
 	-webkit-transition: .4s;
 	transition: .4s;
-	font-size:10pt;
+	font-size: 14px;
+	font-weight: bold;
 	text-align: center;
 	vertical-align: middle;
 	line-height: 25px;
@@ -176,22 +178,22 @@ h3 {
 	position: absolute;
 	content: "";
 	height: 26px;
-	width: 26px;
+	width: 30px;
 	left: 4px;
 	bottom: 4px;
-	background-color: white;
+	background-color: var(--bg-color);
 	-webkit-transition: .4s;
 	transition: .4s;
-	color: gray;
+	color: var(--off-color);
 	content:"OFF";
 }
 
 input:checked + .slider {
-	background-color:  var(--on-bg);
+	background-color:  var(--on-color);
 }
 
 input:focus + .slider {
-	box-shadow: 0 0 1px var(--on-bg);
+	box-shadow: 0 0 1px var(--on-color);
 }
 
 input:checked + .slider:before {
@@ -199,7 +201,7 @@ input:checked + .slider:before {
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
 	content:"ON";
-	color:black;
+	color: var(--on-color);
 }
 
 #switch-label
