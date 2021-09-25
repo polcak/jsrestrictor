@@ -117,18 +117,18 @@ window.addEventListener("load", function() {
 document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200)});
 document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_fp_detection, 200)});
 
-/// Load switch FPD state from storage 
+/// Load switch FPD state from storage
 function load_fp_switch()
 {
 	browser.storage.sync.get(["fpDetectionOn"]).then(function(result)
 	{
-		document.getElementById("fp-switch-checkbox").checked = result.fpDetectionOn
+		document.getElementById("fpd-switch").checked = result.fpDetectionOn
 	});
 }
 
 async function getCurrentSite() {
 	let tabs = await browser.tabs.query({currentWindow: true, active: true});
-	//Obtain hostname	
+	//Obtain hostname
 	return wwwRemove(new URL(tabs[0].url).hostname);
 }
 
@@ -136,17 +136,18 @@ async function getCurrentSite() {
 async function load_on_off_switch()
 {
 	let {requestShieldOn} = await browser.storage.sync.get(["requestShieldOn"]);
+	let container = document.getElementById("http_shield_whitelist");
 	if (requestShieldOn === false)
 	{
-		document.getElementById("http_shield_switch_wrapper").style.display = "none";
-		document.getElementById("shield_off_message").innerHTML = "Network boundary shield is currently off.";
-	}	
+		container.classList.add("off");
+	}
 	else
 	{
+		container.classList.remove("off");
 		let site = await getCurrentSite();
 		//Ask background whether is this site whitelisted or not
 		let response = await browser.runtime.sendMessage({message: "is current site whitelisted?", site});
-		document.getElementById("switch-checkbox").checked = response !== "current site is whitelisted";
+		document.getElementById("shield-switch").checked = response !== "current site is whitelisted";
 	}
 }
 
@@ -154,7 +155,7 @@ async function load_on_off_switch()
 async function control_whitelist()
 {
 	let site = await getCurrentSite();
-	var message;
+	let message = `${document.getElementById("shield-switch").checked ? "remove" : "add"} site to whitelist`;
 	if (document.getElementById("switch-checkbox").checked) {
 		message = "remove site from whitelist";
 	}
@@ -168,7 +169,7 @@ async function control_whitelist()
 /// Event handler for On/off switch
 function control_fp_detection()
 {
-	var checkbox = document.getElementById("fp-switch-checkbox");
+	var checkbox = document.getElementById("fpd-switch");
 	browser.storage.sync.set({fpDetectionOn: checkbox.checked});
 	browser.runtime.sendMessage({purpose:"fpd-state-change", enabled: checkbox.checked});
 	showRefreshPageOption();

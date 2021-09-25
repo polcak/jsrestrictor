@@ -12,7 +12,7 @@ body {
 	grid-template-areas:
 		"logo   jsr    controls"
 		"levels levels levels"
-		"whitelist whitelist whitelist";
+		"bin bin bin";
 	grid-gap: 3em;
 	padding: 1em;
 	margin: 1em;
@@ -49,7 +49,7 @@ h3 {
 
 #level-select {
 	display: flex;
-	flex-flow: row wrap;
+	flex-flow: row;
 	justify-content: center;
 }
 
@@ -83,7 +83,6 @@ h3 {
 	padding: 0.7ex;
 	border: 2px solid grey;
 	border-radius: 0.5ex;
-	//display: inline-block;
 	margin-top: 1.3ex;
 	margin-left: 2ex;
 }
@@ -95,12 +94,32 @@ h3 {
 	color:  black;
 }
 
-#http_shield_whitelist{
-	grid-area:whitelist;
+#binary_options {
+	grid-area: bin;
 }
 
-#shield_off_message{
+.off_message{
 	font-size: large;
+	display: none;
+}
+
+.off > .off_message {
+	display: block;
+}
+
+.off > .switch_wrapper {
+	display: none;
+}
+
+.switch_wrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.switch_wrapper > label {
+	font-size: large;
+	white-space: nowrap;
 }
 
 /* The switch - the box around the slider */
