@@ -23,20 +23,21 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-const fadeOut = "0.3";
-const fadeIn = "1.0";
 var myAddon = new URL(browser.runtime.getURL ('./')); // get my extension / addon url
 var url; // "www.example.com"
 
 /**
  * Enable the refresh page option.
  */
-function showRefreshPageOption() {
-	document.getElementById('set-level-on').innerHTML = "<a href='' id='refresh-page'>Refresh page</a>";
-	document.getElementById('refresh-page').addEventListener('click', function (e) {
+function showRefreshPageOption(toggle = true) {
+	let button = document.getElementById('refresh-page');
+	button.addEventListener('click', function (e) {
 		browser.tabs.reload();
 		window.close();
 	});
+	(showRefreshPageOption = function(toggle = true) {
+		button.disabled = !toggle;
+	})(toggle);
 }
 
 /**
@@ -60,7 +61,7 @@ browser.tabs.query(queryInfo).then(function(tabs) {
 	// remove www
 	url.hostname = wwwRemove(url.hostname);
 	if (url.hostname == "" || url.hostname == myAddon.hostname || url.hostname == "newtab") {
-		document.getElementById("current_site_level_settings").style.opacity = fadeOut;
+		document.getElementById("site-settings").style.display = "none";
 		return;
 	}
 	else {

@@ -7,16 +7,16 @@
  */
 
 body {
-	display: grid;
-	grid-template-columns: 32px 1fr 25px;
-	grid-template-areas:
-		"logo   jsr    controls"
-		"levels levels levels"
-		"bin bin bin";
-	grid-gap: 3em;
 	padding: 1em;
 	margin: 1em;
 	min-width: 25em;
+}
+
+header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }
 
 h3 {
@@ -24,23 +24,29 @@ h3 {
 }
 
 #logo {
-	grid-area: logo;
 	width: 32px;
 }
 
 #titletext {
-	grid-area: jsr;
 	display: block;
 	font-size: large;
+	text-align: center;
 }
 
 #controls {
-	grid-area: controls;
 	width: 25px;
 }
 
-#level_controls {
-	grid-area: levels;
+#page-info {
+  display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#refresh-page {
+	font-size: large;
+	font-weight: bold;
 }
 
 #current-site {
@@ -115,6 +121,7 @@ h3 {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	align-items: center;
 }
 
 .switch_wrapper > label {
