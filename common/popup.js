@@ -23,8 +23,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-var myAddon = new URL(browser.runtime.getURL ('./')); // get my extension / addon url
-var url; // "www.example.com"
+var site; // "https://www.example.com" from current tab will become "example.com"
 
 /**
  * Enable the refresh page option.
@@ -50,23 +49,14 @@ function changeActiveLevel(activeEl) {
 	showRefreshPageOption();
 }
 
-//find url of current tab where popup showed
-var queryInfo = {
-  active: true,
-  currentWindow: true
-};
-browser.tabs.query(queryInfo).then(function(tabs) {
-	let tab = tabs[0];
-	url = new URL(tab.url);
-	// remove www
-	url.hostname = wwwRemove(url.hostname);
-	if (url.hostname == "" || url.hostname == myAddon.hostname || url.hostname == "newtab") {
-		document.getElementById("site-settings").style.display = "none";
-		return;
-	}
-	else {
-		document.getElementById('current-site').innerHTML = url.hostname;
-	}
+async function init() {
+  // get the site of current tab
+	site = await getCurrentSite();
+	// abort per-site options if it can't be accessed
+	if (!site) return;
+	document.getElementById('site-settings').classList.add("enabled");
+	document.getElementById('current-site').textContent = site;
+
 	// fill the popup
 	var port_to_background = browser.runtime.connect({name:"port_from_popup"});
 	var current_level = { level_id: "?" };
@@ -75,7 +65,7 @@ browser.tabs.query(queryInfo).then(function(tabs) {
 		var selectEl = document.getElementById("level-select");
 		selectEl.innerHTML = `<span class="level level_control" id="default_level_select" title="Set the default level">Default</span>`;
 		document.getElementById(`default_level_select`).addEventListener("click", function () {
-			delete domains[url.hostname];
+			delete domains[site];
 			saveDomainLevels();
 			changeActiveLevel(this);
 			current_level = default_level;
@@ -84,7 +74,7 @@ browser.tabs.query(queryInfo).then(function(tabs) {
 			let level = levels[level_id];
 			selectEl.appendChild(document.createRange().createContextualFragment(`<span class="level level_control" id="select-${level.level_id}" title="${level.level_text}">${escape(level.level_id + ": " + level.level_text)}</span>`));
 			document.getElementById(`select-${level.level_id}`).addEventListener("click", function () {
-				domains[url.hostname] = {
+				domains[site] = {
 					level_id: level.level_id,
 				};
 				saveDomainLevels();
@@ -102,7 +92,7 @@ browser.tabs.query(queryInfo).then(function(tabs) {
 			}
 		}
 	});
-});
+}
 
 // Open options in a new tab when clicking on the icon
 document.getElementById('controls').addEventListener('click', function (e) {
@@ -111,7 +101,8 @@ document.getElementById('controls').addEventListener('click', function (e) {
 });
 
 window.addEventListener("load", function() {
-	load_fp_switch();
+	if (!site) return;
+ 	load_fp_switch();
 	load_on_off_switch();
 });
 
@@ -128,9 +119,19 @@ function load_fp_switch()
 }
 
 async function getCurrentSite() {
-	let tabs = await browser.tabs.query({currentWindow: true, active: true});
-	//Obtain hostname
-	return wwwRemove(new URL(tabs[0].url).hostname);
+	if (typeof site !== "undefined") return site;
+	try {
+		// Check whether content scripts are allowed on the current tab:
+		// if an exception is thrown, showing per-site settings is pointless,
+		// because we couldn't operate here anyway
+		await browser.tabs.executeScript({code: ""});
+
+		let [tab] = await browser.tabs.query({currentWindow: true, active: true});
+		// Obtain and normalize hostname
+		return site = wwwRemove(new URL(tab.url).hostname);
+	} catch (e) {
+		return site = null;
+	}
 }
 
 /// Load switch state from storage for current site
@@ -145,7 +146,6 @@ async function load_on_off_switch()
 	else
 	{
 		container.classList.remove("off");
-		let site = await getCurrentSite();
 		//Ask background whether is this site whitelisted or not
 		let response = await browser.runtime.sendMessage({message: "is current site whitelisted?", site});
 		document.getElementById("shield-switch").checked = response !== "current site is whitelisted";
@@ -155,7 +155,6 @@ async function load_on_off_switch()
 /// Event handler for On/off switch
 async function control_whitelist()
 {
-	let site = await getCurrentSite();
 	let message = `${document.getElementById("shield-switch").checked ? "remove" : "add"} site to whitelist`;
 	if (document.getElementById("switch-checkbox").checked) {
 		message = "remove site from whitelist";
@@ -175,3 +174,5 @@ function control_fp_detection()
 	browser.runtime.sendMessage({purpose:"fpd-state-change", enabled: checkbox.checked});
 	showRefreshPageOption();
 }
+
+init();

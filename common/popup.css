@@ -37,6 +37,13 @@ h3 {
 	width: 25px;
 }
 
+#site-settings {
+	display: none;
+}
+#site-settings.enabled {
+	display: initial;
+}
+
 #page-info {
   display: flex;
 	flex-direction: row;
