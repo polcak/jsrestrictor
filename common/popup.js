@@ -64,22 +64,18 @@ async function init() {
 		current_level = msg;
 		var selectEl = document.getElementById("level-select");
 		selectEl.innerHTML = `<span class="level level_control" id="default_level_select" title="Set the default level">Default</span>`;
-		document.getElementById(`default_level_select`).addEventListener("click", function () {
+		document.getElementById(`default_level_select`).addEventListener("click", ev => {
 			delete domains[site];
-			saveDomainLevels();
-			changeActiveLevel(this);
-			current_level = default_level;
+		 	update(default_level, ev.target);
 		});
 		for (let level_id in levels) {
 			let level = levels[level_id];
 			selectEl.appendChild(document.createRange().createContextualFragment(`<span class="level level_control" id="select-${level.level_id}" title="${level.level_text}">${escape(level.level_id)}</span>`));
-			document.getElementById(`select-${level.level_id}`).addEventListener("click", function () {
+			document.getElementById(`select-${level.level_id}`).addEventListener("click", ev => {
 				domains[site] = {
 					level_id: level.level_id,
 				};
-				saveDomainLevels();
-				changeActiveLevel(this);
-				current_level = level;
+				update(level, ev.target);
 			});
 		}
 		if (current_level.is_default) {
@@ -90,6 +86,18 @@ async function init() {
 			if (currentEl !== null) {
 				currentEl.classList.add("active");
 			}
+		}
+
+		update();
+
+		function update(level, element) {
+			if (level) {
+				current_level = level;
+				saveDomainLevels();
+			  if (element) changeActiveLevel(element);
+			}
+			document.getElementById("level-text").textContent = current_level.level_text;
+			document.getElementById("level-description").textContent = ` - ${current_level.level_description}`;
 		}
 	});
 }
