@@ -63,29 +63,31 @@ async function init() {
 	port_to_background.onMessage.addListener(function(msg) {
 		current_level = msg;
 		var selectEl = document.getElementById("level-select");
-		selectEl.innerHTML = `<span class="level level_control" id="default_level_select" title="Set the default level">Default</span>`;
-		document.getElementById(`default_level_select`).addEventListener("click", ev => {
+		function addButton(level) {
+			let b = document.createElement("button");
+			b.id = `select-${level.level_id}`;
+			b.className = "level level_control";
+			b.textContent = level.level_id;
+		  b.title = level.level_text;
+			return selectEl.appendChild(b);
+		}
+		addButton({level_id: "DEFAULT", level_text: `Default level (${default_level.level_id})`})
+		.addEventListener("click", ev => {
 			delete domains[site];
 		 	update(default_level, ev.target);
 		});
 		for (let level_id in levels) {
 			let level = levels[level_id];
-			selectEl.appendChild(document.createRange().createContextualFragment(`<span class="level level_control" id="select-${level.level_id}" title="${level.level_text}">${escape(level.level_id)}</span>`));
-			document.getElementById(`select-${level.level_id}`).addEventListener("click", ev => {
+			addButton(level).addEventListener("click", ev => {
 				domains[site] = {
 					level_id: level.level_id,
 				};
 				update(level, ev.target);
 			});
 		}
-		if (current_level.is_default) {
-			document.getElementById(`default_level_select`).classList.add("active");
-		}
-		else {
-			var currentEl = document.getElementById(`select-${current_level.level_id}`);
-			if (currentEl !== null) {
-				currentEl.classList.add("active");
-			}
+		let  currentEl = document.getElementById(`select-${current_level.is_default ? "DEFAULT" : current_level.level_id}`);
+		if (currentEl !== null) {
+			currentEl.classList.add("active");
 		}
 
 		update();
