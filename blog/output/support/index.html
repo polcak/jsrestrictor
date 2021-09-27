@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>jShelter: We received support from NGI0 PET Fund</title>
+  <meta name="description" content="Your browser extension to keep you safe">
+
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Pelican">
+
+  <link href="/theme/css/fork-awesome.min.css" rel="stylesheet">
+  <link href="/theme/css/minireset.min.css" rel="stylesheet">
+  <link href="/theme/css/bulma_grid.css" rel="stylesheet">
+  <link href="/theme/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+  <header id="topheader" class="container">
+    <h1 id="projectlogo">
+      <a href="/">
+        <img alt="Logo" src="/theme/images/logo.png">
+      </a>
+    </h1>
+    <p>
+      <strong>jShelter </strong>
+      <span>Your browser extension to keep you safe</span>
+    </p>
+  </header><!-- /#topheader -->
+
+  <div  class="content-wrapper container">
+
+    <div class="sidebar">
+      <!-- new navigation -->
+      <nav class="menu">
+        <ul class="menu-list">
+          <li class="menu-heading">
+            <strong>jShelter</strong>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog/">Blog</a></li>
+              <li><a href="/install/">Installing</a></li>
+              <li><a href="/drivers/">Download browser drivers</a></li>
+              <li><a href="/permissions/">Required permissions</a></li>
+              <li><a href="/configure/">Configuring</a></li>
+              <li><a href="/versions/">Release history</a></li>
+              <li><a href="/credits/">Credits</a></li>
+              <li><a href="/license/">License</a></li>
+            </ul>
+          <li class="menu-heading">
+            <!--
+        <strong><a href="/group__wrappers.html">Key protection</a></strong>
+        <ul>
+          <li><a href="/group__NBS.html">Network Boundary Shield</a></li>
+          <li><a href="/wrappingS-AJAX_8js.html">AJAX</a></li>
+          <li><a href="/wrappingS-BATTERY-CR_8js.html">Battery level</a></li>
+          <li><a href="/wrappingS-BE_8js.html">Beacon API</a></li>
+          <li><a href="/wrappingS-DM_8js.html">Device memory</a></li>
+          <li><a href="/wrappingS-ECMA-ARRAY_8js.html">ECMAscript arrays</a></li>
+          <li><a href="/wrappingS-ECMA-DATE_8js.html">ECMAscript date</a></li>
+          <li><a href="/wrappingS-ECMA-SHARED_8js.html">ECMA shared buffers</a></li>
+          <li><a href="/wrappingS-GEO_8js.html">Geolocation</a></li>
+          <li><a href="/wrappingS-H-C_8js.html">HTML Canvas</a></li>
+          <li><a href="/wrappingS-HRT_8js.html">HTML Performance</a></li>
+          <li><a href="/wrappingS-HTML-LS_8js.html">HTML Workers</a></li>
+          <li><a href="/wrappingS-HTML_8js.html">HTML window name</a></li>
+          <li><a href="/wrappingS-MCS_8js.html">Media devices</a></li>
+          <li><a href="/wrappingS-PT2_8js.html">PT2</a></li>
+          <li><a href="/wrappingS-WEBA_8js.html">WebAudio</a></li>
+          <li><a href="/pages/webgl.html">WebGL</a></li>
+        </ul>
+        -->
+            <strong>Key protection</strong>
+            <ul>
+              <li><a href="/ajax/">AJAX</a></li>
+              <li><a href="/battery-cr/">Battery level</a></li>
+              <li><a href="/be/">Beacon API</a></li>
+              <li><a href="/dm/">Device memory</a></li>
+              <li><a href="/ecma-array/">ECMAscript arrays</a></li>
+              <li><a href="/ecma-date/">ECMAscript date</a></li>
+              <li><a href="/ecma-shared/">ECMA shared buffers</a></li>
+              <li><a href="/geo/">Geolocation</a></li>
+              <li><a href="/h-c/">HTML Canvas</a></li>
+              <li><a href="/hrt/">HTML Performance</a></li>
+              <li><a href="/html-ls/">HTML Workers</a></li>
+              <li><a href="/html/">HTML window name</a></li>
+              <li><a href="/mcs/">Media devices</a></li>
+              <li><a href="/np/">np</a></li>
+              <li><a href="/pt2/">PT2</a></li>
+              <li><a href="/weba/">WebAudio</a></li>
+              <li><a href="/webgl/">WebGL</a></li>
+            </ul>
+          </li>
+          <li class="menu-heading">
+            <strong>Developer notes</strong>
+            <ul>
+              <li><a href="/issues/">Known issues</a></li>
+              <li><a href="/build/">Building from scratch</a></li>
+              <li><a href="/new-wrapper/">Making a new wrapper</a></li>
+              <li><a href="/unit-tests/">Running unit tests</a></li>
+              <li><a href="/integration-tests/">Running integration tests</a></li>
+              <li><a href="/system-tests/">Running system tests</a></li>
+              <li><a href="/coding-style/">Coding style</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav><!-- /.menu -->
+    </div><!-- /.sidebar -->
+
+    <section id="main-content">
+
+
+  <p>We are very happy to announce that the <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript
+Restrictor received support from NGI0 PET Fund</a>, a fund established by NLnet with financial
+support from the European Commission's Next Generation Internet programme, under the aegis of DG
+Communications Networks, Content and Technology under grant agreement No 825310.</p>
+<p>We are very excited to improve the extension further. We will focus on the following main goals:</p>
+<h3>1. Investigate fingerprinting scripts and prepare wrappers</h3>
+<p>Review the previously identified APIs suitable for fingerprinting. Select APIs suitable for JSR and
+add wrappers for these APIs. This work has already started, see issue #66. Additionally, we want to focus
+on identification of methods used for fingeprinting such as those identified by Iqbal et al., see
+https://uiowa-irl.github.io/FP-Inspector/</p>
+<h3>2. Prevent unique identification of a device</h3>
+<p>It is hard, if not impossible, to both prevent fingerprinting and still provide customized environment
+for the user. Hence, we want to identify fingerprinting attempts by counting the number of different
+APIs employed by a page, especially APIs that are not frequently used for benign purposes. When
+a fingerprinting attempt is identified, we want to (1) inform the user, (2) prevent uploading of the
+fingerprint to the server, (3) prevent storing the fingerprint for later usage.</p>
+<h3>3. Code ported from Chrome Zero</h3>
+<p>In version 0.3, we integrated features of Chrome Zero 7 as it is no longer maintained. By
+integrating the functionality to JSR, we want to keep the counter-meassures available in a
+maintained extension. However, we do not have sufficient tests for the functionality.</p>
+<h3>4. Evaluation and porting of code from Brave</h3>
+<p>Brave browser currently implements anti-fingerprinting techniques that aim at providing white lies
+about the browser environment. We want to evaluate the messures and select techniques that are
+suitable for JSR.</p>
+<h3>5. Fixing known bugs</h3>
+<p>We want to focus on the proposed changes and found bugs that are reported in the GitHub bug tracker.</p>
+<ul>
+<li>We already closed issues #53, #62, and #72 as a part of this project. The fixes are already available as
+    a part of the 0.4 subversions.</li>
+<li>We want to also deal with issues #56 and #71 that are crucial for the success of the extension.</li>
+<li>We will focus on other identified bugs in the wrappers or developped techniques.</li>
+</ul>
+<h3>6. Cooperation with the Privacy Shield project</h3>
+<p>We are also excited to announce that we found other partners that are willing to work on our code
+base through the NGI0 PET Fund, <a href="https://nlnet.nl/project/JavascriptShield/">Privacy Shield
+project run by Free Software Foundation</a>. Expect inclusion of code that will help to defend your
+freedoms and provide anti-malware protections. This cooperation should also improve the GUI of the
+extension and create explenatory web pages explaining the functionality and its risks. It is
+possible that the project will be rebranded as a result of the cooperation.</p>
+
+
+
+    </section><!-- /#main-content -->
+  </div><!-- /.content-wrapper.container -->
+
+  <footer class="footer">
+    <div class="container">
+      <!-- copied from docs/_includes/footer.html -->
+      <div class="grid">
+        <div class="license">
+          <p>View the source code at <a href="https://pagure.io/JS-Shield/JS-Shield">Pagure.io</a>.</p>
+          <p>
+            This program is free software: you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either
+            <a href="https://www.gnu.org/licenses/gpl-3.0">version 3</a> of the License, or
+            (at your option) any later version.
+          </p>
+        </div>
+        <div class="supporters">
+          <p>
+            This project was funded through the NGI0 PET Fund, a fund established by NLnet with financial support
+            from the European Commission's Next Generation Internet programme, under the aegis of DG
+            Communications Networks, Content and Technology under grant agreement No 825310 as
+            <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a href="https://nlnet.nl/project/JavascriptShield/">JavaScript Shield</a> projects. This
+            project was supported by the <a href="https://www.fit.vut.cz/research/project/1063/.en">MV CR VI20172020062 project</a>.
+          </p>
+        </div>
+        <div class="credits">
+          <ul>
+            <li>
+              <strong>Developers</strong>
+              <ul>
+                <li><a href="https://www.fit.vutbr.cz/~polcak">Libor Polčák</a></li>
+                <li>Martin Bednář</li>
+                <li>Giorgio Maone</li>
+                <li>Zbyněk Červinka</li>
+                <li>Martin Timko</li>
+                <li>Pavel Pohner</li>
+                <li>Pater Horňák</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Design and website development</strong>
+              <a href="manufacturaindependente.org/">Manufactura Independente</a>
+            </li>
+            <li>
+              <strong>Coordination</strong>
+              <ul>
+                <li>John Hsieh</li>
+                <li>Michael McMahon</li>
+                <li>Ruben Rodriguez</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div><!-- /.grid -->
+    </div>
+  </footer>
+
+</body>
+
+</html>

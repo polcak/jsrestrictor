@@ -1,0 +1,413 @@
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/Inter-Regular.woff2?v=3.13") format("woff2"),
+       url("../fonts/Inter-Regular.woff?v=3.13") format("woff");
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style:  normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/Inter-Bold.woff2?v=3.13") format("woff2"),
+       url("../fonts/Inter-Bold.woff?v=3.13") format("woff");
+}
+
+@font-face {
+    font-family: 'Oxygen Mono';
+    src: url('OxygenMono-Regular.woff2') format('woff2'),
+        url('OxygenMono-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+  --main-font: 'Inter', Roboto, Helvetica, Arial, sans-serif;
+  --code-font: 'Oxygen Mono', 'Roboto Mono', monospace;
+  --text-color: #383E42;
+  --link-color: #e76f51;
+  --link-color-rgb: 231, 111, 81;
+  --darkgreen: #264653;
+  --ghost-white: #FBF9FF;
+  --lightgray: #fefae0;
+  --mg-xlarge: 2rem;
+  --mg-large: 1.5rem;
+  --mg-medium: 1rem;
+  --mg-small: 0.5rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+}
+
+body {
+  color: var(--text-color);
+  font-family: var(--main-font);
+  font-weight: 400;
+  font-size: 1em;
+  line-height: 1.45;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration-color: var(--link-color);
+}
+
+a:hover {
+}
+
+a[href*="//"]:not([href*="jsr.manufacturaindependente.org"]):not(.button):after {
+  content: "↗";
+  color: var(--link-color);
+  font-size: 70%;
+  font-weight: 700;
+  vertical-align: super;
+}
+
+
+img {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+code,
+pre {
+  font-family: var(--code-font);
+}
+
+code {
+  background-color: var(--lightgray);
+  font-size: 0.875rem;
+  font-weight: 400;
+  padding: 0.25em 0.5em;
+  display: inline-block;
+  position: relative;
+}
+
+/* Typography
+*/
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2.5rem; }
+h3 { font-size: 2rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
+h1:not(:first-child),
+h2:not(:first-child),
+h3:not(:first-child),
+h4:not(:first-child),
+h5:not(:first-child),
+h6:not(:first-child) { margin-top: var(--mg-xlarge); }
+
+h1:not(:last-child),
+h2:not(:last-child),
+h3:not(:last-child),
+h4:not(:last-child),
+h5:not(:last-child),
+h6:not(:last-child) { margin-bottom: var(--mg-medium); }
+
+.highlight {
+  font-size: 115%;
+}
+
+p:not(:last-child) {
+  margin-bottom: var(--mg-large);
+}
+
+ul:not(:last-child),
+ol:not(:last-child) {
+  margin-bottom: var(--mg-large);
+}
+
+/* General layout
+*/
+
+.container {
+  width: auto;
+  max-width: 1344px;
+  margin: 0 auto;
+  position: relative;
+  padding: var(--mg-xlarge) var(--mg-medium) 0;
+}
+
+#topheader {
+  display: grid;
+  grid-gap: 1em;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+#projectlogo a {
+  border-bottom: 0;
+}
+
+#projectlogo img {
+  display: block;
+  height: 60px;
+}
+
+#topheader p strong {
+  display: block;
+}
+
+.content-wrapper {
+  display: grid;
+  grid-gap: var(--mg-medium) var(--mg-xlarge);
+  grid-template-columns: auto 1fr;
+}
+
+#main-content {
+  padding-bottom: calc(2 * var(--mg-xlarge));
+}
+
+#main-content .header {
+  margin-bottom: var(--mg-large);
+  line-height: 1;
+}
+
+.footer {
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: var(--ghost-white);
+  background-color: var(--darkgreen);
+}
+
+.footer a {
+  color: var(--ghost-white);
+}
+
+.footer .grid {
+  display: grid;
+  grid-gap: 0 var(--mg-xlarge);
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+}
+
+.footer .credits ul:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+#main-content ul li {
+  list-style-type: disc;
+}
+
+#main-content li {
+  margin-top: var(--mg-small);
+  margin-left: var(--mg-medium);
+}
+
+#main-content li li {
+  margin-left: var(--mg-medium);
+}
+
+
+/* Hero
+  based in Bulma's hero component
+  https://github.com/jgthms/bulma/blob/master/sass/grid/columns.sass
+*/
+
+.hero {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.block:not(:first-child) {
+  padding-top: var(--mg-large);
+}
+
+.block:not(:last-child) {
+  margin-bottom: var(--mg-large);
+}
+
+/* Helper classes
+*/
+
+.has-text-centered {
+  text-align: center !important;
+}
+
+.has-text-justified {
+  text-align: justify !important;
+}
+
+.has-text-left {
+  text-align: left !important;
+}
+
+.has-text-right {
+  text-align: right !important;
+}
+
+
+/* Navigation
+*/
+
+.menu-list {
+  font-size: 0.85rem;
+}
+
+.menu-list li {
+  margin-left: 0;
+  list-style-type: none;
+}
+
+.menu-heading strong {
+  color: var(--darkgreen);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.menu-heading:not(:last-child) {
+    margin-bottom: var(--mg-medium);
+}
+
+.menu-list {
+  list-style: none;
+  line-height: 1;
+}
+
+.menu-list li:not(:last-child) {
+}
+
+.menu-list a {
+  color: var(--link-color);
+  text-decoration: none;
+  display: block;
+  padding: 0.25em 0;
+  border-bottom: 0;
+}
+
+.menu-list a:hover {
+}
+
+.menu-list li ul {
+  margin: var(--mg-small) 0;
+}
+
+/* Buttons
+*/
+
+.button {
+  color: rgba(var(--link-color-rgb), 0.9);
+  background-color: #fff;
+  border: 2px solid rgba(var(--link-color-rgb), 0.9);
+  cursor: pointer;
+  justify-content: center;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(0.5em - 1px);
+  text-align: center;
+  white-space: nowrap;
+  transition: background-color 0.25s ease-out, color 0.25s ease-out;
+  -webkit-appearance: none;
+}
+
+.button:hover {
+  color: rgba(var(--link-color-rgb), 1);
+  border-color: rgba(var(--link-color-rgb), 1);
+}
+
+a.button {
+  text-decoration: none;
+  display: inline-block;
+}
+
+.button.is-normal {
+  font-size: 1rem;
+}
+
+.button.is-medium {
+  font-size: 1.25rem;
+}
+
+.button.is-large {
+  font-size: 1.5rem;
+}
+
+.buttons {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.buttons .button {
+  margin-bottom: 0.5rem;
+}
+
+.buttons .button:not(:last-child):not(.is-fullwidth) {
+  margin-right: 0.5rem;
+}
+
+.buttons:last-child {
+  margin-bottom: -0.5rem;
+}
+
+.buttons:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.buttons.are-small .button:not(.is-normal):not(.is-medium):not(.is-large) {
+  font-size: 0.75rem;
+}
+
+.buttons.are-small .button:not(.is-normal):not(.is-medium):not(.is-large):not(.is-rounded) {
+  border-radius: 2px;
+}
+
+.buttons.are-medium .button:not(.is-small):not(.is-normal):not(.is-large) {
+  font-size: 1.25rem;
+}
+
+.buttons.are-large .button:not(.is-small):not(.is-normal):not(.is-medium) {
+  font-size: 1.5rem;
+}
+
+.buttons.is-centered {
+  justify-content: center;
+}
+
+/* Homepage
+*/
+
+#home .hero {}
+
+#home .hero-body {
+  padding: calc(2 * var(--mg-xlarge)) var(--mg-xlarge);
+}
+
+#home .block:not(:first-child) {
+  padding: var(--mg-xlarge) 0;
+}
+
+#about .grid {
+  display: grid;
+  grid-gap: var(--mg-xlarge) var(--mg-large);
+  grid-template-columns: repeat(2, minmax(200px, 1fr));
+}
+
+#contribute .grid {
+  display: grid;
+  grid-gap: var(--mg-xlarge) var(--mg-large);
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+}
+
+.grid article header {
+  margin-bottom: var(--mg-medium);
+}

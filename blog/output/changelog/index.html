@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Rescriptor: Release History</title>
+  <meta name="description" content="Your browser extension to keep you safe">
+
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Pelican">
+
+  <link href="/theme/css/fork-awesome.min.css" rel="stylesheet">
+  <link href="/theme/css/minireset.min.css" rel="stylesheet">
+  <link href="/theme/css/bulma_grid.css" rel="stylesheet">
+  <link href="/theme/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+<header id="topheader" class="container">
+  <h1 id="projectlogo">
+    <a href="/">
+      <img alt="Logo" src="/theme/images/logo.png">
+    </a>
+  </h1>
+ <p>
+     <strong>Rescriptor </strong>
+     <span>Your browser extension to keep you safe</span>
+ </p>
+</header><!-- /#topheader -->
+
+<div  class="content-wrapper container">
+
+<div class="sidebar">
+  <!-- new navigation -->
+  <nav class="menu">
+    <ul class="menu-list">
+      <li class="menu-heading">
+        <strong>Rescriptor</strong>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/install/">Installing</a></li>
+          <li><a href="/drivers/">Download browser drivers</a></li>
+          <li><a href="/permissions/">Required permissions</a></li>
+          <li><a href="/configure/">Configuring</a></li>
+          <li><a href="/versions/">Release history</a></li>
+          <li><a href="/credits/">Credits</a></li>
+          <li><a href="/license/">License</a></li>
+        </ul>
+      <li class="menu-heading">
+        <!--
+        <strong><a href="/group__wrappers.html">Key protection</a></strong>
+        <ul>
+          <li><a href="/group__NBS.html">Network Boundary Shield</a></li>
+          <li><a href="/wrappingS-AJAX_8js.html">AJAX</a></li>
+          <li><a href="/wrappingS-BATTERY-CR_8js.html">Battery level</a></li>
+          <li><a href="/wrappingS-BE_8js.html">Beacon API</a></li>
+          <li><a href="/wrappingS-DM_8js.html">Device memory</a></li>
+          <li><a href="/wrappingS-ECMA-ARRAY_8js.html">ECMAscript arrays</a></li>
+          <li><a href="/wrappingS-ECMA-DATE_8js.html">ECMAscript date</a></li>
+          <li><a href="/wrappingS-ECMA-SHARED_8js.html">ECMA shared buffers</a></li>
+          <li><a href="/wrappingS-GEO_8js.html">Geolocation</a></li>
+          <li><a href="/wrappingS-H-C_8js.html">HTML Canvas</a></li>
+          <li><a href="/wrappingS-HRT_8js.html">HTML Performance</a></li>
+          <li><a href="/wrappingS-HTML-LS_8js.html">HTML Workers</a></li>
+          <li><a href="/wrappingS-HTML_8js.html">HTML window name</a></li>
+          <li><a href="/wrappingS-MCS_8js.html">Media devices</a></li>
+          <li><a href="/wrappingS-PT2_8js.html">PT2</a></li>
+          <li><a href="/wrappingS-WEBA_8js.html">WebAudio</a></li>
+          <li><a href="/pages/webgl.html">WebGL</a></li>
+        </ul>
+        -->
+        <strong>Key protection</strong>
+        <ul>
+          <li><a href="/ajax/">AJAX</a></li>
+          <li><a href="/battery-cr/">Battery level</a></li>
+          <li><a href="/be/">Beacon API</a></li>
+          <li><a href="/dm/">Device memory</a></li>
+          <li><a href="/ecma-array/">ECMAscript arrays</a></li>
+          <li><a href="/ecma-date/">ECMAscript date</a></li>
+          <li><a href="/ecma-shared/">ECMA shared buffers</a></li>
+          <li><a href="/geo/">Geolocation</a></li>
+          <li><a href="/h-c/">HTML Canvas</a></li>
+          <li><a href="/hrt/">HTML Performance</a></li>
+          <li><a href="/html-ls/">HTML Workers</a></li>
+          <li><a href="/html/">HTML window name</a></li>
+          <li><a href="/mcs/">Media devices</a></li>
+          <li><a href="/np/">np</a></li>
+          <li><a href="/pt2/">PT2</a></li>
+          <li><a href="/weba/">WebAudio</a></li>
+          <li><a href="/webgl/">WebGL</a></li>
+        </ul>
+      </li>
+      <li class="menu-heading">
+        <strong>Developer notes</strong>
+        <ul>
+          <li><a href="/issues/">Known issues</a></li>
+          <li><a href="/build/">Building JSR from scratch</a></li>
+          <li><a href="/new-wrapper/">Making a new wrapper</a></li>
+          <li><a href="/unit-tests/">Running unit tests</a></li>
+          <li><a href="/integration-tests/">Running integration tests</a></li>
+          <li><a href="/system-tests/">Running system tests</a></li>
+          <li><a href="/coding-style/">Coding style</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav><!-- /.menu -->
+</div><!-- /.sidebar -->
+
+<section id="main-content">
+
+
+  <header>
+    <h2 class="entry-title">Release History</h2>
+  </header>
+
+  <h1>Release history</h1>
+<h2>0.4.7</h2>
+<ul>
+<li>Wrap Beacon API</li>
+<li>Bugfix: inject content scripts to all iframes</li>
+<li>Fix exception throwing in the code generator dealing with Firefox bug 1267027</li>
+</ul>
+<h2>0.4.6</h2>
+<ul>
+<li>NBS improvements for Chromium-based browsers: block a host after detecting the first suspicious HTTP request from the public to the private network.</li>
+</ul>
+<h2>0.4.5</h2>
+<ul>
+<li>Add wrapper of MediaDevices.prototype.enumerateDevices</li>
+<li>Fix missing Date properties</li>
+<li>Fix Geolocation overflows appearing near poles</li>
+<li>Improve handling of domain names (URLs):</li>
+<li>Handle IPv4 addresses used as hostnames correctly</li>
+<li>Do not treat TLD specially and allow specifying wrapping levels for TLDs</li>
+<li>Fix handling of two-letters 2-nd level domains</li>
+<li>Fix exception throwing in the code generator dealing with Firefox bug 1267027</li>
+</ul>
+<h2>0.4.4</h2>
+<ul>
+<li>Bugfix: Do not try to redefine undefined objects. The exceptions thrown in injected code used to
+    prevent application of all the wrapping code.</li>
+</ul>
+<h2>0.4.3</h2>
+<ul>
+<li>Add an option to clear <code>window.name</code> with each page reload.</li>
+</ul>
+<h2>0.4.2</h2>
+<ul>
+<li>Rewrite the NBS for Chromium-based browsers with custom DNS cache build with resolved data available in onResponseStartedListener()</li>
+</ul>
+<h2>0.4.1</h2>
+<ul>
+<li>Fix the amount of saved data through pop-up (for a specific domain), it is much harder to reach
+    the quoa</li>
+</ul>
+<h2>0.4</h2>
+<ul>
+<li>Re-introduced Geolocation API wrapping (several settings available).</li>
+</ul>
+<h2>0.3.2</h2>
+<ul>
+<li>Bugfix: Set up domain-specific levels from storage correctly</li>
+<li>Wrap PerformanceEntry instead of performance.getEntries*() - prevents a known leak of precise
+    time stamps in Chromium-based browsers.</li>
+<li>Add note on the effectivity of time randomization</li>
+<li>Firefox fix background and content scripts synchronization, use correct naming (improves speed)</li>
+<li>Time wrappers in Firefox affected by the <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1267027">Fiefox CSP bug</a> should work better. However, the precise timers are not wrapped, see also <a href="https://github.com/polcak/jsrestrictor/issues/25">#25</a>.</li>
+<li>NBS message for Chromium-based browsers reworded.</li>
+</ul>
+<h2>0.3.1</h2>
+<ul>
+<li>Improve compatibility with Chromium based browsers</li>
+</ul>
+<h2>0.3</h2>
+<ul>
+<li>Major code rewrite - make the code more modular, remove duplications</li>
+<li>Add wrappings inspired by <a href="https://misc0110.net/web/files/jszero.pdf">JavaScript Zero: Real JavaScript and Zero S
+ide-Channel Attacks</a></li>
+<li>Network boundary shield prevents web pages to use the browser as a proxy between local network and the public Internet. See the <a href="https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf">Force Point report</a> for an example of the attack. The protection encapsulates the WebRequest API, so it captures all outgoing requests.</li>
+<li>Allow multiple custom levels</li>
+<li>Do not modify DOM of displayed pages (the modifications were detectable by the page scripts and may
+    reveal that the user is running JSR)</li>
+<li>Canvas fingerprinting: originally, only <code>toDataURL</code> was blocked. The extension now blocks <code>CanvasRenderingContext2D.prototype.getImageData</code> and <code>HTMLCanvasElement.prototype.toBlob</code>.</li>
+<li>Block additionaly methods to get performance data.</li>
+<li>Unfortunately, we do not migrate old settings as the levels were redesigned and several features
+    were removed. We expect to migrate previous settings in the future.</li>
+<li>Initial attempt to deal with a bug <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1267027">https://bugzilla.mozilla.org/show_bug.cgi?id=1267027</a> but it
+    does not work completely as expected, yet.</li>
+<li>Make sure that calling toString on the wrapped function does not leak the wrapping code.</li>
+<li>Fix original canvas method leaks through iframes</li>
+<li>Do not allow page scripts to delete wrappers</li>
+<li>GUI rewritten.</li>
+<li>Do not open the main page after browser or extension update as it is irritating and may send a
+    signal that the user is tracked.</li>
+<li><em>Removed feature</em> Do not change request HTTP headers. See the paper
+    FP-Scanner: The privacy implications of browser
+    fingerprint inconsistencies and pages like
+    <a href="https://ghacksuserjs.github.io/TorZillaPrint/TorZillaPrint.html">https://ghacksuserjs.github.io/TorZillaPrint/TorZillaPrint.html</a>.</li>
+<li><em>Removed feature</em> GPS/location is not blocked anymore, we expect to reintroduce this feature in the future.</li>
+</ul>
+<h2>0.2.1</h2>
+<ul>
+<li>Fix <code>Date</code> wrapping that used to break some pages; <code>Date</code> wrapping code improved</li>
+<li>Improve <code>XMLHttpRequest</code> wrapping</li>
+</ul>
+<h2>0.2</h2>
+<ul>
+<li>Additional APIs that can be wrapped:</li>
+<li><code>navigator</code> properties: <code>userAgent</code>, <code>vendor</code>, <code>platform</code>, <code>appVersion</code>, <code>oscpu</code>, <code>language</code>, <code>languages</code></li>
+<li><code>document</code> properties: <code>referrer</code></li>
+</ul>
+<h2>0.1</h2>
+<ul>
+<li>Initial public version</li>
+</ul>
+
+
+
+</section><!-- /#main-content -->
+</div><!-- /.content-wrapper.container -->
+
+<footer class="footer">
+  <div class="container">
+    <!-- copied from docs/_includes/footer.html -->
+    <div class="columns">
+      <div class="column">
+        <p>
+          This project was funded through the NGI0 PET Fund, a fund established by NLnet with financial support
+          from the European Commission's Next Generation Internet programme, under the aegis of DG
+          Communications Networks, Content and Technology under grant agreement No 825310 as
+          <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a
+             href="https://nlnet.nl/project/JavascriptShield/">JavaScript Shield</a> projects. This
+          project was supported by the <a href="https://www.fit.vut.cz/research/project/1063/.en">MV CR	VI20172020062 project</a>.
+        </p>
+      </div>
+      <div class="column">
+        <p>View the source code at <a href="https://pagure.io/JS-Shield/JS-Shield">Pagure.io</a>.</p>
+        <p>
+          This program is free software: you can redistribute it and/or modify
+          it under the terms of the GNU General Public License as published by
+          the Free Software Foundation, either
+          <a href="https://www.gnu.org/licenses/gpl-3.0">version 3</a> of the License, or
+          (at your option) any later version.
+        </p>
+      </div>
+    </div><!-- /.columns -->
+  </div>
+</footer>
+
+</body>
+</html>

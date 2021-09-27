@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>jShelter: Geolocation</title>
+  <meta name="description" content="Your browser extension to keep you safe">
+
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Pelican">
+
+  <link href="/theme/css/fork-awesome.min.css" rel="stylesheet">
+  <link href="/theme/css/minireset.min.css" rel="stylesheet">
+  <link href="/theme/css/bulma_grid.css" rel="stylesheet">
+  <link href="/theme/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+  <header id="topheader" class="container">
+    <h1 id="projectlogo">
+      <a href="/">
+        <img alt="Logo" src="/theme/images/logo.png">
+      </a>
+    </h1>
+    <p>
+      <strong>jShelter </strong>
+      <span>Your browser extension to keep you safe</span>
+    </p>
+  </header><!-- /#topheader -->
+
+  <div  class="content-wrapper container">
+
+    <div class="sidebar">
+      <!-- new navigation -->
+      <nav class="menu">
+        <ul class="menu-list">
+          <li class="menu-heading">
+            <strong>jShelter</strong>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog/">Blog</a></li>
+              <li><a href="/install/">Installing</a></li>
+              <li><a href="/drivers/">Download browser drivers</a></li>
+              <li><a href="/permissions/">Required permissions</a></li>
+              <li><a href="/configure/">Configuring</a></li>
+              <li><a href="/versions/">Release history</a></li>
+              <li><a href="/credits/">Credits</a></li>
+              <li><a href="/license/">License</a></li>
+            </ul>
+          <li class="menu-heading">
+            <!--
+        <strong><a href="/group__wrappers.html">Key protection</a></strong>
+        <ul>
+          <li><a href="/group__NBS.html">Network Boundary Shield</a></li>
+          <li><a href="/wrappingS-AJAX_8js.html">AJAX</a></li>
+          <li><a href="/wrappingS-BATTERY-CR_8js.html">Battery level</a></li>
+          <li><a href="/wrappingS-BE_8js.html">Beacon API</a></li>
+          <li><a href="/wrappingS-DM_8js.html">Device memory</a></li>
+          <li><a href="/wrappingS-ECMA-ARRAY_8js.html">ECMAscript arrays</a></li>
+          <li><a href="/wrappingS-ECMA-DATE_8js.html">ECMAscript date</a></li>
+          <li><a href="/wrappingS-ECMA-SHARED_8js.html">ECMA shared buffers</a></li>
+          <li><a href="/wrappingS-GEO_8js.html">Geolocation</a></li>
+          <li><a href="/wrappingS-H-C_8js.html">HTML Canvas</a></li>
+          <li><a href="/wrappingS-HRT_8js.html">HTML Performance</a></li>
+          <li><a href="/wrappingS-HTML-LS_8js.html">HTML Workers</a></li>
+          <li><a href="/wrappingS-HTML_8js.html">HTML window name</a></li>
+          <li><a href="/wrappingS-MCS_8js.html">Media devices</a></li>
+          <li><a href="/wrappingS-PT2_8js.html">PT2</a></li>
+          <li><a href="/wrappingS-WEBA_8js.html">WebAudio</a></li>
+          <li><a href="/pages/webgl.html">WebGL</a></li>
+        </ul>
+        -->
+            <strong>Key protection</strong>
+            <ul>
+              <li><a href="/ajax/">AJAX</a></li>
+              <li><a href="/battery-cr/">Battery level</a></li>
+              <li><a href="/be/">Beacon API</a></li>
+              <li><a href="/dm/">Device memory</a></li>
+              <li><a href="/ecma-array/">ECMAscript arrays</a></li>
+              <li><a href="/ecma-date/">ECMAscript date</a></li>
+              <li><a href="/ecma-shared/">ECMA shared buffers</a></li>
+              <li><a href="/geo/">Geolocation</a></li>
+              <li><a href="/h-c/">HTML Canvas</a></li>
+              <li><a href="/hrt/">HTML Performance</a></li>
+              <li><a href="/html-ls/">HTML Workers</a></li>
+              <li><a href="/html/">HTML window name</a></li>
+              <li><a href="/mcs/">Media devices</a></li>
+              <li><a href="/np/">np</a></li>
+              <li><a href="/pt2/">PT2</a></li>
+              <li><a href="/weba/">WebAudio</a></li>
+              <li><a href="/webgl/">WebGL</a></li>
+            </ul>
+          </li>
+          <li class="menu-heading">
+            <strong>Developer notes</strong>
+            <ul>
+              <li><a href="/issues/">Known issues</a></li>
+              <li><a href="/build/">Building from scratch</a></li>
+              <li><a href="/new-wrapper/">Making a new wrapper</a></li>
+              <li><a href="/unit-tests/">Running unit tests</a></li>
+              <li><a href="/integration-tests/">Running integration tests</a></li>
+              <li><a href="/system-tests/">Running system tests</a></li>
+              <li><a href="/coding-style/">Coding style</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav><!-- /.menu -->
+    </div><!-- /.sidebar -->
+
+    <section id="main-content">
+
+
+  <header>
+    <h2 class="entry-title">Geolocation</h2>
+  </header>
+
+  <p>The goal is to prevent leaks of user current position. The Geolocation API also provides access
+to high precision timestamps which can be used to various web attacks (see for example,
+http://www.jucs.org/jucs_21_9/clock_skew_based_computer,
+https://lirias.kuleuven.be/retrieve/389086).</p>
+<p>Although it is true that the user needs to specificaly approve access to location facilities,
+these wrappers aim on improving the control of the precision of the geolocation.</p>
+<p>The wrappers support the following controls:</p>
+<ul>
+<li>Accurate data: the extension provides precise geolocation position but modifies the time
+  precision in conformance with the Date and Performance wrappers.</li>
+<li>Modified position: the extension modifies the time precision of the time stamps in
+  conformance with the Date and Performance wrappers, and additionally,  allows to limit the
+  precision of the current position to hundered of meters, kilometers, tens, or hundereds of
+  kilometers.</li>
+</ul>
+<p>When modifying position:</p>
+<ul>
+<li>Repeated calls of navigator.geolocation.getCurrentPosition() return the same position
+without page load and typically return another position after page reload.</li>
+<li>navigator.geolocation.watchPosition() does not change position.</li>
+</ul>
+
+
+
+    </section><!-- /#main-content -->
+  </div><!-- /.content-wrapper.container -->
+
+  <footer class="footer">
+    <div class="container">
+      <!-- copied from docs/_includes/footer.html -->
+      <div class="grid">
+        <div class="license">
+          <p>View the source code at <a href="https://pagure.io/JS-Shield/JS-Shield">Pagure.io</a>.</p>
+          <p>
+            This program is free software: you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either
+            <a href="https://www.gnu.org/licenses/gpl-3.0">version 3</a> of the License, or
+            (at your option) any later version.
+          </p>
+        </div>
+        <div class="supporters">
+          <p>
+            This project was funded through the NGI0 PET Fund, a fund established by NLnet with financial support
+            from the European Commission's Next Generation Internet programme, under the aegis of DG
+            Communications Networks, Content and Technology under grant agreement No 825310 as
+            <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a href="https://nlnet.nl/project/JavascriptShield/">JavaScript Shield</a> projects. This
+            project was supported by the <a href="https://www.fit.vut.cz/research/project/1063/.en">MV CR VI20172020062 project</a>.
+          </p>
+        </div>
+        <div class="credits">
+          <ul>
+            <li>
+              <strong>Developers</strong>
+              <ul>
+                <li><a href="https://www.fit.vutbr.cz/~polcak">Libor Polčák</a></li>
+                <li>Martin Bednář</li>
+                <li>Giorgio Maone</li>
+                <li>Zbyněk Červinka</li>
+                <li>Martin Timko</li>
+                <li>Pavel Pohner</li>
+                <li>Pater Horňák</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Design and website development</strong>
+              <a href="manufacturaindependente.org/">Manufactura Independente</a>
+            </li>
+            <li>
+              <strong>Coordination</strong>
+              <ul>
+                <li>John Hsieh</li>
+                <li>Michael McMahon</li>
+                <li>Ruben Rodriguez</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div><!-- /.grid -->
+    </div>
+  </footer>
+
+</body>
+
+</html>

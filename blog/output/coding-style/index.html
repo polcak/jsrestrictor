@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>jShelter: Coding style</title>
+  <meta name="description" content="Your browser extension to keep you safe">
+
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Pelican">
+
+  <link href="/theme/css/fork-awesome.min.css" rel="stylesheet">
+  <link href="/theme/css/minireset.min.css" rel="stylesheet">
+  <link href="/theme/css/bulma_grid.css" rel="stylesheet">
+  <link href="/theme/css/main.css" rel="stylesheet">
+</head>
+
+<body>
+  <header id="topheader" class="container">
+    <h1 id="projectlogo">
+      <a href="/">
+        <img alt="Logo" src="/theme/images/logo.png">
+      </a>
+    </h1>
+    <p>
+      <strong>jShelter </strong>
+      <span>Your browser extension to keep you safe</span>
+    </p>
+  </header><!-- /#topheader -->
+
+  <div  class="content-wrapper container">
+
+    <div class="sidebar">
+      <!-- new navigation -->
+      <nav class="menu">
+        <ul class="menu-list">
+          <li class="menu-heading">
+            <strong>jShelter</strong>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/blog/">Blog</a></li>
+              <li><a href="/install/">Installing</a></li>
+              <li><a href="/drivers/">Download browser drivers</a></li>
+              <li><a href="/permissions/">Required permissions</a></li>
+              <li><a href="/configure/">Configuring</a></li>
+              <li><a href="/versions/">Release history</a></li>
+              <li><a href="/credits/">Credits</a></li>
+              <li><a href="/license/">License</a></li>
+            </ul>
+          <li class="menu-heading">
+            <!--
+        <strong><a href="/group__wrappers.html">Key protection</a></strong>
+        <ul>
+          <li><a href="/group__NBS.html">Network Boundary Shield</a></li>
+          <li><a href="/wrappingS-AJAX_8js.html">AJAX</a></li>
+          <li><a href="/wrappingS-BATTERY-CR_8js.html">Battery level</a></li>
+          <li><a href="/wrappingS-BE_8js.html">Beacon API</a></li>
+          <li><a href="/wrappingS-DM_8js.html">Device memory</a></li>
+          <li><a href="/wrappingS-ECMA-ARRAY_8js.html">ECMAscript arrays</a></li>
+          <li><a href="/wrappingS-ECMA-DATE_8js.html">ECMAscript date</a></li>
+          <li><a href="/wrappingS-ECMA-SHARED_8js.html">ECMA shared buffers</a></li>
+          <li><a href="/wrappingS-GEO_8js.html">Geolocation</a></li>
+          <li><a href="/wrappingS-H-C_8js.html">HTML Canvas</a></li>
+          <li><a href="/wrappingS-HRT_8js.html">HTML Performance</a></li>
+          <li><a href="/wrappingS-HTML-LS_8js.html">HTML Workers</a></li>
+          <li><a href="/wrappingS-HTML_8js.html">HTML window name</a></li>
+          <li><a href="/wrappingS-MCS_8js.html">Media devices</a></li>
+          <li><a href="/wrappingS-PT2_8js.html">PT2</a></li>
+          <li><a href="/wrappingS-WEBA_8js.html">WebAudio</a></li>
+          <li><a href="/pages/webgl.html">WebGL</a></li>
+        </ul>
+        -->
+            <strong>Key protection</strong>
+            <ul>
+              <li><a href="/ajax/">AJAX</a></li>
+              <li><a href="/battery-cr/">Battery level</a></li>
+              <li><a href="/be/">Beacon API</a></li>
+              <li><a href="/dm/">Device memory</a></li>
+              <li><a href="/ecma-array/">ECMAscript arrays</a></li>
+              <li><a href="/ecma-date/">ECMAscript date</a></li>
+              <li><a href="/ecma-shared/">ECMA shared buffers</a></li>
+              <li><a href="/geo/">Geolocation</a></li>
+              <li><a href="/h-c/">HTML Canvas</a></li>
+              <li><a href="/hrt/">HTML Performance</a></li>
+              <li><a href="/html-ls/">HTML Workers</a></li>
+              <li><a href="/html/">HTML window name</a></li>
+              <li><a href="/mcs/">Media devices</a></li>
+              <li><a href="/np/">np</a></li>
+              <li><a href="/pt2/">PT2</a></li>
+              <li><a href="/weba/">WebAudio</a></li>
+              <li><a href="/webgl/">WebGL</a></li>
+            </ul>
+          </li>
+          <li class="menu-heading">
+            <strong>Developer notes</strong>
+            <ul>
+              <li><a href="/issues/">Known issues</a></li>
+              <li><a href="/build/">Building from scratch</a></li>
+              <li><a href="/new-wrapper/">Making a new wrapper</a></li>
+              <li><a href="/unit-tests/">Running unit tests</a></li>
+              <li><a href="/integration-tests/">Running integration tests</a></li>
+              <li><a href="/system-tests/">Running system tests</a></li>
+              <li><a href="/coding-style/">Coding style</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav><!-- /.menu -->
+    </div><!-- /.sidebar -->
+
+    <section id="main-content">
+
+
+  <header>
+    <h2 class="entry-title">Coding style</h2>
+  </header>
+
+  <h2>General guidelines</h2>
+<ul>
+<li>Use <strong>tabulators</strong> for indentation, and avoid spaces/tabs at the end of the line.</li>
+<li>Functions, methods, classes, ifs, cycles etc. have opening braces at the same line.</li>
+<li>Text width preferred less than 80 characters, maximum 100 characters. It is better having readable code than pursuing this limit.</li>
+<li>Always enclose blocks of expressions into brackets.</li>
+<li>Names are lower case and preferably explain the purpose of the variable, class, etc.</li>
+<li>Comment classes, functions, etc. in Doxygen style. Use <code>make doc</code> to generate documentation.</li>
+</ul>
+<h2>Code examples</h2>
+<p>Correct code example:</p>
+<div class="highlight"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * This is an example function created for the coding style manual.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param abc The number that will be ...</span>
+<span class="cm"> * @returns  The Answer to the Ultimate Question of Life, The Universe, and Everything.</span>
+<span class="cm"> */</span>
+<span class="kd">function</span> <span class="nx">example</span><span class="p">(</span><span class="nx">abc</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mf">42</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">counter</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>Bad code example:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">function</span> <span class="nx">example</span><span class="p">(</span><span class="nx">abc</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kd">function</span> <span class="nx">method</span><span class="p">()</span>
+    <span class="p">{</span>
+      <span class="k">return</span> <span class="mf">42</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">method</span><span class="p">();</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h2>Version control workflow</h2>
+<ul>
+<li>Do not provide commits dealing with bad coding style. The only exception is if
+  you want to improve code that does not follow the coding style rules.
+  Preferably provide one commit that fixes the issues and another (others) that
+  improve the code, add new functionality etc.</li>
+<li>Atomic commits are useful, see <a href="https://www.freshconsulting.com/atomic-commits/">this
+  page</a> for help.</li>
+<li>A commit should not contain adding missing semicolons, changes in generated
+  code, a bugfix, and addition of a new functionality. Each of these changes
+  should go to a separate commit with a message explaining why is the change
+  necessary (if it is not obvious like in the case of missing semicolons).</li>
+<li>Provide meaningful commit messages. For help, see points 1, 2 and 7 of <a href="https://chris.beams.io/posts/git-commit/">this
+  guide</a></li>
+<li>Do not fear changing commits that are not public, yet. If you create a bug and
+  find it before merge, it is better to fix the bug in the original commit.
+  Available Git operations for this are <code>rebase (-i)</code>, <code>fixup</code>, <code>squash</code> and
+  <code>push --force</code>.</li>
+<li>This <a href="">pull request</a> contains an example of big commits that needed to be refactored.</li>
+<li>Provide merge request more often rather than commiting big changes. If you fix
+  Makefile or other scripts, provide the change and do not wait. Create code
+  that is understandable and does not repeat itself. If possible, use variables
+  instead of copying the same code.</li>
+</ul>
+
+
+
+    </section><!-- /#main-content -->
+  </div><!-- /.content-wrapper.container -->
+
+  <footer class="footer">
+    <div class="container">
+      <!-- copied from docs/_includes/footer.html -->
+      <div class="grid">
+        <div class="license">
+          <p>View the source code at <a href="https://pagure.io/JS-Shield/JS-Shield">Pagure.io</a>.</p>
+          <p>
+            This program is free software: you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either
+            <a href="https://www.gnu.org/licenses/gpl-3.0">version 3</a> of the License, or
+            (at your option) any later version.
+          </p>
+        </div>
+        <div class="supporters">
+          <p>
+            This project was funded through the NGI0 PET Fund, a fund established by NLnet with financial support
+            from the European Commission's Next Generation Internet programme, under the aegis of DG
+            Communications Networks, Content and Technology under grant agreement No 825310 as
+            <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a href="https://nlnet.nl/project/JavascriptShield/">JavaScript Shield</a> projects. This
+            project was supported by the <a href="https://www.fit.vut.cz/research/project/1063/.en">MV CR VI20172020062 project</a>.
+          </p>
+        </div>
+        <div class="credits">
+          <ul>
+            <li>
+              <strong>Developers</strong>
+              <ul>
+                <li><a href="https://www.fit.vutbr.cz/~polcak">Libor Polčák</a></li>
+                <li>Martin Bednář</li>
+                <li>Giorgio Maone</li>
+                <li>Zbyněk Červinka</li>
+                <li>Martin Timko</li>
+                <li>Pavel Pohner</li>
+                <li>Pater Horňák</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Design and website development</strong>
+              <a href="manufacturaindependente.org/">Manufactura Independente</a>
+            </li>
+            <li>
+              <strong>Coordination</strong>
+              <ul>
+                <li>John Hsieh</li>
+                <li>Michael McMahon</li>
+                <li>Ruben Rodriguez</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div><!-- /.grid -->
+    </div>
+  </footer>
+
+</body>
+
+</html>
