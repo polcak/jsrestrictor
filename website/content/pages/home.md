@@ -94,10 +94,6 @@ URL:
       <div>
         <p>If you have any questions or you spotted a bug, the project's <a href="https://pagure.io/JS-Shield/JS-Shield/issues">issue tracker</a> is the place for posting those. We especially appreciate feedback, so feel free to use the issue tracker for chiming in.</p>
 
-
-Once you install the extension, see the [test page](test/test.html) for the working demo on how the
-extension can help in restricting JS capabilities.
-
       </div>
     </article>
 
