@@ -38,10 +38,13 @@ URL:
         <h4>What is JShelter?</h4>
       </header>
       <div>
-        <p>Accessing cookies, performing fingerprinting to track users across
-        multiple sites, revealing the local network address, or capturing the
-        user's input before they submit a form are some examples of JavaScript's
-        capabilities that can be used in harmful ways.</p>
+        <p>JShelter is a browser extension to give back control over what your
+        browser is doing. A JavaScript-enabled web page can access much of the
+        browser's functionality, with little control over this process available
+        to the user: malicious websites can uniquely identify you through
+        fingerprinting and use other tactics for tracking your activity.
+        JShelter aims to improve the privacy and security of your web
+        browsing.</p>
       </div>
     </article>
     <article>
@@ -49,23 +52,23 @@ URL:
         <h4>How does it work?</h4>
       </header>
       <div>
-        <p>JavaScript Shield adds a
-        safety layer that allows the user to choose if a certain action should
-        be forbidden on a site, or if it should be allowed with restrictions,
-        such as reducing the precision of geolocation to the city area. This
-        layer can also aid as a countermeasure against attacks targeting the
-        browser, operating system or hardware levels.</p>
+        <p>Like a firewall that controls network connections, JShelter controls
+        the APIs provided by the browser, restricting the data that they gather
+        and send out to websites. JShelter adds a safety layer that allows the
+        user to choose if a certain action should be forbidden on a site, or if
+        it should be allowed with restrictions, such as reducing the precision
+        of geolocation to the city area. This layer can also aid as a
+        countermeasure against attacks targeting the browser, operating system
+        or hardware.</p>
       </div>
     </article>
     <article>
       <header>
-        <h4>How is it different from X, Y and Z?</h4>
+        <h4>How can I get started?</h4>
       </header>
       <div>
-        <p>Accessing cookies, performing fingerprinting to track users across
-        multiple sites, revealing the local network address, or capturing the
-        user's input before they submit a form are some examples of JavaScript's
-        capabilities that can be used in harmful ways.</p>
+        <p>First, install the extension using the button above or checking the various <a href="/install/">installation options</a>.</p>
+        <p>Afterwards, read about <a href="/configure/">how to configure</a> JShelter, the <a href="/permissions/">required permissions</a> and the different protection levels.</p>
       </div>
     </article>
     <article>
@@ -86,25 +89,24 @@ URL:
   <div class="grid">
     <article>
       <header>
-        <h4>How can I help?</h4>
+        <h4>I found a bug!</h4>
       </header>
       <div>
-        <p>Accessing cookies, performing fingerprinting to track users across
-        multiple sites, revealing the local network address, or capturing the
-        user's input before they submit a form are some examples of JavaScript's
-        capabilities that can be used in harmful ways.</p>
+        <p>If you have any questions or you spotted a bug, the project's <a href="https://pagure.io/JS-Shield/JS-Shield/issues">issue tracker</a> is the place for posting those. We especially appreciate feedback, so feel free to use the issue tracker for chiming in.</p>
+
+
+Once you install the extension, see the [test page](test/test.html) for the working demo on how the
+extension can help in restricting JS capabilities.
+
       </div>
     </article>
 
     <article>
       <header>
-        <h4>I found a bug!</h4>
+        <h4>How can I help?</h4>
       </header>
       <div>
-        <p>Accessing cookies, performing fingerprinting to track users across
-        multiple sites, revealing the local network address, or capturing the
-        user's input before they submit a form are some examples of JavaScript's
-        capabilities that can be used in harmful ways.</p>
+        <p>Using JShelter and reporting any problems you find in our <a href="https://pagure.io/JS-Shield/JS-Shield/issues">issue tracker</a> is a huge help. If you want to contribute to the project itself, post your ideas on the issue tracker or just go ahead and make a pull request.</p>
       </div>
     </article>
 
@@ -113,10 +115,7 @@ URL:
         <h4>What is the license?</h4>
       </header>
       <div>
-        <p>Accessing cookies, performing fingerprinting to track users across
-        multiple sites, revealing the local network address, or capturing the
-        user's input before they submit a form are some examples of JavaScript's
-        capabilities that can be used in harmful ways.</p>
+        <p>JShelter is copylefted software, available under the <a href="/license/">GNU General Public License</a>.</p>
       </div>
     </article>
   </div>
