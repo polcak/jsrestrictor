@@ -9,7 +9,7 @@ SITEURL = ""
 DEFAULT_DATE = "fs"  # use a default date to stop Pelican complaints on pages
 PAGE_PATHS = ["pages", "wrappers"]
 THEME = "./theme/"
-DIRECT_TEMPLATES = ['index']
+DIRECT_TEMPLATES = ["index"]
 
 # Use filenames as the base for slugs (default is post title)
 SLUGIFY_SOURCE = "basename"

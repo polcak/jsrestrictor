@@ -82,9 +82,9 @@ publish:
 	$(ACTIVATE); $(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(PUBLISHCONF)" $(PELICANOPTS)
 
 deploy: html
-	rsync -e "ssh -p 22" -P -rvzc output/ manufactura@opal5.opalstack.com:~/apps/js-shield/ --cvs-exclude
+	rsync -e "ssh -p 22" -P -rvzc output/ root@jshelter.org:/var/www/html/ --cvs-exclude
 
 dry-deploy: html
-	rsync -n -e "ssh -p 22" -P -rvzc output/ manufactura@opal5.opalstack.com:~/apps/js-shield/ --cvs-exclude
+	rsync -n -e "ssh -p 22" -P -rvzc output/ root@jshelter.org:/var/www/html/ --cvs-exclude
 
 .PHONY: html help clean regenerate serve serve-global devserver publish
