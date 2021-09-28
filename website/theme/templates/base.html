@@ -7,14 +7,17 @@
   {# }<title>{{ SITENAME }}: {% if page %}{{ page.title }}{% else %}{{ article.title }}{% endif %}</title> #}
   <title>{{ SITENAME }}: {{ title }}</title>
   <meta name="description" content="{{ DESCRIPTION }}">
+  <link rel="canonical" href="https://erase.artdel.net/" />
 
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="Pelican">
 
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="icon" type="image/x-icon" href="/theme/images/icon.png">
+
   <link href="/theme/css/fork-awesome.min.css" rel="stylesheet">
   <link href="/theme/css/minireset.min.css" rel="stylesheet">
-  <link href="/theme/css/bulma_grid.css" rel="stylesheet">
   <link href="/theme/css/main.css" rel="stylesheet">
 </head>
 {% endblock %}
@@ -34,7 +37,7 @@
         <a class="navbar-item" href="/">
           {% block titlearea %}
 
-            <img src="/theme/images/jshelter-logo.svg" alt="{{ SITENAME }}">
+            <img src="/theme/images/jshelter-logo.svg" alt="Dark orange square with a little white hermitt crab cuttout. {{ SITENAME }} logo">
             <p>
               <strong>{{ SITENAME }} </strong>
               <span>{{ DESCRIPTION }}</span>
