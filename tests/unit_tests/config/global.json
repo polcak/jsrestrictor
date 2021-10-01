@@ -3,6 +3,7 @@
 		{
 			"name": "helpers",
 			"remove_custom_namespace": false,
+			"let_to_var": false,
 			"src_script_requirements": [
 			],
 			"test_script_requirements": [
@@ -21,39 +22,9 @@
 			]
 		},
 		{
-			"name": "browser",
-			"remove_custom_namespace": false,
-			"src_script_requirements": [
-				{
-					"type": "const",
-					"requirements": [
-						{
-							"import": "sinon-chrome",
-							"as": "chrome"
-						}
-					]
-				}
-			],
-			"test_script_requirements": [
-				{
-					"type": "const",
-					"requirements": [
-						{
-							"from": "./browser.js",
-							"objects": [
-								"browser"
-							]
-						}
-					]
-				}
-			],
-			"extra_exports": [
-				"browser"
-			]
-		},
-		{
 			"name": "url",
 			"remove_custom_namespace": false,
+			"let_to_var": false,
 			"src_script_requirements": [
 			],
 			"test_script_requirements": [
@@ -73,13 +44,14 @@
 		{
 			"name": "levels",
 			"remove_custom_namespace": false,
+			"let_to_var": false,
 			"src_script_requirements": [
 				{
 					"type": "const",
 					"requirements": [
 						{
 							"import": "sinon-chrome",
-							"as": "chrome"
+							"as": "browser"
 						},
 						{
 							"import": "navigator",
@@ -154,6 +126,7 @@
 		{
 			"name": "code_builders",
 			"remove_custom_namespace": false,
+			"let_to_var": false,
 			"src_script_requirements": [
 				{
 					"type": "const",
@@ -198,6 +171,7 @@
 		{
 			"name": "wrapping",
 			"remove_custom_namespace": false,
+			"let_to_var": false,
 			"src_script_requirements": [
 			],
 			"test_script_requirements": [
@@ -220,6 +194,7 @@
 		{
 			"name": "background",
 			"remove_custom_namespace": false,
+			"let_to_var": false,
 			"src_script_requirements": [
 				{
 					"type": "const",
@@ -232,7 +207,7 @@
 						},
 						{
 							"import": "sinon-chrome",
-							"as": "chrome"
+							"as": "browser"
 						}
 					]
 				}
@@ -257,6 +232,7 @@
 		{
 			"name": "wrappingS-GEO",
 			"remove_custom_namespace": true,
+			"let_to_var": true,
 			"src_script_requirements": [
 				{
 					"type": "const",
@@ -287,7 +263,7 @@
 			],
 			"inject_code_to_src":
 			{
-				"begin": "function gen_random32() { return 0.2 * 4294967295; }"
+				"begin": "function gen_random32() { return 0.2 * 4294967295; } WrapHelper = { XRAY: false, shared: {}, forPage: function(param) {return param}, isForPage: obj => pageReady.has(obj), defineProperty: Object.defineProperty, defineProperties: Object.defineProperties, create: Object.create, OriginalProxy: Proxy, Proxy: Proxy };"
 			}
 		}
 	]

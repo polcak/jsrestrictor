@@ -68,7 +68,7 @@
 					parent_object: "window.Date",
 					parent_object_property: "now",
 					wrapping_function_args: "",
-					wrapping_function_body: "return func(originalDateConstructor.now.call(Date), precision);",
+					wrapping_function_body: "return func(originalF.call(Date), precision);",
 				},
 				{
 					code_type: "function_export",

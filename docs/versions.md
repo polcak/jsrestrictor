@@ -1,5 +1,27 @@
 Title: Release history
 
+## 0.5
+
+* Add fingerprinting defenses based on Farbling developed by the Brave browser (improved or added
+	wrappers for Canvas, Audio, Web	GL, device memory, hardware concurrency, enumerateDevices). Most
+	wrappers support provisioning of white lies that differ between origins and sessions (the
+	fingeprint is different across origins and across sessions).
+ * We claimed to generate white image fake Canvas value but instead generated fully transparent black image. We now generate the white image as it is more common in other anti-canvas fingerprinting tools (level 3).
+ * toDataUrl() no longer destructs the original canvas.
+* We use NoScript Commons Library to simplify some tasks like cross-browser support.
+ * More reliable early content script configuration.
+   * CSP headers no longer prevents the extension from wrapping JS APIs in Firefox (Github issue #25)
+   * Wrappers should be injected reliably before page scripts start to operate (Github issue #40)
+ * We use NSCL to wrap APIs in iframes and workers
+   * It is no longer possible to access unwrapped functions from iframes and workers (Pagure issue #2, Github issue #56)
+* Ignore trailing '.' in domain names when selecting appropriate custom level.
+* Do not freeze wrappers to prevent fingeprintability of the users of JSR. We wrap the correct function
+	in the prototype chain instead.
+* navigator.getGamepads() wrapper added
+* navigator.activeVRDisplays() and navigator.xr wrappers added
+* Limit precision of high resolution timestamps in the Event, VRFrameData, and Gamepad interface to be consistent
+	with Date and Performance precision
+
 ## 0.4.7
 
 * Wrap Beacon API

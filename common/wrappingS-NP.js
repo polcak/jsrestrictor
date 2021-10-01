@@ -51,220 +51,222 @@
  * Create private namespace
  */
 (function() {
-  /**
-   * \brief create and return fake MimeType object
-   *
-   */
-  function fakeMime(){
-    var ret = Object.create(MimeType.prototype);
-    Object.defineProperties(ret, {
-      type:{
-        value: ""
-      },
-      suffixes:{
-        value: ""
-      },
-      description:{
-        value:  randomString(32, 0)
-      },
-      enabledPlugin:{
-        value: null
-      }
-    });
-    return ret;
-  }
-  /**
+	/**
+	 * \brief create and return fake MimeType object
+	 *
+	 */
+	function fakeMime(){
+		var ret = Object.create(MimeType.prototype);
+		Object.defineProperties(ret, {
+			type:{
+				value: ""
+			},
+			suffixes:{
+				value: ""
+			},
+			description:{
+				value: randomString(32, 0)
+			},
+			enabledPlugin:{
+				value: null
+			}
+		});
+		return ret;
+	}
+	/**
 	 * \brief create and return fake MimeType object created from given mime and plugin
 	 *
 	 * \param mime original MimeType object https://developer.mozilla.org/en-US/docs/Web/API/MimeType
-   * \param plugin original Plugin object https://developer.mozilla.org/en-US/docs/Web/API/Plugin
+	 * \param plugin original Plugin object https://developer.mozilla.org/en-US/docs/Web/API/Plugin
 	 */
-  function farbleMime(mime, plugin){
-    var ret = Object.create(MimeType.prototype);
-    Object.defineProperties(ret, {
-      type:{
-        value: mime.type
-      },
-      suffixes:{
-        value: mime.suffixes
-      },
-      description:{
-        value:  mime.description
-      },
-      enabledPlugin:{
-        value: plugin
-      }
-    });
-    return ret;
-  }
-  /**
-   * \brief create and return fake Plugin object
-   *
-   * \param descLength enum specifying browser 0 - Chrome 1 - Firefox
-   * \param filenameLength enum specifying browser 0 - Chrome 1 - Firefox
-   * \param nameLength enum specifying browser 0 - Chrome 1 - Firefox
-   */
-  function fakePlugin(descLength, filenameLength, nameLength){
-    var ret = Object.create(Plugin.prototype);
-    var mime = fakeMime();
-    Object.defineProperties(ret, {
-      0:{
-        value: mime
-      },
-      "":{
-        value: mime
-      },
-      name:{
-        value: randomString(nameLength, 0)
-      },
-      filename:{
-        value: randomString(filenameLength, 0)
-      },
-      description:{
-        value:  randomString(descLength, 0)
-      },
-      version:{
-        value: null
-      },
-      length:{
-        value: 1
-      }
-    });
-    ret.__proto__.item = item;
-    ret.__proto__.namedItem = namedItem;
-    return ret;
-  }
-  /**
+	function farbleMime(mime, plugin){
+		var ret = Object.create(MimeType.prototype);
+		Object.defineProperties(ret, {
+			type:{
+				value: mime.type
+			},
+			suffixes:{
+				value: mime.suffixes
+			},
+			description:{
+				value: mime.description
+			},
+			enabledPlugin:{
+				value: plugin
+			}
+		});
+		return ret;
+	}
+	/**
+	 * \brief create and return fake Plugin object
+	 *
+	 * \param descLength enum specifying browser 0 - Chrome 1 - Firefox
+	 * \param filenameLength enum specifying browser 0 - Chrome 1 - Firefox
+	 * \param nameLength enum specifying browser 0 - Chrome 1 - Firefox
+	 */
+	function fakePlugin(descLength, filenameLength, nameLength){
+		var ret = Object.create(Plugin.prototype);
+		var mime = fakeMime();
+		Object.defineProperties(ret, {
+			0:{
+				value: mime
+			},
+			"":{
+				value: mime
+			},
+			name:{
+				value: randomString(nameLength, 0)
+			},
+			filename:{
+				value: randomString(filenameLength, 0)
+			},
+			description:{
+				value: randomString(descLength, 0)
+			},
+			version:{
+				value: null
+			},
+			length:{
+				value: 1
+			}
+		});
+		ret.__proto__.item = item;
+		ret.__proto__.namedItem = namedItem;
+		return ret;
+	}
+	/**
 	 * \brief create and return fake PluginArray object containing given plugins
 	 *
 	 * \param plugins array of Plugin objects https://developer.mozilla.org/en-US/docs/Web/API/Plugin
 	 */
-  function fakePluginArray(plugins){
-    var ret = Object.create(PluginArray.prototype);
-    var count = 0;
-    for(var i = 0; i<plugins.length; i++) {
-      ret[i] = plugins[i];
-      if(plugins[i][0].type != "") {
-        Object.defineProperty(ret, plugins[i].name, {
-          value: plugins[count],
-        });
-        count++;
-      }
-    }
-    Object.defineProperty(ret, 'length', {
-      value: plugins.length,
-    });
-    ret.__proto__.item = item;
-    ret.__proto__.namedItem = namedItem;
-    ret.__proto__.refresh = refresh;
-    return ret;
-  }
-  /**
-   * \brief create and return fake MimeTypeArray object
-   *
-   * \param plugins PluginArray object https://developer.mozilla.org/en-US/docs/Web/API/PluginArray
-   */
-  function fakeMimeTypeArray(plugins){
-    var ret = Object.create(MimeTypeArray.prototype);
-    ret.__proto__.item = item;
-    ret.__proto__.namedItem = namedItem;
-    ret.__proto__.refresh = refresh;
-    var counter = 0;
-    for(var i = 0;i<plugins.length;i++){
-      for(var j = 0;j>=0;j++){
-        if((typeof plugins[i][j] != 'undefined') && (ret.namedItem(plugins[i][j].name)==null) && (plugins[i][j].type != "")){
-          ret[counter] = plugins[i][j];
-          ret[plugins[i][j].type] = plugins[i][j];
-          counter++;
-        }
-        else{
-          break;
-        }
-      }
-    }
-    Object.defineProperty(ret, 'length', {
-      value: counter
-    });
-    return ret;
-  }
-  function item(arg){
-    if(typeof arg != 'undefined' && Number.isInteger(Number(arg)))
-      return this[arg];
-    else return null;
-  }
+	function fakePluginArray(plugins){
+		var ret = Object.create(PluginArray.prototype);
+		var count = 0;
+		for(var i = 0; i<plugins.length; i++) {
+			ret[i] = plugins[i];
+			if(plugins[i][0].type != "") {
+				Object.defineProperty(ret, plugins[i].name, {
+					value: plugins[count],
+				});
+				count++;
+			}
+		}
+		Object.defineProperty(ret, 'length', {
+			value: plugins.length,
+		});
+		ret.__proto__.item = item;
+		ret.__proto__.namedItem = namedItem;
+		ret.__proto__.refresh = refresh;
+		return ret;
+	}
+	/**
+	 * \brief create and return fake MimeTypeArray object
+	 *
+	 * \param plugins PluginArray object https://developer.mozilla.org/en-US/docs/Web/API/PluginArray
+	 */
+	function fakeMimeTypeArrayF(plugins){
+		var ret = Object.create(MimeTypeArray.prototype);
+		ret.__proto__.item = item;
+		ret.__proto__.namedItem = namedItem;
+		ret.__proto__.refresh = refresh;
+		var counter = 0;
+		for(var i = 0;i<plugins.length;i++){
+			for(var j = 0;j>=0;j++){
+				if((typeof plugins[i][j] != 'undefined') && (ret.namedItem(plugins[i][j].name)==null) && (plugins[i][j].type != "")){
+					ret[counter] = plugins[i][j];
+					ret[plugins[i][j].type] = plugins[i][j];
+					counter++;
+				}
+				else{
+					break;
+				}
+			}
+		}
 
-  function namedItem(arg){
-    if(typeof arg != 'undefined' && this[arg])
-      return this[arg];
-    else return null;
-  }
-  function refresh(){
-    return undefined;
-  }
-  /**
-   * \brief create modified Plugin object from given plugin
-   *
-   * \param plugin original Plugin object https://developer.mozilla.org/en-US/docs/Web/API/Plugin
-   *
-   * Replaces words in name and description parameters in PDF plugins (default plugins in most browsers)
-   */
-  function farblePlugin(plugin){
-    var chrome = ["Chrome ", "Chromium ", "Web ", "Browser ", "OpenSource ", "Online ", "JavaScript ", ""];
-    var pdf = ["PDF ", "Portable Document Format ", "portable-document-format ", "document ", "doc ", "PDF and PS ", "com.adobe.pdf "];
-    var viewer = ["Viewer", "Renderer", "Display", "Plugin", "plug-in", "plug in", "extension", ""];
-    var name = plugin.name;
-    var description = plugin.description;
-    if(plugin.name.includes("PDF")){
-      name = chrome[Math.floor(prng() * (chrome.length))]+pdf[Math.floor(prng() * (pdf.length))]+viewer[Math.floor(prng() * (viewer.length))];
-      description = pdf[Math.floor(prng() * (pdf.length))];
-    }
-    var ret = Object.create(Plugin.prototype);
-    var counter = 0;
-    while(1){
-      if(typeof plugin[counter] != 'undefined'){
-        Object.defineProperties(ret, {
-          [counter]:{
-            value: farbleMime(plugin[counter],ret)
-          },
-          [plugin[counter].type]:{
-            value: farbleMime(plugin[counter],ret)
-          }
-        });
-      }
-      else {
-        break;
-      }
-      counter++;
-    }
-    Object.defineProperties(ret, {
-      name:{
-        value: name
-      },
-      filename:{
-        value: randomString(32, 0),
-      },
-      description:{
-        value:  description
-      },
-      version:{
-        value: null
-      },
-      length:{
-        value: 1
-      }
-    });
-    ret.__proto__.item = item;
-    ret.__proto__.namedItem = namedItem;
-    ret.__proto__.refresh = refresh;
-    return ret;
-  }
-  var methods = item + namedItem + refresh + shuffleArray + randomString;
-  var farbles = farblePlugin + farbleMime;
-  var fakes = fakeMime + fakePlugin + fakePluginArray + fakeMimeTypeArray;
+		Object.defineProperty(ret, 'length', {
+			value: counter
+		});
+		return ret;
+	}
+	function item(arg){
+		if(typeof arg != 'undefined' && Number.isInteger(Number(arg)))
+			return this[arg];
+		else return null;
+	}
+
+	function namedItem(arg){
+		if(typeof arg != 'undefined' && this[arg])
+			return this[arg];
+		else return null;
+	}
+	function refresh(){
+		return undefined;
+	}
+	/**
+	 * \brief create modified Plugin object from given plugin
+	 *
+	 * \param plugin original Plugin object https://developer.mozilla.org/en-US/docs/Web/API/Plugin
+	 *
+	 * Replaces words in name and description parameters in PDF plugins (default plugins in most browsers)
+	 */
+	function farblePlugin(plugin){
+		var name = plugin.name;
+		var description = plugin.description;
+		if(plugin.name.includes("PDF")){
+			let chrome = ["Chrome ", "Chromium ", "Web ", "Browser ", "OpenSource ", "Online ", "JavaScript ", ""];
+			let pdf = ["PDF ", "Portable Document Format ", "portable-document-format ", "document ", "doc ", "PDF and PS ", "com.adobe.pdf "];
+			let viewer = ["Viewer", "Renderer", "Display", "Plugin", "plug-in", "plug in", "extension", ""];
+			name = chrome[Math.floor(prng() * (chrome.length))]+pdf[Math.floor(prng() * (pdf.length))]+viewer[Math.floor(prng() * (viewer.length))];
+			description = pdf[Math.floor(prng() * (pdf.length))];
+		}
+		var ret = Object.create(Plugin.prototype);
+		var counter = 0;
+		while(1){
+			if(typeof plugin[counter] != 'undefined'){
+				Object.defineProperties(ret, {
+					[counter]:{
+						value: farbleMime(plugin[counter],ret)
+					},
+					[plugin[counter].type]:{
+						value: farbleMime(plugin[counter],ret)
+					}
+				});
+			}
+			else {
+				break;
+			}
+			counter++;
+		}
+		Object.defineProperties(ret, {
+			name:{
+				value: name
+			},
+			filename:{
+				value: randomString(32, 0),
+			},
+			description:{
+				value: description
+			},
+			version:{
+				value: null
+			},
+			length:{
+				value: 1
+			}
+		});
+		ret.__proto__.item = item;
+		ret.__proto__.namedItem = namedItem;
+		ret.__proto__.refresh = refresh;
+		return ret;
+	}
+	var methods = item + namedItem + refresh + shuffleArray + randomString;
+	var farbles = farblePlugin + farbleMime;
+	var fakes = fakeMime + fakePlugin + fakePluginArray + fakeMimeTypeArrayF;
 	var wrappers = [
-    {
+		{
 			parent_object: "navigator",
 			parent_object_property: "plugins",
+			apply_if: "navigator.plugins.length > 0",
 			wrapped_objects: [],
 			helping_code:
 				methods + farbles + fakes +`
@@ -282,7 +284,7 @@
 					shuffleArray(buffer);
 				}
 				var fakePluginArray = fakePluginArray(buffer);
-				var fakeMimeTypeArray = fakeMimeTypeArray(fakePluginArray);
+				var fakeMimeTypeArray = fakeMimeTypeArrayF(fakePluginArray);
 			`,
 			post_wrapping_code: [
 				{
@@ -307,12 +309,12 @@
 						},
 					],
 				},
-        {
+				{
 					code_type: "object_properties",
 					parent_object: "navigator",
 					parent_object_property: "mimeTypes",
 					wrapped_objects: [],
-					/**  \brief replaces navigator.plugins getter
+					/** \brief replaces navigator.mimeTypes getter
 					 *
 					 * Depending on level chosen this property returns:
 					 *	* (0) - modified MimeTypeArray with links to updated Plugins
@@ -329,7 +331,7 @@
 					],
 				}
 			],
-    },
+		},
 	];
 	add_wrappers(wrappers);
 })();

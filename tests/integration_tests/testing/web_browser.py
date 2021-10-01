@@ -111,7 +111,6 @@ class Browser:
             self.real = values_real.init(self.driver)
             self.driver.install_addon(get_config("firefox_jsr_extension"), temporary=True)
             self.find_options_jsr_page_url()
-            self.define_test_level()
         elif type == BrowserType.CHROME:
             driver_tmp = webdriver.Chrome(executable_path=get_config("chrome_driver"))
             self.real = values_real.init(driver_tmp)
@@ -121,7 +120,6 @@ class Browser:
             options.add_extension(get_config("chrome_jsr_extension"))
             self.driver = webdriver.Chrome(executable_path=get_config("chrome_driver"), options=options)
             self.find_options_jsr_page_url()
-            self.define_test_level()
 
     ## Get current level of JSR in browser.
     @property

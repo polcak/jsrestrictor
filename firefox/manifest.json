@@ -40,13 +40,13 @@
       "all_frames": true,
       "match_about_blank": true,
       "js": [
+        "nscl/common/uuid.js",
         "nscl/content/patchWindow.js",
+        "nscl/lib/sha256.js",
         "alea.js",
         "helpers.js",
-        "inject.js",
         WRAPPING,
         "code_builders.js",
-        "ffbug1267027.js",
         "document_start.js"],
       "run_at": "document_start"
     }
@@ -80,7 +80,7 @@
     "notifications"
   ],
   "short_name": "JSR",
-  "version": "0.4.6",
+  "version": "0.5",
   "browser_specific_settings": {
     "gecko": {
         "id": "jsr@javascriptrestrictor",

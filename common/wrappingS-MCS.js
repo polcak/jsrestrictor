@@ -61,39 +61,32 @@
 	 *	* (0,1) - promise with modified device array
 	 *	* (2) - empty promise
 	 */
-	function farbleEnumerateDevices(){
-		if(args[0] == 0 || args[0] == 1){
-			return devices;
-		}
-		else if(args[0] == 2){
-			return new Promise((resolve) => resolve([]));
-		}
+	function farbleEnumerateDevices() {
+		// to emulate correctly we need a fresh Promise and a fresh Array (with same values) on every call
+		return cachedDevices.then(r => {
+			r = r.concat();
+			return r;
+		});
 	}
 	/**
-	 * \brief create and return MediaDeviceInfo object
+	 * \brief create and return MediaDeviceInfo object by overlaying a native one with fake properties
 	 *
 	 * \param browserEnum enum specifying browser 0 - Chrome 1 - Firefox
 	 */
-	function fakeDevice(browserEnum){
+	function fakeDevice(device){
 		var kinds = ["videoinput", "audioinput", "audiooutput"];
+		let browserEnum = device.groupId.length == 44 ? 1 : 0;
 		var deviceId = browserEnum == 1 ? randomString(43, browserEnum)+ "=" : "";
-		var ret = Object.create(MediaDeviceInfo.prototype);
-		Object.defineProperties(ret, {
-			deviceId:{
-				value: deviceId
-			},
-			groupId:{
-				value: deviceRandomString(browserEnum)
-			},
-			kind:{
-				value: kinds[Math.floor(prng()*3)]
-			},
-			label:{
-				value: ""
-			}
-		});
-		ret.__proto__.toJSON = JSON.stringify;
-		return ret;
+		let fakeData = {
+			deviceId,
+			groupId: deviceRandomString(browserEnum),
+			kind: kinds[Math.floor(prng() * 3)],
+			label: "",
+		};
+		let json = JSON.stringify(fakeData);
+		fakeData.toJSON = () => json;
+		let overlay = WrapHelper.overlay(device, fakeData);
+		return overlay;
 	}
 	/**
 	 * \brief return random string for MediaDeviceInfo parameters
@@ -119,28 +112,43 @@
 			parent_object_property: "enumerateDevices",
 			wrapped_objects: [{
 					original_name: "MediaDevices.prototype.enumerateDevices",
-					wrapped_name: "origEnumerateDevices",
+					callable_name: "origEnumerateDevices",
 				}],
-			helping_code: farbleEnumerateDevices+shuffleArray+deviceRandomString+randomString+fakeDevice+`
-				if(args[0]==0){
-					var devices = origEnumerateDevices.call(navigator.mediaDevices);
-					devices.then(function(result) {
-						shuffleArray(result);
-					});
-				}
-				if(args[0]==1){
-					var until = Math.floor(prng()*4);
-					var devices = origEnumerateDevices.call(navigator.mediaDevices);
-					devices.then(function(result) {
-						var browserEnum = 0;
-						if(result[0].groupId.length == 44)
-							browserEnum = 1;
-						for(var i = 0; i < until; i++){
-							result.push(fakeDevice(browserEnum));
+			helping_code: farbleEnumerateDevices + shuffleArray + deviceRandomString + randomString + fakeDevice + `
+				let [level] = args;
+				let cachedDevices = level < 2 ?
+					origEnumerateDevices.call(navigator.mediaDevices).then(result => {
+						try {
+							let shuffle = () => {
+								if (result.length > 1) shuffleArray(result);
+								console.log("Shuffled array", result);
+								return result;
+							};
+							if (level === 1 && result.length) {
+								let additional = Math.floor(prng()*4);
+								console.debug("Random additional devices to add:", additional);
+								if (additional > 0) {
+									let adding = [];
+									while (additional-- > 0) {
+										adding.push(origEnumerateDevices.call(navigator.mediaDevices).then(([device]) => {
+											let fake = fakeDevice(device);
+											console.debug("Faking", fake);
+											result.push(fake);
+										}));
+									}
+									return Promise.all(adding).then(r => {
+										console.debug("Faked array", result);
+										return shuffle();
+									});
+								}
+							}
+							return shuffle();
+						} catch (e) {
+							console.error("Error in farble promise callback", e);
+							throw e;
 						}
-						shuffleArray(result);
-					});
-				}
+				 })
+				 : Promise.resolve([]);
 				`,
 			wrapping_function_args: "",
 			/** \fn fake MediaDevices.prototype.enumerateDevices
