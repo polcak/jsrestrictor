@@ -64,7 +64,7 @@
               {% set page = (pages|get_by_slug('home')) %}
               <li><a href="{{ SITEURL }}/">{{ page.title }}</a></li>
               <li><a href="{{ SITEURL }}/blog/">Blog</a></li>
-              {% for pagename in ['install', 'drivers', 'permissions', 'configure', 'versions', 'credits', 'license'] %}
+              {% for pagename in ['install', 'permissions', 'levels', 'versions', 'credits', 'license'] %}
               {% set page = (pages|get_by_slug(pagename)) %}
               {% if page %}
               <li><a href="{{ SITEURL }}/{{ pagename }}/">{{ page.title }}</a></li>
@@ -82,7 +82,7 @@
           <li class="menu-heading">
             <strong>Developer notes</strong>
             <ul>
-              {% for pagename in ['issues', 'build', 'new-wrapper', 'unit-tests', 'integration-tests', 'system-tests', 'coding-style'] %}
+              {% for pagename in ['build', 'new-wrapper', 'coding-style'] %}
               {% set page = (pages|get_by_slug(pagename)) %}
               {% if page %}
               <li><a href="{{ SITEURL }}/{{ pagename }}/">{{ page.title }}</a></li>
