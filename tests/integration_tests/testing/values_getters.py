@@ -37,7 +37,7 @@ from configuration import get_config
 #  Javascript is called and returned values are processed and returned.
 
 
-## Get geolocation data through JST test page.
+## Get geolocation data through JSR test page.
 #
 #  Geolocation data is obtained asynchronously. Interaction with page is needed.
 #  We need element on page where geolocation data is shown after its loading.
@@ -175,14 +175,16 @@ def get_blob_canvas(driver, name):
         return img
 
 ## returns output of HTMLCanvasElement.toDataURL where name is id of chosen canvas
-def get_point_in_path(driver, name):
+def get_point_in_path(driver, name, alwaysFalse):
     try:
         driver.get(get_config("testing_page"))
         sleep(0.3)
-        img = driver.execute_script("var ret = true; var canvas = document.getElementById('"+name+"');var ctx = canvas.getContext('2d');"
+        op = "||" if alwaysFalse else "&&"
+        initial = "false" if alwaysFalse else "true"
+        img = driver.execute_script("var ret = "+initial+" ; var canvas = document.getElementById('"+name+"');var ctx = canvas.getContext('2d');"
                                     "const circle = new Path2D();circle.arc(100, 75, 50, 0, 2 * Math.PI);"
                                     "for (var i = 0; i < 200; i++) {"
-                                          "ret = ret && ctx.isPointInPath(circle, 100, 100) "
+                                          "ret = ret "+op+" ctx.isPointInPath(circle, 100, 100) "
                                       "}"
                                     "return ret")
     except:
@@ -191,15 +193,17 @@ def get_point_in_path(driver, name):
         return img
 
 ## returns output of HTMLCanvasElement.toDataURL where name is id of chosen canvas
-def get_point_in_stroke(driver, name):
+def get_point_in_stroke(driver, name, alwaysFalse):
     try:
         driver.get(get_config("testing_page"))
         sleep(0.3)
-        img = driver.execute_script("var ret = true; var canvas = document.getElementById('"+name+"');var ctx = canvas.getContext('2d');"
+        op =  "||" if alwaysFalse else "&&"
+        initial = "false" if alwaysFalse else "true"
+        img = driver.execute_script("var ret =  "+initial+" ; var canvas = document.getElementById('"+name+"');var ctx = canvas.getContext('2d');"
                                     "const ellipse = new Path2D(); ellipse.ellipse(100, 75, 40, 60, Math.PI * .25, 0, 2 * Math.PI);"
                                     "ctx.lineWidth = 20;"
                                     "for (var i = 0; i < 200; i++) {"
-                                          "ret = ret && ctx.isPointInStroke(ellipse, 100, 25) "
+                                          "ret = ret "+op+" ctx.isPointInStroke(ellipse, 100, 25) "
                                       "}"
                                     "return ret")
     except:

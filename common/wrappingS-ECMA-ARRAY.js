@@ -248,15 +248,17 @@ var proxyHandler = `{
 		var random_idx = Math.floor(Math.random() * target['length']);
 		// Load random index from array
 		var rand_val = target[random_idx];
+		/*
 		let proto_keys = ['buffer', 'byteLength', 'byteOffset', 'length'];
 		if (proto_keys.indexOf(key) >= 0) {
 			return target[key];
 		}
+		*/
 		// offsetF argument needs to be in array range
 		if (typeof key !== 'symbol' && Number(key) >= 0 && Number(key) < target.length) {
 			key = offsetF(key)
 		}
-		let value = Reflect.get(...arguments);
+		let value = target[key]
 		return typeof value == 'function' ? value.bind(target) : value;
 	},
 	set(target, key, value) {
@@ -267,7 +269,7 @@ var proxyHandler = `{
 		if (typeof key !== 'symbol' && Number(key) >= 0 && Number(key) < target.length) {
 			key = offsetF(key)
 		}
-		return Reflect.set(...arguments);
+		return target[key] = value;
 	}
 }`;
 
@@ -551,7 +553,6 @@ function redefineDataViewFunctions(target, offsetF, doMapping) {
 			_data[offsetF(i)] = arr[i];
 		}
 	}
-	let _target = target;
 	var proxy = new newProxy(_data, ${proxyHandler});
 	// Proxy has to support all methods, original object supports.
 	${offsetDecorator};
@@ -650,8 +651,8 @@ function redefineDataViewFunctions(target, offsetF, doMapping) {
 			has (target, key) {
 				return (is_proxy === key) || (key in target);
 			}
-		};
-		let newProxy = new Proxy(Proxy, {
+	  };
+		let newProxy = new originalProxy(originalProxy, {
 			construct(target, args) {
 				return new originalProxy(new target(...args), proxyHandler);
 			}

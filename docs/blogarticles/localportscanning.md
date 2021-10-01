@@ -65,10 +65,11 @@ local applications. So why does a browser leak the information?
 
 Well, the browser employs so called [same origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) (SOP) that in abstract theory should prevent websites from the scans in question. As your local computer is of a different origin from the remote website, your computer should be protected by SOP. Nevertheless, SOP has its limitations. First of all, some [cross-origin resource sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) is beneficial, so the browser cannot block outgoing requests to other origins. Such behaviour opens possibilities for [side-channels](https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf) to be identified. So even though the web page cannot communicate with applications on your computer (or in your network) without the cooperation of these applications, it can observe the behaviour and make some conclusions based on the observed errors, timing, etc.
 
-An (ad) blocker can prevent you from the activity. As the blockers typically leverage blocklists,
+An (ad) blocker can protect you from the activity. As the blockers typically leverage blocklists,
 such a port scanning script URL needs to match a rule in a block list. Once information about a
-misbehaving script becomes public, a rule can be added to a block list. However, this could take some time. Additional techniques like [DNS de-cloaking](https://blog.lukaszolejnik.com/large-scale-analysis-of-dns-based-tracking-evasion-broad-data-leaks-included/)
-need to be applied in this case.
+misbehaving script becomes public, a rule can be added to a block list. However, blockers do not
+protect in the time span between the deployment and rule update at your computer. Moreover, additional techniques like [DNS de-cloaking](https://blog.lukaszolejnik.com/large-scale-analysis-of-dns-based-tracking-evasion-broad-data-leaks-included/)
+need to be applied in this case. Not all blockers (can) use DNS de-cloacking.
 
 ## Network Boundary Shield to the rescue
 

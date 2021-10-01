@@ -21,19 +21,27 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+/**
+ * Object for generating and caching domain/session hashes
+ * getFor method used to get domain hashes from given url
+ *
+ * \note cached visited domains with related keys are only deleted after end of the session
+ */
 var Hashes = {
-  sessionHash: gen_random64().toString(),
-  visitedDomains: {},
-  getFor(url) {
+  sessionHash : gen_random64().toString(),
+  visitedDomains : {},
+  getFor(url){
     if (!url.origin) url = new URL(url);
 	  let {origin} = url;
-    let domainHash = this.visitedDomains[origin];
+	  let domainHash = this.visitedDomains[origin];
 	  if (!domainHash) {
-		  domainHash = this.visitedDomains[origin] = generateId();
+		  let hmac = sha256.hmac.create(this.sessionHash);
+		  hmac.update(url.origin);
+		  domainHash = hmac.hex();
+		  this.visitedDomains[origin] = domainHash;
 	  }
     return {
-      sessionHash: this.sessionHash,
-      domainHash,
+      domainHash
     };
   }
 };

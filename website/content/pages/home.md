@@ -76,10 +76,7 @@ URL:
         <h4>Who's behind this project?</h4>
       </header>
       <div>
-        <p>Accessing cookies, performing fingerprinting to track users across
-        multiple sites, revealing the local network address, or capturing the
-        user's input before they submit a form are some examples of JavaScript's
-        capabilities that can be used in harmful ways.</p>
+        <p>See the <a href="/credits/">credits page</a>.</p>
       </div>
     </article>
   </div>

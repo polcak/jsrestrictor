@@ -14,6 +14,9 @@
 						"remove_custom_namespace": {
 							"type": "boolean"
 						},
+						"let_to_var": {
+							"type": "boolean"
+						},
 						"src_script_requirements": {
 							"type": "array",
 							"items": [

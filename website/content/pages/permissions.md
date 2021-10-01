@@ -1,6 +1,6 @@
 Title: Permissions
 
-jShelter requires these permissions:
+JShelter requires these permissions:
 
  * **storage**: for storing extension configuration and user options
  * **tabs**: for updating the extension's icon badge on tab change

@@ -6,6 +6,7 @@
  *  \author Copyright (C) 2019  Martin Timko
  *  \author Copyright (C) 2020  Libor Polcak
  *  \author Copyright (C) 2020  Peter Marko
+ *  \author Copyright (C) 2021  Giorgio Maone
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -54,10 +55,12 @@
 (function() {
 	var processOriginalGPSDataObject_globals = gen_random32 + `
 		/**
-		 * Make sure that repeated calls shows the same position to reduce
-		 * fingerprintablity.
+		 * Make sure that repeated calls shows the same position (BUT different objects, via cloning)
+		 * to reduce fingerprintablity.
 		 */
-		var previouslyReturnedCoords = undefined;
+		let previouslyReturnedCoords;
+		let clone = obj => Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+
 		/**
 		 * \brief Store the limit for the returned timestamps.
 		 *
@@ -96,7 +99,22 @@
 	 * * As there are not many people near poles, we do not believe this wrapping is useful near poles
 	 * so we do not consider this bug as important.
 	 */
-	var processOriginalGPSDataObject = `
+
+		function spoofCall(fakeData, originalPositionObject, successCallback) {
+			// proxying the original object lessens the fingerprintable weirdness
+				// (e.g. accessors on the instance rather than on the prototype)
+				fakeData = clone(fakeData);
+				let pos = new Proxy(originalPositionObject, {
+					get(target, key) {
+						return (key in fakeData) ? fakeData[key] : target[key];
+					},
+					getPrototypeOf(target) {
+						return Object.getPrototypeOf(target);
+					}
+				});
+				successCallback(pos);
+		}
+
 		function processOriginalGPSDataObject(expectedMaxAge, originalPositionObject) {
 			if (expectedMaxAge === undefined) {
 				expectedMaxAge = 0; // default value
@@ -104,21 +122,18 @@
 			// Set reasonable expectedMaxAge of 1 hour for later computation
 			expectedMaxAge = Math.min(3600000, expectedMaxAge);
 			geoTimestamp = Math.max(geoTimestamp, Date.now() - Math.random()*expectedMaxAge);
+
+			let spoofPos = coords => {
+				let pos = { timestamp: geoTimestamp };
+				if (coords) pos.coords = coords;
+				spoofCall(pos, originalPositionObject, successCallback);
+			};
+
 			if (provideAccurateGeolocationData) {
-			  var pos = {
-    			coords: originalPositionObject.coords,
-			    timestamp: geoTimestamp // Limit the timestamp accuracy
-			  };	
-				successCallback(pos);
-				return;
+				return spoofPos();
 			}
-			if (previouslyReturnedCoords !== undefined) {
-				var pos = {
-					coords: previouslyReturnedCoords,
-					timestamp: geoTimestamp
-				};
-				successCallback(pos);
-				return;
+			if (previouslyReturnedCoords) {
+				return spoofPos(clone(previouslyReturnedCoords));
 			}
 
 			const EQUATOR_LEN = 40074;
@@ -164,25 +179,18 @@
 
 			var newAccuracy = DESIRED_ACCURACY_KM * 1000 * 2.5; // in meters
 
-			const editedPositionObject = {
-				coords: {
-					latitude: newLatitude,
-					longitude: newLongitude,
-					altitude: null,
-					accuracy: newAccuracy,
-					altitudeAccuracy: null,
-					heading: null,
-					speed: null,
-					__proto__: originalPositionObject.coords.__proto__
-				},
-				timestamp: geoTimestamp,
-				__proto__: originalPositionObject.__proto__
+			previouslyReturnedCoords = {
+				latitude: newLatitude,
+				longitude: newLongitude,
+				altitude: null,
+				accuracy: newAccuracy,
+				altitudeAccuracy: null,
+				heading: null,
+				speed: null,
+				__proto__: originalPositionObject.coords.__proto__
 			};
-			Object.freeze(editedPositionObject.coords);
-			previouslyReturnedCoords = editedPositionObject.coords;
-			successCallback(editedPositionObject);
-		}
-	`;
+			spoofPos(previouslyReturnedCoords);
+		};
 	/**
 	 * \brief process the parameters of the wrapping function
 	 *
@@ -223,7 +231,6 @@
 					delete_properties: ["geolocation"],
 				}
 			],
-			nofreeze: true,
 		},
 		{
 			parent_object: "navigator.geolocation",
@@ -232,7 +239,7 @@
 			wrapped_objects: [
 				{
 					original_name: "navigator.geolocation.getCurrentPosition",
-					wrapped_name: "originalGetCurrentPosition",
+					callable_name: "originalGetCurrentPosition",
 				},
 			],
 			helping_code: setArgs + processOriginalGPSDataObject_globals,
@@ -240,11 +247,13 @@
 			/** \fn fake navigator.geolocation.getCurrentPosition
 			 * \brief Provide a fake geolocation position
 			 */
-			wrapping_function_body: processOriginalGPSDataObject + `
+			wrapping_function_body: `
+				${spoofCall}
+				${processOriginalGPSDataObject}
 				var options = {
 					enableHighAccuracy: false,
 				};
-				try {
+				if (origOptions) try {
 					if ("timeout" in origOptions) {
 						options.timeout = origOptions.timeout;
 					}
@@ -277,11 +286,7 @@
 				if (provideAccurateGeolocationData) {
 					function wrappedSuccessCallback(originalPositionObject) {
 						geoTimestamp = Date.now(); // Limit the timestamp accuracy by calling possibly wrapped function
-				  	var pos = {
-    					coords: originalPositionObject.coords,
-				  	  timestamp: geoTimestamp
-				  	};	
-						successCallback(pos);
+						return spoofCall({ timestamp: geoTimestamp }, originalPositionObject, succesCallback);
 					}
 					originalWatchPosition.call(this, wrappedSuccessCallback, errorCallback, origOptions);
 				}

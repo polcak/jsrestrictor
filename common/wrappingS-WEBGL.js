@@ -65,16 +65,17 @@
  */
 (function() {
   /**
-	 * \brief subtract one from given number with ~50% probability and return it
+	 * \brief subtract one from given number with ~50% probability relative to given enum and return it
 	 *
 	 * \param number original Number value to edit
+   * \param pname enum of argument given to getParameter
 	 *
 	 */
 	function farbleGLint(number, pname) {
 		var ret = 0;
 		if(number > 0){
-      var temp = (Number("0x"+domainHash.slice(26,domainHash.length))^pname)%3;
-			ret = number - (temp >= 1 ? 1:0);
+      var temp = (Number("0x"+domainHash.slice(29,domainHash.length-28))^pname)%3;
+			ret = number - (temp == 1 ? 1:0);
 		}
 		return ret;
 	}
@@ -167,7 +168,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns null or output of given function
 	 *
 	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
@@ -186,7 +187,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns 0 or output of given function
 	 *
 	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
@@ -205,7 +206,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns -1 or output of given function
 	 *
 	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
@@ -224,7 +225,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns [] or output of given function
 	 *
 	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
@@ -236,14 +237,14 @@
 	 */
 	function farbleNullArray(name, ctx, ...fcarg) {
 		if(args[0]===1) {
-			return [];
+			return new window.Array;
 		}
 		else if(args[0]===0) {
 			return  name.call(ctx, ...fcarg);
 		}
 	};
   /**
-	 * \brief Modifies return value
+	 * \brief Returns empty WebGLShaderPrecisionFormat object or real value
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param ...fcarg delegated arguments depending on function
@@ -273,7 +274,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief  Returns empty WebGLActiveInfo object or real value
 	 *
 	 * \param name of original function
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
@@ -304,7 +305,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns modified WebGLRenderingContext.getFramebufferAttachmentParameter output for some specific parameters, original value for the rest
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param target GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
@@ -347,7 +348,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns modified WebGLRenderingContext.getVertexAttrib output for some specific parameters, original value for the rest
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param index GLuint specifying index
@@ -385,7 +386,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns modified WebGLRenderingContext.getBufferParameter output for some specific parameters, original value for the rest
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param target GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
@@ -413,7 +414,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns modified WebGLRenderingContext.getShaderParameter output for some specific parameters, original value for the rest
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param program WebGLShader object (https://developer.mozilla.org/en-US/docs/Web/API/WebGLShader)
@@ -442,7 +443,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns modified WebGLRenderingContext.getRenderbufferParameter output for some specific parameters, original value for the rest
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param target GLenum (https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants)
@@ -478,7 +479,7 @@
 		}
 	};
 	/**
-	 * \brief Modifies return value
+	 * \brief Returns modified WebGLRenderingContext.getProgramParameter output for some specific parameters, original value for the rest
 	 *
 	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param program WebGLProgram object (https://developer.mozilla.org/en-US/docs/Web/API/WebGLProgram)
@@ -540,7 +541,7 @@
 			var pixel_count = BigInt(width * height);
 			var channel = domainHash[0].charCodeAt(0) % 3;
 			var canvas_key = domainHash;
-			var v = BigInt(sessionHash);
+			var v = BigInt(strToUint(domainHash,8));
 			for (let i = 0; i < 32; i++) {
 				var bit = canvas_key[i];
 				for (let j = 8; j >= 0; j--) {
@@ -936,7 +937,7 @@
 					wrapped_name: "origReadPixels",
 				}
 			],
-			helping_code: lfsr_next + farblePixels,
+			helping_code: lfsr_next + strToUint + farblePixels,
 			original_function: "parent.WebGLRenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGLRenderingContext.prototype.readPixels
@@ -959,7 +960,7 @@
 					wrapped_name: "origReadPixels",
 				}
 			],
-			helping_code: lfsr_next + farblePixels,
+			helping_code: lfsr_next + strToUint + farblePixels,
 			original_function: "parent.WebGL2RenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGL2RenderingContext.prototype.readPixels

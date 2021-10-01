@@ -3,7 +3,7 @@
  *
  * \see https://www.w3.org/TR/battery-status/
  *
- *  \author Copyright (C) 2020  Peter Hornak
+ *  \author Copyright (C) 2021 Libor Polčák
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -22,6 +22,24 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+/** \file
+ * \ingroup wrappers
+ *
+ * The `navigator.getBattery()` reports the state of the battery and can be
+ * misused to fingerprint users for a short term. The API was removed from
+ * Firefox.
+ *
+ * \see https://lukaszolejnik.com/battery
+ *
+ * The API is still supported in browsers derived from Chromium. The wrapper
+ * mimics Firefox behaviour.
+ *
+ * \bug Because we mimic Firefox behaviour, a Chromium derived browser
+ * becomes more easily fingerprintable. This can be fixed by properly
+ * wrapping `BatteryManager.prototype` getters and setters.
+ */
+
+
 /*
  * Create private namespace
  */
@@ -31,18 +49,25 @@
 			parent_object: "navigator",
 			parent_object_property: "getBattery",
 			wrapped_objects: [],
-			helping_code: `
-				if (navigator.getBattery === undefined) {
-					return;
+			post_wrapping_code: [
+				{
+					code_type: "delete_properties",
+					parent_object: "navigator",
+					delete_properties: ["getBattery"],
 				}
-			`,
-			original_function: "navigator.getBattery",
-			wrapping_function_body: `
-					return undefined; 
-				`,
-			post_replacement_code: `
-				delete BatteryManager;
-			`
+			],
+		},
+		{
+			parent_object: "window",
+			parent_object_property: "BatteryManager",
+			wrapped_objects: [],
+			post_wrapping_code: [
+				{
+					code_type: "delete_properties",
+					parent_object: "window",
+					delete_properties: ["BatteryManager"],
+				}
+			],
 		},
 	];
 	add_wrappers(wrappers);
