@@ -157,11 +157,14 @@ ol:not(:last-child) {
 /* General layout
 */
 
+.wrapper {
+  position: relative;
+}
+
 .container {
   width: auto;
-  dth: 1344px;
+  max-width: 1344px;
   margin: 0 auto;
-  position: relative;
   padding: var(--mg-xlarge) var(--mg-medium);
 }
 
@@ -245,7 +248,6 @@ ol:not(:last-child) {
   font-size: 1rem;
   color: var(--ghost-white);
   background-color: var(--text-color);
-  min-height: 3.25rem;
   position: relative;
   padding: var(--mg-small) var(--mg-medium);
 }
@@ -280,7 +282,6 @@ ol:not(:last-child) {
   align-items: stretch;
   display: flex;
   flex-shrink: 0;
-  min-height: 3.25rem;
 }
 
 .navbar-brand img {
@@ -357,6 +358,10 @@ ol:not(:last-child) {
 
 /* Sidebar navigation
 */
+
+.menu {
+  display: block;
+}
 
 .menu-list {
   font-size: 0.85rem;
@@ -574,7 +579,7 @@ p.download-buttons {
   text-decoration: none;
   display: grid;
   grid-gap: 0 var(--mg-xlarge);
-  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .blog-index .hentry a:hover {
@@ -612,7 +617,6 @@ p.download-buttons {
 @media screen and (max-width: 840px) {
 
   .content-wrapper {
-    position: relative;
     display: block;
     padding: var(--mg-large) 0;
   }
@@ -718,7 +722,13 @@ p.download-buttons {
 }
 
 @media screen and (min-width: 841px) and (max-width: 1280px) {
+
   .content-wrapper {
     padding-top: var(--mg-xlarge);
   }
+
+  .container {
+    max-width: 84%;
+  }
+
 }

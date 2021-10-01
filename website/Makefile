@@ -55,6 +55,7 @@ extract:
 html:
 	cd ../docs; cp -f build.md credits.md levels.md permissions.md versions.md license.md ../website/content/pages
 	cd ../docs; cp -f new-wrapper.md ../website/content/pages
+	cp -r favicon.ico output/
 	$(ACTIVATE); python extract_comments.py
 	$(ACTIVATE); $(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
 	# fix translated indexes to address a Pelican bug
