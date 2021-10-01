@@ -24,7 +24,7 @@ The [Force Point report](https://www.forcepoint.com/sites/default/files/resource
 
 ### Borrowed code
 
-We borrowed code from other free software project:
+We borrowed code from other free software projects:
 
 * [Chrome Zero](https://github.com/IAIK/ChromeZero)
 * [Brave Farbling](https://github.com/brave/brave-browser/issues/8787)
