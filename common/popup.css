@@ -172,3 +172,10 @@ input:checked + .slider:before {
 	font-size:14pt;
 	padding-top:5px;
 }
+
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #313131;
+		color: #bfbfbf;
+	}
+}

@@ -262,3 +262,10 @@ input:checked + .slider:before {
 .notsupportedapis {
 	display: none;
 }
+
+@media (prefers-color-scheme: dark) {
+	body, button, input, select {
+		background-color: #313131;
+		color: #bfbfbf;
+	}
+}
