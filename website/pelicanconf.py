@@ -4,7 +4,7 @@
 AUTHOR = "The JShelter team"
 SITENAME = "JShelter"
 DESCRIPTION = "Your browser extension to keep you safe"
-SITEURL = ""
+SITEURL = "https://jshelter.org"
 
 DEFAULT_DATE = "fs"  # use a default date to stop Pelican complaints on pages
 PAGE_PATHS = ["pages", "wrappers"]

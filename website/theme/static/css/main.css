@@ -55,6 +55,7 @@
   --mg-large: 1.5rem;
   --mg-medium: 1rem;
   --mg-small: 0.5rem;
+  --mg-tiny: 0.0125rem;
 }
 
 * {
@@ -79,10 +80,20 @@ a {
   color: var(--text-color);
   text-decoration-color: var(--link-color);
   transition: color 0.3s ease-in;
+  padding-top: var(--mg-tiny);
+  padding-bottom: var(--mg-tiny);
 }
 
 a:hover {
   color: #4B5358; /*lighter text color shade */
+}
+
+a:focus {
+  background-color: rgba(var(--link-color-rgb), 0.1);
+  font-weight: 700;
+  outline: 4px solid transparent;
+  box-shadow: 0 -2px var(--link-color),0 2px var(--link-color);
+  text-decoration: none;
 }
 
 a[href*="//"]:not([href*="jshelter.org"]):not(.button)::after {
@@ -458,6 +469,12 @@ ol:not(:last-child) {
 .button:hover {
   background-color: rgba(var(--link-color-rgb), 1);
   border-color: rgba(var(--link-color-rgb), 1);
+}
+
+.button:focus {
+  background-color: var(--text-color);
+  border-color: var(--link-color);
+  box-shadow: none;
 }
 
 a.button {
