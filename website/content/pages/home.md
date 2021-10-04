@@ -3,16 +3,17 @@ Template: home
 save_as: index.html
 URL:
 
-<section class="hero block">
-  <div class="hero-body">
-    <div class="logo block has-text-centered">
-      <h3>
+<section class="hero block has-text-centered">
+    <header>
+      <h2 class="logo">
         <img src="/theme/images/jshelter-hero.svg" alt="{{ SITENAME }}">
         <span>JShelter</span>
-      </h3>
+      </h2>
       <p>An anti-malware Web browser extension to mitigate potential
   threats from JavaScript, including fingerprinting, tracking, and data
   collection!</p>
+    </header>
+    <div>
       <p class="download-buttons">
         <a id="download-firefox" class="button is-medium" href="https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/">
           <i class="fa fa-firefox" aria-hidden="true"></i> Install in Firefox
@@ -24,14 +25,15 @@ URL:
           <i class="fa fa-opera" aria-hidden="true"></i> Install in Opera
         </a>
       </p>
-      <p class="small">Visit the <a href="/install">Install page</a> for other options</p>
+      <p class="small">Visit the <a href="/install">Install page</a> for other options</p
     </div>
-
-  </div><!-- /.hero-body -->
 </section><!-- /.hero -->
 
 
 <section id="about" class="block">
+  <header class="has-text-centered">
+    <h3>About</h3>
+  </header>
   <div class="grid">
     <article>
       <header>
@@ -83,6 +85,9 @@ URL:
 </section>
 
 <section id="contribute" class="block">
+  <header class="has-text-centered">
+    <h3>Contribute</h3>
+  </header>
   <div class="grid">
     <article>
       <header>

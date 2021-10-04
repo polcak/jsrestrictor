@@ -1,6 +1,6 @@
 Title: Coding style
 
-## General guidelines
+### General guidelines
 
 - Use **tabulators** for indentation, and avoid spaces/tabs at the end of the line.
 - Functions, methods, classes, ifs, cycles etc. have opening braces at the same line.
@@ -9,7 +9,7 @@ Title: Coding style
 - Names are lower case and preferably explain the purpose of the variable, class, etc.
 - Comment classes, functions, etc. in Doxygen style. Use `make doc` to generate documentation.
 
-## Code examples
+### Code examples
 
 Correct code example:
 
@@ -42,7 +42,7 @@ function example(abc)
 };
 ```
 
-## Version control workflow
+### Version control workflow
 
 - Do not provide commits dealing with bad coding style. The only exception is if
   you want to improve code that does not follow the coding style rules.

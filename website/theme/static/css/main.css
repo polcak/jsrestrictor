@@ -36,8 +36,8 @@
 
 @font-face {
     font-family: 'Oxygen Mono';
-    src: url('OxygenMono-Regular.woff2') format('woff2'),
-        url('OxygenMono-Regular.woff') format('woff');
+    src: url('../fonts/OxygenMono-Regular.woff2') format('woff2'),
+        url('../fonts/OxygenMono-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -47,9 +47,12 @@
   --main-font: 'Inter', Roboto, Helvetica, Arial, sans-serif;
   --code-font: 'Oxygen Mono', 'Roboto Mono', monospace;
   --text-color: #333333;
-  --link-color: #e76f51;
-  --link-color-rgb: 231, 111, 81;
-  --ghost-white: #FBF9FF;
+  --text-color-rgb: 51, 51, 51;
+  --light-link-color: #e76f51;
+  --link-color: #c53d1b; /* original #e76f51 */
+  --link-color-rgb: 197, 61, 27; /* original 231, 111, 81 */
+  --hero-background-color: 224, 200, 66;
+  --ghost-white: #fbf9ff;
   --lightgray: #fefae0;
   --mg-xlarge: 2rem;
   --mg-large: 1.5rem;
@@ -96,13 +99,18 @@ a:focus {
   text-decoration: none;
 }
 
+a:active {
+  color: green;
+}
+
+/* remove formatting for external links
 a[href*="//"]:not([href*="jshelter.org"]):not(.button)::after {
   content: "↗";
   color: var(--link-color);
   font-size: 70%;
-  font-weight: 700;
+  font-weight: 900;
   vertical-align: super;
-}
+}*/
 
 
 img {
@@ -195,9 +203,9 @@ ol:not(:last-child) {
   padding: 0 var(--mg-medium) calc(2 * var(--mg-xlarge));
 }
 
-#main-content .header {
+section > header {
+  border-bottom: 4px solid rgba(var(--hero-background-color), 0.2);
   margin-bottom: var(--mg-large);
-  line-height: 1;
 }
 
 .footer {
@@ -259,10 +267,6 @@ ol:not(:last-child) {
 .footer .supporter-logos a {
   display: block;
   padding: var(--mg-medium) var(--mg-xlarge) var(--mg-medium) 0;
-}
-
-.footer .supporter-logos a[href*="//"]:not([href*="jshelter.org"])::after {
-  display: none;
 }
 
 #main-content ul li {
@@ -365,9 +369,10 @@ ol:not(:last-child) {
   z-index: 2;
 }
 
+/*
 .block:not(:first-child) {
   padding-top: var(--mg-large);
-}
+}*/
 
 .block:not(:last-child) {
   margin-bottom: var(--mg-large);
@@ -451,9 +456,9 @@ ol:not(:last-child) {
 
 .button {
   color: #fff;
-  background-color: rgba(var(--link-color-rgb), 0.9);;
+  background-color: rgba(var(--link-color-rgb), 0.9);
   font-weight: 700;
-  border: 2px solid rgba(var(--link-color-rgb), 0.9);
+  border: 2px solid rgba(var(--link-color-rgb), 0.5);
   cursor: pointer;
   justify-content: center;
   padding-bottom: calc(0.5em - 1px);
@@ -462,18 +467,21 @@ ol:not(:last-child) {
   padding-top: calc(0.5em - 1px);
   text-align: center;
   white-space: nowrap;
-  transition: background-color 0.25s ease-out, border-color 0.25s ease-out;
+  transition: all 0.25s ease-out;
   -webkit-appearance: none;
 }
 
 .button:hover {
+  color: #fff;
   background-color: rgba(var(--link-color-rgb), 1);
-  border-color: rgba(var(--link-color-rgb), 1);
+  border-color: var(--light-link-color);
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .button:focus {
-  background-color: var(--text-color);
-  border-color: var(--link-color);
+  color: #fff;
+  background-color: rgba(var(--link-color-rgb), 1);
+  border-color: var(--text-color);
   box-shadow: none;
 }
 
@@ -541,8 +549,12 @@ a.button {
 */
 
 .hero {
-  background: rgba(224, 200, 66, 0.5) url('../images/crumbled-paper.png') no-repeat 0 0 / cover;
+  background: rgba(var(--hero-background-color), 0.5) url('../images/crumbled-paper.png') no-repeat 0 0 / cover;
   padding: calc(2 * var(--mg-xlarge)) var(--mg-medium);
+}
+
+.hero header {
+  border: 0;
 }
 
 .hero .logo img {
@@ -552,12 +564,14 @@ a.button {
 
 .hero .logo span {
   display: block;
+  font-weight: 900;
 }
 
-.hero .logo p {
+.hero header p {
   max-width: 32em;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: var(--mg-medium);
 }
 
 p.download-buttons {
