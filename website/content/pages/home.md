@@ -7,7 +7,7 @@ URL:
   <div class="hero-body">
     <div class="logo block has-text-centered">
       <h3>
-        <img src="/theme/images/jshelter-hero.svg" alt="{{ SITENAME }}">
+        <img src="/theme/images/jshelter-hero.svg" alt="JShelter logo">
         <span>JShelter</span>
       </h3>
       <p>An anti-malware Web browser extension to mitigate potential
