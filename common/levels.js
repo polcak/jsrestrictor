@@ -641,7 +641,7 @@ var level_1 = {
 var level_2 = {
 	"level_id": "2",
 	"level_text": "Built-in 2",
-	"level_description": "Recomended level of protection for most sites",
+	"level_description": "Recommended level of protection for most sites",
 	"time_precision": true,
 	"time_precision_precision": 1,
 	"time_precision_randomize": false,
