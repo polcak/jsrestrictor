@@ -211,3 +211,20 @@ input:checked + .slider:before {
 	font-size:14pt;
 	padding-top:5px;
 }
+
+#customizations {
+	display: grid;
+	grid: auto / auto 1fr 1fr;
+	gap: 1em;
+	align-items: center;
+}
+
+.head {
+	font-weight: bold;
+}
+
+.explainer {
+	grid-column-start: 1;
+	grid-column-end: 3;
+	border-bottom: 1px solid grey;
+}
