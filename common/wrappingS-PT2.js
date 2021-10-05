@@ -23,6 +23,33 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+
+/** \file
+ * \ingroup wrappers
+ *
+ * This wrapper aims on prevention of microarchitectural attacks, clock-skew attacks, and other time
+ * related attacks. The goal is to limit the precision of the time returned by the Performance Timeline API.
+ *
+ * \see https://www.fit.vut.cz/study/thesis/22308/?year=0&sup=Pol%C4%8D%C3%A1k, especially Sect.
+ * 7.2.
+ *
+ * \see Tom Van Goethem, Wouter Joosen, Nick Nikiforakis. The Clock is Still Ticking:
+Timing Attacks in the Modern Web. CCS'15. DOI: http://dx.doi.org/10.1145/2810103.2813632.
+https://lirias.kuleuven.be/retrieve/389086
+ *
+ * \see Schwarz, M., Lipp, M. a Gruss, D. JavaScript Zero: Real JavaScript and Zero
+ *      Side-Channel Attacks. NDSS'18.
+ *
+ * \see Schwarz M., Maurice C., Gruss D., Mangard S. (2017) Fantastic Timers and Where to Find Them: High-Resolution Microarchitectural Attacks in JavaScript. In: Kiayias A. (eds) Financial Cryptography and Data Security. FC 2017. Lecture Notes in Computer Science, vol 10322. Springer, Cham. https://doi.org/10.1007/978-3-319-70972-7_13 
+ *
+ * The wrappers support the following behaviour:
+ *
+ * * Round timestamp: Limit the precision by removing (a part of) the decimal part of the timestamp.
+ * * Randomize after rounding: Create a fake decimal part to confuse attackers and to create
+ *   timestamps that look similar to expected timestamps.
+ */
+
+
 /*
  * Create private namespace
  */

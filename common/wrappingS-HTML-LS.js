@@ -22,6 +22,29 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+/** \file
+ * \ingroup wrappers
+ *
+ * This wrapper aims on prevention of microarchitectural attacks. This
+ * code was originally a part of https://github.com/IAIK/ChromeZero.
+ *
+ * The wrappers support the following behaviour:
+ *
+ * * Polyfill: Completely eliminates the paralelism.
+ * * Randomly slow messages: Add noise to the `postMessage` method execution.
+ *
+ * \see Lipp, M., Gruss, D., Schwarz, M., Bidner, D., Maurice, C. et al. Practical
+Keystroke Timing Attacks in Sandboxed JavaScript. In:. August 2017, s. 191–209.
+ISBN 978-3-319-66398-2.
+ *
+ * \see Schwarz, M., Lipp, M. a Gruss, D. JavaScript Zero: Real JavaScript and Zero
+ *      Side-Channel Attacks. NDSS'18.
+ *
+ * \see https://www.fit.vut.cz/study/thesis/22374/?year=0&sup=Pol%C4%8D%C3%A1k
+ */
+
+
+
 /*
  * Create private namespace
  */

@@ -22,6 +22,25 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+/** \file
+ * \ingroup wrappers
+ *
+ * XHR may be misused to exfiltrate data from the browser to the server.
+ * We provide a wrapper that either blocks all XHR requests or lets the
+ * user decide.
+ *
+ * \bug There are two flaws in the current implementation:
+ *  * There are many ways (see e.g. https://github.com/cure53/HTTPLeaks) to replace
+ *    XHR and consequently evade the wrapper. This can be mitigating by monitoring
+ *    the requests using Web Request API.
+ *  * The confirm method puts a lot of responsibility on the user who needs to
+ *    have a good knowledge about the requests on each visited page.
+ *
+ * \note We expect to remove the wrapper once we release JShleter
+ * with Fingerprint Detector (FPD). FPD should solve both issues above.
+ */
+
+
 /*
  * Create private namespace
  */

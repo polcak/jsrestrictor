@@ -20,8 +20,21 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-/*
- * Create private namespace
+/** \file
+ * \ingroup wrappers
+ *
+ * This wrapper aims on prevention of microarchitectural attacks like Meltdown and Spectre. This
+ * code was originally a part of https://github.com/IAIK/ChromeZero.
+ *
+ * \bug subarray() method always ruturns the full array.
+ *
+ * The wrappers support the following behaviour:
+ *
+ * * Offset: The content of the buffer is shifted by a fix offset. This is a faster method but can
+ *   be removed.
+ * * Random mapping: All items are mapped randomly. This is a slower method but more reliable.
+ *
+ * \see https://www.fit.vut.cz/study/thesis/22374/?year=0&sup=Pol%C4%8D%C3%A1k, especially Sect. 5.1
  */
 
 
