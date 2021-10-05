@@ -65,9 +65,6 @@
   box-sizing: border-box;
 }
 
-html {
-}
-
 body {
   color: var(--text-color);
   font-family: var(--main-font);
@@ -818,3 +815,28 @@ p.download-buttons {
   }
 
 }
+
+@media screen and (prefers-color-scheme: dark) {
+
+  html {
+   background-color: var(--text-color);
+  }
+
+  body {
+   color: var(--ghost-white);
+  }
+
+  .hero {
+   background-color: var(--text-color);
+  }
+
+  section > header {
+    border-color: var(--lightgray);
+  }
+
+   .footer {
+     color: var(--ghost-white);
+     border-top: 1px solid var(--lightgray);
+   }
+
+ }
