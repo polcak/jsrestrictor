@@ -142,7 +142,14 @@ async function load_on_off_switch()
 async function control_whitelist()
 {
 	let site = await getCurrentSite();
-	let message = `${document.getElementById("switch-checkbox").checked ? "remove" : "add"} site to whitelist`;
+	var message;
+	if (document.getElementById("switch-checkbox").checked) {
+		message = "remove site from whitelist";
+	}
+	else {
+		message = "add site to whitelist";
+	}
+	console.log(message);
 	browser.runtime.sendMessage({message, site});
 	showRefreshPageOption();
 }

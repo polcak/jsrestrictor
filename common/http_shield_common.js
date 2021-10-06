@@ -475,7 +475,7 @@ function notifyBlockedRequest(origin, target, resource) {
 	 //Message came from popup,js, asking whether is this site whitelisted
 	 if (message === "is current site whitelisted?")
 	 {
-		 return Promise.resolve(`current site is ${checkWhitelist(site) ? '' : 'not '} whitelisted`);
+		 return Promise.resolve(`current site is ${checkWhitelist(site) ? '' : 'not '}whitelisted`);
 	 }
  }
  
