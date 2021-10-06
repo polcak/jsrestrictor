@@ -26,6 +26,7 @@ var wrappersPort;
 
 function configureInjection({code, wrappers, domainHash, sessionHash}) {
 	configureInjection = () => false; // one shot
+	if (!code) return true; // nothing to wrap, bail out!
 	if(browser.extension.inIncognitoContext){
 		// Redefine the domainHash for incognito context:
 		// Compute the SHA256 hash of the original hash so that the incognito hash is:
