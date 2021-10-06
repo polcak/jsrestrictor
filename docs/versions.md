@@ -1,6 +1,16 @@
 
 # Release history
 
+## 0.5.1
+
+* Bugfix: Display correctly NBS status at the current page (Github issue #114)
+* Rebranding step 1: change UI-facing icons
+* Set minimal pop up width so that the pop up is usable in Chrome (Github issue #112, Pagure issue
+	#7)
+* Chromium-based browsers: revise Battery API protection that should match the expectations of page
+	scripts (mimic Firefox behaviour).
+* Fixed typos in settings.
+
 ## 0.5
 
 * Add fingerprinting defenses based on Farbling developed by the Brave browser (improved or added
