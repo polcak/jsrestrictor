@@ -15,6 +15,7 @@ body {
 	grid-gap: 3em;
 	padding: 1em;
 	margin: 1em;
+	min-width: 25em;
 }
 
 h3 {
