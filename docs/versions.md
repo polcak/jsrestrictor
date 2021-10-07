@@ -1,6 +1,10 @@
 
 # Release history
 
+## 0.5.2
+
+* Bugfix: Do not modify JS environment on level 0. Regression appeared in 0.5.
+
 ## 0.5.1
 
 * Bugfix: Display correctly NBS status at the current page (Github issue #114)
