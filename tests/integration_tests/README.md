@@ -1,6 +1,6 @@
 # Instruction how to run integration tests
 
-Integration tests for web browser extension Javascript Restrictor automatically verify that
+Integration tests for web browser extension JShelter automatically verify that
 required JavaScript API is wrapped and conversely, that non-wrapped JavaScript API provides real values.
 
 It is necessary to partially set up manually a test environment before the first test run!

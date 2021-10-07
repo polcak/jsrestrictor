@@ -46,7 +46,7 @@ function installUpdate() {
 	browser.storage.sync.get(null).then(function (item) {
 		if (!item.hasOwnProperty("version") || (item.version < 2.1)) {
 			browser.storage.sync.clear();
-			console.log("All JavaScript Restrictor data cleared! Unfortunately, we do not migrate settings from versions bellow 0.3.");
+			console.log("All JShelter data cleared! Unfortunately, we do not migrate settings from versions bellow 0.3.");
 			item = {
 				__default__: 2,
 				version: 2.1,

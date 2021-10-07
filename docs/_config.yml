@@ -3,5 +3,5 @@ defaults:
     scope:
        path: ""
     values:
-      title: JavaScript Restrictor
+      title: JShelter
       layout: default
