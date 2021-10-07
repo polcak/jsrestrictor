@@ -48,6 +48,7 @@
   --code-font: 'Oxygen Mono', 'Roboto Mono', monospace;
   --text-color: #333333;
   --text-color-rgb: 51, 51, 51;
+  --light-text-color: #4B5358;
   --light-link-color: #e76f51;
   --link-color: #c53d1b; /* original #e76f51 */
   --link-color-rgb: 197, 61, 27; /* original 231, 111, 81 */
@@ -85,7 +86,7 @@ a {
 }
 
 a:hover {
-  color: #4B5358; /*lighter text color shade */
+  color: var(--light-text-color);
 }
 
 a:focus {
@@ -433,7 +434,6 @@ section > header {
 }
 
 .menu-list a {
-  color: var(--text-color);
   text-decoration: none;
   display: block;
   padding: 0.25em 0;
@@ -638,10 +638,15 @@ p.download-buttons {
   display: grid;
   grid-gap: 0 var(--mg-xlarge);
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  padding: var(--mg-large) 0;
 }
 
 .blog-index .hentry a:hover {
   color: var(--link-color);
+}
+
+.blog-index .hentry a:focus {
+  font-weight: inherit;
 }
 
 .hentry.post,
@@ -654,7 +659,7 @@ p.download-buttons {
 }
 
 .blog-index .hentry header {
-  margin-bottom: var(--mg-medium);
+  margin-bottom: 0;
 }
 
 .entry-date {
@@ -789,6 +794,10 @@ p.download-buttons {
   .navbar-burger.is-active span:nth-child(3) {
     transform: translateY(-5px) rotate(-45deg);
   }
+  
+  .blog-index .hentry header {
+    margin-bottom: var(--mg-medium);
+  }
 
 }
 
@@ -822,21 +831,29 @@ p.download-buttons {
    background-color: var(--text-color);
   }
 
-  body {
+  body,
+  a {
    color: var(--ghost-white);
   }
 
+  a { text-decoration-color: #e76f51; }
+  a:hover { color: white; }
+
+  .menu-heading strong {
+    color: #e76f51;
+  }
+
   .hero {
-   background-color: var(--text-color);
+    background: var(--text-color) url('../images/crumbled-paper_dark.png') no-repeat 0 0 / cover;
   }
 
   section > header {
-    border-color: var(--lightgray);
+    border-color: var(--light-text-color);
   }
 
    .footer {
      color: var(--ghost-white);
-     border-top: 1px solid var(--lightgray);
+     border-top: 1px solid var(--light-text-color);
    }
 
  }
