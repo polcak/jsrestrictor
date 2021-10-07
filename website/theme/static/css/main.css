@@ -794,7 +794,7 @@ p.download-buttons {
   .navbar-burger.is-active span:nth-child(3) {
     transform: translateY(-5px) rotate(-45deg);
   }
-  
+
   .blog-index .hentry header {
     margin-bottom: var(--mg-medium);
   }
@@ -851,9 +851,13 @@ p.download-buttons {
     border-color: var(--light-text-color);
   }
 
-   .footer {
-     color: var(--ghost-white);
-     border-top: 1px solid var(--light-text-color);
-   }
+  code {
+    background: var(--light-text-color);
+  }
+
+  .footer {
+    color: var(--ghost-white);
+    border-top: 1px solid var(--light-text-color);
+  }
 
  }
