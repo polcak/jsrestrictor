@@ -24,7 +24,7 @@
 
 <body>
 
-  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <nav class="navbar" aria-label="navigation">
     <div class="container">
       <div class="navbar-brand">
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
@@ -54,7 +54,7 @@
       <div class="sidebar-overlay"></div>
       <div class="sidebar">
         <!-- new navigation -->
-        <nav class="menu">
+        <nav class="menu" aria-label="navigation">
           <ul class="menu-list">
             <li class="menu-heading">
               <a href="{{ SITEURL }}/" class="logo">
@@ -95,12 +95,12 @@
       </div><!-- /.sidebar -->
       {% endblock %}
 
-      <section id="main-content">
+      <main id="main-content" aria-label="main">
 
         {% block content %}
         {% endblock %}
 
-      </section><!-- /#main-content -->
+      </main><!-- /#main-content -->
     </div><!-- /.container -->
 
     <footer class="footer">
@@ -152,7 +152,7 @@
               </li>
               <li>
                 <strong>Design and website development</strong>
-                <a href="manufacturaindependente.org/">Manufactura Independente</a>
+                <a href="https://manufacturaindependente.org/">Manufactura Independente</a>
               </li>
             </ul>
           </div>
