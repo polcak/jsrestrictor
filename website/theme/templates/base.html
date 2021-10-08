@@ -74,7 +74,8 @@
             <li class="menu-heading">
               <strong>Key protection</strong>
               <ul>
-                {% for page in pages if page.category == "wrappers "%}
+                <li><a href="{{ SITEURL }}/nbs">Network Boundary Shield</a></li>
+                {% for page in pages if page.category == "wrappers" %}
                 <li><a href="{{ SITEURL }}/{{ page.url }}">{{ page.title }}</a></li>
                 {% endfor %}
               </ul>
