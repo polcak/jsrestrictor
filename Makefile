@@ -41,9 +41,6 @@ submodules:
 	@find $*_JSR/ -name '*.license' -delete
 	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
 
-docs:
-	PROJECT_NAME="${PROJECT_NAME}" doxygen < doxyfile
-
 clean:
 	rm -rf firefox_JSR.zip
 	rm -rf firefox_JSR
