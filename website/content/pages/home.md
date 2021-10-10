@@ -15,13 +15,13 @@ URL:
     </header>
     <div>
       <p class="download-buttons">
-        <a id="download-firefox" class="button is-medium" href="https://addons.mozilla.org/en-US/firefox/addon/javascript-restrictor/">
+        <a id="download-firefox" class="button is-medium" href="https://addons.mozilla.org/firefox/addon/javascript-restrictor/">
           <i class="fa fa-firefox" aria-hidden="true"></i> Install in Firefox
         </a>
         <a id="download-chrome" class="button is-medium" href="https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb">
           <i class="fa fa-chrome" aria-hidden="true"></i> Install in Chrome
         </a>
-        <a id="download-opera" class="button is-medium" href="https://addons.opera.com/en/extensions/details/javascript-restrictor/">
+        <a id="download-opera" class="button is-medium" href="https://addons.opera.com/extensions/details/javascript-restrictor/">
           <i class="fa fa-opera" aria-hidden="true"></i> Install in Opera
         </a>
       </p>
