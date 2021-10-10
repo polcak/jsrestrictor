@@ -2,7 +2,7 @@ Title: Installing
 
 JShelter can be installed directly through each browser's extension repository:
 
-- [Firefox](https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/)
+- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/javascript-restrictor/)
 - [Chrome](https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb)
 - [Opera](https://addons.opera.com/en/extensions/details/javascript-restrictor/)
 

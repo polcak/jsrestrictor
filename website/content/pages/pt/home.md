@@ -14,7 +14,7 @@ save_as: pt/index.html
     <div class="block has-text-centered">
       <p>Instalar já</p>
       <p class="buttons are-medium is-centered">
-        <a class="button" href="https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/">
+        <a class="button" href="https://addons.mozilla.org/en-US/firefox/addon/javascript-restrictor/">
           <i class="fa fa-firefox" aria-hidden="true"></i> Firefox
         </a>
         <a class="button" href="https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb">

@@ -15,7 +15,7 @@ URL:
     </header>
     <div>
       <p class="download-buttons">
-        <a id="download-firefox" class="button is-medium" href="https://addons.mozilla.org/cs/firefox/addon/javascript-restrictor/">
+        <a id="download-firefox" class="button is-medium" href="https://addons.mozilla.org/en-US/firefox/addon/javascript-restrictor/">
           <i class="fa fa-firefox" aria-hidden="true"></i> Install in Firefox
         </a>
         <a id="download-chrome" class="button is-medium" href="https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb">
