@@ -6,8 +6,14 @@
   <meta charset="utf-8">
   {# }<title>{{ SITENAME }}: {% if page %}{{ page.title }}{% else %}{{ article.title }}{% endif %}</title> #}
   <title>{{ SITENAME }}: {{ title }}</title>
-  <meta name="description" content="{{ DESCRIPTION }}">
+  <meta name="description" content="An anti-malware Web browser extension to mitigate potential threats from JavaScript, including fingerprinting, tracking, and data collection!">
   <link rel="canonical" href="https://jshelter.org" />
+
+  <meta property="og:title" content="{{ SITENAME }}: {{ title }}">
+  <meta property="og:description" content="An anti-malware Web browser extension to mitigate potential threats from JavaScript, including fingerprinting, tracking, and data collection!">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jshelter.org">
+  <meta property="og:image" content="https://jshelter.org/theme/img/jshelter_preview.png">
 
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +25,32 @@
   <link href="/theme/css/fork-awesome.min.css" rel="stylesheet">
   <link href="/theme/css/minireset.min.css" rel="stylesheet">
   <link href="/theme/css/main.css" rel="stylesheet">
+
+  <script type="text/javascript">
+  /** @licstart  The following is the entire license notice for the
+   *  JavaScript code in this page
+   *
+   *   Copyright (C) 2021 Manufactura Independente
+   *
+   *   The JavaScript code in this page is free software: you can
+   *   redistribute it and/or modify it under the terms of the GNU
+   *   General Public License (GNU GPL) as published by the Free Software
+   *   Foundation, either version 3 of the License, or (at your option)
+   *   any later version.  The code is distributed WITHOUT ANY WARRANTY;
+   *   without even the implied warranty of MERCHANTABILITY or FITNESS
+   *   FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+   *
+   *   As additional permission under GNU GPL version 3 section 7, you
+   *   may distribute non-source (e.g., minimized or compacted) forms of
+   *   that code without the copy of the GNU GPL normally required by
+   *   section 4, provided you include this license notice and a URL
+   *   through which recipients can access the Corresponding Source.
+   *
+   *  @licend  The above is the entire license notice
+   *  for the JavaScript code in this page.
+   */
+  </script>
+
 </head>
 {% endblock %}
 
