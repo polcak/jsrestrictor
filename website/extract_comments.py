@@ -23,6 +23,7 @@ titles = {
     "pt2": "PT2",
     "weba": "WebAudio",
     "webgl": "WebGL",
+    "nbs" : "Network Boundary Shield",
 }
 
 

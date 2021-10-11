@@ -6,13 +6,13 @@
   <meta charset="utf-8">
   {# }<title>{{ SITENAME }}: {% if page %}{{ page.title }}{% else %}{{ article.title }}{% endif %}</title> #}
   <title>{{ SITENAME }}: {{ title }}</title>
-  <meta name="description" content="An anti-malware Web browser extension to mitigate potential threats from JavaScript, including fingerprinting, tracking, and data collection!">
-  <link rel="canonical" href="https://jshelter.org" />
+  <meta name="description" content="{{ LONGDESCRIPTION }}">
+  <link rel="canonical" href="{{ SITEURL }}/">
 
   <meta property="og:title" content="{{ SITENAME }}: {{ title }}">
-  <meta property="og:description" content="An anti-malware Web browser extension to mitigate potential threats from JavaScript, including fingerprinting, tracking, and data collection!">
+  <meta property="og:description" content="{{ LONGDESCRIPTION }}">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://jshelter.org">
+  <meta property="og:url" content="{{ SITEURL }}/">
   <meta property="og:image" content="https://jshelter.org/theme/img/jshelter_preview.png">
 
   <meta http-equiv="x-ua-compatible" content="ie=edge">

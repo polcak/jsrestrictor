@@ -1,4 +1,5 @@
 Title: Network Boundary Shield
+Slug: nbs
 
 The Network Boundary Shield (NBS) is a protection against attacks from an
 external network (the Internet) to an internal network - especially against a
