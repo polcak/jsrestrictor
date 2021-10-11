@@ -3,6 +3,7 @@
   "background": {
       "scripts": [
         "nscl/lib/browser-polyfill.js",
+        "nscl/service/TabCache.js",
         "nscl/service/DocStartInjection.js",
         "nscl/lib/sha256.js",
         "nscl/common/log.js",

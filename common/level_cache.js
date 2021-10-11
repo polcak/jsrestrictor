@@ -28,14 +28,44 @@
  */
 
 
-function getContentConfiguration(url) {
+function getContentConfiguration(url, frameId, tabId) {
 	return new Promise(resolve => {
 		function resolve_promise() {
-			var page_level = getCurrentLevelJSON(url);
+			let level = getCurrentLevelJSON(url);
+			if (level[0].is_default && frameId !== 0) {
+				/**
+				 * \bug iframes nested within an iframe with user-specific level do not get this level
+				 *
+				 * Suppose that there is an iframe from domain C nested in an iframe from
+				 * domain B that is iself nested in a visited domain A.
+				 * 
+				 * +------------------------------------------------------------+
+				 * | visited domain a.example                                   |
+				 * |                                                            |
+				 * | +--------------------------------------------------------+ |
+				 * | | iframe from domain b.example                           | |
+				 * | |                                                        | |
+				 * | | +----------------------------------------------------+ | |
+				 * | | | iframe from domain c.example                       | | |
+				 * | | |                                                    | | |
+				 * | | +----------------------------------------------------+ | |
+				 * | |                                                        | |
+				 * | +--------------------------------------------------------+ |
+				 * +------------------------------------------------------------+
+				 * 
+				 * Suppose that B has a user-defined specific level settings, and C does
+				 * not have a user-defined specific level settings. The iframe of domain B
+				 * gets the user-defined settings for domain B but the iframe from domain C
+				 * is set with the level of domain A.
+				 */
+				level =  getCurrentLevelJSON(TabCache.get(tabId).url);
+			}
+			let [{is_default, wrappers}, code] = level;
 			let {domainHash} = Hashes.getFor(url);
 			resolve({
-				code: page_level[1],
-				wrappers: page_level[0].wrappers,
+				is_default,
+				code,
+				wrappers,
 				domainHash
 			});
 		}
@@ -55,10 +85,10 @@ function getContentConfiguration(url) {
  *
  * Returns the promise with the message returned to the content script.
  */
-function contentScriptLevelSetter(message) {
+function contentScriptLevelSetter(message, {frameId, tab}) {
 	switch (message.message) {
 	  case "get wrapping for URL":
-			return getContentConfiguration(message.url)
+			return getContentConfiguration(message.url, frameId, tab.id)
 	}
 }
 browser.runtime.onMessage.addListener(contentScriptLevelSetter);
@@ -68,15 +98,14 @@ browser.runtime.onMessage.addListener(contentScriptLevelSetter);
  * Register a dynamic content script to be ran for early configuration and
  * injection of the wrapper, hopefully before of the asynchronous
  * message listener above
- * \see Depends on /nscl/service/DocStartInjection.js
+ * \see Depends on /nscl/service/DocStartInjection.js, /nscl/service/TabCache.js
  */
+
 DocStartInjection.register(async ({url, frameId, tabId}) => {
-	let configuration = await getContentConfiguration(url);
-	if (configuration) {
-		return `
+	let configuration = await getContentConfiguration(url, frameId, tabId);
+	return `
 		window.configuration = ${JSON.stringify(configuration)};
 		if (typeof configureInjection === "function") configureInjection(configuration);
 		console.debug("DocStartInjection while doc", document.readyState);
 		`;
-	}
 });

@@ -7,6 +7,7 @@
         "nscl/common/log.js",
         "nscl/common/uuid.js",
         "nscl/service/DocStartInjection.js",
+        "nscl/service/TabCache.js",
         "helpers.js",
         "session_hash.js",
         "update.js",
