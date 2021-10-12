@@ -7,7 +7,7 @@
   {# }<title>{{ SITENAME }}: {% if page %}{{ page.title }}{% else %}{{ article.title }}{% endif %}</title> #}
   <title>{{ SITENAME }}: {{ title }}</title>
   <meta name="description" content="{{ LONGDESCRIPTION }}">
-  <link rel="canonical" href="{{ SITEURL }}/">
+  <link rel="canonical" href="{{ SITEURL }}/{{ output_file.replace('index.html', '') }}">
 
   <meta property="og:title" content="{{ SITENAME }}: {{ title }}">
   <meta property="og:description" content="{{ LONGDESCRIPTION }}">
