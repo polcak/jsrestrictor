@@ -105,14 +105,20 @@
               <a href="{{ SITEURL }}/" class="logo">
                 <img src="/theme/images/jshelter-horizontal.svg" alt="{{ SITENAME }}">
               </a>
+              {% set slug = output_file.split('/')[0] %}
               <ul>
-                {% set page = (pages|get_by_slug('home')) %}
-                <li><a href="{{ SITEURL }}/">{{ page.title }}</a></li>
+                <li><a href="{{ SITEURL }}/">Home</a></li>
                 <li><a href="{{ SITEURL }}/blog/">Blog</a></li>
                 {% for pagename in ['install', 'permissions', 'levels', 'versions', 'credits', 'license'] %}
-                {% set page = (pages|get_by_slug(pagename)) %}
-                {% if page %}
-                <li><a href="{{ SITEURL }}/{{ pagename }}/">{{ page.title }}</a></li>
+                {% set p = (pages|get_by_slug(pagename)) %}
+                {% if p %}
+                  {% if pagename == slug %}
+                  <li class="active">
+                  {% else %}
+                  <li>
+                  {% endif %}
+                    <a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a>
+                  </li>
                 {% endif %}
                 {% endfor %}
               </ul>
@@ -120,8 +126,8 @@
               <strong>Key protection</strong>
               <ul>
                 <li><a href="{{ SITEURL }}/nbs">Network Boundary Shield</a></li>
-                {% for page in pages if page.category == "wrappers" %}
-                <li><a href="{{ SITEURL }}/{{ page.url }}">{{ page.title }}</a></li>
+                {% for p in pages if p.category == "wrappers" %}
+                <li><a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a></li>
                 {% endfor %}
               </ul>
             </li>
@@ -129,9 +135,9 @@
               <strong>Developer notes</strong>
               <ul>
                 {% for pagename in ['build', 'new-wrapper', 'coding-style'] %}
-                {% set page = (pages|get_by_slug(pagename)) %}
-                {% if page %}
-                <li><a href="{{ SITEURL }}/{{ pagename }}/">{{ page.title }}</a></li>
+                {% set p = (pages|get_by_slug(pagename)) %}
+                {% if p %}
+                <li><a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a></li>
                 {% endif %}
                 {% endfor %}
               </ul>

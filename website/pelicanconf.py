@@ -6,6 +6,7 @@ SITENAME = "JShelter"
 DESCRIPTION = "Your browser extension to keep you safe"
 LONGDESCRIPTION = "An anti-malware Web browser extension to mitigate potential threats from JavaScript, including fingerprinting, tracking, and data collection!"
 SITEURL = "https://jshelter.org"
+RELATIVE_URLS = True
 
 DEFAULT_DATE = "fs"  # use a default date to stop Pelican complaints on pages
 PAGE_PATHS = ["pages", "wrappers"]
@@ -56,7 +57,7 @@ I18N_UNTRANSLATED_PAGES = "remove"  # needed to avoid index overwrites
 I18N_SUBSITES = {
     "pt": {
         "DESCRIPTION": "A extensão para navegar em segurança",
-        "LONGDESCRIPTION" = "Uma extensão anti-malware para o teu navegador web que vai pôr sob controlo ameaças de JavaScript, incluindo a recolha de impressões digitais, rastreamento e recolha de dados",
+        "LONGDESCRIPTION": "Uma extensão anti-malware para o teu navegador web que vai pôr sob controlo ameaças de JavaScript, incluindo a recolha de impressões digitais, rastreamento e recolha de dados",
     }
 }
 
