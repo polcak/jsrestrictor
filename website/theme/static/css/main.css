@@ -80,9 +80,10 @@ body {
 a {
   color: var(--text-color);
   text-decoration-color: var(--link-color);
-  transition: color 0.3s ease-in;
+  transition: all 0.3s ease-in;
   padding-top: var(--mg-tiny);
   padding-bottom: var(--mg-tiny);
+  position: relative;
 }
 
 a:hover {
@@ -90,15 +91,22 @@ a:hover {
 }
 
 a:focus {
-  background-color: rgba(var(--link-color-rgb), 0.1);
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--link-color);
+}
+
+a:focus-visible {
   font-weight: 700;
   outline: 4px solid transparent;
-  box-shadow: 0 -2px var(--link-color),0 2px var(--link-color);
+  background-color: rgba(var(--link-color-rgb), 0.1);
+  box-shadow: 0 -2px transparent,0 2px var(--link-color);
   text-decoration: none;
+  color: var(--link-color);
 }
 
 a:active {
-  color: green;
+  color: var(--link-color);
 }
 
 /* remove formatting for external links
@@ -412,6 +420,15 @@ section > header {
   list-style-type: none;
 }
 
+.menu-list li.active {
+  color: var(--link-color);
+  list-style-type: disc;
+}
+
+.menu-list li.active a {
+  color: var(--link-color);
+}
+
 .menu-heading strong {
   color: var(--link-color);
   font-weight: 700;
@@ -623,11 +640,27 @@ p.download-buttons {
 
 .blog-index > header {
   margin-bottom: var(--mg-large);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 .blog-index > header h2 {
-  font-size: 1.25rem;
+  margin-bottom: 0;
 }
+
+.blog-index header a.rss {
+  font-size: 1.25rem;
+  display: inline-block;
+  text-decoration: none;
+  color: var(--link-color);
+}
+
+.blog-index header a.rss:hover {
+  color: var(--text-color);
+}
+
 
 .blog-index .hentry {
   margin-bottom: var(--mg-xlarge);
