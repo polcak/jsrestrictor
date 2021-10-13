@@ -28,11 +28,14 @@
  * to an internal network - especially against a reconnaissance attacks when a web browser is abused as a proxy.
  * See, for example, the ForcePoint report https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf,
  * https://www.forcepoint.com/blog/x-labs/attacking-internal-network-public-internet-using-browser-proxy.
+ * Another example is the detection of applications running on the localhost, see
+ * https://jshelter.org/localportscanning/.
  *
  * The NBS functionality is based on filtering HTTP requests. The Network Boundary Shield uses blocking webRequest API to handle HTTP requests.
  * This means that processing of each HTTP request is paused before it is analyzed and allowed (if it seems benign) or blocked (if it is suspicious).
  *
  * The main goal of NBS is to prevent attacks like a public website requests a resource from the
+ * local compiter (e.g. to determine open TCP ports and thus running applications) or
  * internal network (e.g. the logo of the manufacturer of the local router); NBS will detect that
  * a web page hosted on the public Internet tries to connect to a local IP address. NBS blocks only
  * HTTP requests from a web page hosted on a public IP address to a private network resource. The
@@ -178,7 +181,9 @@ function isIPV4(url)
  */
 function isIPV6(url)
 {
-	url = url.substring(1, url.length - 1);
+	if (url[0] === "[" && url[url.length - 1] === "]") {
+		url = url.substring(1, url.length - 1);
+	}
 	var reg = new RegExp("^(?:(?:(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):){6})(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):(?:(?:[0-9a-fA-F]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:::(?:(?:(?:[0-9a-fA-F]{1,4})):){5})(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):(?:(?:[0-9a-fA-F]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})))?::(?:(?:(?:[0-9a-fA-F]{1,4})):){4})(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):(?:(?:[0-9a-fA-F]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):){0,1}(?:(?:[0-9a-fA-F]{1,4})))?::(?:(?:(?:[0-9a-fA-F]{1,4})):){3})(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):(?:(?:[0-9a-fA-F]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):){0,2}(?:(?:[0-9a-fA-F]{1,4})))?::(?:(?:(?:[0-9a-fA-F]{1,4})):){2})(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):(?:(?:[0-9a-fA-F]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):){0,3}(?:(?:[0-9a-fA-F]{1,4})))?::(?:(?:[0-9a-fA-F]{1,4})):)(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):(?:(?:[0-9a-fA-F]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):){0,4}(?:(?:[0-9a-fA-F]{1,4})))?::)(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):(?:(?:[0-9a-fA-F]{1,4})))|(?:(?:(?:(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9]))\.){3}(?:(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])))))))|(?:(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):){0,5}(?:(?:[0-9a-fA-F]{1,4})))?::)(?:(?:[0-9a-fA-F]{1,4})))|(?:(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4})):){0,6}(?:(?:[0-9a-fA-F]{1,4})))?::))))$", 'm');
 	return reg.test(url);
 }
@@ -194,6 +199,14 @@ function isIPV6(url)
  */
 function isIPV4Private(ipAddr)
 {
+	/**
+	 * \seealso https://github.com/polcak/jsrestrictor/issues/125
+	 * and the tempral white listing of 0.0.0.0 until we provide
+	 * a checkbox for notifications.
+	 */
+	if (ipAddr === "0.0.0.0") {
+		return false;
+	}
 	//Split IP address on dots, obtain 4 numbers	
 	var substrIP = ipAddr.split('.');
 	//Convert IP address into array of 4 integers
@@ -237,6 +250,14 @@ function isIPV4Private(ipAddr)
  */
 function isIPV6Private(ipAddr)
 {
+	/**
+	 * \seealso https://github.com/polcak/jsrestrictor/issues/125
+	 * and the tempral white listing of 0.0.0.0 until we provide
+	 * a checkbox for notifications.
+	 */
+	if (ipAddr === "::") {
+		return false;
+	}
 	//Expand shorten IPv6 addresses to full length
 	ipAddr = expandIPV6(ipAddr);
 	//Split into array of fields
@@ -377,7 +398,9 @@ function CSVToArray(strData){
  */
 function expandIPV6(ip6addr)
 {
-	ip6addr = ip6addr.substring(1, ip6addr.length - 1);
+	if (ip6addr[0] === "[" && ip6addr[ip6addr.length - 1] === "]") {
+		ip6addr = ip6addr.substring(1, ip6addr.length - 1);
+	}
 	var expandedIP6 = "";
 	//Check for omitted groups of zeros (::)
 	if (ip6addr.indexOf("::") == -1)
@@ -456,7 +479,7 @@ function checkWhitelist(hostname)
 function notifyBlockedRequest(origin, target, resource) {
 	browser.notifications.create({
 		"type": "basic",
-		"iconUrl": browser.extension.getURL("img/icon-48.png"),
+		"iconUrl": browser.runtime.getURL("img/icon-48.png"),
 		"title": "Network boundary shield blocked suspicious request!",
 		"message": `Request from ${origin} to ${target} blocked.\n\nMake sure that you are on a benign page. If you want to allow web requests from ${origin}, please, go to the JS Restrictor settings and add an exception.`
 	});
