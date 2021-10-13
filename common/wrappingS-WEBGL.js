@@ -43,9 +43,8 @@
  *
  * Content is either modified according to domain and session keys to be different than the original albeit very similar
  * or replaced by bottom value which is consistent every time.
- * Both approaches are inspired by the algorithms created by Brave Software <https://brave.com>
- * available at [https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc,
- * https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc]
+ * Both approaches are inspired by the algorithms created by [Brave Software](https://brave.com) available [here](https://github.com/brave/brave-core/$blob/master/chromium_src/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc)
+ * and [here](https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc).
  *
  * This wrapper operates with two levels of protection:
  *	* (0) - return modified results, such as slightly changed image, slightly changed number or random string

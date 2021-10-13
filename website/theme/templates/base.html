@@ -1,0 +1,247 @@
+{% block header %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  {# }<title>{{ SITENAME }}: {% if page %}{{ page.title }}{% else %}{{ article.title }}{% endif %}</title> #}
+  <title>{{ SITENAME }}: {{ title }}</title>
+  <meta name="description" content="{{ LONGDESCRIPTION }}">
+  <link rel="canonical" href="{{ SITEURL }}/{{ output_file.replace('index.html', '') }}">
+
+  <meta property="og:title" content="{{ SITENAME }}: {{ title }}">
+  <meta property="og:description" content="{{ LONGDESCRIPTION }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ SITEURL }}/{{ output_file.replace('index.html', '') }}">
+  <meta property="og:image" content="https://jshelter.org/theme/img/jshelter_preview.png">
+
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Pelican">
+
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="icon" type="image/x-icon" href="/theme/images/icon.png">
+
+  <link href="/theme/css/fork-awesome.min.css" rel="stylesheet">
+  <link href="/theme/css/minireset.min.css" rel="stylesheet">
+  <link href="/theme/css/main.css" rel="stylesheet">
+
+  {% if FEED_ALL_ATOM %}
+  <link href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Full Atom Feed">
+  {% endif %}
+  {% if FEED_ALL_RSS %}
+  <link href="{{ FEED_DOMAIN }}/{{ FEED_ALL_RSS }}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Full RSS Feed">
+  {% endif %}
+  {% if FEED_ATOM %}
+  <link href="{{ FEED_DOMAIN }}/{{ FEED_ATOM }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Atom Feed">
+  {% endif %}
+  {% if FEED_RSS %}
+  <link href="{{ FEED_DOMAIN }}/{{ FEED_RSS }}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} RSS Feed">
+  {% endif %}
+
+  <script type="text/javascript">
+  /** @licstart  The following is the entire license notice for the
+   *  JavaScript code in this page
+   *
+   *   Copyright (C) 2021 Manufactura Independente
+   *
+   *   The JavaScript code in this page is free software: you can
+   *   redistribute it and/or modify it under the terms of the GNU
+   *   General Public License (GNU GPL) as published by the Free Software
+   *   Foundation, either version 3 of the License, or (at your option)
+   *   any later version.  The code is distributed WITHOUT ANY WARRANTY;
+   *   without even the implied warranty of MERCHANTABILITY or FITNESS
+   *   FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+   *
+   *   As additional permission under GNU GPL version 3 section 7, you
+   *   may distribute non-source (e.g., minimized or compacted) forms of
+   *   that code without the copy of the GNU GPL normally required by
+   *   section 4, provided you include this license notice and a URL
+   *   through which recipients can access the Corresponding Source.
+   *
+   *  @licend  The above is the entire license notice
+   *  for the JavaScript code in this page.
+   */
+  </script>
+
+</head>
+{% endblock %}
+
+<body>
+
+  <nav class="navbar" aria-label="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+          <div>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </div>
+        </a>
+        <a class="navbar-item" href="/">
+          {% block titlearea %}
+            <img src="/theme/images/jshelter-logo.svg" alt="Dark orange square with a little white hermitt crab cuttout. {{ SITENAME }} logo">
+            <p>
+              <strong>{{ SITENAME }} </strong>
+              <span>{{ DESCRIPTION }}</span>
+            </p>
+          {% endblock %}
+        </a>
+      </div><!-- /.navbar-brand -->
+    </div><!-- /.container-->
+  </nav>
+
+  <div {% if title == "Home" %} id="home" {% endif %} class="wrapper">
+    <div class="content-wrapper container">
+
+      {% block sidebar %}
+      <div class="sidebar-overlay"></div>
+      <div class="sidebar">
+        <!-- new navigation -->
+        <nav class="menu" aria-label="navigation">
+          <ul class="menu-list">
+            <li class="menu-heading">
+              <a href="{{ SITEURL }}/" class="logo">
+                <img src="/theme/images/jshelter-horizontal.svg" alt="{{ SITENAME }}">
+              </a>
+              {% set slug = output_file.split('/')[0] %}
+              <ul>
+                <li><a href="{{ SITEURL }}/">Home</a></li>
+                <li><a href="{{ SITEURL }}/blog/">Blog</a></li>
+                {% for pagename in ['install', 'permissions', 'levels', 'versions', 'credits', 'license'] %}
+                {% set p = (pages|get_by_slug(pagename)) %}
+                {% if p %}
+                  {% if pagename == slug %}
+                  <li class="active">
+                  {% else %}
+                  <li>
+                  {% endif %}
+                    <a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a>
+                  </li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+            <li class="menu-heading">
+              <strong>Key protection</strong>
+              <ul>
+                <li><a href="{{ SITEURL }}/nbs">Network Boundary Shield</a></li>
+                {% for p in pages if p.category == "wrappers" %}
+                <li><a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+            <li class="menu-heading">
+              <strong>Developer notes</strong>
+              <ul>
+                {% for pagename in ['build', 'new-wrapper', 'coding-style'] %}
+                {% set p = (pages|get_by_slug(pagename)) %}
+                {% if p %}
+                <li><a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a></li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+          </ul>
+        </nav><!-- /.menu -->
+      </div><!-- /.sidebar -->
+      {% endblock %}
+
+      <main id="main-content" aria-label="main">
+
+        {% block content %}
+        {% endblock %}
+
+      </main><!-- /#main-content -->
+    </div><!-- /.container -->
+
+    <footer class="footer">
+      {% block footer %}
+      <div class="container grid">
+        <!-- copied from docs/_includes/footer.html -->
+          <div class="supporters">
+            <p>
+              This project was funded through the NGI0 PET Fund, a fund established by NLnet with financial support
+              from the European Commission's Next Generation Internet programme, under the aegis of DG
+              Communications Networks, Content and Technology under grant agreement No 825310 as
+              <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a href="https://nlnet.nl/project/JShelter">JShelter</a> projects. This
+              project was supported by the <a href="https://www.fit.vut.cz/research/project/1063/.en">MV CR VI20172020062 project</a>.
+            </p>
+          </div>
+          <div class="license">
+            <p>
+              This program is free software: you can redistribute it and/or modify
+              it under the terms of the GNU General Public License as published by
+              the Free Software Foundation, either
+              <a href="https://www.gnu.org/licenses/gpl-3.0">version 3</a> of the License, or
+              (at your option) any later version.
+            </p>
+            <p>View the source code at <a href="https://pagure.io/JS-Shield/JS-Shield">Pagure.io</a>.</p>
+          </div>
+          <div class="credits">
+            <ul>
+              <li>
+                <strong>Developers</strong>
+                <ul>
+                  <li><a href="https://www.fit.vutbr.cz/~polcak">Libor Polčák</a></li>
+                  <li>Martin Bednář</li>
+                  <li>Giorgio Maone</li>
+                  <li>Zbyněk Červinka</li>
+                  <li>Martin Timko</li>
+                  <li>Pavel Pohner</li>
+                  <li>Pater Horňák</li>
+                </ul>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <strong>FSF team</strong>
+                <ul>
+                  <li>John Hsieh</li>
+                  <li>Michael McMahon</li>
+                  <li>Ruben Rodriguez</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Design and website development</strong>
+                <a href="https://manufacturaindependente.org/">Manufactura Independente</a>
+              </li>
+            </ul>
+          </div>
+      </div><!-- /.container.grid -->
+      <div class="container">
+        <ul class="supporter-logos">
+          <li>
+            <a href="https://nlnet.nl/"><img src="/theme/images/nlnet-logo.svg" alt="NLnet logo"></a>
+          </li>
+          <li>
+            <a href="https://www.fsf.org/"><img src="/theme/images/fsf-logo.svg" alt="Free Software Foundation logo"></a>
+          </li>
+          <li>
+            <a href="https://www.fit.vut.cz/"><img src="/theme/images/brno-fit-logo.svg" alt="BRNO University of Technology, Faculty of Information Technology"></a>
+          </li>
+        </ul>
+      </div>
+      {% endblock %}
+    </footer>
+  </div><!-- /.content-wrapper.container -->
+
+  {% block extrascripts %}{% endblock %}
+  <script>
+
+    // mobile navigation
+    var navBurguer = document.getElementsByClassName('navbar-burger')[0];
+    var sidebarNav = document.getElementsByClassName('sidebar')[0];
+    var sidebarOverlay = document.getElementsByClassName('sidebar-overlay')[0];
+
+    navBurguer.onclick = function() {
+      navBurguer.classList.toggle('is-active');
+      sidebarNav.classList.toggle('is-shown');
+      sidebarOverlay.classList.toggle('is-shown');
+    }
+
+  </script>
+
+</body>
+
+</html>

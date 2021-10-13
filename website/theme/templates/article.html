@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <article class="hentry post">
+      {% set title = article.title %}
+      <header>
+      {% block title %}
+        <h2 class="entry-title">{{ article.title }}</h2>
+        <p class="entry-date">
+          <time class="published" datetime="{{ article.date.isoformat() }}"> {{ article.locale_date }}</time>
+        </p>
+      {% endblock %}
+      </header>
+
+      <div class="entry-content">
+        {{ article.content }}
+
+        {# source link #}
+        {# <p><a href="{{ page.relPath }}{{ compound.sourceFileName }}{{ config.HTML_FILE_EXTENSION }}">{{ tr.gotoSourceCode }}</a></p> #}
+      </div>
+  </article>
+{% endblock %}
