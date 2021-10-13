@@ -1,5 +1,16 @@
 Title: Release history
 
+## 0.5.3
+
+* Bugfix: Cascade top document's level to subframes with no explicitly assigned level. (workaround
+	for Github issue #133).
+* Bugfix: Improve IPv6 handling in NBS
+* Bugfix (Chromium-based browsers): Fix per-domain level options/settings page (Github issue #147)
+* Do not display NBS notifactions when accessing 0.0.0.0 and :: (workaround
+	for Github issue #125)
+* Improve NBS description in the option/settings page.
+* Display level names in the pop up to improve usability.
+
 ## 0.5.2
 
 * Bugfix: Do not modify JS environment on level 0. Regression appeared in 0.5.
