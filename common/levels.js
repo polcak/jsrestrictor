@@ -618,13 +618,13 @@ wrapping_groups.groups.forEach(function (group) {
 
 var level_0 = {
 	"level_id": "0",
-	"level_text": "Built-in 0",
+	"level_text": "Turn wrappers off",
 	"level_description": "No protection at all",
 };
 
 var level_1 = {
 	"level_id": "1",
-	"level_text": "Built-in 1",
+	"level_text": "Minimal",
 	"level_description": "Minimal level of protection",
 	"time_precision": true,
 	"time_precision_precision": 2,
@@ -640,7 +640,7 @@ var level_1 = {
 
 var level_2 = {
 	"level_id": "2",
-	"level_text": "Built-in 2",
+	"level_text": "Recommended",
 	"level_description": "Recommended level of protection for most sites",
 	"time_precision": true,
 	"time_precision_precision": 1,
@@ -668,7 +668,7 @@ var level_2 = {
 
 var level_3 = {
 	"level_id": "3",
-	"level_text": "Built-in 3",
+	"level_text": "High",
 	"level_description": "High level of protection",
 	"time_precision": true,
 	"time_precision_precision": 0,
