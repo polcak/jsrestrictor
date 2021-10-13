@@ -80,7 +80,7 @@ browser.tabs.query(queryInfo).then(function(tabs) {
 		});
 		for (let level_id in levels) {
 			let level = levels[level_id];
-			selectEl.appendChild(document.createRange().createContextualFragment(`<span class="level level_control" id="select-${level.level_id}" title="${level.level_text}">${escape(level.level_id)}</span>`));
+			selectEl.appendChild(document.createRange().createContextualFragment(`<span class="level level_control" id="select-${level.level_id}" title="${level.level_text}">${escape(level.level_id + ": " + level.level_text)}</span>`));
 			document.getElementById(`select-${level.level_id}`).addEventListener("click", function () {
 				domains[url.hostname] = {
 					level_id: level.level_id,
