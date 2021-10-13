@@ -196,6 +196,14 @@ function isIPV6(url)
  */
 function isIPV4Private(ipAddr)
 {
+	/**
+	 * \seealso https://github.com/polcak/jsrestrictor/issues/125
+	 * and the tempral white listing of 0.0.0.0 until we provide
+	 * a checkbox for notifications.
+	 */
+	if (ipAddr === "0.0.0.0") {
+		return false;
+	}
 	//Split IP address on dots, obtain 4 numbers	
 	var substrIP = ipAddr.split('.');
 	//Convert IP address into array of 4 integers
@@ -239,6 +247,14 @@ function isIPV4Private(ipAddr)
  */
 function isIPV6Private(ipAddr)
 {
+	/**
+	 * \seealso https://github.com/polcak/jsrestrictor/issues/125
+	 * and the tempral white listing of 0.0.0.0 until we provide
+	 * a checkbox for notifications.
+	 */
+	if (ipAddr === "::") {
+		return false;
+	}
 	//Expand shorten IPv6 addresses to full length
 	ipAddr = expandIPV6(ipAddr);
 	//Split into array of fields
