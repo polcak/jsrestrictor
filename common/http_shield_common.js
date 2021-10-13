@@ -28,11 +28,14 @@
  * to an internal network - especially against a reconnaissance attacks when a web browser is abused as a proxy.
  * See, for example, the ForcePoint report https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf,
  * https://www.forcepoint.com/blog/x-labs/attacking-internal-network-public-internet-using-browser-proxy.
+ * Another example is the detection of applications running on the localhost, see
+ * https://jshelter.org/localportscanning/.
  *
  * The NBS functionality is based on filtering HTTP requests. The Network Boundary Shield uses blocking webRequest API to handle HTTP requests.
  * This means that processing of each HTTP request is paused before it is analyzed and allowed (if it seems benign) or blocked (if it is suspicious).
  *
  * The main goal of NBS is to prevent attacks like a public website requests a resource from the
+ * local compiter (e.g. to determine open TCP ports and thus running applications) or
  * internal network (e.g. the logo of the manufacturer of the local router); NBS will detect that
  * a web page hosted on the public Internet tries to connect to a local IP address. NBS blocks only
  * HTTP requests from a web page hosted on a public IP address to a private network resource. The

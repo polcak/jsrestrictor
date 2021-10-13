@@ -62,7 +62,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	<p>
 		Network boundary shield prevents web pages to use the browser as a proxy between local network
 		and the public Internet. See our <a
-		  href="https://polcak.github.io/jsrestrictor/blogarticles/localportscanning.html">
+		  href="https://jshelter.org/localportscanning/">
 			blog post</a> and
 		<a
 			href="https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf">Force
@@ -72,7 +72,9 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	<p>
 		Generally, you want Network boundary shield protection active, however, some pages can be
 		broken, because they require interaction between public Internet and local network, for example,
-		some Intranet information systems might be broken by the Network boundary shield.
+		some Intranet information systems might be broken by the Network boundary shield. JShelter users
+		also reported increased number of false positives when using DNS-based filtering programs. If
+		you use one, make sure that DNS returns 0.0.0.0 for the blocked domains.
 	</p>
 	<p>
 		You can disable the Network boundary shield by adding the domain (e.g. example.com) to the
