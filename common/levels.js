@@ -614,16 +614,26 @@ wrapping_groups.groups.forEach(function (group) {
 	}).bind(null, group.id));
 });
 
+// *****************************************************************************
 // levels of protection
 
+// Level aliases
+const L0 = "0";
+const L1 = "1";
+const L2 = "2";
+const L3 = "3";
+
+/// Built-in levels
 var level_0 = {
-	"level_id": "0",
+	"builtin": true,
+	"level_id": L0,
 	"level_text": "Turn wrappers off",
 	"level_description": "No protection at all",
 };
 
 var level_1 = {
-	"level_id": "1",
+	"builtin": true,
+	"level_id": L1,
 	"level_text": "Minimal",
 	"level_description": "Minimal level of protection",
 	"time_precision": true,
@@ -639,7 +649,8 @@ var level_1 = {
 };
 
 var level_2 = {
-	"level_id": "2",
+	"builtin": true,
+	"level_id": L2,
 	"level_text": "Recommended",
 	"level_description": "Recommended level of protection for most sites",
 	"time_precision": true,
@@ -667,7 +678,8 @@ var level_2 = {
 };
 
 var level_3 = {
-	"level_id": "3",
+	"builtin": true,
+	"level_id": L3,
 	"level_text": "High",
 	"level_description": "High level of protection",
 	"time_precision": true,
@@ -705,11 +717,7 @@ var level_3 = {
 	"windowname": true,
 };
 
-// Level aliases
-const L0 = "0";
-const L1 = "1";
-const L2 = "2";
-const L3 = "3";
+const BUILTIN_LEVEL_NAMES = [L0, L1, L2, L3];
 
 var levels = {};
 var default_level = {};
@@ -756,7 +764,10 @@ function updateLevels(res) {
 	default_level.is_default = true;
 	var new_domains = res["domains"] || {};
 	for (let d in new_domains) {
-		domains[d] = levels[new_domains[d].level_id];
+		levid = levels[new_domains[d].level_id];
+		if (levid !== undefined) {
+			domains[d] = levid;
+		}
 	}
 	var orig_levels_updated_callbacks = levels_updated_callbacks;
 	levels_updated_callbacks = [];

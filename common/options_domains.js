@@ -101,9 +101,11 @@ function insert_domain_levels() {
 window.addEventListener("load", function() {
 	if (!levels_initialised) {
 		levels_updated_callbacks.push(insert_domain_levels);
+		levels_updated_callbacks.push(update_domain_level.bind(document.getElementById("domain-level")));
 	}
 	else {
 		insert_domain_levels();
+		update_domain_level(document.getElementById("domain-level"));
 	}
 });
 
@@ -135,7 +137,6 @@ function update_domain_level(dlel, set_value) {
 	};
 	dlel.value = finalValue;
 }
-update_domain_level(document.getElementById("domain-level"));
 
 document.getElementById("save-all-domain-levels").addEventListener("click", function (e) {
 	e.preventDefault();
