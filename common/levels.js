@@ -764,7 +764,10 @@ function updateLevels(res) {
 	default_level.is_default = true;
 	var new_domains = res["domains"] || {};
 	for (let d in new_domains) {
-		domains[d] = levels[new_domains[d].level_id];
+		levid = levels[new_domains[d].level_id];
+		if (levid !== undefined) {
+			domains[d] = levid;
+		}
 	}
 	var orig_levels_updated_callbacks = levels_updated_callbacks;
 	levels_updated_callbacks = [];
