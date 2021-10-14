@@ -625,12 +625,14 @@ const L3 = "3";
 
 /// Built-in levels
 var level_0 = {
+	"builtin": true,
 	"level_id": L0,
 	"level_text": "Turn wrappers off",
 	"level_description": "No protection at all",
 };
 
 var level_1 = {
+	"builtin": true,
 	"level_id": L1,
 	"level_text": "Minimal",
 	"level_description": "Minimal level of protection",
@@ -647,6 +649,7 @@ var level_1 = {
 };
 
 var level_2 = {
+	"builtin": true,
 	"level_id": L2,
 	"level_text": "Recommended",
 	"level_description": "Recommended level of protection for most sites",
@@ -675,6 +678,7 @@ var level_2 = {
 };
 
 var level_3 = {
+	"builtin": true,
 	"level_id": L3,
 	"level_text": "High",
 	"level_description": "High level of protection",

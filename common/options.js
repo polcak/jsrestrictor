@@ -227,7 +227,7 @@ function show_existing_level(levelsEl, level) {
 		<span>${escape(levels[level].level_description)}</span>
 		</li>`);
 	levelsEl.appendChild(fragment);
-	if (!(BUILTIN_LEVEL_NAMES.includes(level))) {
+	if (levels[level].builtin !== true) {
 		var lielem = document.getElementById(`li-${level}`); // Note that FF here requires unescaped ID
 		var existPref = document.createElement("span");
 		existPref.setAttribute("id", `li-exist-group-${escape(level)}`);
