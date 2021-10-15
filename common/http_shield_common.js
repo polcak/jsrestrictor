@@ -145,7 +145,7 @@ readFile(browser.runtime.getURL("ipv4.dat"))
 		localIPV4DNSZones = parseCSV(_res, true);
 	})
 	.catch(_error => {
-		console.log(_error );
+		console.error(_error );
 	});
 
 // Obtain file path in user's file system and read CSV file with IPv6 local zones
@@ -155,7 +155,7 @@ readFile(browser.runtime.getURL("ipv6.dat"))
 		localIPV6DNSZones = parseCSV(_res, false);
 	})
 	.catch(_error => {
-		console.log(_error );
+		console.error(_error );
 	});
 /// \endcond
 

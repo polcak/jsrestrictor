@@ -7,6 +7,8 @@ Title: Building from scratch
 3. Unpack the zip archive.
 4. Run `make`.
 	* You will need common software, such as `zip`, `wget`, `bash`, `awk`, `sed`.
+	* Note that running `make` removes all `console.debug` calls. If you want to keep such calls, run
+		`make debug`.
 5. Import the extension to the browser.
 	* Firefox: [https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/)
 		* Use the file `firefox_JSR.zip` created by `make`.
