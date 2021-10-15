@@ -5,6 +5,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+DEBUG=0
+
 all: firefox chrome
 
 .PHONY: firefox chrome clean get_csv docs
@@ -18,6 +20,8 @@ COMMON_FILES = $(shell find common/) \
 			   $(shell find chrome/)
 
 PROJECT_NAME = $(shell grep ^PROJECT_NAME doxyfile | cut -f2 -d'"')
+
+debug=1
 
 get_csv:
 	wget -q -N https://www.iana.org/assignments/locally-served-dns-zones/ipv4.csv
@@ -36,10 +40,17 @@ submodules:
 	@cp -r LICENSES $*_JSR/
 	@./fix_manifest.sh $*_JSR/manifest.json
 	@nscl/include.sh $*_JSR
+	@if [ $(DEBUG) -eq 0 ]; \
+	then \
+		find $*_JSR/ -type f -name "*.js" -exec sed -i '/console\.debug/d' {} + ; \
+	fi
 	@rm -f $*_JSR/.*.sw[pno]
 	@rm -f $*_JSR/img/makeicons.sh
 	@find $*_JSR/ -name '*.license' -delete
 	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
+
+debug: DEBUG=1
+debug: all
 
 clean:
 	rm -rf firefox_JSR.zip
