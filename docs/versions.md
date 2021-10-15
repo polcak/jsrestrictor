@@ -1,5 +1,14 @@
 Title: Release history
 
+## 0.5.4
+
+* Dark style support added (Github issue #134)
+* Bugfix: Removal of debugging noise (Github issue #139)
+* Bugfix: Allow removal of user-defined levels with names of a built-in level
+* Bugfix: Make sure that all user-defined levels are displayed in "Specific domain level configuration"
+  settings page
+* Bugfix: Ignore non-existing levels for a specific domain
+
 ## 0.5.3
 
 * Bugfix: Cascade top document's level to subframes with no explicitly assigned level. (workaround
