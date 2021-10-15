@@ -121,7 +121,7 @@
 						try {
 							let shuffle = () => {
 								if (result.length > 1) shuffleArray(result);
-								console.log("Shuffled array", result);
+								console.debug("Shuffled array", result);
 								return result;
 							};
 							if (level === 1 && result.length) {

@@ -149,7 +149,6 @@ async function control_whitelist()
 	else {
 		message = "add site to whitelist";
 	}
-	console.log(message);
 	browser.runtime.sendMessage({message, site});
 	showRefreshPageOption();
 }
