@@ -108,7 +108,7 @@
               {% set slug = output_file.split('/')[0] %}
               <ul>
                 <li><a href="{{ SITEURL }}/">Home</a></li>
-                <li><a href="{{ SITEURL }}/blog/">Blog</a></li>
+                <li {% if slug == 'blog' %} class="active" {% endif %}><a href="{{ SITEURL }}/blog/">Blog</a></li>
                 {% for pagename in ['install', 'permissions', 'levels', 'versions', 'credits', 'license'] %}
                 {% set p = (pages|get_by_slug(pagename)) %}
                 {% if p %}
@@ -125,7 +125,7 @@
             <li class="menu-heading">
               <strong>Key protection</strong>
               <ul>
-                <li><a href="{{ SITEURL }}/nbs">Network Boundary Shield</a></li>
+                <li {% if slug == 'nbs' %} class="active" {% endif %}><a href="{{ SITEURL }}/nbs">Network Boundary Shield</a></li>
                 {% for p in pages if p.category == "wrappers" %}
                 <li><a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a></li>
                 {% endfor %}
@@ -137,7 +137,7 @@
                 {% for pagename in ['build', 'new-wrapper', 'coding-style'] %}
                 {% set p = (pages|get_by_slug(pagename)) %}
                 {% if p %}
-                <li><a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a></li>
+                <li {% if pagename == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a></li>
                 {% endif %}
                 {% endfor %}
               </ul>
