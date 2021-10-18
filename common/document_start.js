@@ -51,14 +51,15 @@ function configureInjection({code, wrappers, domainHash, sessionHash}) {
 	}
 	return false;
 }
+
 if ("configuration" in window) {
 	console.debug("Early configuration found!", configuration);
 	configureInjection(configuration);
 } else {
 	/// Get current level configuration from the background script
-	browser.runtime.sendMessage({
+	configureInjection(browser.runtime.sendSyncMessage({
 			message: "get wrapping for URL",
 			url: window.location.href
 		}
-	).then(c => configureInjection(c));
-}
+	));
+};

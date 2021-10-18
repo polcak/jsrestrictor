@@ -8,6 +8,7 @@
         "nscl/lib/sha256.js",
         "nscl/common/log.js",
         "nscl/common/uuid.js",
+        "nscl/common/SyncMessage.js",
         "helpers.js",
         "session_hash.js",
         "update.js",
@@ -42,6 +43,7 @@
       "match_about_blank": true,
       "js": [
         "nscl/common/uuid.js",
+        "nscl/common/SyncMessage.js",
         "nscl/content/patchWindow.js",
         "nscl/lib/sha256.js",
         "alea.js",
