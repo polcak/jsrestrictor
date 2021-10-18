@@ -11,6 +11,6 @@ This wrapper operates with three levels of protection:
 *	(2) - return 4
 
 These approaches are inspired by the algorithms created by Brave Software <https://brave.com>
-available at https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/core/frame/navigator_device_memory.cc
+available at <https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/core/frame/navigator_device_memory.cc>
 
 

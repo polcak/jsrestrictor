@@ -2,8 +2,9 @@ import jinja2
 from comment_parser import comment_parser
 import glob
 
+
 TEMPLATES_PATH = "md-templates/"
-filenames = glob.glob("../common/wrapping-*.js")
+filenames = glob.glob("../common/wrappingS-*.js")
 output_dir = "content/wrappers/"
 
 titles = {
@@ -58,21 +59,22 @@ env = jinja2.Environment(
     lstrip_blocks=True,
 )
 
+if __name__ == "__main__":
+    for fn in filenames:
+        slug = fn.split("/")[-1].replace("wrappingS-", "").replace(".js", "").lower()
+        comments = comment_parser.extract_comments(fn, mime="text/x-javascript")
 
-for fn in filenames:
-    slug = fn.split("/")[-1].replace("wrappingS-", "").replace(".js", "").lower()
-    comments = comment_parser.extract_comments(fn, mime="text/x-javascript")
+        description = [c.text() for c in comments if "ingroup" in c.text()]
+        context = {}
+        context["filename"] = fn
+        context["title"] = titles.get(slug, slug)
 
-    description = [c.text() for c in comments if "ingroup" in c.text()]
-    context = {}
-    context["filename"] = fn
-    context["title"] = titles.get(slug, slug)
-
-    if description:
-        print("+ " + slug)
-        context["description"] = comment_to_md(description[0])
-    else:
-        # meter título sem link no site
-        print("  " + slug)
-    outfn = output_dir + slug + ".md"
-    render_template_into_file(env, "wrapper.md", outfn, context=context)
+        if description:
+            # print("+ " + slug)
+            context["description"] = comment_to_md(description[0])
+        else:
+            # meter título sem link no site
+            # print("  " + slug)
+            pass
+        outfn = output_dir + slug + ".md"
+        render_template_into_file(env, "wrapper.md", outfn, context=context)

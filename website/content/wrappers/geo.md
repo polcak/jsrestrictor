@@ -24,3 +24,4 @@ When modifying position:
 * Repeated calls of navigator.geolocation.getCurrentPosition() return the same position
 without page load and typically return another position after page reload.
 * navigator.geolocation.watchPosition() does not change position.
+
