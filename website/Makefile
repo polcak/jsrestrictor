@@ -52,7 +52,7 @@ install:
 extract:
 	$(ACTIVATE); python extract_comments.py
 
-html:
+html: extract
 	cd ../docs; cp -f build.md credits.md levels.md permissions.md versions.md license.md ../website/content/pages
 	cd ../docs; cp -f new-wrapper.md ../website/content/pages
 	cp -r favicon.ico output/
