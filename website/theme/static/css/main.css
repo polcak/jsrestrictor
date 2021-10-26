@@ -375,11 +375,6 @@ section > header {
   z-index: 2;
 }
 
-/*
-.block:not(:first-child) {
-  padding-top: var(--mg-large);
-}*/
-
 .block:not(:last-child) {
   margin-bottom: var(--mg-large);
 }
@@ -633,6 +628,13 @@ p.download-buttons {
 
 .grid article header {
   margin-bottom: var(--mg-medium);
+}
+
+/* Wrapper pages
+*/
+
+.entry-content p + ul {
+  margin-top: calc(var(--mg-medium) * -1);
 }
 
 /* Blog and article page
