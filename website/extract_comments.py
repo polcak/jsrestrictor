@@ -25,6 +25,12 @@ titles = {
     "weba": "WebAudio",
     "webgl": "WebGL",
     "nbs" : "Network Boundary Shield",
+    "dom": "DOM API",
+    "gp": "Gamepad",
+    "np": "Navigator Plugins",
+    "pt2": "Performance Timeline (L2)",
+    "vr": "Virtual Reality 1.1",
+    "xr": "Web XR",
 }
 
 
