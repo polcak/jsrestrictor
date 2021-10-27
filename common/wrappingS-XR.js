@@ -1,5 +1,5 @@
 /** \file
- * \brief This file contains wrappers for the current Virtual Reality API (WebXR)
+ * \brief This file contains wrappers for the current Virtual/Augmented Reality API (WebXR)
  *
  * \see https://developer.mozilla.org/en-US/docs/Web/API/WebXR_Device_API
  * \see https://immersive-web.github.io/webxr/
