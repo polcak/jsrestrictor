@@ -260,7 +260,7 @@ ISBN 978-3-319-66398-2.
 					original_name: "navigator.hardwareConcurrency",
 					wrapped_name: "origConcurrency",
 					wrapped_objects: [],
-					parent_object: "navigator",
+					parent_object: "Navigator.prototype",
 					parent_object_property: "hardwareConcurrency",
 					/**  \brief replaces navigator.hardwareConcurrency getter
 					 *
