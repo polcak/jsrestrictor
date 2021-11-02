@@ -211,26 +211,6 @@ for k in $(jq '.scripts | keys | .[]' ./config/global.json); do
 				# Export function.
 				exports+="exports.${var_name} = ${var_name}; "
 			fi
-		else
-			# Remove leading space. When removing custom namspace, global functions and vars are on the second level (one leading tabulator).
-			line=$(sed 's/^.//' <<< $line)
-			if [[ $line == function* ]] ;
-			then
-				# Divide line by character SPACE and left bracket.
-				IFS=' (' read -ra line_divided <<< "$line"
-				# Pick up function name.
-				function_name="${line_divided[1]}"
-				# Export function.
-				exports+="exports.${function_name} = ${function_name}; "
-			elif [[ $line == var* ]] ;
-			then
-				# Divide line by character SPACE and left bracket.
-				IFS=' =' read -ra line_divided <<< "$line"
-				# Pick up function name.
-				var_name="${line_divided[1]}"
-				# Export function.
-				exports+="exports.${var_name} = ${var_name}; "
-			fi
 		fi
 	done < ./tmp/$source_script_name
 	

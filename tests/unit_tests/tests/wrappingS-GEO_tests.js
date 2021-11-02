@@ -324,8 +324,10 @@ describe("GEO", function() {
 		});
 		it("should return given coordinates when flag provideAccurateGeolocationData is set.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject_globals);
-				eval(processOriginalGPSDataObject);
+				// Eval the functions in this function scope using indirect eval call.
+				// Look at: http://perfectionkills.com/global-eval-what-are-the-options#evaling_in_global_scope
+				(1,eval)(processOriginalGPSDataObject_globals);
+				(1,eval)(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = true;
 				var original_coords;
 				var changed_coords;
@@ -339,8 +341,10 @@ describe("GEO", function() {
 		});
 		it("should return changed timestamp when flag provideAccurateGeolocationData is set.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject_globals);
-				eval(processOriginalGPSDataObject);
+				// Eval the functions in this function scope using indirect eval call.
+				// Look at: http://perfectionkills.com/global-eval-what-are-the-options#evaling_in_global_scope
+				(1,eval)(processOriginalGPSDataObject_globals);
+				(1,eval)(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = true;
 				var original_timestamp;
 				var changed_timestamp;
@@ -354,8 +358,10 @@ describe("GEO", function() {
 		});
 		it("should return given coordinates when previouslyReturnedCoords are set.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject_globals);
-				eval(processOriginalGPSDataObject);
+				// Eval the functions in this function scope using indirect eval call.
+				// Look at: http://perfectionkills.com/global-eval-what-are-the-options#evaling_in_global_scope
+				(1,eval)(processOriginalGPSDataObject_globals);
+				(1,eval)(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = false;
 				var original_coords;
 				var changed_coords;
@@ -370,8 +376,10 @@ describe("GEO", function() {
 		});
 		it("should return changed timestamp when previouslyReturnedCoords are set.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject_globals);
-				eval(processOriginalGPSDataObject);
+				// Eval the functions in this function scope using indirect eval call.
+				// Look at: http://perfectionkills.com/global-eval-what-are-the-options#evaling_in_global_scope
+				(1,eval)(processOriginalGPSDataObject_globals);
+				(1,eval)(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = false;
 				var original_timestamp;
 				var changed_timestamp;
@@ -386,8 +394,10 @@ describe("GEO", function() {
 		});
 		it("should return coords that are not equal to original coords.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject_globals);
-				eval(processOriginalGPSDataObject);
+				// Eval the functions in this function scope using indirect eval call.
+				// Look at: http://perfectionkills.com/global-eval-what-are-the-options#evaling_in_global_scope
+				(1,eval)(processOriginalGPSDataObject_globals);
+				(1,eval)(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = false;
 				previouslyReturnedCoords = undefined;
 				var desiredAccuracyArray = [ 0.1, 1, 10, 100 ]
@@ -400,7 +410,7 @@ describe("GEO", function() {
 					desiredAccuracy = desiredAccuracyArray[i];
 					for (const position_key in originalPositions) {
 						original_coords = originalPositions[position_key]['coords'];
-						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords'];
+						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key], desiredAccuracy)['coords'];
 						expect(changed_coords).not.toEqual(original_coords,
 						'Returned coords (Latitude: ' + changed_coords['latitude'] + ', Longtitude: ' + changed_coords['longtitude'] + ') are equal to original coords (Latitude: ' + original_coords['latitude'] + ', Longtitude: ' + original_coords['longtitude'] + ') but spoofed coords were expected.');
 						previouslyReturnedCoords = undefined;
@@ -411,8 +421,10 @@ describe("GEO", function() {
 		// Required accuracy overview: https://github.com/polcak/jsrestrictor/blob/master/common/levels.js#L254
 		it("should return changed coords that are in required accuracy.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject_globals);
-				eval(processOriginalGPSDataObject);
+				// Eval the functions in this function scope using indirect eval call.
+				// Look at: http://perfectionkills.com/global-eval-what-are-the-options#evaling_in_global_scope
+				(1,eval)(processOriginalGPSDataObject_globals);
+				(1,eval)(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = false;
 				previouslyReturnedCoords = undefined;
 				var desiredAccuracyArray = [ 0.1, 1, 10, 100 ]
@@ -425,7 +437,7 @@ describe("GEO", function() {
 					desiredAccuracy = desiredAccuracyArray[i];
 					for (const position_key in originalPositions) {
 						original_coords = originalPositions[position_key]['coords'];
-						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords'];
+						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key], desiredAccuracy)['coords'];
 						expect(calcDistance(changed_coords['latitude'],
 										changed_coords['longitude'],
 										original_coords['latitude'],
@@ -438,8 +450,10 @@ describe("GEO", function() {
 		});
 		it("should return changed timestamp.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject_globals);
-				eval(processOriginalGPSDataObject);
+				// Eval the functions in this function scope using indirect eval call.
+				// Look at: http://perfectionkills.com/global-eval-what-are-the-options#evaling_in_global_scope
+				(1,eval)(processOriginalGPSDataObject_globals);
+				(1,eval)(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = false;
 				previouslyReturnedCoords = undefined;
 				var desiredAccuracyArray = [ 0.1, 1, 10, 100 ]
@@ -450,7 +464,7 @@ describe("GEO", function() {
 					desiredAccuracy = desiredAccuracyArray[i];
 					for (const position_key in originalPositions) {
 						original_timestamp = originalPositions[position_key]['timestamp'];
-						changed_timestamp = processOriginalGPSDataObject(undefined, originalPositions[position_key])['timestamp'];
+						changed_timestamp = processOriginalGPSDataObject(undefined, originalPositions[position_key], desiredAccuracy)['timestamp'];
 						expect(changed_timestamp).not.toEqual(original_timestamp, 'Timestamp should have been changed but original timestamp (Original timestamp: ' + original_timestamp + ') has been returned (Returned timestamp: ' + changed_timestamp + '). Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
 					}
 				}
@@ -458,8 +472,10 @@ describe("GEO", function() {
 		});
 		it("should not return nonsence coords.",function() {
 			if (typeof processOriginalGPSDataObject !== undefined && typeof processOriginalGPSDataObject_globals !== undefined) {
-				eval(processOriginalGPSDataObject_globals);
-				eval(processOriginalGPSDataObject);
+				// Eval the functions in this function scope using indirect eval call.
+				// Look at: http://perfectionkills.com/global-eval-what-are-the-options#evaling_in_global_scope
+				(1,eval)(processOriginalGPSDataObject_globals);
+				(1,eval)(processOriginalGPSDataObject);
 				provideAccurateGeolocationData = false;
 				previouslyReturnedCoords = undefined;
 				var desiredAccuracyArray = [ 0.1, 1, 10, 100 ]
@@ -472,7 +488,7 @@ describe("GEO", function() {
 					desiredAccuracy = desiredAccuracyArray[i];
 					for (const position_key in originalPositions) {
 						original_coords = originalPositions[position_key]['coords'];
-						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key])['coords'];
+						changed_coords = processOriginalGPSDataObject(undefined, originalPositions[position_key], desiredAccuracy)['coords'];
 						expect(changed_coords['latitude']).not.toBeGreaterThan(90, 'Spoofed latitude (' + changed_coords['latitude'] + '°) greather than the highest possible value (90°). Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
 						expect(changed_coords['longitude']).not.toBeGreaterThan(180, 'Spoofed longitude (' + changed_coords['longitude'] + '°) greather than the highest possible value (180°). Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
 						expect(changed_coords['latitude']).not.toBeLessThan(-90, 'Spoofed latitude (' + changed_coords['latitude'] + '°) less than the lowest possible value (-90°). Input position: ' + position_key + ' (Latitude: ' + originalPositions[position_key]['coords']['latitude'] + ', Longtitude: ' + originalPositions[position_key]['coords']['longitude'] + ').');
