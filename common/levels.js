@@ -97,6 +97,8 @@ var wrapping_groups = {
 				"Gamepad.prototype.timestamp",
 				// VR
 				"VRFrameData.prototype.timestamp",
+        // SENSOR
+        "Sensor.prototype.timestamp",
 			],
 		},
 		{
