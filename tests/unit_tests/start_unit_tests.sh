@@ -202,7 +202,7 @@ for k in $(jq '.scripts | keys | .[]' ./config/global.json); do
 				function_name="${line_divided[1]}"
 				# Export function.
 				exports+="exports.${function_name} = ${function_name}; "
-			elif [[ $line == var* ]] ;
+			elif [[ $line =~ ^var[[:space:]]+[a-zA-Z0-9_]+[[:space:]]*=[[:space:]]* ]] ;
 			then
 				# Divide line by character SPACE and left bracket.
 				IFS=' =' read -ra line_divided <<< "$line"
