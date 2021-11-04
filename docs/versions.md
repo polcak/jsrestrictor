@@ -1,5 +1,13 @@
 Title: Release history
 
+## 0.5.5
+
+* Tighter content script initialization
+* Bugfix: wrap `Navigator.prototype` and `Geolocation.prototype` instead of `navigator` and
+	`navigator.geolocation`
+* Remove additional Geolocation API objects when Geolocation is disabled completely
+* Icons updated and synced with the JShelter website
+
 ## 0.5.4
 
 * Dark style support added (Github issue #134)
