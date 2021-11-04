@@ -233,6 +233,62 @@
 			],
 		},
 		{
+			parent_object: "window",
+			parent_object_property: "Geolocation",
+			wrapped_objects: [],
+			helping_code: setArgs,
+			post_wrapping_code: [
+				{
+					code_type: "delete_properties",
+					parent_object: "window",
+					apply_if: "!enableGeolocation",
+					delete_properties: ["Geolocation"],
+				}
+			],
+		},
+		{
+			parent_object: "window",
+			parent_object_property: "GeolocationCoordinates",
+			wrapped_objects: [],
+			helping_code: setArgs,
+			post_wrapping_code: [
+				{
+					code_type: "delete_properties",
+					parent_object: "window",
+					apply_if: "!enableGeolocation",
+					delete_properties: ["GeolocationCoordinates"],
+				}
+			],
+		},
+		{
+			parent_object: "window",
+			parent_object_property: "GeolocationPosition",
+			wrapped_objects: [],
+			helping_code: setArgs,
+			post_wrapping_code: [
+				{
+					code_type: "delete_properties",
+					parent_object: "window",
+					apply_if: "!enableGeolocation",
+					delete_properties: ["GeolocationPosition"],
+				}
+			],
+		},
+		{
+			parent_object: "window",
+			parent_object_property: "GeolocationPositionError",
+			wrapped_objects: [],
+			helping_code: setArgs,
+			post_wrapping_code: [
+				{
+					code_type: "delete_properties",
+					parent_object: "window",
+					apply_if: "!enableGeolocation",
+					delete_properties: ["GeolocationPositionError"],
+				}
+			],
+		},
+		{
 			parent_object: "Geolocation.prototype",
 			parent_object_property: "getCurrentPosition",
 

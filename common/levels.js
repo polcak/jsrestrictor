@@ -482,6 +482,10 @@ var wrapping_groups = {
 			wrappers: [
 				// GPS
 				"Navigator.prototype.geolocation",
+				"window.Geolocation",
+				"window.GeolocationCoordinates",
+				"window.GeolocationPosition",
+				"window.GeolocationPositionError",
 				"Geolocation.prototype.getCurrentPosition",
 				"Geolocation.prototype.watchPosition",
 				"Geolocation.prototype.clearWatch"
