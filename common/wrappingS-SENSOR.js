@@ -45,16 +45,25 @@
  * - Xiaomi Redmi Note 5; Android 9, kernel 4.4.156-perf+, Build/9 PKQ1.180901.001
  *   Chrome 94.0.4606.71
  *
- * The wrapper thus
- * e
- * As the value should be unique
+ * The wrapper thus protects device by changing the time origin to the browsing context
+ * creation time, whereas the timestamp should still uniquely identify the reading.
+ * This is achieved in the following way:
+ * - At the first reading, we calculate the difference between the original value
+ *   and performance.now(). This gives us the offset between 1) the device boot
+ *   and 2) the page context initialization.
+ * - On every reading, the offset is subtracted from the original value. The resulting
+ *   value then uniquely identifies the reading sample without exposing the boot time.
+ * - Like in the other time precision wrappers, the resulting timestamp is processed
+ *   by the mitigation function before return. The mitigation may round and (optionally)
+ *   add noise to the resulting timestamp.
  *
-
- // We observed a phone that returned the time after the phone
- // was last booted. This might be a very good value to create
- // fingerprint
- * Y
+ * NOTE: Possible enhancement - in protection level 2, the timestamp origin may be set
+ * to a random value based on the session hash. This can serve as a "fake boot time."
  */
+
+ /*
+  * Create private namespace
+  */
  (function() {
 
   var remember_past_values = `var precision = args[0];
@@ -102,12 +111,11 @@
                 function() {
                   orig_val = origGet.call(this);
                   if (typeof orig_val != 'number') {
+                    // Sensor is not available or there is no reading yet.
                     return orig_val;
                   }
 									if (offsetCompStartPageStart === undefined) {
-										// We observed a phone that returned the time after the phone
-										// was last booted. This might be a very good value to create
-										// fingerprint
+                    // The offset has not been set yet so it needs to be calculated.
 										offsetCompStartPageStart = orig_val - performance.now();
 									}
 									return mitigationF(orig_val - offsetCompStartPageStart, precision);
