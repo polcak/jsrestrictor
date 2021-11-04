@@ -75,10 +75,10 @@
 			`;
 	var wrappers = [
 		{
-			parent_object: "navigator",
+			parent_object: "Navigator.prototype",
 			parent_object_property: "getGamepads",
 			wrapped_objects: [{
-				original_name: "navigator.getGamepads()",
+				original_name: "Navigator.prototype.getGamepads()",
 				wrapped_name: "origGamepads",
 			}],
 			helping_code: "",

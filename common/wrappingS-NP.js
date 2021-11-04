@@ -266,7 +266,7 @@
 	var fakes = fakeMime + fakePlugin + fakePluginArray + fakeMimeTypeArrayF;
 	var wrappers = [
 		{
-			parent_object: "navigator",
+			parent_object: "Navigator.prototype",
 			parent_object_property: "plugins",
 			apply_if: "navigator.plugins.length > 0",
 			wrapped_objects: [],
@@ -291,7 +291,7 @@
 			post_wrapping_code: [
 				{
 					code_type: "object_properties",
-					parent_object: "navigator",
+					parent_object: "Navigator.prototype",
 					parent_object_property: "plugins",
 					wrapped_objects: [],
 					/** \brief replaces navigator.plugins getter
@@ -313,7 +313,7 @@
 				},
 				{
 					code_type: "object_properties",
-					parent_object: "navigator",
+					parent_object: "Navigator.prototype",
 					parent_object_property: "mimeTypes",
 					wrapped_objects: [],
 					/** \brief replaces navigator.mimeTypes getter

@@ -6,6 +6,7 @@
         "nscl/lib/sha256.js",
         "nscl/common/log.js",
         "nscl/common/uuid.js",
+        "nscl/common/SyncMessage.js",
         "nscl/service/DocStartInjection.js",
         "nscl/service/TabCache.js",
         "helpers.js",
@@ -45,6 +46,7 @@
       "js": [
         "nscl/lib/browser-polyfill.js",
         "nscl/common/uuid.js",
+        "nscl/common/SyncMessage.js",
         "nscl/content/patchWindow.js",
         "nscl/lib/sha256.js",
         "alea.js",

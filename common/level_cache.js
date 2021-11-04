@@ -91,7 +91,7 @@ function contentScriptLevelSetter(message, {frameId, tab}) {
 			return getContentConfiguration(message.url, frameId, tab.id)
 	}
 }
-browser.runtime.onMessage.addListener(contentScriptLevelSetter);
+browser.runtime.onSyncMessage.addListener(contentScriptLevelSetter);
 
 
 /**

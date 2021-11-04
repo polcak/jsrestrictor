@@ -241,7 +241,7 @@ ISBN 978-3-319-66398-2.
 
 	var wrappers = [
 		{
-			parent_object: "navigator",
+			parent_object: "Navigator.prototype",
 			parent_object_property: "hardwareConcurrency",
 			wrapped_objects: [],
 			helping_code: `
@@ -257,10 +257,9 @@ ISBN 978-3-319-66398-2.
 			post_wrapping_code: [
 				{
 					code_type: "object_properties",
-					original_name: "navigator.hardwareConcurrency",
 					wrapped_name: "origConcurrency",
 					wrapped_objects: [],
-					parent_object: "navigator",
+					parent_object: "Navigator.prototype",
 					parent_object_property: "hardwareConcurrency",
 					/**  \brief replaces navigator.hardwareConcurrency getter
 					 *
