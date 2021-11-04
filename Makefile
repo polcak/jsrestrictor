@@ -48,6 +48,8 @@ submodules:
 	@rm -f $*_JSR/img/makeicons.sh
 	@find $*_JSR/ -name '*.license' -delete
 	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
+	@echo "LOG-WARNING: Number of lines in $*_JSR with console.log:"
+	@grep -re 'console.log' $*_JSR | wc -l
 
 debug: DEBUG=1
 debug: all

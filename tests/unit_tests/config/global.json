@@ -246,6 +246,13 @@
 					]
 				}
 			],
+			"extra_exports": [
+				"processOriginalGPSDataObject_globals",
+				"spoofCall",
+				"processOriginalGPSDataObject",
+				"setArgs",
+				"wrappers"
+			],
 			"test_script_requirements": [
 				{
 					"type": "const",
@@ -261,9 +268,47 @@
 					]
 				}
 			],
+			"replace_in_src": [
+				{
+					"origin": "spoofPos(previouslyReturnedCoords);",
+					"new": "return spoofPos(previouslyReturnedCoords);"
+				},
+				{
+					"origin": "spoofCall(pos, originalPositionObject, successCallback);",
+					"new": "return spoofCall(pos, originalPositionObject, successCallback);"
+				},
+				{
+					"origin": "function processOriginalGPSDataObject(expectedMaxAge, originalPositionObject) {",
+					"new": "function processOriginalGPSDataObject(expectedMaxAge, originalPositionObject, desiredAccuracy) {"
+				}
+			],
 			"inject_code_to_src":
 			{
-				"begin": "function gen_random32() { return 0.2 * 4294967295; } WrapHelper = { XRAY: false, shared: {}, forPage: function(param) {return param}, isForPage: obj => pageReady.has(obj), defineProperty: Object.defineProperty, defineProperties: Object.defineProperties, create: Object.create, OriginalProxy: Proxy, Proxy: Proxy };"
+				"begin": "function gen_random32() { return 0.2 * 4294967295; } function successCallback(arg) { return arg; } WrapHelper = { XRAY: false, shared: {}, forPage: function(param) {return param}, isForPage: obj => pageReady.has(obj), defineProperty: Object.defineProperty, defineProperties: Object.defineProperties, create: Object.create, OriginalProxy: Proxy, Proxy: Proxy };"
+			}
+		},
+		{
+			"name": "http_shield_common",
+			"remove_custom_namespace": false,
+			"let_to_var": true,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"import": "sinon-chrome",
+							"as": "sinon_browser"
+						}
+					]
+				}
+			],
+			"extra_exports": [
+			],
+			"test_script_requirements": [
+			],
+			"inject_code_to_src":
+			{
+				"begin": "var browser = JSON.parse(JSON.stringify(sinon_browser)); browser.storage.sync.get = function(param) { return Promise.resolve(param); }; browser.runtime.onMessage.addListener = function(){return;}; browser.runtime.getURL = function(){return;};"
 			}
 		}
 	]
