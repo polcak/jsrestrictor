@@ -46,13 +46,13 @@
 (function() {
 	var wrappers = [
 		{
-			parent_object: "navigator",
+			parent_object: "Navigator.prototype",
 			parent_object_property: "getBattery",
 			wrapped_objects: [],
 			post_wrapping_code: [
 				{
 					code_type: "delete_properties",
-					parent_object: "navigator",
+					parent_object: "Navigator.prototype",
 					delete_properties: ["getBattery"],
 				}
 			],

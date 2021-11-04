@@ -54,7 +54,7 @@
 (function() {
 	var wrappers = [
 		{
-			parent_object: "navigator",
+			parent_object: "Navigator.prototype",
 			parent_object_property: "deviceMemory",
 			wrapped_objects: [],
 			helping_code: `
@@ -78,7 +78,7 @@
 			post_wrapping_code: [
 				{
 					code_type: "object_properties",
-					parent_object: "navigator",
+					parent_object: "Navigator.prototype",
 					parent_object_property: "deviceMemory",
 					wrapped_objects: [],
 					/**  \brief replaces navigator.deviceMemory getter

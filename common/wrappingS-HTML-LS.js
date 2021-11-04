@@ -241,7 +241,7 @@ ISBN 978-3-319-66398-2.
 
 	var wrappers = [
 		{
-			parent_object: "navigator",
+			parent_object: "Navigator.prototype",
 			parent_object_property: "hardwareConcurrency",
 			wrapped_objects: [],
 			helping_code: `

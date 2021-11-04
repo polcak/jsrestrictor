@@ -74,7 +74,7 @@
 			`;
 	var wrappers = [
 		{
-			parent_object: "navigator",
+			parent_object: "Navigator.prototype",
 			parent_object_property: "activeVRDisplays",
 			wrapped_objects: [],
 			helping_code: "",

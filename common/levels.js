@@ -257,7 +257,7 @@ var wrapping_groups = {
 			}],
 			wrappers: [
 				// NP
-				"navigator.plugins", // also modifies "navigator.mimeTypes",
+				"Navigator.prototype.plugins", // also modifies "Navigator.prototype.mimeTypes",
 			],
 		},
 		{
@@ -321,9 +321,9 @@ var wrapping_groups = {
 			}],
 			wrappers: [
 				// HTML-LS
-				"navigator.hardwareConcurrency",
+				"Navigator.prototype.hardwareConcurrency",
 				// DM
-				"navigator.deviceMemory",
+				"Navigator.prototype.deviceMemory",
 			],
 		},
 		{
@@ -481,10 +481,10 @@ var wrapping_groups = {
 			],
 			wrappers: [
 				// GPS
-				"navigator.geolocation",
-				"navigator.geolocation.getCurrentPosition",
-				"navigator.geolocation.watchPosition",
-				"navigator.geolocation.clearWatch"
+				"Navigator.prototype.geolocation",
+				"Geolocation.prototype.getCurrentPosition",
+				"Geolocation.prototype.watchPosition",
+				"Geolocation.prototype.clearWatch"
 			],
 		},
 		{
@@ -495,7 +495,7 @@ var wrapping_groups = {
 			options: [],
 			wrappers: [
 				// GAMEPAD
-				"navigator.getGamepads",
+				"Navigator.prototype.getGamepads",
 			],
 		},
 		{
@@ -506,9 +506,9 @@ var wrapping_groups = {
 			options: [],
 			wrappers: [
 				// VR
-				"navigator.activeVRDisplays",
+				"Navigator.prototype.activeVRDisplays",
 				// XR
-				"navigator.xr",
+				"Navigator.prototype.xr",
 			],
 		},
 		{
@@ -519,7 +519,7 @@ var wrapping_groups = {
 			options: [],
 			wrappers: [
 				// BEACON
-				"navigator.sendBeacon",
+				"Navigator.prototype.sendBeacon",
 			],
 		},
 		{
@@ -530,7 +530,7 @@ var wrapping_groups = {
 			options: [],
 			wrappers: [
 				// BATTERY
-				"navigator.getBattery",
+				"Navigator.prototype.getBattery",
 				"window.BatteryManager",
 			],
 		},

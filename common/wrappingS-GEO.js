@@ -219,32 +219,32 @@
 
 	var wrappers = [
 		{
-			parent_object: "navigator",
+			parent_object: "Navigator.prototype",
 			parent_object_property: "geolocation",
 			wrapped_objects: [],
 			helping_code: setArgs,
 			post_wrapping_code: [
 				{
 					code_type: "delete_properties",
-					parent_object: "navigator",
+					parent_object: "Navigator.prototype",
 					apply_if: "!enableGeolocation",
 					delete_properties: ["geolocation"],
 				}
 			],
 		},
 		{
-			parent_object: "navigator.geolocation",
+			parent_object: "Geolocation.prototype",
 			parent_object_property: "getCurrentPosition",
 
 			wrapped_objects: [
 				{
-					original_name: "navigator.geolocation.getCurrentPosition",
+					original_name: "Geolocation.prototype.getCurrentPosition",
 					callable_name: "originalGetCurrentPosition",
 				},
 			],
 			helping_code: setArgs + processOriginalGPSDataObject_globals,
 			wrapping_function_args: "successCallback, errorCallback, origOptions",
-			/** \fn fake navigator.geolocation.getCurrentPosition
+			/** \fn fake Geolocation.prototype.getCurrentPosition
 			 * \brief Provide a fake geolocation position
 			 */
 			wrapping_function_body: `
@@ -266,18 +266,18 @@
 			`,
 		},
 		{
-			parent_object: "navigator.geolocation",
+			parent_object: "Geolocation.prototype",
 			parent_object_property: "watchPosition",
 			wrapped_objects: [
 				{
-					original_name: "navigator.geolocation.watchPosition",
+					original_name: "Geolocation.prototype.watchPosition",
 					wrapped_name: "originalWatchPosition",
 				},
 			],
 			helping_code: setArgs + processOriginalGPSDataObject_globals + "let watchPositionCounter = 0;",
 			wrapping_function_args: "successCallback, errorCallback, origOptions",
-			/** \fn fake navigator.geolocation.watchPosition
-			 * navigator.geolocation.watchPosition intended use concerns tracking user position changes.
+			/** \fn fake Geolocation.prototype.watchPosition
+			 * Geolocation.prototype.watchPosition intended use concerns tracking user position changes.
 			 * JSR provides four modes of operaion:
 			 * * current position approximation: Always return the same data, the same as getCurrentPosition()
 			 * * accurate data: Return exact position but fake timestamp
@@ -292,30 +292,30 @@
 				}
 				else {
 					// Re-use the wrapping of n.g.getCurrentPosition()
-					navigator.geolocation.getCurrentPosition(successCallback, errorCallback, origOptions);
+					Geolocation.prototype.getCurrentPosition(successCallback, errorCallback, origOptions);
 					watchPositionCounter++;
 					return watchPositionCounter;
 				}
 			`,
 		},
 		{
-			parent_object: "navigator.geolocation",
+			parent_object: "Geolocation.prototype",
 			parent_object_property: "clearWatch",
 			wrapped_objects: [
 				{
-					original_name: "navigator.geolocation.clearWatch",
+					original_name: "Geolocation.prototype.clearWatch",
 					wrapped_name: "originalClearWatch",
 				},
 			],
 			helping_code: setArgs,
 			wrapping_function_args: "id",
-			/** \fn fake_or_original navigator.geolocation.clearWatch
+			/** \fn fake_or_original Geolocation.prototype.clearWatch
 			 * If the Geolocation API provides correct data, call the original implementation,
 			 * otherwise do nothing as the watchPosition object was not created.
 			 */
 			wrapping_function_body: `
 				if (provideAccurateGeolocationData) {
-					originalClearWatch.call(navigator.geolocation, id);
+					originalClearWatch.call(Geolocation.prototype, id);
 				}
 			`,
 		}
