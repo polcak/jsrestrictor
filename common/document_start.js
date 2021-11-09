@@ -25,6 +25,8 @@
 
 var wrappersPort;
 
+var wrapperAccessCounters = new Map();
+
 function configureInjection({code, wrappers, domainHash, sessionHash}) {
 	configureInjection = () => false; // one shot
 	if (!code) return true; // nothing to wrap, bail out!
