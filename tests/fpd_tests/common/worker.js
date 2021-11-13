@@ -22,11 +22,9 @@
 
 importScripts('helpers.js');
 //SCRIPTS_S
-
 //SCRIPTS_E
 
 var resultsAcc = {};
 //CALL_S
-
 //CALL_E
 postMessage(resultsAcc);

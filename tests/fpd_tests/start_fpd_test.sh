@@ -42,10 +42,12 @@ done
 # update html and worker files to include and call test functions
 echo -ne "UPDATING ./common/* FILES FOR THE LATEST CONFIGURATION"
 
+# clear script placeholders in test files
 sed -i "/.*<!--SCRIPTS_S-->.*/,/.*<!--SCRIPTS_E-->.*/{/.*<!--SCRIPTS_S-->.*/!{/.*<!--SCRIPTS_E-->.*/!d}}" ./index.html
 sed -i "/.*<!--SCRIPTS_S-->.*/,/.*<!--SCRIPTS_E-->.*/{/.*<!--SCRIPTS_S-->.*/!{/.*<!--SCRIPTS_E-->.*/!d}}" ./common/iframe.html
 sed -i "/.*\/\/SCRIPTS_S.*/,/.*\/\/SCRIPTS_E.*/{/.*\/\/SCRIPTS_S.*/!{/.*\/\/SCRIPTS_E.*/!d}}" ./common/worker.js
 
+# add test scripts to source code of testing website
 test_functions=()
 test_files=`find ${tests_path} -type f -name "*.js"`
 for file in $test_files
@@ -59,11 +61,13 @@ done
 
 echo -ne "....."
 
+# clear function placeholders in test files
 for file in ./index.html ./common/iframe.html ./common/worker.js
 do
 	sed -i "/.*\/\/CALL_S.*/,/.*\/\/CALL_E.*/{/.*\/\/CALL_S.*/!{/.*\/\/CALL_E.*/!d}}" $file
 done
 
+# add calls of testing functions to source code of testing website
 for fce in "${test_functions[@]}"
 do
 	for file in ./index.html ./common/iframe.html ./common/worker.js
@@ -243,7 +247,20 @@ cd $fpd_test_path
 trap_ctrlc()
 {
 	echo ""
-    echo -ne "PERFORMING CLEAN-UP AND REVERTING FILES....."
+    echo -ne "CLEANING FPD TESTING FILES TO ORIGINAL STATE....."
+
+	sed -i "/.*<!--SCRIPTS_S-->.*/,/.*<!--SCRIPTS_E-->.*/{/.*<!--SCRIPTS_S-->.*/!{/.*<!--SCRIPTS_E-->.*/!d}}" ./index.html
+	sed -i "/.*<!--SCRIPTS_S-->.*/,/.*<!--SCRIPTS_E-->.*/{/.*<!--SCRIPTS_S-->.*/!{/.*<!--SCRIPTS_E-->.*/!d}}" ./common/iframe.html
+	sed -i "/.*\/\/SCRIPTS_S.*/,/.*\/\/SCRIPTS_E.*/{/.*\/\/SCRIPTS_S.*/!{/.*\/\/SCRIPTS_E.*/!d}}" ./common/worker.js
+
+	for file in ./index.html ./common/iframe.html ./common/worker.js
+	do
+		sed -i "/.*\/\/CALL_S.*/,/.*\/\/CALL_E.*/{/.*\/\/CALL_S.*/!{/.*\/\/CALL_E.*/!d}}" $file
+	done
+
+	echo ".....DONE!"
+	
+    echo -ne "PERFORMING CLEAN-UP AND REVERTING EXTENSION FILES....."
 	
 	cd $default_extension_path
 	rm -f ./fpd_test.js
