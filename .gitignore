@@ -21,5 +21,7 @@ tests/system_tests/get_data/top_sites/*.csv
 tests/system_tests/get_data/selenium/*.jar
 tests/unit_tests/node_modules/*
 tests/unit_tests/tmp/*
+tests/fpd_tests/wrappers*
+tests/fpd_tests/tests/resources.js
 
 website/output
