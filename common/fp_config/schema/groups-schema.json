@@ -1,0 +1,152 @@
+{
+    "$schema":"http://json-schema.org/draft-07/schema",
+    "$id":"http://example.com/example.json",
+    "definitions":{
+        "group":{
+            "type":"object",
+            "title":"Group object",
+            "description":"Object representing group and its properties.",
+            "properties":{
+                "name":{
+                    "type":"string"
+                },
+                "description":{
+                    "type":"string"
+                },
+                "criteria":{
+                    "$ref":"#/definitions/criteria"
+                },
+                "groups":{
+                    "title":"Subgroups array",
+                    "description":"Array of subgroups of defined group.",
+                    "type":"array",
+                    "items":{
+                        "$ref":"#/definitions/group"
+                    }
+                }
+            },
+            "required":[
+                "name"
+            ],
+            "additionalProperties":false
+        },
+        "criteria":{
+            "type":"array",
+            "title":"Criteria array",
+            "description":"Contains criterion objects to define parent group access/weight.",
+            "if":{
+                "items":[
+                    {
+                        "$ref":"#/definitions/criterion_access"
+                    }
+                ]
+            },
+            "then":{
+                "items":{
+                    "$ref":"#/definitions/criterion_access"
+                }
+            },
+            "else":{
+                "items":{
+                    "oneOf":[
+                        {
+                            "$ref":"#/definitions/criterion_value"
+                        },
+                        {
+                            "$ref":"#/definitions/criterion_percentage"
+                        }
+                    ]
+                }
+            }
+        },
+        "criterion_value":{
+            "type":"object",
+            "title":"Value criterion",
+            "description":"Criterion based on curent weights of direct children. (children = subgroups or wrapped resources)",
+            "properties":{
+                "value":{
+                    "type":"integer",
+                    "minimum":1,
+                    "maximum":1000
+                },
+                "weight":{
+                    "type":"integer",
+                    "minimum":0
+                }
+            },
+            "required":[
+                "value",
+                "weight"
+            ],
+            "additionalProperties":false
+        },
+        "criterion_percentage":{
+            "type":"object",
+            "title":"Percentage criterion",
+            "description":"Criterion based on percentage of currently gained weights (from max. obtainable) of direct children.",
+            "properties":{
+                "percentage":{
+                    "type":"integer",
+                    "minimum":0,
+                    "maximum":100
+                },
+                "weight":{
+                    "type":"integer",
+                    "minimum":0
+                }
+            },
+            "required":[
+                "percentage",
+                "weight"
+            ],
+            "additionalProperties":false
+        },
+        "criterion_access":{
+            "type":"object",
+            "title":"Access criterion",
+            "description":"Criterion based on total number of accesses from direct child resources. (subgroups are ignored)",
+            "properties":{
+                "access":{
+                    "type":"integer",
+                    "minimum":1,
+                    "maximum":1000
+                },
+                "weight":{
+                    "type":"integer",
+                    "minimum":0
+                }
+            },
+            "required":[
+                "access",
+                "weight"
+            ],
+            "additionalProperties":false
+        }
+    },
+    "type":"object",
+    "title":"Root group object",
+    "description":"Object representing root group and its properties.",
+    "properties":{
+        "name":{
+            "type":"string"
+        },
+        "description":{
+            "type":"string"
+        },
+        "criteria":{
+            "$ref":"#/definitions/criteria"
+        },
+        "groups":{
+            "title":"Array of subgroups",
+            "description":"Array of subgroups of root group.",
+            "type":"array",
+            "items":{
+                "$ref":"#/definitions/group"
+            }
+        }
+    },
+    "required":[
+        "name"
+    ],
+    "additionalProperties":false
+}
