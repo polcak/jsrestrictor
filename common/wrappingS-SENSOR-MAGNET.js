@@ -57,24 +57,26 @@
   }
 */
 
+  // TODO: replace "var" with "get" after testing.
+
   var init_data = `
-    let currentReading = {orig_x: null, orig_y: null, orig_z: null, timestamp: null,
+    var currentReading = currentReading || {orig_x: null, orig_y: null, orig_z: null, timestamp: null,
                       fake_x: null, fake_y: null, fake_z: null};
 
-    let previousReading = JSON.parse(JSON.stringify(currentReading));
-
-    //let previousReading = new Reading;
-    //let currentReading = new Reading;
+    var previousReading = previousReading || {orig_x: null, orig_y: null, orig_z: null, timestamp: null,
+                      fake_x: null, fake_y: null, fake_z: null};
 
     //let emulateStationaryDevice = args[0];
     //let deviceOrientation = null;
+
+    var debugMode = false;
     `;
 
    var orig_getters = `
-    let origGetX = Object.getOwnPropertyDescriptor(Magnetometer.prototype, "x").get;
-    let origGetY = Object.getOwnPropertyDescriptor(Magnetometer.prototype, "y").get;
-    let origGetZ = Object.getOwnPropertyDescriptor(Magnetometer.prototype, "z").get;
-    let origGetTimestamp = Object.getOwnPropertyDescriptor(Sensor.prototype, "timestamp").get;
+    var origGetX = Object.getOwnPropertyDescriptor(Magnetometer.prototype, "x").get;
+    var origGetY = Object.getOwnPropertyDescriptor(Magnetometer.prototype, "y").get;
+    var origGetZ = Object.getOwnPropertyDescriptor(Magnetometer.prototype, "z").get;
+    var origGetTimestamp = Object.getOwnPropertyDescriptor(Sensor.prototype, "timestamp").get;
     `;
 
   function generateRandomField(previous) {
@@ -137,14 +139,16 @@
 
   function updateReadings(sensorObject) {
     let currentTimestamp = origGetTimestamp.call(sensorObject);
+
+    if (debugMode) {
+      console.log("[!] Debug mode: overriding timestamp")
+      currentTimestamp = sensorObject.timestamp;
+    }
+
     if (currentTimestamp === previousReading.timestamp) {
       // No new reading, nothing to update
       return;
     }
-
-    // Rotate the readings: previous <- current
-    previousReading = JSON.parse(JSON.stringify(currentReading));
-
 
     // Update current with
     currentReading.orig_x = origGetX.call(sensorObject);
@@ -152,7 +156,16 @@
     currentReading.orig_z = origGetZ.call(sensorObject);
     currentReading.timestamp = currentTimestamp;
 
+    // Rotate the readings: previous <- current
+    previousReading = JSON.parse(JSON.stringify(currentReading));
+
+    // Get new current reading
     fakeReading(currentReading, previousReading);
+
+    /*
+    console.log(currentReading);
+    console.log(previousReading);
+    */
   }
 
   var helping_functions = generateRandomField + fakeReading + updateReadings;
