@@ -173,7 +173,7 @@
 
   function generateBaseField() {
     // Generate a random base field
-    const FIELD_MIN = 30;
+    const FIELD_MIN = 25;
     const FIELD_MAX = 60;
     return prng() * (FIELD_MIN - FIELD_MAX) + FIELD_MAX;
   }
@@ -217,10 +217,20 @@
     currentReading.fake_x = fieldGenerator.x.value;
     currentReading.fake_y = fieldGenerator.y.value;
     currentReading.fake_z = fieldGenerator.z.value;
+
+    if (debugMode) {
+      console.log(fieldGenerator);
+    }
   }
 
   var generators = `
-    var seed = seed || generateSeed(Hashes.sessionHash);
+    // Get seed for PRNG: prefer existing seed, then domain hash, session hash
+    var seed = seed ||
+      ((typeof domainHash === 'undefined') ?
+      generateSeed(Hashes.sessionHash) :
+      generateSeed(domainHash));
+
+    // Initialize the field generator, if not initialized before
     var fieldGenerator = fieldGenerator || initFieldGenerator();
     `;
 
@@ -228,88 +238,85 @@
           + generateBaseField + generateAxisBase + updateReadings;
   var hc = init_data + orig_getters + helping_functions + generators;
 
-	var wrappers = [
-		{
-			parent_object: "Magnetometer.prototype",
-			parent_object_property: "x",
-			wrapped_objects: [],
-			helping_code: hc,
-			post_wrapping_code: [
-				{
-					code_type: "object_properties",
-					parent_object: "Magnetometer.prototype",
-					parent_object_property: "x",
-					wrapped_objects: [],
-					/**  \brief replaces Sensor.prototype.x getter to return a faked value
-					 */
-					wrapped_properties: [
-						{
-							property_name: "get",
-							property_value: `
+  var wrappers = [
+    {
+      parent_object: "Magnetometer.prototype",
+      parent_object_property: "x",
+      wrapped_objects: [],
+      helping_code: hc,
+      post_wrapping_code: [
+        {
+          code_type: "object_properties",
+          parent_object: "Magnetometer.prototype",
+          parent_object_property: "x",
+          wrapped_objects: [],
+          /**  \brief replaces Sensor.prototype.x getter to return a faked value
+           */
+          wrapped_properties: [
+            {
+              property_name: "get",
+              property_value: `
               function() {
                updateReadings(this);
                return currentReading.fake_x;
-               //return 10;
              }`,
-						},
-					],
-				}
-			],
-		},
+            },
+          ],
+        }
+      ],
+    },
     {
-			parent_object: "Magnetometer.prototype",
-			parent_object_property: "y",
-			wrapped_objects: [],
-			helping_code: hc,
-			post_wrapping_code: [
-				{
-					code_type: "object_properties",
-					parent_object: "Magnetometer.prototype",
-					parent_object_property: "y",
-					wrapped_objects: [],
-					/**  \brief replaces Sensor.prototype.y getter to return a faked value
-					 */
-					wrapped_properties: [
-						{
-							property_name: "get",
-							property_value: `
+      parent_object: "Magnetometer.prototype",
+      parent_object_property: "y",
+      wrapped_objects: [],
+      helping_code: hc,
+      post_wrapping_code: [
+        {
+          code_type: "object_properties",
+          parent_object: "Magnetometer.prototype",
+          parent_object_property: "y",
+          wrapped_objects: [],
+          /**  \brief replaces Sensor.prototype.y getter to return a faked value
+           */
+          wrapped_properties: [
+            {
+              property_name: "get",
+              property_value: `
               function() {
                updateReadings(this);
                return currentReading.fake_y;
-               //return 30;
              }`,
-						},
-					],
-				}
-			],
-		},
+            },
+          ],
+        }
+      ],
+    },
     {
-			parent_object: "Magnetometer.prototype",
-			parent_object_property: "z",
-			wrapped_objects: [],
-			helping_code: hc,
-			post_wrapping_code: [
-				{
-					code_type: "object_properties",
-					parent_object: "Magnetometer.prototype",
-					parent_object_property: "z",
-					wrapped_objects: [],
-					/**  \brief replaces Sensor.prototype.z getter to return a faked value
-					 */
-					wrapped_properties: [
-						{
-							property_name: "get",
-							property_value: `
+      parent_object: "Magnetometer.prototype",
+      parent_object_property: "z",
+      wrapped_objects: [],
+      helping_code: hc,
+      post_wrapping_code: [
+        {
+          code_type: "object_properties",
+          parent_object: "Magnetometer.prototype",
+          parent_object_property: "z",
+          wrapped_objects: [],
+          /**  \brief replaces Sensor.prototype.z getter to return a faked value
+           */
+          wrapped_properties: [
+            {
+              property_name: "get",
+              property_value: `
               function() {
                updateReadings(this);
                return currentReading.fake_z;
-               //return 50;
              }`,
-						},
-					],
-				}
-			],
-		},
-	]
-  	add_wrappers(wrappers);
+            },
+          ],
+        }
+      ],
+    },
+  ]
+    add_wrappers(wrappers);
 })()
