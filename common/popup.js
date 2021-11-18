@@ -62,6 +62,7 @@ async function init() {
 	var current_level = { level_id: "?" };
 	port_to_background.onMessage.addListener(function(msg) {
 		current_level = msg;
+		document.body.innerHTML += `<div>${JSON.stringify(wrapping_groups)}</div>`;
 		var selectEl = document.getElementById("level-select");
 		function addButton(level) {
 			let b = document.createElement("button");
@@ -100,6 +101,17 @@ async function init() {
 			}
 			document.getElementById("level-text").textContent = current_level.level_text;
 			document.getElementById("level-description").textContent = ` - ${current_level.level_description}`;
+			let tweaks = document.getElementById("tweaks");
+			tweaks.innerHTML = "";
+			if (current_level.tweaks) {
+				tweaks.appendChild(document.getElementById("tweak-head").content);
+				let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
+				for (let [group, tlev_id] of Object.entries(current_level.tweaks)) {
+					tweakRow.querySelector("label").textContent = group;
+					tweakRow.querySelector(".tlev").value = parseInt(tlev_id);
+					tweaks.appendChild(tweakRow);
+				}
+			}
 		}
 	});
 }

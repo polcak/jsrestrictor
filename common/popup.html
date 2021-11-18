@@ -42,15 +42,20 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			</div>
 		</section>
 
-		<section id="customizations">
+		<section id="tweaks">
+		</section>
+		<template id="tweak-head">
 			<span class="head">Wrappers</span><span></span><span class="head">Hits</span>
+		</template>
+		<template id="tweak-row">
 			<label>Wrapper group name</label>
-			<div class="customizer">
-				<input type="range" min="0" max="1" /><span class="count"></span>
+			<div class="tweak">
+				<input class="tlev" type="range" min="0" max="3" /><span class="count"></span>
 				<div class="value"></div>
 			</div>
 			<div class="explainer">Long explaination of the wrapper inner working</div>
-		</section>
+		</template>
+
 
 		<section id="binary_options">
 			<div id="http_shield_whitelist">

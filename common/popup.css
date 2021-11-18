@@ -212,7 +212,7 @@ input:checked + .slider:before {
 	padding-top:5px;
 }
 
-#customizations {
+#tweaks {
 	display: grid;
 	grid: auto / auto 1fr 1fr;
 	gap: 1em;
