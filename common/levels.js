@@ -767,14 +767,34 @@ function updateLevels(res) {
 	}
 	default_level.is_default = true;
 	var new_domains = res["domains"] || {};
-	for (let [d, opts] of Object.entries(new_domains)) {
-		levid = levels[new_domains[d].level_id];
-		if (levid !== undefined) {
-			domains[d] = levid;
+	for (let [d, {level_id, tweaks}] of Object.entries(new_domains)) {
+		let level = levels[level_id];
+		if (level !== undefined) {
+			domains[d] = level;
 		}
-		else if (opts.custom) {
-			Object.assign({}, level, custom);
+		else if (tweaks) {
+			// this domain has "tweaked" wrapper groups from other levels, let's merge them
+			level = Object.assign({tweaks}, level);
+			for ([group, tlev_id] of Object.entries(tweaks)) {
+				if (tlev_id === level_id) {
+					// redundant tweak: same level
+					delete tweaks[group];
+					continue;
+				}
+				// cleanup original group settings for this level
+				delete level[group];
+				let prefix = `${group}_`;
+				for (let key of Object.keys(level).filter(k => k.startsWith(prefix))) delete[key];
+				// now copy the group settings from the tweak level
+				let tweakLevel = levels[tlev_id];
+				if (tweakLevel[group]) {
+					level[group] = tweakLevel[group];
+					for (let key of Object.keys(tweakLevel).filter(k => k.startsWith(prefix))) level[key] = tweakLevel[key];
+				}
+			}
+			delete level.wrappers; // we will lazy instantiate them on demand in getCurrentLevelJSON()
 		}
+		domains[d] = level;
 	}
 	var orig_levels_updated_callbacks = levels_updated_callbacks;
 	levels_updated_callbacks = [];
@@ -795,11 +815,17 @@ function setDefaultLevel(level) {
 function saveDomainLevels() {
 	tobesaved = {};
 	for (k in domains) {
-		let level_id = domains[k].level_id;
+		let {level_id, tweaks} = domains[k];
 		if (k[k.length - 1] === ".") {
 			k = k.substring(0, k.length-1);
 		}
-		tobesaved[k] = {level_id: level_id};
+		if (tweaks) {
+			for (let [group, tlev_id] of Object.entries(tweaks)) {
+				if (tlev_id === level_id) delete tweaks[tlev_id]; // remove redundant entries
+			}
+			if (Object.keys(tweaks).length === 0) delete tweaks;
+		}
+		tobesaved[k] = tweaks ? {level_id, tweaks} : {level_id};
 	}
 	browser.storage.sync.set({domains: tobesaved});
 }
@@ -809,7 +835,10 @@ function getCurrentLevelJSON(url) {
 	for (let domain of subDomains.reverse()) {
 		if (domain in domains) {
 			let l = domains[domain];
-			return [l, wrapped_codes[l.level_id]];
+			if (l.tweaks && !("wrapper_code" in l)) {
+			  l.wrapped_code = wrap_code(l.wrappers = wrapping_groups.get_wrappers(l)) || "";
+			}
+			return [l, l.tweaks ? l.wrapped_code : wrapped_codes[l.level_id]];
 		}
 	}
 	return [default_level, wrapped_codes[default_level.level_id]];
