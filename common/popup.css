@@ -223,6 +223,10 @@ input:checked + .slider:before {
 	display: none;
 }
 
+.tweak {
+	display: flex;
+}
+
 .tweaking #tweaks {
 	display: grid;
 	grid: auto / auto 1fr 1fr;

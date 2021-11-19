@@ -110,9 +110,9 @@ async function init() {
 					let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
 					tweakRow.querySelector("label").textContent = group;
 					let tlevUI = tweakRow.querySelector(".tlev");
-					tlevUI.value = parseInt(tlev_id);
+					tlevUI.value = tlevUI.nextElementSibling.value = parseInt(tlev_id);
 					tlevUI.onchange = () => {
-						current_level.tweaks[group] = tlevUI.value;
+						current_level.tweaks[group] = tlevUI.nextElementSibling.value = tlevUI.value;
 						saveDomainLevels();
 					}
 					tweaks.appendChild(tweakRow);
@@ -120,10 +120,10 @@ async function init() {
 				tweakBtn.disabled = true;
 				document.body.classList.add("tweaking");
 			}
-
+			tweakBtn.disabled = true;
 			if (current_level.tweaks) {
 				initTweaks();
-			} else {
+			} else if (parseInt(current_level.level_id)) {
 				tweakBtn.disabled = false;
 				tweakBtn.onclick = function() {
 					let tt = {}, tlev_id = current_level.level_id;
