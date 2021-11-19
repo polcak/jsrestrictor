@@ -62,7 +62,6 @@ async function init() {
 	var current_level = { level_id: "?" };
 	port_to_background.onMessage.addListener(function(msg) {
 		current_level = msg;
-		document.body.innerHTML += `<div>${JSON.stringify(wrapping_groups)}</div>`;
 		var selectEl = document.getElementById("level-select");
 		function addButton(level) {
 			let b = document.createElement("button");
