@@ -101,15 +101,38 @@ async function init() {
 			document.getElementById("level-text").textContent = current_level.level_text;
 			document.getElementById("level-description").textContent = ` - ${current_level.level_description}`;
 			let tweaks = document.getElementById("tweaks");
-			tweaks.innerHTML = "";
-			if (current_level.tweaks) {
+			document.body.classList.remove("tweaking");
+			let tweakBtn = document.getElementById("btn-tweak");
+			function initTweaks() {
+				tweaks.innerHTML = "";
 				tweaks.appendChild(document.getElementById("tweak-head").content);
-				let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
 				for (let [group, tlev_id] of Object.entries(current_level.tweaks)) {
+					let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
 					tweakRow.querySelector("label").textContent = group;
-					tweakRow.querySelector(".tlev").value = parseInt(tlev_id);
+					let tlevUI = tweakRow.querySelector(".tlev");
+					tlevUI.value = parseInt(tlev_id);
+					tlevUI.onchange = () => {
+						current_level.tweaks[group] = tlevUI.value;
+						saveDomainLevels();
+					}
 					tweaks.appendChild(tweakRow);
 				}
+				tweakBtn.disabled = true;
+				document.body.classList.add("tweaking");
+			}
+
+			if (current_level.tweaks) {
+				initTweaks();
+			} else {
+				tweakBtn.disabled = false;
+				tweakBtn.onclick = function() {
+					let tt = {}, tlev_id = current_level.level_id;
+					for (let g of wrapping_groups.groups) {
+						tt[g.id] = tlev_id;
+					}
+					current_level.tweaks = tt;
+					initTweaks();
+				};
 			}
 		}
 	});

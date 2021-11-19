@@ -212,12 +212,25 @@ input:checked + .slider:before {
 	padding-top:5px;
 }
 
+#btn-tweak {
+	float: right;
+}
+#btn-tweak:disabled {
+	display: none;
+}
+
 #tweaks {
+	display: none;
+}
+
+.tweaking #tweaks {
 	display: grid;
 	grid: auto / auto 1fr 1fr;
 	gap: 1em;
 	align-items: center;
 }
+
+
 
 .head {
 	font-weight: bold;
@@ -225,6 +238,7 @@ input:checked + .slider:before {
 
 .explainer {
 	grid-column-start: 1;
-	grid-column-end: 3;
+	grid-column-end: -1;
+	padding-bottom: 3px;
 	border-bottom: 1px solid grey;
 }
