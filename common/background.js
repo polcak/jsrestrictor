@@ -29,7 +29,7 @@ function updateBadge(level) {
 	browser.browserAction.setBadgeText({text: "" + level["level_id"]});
 }
 
-// get active tab and pass it 
+// get active tab and pass it
 var queryInfo = {
 	active: true,
 	currentWindow: true
@@ -47,8 +47,12 @@ function tabUpdate(tabid, changeInfo) {
 	updateBadge(current_level);
 }
 // get level for activated tab
-function tabActivate(activeInfo) {
-	current_level = tab_levels[activeInfo.tabId] || {level_id: "?"};
+async function tabActivate(activeInfo) {
+	let {tabId} = activeInfo;
+	if (!(tabId in tab_levels)) {
+		tabUpdate(tabId, await browser.tabs.get(tabId));
+	}
+	current_level = tab_levels[tabId] || {level_id: "?"};
 	updateBadge(current_level);
 }
 // on tab reload or tab change, update badge
@@ -64,9 +68,11 @@ browser.tabs.onActivated.addListener(tabActivate); // change tab
  * browser.runtime.getBackgroundPage() does not work as expected. See
  * also https://bugzilla.mozilla.org/show_bug.cgi?id=1329304.
  */
-function connected(port) {
+async function connected(port) {
 	if (port.name === "port_from_popup") {
 		/// We always send back current level
+		let [tab] = await browser.tabs.query(queryInfo);
+		tabUpdate(tab.id, tab.url);
 		port.postMessage(current_level);
 		port.onMessage.addListener(function(msg) {
 			port.postMessage(current_level);

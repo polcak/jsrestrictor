@@ -103,16 +103,24 @@ async function init() {
 			let tweaks = document.getElementById("tweaks");
 			document.body.classList.remove("tweaking");
 			let tweakBtn = document.getElementById("btn-tweak");
+			function defaultTweaks() {
+				let tt = {}, tlev_id = current_level.level_id;
+				for (let g of wrapping_groups.groups) {
+					tt[g.id] = tlev_id;
+				}
+				return tt;
+			}
 			function initTweaks() {
 				tweaks.innerHTML = "";
 				tweaks.appendChild(document.getElementById("tweak-head").content);
-				for (let [group, tlev_id] of Object.entries(current_level.tweaks)) {
+				for (let [group, tlev_id] of Object.entries(Object.assign(defaultTweaks(), current_level.tweaks || {}))) {
 					let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
 					tweakRow.querySelector("label").textContent = group;
 					let tlevUI = tweakRow.querySelector(".tlev");
 					tlevUI.value = tlevUI.nextElementSibling.value = parseInt(tlev_id);
 					tlevUI.onchange = () => {
 						current_level.tweaks[group] = tlevUI.nextElementSibling.value = tlevUI.value;
+						domains[site].tweaks = current_level.tweaks;
 						saveDomainLevels();
 					}
 					tweaks.appendChild(tweakRow);
@@ -121,16 +129,12 @@ async function init() {
 				document.body.classList.add("tweaking");
 			}
 			tweakBtn.disabled = true;
-			if (current_level.tweaks) {
+
+			if (current_level.tweaks && Object.keys(current_level.tweaks).length) {
 				initTweaks();
 			} else if (parseInt(current_level.level_id)) {
 				tweakBtn.disabled = false;
 				tweakBtn.onclick = function() {
-					let tt = {}, tlev_id = current_level.level_id;
-					for (let g of wrapping_groups.groups) {
-						tt[g.id] = tlev_id;
-					}
-					current_level.tweaks = tt;
 					initTweaks();
 				};
 			}

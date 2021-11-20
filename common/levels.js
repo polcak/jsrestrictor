@@ -821,7 +821,7 @@ function saveDomainLevels() {
 		}
 		if (tweaks) {
 			for (let [group, tlev_id] of Object.entries(tweaks)) {
-				if (tlev_id === level_id) delete tweaks[tlev_id]; // remove redundant entries
+				if (tlev_id === level_id) delete tweaks[group]; // remove redundant entries
 			}
 			if (Object.keys(tweaks).length === 0) delete tweaks;
 		}
