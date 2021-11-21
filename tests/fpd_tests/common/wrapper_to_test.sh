@@ -24,7 +24,7 @@
 #
 
 tests_path="$2/resources.js"
-fce_name="test_$(echo $1 | sed -e "s,^./wrappers-,," -e "s/.json$//")"
+fce_name="test_$(echo $1 | sed -e "s,^.*wrappers-,," -e "s/.json$//")"
 
 cat << EOF >> $tests_path
 function ${fce_name}(wrappers) {

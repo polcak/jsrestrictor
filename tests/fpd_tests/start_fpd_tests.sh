@@ -23,21 +23,32 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-tests_path="./tests"
+tests_path="tests"
 server_port=8000
 default_extension_path="../../common"
 fpd_test_path=$(dirname "$(realpath $0)")
-fpd_background_name="./fp_detect_background.js"
+fpd_background_name="fp_detect_background.js"
 
 cat << EOF > ./tests/resources.js
 EOF
 
 # load all wrapper files and process them with wrapper_to_test
 in_files=`find -maxdepth 1 -name "wrappers-*"`
+in_files_path="${fpd_test_path}/"
+
+# config files not found in this folder - use default config files from fp_config directory
+cd "${default_extension_path}/fp_config"
+if [ -z "$in_files" ]; then
+	in_files=`find -maxdepth 1 -name "wrappers-*"`
+	in_files_path=""
+fi
+
 for file in $in_files
 do
-	./common/wrapper_to_test.sh $file $tests_path
+	eval "${fpd_test_path}/common/wrapper_to_test.sh ${in_files_path}${file} ${fpd_test_path}/${tests_path}"
 done
+
+cd $fpd_test_path
 
 # update html and worker files to include and call test functions
 echo -ne "UPDATING ./common/* FILES FOR THE LATEST CONFIGURATION"
