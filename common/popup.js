@@ -110,16 +110,40 @@ async function init() {
 				}
 				return tt;
 			}
+
 			function initTweaks() {
 				tweaks.innerHTML = "";
 				tweaks.appendChild(document.getElementById("tweak-head").content);
-				for (let [group, tlev_id] of Object.entries(Object.assign(defaultTweaks(), current_level.tweaks || {}))) {
+				for (let [group_id, tlev_id] of Object.entries(Object.assign(defaultTweaks(), current_level.tweaks || {}))) {
+					let group = wrapping_groups.option_map[group_id];
 					let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
-					tweakRow.querySelector("label").textContent = group;
+					tweakRow.querySelector("label").textContent = group_id;
+					tweakRow.querySelector(".hits").innerHTML = `<em>TODO: from FPD</em>`;
 					let tlevUI = tweakRow.querySelector(".tlev");
+					let status = tweakRow.querySelector(".status");
+					let updateStatus = lid => {
+						status.innerHTML = levels[lid][group_id] === true ? `<strong>ON</strong> <em>(TODO: show level ${lid} specific configuration)</em>` : "OFF";
+					}
+					updateStatus(tlev_id);
+				  tweakRow.querySelector(".description").textContent = group.description;
+					let more = tweakRow.querySelector(".more");
+					let longDescription = group.description2;
+					if (!longDescription || longDescription.length === 0) {
+						more.remove();
+					} else {
+						more.onclick = function() {
+							let parent = this.parentNode.parentNode;
+							this.remove();
+							for (let line of longDescription) {
+								parent.appendChild(document.createElement("p")).textContent = line;
+							}
+							return false;
+					  }
+					}
+
 					tlevUI.value = tlevUI.nextElementSibling.value = parseInt(tlev_id);
 					tlevUI.onchange = () => {
-						current_level.tweaks[group] = tlevUI.nextElementSibling.value = tlevUI.value;
+						updateStatus(current_level.tweaks[group_id] = tlevUI.nextElementSibling.value = tlevUI.value);
 						domains[site].tweaks = current_level.tweaks;
 						saveDomainLevels();
 					}

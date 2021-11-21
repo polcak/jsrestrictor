@@ -246,3 +246,7 @@ input:checked + .slider:before {
 	padding-bottom: 3px;
 	border-bottom: 1px solid grey;
 }
+
+.more .description2 {
+	display: none;
+}
