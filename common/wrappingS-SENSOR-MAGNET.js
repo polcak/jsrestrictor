@@ -72,6 +72,15 @@
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
   }
 
+  function generateAround(number, tolerance) {
+    // Generates a number around the input number
+
+    let min = number - tolerance * tolerance;
+    let max = number + number * tolerance;
+
+    return prng() * (max - min) + min;
+  }
+
   function SineCfg() {
     this.center = 0;
     this.amplitude = 1;
@@ -83,30 +92,11 @@
     // This is helping function for the field generator
     // Configures an array of sines for the given settings
 
-    // TODO: improve and check
-    // Need to create better heuristics:
-    // a) To stay within the limits of the base field!
-    // b) To make it NOT look like sines :)
-
-    /*
-    console.log("------");
-    console.log(cntMin);
-    console.log(cntMax);
-    console.log(center);
-    console.log(flucMin);
-    console.log(fluctMax);
-    console.log(periodMin);
-    console.log(periodMax);
-    console.log("------");
-    */
-
-
     // How many sines we have?
     var cnt = Math.floor(prng() * (cntMax - cntMin + 1) + cntMin);
 
     // What is the typical amplitude for these sines?
     var sineAmplitude = center / cnt;
-    // (This is a naive approach...)
 
     var fluctMinMax = flucMin - fluctMax;
 
@@ -117,19 +107,26 @@
 
       s.center = center;
       s.amplitude = sineAmplitude * fluctuationFactor;
-      console.log(fluctuationFactor);
-
       s.shift = prng() * (- TWOPI) + TWOPI;
 
-      if (i === 0) {
-        // The base sine should have the period close to the sampling rate
-        // to guarantee unique reading
-        const MAX_DIFF_FROM_SAMPLING_RATE = 1.1;
-        s.period = prng() * ((periodMin * MAX_DIFF_FROM_SAMPLING_RATE) - periodMin + 1) + periodMin;
-      } else {
-        s.period = prng() * (periodMax - periodMin + 1) + periodMin;
+      let series = i % 5;
+      switch(series) {
+        case 0: // Minimal sampling rate (default: 100 miliseconds)
+          s.period = generateAround(periodMin, 0.1);
+        break;
+        case 1: // Seconds
+          s.period = generateAround(1000, 0.1);
+        break;
+        case 2: // Tens of seconds
+          s.period = generateAround(10000, 0.1);
+        break;
+        case 3: // Minutes
+          s.period = generateAround(60000, 0.1);
+        break;
+        case 4: // Hours
+          s.period = generateAround(3600000, 0.1);
+        break;
       }
-
       sines.push(s);
     }
     return sines;
@@ -143,8 +140,8 @@
     const FLUCTUATION_MAX = 0.10;
     const AXES_OSCILLATE_DIFFERENTLY = true;
 
-    const NUMBER_OF_SINES_MIN = 1;
-    const NUMBER_OF_SINES_MAX = 3;
+    const NUMBER_OF_SINES_MIN = 5;
+    const NUMBER_OF_SINES_MAX = 20;
 
     // Shifts the phase of each axis randomly [0, 2*PI)
     const RANDOM_PHASE_SHIFT = true;
@@ -194,53 +191,36 @@
       x: {
         base: baseX,
         center: baseX * mult,
-        //amplitude: 1,
-        //shift: 0,
         sines: [],
         value: null
       },
       y: {
         base: baseY,
         center: baseY * mult,
-        //amplitude: 1,
-        //shift: 0,
         sines: [],
         value: null
       },
       z: {
         base: baseZ,
         center: baseZ * mult,
-        //amplitude: 1,
-        //shift: 0,
         sines: [],
         value: null
       },
       // Update x/y/z values based on timestamp
       update: function(t) {
         // Simulate the magnetic field fluctuation based on settings
-
-        /*
-        this.x.value = Math.sin(t + this.x.shift) * this.x.amplitude + this.x.center;
-        this.y.value = Math.sin(t + this.y.shift) * this.y.amplitude + this.y.center;
-        this.z.value = Math.sin(t + this.z.shift) * this.z.amplitude + this.z.center;
-        */
-
-
-        this.x.value = this.x.sines.reduce(function (val, s) {
-          return val + (Math.sin(t * (TWOPI/s.period) + s.shift) * s.amplitude + s.center);
+        // Center is added only once - we want to y-shift the result, not individial sines
+        this.x.value = this.x.center + this.x.sines.reduce(function (val, s) {
+          return val + (Math.sin(t * (TWOPI/s.period) + s.shift) * s.amplitude);
         }, 0);
-        this.y.value = this.y.sines.reduce(function (val, s) {
-          return val + (Math.sin(t * (TWOPI/s.period) + s.shift) * s.amplitude + s.center);
+        this.y.value = this.y.center + this.y.sines.reduce(function (val, s) {
+          return val + (Math.sin(t * (TWOPI/s.period) + s.shift) * s.amplitude);
         }, 0);
-        this.z.value = this.z.sines.reduce(function (val, s) {
-          return val + (Math.sin(t * (TWOPI/s.period) + s.shift) * s.amplitude + s.center);
+        this.z.value = this.z.center + this.z.sines.reduce(function (val, s) {
+          return val + (Math.sin(t * (TWOPI/s.period) + s.shift) * s.amplitude);
         }, 0);
-
-        //this.x.value = Math.sin(t + this.x.shift) * this.x.amplitude + this.x.center;
       }
     }
-
-    console.log(fieldGen);
 
     fieldGen.x.sines = configureSines(NUMBER_OF_SINES_MIN, NUMBER_OF_SINES_MAX, fieldGen.x.center,
                                   FLUCTUATION_MIN, FLUCTUATION_MAX, PERIOD_MIN, PERIOD_MAX);
@@ -248,35 +228,6 @@
                                   FLUCTUATION_MIN, FLUCTUATION_MAX, PERIOD_MIN, PERIOD_MAX);
     fieldGen.z.sines = configureSines(NUMBER_OF_SINES_MIN, NUMBER_OF_SINES_MAX, fieldGen.z.center,
                                   FLUCTUATION_MIN, FLUCTUATION_MAX, PERIOD_MIN, PERIOD_MAX);
-    console.log(fieldGen);
-
-    // Define amplitude based on axes oscillation
-    /*
-    var minmaxFluct = FLUCTUATION_MIN - FLUCTUATION_MAX;
-    if (AXES_OSCILLATE_DIFFERENTLY) {
-      let fluctuationFactor = prng() * (minmaxFluct) + FLUCTUATION_MAX;
-      fieldGen.x.amplitude = fieldGen.x.center * fluctuationFactor;
-      fluctuationFactor = prng() * (minmaxFluct) + FLUCTUATION_MAX;
-      fieldGen.y.amplitude = fieldGen.y.center * fluctuationFactor;
-      fluctuationFactor = prng() * (minmaxFluct) + FLUCTUATION_MAX;
-      fieldGen.z.amplitude = fieldGen.z.center * fluctuationFactor;
-    } else {
-      let fluctuationFactor = prng() * (minmaxFluct) + FLUCTUATION_MAX;
-      fieldGen.x.amplitude = fieldGen.x.center * fluctuationFactor;
-      fieldGen.y.amplitude = fieldGen.y.center * fluctuationFactor;
-      fieldGen.z.amplitude = fieldGen.z.center * fluctuationFactor;
-    }
-    */
-
-    /*
-    // Define phase shift
-    if (RANDOM_PHASE_SHIFT) {
-      let twopi = 2 * Math.PI;
-      fieldGen.x.shift = prng() * (- twopi) + twopi;
-      fieldGen.y.shift = prng() * (- twopi) + twopi;
-      fieldGen.z.shift = prng() * (- twopi) + twopi;
-    }
-    */
 
     return fieldGen;
   }
@@ -344,8 +295,8 @@
     var fieldGenerator = fieldGenerator || initFieldGenerator();
     `;
 
-  var helping_functions = generateSeed + prng + SineCfg + configureSines
-          + initFieldGenerator
+  var helping_functions = generateSeed + prng + generateAround
+          + SineCfg + configureSines + initFieldGenerator
           + generateBaseField + generateAxisBase + updateReadings;
   var hc = init_data + orig_getters + helping_functions + generators;
 
