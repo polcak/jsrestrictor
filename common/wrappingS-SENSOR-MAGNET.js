@@ -25,8 +25,64 @@
  /** \file
   * \ingroup wrappers
   *
-  * TODO: document
-  * TODO: add movement simulation of non-stationary devices
+  * TODO: Add intro
+  *
+  * To protect the device, we are wrapping the `x`, `y`, `z` getters of the
+  * `Magnetometer.prototype` object. Instead of using the original data, we use
+  * artificially generated values that look like actual sensor readings.
+  *
+  * Our wrapper stores information about the previous reading. Each rewrapped getter
+  * first checks the `timestamp` value of the sensor object. If it has not changed
+  * from the previous, it returns the last value. Otherwise, it provides new fake readings.
+  *
+  * We designed our fake field generator to fulfill the following properties:
+  *
+  * - The randomness of the generator should be high enough to prevent attackers from
+  *   deducing the sensor values.
+  * - Multiple scripts from the same website must obtain the same values from readings
+  *   with the same timestamp. And thus:
+  * - The readings are deterministic - e.g., for a given website and time, we must
+  *   be able to say what values to return.
+  *
+  * For every "random" toss-up, we use the Mulberry32 PRNG, seeded with by `domainHash`.
+  * First, we choose the desired total strength M of the magnetic field in our location.
+  * This is a pseudo-random number from 25 to 60 uT, like on the Earth.
+  *
+  * In the current implementation, we simulate a stationary device with a pseudo-randomly
+  * drawn orientation. Therefore, we choose the orientation of the device by generating
+  * a number from -1 to 1 for each axis. Those values we call `baseX`, `baseY`, and `baseZ`.
+  * By modifying the field calculation formula, we calculate the `multiplier` that needs to be
+  * applied to the base values to get the desired field.
+  * Now, we know that for axis `x`, the value should fluctuate around `baseX * mult`, etc.
+  *
+  * How much the field changes over time is specified by the fluctuation factor (0;1]
+  * that can also be configured. For instance, `0.2` means that the magnetic field on
+  * the axis may change from the base value by `20%` in both positive and negative way.
+  *
+  * The fluctuation is simulated by using a series of **sine** functions for each axis.
+  * Each sine has a unique amplitude, phase shift, and period.
+  * The number of sines per axis is chosen pseudorandomly based on the wrapper settings.
+  * For initial experiments, we used around `20` to `30` sines for each axis.
+  * The optimal configuration is in question.
+  * More sines give less predictable results, but also increase the computing complexity
+  * that could have a negative impact on the browser's performance.
+  *
+  * For the given timestamp `t`, we make a sum of values of all sine values at point `x=t`.
+  * The result is then shifted over the y-axis by adding `base[X,Y,Z] * multiplier` and used.
+  * The initial configuration of the fake field generator was chosen intuitively to resemble the
+  * results of the real measurements. Currently, the generator uses **at least one** sine
+  * with the period around `100 us` (with `10%` tolerance), which seems to be the minimum sampling rate
+  * obtainable using the API on mobile devices. Then, at least one sine around `1 s`,
+  * around `10 s`, `1 minute` and `1 hour`. When more than `5` sines are used, the cycle repeats by
+  * `modulo 5` and takes a new sine around `100 us`, but the tolerance is `20%` instead
+  * of `10%`. The same follows for seconds, tens of seconds, minutes, hours.
+  * For 11+ sines, the tolerance is `30%` up to the maximum (currently `50%`).
+  *
+  * Based on the results, this heuristic returns belivable values that look like actual sensor readings.
+  * Nevertheless, the generator uses a series of constants, whose optimal values
+  * should be a subject of future research and improvements. Perphaps, a correlation analysis
+  * with real mesurements could help in the future.
+  *
   */
 
   /*
@@ -95,12 +151,20 @@
     // How many sines we have?
     var cnt = Math.floor(prng() * (cntMax - cntMin + 1) + cntMin);
 
+    // max difference from base period
+    const TOLERANCE_MAX = 0.5;
+
     // What is the typical amplitude for these sines?
     var sineAmplitude = center / cnt;
 
     var fluctMinMax = flucMin - fluctMax;
 
     let sines = [];
+
+
+    let iteration = 0;
+    let tolerance = 0.1;
+
     for (let i = 0; i < cnt; i++) {
       let s = new SineCfg();
       let fluctuationFactor = prng() * (fluctMinMax) + fluctMax;
@@ -110,21 +174,31 @@
       s.shift = prng() * (- TWOPI) + TWOPI;
 
       let series = i % 5;
+
       switch(series) {
-        case 0: // Minimal sampling rate (default: 100 miliseconds)
-          s.period = generateAround(periodMin, 0.1);
+
+        case 0:
+          iteration += 1;
+
+          // increase tolerance for new iterations
+          if (iteration > 1 && tolerance < TOLERANCE_MAX) {
+            tolerance += 0.1;
+          }
+
+          // Minimal sampling rate (default: 100 miliseconds)
+          s.period = generateAround(periodMin, tolerance);
         break;
         case 1: // Seconds
-          s.period = generateAround(1000, 0.1);
+          s.period = generateAround(1000, tolerance);
         break;
         case 2: // Tens of seconds
-          s.period = generateAround(10000, 0.1);
+          s.period = generateAround(10000, tolerance);
         break;
         case 3: // Minutes
-          s.period = generateAround(60000, 0.1);
+          s.period = generateAround(60000, tolerance);
         break;
         case 4: // Hours
-          s.period = generateAround(3600000, 0.1);
+          s.period = generateAround(3600000, tolerance);
         break;
       }
       sines.push(s);
@@ -136,12 +210,12 @@
     // Specifies, how much the values may (pseudorandomly) oscillate,
     // i.e., how much the may relatively differ from the chosen center value
     // in both positiva and negative way
-    const FLUCTUATION_MIN = 0.05;
-    const FLUCTUATION_MAX = 0.10;
+    const FLUCTUATION_MIN = 0.15;
+    const FLUCTUATION_MAX = 0.30;
     const AXES_OSCILLATE_DIFFERENTLY = true;
 
-    const NUMBER_OF_SINES_MIN = 5;
-    const NUMBER_OF_SINES_MAX = 20;
+    const NUMBER_OF_SINES_MIN = 25;
+    const NUMBER_OF_SINES_MAX = 30;
 
     // Shifts the phase of each axis randomly [0, 2*PI)
     const RANDOM_PHASE_SHIFT = true;
