@@ -1,5 +1,5 @@
 /** \file
- * \brief Wrappers for Magnetometer Sensor
+ * \brief Wrappers for the Magnetometer Sensor
  *
  * \see https://www.w3.org/TR/magnetometer/
  *
@@ -25,63 +25,88 @@
  /** \file
   * \ingroup wrappers
   *
-  * TODO: Add intro
+  * MOTIVATION
   *
-  * To protect the device, we are wrapping the `x`, `y`, `z` getters of the
+  * Magnetometer is a platform sensor available under the Generic Sensor API.
+  * Magnetometer measures strength and direction of the magnetic field at device's
+  * location. The interface offers sensor readings using three properties: x, y, and z.
+  * Each returns a number that describes the magnetic field aroud the particular axis.
+  * The numbers have a double precision and can be positive or negative, depending
+  * on the orientation of the field. The total strength of the magnetic field (M)
+  * can be calculated as M = sqrt(x^2 + z^2 + y^2). The unit is in microtesla (µT).
+  *
+  * The Earth's magnetic field ranges between approximately 25 and 65 µT. Concrete
+  * values depend on location, altitude, weather, interference made by other electric.
+  * devices, etc. While we consider it is unlikely that someone determines the precise
+  * location of the device from the  Mangetometer values, its data can be used for
+  * fingerprinting. For instance, it can be determined wheter the device is moving or not.
+  * In case of a stationary device, we can make a fingerprint from the device's orientation.
+  * Another fingerprintable value is the average total strength of the field, which
+  * should remain stable if the device is at the same position and in the same environment.
+  *
+  *
+  * WRAPPING
+  *
+  * To protect the device, we are wrapping the x, y, z getters of the
   * `Magnetometer.prototype` object. Instead of using the original data, we use
   * artificially generated values that look like actual sensor readings.
   *
-  * Our wrapper stores information about the previous reading. Each rewrapped getter
-  * first checks the `timestamp` value of the sensor object. If it has not changed
-  * from the previous, it returns the last value. Otherwise, it provides new fake readings.
+  * At every moment, our wrapper stores information about the previous reading. Each
+  * rewrapped getter first checks the `timestamp` value of the sensor object. If there
+  * is no difference from the previous reading's timestamp, the wrapper returns the
+  * last measured value. Otherwise, it provides a new fake reading.
   *
   * We designed our fake field generator to fulfill the following properties:
   *
   * - The randomness of the generator should be high enough to prevent attackers from
   *   deducing the sensor values.
-  * - Multiple scripts from the same website must obtain the same values from readings
-  *   with the same timestamp. And thus:
+  * - Multiple scripts from the same website that access readings with the same
+  *   timestamp must get the same results. And thus:
   * - The readings are deterministic - e.g., for a given website and time, we must
   *   be able to say what values to return.
   *
-  * For every "random" toss-up, we use the Mulberry32 PRNG, seeded with by `domainHash`.
-  * First, we choose the desired total strength M of the magnetic field in our location.
-  * This is a pseudo-random number from 25 to 60 uT, like on the Earth.
-  *
-  * In the current implementation, we simulate a stationary device with a pseudo-randomly
-  * drawn orientation. Therefore, we choose the orientation of the device by generating
-  * a number from -1 to 1 for each axis. Those values we call `baseX`, `baseY`, and `baseZ`.
-  * By modifying the field calculation formula, we calculate the `multiplier` that needs to be
-  * applied to the base values to get the desired field.
+  * For every "random" toss-up, we use the Mulberry32 PRNG that is seeded with a value
+  * generated from the `domainHash` which ensures deterministic behavior for the given
+  * website. First, we choose the desired total strength `M` of the magnetic field at
+  * our simulated location. This is a pseudo-random number from 25 to 60 uT, like on
+  * the Earth. In the current implementation, we simulate a stationary device with
+  * a pseudo-randomly drawn orientation. Therefore, we choose the orientation of the
+  * device by generating a number from -1 to 1 for each axis. Those values we call
+  * `baseX`, `baseY`, and `baseZ`. By modifying the above-shown formula, we calculate
+  * the `multiplier` that needs to be applied to the base values to get the desired field.
+  * The calculation is done as follows:
+  * - mult = (M * sqrt(baseX^2 + baseY^2 + baseZ^2) / (baseX^2 + baseY^2 + baseZ^2))
   * Now, we know that for axis `x`, the value should fluctuate around `baseX * mult`, etc.
   *
   * How much the field changes over time is specified by the fluctuation factor (0;1]
-  * that can also be configured. For instance, `0.2` means that the magnetic field on
-  * the axis may change from the base value by `20%` in both positive and negative way.
+  * that can also be configured. For instance, 0.2 means that the magnetic field on
+  * the axis may change from the base value by 20% in both positive and negative way.
   *
   * The fluctuation is simulated by using a series of **sine** functions for each axis.
-  * Each sine has a unique amplitude, phase shift, and period.
-  * The number of sines per axis is chosen pseudorandomly based on the wrapper settings.
-  * For initial experiments, we used around `20` to `30` sines for each axis.
-  * The optimal configuration is in question.
+  * Each sine has a unique amplitude, phase shift, and period. The number of sines per
+  * axis is chosen pseudorandomly based on the wrapper settings. For initial experiments,
+  * we used around 20 to 30 sines for each axis. The optimal configuration is in question.
   * More sines give less predictable results, but also increase the computing complexity
   * that could have a negative impact on the browser's performance.
   *
-  * For the given timestamp `t`, we make a sum of values of all sine values at point `x=t`.
-  * The result is then shifted over the y-axis by adding `base[X,Y,Z] * multiplier` and used.
-  * The initial configuration of the fake field generator was chosen intuitively to resemble the
-  * results of the real measurements. Currently, the generator uses **at least one** sine
-  * with the period around `100 us` (with `10%` tolerance), which seems to be the minimum sampling rate
-  * obtainable using the API on mobile devices. Then, at least one sine around `1 s`,
-  * around `10 s`, `1 minute` and `1 hour`. When more than `5` sines are used, the cycle repeats by
-  * `modulo 5` and takes a new sine around `100 us`, but the tolerance is `20%` instead
-  * of `10%`. The same follows for seconds, tens of seconds, minutes, hours.
-  * For 11+ sines, the tolerance is `30%` up to the maximum (currently `50%`).
+  * For the given timestamp `t`, we make the sum of all sine values at the point `x=t`.
+  * The result is then shifted over the y-axis by adding `base[X|Y|Z] * multiplier` to
+  * the sum. The initial configuration of the fake field generator was chosen intuitively
+  * to resemble the results of the real measurements. Currently, the generator uses at
+  * least one sine with the period around 100 us (with 10% tolerance), which seems to be
+  * the minimum sampling rate obtainable using the API on mobile devices. Then, at least
+  * one sine around 1 s, around 10 s, 1 minute, and 1 hour. When more than 5 sines are
+  * used, the cycle repeats using `modulo 5` and creates a new sine with the period around
+  * 100 us, but this time the tolerance is 20%. The same follows for seconds, tens of
+  * seconds, minutes, hours. The tolerance grows every 5 sines. For 11+ sines, the tolerance
+  * is 30% up to the maximum (currently 50%). The amplitude of each sine is chosen pseudo-
+  * randomly based on the **fluctuation factor** described above. The phase shift of each
+  * sine is also pseudo-random number from [0;2PI).
   *
-  * Based on the results, this heuristic returns belivable values that look like actual sensor readings.
-  * Nevertheless, the generator uses a series of constants, whose optimal values
-  * should be a subject of future research and improvements. Perphaps, a correlation analysis
-  * with real mesurements could help in the future.
+  * Based on the results, this heuristic returns belivable values that look like actual
+  * sensor readings. Nevertheless, the generator uses a series of constants, whose optimal
+  * values should be a subject of future research and improvements. Perphaps, a correlation
+  * analysis with real mesurements could help in the future.
   *
   */
 
@@ -158,10 +183,7 @@
     var sineAmplitude = center / cnt;
 
     var fluctMinMax = flucMin - fluctMax;
-
     let sines = [];
-
-
     let iteration = 0;
     let tolerance = 0.1;
 
@@ -171,7 +193,7 @@
 
       s.center = center;
       s.amplitude = sineAmplitude * fluctuationFactor;
-      s.shift = prng() * (- TWOPI) + TWOPI;
+      s.shift = prng() * TWOPI;
 
       let series = i % 5;
 
@@ -210,8 +232,8 @@
     // Specifies, how much the values may (pseudorandomly) oscillate,
     // i.e., how much the may relatively differ from the chosen center value
     // in both positiva and negative way
-    const FLUCTUATION_MIN = 0.15;
-    const FLUCTUATION_MAX = 0.30;
+    const FLUCTUATION_MIN = 0.20;
+    const FLUCTUATION_MAX = 0.45;
     const AXES_OSCILLATE_DIFFERENTLY = true;
 
     const NUMBER_OF_SINES_MIN = 25;
