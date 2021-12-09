@@ -508,10 +508,23 @@ var wrapping_groups = {
 				},
 			],
 			wrappers: [
-				// MAGNETOMETER SENSOR
+        // GENERIC SENSOR API Sensors
+
+				// Magnetometer
 				"Magnetometer.prototype.x",
         "Magnetometer.prototype.y",
         "Magnetometer.prototype.z",
+
+        // Accelerometer
+        "Accelerometer.prototype.x",
+        "Accelerometer.prototype.y",
+        "Accelerometer.prototype.z",
+
+        // LinearAccelerationSensor
+
+        // GravitySensor
+
+
 
         // DEVICE ORIENTATION SENSOR
         // TODO
