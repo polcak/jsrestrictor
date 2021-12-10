@@ -25,6 +25,23 @@
  /** \file
   * \ingroup wrappers
   *
+  *
+  * WRAPPING
+  * For a stationary device lying bottom down on a flat surface, only the `z`
+  * axis is affected by gravity. The `x` and `y` axes should be set to zero.
+  * Yet, there could be vibrations that may change values a little bit, e.g.,
+  * to spin around -0.2 to +0.2. This usually does not happed with every
+  * reading but only in intervals of seconds. And thus, after a few seconds
+  * we pseudo-randomly change these values.
+  *
+  *
+  * POSSIBLE IMPROVEMENTS
+  * Currently, we assume te device is lying on a flat surface bottom down, and
+  * thus only the `z` is affected by gravity. As improvement, we can also
+  * assume the device is in an oblique position. In this case, the gravitational
+  * acceleration would affect two or three axes. Those will have to be updated
+  * properly to create a realistic behavior.
+  *
   */
 
   /*
@@ -79,7 +96,6 @@
     return prng() * (max - min) + min;
   }
 
-
   function shake(axis) {
     val = prng() * (axis.max - axis.min) + axis.max;
     if (axis.canBeNegative) {
@@ -89,7 +105,8 @@
   }
 
   function initDataGenerator() {
-
+    const NEXT_CHANGE_MS_MIN = 1000;
+    const NEXT_CHANGE_MS_MAX = 10000;
 
     dataGen = {
       x: {
@@ -113,22 +130,42 @@
         canBeNegative: false,
         value: null,
       },
+      nextChangeAfter: null, // miliseconds
 
       // Update x/y/z values based on timestamp
-      update: function(t) {
-        // Simulate the accelerometer changes
-
-        shake(this.x);
-        shake(this.y);
+      update: function(previousTimestamp, currentTimestamp) {
+      // Simulate the accelerometer changes
+        if (this->shouldWeUpdateXY(reviousTimestamp, currentTimestamp)) {
+          shake(this.x);
+          shake(this.y);
+          this->setNextChange();
+        }
         shake(this.z);
+      },
 
+      shouldWeUpdateXY: function(reviousTimestamp, currentTimestamp) {
+        if (previousTimestamp === null || this->nextChangeAfter === null) {
+          return true;
+        }
+        let timestampDiff = currentTimestamp - previousTimestamp;
+        if (timestampDiff >= this->nextChangeAfter) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+
+      setNextChange: function() {
+        let interval_ms = Math.floor(
+          prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
+          + NEXT_CHANGE_MS_MIN
+        );
+        this->nextChangeAfter = interval_ms;
       }
     }
 
-
     return dataGen;
   }
-
 
   function updateReadings(sensorObject) {
     // We need the original reading's timestamp to see if it differs
@@ -149,7 +186,6 @@
 
     // Update current reading
     // NOTE: Original values are also stored for possible future use
-    //       in improvements of the magnetic field generator
     currentReading.orig_x = origGetX.call(sensorObject);
     currentReading.orig_y = origGetY.call(sensorObject);
     currentReading.orig_z = origGetZ.call(sensorObject);
@@ -158,7 +194,7 @@
     // Rotate the readings: previous <- current
     previousReading = JSON.parse(JSON.stringify(currentReading));
 
-    dataGenerator.update(currentTimestamp);
+    dataGenerator.update(previousReading.timestamp, currentTimestamp);
     currentReading.fake_x = dataGenerator.x.value;
     currentReading.fake_y = dataGenerator.y.value;
     currentReading.fake_z = dataGenerator.z.value;
