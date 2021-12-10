@@ -521,6 +521,11 @@ var wrapping_groups = {
         "Accelerometer.prototype.z",
 
         // LinearAccelerationSensor
+        /*
+        "LinearAccelerationSensor.prototype.x",
+        "LinearAccelerationSensor.prototype.y",
+        "LinearAccelerationSensor.prototype.z",
+        */
 
         // GravitySensor
 

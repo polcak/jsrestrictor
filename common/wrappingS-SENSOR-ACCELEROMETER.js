@@ -130,37 +130,59 @@
         canBeNegative: false,
         value: null,
       },
-      nextChangeAfter: null, // miliseconds
+      nextChangeTimeX: null, // miliseconds
+      nextChangeTimeY: null,
 
       // Update x/y/z values based on timestamp
-      update: function(previousTimestamp, currentTimestamp) {
+      update: function(currentTimestamp) {
       // Simulate the accelerometer changes
-        if (this->shouldWeUpdateXY(reviousTimestamp, currentTimestamp)) {
+        if (this.shouldWeUpdateX(currentTimestamp)) {
           shake(this.x);
+          this.setNextChangeX(currentTimestamp);
+        };
+        if (this.shouldWeUpdateY(currentTimestamp)) {
           shake(this.y);
-          this->setNextChange();
-        }
+          this.setNextChangeY(currentTimestamp);
+        };
         shake(this.z);
       },
 
-      shouldWeUpdateXY: function(reviousTimestamp, currentTimestamp) {
-        if (previousTimestamp === null || this->nextChangeAfter === null) {
+      shouldWeUpdateX: function(currentTimestamp) {
+        if (currentTimestamp === null || this.nextChangeTimeX === null) {
           return true;
         }
-        let timestampDiff = currentTimestamp - previousTimestamp;
-        if (timestampDiff >= this->nextChangeAfter) {
+        if (currentTimestamp >= this.nextChangeTimeX) {
           return true;
         } else {
           return false;
         }
       },
 
-      setNextChange: function() {
+      shouldWeUpdateY: function(currentTimestamp) {
+        if (currentTimestamp === null || this.nextChangeTimeY === null) {
+          return true;
+        }
+        if (currentTimestamp >= this.nextChangeTimeY) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+
+      setNextChangeX: function(currentTimestamp) {
         let interval_ms = Math.floor(
           prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
           + NEXT_CHANGE_MS_MIN
         );
-        this->nextChangeAfter = interval_ms;
+        this.nextChangeTimeX = currentTimestamp + interval_ms;
+      },
+
+      setNextChangeY: function(currentTimestamp) {
+        let interval_ms = Math.floor(
+          prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
+          + NEXT_CHANGE_MS_MIN
+        );
+        this.nextChangeTimeY = currentTimestamp + interval_ms;
       }
     }
 
@@ -170,6 +192,7 @@
   function updateReadings(sensorObject) {
     // We need the original reading's timestamp to see if it differs
     // from the previous sample. If so, we need to update the faked x,y,z
+    let previousTimestamp = previousReading.timestamp;
     let currentTimestamp = origGetTimestamp.call(sensorObject);
 
     if (debugMode) {
@@ -184,6 +207,9 @@
       return;
     }
 
+    // Rotate the readings: previous <- current
+    previousReading = JSON.parse(JSON.stringify(currentReading));
+
     // Update current reading
     // NOTE: Original values are also stored for possible future use
     currentReading.orig_x = origGetX.call(sensorObject);
@@ -191,16 +217,14 @@
     currentReading.orig_z = origGetZ.call(sensorObject);
     currentReading.timestamp = currentTimestamp;
 
-    // Rotate the readings: previous <- current
-    previousReading = JSON.parse(JSON.stringify(currentReading));
+    dataGenerator.update(currentTimestamp);
 
-    dataGenerator.update(previousReading.timestamp, currentTimestamp);
     currentReading.fake_x = dataGenerator.x.value;
     currentReading.fake_y = dataGenerator.y.value;
     currentReading.fake_z = dataGenerator.z.value;
 
     if (debugMode) {
-      console.log(fieldGenerator);
+      console.log(dataGenerator);
     }
   }
 

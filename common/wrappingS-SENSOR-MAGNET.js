@@ -345,6 +345,7 @@
   function updateReadings(sensorObject) {
     // We need the original reading's timestamp to see if it differs
     // from the previous sample. If so, we need to update the faked x,y,z
+    let previousTimestamp = previousReading.timestamp;
     let currentTimestamp = origGetTimestamp.call(sensorObject);
 
     if (debugMode) {
@@ -354,10 +355,13 @@
       currentTimestamp = sensorObject.timestamp;
     }
 
-    if (currentTimestamp === previousReading.timestamp) {
+    if (currentTimestamp === previousTimestamp) {
       // No new reading, nothing to update
       return;
     }
+
+    // Rotate the readings: previous <- current
+    previousReading = JSON.parse(JSON.stringify(currentReading));
 
     // Update current reading
     // NOTE: Original values are also stored for possible future use
@@ -366,9 +370,6 @@
     currentReading.orig_y = origGetY.call(sensorObject);
     currentReading.orig_z = origGetZ.call(sensorObject);
     currentReading.timestamp = currentTimestamp;
-
-    // Rotate the readings: previous <- current
-    previousReading = JSON.parse(JSON.stringify(currentReading));
 
     fieldGenerator.update(currentTimestamp);
     currentReading.fake_x = fieldGenerator.x.value;
