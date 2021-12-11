@@ -45,6 +45,37 @@ for (let key in fp_config_code) {
 		fp_levels[key_splitted[0]][level] = JSON.parse(fp_config_code[key]);
 	}
 }
+
+// merge duplicit entries of the same resource to be wrapped only once
+{
+	let mergeWrappers = (sameResources) => {
+		let mergeGroups = () => {
+			let accArray = [];
+			for (let resource of sameResources) {
+				accArray.push(...resource.groups);
+			}
+			return accArray;
+		}
+
+		return {
+			resource: sameResources[0].resource,
+			type: sameResources[0].type,
+			groups: mergeGroups()
+		}
+	}
+	
+	for (let level in fp_levels.wrappers) {
+		let tmpWrappers = {};
+		for (let wrapper of fp_levels.wrappers[level]) {
+			if (!Object.keys(tmpWrappers).includes(wrapper.resource)) {
+				let sameResources = fp_levels.wrappers[level].filter(x => x.resource == wrapper.resource);
+				tmpWrappers[wrapper.resource] = mergeWrappers(sameResources);
+			}
+		}
+		fp_levels.wrappers[level] = Object.values(tmpWrappers);
+	}
+}
+
 /// \endcond
 
 /**
