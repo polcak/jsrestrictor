@@ -79,62 +79,45 @@ for (let key in fp_config_code) {
 /// \endcond
 
 /**
- * The function that provides lookup for used level of wrapping in current context according
- * to wrapped resources.
- *
- * \param wrappers Wrappers object of explicitly wrapped resources that level needs to be found out.
- */
-function get_level_from_wrappers(wrappers) {
-    if (levels != undefined) {   
-        for (let key in levels) {
-			// if wrappers are the same, it's that level (only built-in levels)
-            if (levels[key].wrappers == wrappers) {
-                return key;
-            }
-        }
-    }
-    return 0;
-}
-
-/**
  * The function returning amount of FPD wrappers defined for specific level.
  *
- * \param wrappers Wrappers object of explicitly wrapped resources.
+ * \param level_id Id of currently wrapped level.
  */
-function fp_wrappers_length(wrappers) {
-    return fp_levels.wrappers[get_level_from_wrappers(wrappers)] ? 
-		fp_levels.wrappers[get_level_from_wrappers(wrappers)].length : 0;
+function fp_wrappers_length(level_id) {
+	return fp_levels.wrappers[level_id] ? fp_levels.wrappers[level_id].length : fp_levels.wrappers["default"].length;
 }
 
 /**
  * The function for initialization of building new wrappers that are not explicitly defined (in wrappingS files).
  *
- * \param wrappers Wrappers object of explicitly wrapped resources.
+ * \param level Object of protection level containing array of explicitly wrapped resources.
  * 
  * \returns Standard object for wrapping resources by code_builder (structurally same as build_wrapping_code).
  */
-function fp_wrappers_create(wrappers) {
-	// get id of current level from wrappers
-    var level_id = get_level_from_wrappers(wrappers);
-    
+function fp_wrappers_create(level) {
 	// return object initialization
-	var new_build_wrapping_code = {};
+	var fpd_build_wrapping_code = {};
+	
+	// get id of wrapped level
+	var level_id = level.level_id;
 
-	// if level is defined, build wrapper objects to feed code_bulder
-    if (fp_levels.wrappers[level_id] != undefined) {
-        for (let wrap_item of fp_levels.wrappers[level_id]) {
-			// implicitly create wrapper object for every defined resource that is not explicitly defined
-            if (!(wrappers.map((x) => { return x[0] })).includes(wrap_item.resource)) {
-                if (wrap_item.type == "property") {
-					new_build_wrapping_code[wrap_item.resource] = fp_build_property_wrapper(wrap_item);
-				}
-				else if (wrap_item.type == "function") {
-					new_build_wrapping_code[wrap_item.resource] = fp_build_function_wrapper(wrap_item);
-				}
-            }
-        }
-    }
-    return new_build_wrapping_code;
+	// if level is not defined by FPD, use default FPD configuration
+    if (fp_levels.wrappers[level.level_id] == undefined) {
+		level_id = "default";
+	}
+
+	for (let wrap_item of fp_levels.wrappers[level_id]) {
+		// implicitly create wrapper object for every defined resource that is not explicitly defined
+		if (!(level.wrappers.map((x) => { return x[0] })).includes(wrap_item.resource)) {
+			if (wrap_item.type == "property") {
+				fpd_build_wrapping_code[wrap_item.resource] = fp_build_property_wrapper(wrap_item);
+			}
+			else if (wrap_item.type == "function") {
+				fpd_build_wrapping_code[wrap_item.resource] = fp_build_function_wrapper(wrap_item);
+			}
+		}
+	} 
+    return fpd_build_wrapping_code;
 }
 
 /**

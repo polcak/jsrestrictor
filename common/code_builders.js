@@ -278,15 +278,15 @@ var build_code = function(wrapper, ...args) {
 /**
  * Transform wrapping arrays into code.
  *
- * @param Array of wrapping arrays.
+ * @param Object of protection level containing wrapping arrays.
  */
-function wrap_code(wrappers) {
-	if (wrappers.length === 0 && fp_wrappers_length(wrappers) === 0) {
+function wrap_code(level) {
+	if (level.wrappers.length === 0 && fp_wrappers_length(level.id) === 0) {
 		return; // Nothing to wrap
 	}
 
 	// get all implicit wrappers for FPD logging
-	var new_build_wrapping_code = fp_wrappers_create(wrappers);
+	var fpd_build_wrapping_code = fp_wrappers_create(level);
 
 	let joinCode = code => {
 		return code.join("\n").replace(/\bObject\.(create|definePropert)/g, "WrapHelper.$1")
@@ -296,7 +296,7 @@ function wrap_code(wrappers) {
 		try {
 			if (fpd) {
 				// create code for implicit wrappers (FPD)
-				return build_code(new_build_wrapping_code[wrapper]);
+				return build_code(fpd_build_wrapping_code[wrapper]);
 			}
 			return build_code(build_wrapping_code[wrapper[0]], wrapper.slice(1));
 		} catch (e) {
@@ -592,8 +592,8 @@ function wrap_code(wrappers) {
 			fp_enabled = true;
 		}
 	}).toString()
-		.replace('// WRAPPERS //', joinCode(wrappers.map(x => build(x, false))))
-		.replace('// FPD //', joinCode(Object.keys(new_build_wrapping_code).map(x => build(x, true))));
+		.replace('// WRAPPERS //', joinCode(level.wrappers.map(x => build(x, false))))
+		.replace('// FPD //', joinCode(Object.keys(fpd_build_wrapping_code).map(x => build(x, true))));
 
 	return `(${code})();`;
 }

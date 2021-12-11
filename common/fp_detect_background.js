@@ -322,6 +322,9 @@ function evaluateGroups(tabId) {
 	// get level for tab url to determine valid group criteria
 	var level = getCurrentLevelJSON(url)[0].level_id;
 
+	// check if the level exists within FPD configuration, if not use default FPD configuration
+	level = fp_levels.groups[level] ? level : "default";
+
 	// getting root group name as a start point for recursive evaluation
 	var rootGroup = fp_levels.groups[level] ? fp_levels.groups[level].name : undefined;
 	
