@@ -26,6 +26,22 @@
         ]
     },
     {
+        "resource":"Navigator.prototype.languages",
+        "type":"property",
+        "groups":[
+            {
+                "group":"NavigatorBasic",
+                "property":"get",
+                "criteria":[
+                    {
+                        "value":1,
+                        "weight":3
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "resource":"Navigator.prototype.platform",
         "type":"property",
         "groups":[
@@ -56,6 +72,22 @@
         ]
     },
     {
+        "resource":"Navigator.prototype.vendorSub",
+        "type":"property",
+        "groups":[
+            {
+                "group":"NavigatorBasic",
+                "property":"get",
+                "criteria":[
+                    {
+                        "value":1,
+                        "weight":2
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "resource":"Navigator.prototype.vendor",
         "type":"property",
         "groups":[
@@ -76,6 +108,54 @@
                     {
                         "value":1,
                         "weight":3
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "resource":"Navigator.prototype.buildID",
+        "type":"property",
+        "groups":[
+            {
+                "group":"NavigatorBasic",
+                "property":"get",
+                "criteria":[
+                    {
+                        "value":1,
+                        "weight":2
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "resource":"Navigator.prototype.oscpu",
+        "type":"property",
+        "groups":[
+            {
+                "group":"NavigatorBasic",
+                "property":"get",
+                "criteria":[
+                    {
+                        "value":1,
+                        "weight":2
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "resource":"Navigator.prototype.appCodeName",
+        "type":"property",
+        "groups":[
+            {
+                "group":"NavigatorBasic",
+                "property":"get",
+                "criteria":[
+                    {
+                        "value":1,
+                        "weight":2
                     }
                 ]
             }
@@ -132,7 +212,7 @@
         ]
     },
     {
-        "resource":"navigator.hardwareConcurrency",
+        "resource":"Navigator.prototype.hardwareConcurrency",
         "type":"property",
         "groups":[
             {
@@ -142,12 +222,31 @@
         ]
     },
     {
-        "resource":"navigator.deviceMemory",
+        "resource":"Navigator.prototype.deviceMemory",
         "type":"property",
         "groups":[
             {
                 "group":"NavigatorHardware",
                 "property":"get"
+            }
+        ]
+    },
+    {
+        "resource":"Navigator.prototype.maxTouchPoints",
+        "type":"property",
+        "groups":[
+            {
+                "group":"NavigatorHardware",
+                "property":"get"
+            }
+        ]
+    },
+    {
+        "resource":"Navigator.prototype.vibrate",
+        "type":"function",
+        "groups":[
+            {
+                "group":"NavigatorHardware"
             }
         ]
     },
@@ -176,13 +275,7 @@
         "type":"function",
         "groups":[
             {
-                "group":"NavigatorEnums",
-                "criteria":[
-                    {
-                        "value":1,
-                        "weight":1
-                    }
-                ]
+                "group":"NavigatorEnums"
             }
         ]
     },
@@ -317,7 +410,7 @@
         ]
     },
     {
-        "resource":"AudioNode.prototype.maxChannelCount",
+        "resource":"AudioDestinationNode.prototype.maxChannelCount",
         "type":"property",
         "groups":[
             {
@@ -422,7 +515,13 @@
         "groups":[
             {
                 "group":"StorageInfo",
-                "property":"get"
+                "property":"get",
+                "criteria":[
+                    {
+                        "value":1,
+                        "weight":2
+                    }
+                ]
             }
         ]
     },
@@ -431,7 +530,23 @@
         "type":"function",
         "groups":[
             {
-                "group":"BrowserProperties",
+                "group":"WebGLInfo",
+                "arguments":"diff",
+                "criteria":[
+                    {
+                        "value":3,
+                        "weight":1
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "resource":"WebGL2RenderingContext.prototype.getParameter",
+        "type":"function",
+        "groups":[
+            {
+                "group":"WebGLInfo",
                 "arguments":"diff",
                 "criteria":[
                     {
@@ -584,7 +699,10 @@
                 "group":"CanvasFingerprintStepThree"
             },
             {
-                "group":"WebGLFingerprintStepThree"
+                "group":"WebGL1FingerprintStepThree"
+            },
+            {
+                "group":"WebGL2FingerprintStepThree"
             }
         ]
     },
@@ -596,7 +714,10 @@
                 "group":"CanvasFingerprintStepThree"
             },
             {
-                "group":"WebGLFingerprintStepThree"
+                "group":"WebGL1FingerprintStepThree"
+            },
+            {
+                "group":"WebGL2FingerprintStepThree"
             }
         ]
     },
@@ -608,7 +729,10 @@
                 "group":"CanvasFingerprintStepThree"
             },
             {
-                "group":"WebGLFingerprintStepThree"
+                "group":"WebGL1FingerprintStepThree"
+            },
+            {
+                "group":"WebGL2FingerprintStepThree"
             }
         ]
     },
@@ -617,7 +741,7 @@
         "type":"function",
         "groups":[
             {
-                "group":"WebGLFingerprintStepOne"
+                "group":"WebGL1FingerprintStepOne"
             }
         ]
     },
@@ -626,7 +750,7 @@
         "type":"function",
         "groups":[
             {
-                "group":"WebGLFingerprintStepOne"
+                "group":"WebGL1FingerprintStepOne"
             }
         ]
     },
@@ -635,7 +759,7 @@
         "type":"function",
         "groups":[
             {
-                "group":"WebGLFingerprintStepTwo"
+                "group":"WebGL1FingerprintStepTwo"
             }
         ]
     },
@@ -644,7 +768,43 @@
         "type":"function",
         "groups":[
             {
-                "group":"WebGLFingerprintStepTwo"
+                "group":"WebGL1FingerprintStepTwo"
+            }
+        ]
+    },
+    {
+        "resource":"WebGL2RenderingContext.prototype.createBuffer",
+        "type":"function",
+        "groups":[
+            {
+                "group":"WebGL2FingerprintStepOne"
+            }
+        ]
+    },
+    {
+        "resource":"WebGL2RenderingContext.prototype.bindBuffer",
+        "type":"function",
+        "groups":[
+            {
+                "group":"WebGL2FingerprintStepOne"
+            }
+        ]
+    },
+    {
+        "resource":"WebGL2RenderingContext.prototype.vertexAttribPointer",
+        "type":"function",
+        "groups":[
+            {
+                "group":"WebGL2FingerprintStepTwo"
+            }
+        ]
+    },
+    {
+        "resource":"WebGL2RenderingContext.prototype.enableVertexAttribArray",
+        "type":"function",
+        "groups":[
+            {
+                "group":"WebGL2FingerprintStepTwo"
             }
         ]
     },
@@ -705,6 +865,33 @@
     {
         "resource":"BaseAudioContext.prototype.destination",
         "type":"property",
+        "groups":[
+            {
+                "group":"AudioContextFingerprint"
+            }
+        ]
+    },
+    {
+        "resource":"BaseAudioContext.prototype.createAnalyser",
+        "type":"function",
+        "groups":[
+            {
+                "group":"AudioContextFingerprint"
+            }
+        ]
+    },
+    {
+        "resource":"BaseAudioContext.prototype.createBuffer",
+        "type":"function",
+        "groups":[
+            {
+                "group":"AudioContextFingerprint"
+            }
+        ]
+    },
+    {
+        "resource":"BaseAudioContext.prototype.createScriptProcessor",
+        "type":"function",
         "groups":[
             {
                 "group":"AudioContextFingerprint"
