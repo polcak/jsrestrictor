@@ -51,8 +51,9 @@ function create_counter_call(wrapper, type) {
 		if (typeof wrapper.update_count === "string") updateCount = wrapper.update_count;
 	}
 	
-	return updateCount ? `if (fp_enabled) {
-	updateCount(${JSON.stringify(updateCount)}, "${type}", args.map(x => JSON.stringify(x)));
+	return updateCount ? `if (fp_enabled && fp_${type}_count < 1000) {
+		updateCount(${JSON.stringify(updateCount)}, "${type}", args.map(x => JSON.stringify(x)));
+		fp_${type}_count += 1;
 	}` : "";
 }
 
@@ -69,6 +70,7 @@ function define_page_context_function(wrapper) {
 	}
 	let originalF = original_function || `${parent_object}.${parent_object_property}`;
 	return enclose_wrapping2(`let originalF = ${originalF};
+			var fp_call_count = 0;
 			let replacementF = function(${wrapper.wrapping_function_args}) {
 				{
 					let args = [].slice.apply(arguments);
@@ -161,6 +163,7 @@ function generate_object_properties(code_spec_obj) {
 
 		code += `
 			originalPDF = descriptor["${wrap_spec.property_name}"];
+			var fp_${wrap_spec.property_name}_count = 0;
 			replacementPD = ${counting_wrapper};
 			descriptor["${wrap_spec.property_name}"] = replacementPD;
 		`;
