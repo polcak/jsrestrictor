@@ -314,12 +314,11 @@ function wrap_code(level) {
 		let xrayWindow = window; // the "privileged" xray window wrapper in Firefox
 		{
 			let {port} = env;
-			function updateCount(wrapperName, wrapperType, wrapperArgs, delta = 1) {
+			function updateCount(wrapperName, wrapperType, wrapperArgs) {
 				port.postMessage({
 					wrapperName,
 					wrapperType,
-					wrapperArgs,
-					delta
+					wrapperArgs
 				});
 			}
 		}
