@@ -66,8 +66,8 @@ do
 	test_functions+=($(grep "function test_" $file | sed -e 's/.*function\s\(.*\)(wrappers).*/\1/' -e 's/$/(resultsAcc);/'))
 	
 	sed -i "/.*<!--SCRIPTS_S-->.*/a <script language=\"javascript\" src=\"${file}\"></script>" ./index.html
-	sed -i "/.*<!--SCRIPTS_S-->.*/a <script language=\"javascript\" src=\".${file}\"></script>" ./common/iframe.html
-	sed -i "/.*\/\/SCRIPTS_S.*/a importScripts('.${file}');" ./common/worker.js
+	sed -i "/.*<!--SCRIPTS_S-->.*/a <script language=\"javascript\" src=\"../${file}\"></script>" ./common/iframe.html
+	sed -i "/.*\/\/SCRIPTS_S.*/a importScripts('../${file}');" ./common/worker.js
 done
 
 echo -ne "....."
@@ -166,7 +166,7 @@ browser.runtime.onMessage.addListener(function (message) {
         
         document.getElementById("passed").innerHTML += passedCount;
         document.getElementById("failed").innerHTML += failedCount;
-        document.getElementById("unsupported").innerHTML += unwrappedCount;
+        document.getElementById("unsupported").innerHTML += unsupportedCount;
         document.getElementById("unwrapped").innerHTML += unwrappedCount;
     }
 });
@@ -219,6 +219,10 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 			}
 
 			return [...new Set(acc)];
+		}
+		
+		if (!Object.keys(fp_levels.wrappers).includes(currentLevel)) {
+			currentLevel = "default";
 		}
 
 		for (let wrapper of fp_levels.wrappers[currentLevel]) {
