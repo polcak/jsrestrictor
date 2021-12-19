@@ -676,7 +676,7 @@ browser.webRequest.onBeforeRequest.addListener(
  * \returns Object containing key "cancel" with value true if request is blocked, otherwise with value false
  */
 function cancelCallback(requestDetails) {
-
+	
 	// chrome fires onBeforeRequest event before tabs.onUpdated => refreshDb won't happen in time
 	// need to refreshDb when main_frame request occur, otherwise also user's requests will be blocked
 	if (requestDetails.type == "main_frame") {
@@ -743,4 +743,17 @@ function cancelCallback(requestDetails) {
 	return {
 		cancel: false
 	};
+}
+
+/**
+ * The function that returns FPD setting for given url.
+ *
+ * \param tabId Tab identifier for which FPD setting is needed.
+ * 
+ * \returns Boolean value TRUE if FPD is on, otherwise FALSE.
+ */
+
+function isFpdOn(tabId) {
+	// function preparation for "per url settings"
+	return fpDetectionEnabled;
 }

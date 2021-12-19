@@ -62,11 +62,13 @@ function getContentConfiguration(url, frameId, tabId) {
 			}
 			let [{is_default, wrappers}, code] = level;
 			let {domainHash} = Hashes.getFor(url);
+			let fpdOn = isFpdOn(tabId);
 			resolve({
 				is_default,
 				code,
 				wrappers,
-				domainHash
+				domainHash,
+				fpdOn
 			});
 		}
 		if (levels_initialised === true) {
