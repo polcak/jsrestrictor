@@ -32,6 +32,78 @@
  */
 var fp_levels = {};
 
+/**
+ *  Additional wrappers for specialized purposes.
+ */
+var additional_wrappers = [
+	{
+		parent_object: "HTMLElement.prototype",
+		parent_object_property: "offsetHeight",
+		wrapped_objects: [],
+		post_wrapping_code: [
+			{
+				code_type: "object_properties",
+				parent_object: "HTMLElement.prototype",
+				parent_object_property: "offsetHeight",
+				wrapped_objects: [
+					{
+						original_name: `
+							Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetHeight") ? 
+							Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetHeight")["get"] : 
+							HTMLElement.prototype.offsetHeight
+						`,
+						wrapped_name: "originalD_get"
+					}
+				],
+				wrapped_properties: [
+					{
+						property_name: "get",
+						property_value: `function() {
+							// workaround - style property is bound to HTMLElement instance, check fontFamily value with every access
+							let font = this.style.fontFamily;
+							updateCount("CSSStyleDeclaration.prototype.fontFamily", "set", [font]);
+							return originalD_get.call(this);
+						}`
+					}
+				]
+			}
+		]
+	},
+	{
+		parent_object: "HTMLElement.prototype",
+		parent_object_property: "offsetWidth",
+		wrapped_objects: [],
+		post_wrapping_code: [
+			{
+				code_type: "object_properties",
+				parent_object: "HTMLElement.prototype",
+				parent_object_property: "offsetWidth",
+				wrapped_objects: [
+					{
+						original_name: `
+							Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetWidth") ? 
+							Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetWidth")["get"] : 
+							HTMLElement.prototype.offsetWidth
+						`,
+						wrapped_name: "originalD_get"
+					}
+				],
+				wrapped_properties: [
+					{
+						property_name: "get",
+						property_value: `function() {
+							// workaround - style property is bound to HTMLElement instance, check fontFamily value with every access
+							let font = this.style.fontFamily;
+							updateCount("CSSStyleDeclaration.prototype.fontFamily", "set", [font]);
+							return originalD_get.call(this);
+						}`
+					}
+				]
+			}
+		]
+	}
+]
+
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 // parse input files from fp_config_code into fp_levels for each level
 for (let key in fp_config_code) {
@@ -116,7 +188,18 @@ function fp_wrappers_create(level) {
 				fpd_build_wrapping_code[wrap_item.resource] = fp_build_function_wrapper(wrap_item);
 			}
 		}
-	} 
+	}
+
+	// if there is an additional wrapper for resource, overwrite default declaration with it
+	for (let additional_item of additional_wrappers) {
+		let { parent_object, parent_object_property } = additional_item;
+		let resource = `${parent_object}.${parent_object_property}`;
+		
+		if (resource in fpd_build_wrapping_code) {
+			fpd_build_wrapping_code[resource] = additional_item;
+		}
+	}
+
     return fpd_build_wrapping_code;
 }
 
@@ -163,7 +246,6 @@ function fp_build_property_wrapper(wrap_item) {
 					code_type: "object_properties",
 					parent_object: resource_splitted["path"],
 					parent_object_property: resource_splitted["name"],
-					force_wrapping: wrap_item.force_wrapping ? true : false,
 					wrapped_objects: [],
 					wrapped_properties: [],
 				}
@@ -178,7 +260,7 @@ function fp_build_property_wrapper(wrap_item) {
 				original_name: `
 					Object.getOwnPropertyDescriptor(${resource_splitted["path"]}, "${resource_splitted["name"]}") ?
 					Object.getOwnPropertyDescriptor(${resource_splitted["path"]}, "${resource_splitted["name"]}")["${type}"] :
-					${type == "get" ? wrap_item.resource : undefined}			
+					${type == "get" ? wrap_item.resource : undefined}
 				`,
 				wrapped_name: `originalD_${type}`,
 			});
@@ -208,7 +290,6 @@ function fp_build_function_wrapper(wrap_item) {
 	var wrapper_object = {
 		parent_object: resource_splitted["path"],
 		parent_object_property: resource_splitted["name"],
-		force_wrapping: wrap_item.force_wrapping ? true : false,
 
 		// save original function into variable
 		wrapped_objects: [{

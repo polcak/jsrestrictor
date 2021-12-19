@@ -132,9 +132,6 @@
                 "type":{
                     "const":"property"
                 },
-                "force_wrapping":{
-                    "type":"boolean"
-                },
                 "groups":{
                     "type":"array",
                     "items":{
@@ -151,9 +148,6 @@
                 },
                 "type":{
                     "const":"function"
-                },
-                "force_wrapping":{
-                    "type":"boolean"
                 },
                 "groups":{
                     "type":"array",

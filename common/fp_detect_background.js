@@ -89,6 +89,11 @@ var fpGroups = {};
  */
 var unsupportedWrappers = {};
 
+/**
+ *  Array containing names of unsupported wrappers that should be treated like supported ones during groups evaluation.
+ */
+var exceptionWrappers = ["CSSStyleDeclaration.prototype.fontFamily"];
+
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 // fill up fpGroups object with necessary data for evaluation
 for (let groupsLevel in fp_levels.groups) {
@@ -160,8 +165,8 @@ function balanceUnsupportedWrappers() {
 			// access nested object in browser's "window" object using path string
 			var resolvedPath = resourceSplitted["path"].split('.').reduce((o, p) => o ? o[p] : undefined, window);
 
-			// if resource or resource path is undefined -> resource unsupported (exception: makes sense only with disabled force wrapping)
-			if (!(resolvedPath && resourceSplitted["name"] in resolvedPath) && !wrapper.force_wrapping) {
+			// if resource or resource path is undefined -> resource unsupported && no exception for the resource
+			if (!(resolvedPath && resourceSplitted["name"] in resolvedPath) && !exceptionWrappers.includes(wrapper.resource)) {
 				// store wrapper object to "unsupportedWrappers" object
 				unsupportedWrappers[level].push(wrapper);
 
@@ -676,7 +681,7 @@ browser.webRequest.onBeforeRequest.addListener(
  * \returns Object containing key "cancel" with value true if request is blocked, otherwise with value false
  */
 function cancelCallback(requestDetails) {
-	
+
 	// chrome fires onBeforeRequest event before tabs.onUpdated => refreshDb won't happen in time
 	// need to refreshDb when main_frame request occur, otherwise also user's requests will be blocked
 	if (requestDetails.type == "main_frame") {
