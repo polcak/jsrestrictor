@@ -35,7 +35,6 @@ function test_canvasFp(wrappers) {
 		canvasContext.fillStyle = '#069';
 		canvasContext.font = '11pt no-real-font-123';
 		canvasContext.fillText("co ja viem, \uD83D\uDE03", 2, 15);
-		console.log(canvasContext.font)
 		canvasContext.font = 'bold 48px serif';
 
 		// end of function - have to specify all function accesses to resources that supposed to be wrapped and tested 
@@ -43,6 +42,8 @@ function test_canvasFp(wrappers) {
 		addWrapper(wrappers, "CanvasRenderingContext2D.prototype.fillStyle", "set", 2);
 		addWrapper(wrappers, "CanvasRenderingContext2D.prototype.fillText", "call", 1);
 		addWrapper(wrappers, "CanvasRenderingContext2D.prototype.font", "set", 2);
+		addWrapper(wrappers, "CanvasRenderingContext2D.prototype.textBaseline", "set", 1);
+		addWrapper(wrappers, "CanvasRenderingContext2D.prototype.fillRect", "call", 1);
 	}
 	catch {}
 }

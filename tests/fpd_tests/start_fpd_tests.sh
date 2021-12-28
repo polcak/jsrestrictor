@@ -133,6 +133,12 @@ browser.runtime.onMessage.addListener(function (message) {
                                 method.style.color = "green";
                                 passedCount += 1;
                             }
+							else if (message.exceptionWrappers.includes(testResource)) {
+                                let selElement = child.querySelector("p > span.resource");
+                                selElement.textContent = "→Exception: custom/additional wrapper";
+                                selElement.style = "text-decoration: none;color: green;display:inline-block;";
+                                passedCount += 1;
+                            }
                             else {
                                 method.style.color = "red";
                                 failedCount += 1;
@@ -243,7 +249,8 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 		browser.tabs.sendMessage(sender.tab.id, {
 			extensionLogs: prepareDb(sender.tab.id),
 			currentLevel: levelInfo[0],
-			unsupportedWrappers: levelInfo[1]
+			unsupportedWrappers: levelInfo[1],
+			exceptionWrappers: exceptionWrappers
 		});
 	}
 });
