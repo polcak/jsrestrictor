@@ -11,11 +11,11 @@
             "name":"BrowserProperties",
             "criteria":[
                 {
-                    "value":4,
+                    "value":7,
                     "weight":1
                 },
                 {
-                    "value":10,
+                    "value":12,
                     "weight":2
                 }
             ],
@@ -25,22 +25,12 @@
                     "description":"Basic information about browser and system.",
                     "criteria":[
                         {
-                            "percentage":30,
+                            "percentage":35,
                             "weight":1
                         },
                         {
-                            "percentage":60,
+                            "percentage":65,
                             "weight":2
-                        }
-                    ]
-                },
-                {
-                    "name":"NavigatorEnums",
-                    "description":"Enumerations of available devices and plugins",
-                    "criteria":[
-                        {
-                            "percentage":50,
-                            "weight":1
                         }
                     ]
                 },
@@ -55,11 +45,21 @@
                     ]
                 },
                 {
+                    "name":"NavigatorMobile",
+                    "description":"Information about features supported by mobile devices.",
+                    "criteria":[
+                        {
+                            "value":1,
+                            "weight":1
+                        }
+                    ]
+                },
+                {
                     "name":"NavigatorNetwork",
                     "description":"Information about connection to internet.",
                     "criteria":[
                         {
-                            "percentage":50,
+                            "value":3,
                             "weight":1
                         }
                     ]
@@ -97,6 +97,16 @@
                 {
                     "name":"ScreenInfo",
                     "description":"Information about screen and its properties.",
+                    "criteria":[
+                        {
+                            "value":5,
+                            "weight":1
+                        }
+                    ]
+                },
+                {
+                    "name":"WindowInfo",
+                    "description":"Information about screen from root Window object.",
                     "criteria":[
                         {
                             "value":3,
@@ -148,6 +158,16 @@
         },
         {
             "name":"AlgorithmicMethods",
+            "criteria":[
+                {
+                    "value":1,
+                    "weight":1
+                },
+                {
+                    "value":2,
+                    "weight":2
+                }
+            ],
             "groups":[
                 {
                     "name":"FontsEnumFingerprint",
@@ -175,7 +195,7 @@
 									"name":"JSFontEnumStepTwo",
 									"criteria":[
 										{
-											"access":20,
+											"access":15,
 											"weight":1
 										}
 									]
@@ -342,7 +362,26 @@
                 },
 				{
                     "name":"AudioContextFingerprint",
-                    "description":"Fingerprinting based on AudioContext processing."
+                    "description":"Fingerprinting based on AudioContext processing.",
+                    "criteria":[
+                        {
+                            "value":2,
+                            "weight":1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name":"CrawlFpInspector",
+            "criteria":[
+                {
+                    "percentage":15,
+                    "weight":1
+                },
+                {
+                    "percentage":25,
+                    "weight":2
                 }
             ]
         }
