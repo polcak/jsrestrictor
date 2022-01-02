@@ -2,7 +2,7 @@
     "name":"FingerprintingActivity",
     "criteria":[
         {
-            "value":2,
+            "value":3,
             "weight":1
         }
     ],
@@ -17,6 +17,10 @@
                 {
                     "value":12,
                     "weight":2
+                },
+                {
+                    "value":14,
+                    "weight":3
                 }
             ],
             "groups":[
@@ -161,11 +165,11 @@
             "criteria":[
                 {
                     "value":1,
-                    "weight":1
+                    "weight":2
                 },
                 {
                     "value":2,
-                    "weight":2
+                    "weight":3
                 }
             ],
             "groups":[
@@ -376,12 +380,16 @@
             "name":"CrawlFpInspector",
             "criteria":[
                 {
-                    "percentage":15,
+                    "percentage":10,
                     "weight":1
                 },
                 {
-                    "percentage":25,
+                    "percentage":15,
                     "weight":2
+                },
+                {
+                    "percentage":20,
+                    "weight":3
                 }
             ]
         }
