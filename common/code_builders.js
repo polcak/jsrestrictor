@@ -69,37 +69,54 @@ function define_page_context_function(wrapper) {
 		parent_object_property = original_function.substring(lastDot + 1);
 	}
 	let originalF = original_function || `${parent_object}.${parent_object_property}`;
-	return enclose_wrapping2(`let originalF = ${originalF};
-			var fp_call_count = 0;
-			let replacementF = function(${wrapper.wrapping_function_args}) {
-				{
-					let args = [].slice.apply(arguments);
-					${create_counter_call(wrapper, "call")}
-				}
-				${wrapper.wrapping_function_body}
-			};
-			if (WrapHelper.XRAY) {
-				let innerF = replacementF;
-				replacementF = function(...args) {
+	let code = `
+	let originalF = ${originalF};
+	var fp_call_count = 0;
+	let replacementF = function(${wrapper.wrapping_function_args}) {
+		{
+			let args = [].slice.apply(arguments);
+			${create_counter_call(wrapper, "call")}
+		}`
+	
+	// if apply_if condition is present, we need to wrap for FPD anyhow
+	if (wrapper.apply_if !== undefined) {
+		code += `
+		if (${wrapper.apply_if}) {
+			${wrapper.wrapping_function_body}
+		}
+		else {
+			return originalF.call(this, ${wrapper.wrapping_function_args});
+		}`
+	}
+	else {
+		code += `${wrapper.wrapping_function_body}`
+	}
+	
+	code += `
+	};
+	if (WrapHelper.XRAY) {
+		let innerF = replacementF;
+		replacementF = function(...args) {
 
-					// prepare callbacks
-					args = args.map(a => typeof a === "function" ? WrapHelper.pageAPI(a) : a);
+			// prepare callbacks
+			args = args.map(a => typeof a === "function" ? WrapHelper.pageAPI(a) : a);
 
-					let ret = WrapHelper.forPage(innerF.call(this, ...args));
-					if (ret) {
-						if (ret instanceof xrayWindow.Promise || ret instanceof WrapHelper.unX(xrayWindow).Promise) {
-							ret = Promise.resolve(ret);
-						}
-						try {
-							ret = WrapHelper.unX(ret);
-						} catch (e) {}
-					}
-					return ret;
+			let ret = WrapHelper.forPage(innerF.call(this, ...args));
+			if (ret) {
+				if (ret instanceof xrayWindow.Promise || ret instanceof WrapHelper.unX(xrayWindow).Promise) {
+					ret = Promise.resolve(ret);
 				}
+				try {
+					ret = WrapHelper.unX(ret);
+				} catch (e) {}
 			}
-			exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
-			${wrapper.post_replacement_code || ''}
-	`, wrapper.wrapping_code_function_name, wrapper.wrapping_code_function_params, wrapper.wrapping_code_function_call_window);
+			return ret;
+		}
+	}
+	exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
+	${wrapper.post_replacement_code || ''}`
+	
+	return enclose_wrapping2(code, wrapper.wrapping_code_function_name, wrapper.wrapping_code_function_params, wrapper.wrapping_code_function_call_window);
 }
 
 /**
@@ -115,7 +132,7 @@ function generate_assign_function_code(code_spec_obj) {
 /**
  * This function wraps object properties using WrapHelper.defineProperties().
  */
-function generate_object_properties(code_spec_obj) {
+function generate_object_properties(code_spec_obj, fpd_only) {
 	var code = `
 		if (!("${code_spec_obj.parent_object_property}" in ${code_spec_obj.parent_object})) {
 			// Do not wrap an object that is not defined, e.g. because it is experimental feature.
@@ -147,19 +164,26 @@ function generate_object_properties(code_spec_obj) {
 		}
 	`
 	for (let wrap_spec of code_spec_obj.wrapped_properties) {
+		// variable name used for distinguishing between different original properties of the same wrapper
+		var original_property = `originalP_${wrap_spec.property_name}`;
+
 		var counting_wrapper = `
 			function(...args) {
 				${create_counter_call(code_spec_obj, wrap_spec.property_name)}
 
 				// checks type of underlying wrapper/definition and returns it (no changes to semantics)
-				if (typeof (${wrap_spec.property_value}) === 'function') {
-				 	return (${wrap_spec.property_value}).bind(this)(...args);
+				if (typeof (${fpd_only ? original_property : wrap_spec.property_value}) === 'function') {
+				 	return (${fpd_only ? original_property : wrap_spec.property_value}).bind(this)(...args);
 				}
 				else {
-					return (${wrap_spec.property_value});
+					return (${fpd_only ? original_property : wrap_spec.property_value});
 				}
 			}
 		`;
+
+		if (fpd_only) {
+			code += `var ${original_property} = descriptor["${wrap_spec.property_name}"];`;
+		}
 
 		code += `
 			originalPDF = descriptor["${wrap_spec.property_name}"];
@@ -216,9 +240,7 @@ var build_code = function(wrapper, ...args) {
 
 	let target = `${wrapper.parent_object}.${wrapper.parent_object_property}`;
 	let code = "";
-	if (wrapper.apply_if !== undefined) {
-		code += `if (!(${wrapper.apply_if})) {return}`
-	}
+
 	{
 		// Do not wrap an object that is not defined, e.g. because it is experimental feature.
 		// This should reduce fingerprintability.
@@ -260,6 +282,10 @@ var build_code = function(wrapper, ...args) {
 			code += post_wrapping_functions[code_spec.code_type](code_spec);
 			if (code_spec.apply_if !== undefined) {
 				code += "}";
+			}
+			// if not wrapped because of apply_if condition, still needs to be wrapped for FPD
+			if (code_spec.apply_if !== undefined && code_spec.code_type == "object_properties") {
+				code += "else {" + generate_object_properties(code_spec, true) + "}";
 			}
 		}
 	}
@@ -309,7 +335,7 @@ function wrap_code(level) {
 	};
 
 	let code = (w => {
-
+		
 		// cross-wrapper globals
 		let xrayWindow = window; // the "privileged" xray window wrapper in Firefox
 		{
