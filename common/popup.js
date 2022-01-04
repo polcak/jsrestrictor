@@ -156,7 +156,7 @@ async function control_whitelist()
 {
 	let site = await getCurrentSite();
 	let message = `${document.getElementById("shield-switch").checked ? "remove" : "add"} site to whitelist`;
-	if (document.getElementById("switch-checkbox").checked) {
+	if (document.getElementById("shield-switch").checked) {
 		message = "remove site from whitelist";
 	}
 	else {
