@@ -50,6 +50,7 @@ h3 {
 #level-select {
 	display: flex;
 	flex-flow: row;
+	flex-wrap: wrap;
 	justify-content: center;
 }
 
