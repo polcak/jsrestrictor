@@ -221,10 +221,10 @@ function restore_level(id, level_params) {
 function show_existing_level(levelsEl, level) {
 	let currentId = `level-${level}`;
 	var fragment = document.createRange().createContextualFragment(`<li id="li-${escape(level)}">
-		<span class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
+		<button class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
 			${escape(level)}: ${escape(levels[level].level_text)}
-		</span>
-		<span>${escape(levels[level].level_description)}</span>
+		</button>
+		<label for="${escape(currentId)}">${escape(levels[level].level_description)}</label>
 		</li>`);
 	levelsEl.appendChild(fragment);
 	if (levels[level].builtin !== true) {
