@@ -436,3 +436,20 @@ function control_http_request_shield()
 	}
 
 }
+
+window.addEventListener("DOMContentLoaded", function() {
+	function prepareHelpText(prefix) {
+		var descr = document.getElementsByClassName(prefix + "_description");
+		Array.prototype.forEach.call(descr, it => it.classList.add("hidden_descr"));
+		var ctrl = document.createElement("button");
+		ctrl.innerText = "?";
+		ctrl.classList.add("help");
+		ctrl.addEventListener("click", function(ev) {
+			Array.prototype.forEach.call(descr, it => it.classList.toggle("hidden_descr"));
+			ev.preventDefault();
+		});
+		descr[0].previousElementSibling.insertAdjacentElement("beforeend", ctrl);
+	}
+
+	prepareHelpText("nbs");
+});

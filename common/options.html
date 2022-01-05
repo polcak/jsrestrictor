@@ -54,15 +54,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
   <div id="proxy-protection-config">
 	<h2>Network boundary shield</h2>
-	<fieldset>
-  	<div>
-			<label id="switch-label" for="switch-checkbox">Network boundary shield: </label>
-	  	<label class="switch">
-			  <input id="switch-checkbox" type="checkbox" checked>
-			  <span class="slider"></span>
-			</label>
-	</div>
-	<p>
+	<p class="nbs_description">
 		Network boundary shield prevents web pages to use the browser as a proxy between local network
 		and the public Internet. See our <a
 		  href="https://jshelter.org/localportscanning/">
@@ -72,24 +64,33 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			Point report</a> for examples of attacks handled by the Network Boundary Shield.
 		The protection encapsulates the WebRequest API, so it captures all outgoing requests.
 	</p>
-	<p>
+	<p class="nbs_description">
 		Generally, you want Network boundary shield protection active, however, some pages can be
 		broken, because they require interaction between public Internet and local network, for example,
 		some Intranet information systems might be broken by the Network boundary shield. JShelter users
 		also reported increased number of false positives when using DNS-based filtering programs. If
 		you use one, make sure that DNS returns 0.0.0.0 for the blocked domains.
 	</p>
-	<p>
+	<p class="nbs_description">
 		You can disable the Network boundary shield by adding the domain (e.g. example.com) to the
 		list below. The domains and all their subdomains listed bellow are not blocked by the Network
 		boundary shield. To selectively deactivate the Network boundary shield, insert the domains to the list (excluding "www", but including all other domains eg. ".com").
 		We generally do <strong>not</strong> recommend disabling the Network boundary shield for domains
 		from the public Internet.
 	</p>
-	<p>
+	<p class="nbs_description">
 		Please note, that these domain names are checked with domain hierarchy, so whitelisting
 		<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
 	</p>
+	<fieldset>
+		<div>
+			<label id="switch-label" for="switch-checkbox">Network boundary shield: </label>
+			<label class="switch">
+			  <input id="switch-checkbox" type="checkbox" checked>
+			  <span class="slider"></span>
+			</label>
+		</div>
+	</fieldset>
 		<fieldset>
 			<input id="whitelist-input" type="text" name="whitelist-hostname" placeholder="example.com">
 			<button id="whitelist-add-button" class="jsr-button">Deactivate the Network boundary shield
@@ -102,7 +103,6 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		<button id="whitelist-remove-button" class="jsr-button">Reactivate the Network boundary shield
 			for the selected domains</button>
 	</div>
-	</fieldset>
 	</div>
 
 </section>

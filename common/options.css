@@ -163,6 +163,18 @@ section.content {
 	visibility: hidden;
 }
 
+.hidden_descr{
+	display: none;
+}
+
+.help {
+	margin-left: 1em;
+	background-color: blue;
+	color: white;
+	border-radius: 10px;
+	font-weight: bold;
+}
+
 #proxy-protection-config
 {
 	display:flex;
@@ -277,5 +289,5 @@ section#sect-devel {
 }
 
 fieldset {
-	border-color: #f7e032;
+	border: 0;
 }
