@@ -275,3 +275,7 @@ section#sect-devel {
 	width: 100%;
 	height: 50ex;
 }
+
+fieldset {
+	border-color: #f7e032;
+}

@@ -23,7 +23,6 @@ SPDX-License-Identifier: GPL-3.0-or-later
 				<ul>
 					<li><a href="options.html">Main JSR settings</a></li>
 					<li><a href="options_domains.html">Specific domain level configuration</a></li>
-					<li><a href="options_advanced.html">Advanced options</a></li>
 					<li>
 						<p>External links</p>
 						<ul>
@@ -54,12 +53,13 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
   <div id="proxy-protection-config">
 	<h2>Network boundary shield</h2>
+	<fieldset>
   	<div>
-			<label id="switch-label">Network boundary shield: </label>
+			<label id="switch-label" for="switch-checkbox">Network boundary shield: </label>
 	  	<label class="switch">
 			  <input id="switch-checkbox" type="checkbox" checked>
 			  <span class="slider"></span>
-		</label>
+			</label>
 	</div>
 	<p>
 		Network boundary shield prevents web pages to use the browser as a proxy between local network
@@ -89,12 +89,12 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		Please note, that these domain names are checked with domain hierarchy, so whitelisting
 		<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
 	</p>
-  	<div>
-	  	<input id="whitelist-input" type="text" name="whitelist-hostname" placeholder="example.com">
+		<fieldset>
+			<input id="whitelist-input" type="text" name="whitelist-hostname" placeholder="example.com">
 			<button id="whitelist-add-button" class="jsr-button">Deactivate the Network boundary shield
 				for the domain</button>
-	</div>
-  	<select id="whitelist-select" name="sometext" size="5" multiple>
+		</fieldset>
+  <select id="whitelist-select" name="sometext" size="5" multiple>
 
 	</select>
 	<div>
@@ -102,7 +102,18 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			for the selected domains</button>
 	</div>
   </div>
+		</fieldset>
 
+</section>
+
+<section id="sect-devel">
+	<h2>Development and debugging</h2>
+	<h3>Stored configuration</h3>
+	<textarea id="levels-storage-text">
+	</textarea>
+	<button id="levels-storage-load" class="jsr-button">Load currently stored configuration</button>
+	<button id="levels-storage-save" class="jsr-button">Save currently stored configuration. BEWARE,
+	if you do not know, what you are doing, do not modify the configuration.</button>
 </section>
 
 	</section>
