@@ -175,13 +175,13 @@ section.content {
 	font-weight: bold;
 }
 
-#proxy-protection-config
+#proxy-protection-config, #fingerprinting-protection-config
 {
 	display:flex;
 	flex-direction: column;
 }
 
-#whitelist-select
+#nbs-whitelist-select, #fpd-whitelist-select
 {
 	width:40%;
 	max-width: 400px;
@@ -191,7 +191,7 @@ section.content {
 	margin-top: 3px;
 }
 
-#whitelist-input
+#nbs-whitelist-input, #fpd-whitelist-input
 {
 	width: 39.5%;
 	max-width: 394px;

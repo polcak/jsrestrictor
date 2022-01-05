@@ -54,6 +54,11 @@
  */
  var fpDetectionEnabled;
 
+ /**
+ * Associtive array of hosts, that are currently among trusted ones.
+ */
+var fpdWhitelist = {};
+
 /**
  * API logs database of following structure:
  * 		"resource" : {
@@ -102,8 +107,16 @@ for (let groupsLevel in fp_levels.groups) {
 }
 // load enabled flag from storage
 browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
-	fpDetectionEnabled = result.fpDetectionOn;
+	if (result.fpDetectionOn != undefined)
+		fpDetectionEnabled = result.fpDetectionOn;
 });
+
+// load fpd whitelist from storage
+browser.storage.sync.get(["fpdWhitelist"]).then(function(result) {
+	if (result.fpdWhitelist != undefined)
+		fpdWhitelist = result.fpdWhitelist;
+});
+
 // take care of unsupported resources for cross-browser behaviour uniformity
 balanceUnsupportedWrappers();
 /// \endcond
@@ -565,7 +578,7 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 /**
  * Event listener that listen for content script messages.
  * Messages contain wrappers logging data that are stored into fpDb object.
- * Also listen for popup messages to update FPD enabled state.
+ * Also listen for popup messages to update FPD state and whitelist.
  *
  * \param callback Function that stores recieved data into fpDb.
  */
@@ -590,9 +603,60 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 		fpCounterObj["total"] += 1;
 	}
 	else if (record && record.purpose == "fpd-state-change") {
-		fpDetectionEnabled = record.enabled;
+		browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
+			fpDetectionEnabled = result.fpDetectionOn;
+		});
+	}
+	else if (record && record.purpose == "add-fpd-whitelist") {
+		// obtain current hostname and whitelist it
+		var currentHost = record.url;
+		fpdWhitelist[currentHost] = true;
+		browser.storage.sync.set({"fpdWhitelist": fpdWhitelist});
+	}
+	else if (record && record.purpose == "remove-fpd-whitelist") {
+		// obtain current hostname and remove it form whitelist
+		var currentHost = record.url;
+		delete fpdWhitelist[currentHost];
+		browser.storage.sync.set({"fpdWhitelist": fpdWhitelist});
+	}
+	else if (record && record.purpose == "update-fpd-whitelist") {
+		// update current fpdWhitelist from storage
+		browser.storage.sync.get(["fpdWhitelist"]).then(function(result) {
+			fpdWhitelist = result.fpdWhitelist;
+		});
 	}
 });
+
+/**
+ *
+ * The listener sends message response which contains information if the current site is whitelisted or not.
+ * 
+ * \param record Receives full message.
+ * \param sender Sender of the message.
+ */
+browser.runtime.onMessage.addListener(function (record, sender) {
+	// message came from popup,js, asking whether is this site whitelisted
+	if (record.purpose == "fpd-whitelist-check") {
+		return Promise.resolve(isFpdWhitelisted(record.url));
+	}
+});
+
+/**
+ * Check if the hostname or any of it's domains is whitelisted.
+ *
+ * \param hostname Any hostname (subdomains allowed).
+ *
+ * \returns TRUE when domain (or subdomain) is whitelisted, FALSE otherwise.
+ */
+function isFpdWhitelisted(hostname) {
+	var domains = extractSubDomains(hostname);
+	for (var domain of domains) {
+		if (fpdWhitelist[domain] != undefined) {
+			return true;
+		}
+	}
+	return false;
+}
 
 /**
  * The function that creates notification and informs user about fingerprinting activity.
@@ -688,8 +752,8 @@ function cancelCallback(requestDetails) {
 		refreshDb(requestDetails.tabId);
 	}
 
-	// if actualWeight of root group is higher than 0 => suspicious activity
-	if (fpDetectionEnabled && evaluateGroups(requestDetails.tabId)) {
+	// if FPD enabled for the site and actualWeight of root group is higher than 0 => suspicious activity
+	if (isFpdOn(requestDetails.tabId) && evaluateGroups(requestDetails.tabId)) {
 		// get url of tab asociated with this request
 		var tabUrl = availableTabs[requestDetails.tabId] ? availableTabs[requestDetails.tabId].url : undefined;
 
@@ -759,6 +823,12 @@ function cancelCallback(requestDetails) {
  */
 
 function isFpdOn(tabId) {
-	// function preparation for "per url settings"
-	return fpDetectionEnabled;
+	if (!availableTabs[tabId]) {
+		return false;
+	}
+	let url = wwwRemove(new URL(availableTabs[tabId].url).hostname);
+	if (fpDetectionEnabled && !isFpdWhitelisted(url)) {
+		return true;
+	}
+	return false;
 }
