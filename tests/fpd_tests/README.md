@@ -64,4 +64,4 @@ You can add custom test scripts to describe more complex scenarios with these si
     * Body of the test function wrap into try-catch construction (do not count access if exception occurs).
     * Call method `addWrapper(wrappers, *api_name_string*, *access_type_string*, *access_number_int*)` at the end of the function test body for every accessed API that should be wrapped and counted for testing.
 
-Example of custom test script is available [here](/tests/custom.js).
+Example of custom test script is available in *tests/fpd_tests/tests/custom.js*.
