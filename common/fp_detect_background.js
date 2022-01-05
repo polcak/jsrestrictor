@@ -583,47 +583,51 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
  * \param callback Function that stores recieved data into fpDb.
  */
 browser.runtime.onMessage.addListener(function (record, sender) {
-	if (record && record.purpose == "fp-detection") {
-		// check objects existance => if do not exist, create new one
-		fpDb[record.resource] = fpDb[record.resource] || {};
-		fpDb[record.resource][sender.tab.id] = fpDb[record.resource][sender.tab.id] || {};
-		fpDb[record.resource][sender.tab.id][record.type] = fpDb[record.resource][sender.tab.id][record.type] || {};
-		
-		// object that contains access counters
-		const fpCounterObj = fpDb[record.resource][sender.tab.id][record.type];
-		const argsStr = record.args.join();
-		fpCounterObj["args"] = fpCounterObj["args"] || {};
-		
-		// increase counter for accessed arguments
-		fpCounterObj["args"][argsStr] = fpCounterObj["args"][argsStr] || 0;
-		fpCounterObj["args"][argsStr] += 1;
-		
-		// increase counter for total accesses
-		fpCounterObj["total"] = fpCounterObj["total"] || 0;
-		fpCounterObj["total"] += 1;
-	}
-	else if (record && record.purpose == "fpd-state-change") {
-		browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
-			fpDetectionEnabled = result.fpDetectionOn;
-		});
-	}
-	else if (record && record.purpose == "add-fpd-whitelist") {
-		// obtain current hostname and whitelist it
-		var currentHost = record.url;
-		fpdWhitelist[currentHost] = true;
-		browser.storage.sync.set({"fpdWhitelist": fpdWhitelist});
-	}
-	else if (record && record.purpose == "remove-fpd-whitelist") {
-		// obtain current hostname and remove it form whitelist
-		var currentHost = record.url;
-		delete fpdWhitelist[currentHost];
-		browser.storage.sync.set({"fpdWhitelist": fpdWhitelist});
-	}
-	else if (record && record.purpose == "update-fpd-whitelist") {
-		// update current fpdWhitelist from storage
-		browser.storage.sync.get(["fpdWhitelist"]).then(function(result) {
-			fpdWhitelist = result.fpdWhitelist;
-		});
+	if (record) {
+		switch (record.purpose) {
+			case "fp-detection":
+				// check objects existance => if do not exist, create new one
+				fpDb[record.resource] = fpDb[record.resource] || {};
+				fpDb[record.resource][sender.tab.id] = fpDb[record.resource][sender.tab.id] || {};
+				fpDb[record.resource][sender.tab.id][record.type] = fpDb[record.resource][sender.tab.id][record.type] || {};
+				
+				// object that contains access counters
+				const fpCounterObj = fpDb[record.resource][sender.tab.id][record.type];
+				const argsStr = record.args.join();
+				fpCounterObj["args"] = fpCounterObj["args"] || {};
+				
+				// increase counter for accessed arguments
+				fpCounterObj["args"][argsStr] = fpCounterObj["args"][argsStr] || 0;
+				fpCounterObj["args"][argsStr] += 1;
+				
+				// increase counter for total accesses
+				fpCounterObj["total"] = fpCounterObj["total"] || 0;
+				fpCounterObj["total"] += 1;
+				break;
+			case "fpd-state-change":
+				browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
+					fpDetectionEnabled = result.fpDetectionOn;
+				});
+				break;
+			case "add-fpd-whitelist":
+				// obtain current hostname and whitelist it
+				var currentHost = record.url;
+				fpdWhitelist[currentHost] = true;
+				browser.storage.sync.set({"fpdWhitelist": fpdWhitelist});
+				break;
+			case "remove-fpd-whitelist":
+				// obtain current hostname and remove it form whitelist
+				var currentHost = record.url;
+				delete fpdWhitelist[currentHost];
+				browser.storage.sync.set({"fpdWhitelist": fpdWhitelist});
+				break;
+			case "update-fpd-whitelist":
+				// update current fpdWhitelist from storage
+				browser.storage.sync.get(["fpdWhitelist"]).then(function(result) {
+					fpdWhitelist = result.fpdWhitelist;
+				});
+				break;
+		}
 	}
 });
 
