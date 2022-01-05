@@ -150,9 +150,13 @@ section.content {
 	color:  black;
 }
 
-.undo{
+.undo, .alert{
 	background-color: red;
 	color: white;
+}
+
+.alert{
+	padding: 1em;
 }
 
 .hidden{
