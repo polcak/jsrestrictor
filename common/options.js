@@ -292,24 +292,30 @@ window.addEventListener("load", function() {
 	else {
 		insert_levels();
 	}
-	loadWhitelist();
-	load_on_off_switch();
+	loadWhitelist("nbs");
+	load_on_off_switch("nbs");
+	loadWhitelist("fpd");
+	load_on_off_switch("fpd");
 });
 
 document.getElementById("new_level").addEventListener("click",
 	() => prepare_level_config("Add new level"));
 
-document.getElementById("whitelist-add-button").addEventListener("click", () => add_to_whitelist());
-document.getElementById("whitelist-remove-button").addEventListener("click", () => remove_from_whitelist());
-document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_http_request_shield, 200)});
+document.getElementById("nbs-whitelist-add-button").addEventListener("click", () => add_to_whitelist("nbs"));
+document.getElementById("nbs-whitelist-remove-button").addEventListener("click", () => remove_from_whitelist("nbs"));
+document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_slider, 200, "nbs")});
 
-function add_to_whitelist()
+document.getElementById("fpd-whitelist-add-button").addEventListener("click", () => add_to_whitelist("fpd"));
+document.getElementById("fpd-whitelist-remove-button").addEventListener("click", () => remove_from_whitelist("fpd"));
+document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_slider, 200, "fpd")});
+
+function add_to_whitelist(prefix)
 {	
 	//obtain input value
-	var to_whitelist = document.getElementById("whitelist-input").value;
+	var to_whitelist = document.getElementById(prefix + "-whitelist-input").value;
 	if (to_whitelist.trim() !== '')
 	{
-		var listbox = document.getElementById("whitelist-select");
+		var listbox = document.getElementById(prefix + "-whitelist-select");
 		//Check if it's not in whitelist already
 		for (var i = 0; i < listbox.length; i++)
 		{
@@ -322,7 +328,7 @@ function add_to_whitelist()
 		//Insert it
 		listbox.options[listbox.options.length] = new Option(to_whitelist, to_whitelist);
 		//Update background
-		update_whitelist(listbox);
+		update_whitelist(listbox, prefix);
 
 	}
 	else
@@ -332,9 +338,9 @@ function add_to_whitelist()
 
 }
 
-function remove_from_whitelist()
+function remove_from_whitelist(prefix)
 {	
-	var listbox = document.getElementById("whitelist-select");
+	var listbox = document.getElementById(prefix + "-whitelist-select");
 	var selectedIndexes = getSelectValues(listbox);
 
 	var j = 0;
@@ -343,26 +349,27 @@ function remove_from_whitelist()
 		listbox.remove(selectedIndexes[i]-j);
 		j++;
 	}
-	update_whitelist(listbox);
+	update_whitelist(listbox, prefix);
 }
 
-function update_whitelist(listbox)
+function update_whitelist(listbox, prefix)
 {
 	//Create new associative array
 	var whitelistedHosts = new Object();
 	//Obtain all whitelisted hosts from listbox
 	for (var i = 0; i < listbox.length; i++)
-		{
-			whitelistedHosts[listbox.options[i].text] = true;
-		}
-		//Overwrite the whitelist in storage
-		browser.storage.sync.set({"whitelistedHosts":whitelistedHosts});
-		//Send message to background to update whitelist from storage
-		sendMessage({message:"whitelist updated"});
+	{
+		whitelistedHosts[listbox.options[i].text] = true;
+	}
+
+	if (prefix == "nbs") setStorageAndSendMessage({"whitelistedHosts":whitelistedHosts}, {message:"whitelist updated"});
+	if (prefix == "fpd") setStorageAndSendMessage({"fpdWhitelist":whitelistedHosts}, {purpose:"update-fpd-whitelist"});
 }
 
-function sendMessage(message)
+//Overwrite the whitelist in storage and send message to background
+function setStorageAndSendMessage(setter, message)
 {
+	browser.storage.sync.set(setter);
 	browser.runtime.sendMessage(message);
 }
 
@@ -382,33 +389,45 @@ function getSelectValues(select)
   }
   return result;
 }
+
 //Function called on window load, obtains whitelist from storage
 //Displays it in listbox
-function loadWhitelist()
+function loadWhitelist(prefix)
 {	
-	var listbox = document.getElementById("whitelist-select");
+	var listbox = document.getElementById(prefix + "-whitelist-select");
+	
+	var whitelistName;
+	if (prefix == "nbs") whitelistName = "whitelistedHosts";
+	if (prefix == "fpd") whitelistName = "fpdWhitelist";
+	
 	//Get the whitelist
-	browser.storage.sync.get(["whitelistedHosts"]).then(function(result)
+	browser.storage.sync.get([whitelistName]).then(function(result)
 	{
-		if (result.whitelistedHosts != undefined)
+		if (result[whitelistName] != undefined)
       	{
       		//Create list box options for each item
 	        var it = 0;
-	        Object.keys(result.whitelistedHosts).forEach(function(key, index) {
+	        Object.keys(result[whitelistName]).forEach(function(key, index) {
 	        	listbox.options[it++] = new Option(key, key);
-			}, result.whitelistedHosts);
+			}, result[whitelistName]);
   		}
 	});
 }
+
 //Function called on window load, obtains whether is the protection on or off
-function load_on_off_switch()
+function load_on_off_switch(prefix)
 {
-	var checkbox = document.getElementById("switch-checkbox");
+	var checkbox = document.getElementById(prefix + "-switch");
+
+	var flagName;
+	if (prefix == "nbs") flagName = "requestShieldOn";
+	if (prefix == "fpd") flagName = "fpDetectionOn";
+
 	//Obtain the information from storage
-	browser.storage.sync.get(["requestShieldOn"]).then(function(result)
+	browser.storage.sync.get([flagName]).then(function(result)
 	{
 		//Check the box
-		if (result.requestShieldOn || result.requestShieldOn == undefined)
+		if (result[flagName] || result[flagName] == undefined)
 		{
 			checkbox.checked = true;
 		}
@@ -420,21 +439,20 @@ function load_on_off_switch()
 }
 
 //OnClick event handler for On/Off slider
-function control_http_request_shield()
+function control_slider(prefix)
 {
-	var checkbox = document.getElementById("switch-checkbox");
+	var checkbox = document.getElementById(prefix + "-switch");
 	//Send appropriate message and store state into storage
 	if (checkbox.checked)	//Turn ON
 	{
-		sendMessage({message:"turn request shield on"});
-		browser.storage.sync.set({"requestShieldOn": true});
+		if (prefix == "nbs") setStorageAndSendMessage({"requestShieldOn": true}, {message:"turn request shield on"});
+		if (prefix == "fpd") setStorageAndSendMessage({"fpDetectionOn": true}, {purpose:"fpd-state-change"});
 	}
 	else
 	{
-		sendMessage({message:"turn request shield off"});
-		browser.storage.sync.set({"requestShieldOn": false});
+		if (prefix == "nbs") setStorageAndSendMessage({"requestShieldOn": false}, {message:"turn request shield off"});
+		if (prefix == "fpd") setStorageAndSendMessage({"fpDetectionOn": false}, {purpose:"fpd-state-change"});
 	}
-
 }
 
 window.addEventListener("DOMContentLoaded", function() {
@@ -452,4 +470,5 @@ window.addEventListener("DOMContentLoaded", function() {
 	}
 
 	prepareHelpText("nbs");
+	prepareHelpText("fpd");
 });

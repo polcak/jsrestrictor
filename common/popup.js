@@ -110,26 +110,36 @@ document.getElementById('controls').addEventListener('click', function (e) {
 });
 
 window.addEventListener("load", function() {
-	load_fp_switch();
+	load_fpd_switch();
 	load_on_off_switch();
 });
 
 document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200)});
-document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_fp_detection, 200)});
-
-/// Load switch FPD state from storage
-function load_fp_switch()
-{
-	browser.storage.sync.get(["fpDetectionOn"]).then(function(result)
-	{
-		document.getElementById("fpd-switch").checked = result.fpDetectionOn;
-	});
-}
+document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_fpd_whitelist, 200)});
 
 async function getCurrentSite() {
 	let tabs = await browser.tabs.query({currentWindow: true, active: true});
 	//Obtain hostname
 	return wwwRemove(new URL(tabs[0].url).hostname);
+}
+
+/// Load switch FPD state from storage for current site
+async function load_fpd_switch()
+{
+	let {fpDetectionOn} = await browser.storage.sync.get(["fpDetectionOn"]);
+	let container = document.getElementById("fpd_whitelist");
+	if (fpDetectionOn === false)
+	{
+		container.classList.add("off");
+	}
+	else
+	{
+		container.classList.remove("off");
+		let site = await getCurrentSite();
+		//Ask background whether is this site whitelisted or not
+		let response = await browser.runtime.sendMessage({purpose: "fpd-whitelist-check", url: site});
+		document.getElementById("fpd-switch").checked = !response;
+	}
 }
 
 /// Load switch state from storage for current site
@@ -155,7 +165,7 @@ async function load_on_off_switch()
 async function control_whitelist()
 {
 	let site = await getCurrentSite();
-	let message = `${document.getElementById("shield-switch").checked ? "remove" : "add"} site to whitelist`;
+	var message;
 	if (document.getElementById("shield-switch").checked) {
 		message = "remove site from whitelist";
 	}
@@ -167,10 +177,16 @@ async function control_whitelist()
 }
 
 /// Event handler for On/off switch
-function control_fp_detection()
+async function control_fpd_whitelist()
 {
-	var checkbox = document.getElementById("fpd-switch");
-	browser.storage.sync.set({fpDetectionOn: checkbox.checked});
-	browser.runtime.sendMessage({purpose:"fpd-state-change", enabled: checkbox.checked});
+	let site = await getCurrentSite();
+	var message;
+	if (document.getElementById("fpd-switch").checked) {
+		message = "remove-fpd-whitelist";
+	}
+	else {
+		message = "add-fpd-whitelist";
+	}
+	browser.runtime.sendMessage({purpose: message, url: site});
 	showRefreshPageOption();
 }
