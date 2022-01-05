@@ -122,7 +122,7 @@ function load_fp_switch()
 {
 	browser.storage.sync.get(["fpDetectionOn"]).then(function(result)
 	{
-		document.getElementById("fpd-switch").checked = result.fpDetectionOn
+		document.getElementById("fpd-switch").checked = result.fpDetectionOn;
 	});
 }
 
