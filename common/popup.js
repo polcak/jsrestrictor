@@ -176,13 +176,12 @@ window.addEventListener("load", function() {
 	if (!site) {
 		return;
 	}
-	load_fp_switch();
-	load_fpd_switch();
-	load_on_off_switch();
+	load_on_off_switch("nbs");
+	load_on_off_switch("fpd");
 });
 
-document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200)});
-document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_fpd_whitelist, 200)});
+document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200, "nbs")});
+document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_whitelist, 200, "fpd")});
 
 async function getCurrentSite() {
 	if (typeof site !== "undefined") return site;
@@ -200,31 +199,16 @@ async function getCurrentSite() {
 	}
 }
 
-/// Load switch FPD state from storage for current site
-async function load_fpd_switch()
-{
-	let {fpDetectionOn} = await browser.storage.sync.get(["fpDetectionOn"]);
-	let container = document.getElementById("fpd_whitelist");
-	if (fpDetectionOn === false)
-	{
-		container.classList.add("off");
-	}
-	else
-	{
-		container.classList.remove("off");
-		let site = await getCurrentSite();
-		//Ask background whether is this site whitelisted or not
-		let response = await browser.runtime.sendMessage({purpose: "fpd-whitelist-check", url: site});
-		document.getElementById("fpd-switch").checked = !response;
-	}
-}
-
 /// Load switch state from storage for current site
-async function load_on_off_switch()
+async function load_on_off_switch(prefix)
 {
-	let {requestShieldOn} = await browser.storage.sync.get(["requestShieldOn"]);
-	let container = document.getElementById("http_shield_whitelist");
-	if (requestShieldOn === false)
+	var flagName;
+	if (prefix == "nbs") flagName = "requestShieldOn";
+	if (prefix == "fpd") flagName = "fpDetectionOn";
+	
+	let result = await browser.storage.sync.get([flagName]);
+	let container = document.getElementById(prefix + "_whitelist");
+	if (result[flagName] === false)
 	{
 		container.classList.add("off");
 	}
@@ -232,38 +216,35 @@ async function load_on_off_switch()
 	{
 		container.classList.remove("off");
 		//Ask background whether is this site whitelisted or not
-		let response = await browser.runtime.sendMessage({message: "is current site whitelisted?", site});
-		document.getElementById("shield-switch").checked = response !== "current site is whitelisted";
+		if (prefix == "nbs") 
+		{
+			let response = await browser.runtime.sendMessage({message: "is current site whitelisted?", site});
+			document.getElementById(prefix + "-switch").checked = response !== "current site is whitelisted";
+		}
+		if (prefix == "fpd")
+		{
+			let response = await browser.runtime.sendMessage({purpose: "fpd-whitelist-check", url: site});
+			document.getElementById(prefix + "-switch").checked = !response;
+		}
 	}
 }
 
 /// Event handler for On/off switch
-async function control_whitelist()
+async function control_whitelist(prefix)
 {
 	let site = await getCurrentSite();
 	var message;
-	if (document.getElementById("shield-switch").checked) {
-		message = "remove site from whitelist";
+	if (document.getElementById(prefix + "-switch").checked) {
+		if (prefix == "nbs") message = "remove site from whitelist";
+		if (prefix == "fpd") message = "remove-fpd-whitelist";
 	}
 	else {
-		message = "add site to whitelist";
+		if (prefix == "nbs") message = "add site to whitelist";
+		if (prefix == "fpd") message = "add-fpd-whitelist";
 	}
-	browser.runtime.sendMessage({message, site});
-	showRefreshPageOption();
-}
 
-/// Event handler for On/off switch
-async function control_fpd_whitelist()
-{
-	let site = await getCurrentSite();
-	var message;
-	if (document.getElementById("fpd-switch").checked) {
-		message = "remove-fpd-whitelist";
-	}
-	else {
-		message = "add-fpd-whitelist";
-	}
-	browser.runtime.sendMessage({purpose: message, url: site});
+	if (prefix == "nbs") browser.runtime.sendMessage({message, site});
+	if (prefix == "fpd") browser.runtime.sendMessage({purpose: message, url: site});
 	showRefreshPageOption();
 }
 
