@@ -68,9 +68,9 @@
     `;
 
   function shake(axis) {
-    val = prng() * (axis.max - axis.min) + axis.min;
+    val = sen_prng() * (axis.max - axis.min) + axis.min;
     if (axis.canBeNegative) {
-      val *= Math.round(prng()) ? 1 : -1;
+      val *= Math.round(sen_prng()) ? 1 : -1;
     }
     axis.value = val.toFixed(axis.decimalPlaces);
   }
@@ -81,20 +81,23 @@
 
     dataGen = {
       x: {
+        name: "x",
         min: 0.0,
-        max: 0.1,
+        max: 0.11,
         decimalPlaces: 1,
         canBeNegative: true,
         value: null,
       },
       y: {
+        name: "y",
         min: 0.0,
-        max: 0.1,
+        max: 0.11,
         decimalPlaces: 1,
         canBeNegative: true,
         value: null,
       },
       z: { // "z with gravity" (for Accelerometer)
+        name: "z_g",
         min: 9.8,
         max: 9.9,
         decimalPlaces: 1,
@@ -102,6 +105,7 @@
         value: null,
       },
       z_nograv: { // "z without gravity" (for LinearAccelerationSensor)
+        name: "z_ng",
         min: 0.0,
         max: 0.2,
         decimalPlaces: 1,
@@ -150,7 +154,7 @@
 
       setNextChangeX: function(currentTimestamp) {
         let interval_ms = Math.floor(
-          prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
+          sen_prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
           + NEXT_CHANGE_MS_MIN
         );
         this.nextChangeTimeX = currentTimestamp + interval_ms;
@@ -158,7 +162,7 @@
 
       setNextChangeY: function(currentTimestamp) {
         let interval_ms = Math.floor(
-          prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
+          sen_prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
           + NEXT_CHANGE_MS_MIN
         );
         this.nextChangeTimeY = currentTimestamp + interval_ms;
@@ -207,15 +211,15 @@
       console.log(dataGenerator);
     }
   }
-
   var generators = `
+    // Get seed for sen_prng: prefer existing seed, then domain hash, session hash
 
-
-    // Initialize the field generator, if not initialized before
+    // Initialize the data generator, if not initialized before
     var dataGenerator = dataGenerator || initDataGenerator();
     `;
 
-  var helping_functions = initDataGenerator + shake + updateReadings;
+  var helping_functions = sensorapi_prng_functions
+      + initDataGenerator + shake + updateReadings;
   var hc = init_data + orig_getters + helping_functions + generators;
 
   var wrappers = [

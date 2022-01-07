@@ -27,9 +27,10 @@
   *
   */
 
+var sensorapi_prng_functions = `
   // Generates a 32-bit from a string. Inspired by MurmurHash3 algorithm
   // See: https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
-  function generateSeed(s) {
+  function sen_generateSeed(s) {
     var h;
     for(var i = 0, h = 1779033703 ^ s.length; i < s.length; i++)
       h = Math.imul(h ^ s.charCodeAt(i), 3432918353),
@@ -38,23 +39,23 @@
   }
 
   // Get seed for PRNG: prefer existing seed, then domain hash, session hash
-  var seed = seed ||
+  var sen_seed = sen_seed ||
     ((typeof domainHash === 'undefined') ?
-    generateSeed(Hashes.sessionHash) :
-    generateSeed(domainHash));
+    sen_generateSeed(Hashes.sessionHash) :
+    sen_generateSeed(domainHash));
 
 
   // PRNG based on Mulberry32 algorithm
   // See: https://gist.github.com/tommyettinger/46a874533244883189143505d203312c
-  function prng() {
+  function sen_prng() {
     // expects "seed" variable to be a 32-bit value
-    var t = seed += 0x6D2B79F5;
+    var t = sen_seed += 0x6D2B79F5;
     t = Math.imul(t ^ t >>> 15, t | 1);
     t ^= t + Math.imul(t ^ t >>> 7, t | 61);
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
   }
 
-  function generateAround(number, tolerance) {
+  function sen_generateAround(number, tolerance) {
     // Generates a number around the input number
 
     let min = number - tolerance * tolerance;
@@ -62,3 +63,4 @@
 
     return prng() * (max - min) + min;
   }
+`;

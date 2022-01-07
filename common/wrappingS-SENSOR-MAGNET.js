@@ -65,7 +65,7 @@
   * - The readings are deterministic - e.g., for a given website and time, we must
   *   be able to say what values to return.
   *
-  * For every "random" toss-up, we use the Mulberry32 PRNG that is seeded with a value
+  * For every "random" toss-up, we use the Mulberry32 sen_prng that is seeded with a value
   * generated from the `domainHash` which ensures deterministic behavior for the given
   * website. First, we choose the desired total strength `M` of the magnetic field at
   * our simulated location. This is a pseudo-random number from 25 to 60 uT, like on
@@ -147,7 +147,7 @@
     // Configures an array of sines for the given settings
 
     // How many sines we have?
-    var cnt = Math.floor(prng() * (cntMax - cntMin + 1) + cntMin);
+    var cnt = Math.floor(sen_prng() * (cntMax - cntMin + 1) + cntMin);
 
     // max difference from base period
     const TOLERANCE_MAX = 0.5;
@@ -162,11 +162,11 @@
 
     for (let i = 0; i < cnt; i++) {
       let s = new SineCfg();
-      let fluctuationFactor = prng() * (fluctMinMax) + fluctMax;
+      let fluctuationFactor = sen_prng() * (fluctMinMax) + fluctMax;
 
       s.center = center;
       s.amplitude = sineAmplitude * fluctuationFactor;
-      s.shift = prng() * TWOPI;
+      s.shift = sen_prng() * TWOPI;
 
       let series = i % 5;
 
@@ -181,19 +181,19 @@
           }
 
           // Minimal sampling rate (default: 100 miliseconds)
-          s.period = generateAround(periodMin, tolerance);
+          s.period = sen_generateAround(periodMin, tolerance);
         break;
         case 1: // Seconds
-          s.period = generateAround(1000, tolerance);
+          s.period = sen_generateAround(1000, tolerance);
         break;
         case 2: // Tens of seconds
-          s.period = generateAround(10000, tolerance);
+          s.period = sen_generateAround(10000, tolerance);
         break;
         case 3: // Minutes
-          s.period = generateAround(60000, tolerance);
+          s.period = sen_generateAround(60000, tolerance);
         break;
         case 4: // Hours
-          s.period = generateAround(3600000, tolerance);
+          s.period = sen_generateAround(3600000, tolerance);
         break;
       }
       sines.push(s);
@@ -305,13 +305,13 @@
     // Generate a random base field
     const FIELD_MIN = 25;
     const FIELD_MAX = 60;
-    return prng() * (FIELD_MIN - FIELD_MAX) + FIELD_MAX;
+    return sen_prng() * (FIELD_MIN - FIELD_MAX) + FIELD_MAX;
   }
 
   function generateAxisBase() {
     // Returns a number in (-1,1)
-    var v = prng(); // Random in [0,1)
-    v *= Math.round(prng()) ? 1 : -1; // 50% change for positive / negative
+    var v = sen_prng(); // Random in [0,1)
+    v *= Math.round(sen_prng()) ? 1 : -1; // 50% change for positive / negative
     return v;
   }
 
@@ -353,19 +353,19 @@
       console.log(fieldGenerator);
     }
   }
-
+/*
+  var generators = "";
+*/
   var generators = `
-    // Get seed for PRNG: prefer existing seed, then domain hash, session hash
-    var seed = seed ||
-      ((typeof domainHash === 'undefined') ?
-      generateSeed(Hashes.sessionHash) :
-      generateSeed(domainHash));
+    // Get seed for sen_prng: prefer existing seed, then domain hash, session hash
 
     // Initialize the field generator, if not initialized before
     var fieldGenerator = fieldGenerator || initFieldGenerator();
     `;
 
-  var helping_functions = SineCfg + configureSines + initFieldGenerator
+
+  var helping_functions = sensorapi_prng_functions
+          + SineCfg + configureSines + initFieldGenerator
           + generateBaseField + generateAxisBase + updateReadings;
   var hc = init_data + orig_getters + helping_functions + generators;
 

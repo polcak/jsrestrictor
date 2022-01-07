@@ -514,7 +514,7 @@ var wrapping_groups = {
 				"Magnetometer.prototype.x",
         "Magnetometer.prototype.y",
         "Magnetometer.prototype.z",
-
+        
         // Accelerometer
         "Accelerometer.prototype.x",
         "Accelerometer.prototype.y",
@@ -530,7 +530,6 @@ var wrapping_groups = {
         "GravitySensor.prototype.x",
         "GravitySensor.prototype.y",
         "GravitySensor.prototype.z",
-
 
         // DEVICE ORIENTATION SENSOR
         // TODO
