@@ -67,37 +67,8 @@
     var origGetTimestamp = Object.getOwnPropertyDescriptor(Sensor.prototype, "timestamp").get;
     `;
 
-  // Generates a 32-bit from a string. Inspired by MurmurHash3 algorithm
-  // See: https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
-  function generateSeed(s) {
-    var h;
-    for(var i = 0, h = 1779033703 ^ s.length; i < s.length; i++)
-      h = Math.imul(h ^ s.charCodeAt(i), 3432918353),
-      h = h << 13 | h >>> 19;
-    return h;
-  }
-
-  // PRNG based on Mulberry32 algorithm
-  // See: https://gist.github.com/tommyettinger/46a874533244883189143505d203312c
-  function prng() {
-    // expects "seed" variable to be a 32-bit value
-    var t = seed += 0x6D2B79F5;
-    t = Math.imul(t ^ t >>> 15, t | 1);
-    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  }
-
-  function generateAround(number, tolerance) {
-    // Generates a number around the input number
-
-    let min = number - tolerance * tolerance;
-    let max = number + number * tolerance;
-
-    return prng() * (max - min) + min;
-  }
-
   function shake(axis) {
-    val = prng() * (axis.max - axis.min) + axis.max;
+    val = prng() * (axis.max - axis.min) + axis.min;
     if (axis.canBeNegative) {
       val *= Math.round(prng()) ? 1 : -1;
     }
@@ -123,9 +94,16 @@
         canBeNegative: true,
         value: null,
       },
-      z: {
+      z: { // "z with gravity" (for Accelerometer)
         min: 9.8,
         max: 9.9,
+        decimalPlaces: 1,
+        canBeNegative: false,
+        value: null,
+      },
+      z_nograv: { // "z without gravity" (for LinearAccelerationSensor)
+        min: 0.0,
+        max: 0.2,
         decimalPlaces: 1,
         canBeNegative: false,
         value: null,
@@ -145,6 +123,7 @@
           this.setNextChangeY(currentTimestamp);
         };
         shake(this.z);
+        shake(this.z_nograv);
       },
 
       shouldWeUpdateX: function(currentTimestamp) {
@@ -222,6 +201,7 @@
     currentReading.fake_x = dataGenerator.x.value;
     currentReading.fake_y = dataGenerator.y.value;
     currentReading.fake_z = dataGenerator.z.value;
+    currentReading.fake_z_nograv = dataGenerator.z_nograv.value;
 
     if (debugMode) {
       console.log(dataGenerator);
@@ -229,18 +209,13 @@
   }
 
   var generators = `
-    // Get seed for PRNG: prefer existing seed, then domain hash, session hash
-    var seed = seed ||
-      ((typeof domainHash === 'undefined') ?
-      generateSeed(Hashes.sessionHash) :
-      generateSeed(domainHash));
+
 
     // Initialize the field generator, if not initialized before
     var dataGenerator = dataGenerator || initDataGenerator();
     `;
 
-  var helping_functions = generateSeed + prng + generateAround
-          + initDataGenerator + shake + updateReadings;
+  var helping_functions = initDataGenerator + shake + updateReadings;
   var hc = init_data + orig_getters + helping_functions + generators;
 
   var wrappers = [
@@ -262,9 +237,14 @@
               property_name: "get",
               property_value: `
               function() {
-               updateReadings(this);
-               return currentReading.fake_x;
-             }`,
+                updateReadings(this);
+                if (this.__proto__.constructor.name === 'LinearAccelerationSensor') {
+                  if (currentReading.fake_x != null) {
+                    return 0;
+                  }
+                }
+                return currentReading.fake_x;
+              }`,
             },
           ],
         }
@@ -288,9 +268,14 @@
               property_name: "get",
               property_value: `
               function() {
-               updateReadings(this);
-               return currentReading.fake_y;
-             }`,
+                updateReadings(this);
+                if (this.__proto__.constructor.name === 'LinearAccelerationSensor') {
+                  if (currentReading.fake_y != null) {
+                    return 0;
+                  }
+                }
+                return currentReading.fake_y;
+              }`,
             },
           ],
         }
@@ -314,9 +299,14 @@
               property_name: "get",
               property_value: `
               function() {
-               updateReadings(this);
-               return currentReading.fake_z;
-             }`,
+                updateReadings(this);
+                if (this.__proto__.constructor.name === 'GravitySensor') {
+                  if (currentReading.fake_z != null) {
+                    return (currentReading.fake_z - currentReading.fake_z_nograv);
+                  }
+                }
+                return currentReading.fake_z_nograv;
+              }`,
             },
           ],
         }

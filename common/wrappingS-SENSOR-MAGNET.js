@@ -133,34 +133,7 @@
     var origGetTimestamp = Object.getOwnPropertyDescriptor(Sensor.prototype, "timestamp").get;
     `;
 
-  // Generates a 32-bit from a string. Inspired by MurmurHash3 algorithm
-  // See: https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
-  function generateSeed(s) {
-    var h;
-    for(var i = 0, h = 1779033703 ^ s.length; i < s.length; i++)
-      h = Math.imul(h ^ s.charCodeAt(i), 3432918353),
-      h = h << 13 | h >>> 19;
-    return h;
-  }
 
-  // PRNG based on Mulberry32 algorithm
-  // See: https://gist.github.com/tommyettinger/46a874533244883189143505d203312c
-  function prng() {
-    // expects "seed" variable to be a 32-bit value
-    var t = seed += 0x6D2B79F5;
-    t = Math.imul(t ^ t >>> 15, t | 1);
-    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  }
-
-  function generateAround(number, tolerance) {
-    // Generates a number around the input number
-
-    let min = number - tolerance * tolerance;
-    let max = number + number * tolerance;
-
-    return prng() * (max - min) + min;
-  }
 
   function SineCfg() {
     this.center = 0;
@@ -392,8 +365,7 @@
     var fieldGenerator = fieldGenerator || initFieldGenerator();
     `;
 
-  var helping_functions = generateSeed + prng + generateAround
-          + SineCfg + configureSines + initFieldGenerator
+  var helping_functions = SineCfg + configureSines + initFieldGenerator
           + generateBaseField + generateAxisBase + updateReadings;
   var hc = init_data + orig_getters + helping_functions + generators;
 
