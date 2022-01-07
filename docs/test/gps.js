@@ -31,7 +31,12 @@ function showGPSData() {
 	clearInterval(gettingGPSDataInterval);
 	var gpsDataObject;
 	var gpsGetDataAttemptsRemaining = 100;
-	getGPSData();
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(getGPSDataObject);
+	} else {
+		document.getElementById("placeToWriteGPSDetails").innerHTML = "Geolocation is not supported by this browser.";
+		return;
+	}
 
 	gettingGPSDataInterval = setInterval(function(){
 		if (gpsGetDataAttemptsRemaining) {
@@ -43,13 +48,6 @@ function showGPSData() {
 		gpsGetDataAttemptsRemaining--;
 	}, 200);
 
-	function getGPSData() {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(getGPSDataObject);
-		} else {
-			document.getElementById("placeToWriteGPSDetails").innerHTML = "Geolocation is not supported by this browser.";
-		}
-	}
 
 	function getGPSDataObject(position) {
 		gpsDataObject = position;
