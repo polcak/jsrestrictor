@@ -297,7 +297,7 @@ Again, only the first 10 lines of the FPD analysis result are listed below. Comp
 | Document.prototype.elementsFromPoint           |     12         | 12,469         | 11,365        |  46 938                   |     44               |  1 598              |  46 894            |  45 340           | 0,999                    | 0,966                 |
 | Navigator.prototype.javaEnabled                |     11         | 10,892         | 10,892        |  110 665                  |  3 677               |  3 679              |  106 988           |  106 986          | 0,967                    | 0,967                 |
 
-More about FingerPrint Detector is written in the [following blogpost](TODO).
+More about FingerPrint Detector is written in the [following blogpost](./fpdetection.md).
 
 ## Conclusion
 
