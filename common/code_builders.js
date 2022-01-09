@@ -402,7 +402,7 @@ function wrap_code(level) {
 				for (let accessor of ["set", "get"]) {
 					if (typeof d[accessor] === "function") {
 						let f = d[accessor];
-						d[accessor] = exportFunction(d[accessor], obj, {});
+						d[accessor] = exportFunction(d[accessor], obj, {defineAs: `${accessor} ${prop}`});
 					}
 				}
 				if (typeof d.value === "object") d.value = forPage(d.value);
