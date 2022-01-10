@@ -3,6 +3,7 @@
  *
  * \author Copyright (C) 2020  Libor Polcak
  * \author Copyright (C) 2021  Giorgio Maone
+ * \author Copyright (C) 2022  Marek Salon
  *
  * \license SPDX-License-Identifier: GPL-3.0-or-later
  */
