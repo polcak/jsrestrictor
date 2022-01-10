@@ -25,6 +25,7 @@
 /** \file
  * \ingroup wrappers
  *
+ * MOTIVATION
  * The risk of using Generic Sensor API calls for device fingerprinting is
  * mentioned within the W3C Candidate Recommendation Draft, 29 July 2021
  * (https://www.w3.org/TR/2021/CRD-generic-sensor-20210729/#device-fingerprinting)
@@ -45,6 +46,9 @@
  * - Xiaomi Redmi Note 5; Android 9, kernel 4.4.156-perf+, Build/9 PKQ1.180901.001
  *   Chrome 94.0.4606.71
  *
+ *
+ * WRAPPING
+ *
  * The wrapper thus protects device by changing the time origin to the browsing context
  * creation time, whereas the timestamp should still uniquely identify the reading.
  * This is achieved in the following way:
@@ -57,8 +61,10 @@
  *   by the mitigation function before return. The mitigation may round and (optionally)
  *   add noise to the resulting timestamp.
  *
- * NOTE: Possible enhancement - in protection level 2, the timestamp origin may be set
- * to a random value based on the session hash. This can serve as a "fake boot time."
+ *
+ * POSSIBLE IMPROVEMENTS
+ * in protection level 2, the timestamp origin may be set to a random value based
+ * on the session hash. This can serve as a "fake boot time."
  */
 
  /*

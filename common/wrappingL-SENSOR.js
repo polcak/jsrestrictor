@@ -26,7 +26,6 @@
   * \ingroup wrappers
   *
   */
-
 var sensorapi_prng_functions = `
   // Generates a 32-bit from a string. Inspired by MurmurHash3 algorithm
   // See: https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp

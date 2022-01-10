@@ -24,15 +24,33 @@
 
  /** \file
   * \ingroup wrappers
+  * MOTIVATION
+  * Readings from the Accelerometer, LinearAccelerationSensor, and GravitySensor
+  * of the Generic Sensor API should be secured as they provide a potentially
+  * valuable data for creating fingerprints. There are multiple options.
+  * A unique fingerprint can be obtained by describing the device's vibrations
+  * (See https://link.springer.com/chapter/10.1007/978-3-319-30806-7_7).
+  * Using trajectory inference and matching of the model to map data, one may
+  * use the readings from the Accelerometer to determing the device's position
+  * (See https://www.researchgate.net/publication/220990763_ACComplice_Location_
+  * inference_using_accelerometers_on_smartphones).
   *
   *
   * WRAPPING
-  * For a stationary device lying bottom down on a flat surface, only the `z`
-  * axis is affected by gravity. The `x` and `y` axes should be set to zero.
+  * The wrapper replaces the "XYZ" getters of the Accelerometer sensor,
+  * LinearAccelerationSensor, and GravitySensor. The wrapping's goal is to
+  * simulate a stationary device that is lying bottom down on a flat surface,
+  * e.g., a cell phone on the table. In such a case, only the `z` axis is
+  * affected by gravity. The `x` and `y` axes values should be set to zero.
   * Yet, there could be vibrations that may change values a little bit, e.g.,
-  * to spin around -0.2 to +0.2. This usually does not happed with every
+  * to spin around -0.1 to +0.1. This usually does not happed with every
   * reading but only in intervals of seconds. And thus, after a few seconds
-  * we pseudo-randomly change these values.
+  * we pseudo-randomly change these values. For the LinearAccelerationSensor,
+  * the returned values should represent the acceleration without the conribution
+  * of gravity. For stationary devices, the `x` and `y` are zeroes, while the 'z'
+  * portion fluctuates between 0 and 0.1 on the examined devices. The wrapper
+  * simulates the same behavior. Lastly, the GravitySensor's readings are calculated
+  * as the difference between the previous two.
   *
   *
   * POSSIBLE IMPROVEMENTS
@@ -107,7 +125,7 @@
       z_nograv: { // "z without gravity" (for LinearAccelerationSensor)
         name: "z_ng",
         min: 0.0,
-        max: 0.2,
+        max: 0.11,
         decimalPlaces: 1,
         canBeNegative: false,
         value: null,
@@ -212,8 +230,6 @@
     }
   }
   var generators = `
-    // Get seed for sen_prng: prefer existing seed, then domain hash, session hash
-
     // Initialize the data generator, if not initialized before
     var dataGenerator = dataGenerator || initDataGenerator();
     `;
@@ -305,11 +321,11 @@
               function() {
                 updateReadings(this);
                 if (this.__proto__.constructor.name === 'GravitySensor') {
-                  if (currentReading.fake_z != null) {
-                    return (currentReading.fake_z - currentReading.fake_z_nograv);
-                  }
+                  return (currentReading.fake_z - currentReading.fake_z_nograv);
+                } else if (this.__proto__.constructor.name === 'LinearAccelerationSensor') {
+                  return currentReading.fake_z_nograv;
                 }
-                return currentReading.fake_z_nograv;
+                return currentReading.fake_z;
               }`,
             },
           ],

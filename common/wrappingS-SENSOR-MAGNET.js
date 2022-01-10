@@ -108,6 +108,11 @@
   * values should be a subject of future research and improvements. Perphaps, a correlation
   * analysis with real mesurements could help in the future.
   *
+  *
+  * POSSIBLE IMPROVEMENTS
+  * The initial toss-up of the device orientation can be utilized in other sensors, e.g.,
+  * the Absolute Orientation Sensor frequently uses an underlying magnetometer device.
+  * The orientation should be unified across the individual wrappers.
   */
 
   /*
@@ -357,8 +362,6 @@
   var generators = "";
 */
   var generators = `
-    // Get seed for sen_prng: prefer existing seed, then domain hash, session hash
-
     // Initialize the field generator, if not initialized before
     var fieldGenerator = fieldGenerator || initFieldGenerator();
     `;
