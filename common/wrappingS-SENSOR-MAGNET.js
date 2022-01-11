@@ -65,7 +65,7 @@
   * - The readings are deterministic - e.g., for a given website and time, we must
   *   be able to say what values to return.
   *
-  * For every "random" toss-up, we use the Mulberry32 sen_prng that is seeded with a value
+  * For every "random" draw, we use the Mulberry32 sen_prng that is seeded with a value
   * generated from the `domainHash` which ensures deterministic behavior for the given
   * website. First, we choose the desired total strength `M` of the magnetic field at
   * our simulated location. This is a pseudo-random number from 25 to 60 uT, like on
@@ -119,7 +119,9 @@
    * Create private namespace
    */
 (function() {
-
+  /*
+    * \brief Initialization of data for storing sensor readings
+  */
   var init_data = `
     var currentReading = currentReading || {orig_x: null, orig_y: null, orig_z: null, timestamp: null,
                       fake_x: null, fake_y: null, fake_z: null};
@@ -131,6 +133,9 @@
     const TWOPI = 2 * Math.PI;
     `;
 
+  /*
+    * \brief Property getters of the original sensor object
+  */
   var orig_getters = `
     var origGetX = Object.getOwnPropertyDescriptor(Magnetometer.prototype, "x").get;
     var origGetY = Object.getOwnPropertyDescriptor(Magnetometer.prototype, "y").get;
@@ -138,8 +143,9 @@
     var origGetTimestamp = Object.getOwnPropertyDescriptor(Sensor.prototype, "timestamp").get;
     `;
 
-
-
+  /*
+    * \brief Constructor of the sine configuration object
+  */
   function SineCfg() {
     this.center = 0;
     this.amplitude = 1;
@@ -147,6 +153,17 @@
     this.period = 1;
   }
 
+  /*
+    * \brief Creates sine configurations based on the given settings
+    *
+    * \param Minimum number of sines
+    * \param Maximum number of sines
+    * \param Center 'y' value that the sine should spin around
+    * \param Minimal fluctuation factor of a sine
+    * \param Maximal fluctuation factor of a sine
+    * \param Minimal period of a sine
+    * \param Maximal period of a sine
+  */
   function configureSines(cntMin, cntMax, center, flucMin, fluctMax, periodMin, periodMax) {
     // This is helping function for the field generator
     // Configures an array of sines for the given settings
@@ -206,6 +223,10 @@
     return sines;
   }
 
+  /*
+    * \brief Initializes the fake magnetic field generator
+    *        (Modify the constants below to change the generator's behavior.)
+  */
   function initFieldGenerator() {
     // Specifies, how much the values may (pseudorandomly) oscillate,
     // i.e., how much the may relatively differ from the chosen center value
@@ -225,10 +246,9 @@
     // by oscillating in periods smaller than this value
     const MIN_SAMPLING_RATE = 100; // [ms]
 
-    // Period
+    // Period configuration
     const PERIOD_MIN = MIN_SAMPLING_RATE;
     const PERIOD_MAX = 60000 // 1 minute
-
 
     let m = generateBaseField();
     baseX = generateAxisBase();
@@ -306,13 +326,18 @@
     return fieldGen;
   }
 
+  /*
+    * \brief Pseudorandomly draws the desired total magnetic field around the device
+  */
   function generateBaseField() {
-    // Generate a random base field
     const FIELD_MIN = 25;
     const FIELD_MAX = 60;
     return sen_prng() * (FIELD_MIN - FIELD_MAX) + FIELD_MAX;
   }
 
+  /*
+    * \brief Pseudorandomly draws the orientation of X, Y, Z axes
+  */
   function generateAxisBase() {
     // Returns a number in (-1,1)
     var v = sen_prng(); // Random in [0,1)
@@ -320,6 +345,12 @@
     return v;
   }
 
+  /*
+    * \brief Updates the stored (both real and fake) sensor readings
+    *        according to the data from the sensor object.
+    *
+    * \param The sensor object
+  */
   function updateReadings(sensorObject) {
     // We need the original reading's timestamp to see if it differs
     // from the previous sample. If so, we need to update the faked x,y,z
@@ -358,14 +389,14 @@
       console.log(fieldGenerator);
     }
   }
-/*
-  var generators = "";
-*/
+
+  /*
+    * \brief Initializes the related generators
+  */
   var generators = `
     // Initialize the field generator, if not initialized before
     var fieldGenerator = fieldGenerator || initFieldGenerator();
     `;
-
 
   var helping_functions = sensorapi_prng_functions
           + SineCfg + configureSines + initFieldGenerator

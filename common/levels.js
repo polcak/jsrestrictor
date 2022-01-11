@@ -520,16 +520,10 @@ var wrapping_groups = {
         "Accelerometer.prototype.y",
         "Accelerometer.prototype.z",
 
-        // DEVICE ORIENTATION SENSOR
-        // TODO
-
-        // PROXIMITY SENSOR
-        // TODO
-
-        // AMBIENT LIGHT SENSOR
-        // TODO
-
-        // TODO: Decide if Bluetooth / NFC belongs here
+        // Here, we will add references to other GenericSensorAPI
+        // sensor wrappers (DeviceOrientationSensor, AmbientLightSensor,
+        // ProximitySensor, ...)
+        // We should also decide whether Bluetooth / NFC belongs here
 			],
 		},
 		{

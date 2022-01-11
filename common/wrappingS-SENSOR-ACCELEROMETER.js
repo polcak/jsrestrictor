@@ -1,7 +1,10 @@
 /** \file
- * \brief Wrappers for the Accelerometer Sensor
+ * \brief Wrappers for the Accelerometer Sensor, LinearAccelerationSensor,
+ * and GravitySensor
  *
  * \see https://www.w3.org/TR/accelerometer/
+ * \see https://www.w3.org/TR/accelerometer/#linearaccelerationsensor
+ * \see https://www.w3.org/TR/accelerometer/#gravitysensor
  *
  *  \author Copyright (C) 2021  Radek Hranicky
  *
@@ -66,7 +69,9 @@
    * Create private namespace
    */
 (function() {
-
+  /*
+    * \brief Initialization of data for storing sensor readings
+  */
   var init_data = `
     var currentReading = currentReading || {orig_x: null, orig_y: null, orig_z: null, timestamp: null,
                       fake_x: null, fake_y: null, fake_z: null};
@@ -78,6 +83,9 @@
     const TWOPI = 2 * Math.PI;
     `;
 
+  /*
+    * \brief Property getters of the original sensor object
+  */
   var orig_getters = `
     var origGetX = Object.getOwnPropertyDescriptor(Accelerometer.prototype, "x").get;
     var origGetY = Object.getOwnPropertyDescriptor(Accelerometer.prototype, "y").get;
@@ -85,6 +93,11 @@
     var origGetTimestamp = Object.getOwnPropertyDescriptor(Sensor.prototype, "timestamp").get;
     `;
 
+  /*
+    * \brief Changes the value on the given axis to a new one from the given interval
+    *
+    * \param the axis object (min, max, value, and decimalPlaces properties required)
+  */
   function shake(axis) {
     val = sen_prng() * (axis.max - axis.min) + axis.min;
     if (axis.canBeNegative) {
@@ -93,6 +106,9 @@
     axis.value = val.toFixed(axis.decimalPlaces);
   }
 
+  /*
+    * \brief Initializes the data generator or creating fake accelerometer values
+  */
   function initDataGenerator() {
     const NEXT_CHANGE_MS_MIN = 1000;
     const NEXT_CHANGE_MS_MAX = 10000;
@@ -133,7 +149,11 @@
       nextChangeTimeX: null, // miliseconds
       nextChangeTimeY: null,
 
-      // Update x/y/z values based on timestamp
+      /*
+        * \brief Updates the  x/y/z axes values based on the current timestamp
+        *
+        * \param Current timestamp from the sensor object
+      */
       update: function(currentTimestamp) {
       // Simulate the accelerometer changes
         if (this.shouldWeUpdateX(currentTimestamp)) {
@@ -148,6 +168,12 @@
         shake(this.z_nograv);
       },
 
+      /*
+        * \brief Boolean function that decides if the value on the axis X
+        *        should be updated. Returns true if update is needed.
+        *
+        * \param Current timestamp from the sensor object
+      */
       shouldWeUpdateX: function(currentTimestamp) {
         if (currentTimestamp === null || this.nextChangeTimeX === null) {
           return true;
@@ -159,6 +185,12 @@
         }
       },
 
+      /*
+        * \brief Boolean function that decides if the value on the axis Y
+        *        should be updated. Returns true if update is needed.
+        *
+        * \param Current timestamp from the sensor object
+      */
       shouldWeUpdateY: function(currentTimestamp) {
         if (currentTimestamp === null || this.nextChangeTimeY === null) {
           return true;
@@ -170,6 +202,11 @@
         }
       },
 
+      /*
+        * \brief Sets the timestamp of the next update of value on the axis X.
+        *
+        * \param Current timestamp from the sensor object
+      */
       setNextChangeX: function(currentTimestamp) {
         let interval_ms = Math.floor(
           sen_prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
@@ -178,6 +215,11 @@
         this.nextChangeTimeX = currentTimestamp + interval_ms;
       },
 
+      /*
+        * \brief Sets the timestamp of the next update of value on the axis Y.
+        *
+        * \param Current timestamp from the sensor object
+      */
       setNextChangeY: function(currentTimestamp) {
         let interval_ms = Math.floor(
           sen_prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
@@ -190,6 +232,12 @@
     return dataGen;
   }
 
+  /*
+    * \brief Updates the stored (both real and fake) sensor readings
+    *        according to the data from the sensor object.
+    *
+    * \param The sensor object
+  */
   function updateReadings(sensorObject) {
     // We need the original reading's timestamp to see if it differs
     // from the previous sample. If so, we need to update the faked x,y,z
@@ -229,6 +277,10 @@
       console.log(dataGenerator);
     }
   }
+
+  /*
+    * \brief Initializes the related generators
+  */
   var generators = `
     // Initialize the data generator, if not initialized before
     var dataGenerator = dataGenerator || initDataGenerator();

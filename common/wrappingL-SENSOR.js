@@ -25,6 +25,7 @@
  /** \file
   * \ingroup wrappers
   *
+  * Supporting fuctions for Generic Sensor API Wrappers
   */
 var sensorapi_prng_functions = `
   // Generates a 32-bit from a string. Inspired by MurmurHash3 algorithm
