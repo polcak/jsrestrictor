@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: 2019-2021 Libor Polčák
 # SPDX-FileCopyrightText: 2020 Peter Horňák
 # SPDX-FileCopyrightText: 2021 Giorgio Maone
+# SPDX-FileCopyrightText: 2021 Marek Saloň
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -39,6 +40,7 @@ submodules:
 	@cp -r $*/* $*_JSR/
 	@cp -r LICENSES $*_JSR/
 	@./fix_manifest.sh $*_JSR/manifest.json
+	@cp common/wrappingX* $*_JSR/
 	@nscl/include.sh $*_JSR
 	@if [ $(DEBUG) -eq 0 ]; \
 	then \
@@ -61,6 +63,7 @@ clean:
 	rm -rf chrome_JSR
 	rm -rf common/ipv4.dat
 	rm -rf common/ipv6.dat
+	rm -rf common/wrappingX*
 	rm -rf ipv4.csv
 	rm -rf ipv6.csv
 	rm -rf doxygen/

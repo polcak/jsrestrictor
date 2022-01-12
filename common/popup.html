@@ -2,6 +2,8 @@
 <!--
 SPDX-FileCopyrightText: 2021 2019 Libor Polčák
 SPDX-FileCopyrightText: 2021 2019 Martin Timko
+SPDX-FileCopyrightText: 2021 2021 Marek Saloň
+SPDX-FileCopyrightText: 2021 2021 Giorgio Maone
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
@@ -31,16 +33,29 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		</div>
 	</section>
 
-	<section id="http_shield_whitelist">
-	<h3>Network boundary shield</h3>
-	<p id="shield_off_message"></p>
-	<div id="http_shield_switch_wrapper">
-			<label id="switch-label">Shield enabled for this site:</label>
-			<label class="switch">
-				<input id="switch-checkbox" type="checkbox" checked>
-				<span class="slider"></span>
-		</label>
-	</div>
+
+	<section id="binary_options">
+		<div id="nbs_whitelist">
+			<p class="off_message">Network Boundary Shield is globally off.</p>
+			<div class="switch_wrapper">
+					<label for="nbs-switch">HTTP Shield</label>
+					<label class="switch">
+						<input id="nbs-switch" type="checkbox" checked>
+						<span class="slider"></span>
+				</label>
+			</div>
+		</div>
+
+		<div id="fpd_whitelist">
+			<p class="off_message">Fingerprinting detection is globally off.</p>
+			<div class="switch_wrapper">
+					<label for="fpd-switch">Fingerprinting detection</label>
+					<label class="switch">
+						<input id="fpd-switch" type="checkbox" checked>
+						<span class="slider"></span>
+				</label>
+			</div>
+		</div>
 	</section>
 
 </body>

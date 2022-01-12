@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!--
+SPDX-FileCopyrightText: 2021 2019 Marek Saloň
+
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+<html>
+	<head>
+		<title>Fingerprinting Detection Tests</title>
+		<script language="javascript" src="./common/helpers.js"></script>
+		<!--SCRIPTS_S-->
+		<!--SCRIPTS_E-->
+		<script>
+			var resDivs = "<div id=\"passed\" style=\"color: green\">• PASSED: </div>"
+			+ "<div id=\"failed\" style=\"color: red\">• FAILED: </div>"
+			+ "<div id=\"unwrapped\" style=\"color: grey\">• NOT WRAPPED: </div>"
+			+ "<div id=\"unsupported\" style=\"color: orange\">• NOT SUPPORTED: </div>";
+			
+			function directTest() {
+				document.getElementById("result").innerHTML = "";
+				document.getElementById("testTitle").innerHTML = "DIRECT TEST RESULTS: " + resDivs;
+				
+				var resultsAcc = {};
+				//CALL_S
+				//CALL_E
+				updateDoc(resultsAcc);
+				messageExtension("direct");
+			}
+			
+			function iframeTest() {
+				document.getElementById("result").innerHTML = "";
+				document.getElementById("testTitle").innerHTML = "IFRAME TEST RESULTS: " + resDivs;
+				var iframe = document.createElement('iframe');
+				iframe.id = "testFrame";
+				iframe.src = "./common/iframe.html";
+				iframe.style = "display:none;height:0;width:0";
+				document.getElementById("result").appendChild(iframe);
+				window.onmessage = function(e) {
+					if (e.data.res) {
+						updateDoc(e.data.res);
+						messageExtension("iframe");
+					}
+				};
+			}
+			
+			function workerTest() {
+				document.getElementById("result").innerHTML = "";
+				document.getElementById("testTitle").innerHTML = "WORKER TEST RESULTS: " + resDivs;
+				if (window.Worker) {
+					const testWorker = new Worker("./common/worker.js");
+					testWorker.onmessage = function(e) {
+						updateDoc(e.data);
+						messageExtension("worker");
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<h2>Choose test variant</h2>
+
+		<button onclick="directTest()">Direct</button>
+		
+		<button onclick="iframeTest()">Iframe</button>
+		
+		<button onclick="workerTest()">Worker</button>
+		
+		<div>
+			<h3 id="testTitle"></h3>
+			<div id="result">
+			
+			</div>	
+		</div>
+	</body>
+</html>

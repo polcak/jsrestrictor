@@ -4,6 +4,7 @@
  *  \author Copyright (C) 2020  Libor Polcak
  *  \author Copyright (C) 2021  Matus Svancar
  *  \author Copyright (C) 2021  Giorgio Maone
+ *  \author Copyright (C) 2021  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -23,10 +24,17 @@
 //
 
 var wrappersPort;
-
-function configureInjection({code, wrappers, domainHash, sessionHash}) {
-	configureInjection = () => false; // one shot
+var injectionConfigured = false;
+function configureInjection({code, wrappers, domainHash, sessionHash, fpdOn}) {
+	if (injectionConfigured) return; // one shot
+	injectionConfigured = true;
 	if (!code) return true; // nothing to wrap, bail out!
+	if (!fpdOn) {
+		code = code.replace(/\/\/ FPD_S[\s\S]*?\/\/ FPD_E/, ''); // remove fpd wrappers from injected code
+		if (wrappers.length === 0) {
+			return true; // nothing to wrap and fpd is also off
+		}
+	}
 	if(browser.extension.inIncognitoContext){
 		// Redefine the domainHash for incognito context:
 		// Compute the SHA256 hash of the original hash so that the incognito hash is:
@@ -44,7 +52,19 @@ function configureInjection({code, wrappers, domainHash, sessionHash}) {
 	${code}
 	})()`;
 	try {
-		wrappersPort = patchWindow(aleaCode);
+		wrappersPort = patchWindow(aleaCode);	
+		wrappersPort.onMessage = msg => {
+			if (msg.wrapperName) {
+				let {wrapperName, wrapperType, wrapperArgs} = msg;			
+				// pass access logs to FPD background script
+				browser.runtime.sendMessage({
+					purpose: "fp-detection",
+					resource: wrapperName,
+					type: wrapperType,
+					args: wrapperArgs,
+				});
+			}
+		}
 		return true;
 	} catch (e) {
 		console.error(e, `Trying to run\n${aleaCode}`)
@@ -62,4 +82,16 @@ if ("configuration" in window) {
 			url: window.location.href
 		}
 	));
-};
+}
+
+/**
+ * Event listener that listens for background script messages.
+ *
+ * \param callback Function that clears localStorage and sessionStorage.
+ */
+ browser.runtime.onMessage.addListener(function (message) {
+    if (message.cleanStorage) { 
+        localStorage.clear();
+        sessionStorage.clear();
+    }
+});

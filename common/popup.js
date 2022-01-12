@@ -4,6 +4,7 @@
  *  \author Copyright (C) 2019  Martin Timko
  *  \author Copyright (C) 2019  Libor Polcak
  *  \author Copyright (C) 2020  Pavel Pohner
+ *  \author Copyright (C) 2021  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -109,48 +110,65 @@ document.getElementById('controls').addEventListener('click', function (e) {
 });
 
 window.addEventListener("load", function() {
-	load_on_off_switch();
+	load_on_off_switch("nbs");
+	load_on_off_switch("fpd");
 });
 
-document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200)});
+document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200, "nbs")});
+document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_whitelist, 200, "fpd")});
 
 async function getCurrentSite() {
 	let tabs = await browser.tabs.query({currentWindow: true, active: true});
-	//Obtain hostname	
+	//Obtain hostname
 	return wwwRemove(new URL(tabs[0].url).hostname);
 }
 
 /// Load switch state from storage for current site
-async function load_on_off_switch()
+async function load_on_off_switch(prefix)
 {
-	let {requestShieldOn} = await browser.storage.sync.get(["requestShieldOn"]);
-	if (requestShieldOn === false)
+	var flagName;
+	if (prefix == "nbs") flagName = "requestShieldOn";
+	if (prefix == "fpd") flagName = "fpDetectionOn";
+	
+	let result = await browser.storage.sync.get([flagName]);
+	let container = document.getElementById(prefix + "_whitelist");
+	if (result[flagName] === false)
 	{
-		document.getElementById("http_shield_switch_wrapper").style.display = "none";
-		document.getElementById("shield_off_message").innerHTML = "Network boundary shield is currently off.";
-	}	
+		container.classList.add("off");
+	}
 	else
 	{
+		container.classList.remove("off");
 		let site = await getCurrentSite();
 		//Ask background whether is this site whitelisted or not
-		let response = await browser.runtime.sendMessage({message: "is current site whitelisted?", site});
-		document.getElementById("switch-checkbox").checked = response !== "current site is whitelisted";
+		if (prefix == "nbs") 
+		{
+			let response = await browser.runtime.sendMessage({message: "is current site whitelisted?", site});
+			document.getElementById(prefix + "-switch").checked = response !== "current site is whitelisted";
+		}
+		if (prefix == "fpd")
+		{
+			let response = await browser.runtime.sendMessage({purpose: "fpd-whitelist-check", url: site});
+			document.getElementById(prefix + "-switch").checked = !response;
+		}
 	}
 }
 
 /// Event handler for On/off switch
-async function control_whitelist()
+async function control_whitelist(prefix)
 {
 	let site = await getCurrentSite();
 	var message;
-	if (document.getElementById("switch-checkbox").checked) {
-		message = "remove site from whitelist";
+	if (document.getElementById(prefix + "-switch").checked) {
+		if (prefix == "nbs") message = "remove site from whitelist";
+		if (prefix == "fpd") message = "remove-fpd-whitelist";
 	}
 	else {
-		message = "add site to whitelist";
+		if (prefix == "nbs") message = "add site to whitelist";
+		if (prefix == "fpd") message = "add-fpd-whitelist";
 	}
-	browser.runtime.sendMessage({message, site});
+
+	if (prefix == "nbs") browser.runtime.sendMessage({message, site});
+	if (prefix == "fpd") browser.runtime.sendMessage({purpose: message, url: site});
 	showRefreshPageOption();
 }
-
-

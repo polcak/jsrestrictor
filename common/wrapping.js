@@ -2,6 +2,7 @@
  * \brief Main file handling wrappers
  *
  *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2021  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -43,6 +44,11 @@
 var build_wrapping_code = {};
 
 /**
+ * The object carrying data of all FPD configuration files
+ */
+ var fp_config_code = {};
+
+/**
  * Adds a list of wrapping objects to the build_wrapping_code.
  *
  * This function is called from each wrapper in its file.
@@ -50,6 +56,17 @@ var build_wrapping_code = {};
 function add_wrappers(wrappers) {
 	for (wrapper of wrappers) {
 		build_wrapping_code[wrapper.parent_object + "." + wrapper.parent_object_property] = wrapper;
+	}
+}
+
+/**
+ * Adds FPD configuration data about groups and wrappers to the fp_config_code.
+ *
+ * This function is called from automatically created wrappingX files.
+ */
+ function add_fp_config(config, config_name) {
+	for (config_json of config) {
+		fp_config_code[config_name] = config;
 	}
 }
 
