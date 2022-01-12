@@ -18,6 +18,11 @@ Title: Credits
 
 **Matúš Švancár** ported Farbling anti-fingerprinting measures from the Brave browser as a part of his [master's thesis](https://www.fit.vut.cz/study/thesis/23310/).
 
+**Marek Saloň** created Fingerprint Detector as a part of his [master's
+this](https://www.fit.vut.cz/study/thesis-file/23645/23645.pdf) and later improved the detector.
+
+**Radek Hranický** created sensor API wrappers.
+
 We thank all other minor contributors of the project that are not listed in this section.
 
 ### Key ideas
