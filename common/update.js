@@ -185,6 +185,16 @@ function installUpdate() {
 			}
 			item.version = 2.10;
 		}
+		if (item.version < 2.11) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.hardware || l.battery || l.windowname) {
+					l.physical_environment = true;
+					l.physical_environment_emulateStationaryDevice = true;
+				}
+			}
+			item.version = 2.11;
+		}
 		browser.storage.sync.set(item);
 	});
 }
