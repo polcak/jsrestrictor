@@ -78,12 +78,13 @@
 			parent_object: "Navigator.prototype",
 			parent_object_property: "getGamepads",
 			wrapped_objects: [{
-				original_name: "Navigator.prototype.getGamepads()",
+				original_name: "Navigator.prototype.getGamepads",
 				wrapped_name: "origGamepads",
 			}],
 			helping_code: "",
 			wrapping_function_body: `
-					if (Array.isArray(origGamepads)) {
+					origGamepadsRes = origGamepads.call(navigator);
+					if (Array.isArray(origGamepadsRes)) {
 						// e.g. Gecko
 						return new window.Array();
 					}
@@ -99,7 +100,7 @@
 						l[2] = null;
 						l[3] = null;
 						l.length = 4;
-						window.Object.setPrototypeOf(l, origGamepads.__proto__);
+						window.Object.setPrototypeOf(l, origGamepadsRes.__proto__);
 						return l;
 					}
 				`,
