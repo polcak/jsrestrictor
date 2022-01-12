@@ -83,7 +83,8 @@
 			}],
 			helping_code: "",
 			wrapping_function_body: `
-					if (Array.isArray(origGamepads)) {
+					origGamepadsRes = origGamepads.call(navigator);
+					if (Array.isArray(origGamepadsRes)) {
 						// e.g. Gecko
 						return new window.Array();
 					}
@@ -99,7 +100,7 @@
 						l[2] = null;
 						l[3] = null;
 						l.length = 4;
-						window.Object.setPrototypeOf(l, origGamepads.__proto__);
+						window.Object.setPrototypeOf(l, origGamepadsRes.__proto__);
 						return l;
 					}
 				`,
