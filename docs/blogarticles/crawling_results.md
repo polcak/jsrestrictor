@@ -2,54 +2,56 @@
 title: RESULTS: Measurement of JavaScript API usage on the web
 ---
 
-In a [previous blogpost](./crawling.md), we gave reasons to measure the usage of JavaScript APIs on the web and we suggested a measurement methodology.
-We wanted to crawl the web to find out which JS APIs are used the most, and mainly we wanted to compare the differences in JS APIs usage between browsers with and without privacy extension (e.g., uBlock Origin).
-After a few months, we have finished the development of the crawling tool and we were able to automatically visit hundreds of thousands of websites and collect JavaScript calls on the visited webpages.
-The starting point of our web crawling research is the [work of Peter Snyder](https://www.peteresnyder.com/static/papers/improving-web-privacy-and-security-thesis.pdf), which we followed up.
-This blogpost will introduce the methodology and results of the crawling.
+A [previous blogpost](crawling.md) introduced a methodology to measure the usage of JavaScript APIs on the web by crawling the web. 
+The starting point of our web crawling research is the [work of Peter Snyder](https://www.peteresnyder.com/static/papers/improving-web-privacy-and-security-thesis.pdf). Most importantly,  we wanted to compare the differences in JS API usage between browsers with and without privacy extension (e.g., uBlock Origin). We have finished the development of the [crawling tool](https://github.com/martinbednar/web_crawler). We crawled thousands of websites and collected JavaScript calls on the visited web pages.
+
+This blog post introduces the methodology and results of the crawling.
 
 
 ## Introduction
 
-When a user opens a webpage in a JavaScript-enabled web browser, that webpage can access various APIs offered by user's web browser.
-The webpage can read, for example, the value of performance.now(), battery status or - on a mobile phone - data from sensors.
-All these values can be misused to create a device fingerprint that can be used to identify the user.
+When a user opens a webpage in a JavaScript-enabled web browser, that webpage can access various APIs supported by the web browser.
+The webpage can read, for example, the value of performance.now(), battery status or data from sensors (when available). All these values can be misused to create a [device fingerprint](https://arxiv.org/pdf/1905.01051.pdf) that can be used to identify the user.
 
-We aim to research how JS APIs are used on websites. The main issues were:
-* How many and what APIs do websites used?
-* What endpoints do websites most often access?
-* How many JS calls to any API endpoint are made?
-* What are the differences in results in all the previous questions when privacy web-browser extension (e.g., uBlock Origin) is installed? For example: How much will the number of JS calls be reduced with uBlock Origin installed?
+We aim to research how JS APIs are used on websites. The main research questions are:
+* What APIs do websites use?
+* How many APIs does a website use?
+* What endpoints do websites access most often?
+* How many JS calls are made?
+* What are the differences in results in all the previous questions with an active privacy web-browser extension (e.g., uBlock Origin)? For example, What JS calls are blocked by uBlock Origin?
 
-The answers to these questions would help us better understand the behavior of a websites.
-Based on the obtained data, we want to define the normal behavior of the website and suspicious behavior, which may indicate that the website is trying to create a fingerprint of the user's device.
-Then, we plan to create an anti-fingerprint mechanism based on our own heuristics. The resulting heuristics will evaluate the following issues:
-How many APIs and endpoints does the website access? How many JS calls did the website make? Is the number and combination of identified JS APIs all right? Is not this value suspiciously high?
-Based on crawled data, we will be able to define the usual combinations of used APIs and usual number of used APIs.
+The answers to these questions should help us better understand websites' behaviour. Based on the obtained data, we want to define the suspicious behaviour indicating that the website is trying to fingerprint the user's device.
+
+We plan to keep the [anti-fingerprint mechanism](fpdetection.md) updated based on derived heuristics. The heuristics are derived from the following statistics:
+
+* How many APIs and endpoints does the website access?
+* How many JS calls did the website make?
+* Is the number and combination of JS APIs calls suspicious?
+
 When our anti-fingerprint mechanism detects suspicious combinations or a high number of used APIs, it can block communication with the webpage.
 
 
-## Methodology
+## Crawler
 
 We have developed [Web crawler](https://github.com/martinbednar/web_crawler/) - a tool for automatically visiting websites from a given list and collecting JavaScript calls made by the website.
-Our Web crawler is based on the [OpenWPM](https://github.com/openwpm/OpenWPM) platform. A modified web-browser extension named [Web API Manager](https://github.com/pes10k/web-api-manager) is used to collect JS calls.
+Our Web crawler is based on the [OpenWPM](https://github.com/openwpm/OpenWPM) platform. A modified web browser extension [Web API Manager](https://github.com/pes10k/web-api-manager) collects statistics on called JS APIs.
 
 The crawling process can be described in the following steps:
-1. The python script `start_docker_runs.py` launches the Docker image [martan305/web_crawler](https://hub.docker.com/repository/docker/martan305/web_crawler) in the new Docker container.
-The parameters set in the Python startup script are given to the Docker container as ENV variables (parameters: number of browsers in the container (degree of parallelization), initial index of websites list, offset, run with or without privacy extension).
-1. If a privacy extension is required (in the script parameter), uBlock Origin will be installed as soon as the web browser is started.
-1. Python script running in the container visits webpages from a given list in a cycle.
-1. 30 seconds are spent on each page. Since the webpage loading starts, the customized web-browser extension Web API Manager intercepts JS calls, and these JS calls are stored into the SQLite database.
-1. When the offset in the cycle is reached, a new container can be started and crawling continues, or crawling ends if the target index in the websites list is reached.
 
-At this time, we only visited the homepages of the websites because we wanted to visit as many different websites as possible. In the future, we plan to launch long-term crawling, which will include a visit to subpages.
-In particular, we want to focus on visiting login pages, where we most expect the implementation of fingerprint tools.
+1. The python script `start_docker_runs.py` launches the Docker image [martan305/web_crawler](https://hub.docker.com/repository/docker/martan305/web_crawler). The parameters set in the Python startup script are given to the Docker container as environmental variables.
+2. If a privacy extension is required (in the script parameter), uBlock Origin will be installed as soon as the web browser is started.
+3. Python script running in the container visits web pages from a given list one by one.
+4. The browser waits for 30 seconds on each page. The customised web browser extension Web API Manager intercepts JS calls and stores the stats into the SQLite database.
+5. When all delegated pages are visited, either a new container can be started and crawling continues with a new list of web pages to visit, or crawling ends if all websites are visited.
 
-After crawling the websites, the analysis of output databases with JS calls can be started. We have developed a standalone [analysis tool](https://github.com/martinbednar/web_crawler_data_analysis).
+For now, we only visited the homepages because we wanted to visit as many different websites as possible. In the future, we plan to launch long-term crawling, which will include subpages. In particular, we want to focus on visiting login pages, where we expect fingerprint scripts to be included. Then, we can compare API calls on login pages and other pages.
+
+Afterwards, we analyse the collected data with a standalone [analysis tool](https://github.com/martinbednar/web_crawler_data_analysis).
 The analysis process consists of the following steps:
+
 1. Databases created by browsing with and without the web-browser extension uBlock Origin are loaded separately.
-1. Aggregation SQL queries are executed in databases and the results are loaded into Python dictionaries.
-1. Data sets are analyzed, compared and the results are exported to csv files and Excel sheets.
+2. Aggregation SQL queries are executed in databases. The results are loaded into Python dictionaries.
+3. Data sets are analysed, compared and the results are exported to CSV files.
 
 
 ## Measurement results
@@ -60,8 +62,7 @@ We tried to visit the first 250 000 websites from the [Tranco list X79N](https:/
 211 843 homepages of websites from the Tranco list were successfully visited in both modes - with and without uBlock Origin.
 More than 4 000 000 000 JS calls were intercepted and stored into 5 000 [SQLite databases](https://nextcloud.fit.vutbr.cz/s/XKm3PCZnr2xkPH9) that have a total size of over 880 GB.
 
-The answers to the required questions about using the JavaScript API on websites are given in the following subsections.
-The first 10 result lines for each section are usually listed. Complete tables with all rows can be found in the [results stored on the server](https://nextcloud.fit.vutbr.cz/s/xDfSAe3Nx7iFSm4).
+Let us focus on the answers to the research questions on JavaScript API calls made by the websites. This blog post usually lists only 10 result lines for each experiment. Complete tables with all rows can be found in the [results stored on the server](https://nextcloud.fit.vutbr.cz/s/xDfSAe3Nx7iFSm4).
 
 The meaning of the table columns:
 * Endpoint = a function or a property provided by a web browser.
@@ -164,14 +165,14 @@ All result tables are sorted by the `Difference [%]` column decreasing.
 | https://tsargrad.tv/          | Performance.prototype.now       |  99 445                |     1               |  99 444    | 100,00%        |
 
 
+
 ## Measurement results for opensource websites only
 
-When crawling the web, we specifically focused on one subcategory of websites - opensource websites.
-[The Gentoo repository](https://gitweb.gentoo.org/repo/gentoo.git/tree/) served as a database of opensource websites for us.
-From each open source project listed in this repository, we selected the HOMEPAGE attribute to create a list of opensource websites to crawl.
+As this project focuses on free and open source software, we compared the general results with a list of pages connected to free software or open source.
 
-We tried to visit all 5 271 collected opensource websites.
-4 528 homepages of opensource websites were successfully visited in both modes - with and without uBlock Origin.
+We collected the list of the home pages from [Gentoo repository](https://gitweb.gentoo.org/repo/gentoo.git/tree/).
+
+We tried to visit all 5 271 collected websites. 4 528 homepages were successfully visited in both modes, with and without uBlock Origin.
 More than 11 000 000 JS calls were intercepted and stored into 2 [SQLite databases](https://nextcloud.fit.vutbr.cz/s/yoLa5rcGzkgbSka) that have a total size of over 3 GB.
 
 Only the first 10 lines of the analysis results are usually listed below. Complete tables with all rows can be found in the [results stored on the server](https://nextcloud.fit.vutbr.cz/s/LWANmRxoXc5YYzy).
@@ -263,13 +264,10 @@ Only the first 10 lines of the analysis results are usually listed below. Comple
 
 ## Measurement results for FingerPrint Detector
 
-Web crawling was performed primarily to retrieve input data for the FingerPrint Detector (FPD).
-All of the above results are useful for understanding the JavaScript APIs usage on the web, but not for FPD..
-Only the name of the endpoint and the weight of this endpoint are important for FPD.
-The weight expresses how often a given endpoint is used to create a fingerprint.
+We designed the web crawling primarily to retrieve data to create or evaluate heuristics for the [FingerPrint Detector (FPD)](fpdetection.md).
+The above results are helpful in understanding the JavaScript APIs usage on the web. For FPD, only the name of the endpoint and the weight of this endpoint are important. The weight expresses how often a given endpoint is used to create a fingerprint.
 
-The resulting table below was created from crawled data from websites of the Tranco list.
-Two data sets were combined to obtain more accurate results. The first dataset obtained while crawling with uBlock Origin, the second one obtained while crawling with uMatrix.
+The resulting table below was created from crawled data from websites of the Tranco list . Two data sets were combined to obtain more accurate results. The first dataset obtained while crawling with uBlock Origin, the second one obtained while crawling with uMatrix.
 The resulting endpoint weight (marked as `average_weight`) was calculated in Python as follows:
 
 ```
