@@ -282,7 +282,7 @@ else:
 
 Again, only the first 10 lines of the FPD analysis result are listed below. Complete table with all rows can be found in the [results stored on the server](https://nextcloud.fit.vutbr.cz/s/GjkTJzweccgxw6n).
 
-| Endpoint                                       | Weight_average | Weight_uMatrix | Weight_uBlock | Calls   without extension | Calls   with uMatrix | Calls   with uBlock | Difference_uMatrix | Difference_uBlock | Difference_uMatrix   [%] | Difference_uBlock [%] |
+| Endpoint                                       | Average weight | uMatrix weight | uBlock weight | Calls   without extension | Calls   with uMatrix | Calls   with uBlock | Difference uMatrix | Difference uBlock | Difference uMatrix   [%] | Difference uBlock [%] |
 |------------------------------------------------|----------------|----------------|---------------|---------------------------|----------------------|---------------------|--------------------|-------------------|--------------------------|-----------------------|
 | Range.prototype.setStartAfter                  |     13         | 13,427         | 13,060        |     455                   |     1                |     6               |     454            |     449           | 0,998                    | 0,987                 |
 | Range.prototype.insertNode                     |     13         | 13,138         | 12,920        |     460                   |     5                |     8               |     455            |     452           | 0,989                    | 0,983                 |
