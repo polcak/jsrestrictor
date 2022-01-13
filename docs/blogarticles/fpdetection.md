@@ -40,7 +40,7 @@ FPD works in three basic phases, *monitoring*, *evaluation* and *reactive*.
 
 If the FPD module is active, it locally logs all accesses to crucial JavaScript API endpoints during the monitoring phase. FPD injects custom wrapping code of all suspicious APIs (properties or methods) into the browser when a user visits a page. Hence, the extension observes API calls initiated by the website.
 
-FPD stores the number of accessed calls in the context of a browser tab. It contains all the metadata needed for evaluation. This metadata includes the number of calls for each logged endpoint with a corresponding argument value. Consequently, FPD can tell how often the visited web page called a particular endpoint and the arguments for these calls.
+FPD stores the number of accessed calls in the context of a displayed page. It contains all the metadata needed for evaluation. This metadata includes the number of calls for each logged endpoint with a corresponding argument value. Consequently, FPD can tell how often the visited web page called a particular endpoint and the arguments for these calls.
 
 ### Evaluation phase
 
@@ -66,9 +66,23 @@ In terms of methodology, we manually visited homepages and login pages of the to
 
 With each access to the tested page, we wiped browser settings to ensure determinism of initial access. As the erasure removed any previously-stored identifier, the visited pages may have deployed fingerprinting scripts more aggressively to identify the user and reinstall the identifier.
 
-To boost the probability of fingerprinting even more, we switched off all protection mechanisms offered by the browser and blocked all third party cookies. To see an impact of a browser on the detection process, we used both [Google Chrome](https://www.google.com/chrome/) and [Mozzila Firefox](https://www.mozilla.org/en-US/firefox/).
+To boost the probability of fingerprinting even more, we switched off all protection mechanisms offered by the browser. However, we blocked third-party cookies because our previous experience suggests that the missing possibility to store a permanent identifier tempts trackers to start fingerprinting. To see an impact of a browser on the detection process, we used both [Google Chrome](https://www.google.com/chrome/) and [Mozzila Firefox](https://www.mozilla.org/en-US/firefox/).
 
-We needed the ground truth for web pages employing fingerprinting. We used [FPMON](https://fpmon.github.io/fingerprinting-monitor/) and [DFPM](https://github.com/freethenation/DFPM) to create the ground truth. FPMON reports fingerprinting pages with colour. We assigned Yellow colour 1 point and red colour  2 points. DFPM reports danger warnings. If DFPM reports one danger warning, we assign 1 point to the page. For a higher number of danger warnings, we assign 2 points to the page. Therefore, each page gets a fingerprinting score from 0 to 4. We considered a page to be fingerprinting when its score is above or equal to 3. We didn't count pages with a score of 2 as fingerprinting because they can sit on the edge of the heuristics threshold and may not be fingerprinting in reality. The results are as follows:
+We needed the ground truth for web pages employing fingerprinting. We used [FPMON](https://fpmon.github.io/fingerprinting-monitor/) and [DFPM](https://github.com/freethenation/DFPM) to create the ground truth. We selected these two extensions because they are the only ones capable of real-time fingerprinting detection. FPMON reports fingerprinting pages with colour. We assigned Yellow colour 1 point and red colour 3 points. DFPM reports danger warnings. If DFPM reports one danger warning, we assign 1 point to the page. For a higher number of danger warnings, we assign 3 points to the page. Therefore, each page gets a fingerprinting score from 0 to 6.
+
+Score of 6 means that both detected
+
+Score of 4 means that one detected and one suspect fingerprinting
+
+Score of 3 means that one detected and the other did not detect fingerprinting
+
+Score of 2 both suspect fingerprinting
+
+Score of 1 only one suspects and the other did not detect
+
+Score of 0 neither did detect
+
+We considered a page to be fingerprinting when its score is above or equal to 3. We did not count pages with a score of 2 as fingerprinting because they can sit on the edge of the heuristics threshold and may not be fingerprinting in reality. The results are as follows:
 
 * Number of fingerprinting web pages identified by *our ground truth*.
 	* Homepages: **19**
@@ -96,4 +110,4 @@ The difference between browsers turned out to be minor (only on a single site) b
 
 We have developed a JShelter module dedicated to browser fingerprinting detection called *FingerPrint Detector (FPD)*. FPD applies a heuristic approach to detect fingerprinting behaviour in real-time. FPD counts calls to JavaScript APIs often employed by fingerprinting scripts. When FPD detects fingerprinting attempt, it will (1) inform the user, (2) prevent uploading of the fingerprint to the server, (3) prevent storing the fingerprint for later usage. We tested FPD on the top 100 homepages and login pages. The results show that FPD identifies excessive fingerprinting behaviour and takes the necessary measures against fingerprint leakage.
 
-Nevertheless, we still see work to do. The detection heuristics needst to be updated. The real-world testing yields interesting research questions. How to define an excessive fingerprint? What fingerprints should be blocked by the extension, and what fingerprints should not? What is the best behaviour so that the users find the extension helpful?
+Nevertheless, we still see work to do. The detection heuristics need to be updated. The real-world testing yields interesting research questions. How to define an excessive fingerprint? What fingerprints should be blocked by the extension, and what fingerprints should not? What is the best behaviour so that the users find the extension helpful?
