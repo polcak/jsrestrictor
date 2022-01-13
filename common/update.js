@@ -195,6 +195,10 @@ function installUpdate() {
 			}
 			item.version = 2.11;
 		}
+		if (item.version < 2.12) {
+			item.fpDetectionOn = false;
+			item.version = 2.12;
+		}
 		browser.storage.sync.set(item);
 	});
 }
