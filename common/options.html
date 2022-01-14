@@ -5,7 +5,7 @@ SPDX-FileCopyrightText: 2021 2019 Martin Timko
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="options.css">
@@ -14,6 +14,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
   <script src="levels.js" type="text/javascript"></script>
   <script src="helpers.js" type="text/javascript" defer></script>
   <script src="options.js" type="text/javascript" defer></script>
+	<title>JavaScript Restrictor options</title>
 </head>
 <body>
 			<section class="logo">
@@ -53,14 +54,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
   <div id="proxy-protection-config">
 	<h2>Network boundary shield</h2>
-  	<div>
-			<label id="switch-label">Network boundary shield: </label>
-	  	<label class="switch">
-			  <input id="switch-checkbox" type="checkbox" checked>
-			  <span class="slider"></span>
-		</label>
-	</div>
-	<p>
+	<p class="nbs_description">
 		Network boundary shield prevents web pages to use the browser as a proxy between local network
 		and the public Internet. See our <a
 		  href="https://jshelter.org/localportscanning/">
@@ -70,48 +64,47 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			Point report</a> for examples of attacks handled by the Network Boundary Shield.
 		The protection encapsulates the WebRequest API, so it captures all outgoing requests.
 	</p>
-	<p>
+	<p class="nbs_description">
 		Generally, you want Network boundary shield protection active, however, some pages can be
 		broken, because they require interaction between public Internet and local network, for example,
 		some Intranet information systems might be broken by the Network boundary shield. JShelter users
 		also reported increased number of false positives when using DNS-based filtering programs. If
 		you use one, make sure that DNS returns 0.0.0.0 for the blocked domains.
 	</p>
-	<p>
+	<p class="nbs_description">
 		You can disable the Network boundary shield by adding the domain (e.g. example.com) to the
 		list below. The domains and all their subdomains listed bellow are not blocked by the Network
 		boundary shield. To selectively deactivate the Network boundary shield, insert the domains to the list (excluding "www", but including all other domains eg. ".com").
 		We generally do <strong>not</strong> recommend disabling the Network boundary shield for domains
 		from the public Internet.
 	</p>
-	<p>
+	<p class="nbs_description">
 		Please note, that these domain names are checked with domain hierarchy, so whitelisting
 		<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
 	</p>
-  	<div>
-	  	<input id="whitelist-input" type="text" name="whitelist-hostname" placeholder="example.com">
+	<fieldset>
+		<div>
+			<label id="switch-label" for="switch-checkbox">Network boundary shield: </label>
+			<label class="switch">
+			  <input id="switch-checkbox" type="checkbox" checked>
+			  <span class="slider"></span>
+			</label>
+		</div>
+	</fieldset>
+		<fieldset>
+			<input id="whitelist-input" type="text" name="whitelist-hostname" placeholder="example.com">
 			<button id="whitelist-add-button" class="jsr-button">Deactivate the Network boundary shield
 				for the domain</button>
-	</div>
-  	<select id="whitelist-select" name="sometext" size="5" multiple>
+		</fieldset>
+  <select id="whitelist-select" name="sometext" size="5" multiple>
 
 	</select>
 	<div>
 		<button id="whitelist-remove-button" class="jsr-button">Reactivate the Network boundary shield
 			for the selected domains</button>
 	</div>
-  </div>
+	</div>
 
-</section>
-
-<section id="sect-devel">
-	<h2>Development and debugging</h2>
-	<h3>Stored configuration</h3>
-	<textarea id="levels-storage-text">
-	</textarea>
-	<button id="levels-storage-load" class="jsr-button">Load currently stored configuration</button>
-	<button id="levels-storage-save" class="jsr-button">Save currently stored configuration. BEWARE,
-	if you do not know, what you are doing, do not modify the configuration.</button>
 </section>
 
 	</section>

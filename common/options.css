@@ -127,12 +127,12 @@ section.content {
 
 #levels-list li, #domain-level-list li {
 	list-style-type: none;
-	margin: 7px;
-	padding: 7px;
+	margin: 0px;
+	padding: 0.5em;
 }
 .level {
-	margin: 7px;
-	padding: 7px;
+	margin: 0px;
+	padding: 0.5em;
 	font-weight: bold;
 	border: 2px solid grey;
 	border-radius: 5px;
@@ -150,13 +150,29 @@ section.content {
 	color:  black;
 }
 
-.undo{
+.undo, .alert{
 	background-color: red;
 	color: white;
 }
 
+.alert{
+	padding: 1em;
+}
+
 .hidden{
 	visibility: hidden;
+}
+
+.hidden_descr{
+	display: none;
+}
+
+.help {
+	margin-left: 1em;
+	background-color: blue;
+	color: white;
+	border-radius: 10px;
+	font-weight: bold;
 }
 
 #proxy-protection-config
@@ -270,4 +286,8 @@ section#sect-devel {
 #levels-storage-text {
 	width: 100%;
 	height: 50ex;
+}
+
+fieldset {
+	border: 0;
 }

@@ -221,10 +221,10 @@ function restore_level(id, level_params) {
 function show_existing_level(levelsEl, level) {
 	let currentId = `level-${level}`;
 	var fragment = document.createRange().createContextualFragment(`<li id="li-${escape(level)}">
-		<span class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
+		<button class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
 			${escape(level)}: ${escape(levels[level].level_text)}
-		</span>
-		<span>${escape(levels[level].level_description)}</span>
+		</button>
+		<label for="${escape(currentId)}">${escape(levels[level].level_description)}</label>
 		</li>`);
 	levelsEl.appendChild(fragment);
 	if (levels[level].builtin !== true) {
@@ -437,23 +437,19 @@ function control_http_request_shield()
 
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// Debugging
-function load_config_to_text() {
-	browser.storage.sync.get(null).then(function (item) {
-		document.getElementById("levels-storage-text").value = JSON.stringify(item, null, '\t');
-	});
-}
+window.addEventListener("DOMContentLoaded", function() {
+	function prepareHelpText(prefix) {
+		var descr = document.getElementsByClassName(prefix + "_description");
+		Array.prototype.forEach.call(descr, it => it.classList.add("hidden_descr"));
+		var ctrl = document.createElement("button");
+		ctrl.innerText = "?";
+		ctrl.classList.add("help");
+		ctrl.addEventListener("click", function(ev) {
+			Array.prototype.forEach.call(descr, it => it.classList.toggle("hidden_descr"));
+			ev.preventDefault();
+		});
+		descr[0].previousElementSibling.insertAdjacentElement("beforeend", ctrl);
+	}
 
-document.getElementById("logoimg").addEventListener("dblclick", function() {
-	document.getElementById("sect-devel").style.display = "block";
-	load_config_to_text();
-});
-
-document.getElementById("levels-storage-load").addEventListener("click", function() {
-	load_config_to_text();
-});
-
-document.getElementById("levels-storage-save").addEventListener("click", function() {
-	browser.storage.sync.set(JSON.parse(document.getElementById("levels-storage-text").value));
+	prepareHelpText("nbs");
 });

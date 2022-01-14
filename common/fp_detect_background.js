@@ -89,6 +89,11 @@ var fpGroups = {};
  */
 var unsupportedWrappers = {};
 
+/**
+ *  Array containing names of unsupported wrappers that should be treated like supported ones during groups evaluation.
+ */
+var exceptionWrappers = ["CSSStyleDeclaration.prototype.fontFamily"];
+
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 // fill up fpGroups object with necessary data for evaluation
 for (let groupsLevel in fp_levels.groups) {
@@ -160,8 +165,8 @@ function balanceUnsupportedWrappers() {
 			// access nested object in browser's "window" object using path string
 			var resolvedPath = resourceSplitted["path"].split('.').reduce((o, p) => o ? o[p] : undefined, window);
 
-			// if resource or resource path is undefined -> resource unsupported (exception: makes sense only with disabled force wrapping)
-			if (!(resolvedPath && resourceSplitted["name"] in resolvedPath) && !wrapper.force_wrapping) {
+			// if resource or resource path is undefined -> resource unsupported && no exception for the resource
+			if (!(resolvedPath && resourceSplitted["name"] in resolvedPath) && !exceptionWrappers.includes(wrapper.resource)) {
 				// store wrapper object to "unsupportedWrappers" object
 				unsupportedWrappers[level].push(wrapper);
 
@@ -321,6 +326,9 @@ function evaluateGroups(tabId) {
 
 	// get level for tab url to determine valid group criteria
 	var level = getCurrentLevelJSON(url)[0].level_id;
+
+	// check if the level exists within FPD configuration, if not use default FPD configuration
+	level = fp_levels.groups[level] ? level : "default";
 
 	// getting root group name as a start point for recursive evaluation
 	var rootGroup = fp_levels.groups[level] ? fp_levels.groups[level].name : undefined;
@@ -740,4 +748,17 @@ function cancelCallback(requestDetails) {
 	return {
 		cancel: false
 	};
+}
+
+/**
+ * The function that returns FPD setting for given url.
+ *
+ * \param tabId Tab identifier for which FPD setting is needed.
+ * 
+ * \returns Boolean value TRUE if FPD is on, otherwise FALSE.
+ */
+
+function isFpdOn(tabId) {
+	// function preparation for "per url settings"
+	return fpDetectionEnabled;
 }

@@ -754,7 +754,7 @@ function updateLevels(res) {
 	}
 	if (window.wrap_code !== undefined) {
 		for (l in levels) {
-			wrapped_codes[l] = wrap_code(levels[l].wrappers) || "";
+			wrapped_codes[l] = wrap_code(levels[l]) || "";
 		}
 	}
 	var new_default_level = res["__default__"];

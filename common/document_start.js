@@ -25,11 +25,15 @@
 
 var wrappersPort;
 
-var wrapperAccessCounters = new Map();
-
-function configureInjection({code, wrappers, domainHash, sessionHash}) {
+function configureInjection({code, wrappers, domainHash, sessionHash, fpdOn}) {
 	configureInjection = () => false; // one shot
 	if (!code) return true; // nothing to wrap, bail out!
+	if (!fpdOn) {
+		code = code.replace(/\/\/ FPD_S[\s\S]*?\/\/ FPD_E/, ''); // remove fpd wrappers from injected code
+		if (wrappers.length === 0) {
+			return true; // nothing to wrap and fpd is also off
+		}
+	}
 	if(browser.extension.inIncognitoContext){
 		// Redefine the domainHash for incognito context:
 		// Compute the SHA256 hash of the original hash so that the incognito hash is:
@@ -47,28 +51,19 @@ function configureInjection({code, wrappers, domainHash, sessionHash}) {
 	${code}
 	})()`;
 	try {
-		wrappersPort = patchWindow(aleaCode);
-
+		wrappersPort = patchWindow(aleaCode);	
 		wrappersPort.onMessage = msg => {
 			if (msg.wrapperName) {
-				let {wrapperName, wrapperType, wrapperArgs, delta} = msg;
-				let count = wrapperAccessCounters.get(wrapperName) || 0;
-				wrapperAccessCounters.set(wrapperName, count + delta);
-				if (count % 100 === 0) console.debug("Updated access counts", wrapperAccessCounters);
-
-				// limit messages for performance reasons
-				if (count < 1000) {
-					// resend access information to FPD background script
-					browser.runtime.sendMessage({
-						purpose: "fp-detection",
-						resource: wrapperName,
-						type: wrapperType,
-						args: wrapperArgs,
-					});
-				}
+				let {wrapperName, wrapperType, wrapperArgs} = msg;			
+				// pass access logs to FPD background script
+				browser.runtime.sendMessage({
+					purpose: "fp-detection",
+					resource: wrapperName,
+					type: wrapperType,
+					args: wrapperArgs,
+				});
 			}
 		}
-
 		return true;
 	} catch (e) {
 		console.error(e, `Trying to run\n${aleaCode}`)

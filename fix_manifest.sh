@@ -23,6 +23,8 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+rm -rf common/wrappingX*
+
 for f in ./common/fp_config/*.json
 do
   CONFNAME=`basename $f .json`

@@ -186,7 +186,7 @@ function load_fp_switch()
 {
 	browser.storage.sync.get(["fpDetectionOn"]).then(function(result)
 	{
-		document.getElementById("fpd-switch").checked = result.fpDetectionOn
+		document.getElementById("fpd-switch").checked = result.fpDetectionOn;
 	});
 }
 
@@ -228,7 +228,7 @@ async function load_on_off_switch()
 async function control_whitelist()
 {
 	let message = `${document.getElementById("shield-switch").checked ? "remove" : "add"} site to whitelist`;
-	if (document.getElementById("switch-checkbox").checked) {
+	if (document.getElementById("shield-switch").checked) {
 		message = "remove site from whitelist";
 	}
 	else {

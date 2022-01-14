@@ -2,7 +2,7 @@
     "name":"FingerprintingActivity",
     "criteria":[
         {
-            "value":2,
+            "value":3,
             "weight":1
         }
     ],
@@ -11,12 +11,16 @@
             "name":"BrowserProperties",
             "criteria":[
                 {
-                    "value":2,
+                    "value":7,
                     "weight":1
                 },
                 {
-                    "value":8,
+                    "value":12,
                     "weight":2
+                },
+                {
+                    "value":14,
+                    "weight":3
                 }
             ],
             "groups":[
@@ -25,18 +29,12 @@
                     "description":"Basic information about browser and system.",
                     "criteria":[
                         {
-                            "value":4,
+                            "percentage":35,
                             "weight":1
-                        }
-                    ]
-                },
-                {
-                    "name":"NavigatorEnums",
-                    "description":"Enumerations of available devices and plugins",
-                    "criteria":[
+                        },
                         {
-                            "percentage":50,
-                            "weight":1
+                            "percentage":65,
+                            "weight":2
                         }
                     ]
                 },
@@ -45,7 +43,17 @@
                     "description":"Hardware information about device.",
                     "criteria":[
                         {
-                            "percentage":50,
+                            "value":1,
+                            "weight":1
+                        }
+                    ]
+                },
+                {
+                    "name":"NavigatorMobile",
+                    "description":"Information about features supported by mobile devices.",
+                    "criteria":[
+                        {
+                            "value":1,
                             "weight":1
                         }
                     ]
@@ -55,7 +63,7 @@
                     "description":"Information about connection to internet.",
                     "criteria":[
                         {
-                            "percentage":50,
+                            "value":3,
                             "weight":1
                         }
                     ]
@@ -85,7 +93,7 @@
                     "description":"AudioContext configuration parameters.",
                     "criteria":[
                         {
-                            "percentage":50,
+                            "percentage":40,
                             "weight":1
                         }
                     ]
@@ -93,6 +101,16 @@
                 {
                     "name":"ScreenInfo",
                     "description":"Information about screen and its properties.",
+                    "criteria":[
+                        {
+                            "value":5,
+                            "weight":1
+                        }
+                    ]
+                },
+                {
+                    "name":"WindowInfo",
+                    "description":"Information about screen from root Window object.",
                     "criteria":[
                         {
                             "value":3,
@@ -105,7 +123,7 @@
                     "description":"Availability of WebStorage technology.",
                     "criteria":[
                         {
-                            "percentage":100,
+                            "percentage":60,
                             "weight":1
                         }
                     ]
@@ -129,11 +147,31 @@
                             "weight":1
                         }
                     ]
+                },
+                {
+                    "name":"WebGLInfo",
+                    "description":"Information from WebGL/WebGL2 interface.",
+                    "criteria":[
+                        {
+                            "percentage":50,
+                            "weight":1
+                        }
+                    ]
                 }
             ]
         },
         {
             "name":"AlgorithmicMethods",
+            "criteria":[
+                {
+                    "value":1,
+                    "weight":2
+                },
+                {
+                    "value":2,
+                    "weight":3
+                }
+            ],
             "groups":[
                 {
                     "name":"FontsEnumFingerprint",
@@ -161,7 +199,7 @@
 									"name":"JSFontEnumStepTwo",
 									"criteria":[
 										{
-											"access":20,
+											"access":15,
 											"weight":1
 										}
 									]
@@ -225,31 +263,74 @@
                     "description":"Extraction of rendered image from WebGL canvas.",
                     "criteria":[
                         {
-                            "percentage":100,
+                            "percentage":50,
                             "weight":1
                         }
                     ],
                     "groups":[
                         {
-                            "name":"WebGLFingerprintStepOne",
+                            "name":"WebGL1Fingerprint",
                             "criteria":[
                                 {
                                     "percentage":100,
                                     "weight":1
                                 }
+                            ],
+                            "groups":[
+                                {
+                                    "name":"WebGL1FingerprintStepOne",
+                                    "criteria":[
+                                        {
+                                            "percentage":100,
+                                            "weight":1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name":"WebGL1FingerprintStepTwo",
+                                    "criteria":[
+                                        {
+                                            "percentage":100,
+                                            "weight":1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name":"WebGL1FingerprintStepThree"
+                                }
                             ]
                         },
                         {
-                            "name":"WebGLFingerprintStepTwo",
+                            "name":"WebGL2Fingerprint",
                             "criteria":[
                                 {
                                     "percentage":100,
                                     "weight":1
                                 }
+                            ],
+                            "groups":[
+                                {
+                                    "name":"WebGL2FingerprintStepOne",
+                                    "criteria":[
+                                        {
+                                            "percentage":100,
+                                            "weight":1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name":"WebGL2FingerprintStepTwo",
+                                    "criteria":[
+                                        {
+                                            "percentage":100,
+                                            "weight":1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name":"WebGL2FingerprintStepThree"
+                                }
                             ]
-                        },
-                        {
-                            "name":"WebGLFingerprintStepThree"
                         }
                     ]
                 },
@@ -285,7 +366,30 @@
                 },
 				{
                     "name":"AudioContextFingerprint",
-                    "description":"Fingerprinting based on AudioContext processing."
+                    "description":"Fingerprinting based on AudioContext processing.",
+                    "criteria":[
+                        {
+                            "value":2,
+                            "weight":1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name":"CrawlFpInspector",
+            "criteria":[
+                {
+                    "percentage":10,
+                    "weight":1
+                },
+                {
+                    "percentage":15,
+                    "weight":2
+                },
+                {
+                    "percentage":20,
+                    "weight":3
                 }
             ]
         }
