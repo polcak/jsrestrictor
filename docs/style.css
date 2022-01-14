@@ -109,3 +109,11 @@ section.logo img {
 section.content {
 	text-align: justify;
 }
+
+section.content img {
+	width: 90%;
+}
+
+section.content table {
+	max-width: 90%;
+}
