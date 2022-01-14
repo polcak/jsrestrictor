@@ -197,7 +197,8 @@ async function getCurrentSite() {
 		// Check whether content scripts are allowed on the current tab:
 		// if an exception is thrown, showing per-site settings is pointless,
 		// because we couldn't operate here anyway
-		[pageConfiguration = {}] = await browser.tabs.executeScript({code: "pageConfiguration;"});
+		[pageConfiguration = {}] = await browser.tabs.executeScript({code:
+			`typeof pageConfiguration === "object" && pageConfiguration || {};`});
 
 		let [tab] = await browser.tabs.query({currentWindow: true, active: true});
 		// Obtain and normalize hostname
@@ -213,7 +214,7 @@ async function load_on_off_switch(prefix)
 	var flagName;
 	if (prefix == "nbs") flagName = "requestShieldOn";
 	if (prefix == "fpd") flagName = "fpDetectionOn";
-	
+
 	let result = await browser.storage.sync.get([flagName]);
 	let container = document.getElementById(prefix + "_whitelist");
 	if (result[flagName] === false)
@@ -224,7 +225,7 @@ async function load_on_off_switch(prefix)
 	{
 		container.classList.remove("off");
 		//Ask background whether is this site whitelisted or not
-		if (prefix == "nbs") 
+		if (prefix == "nbs")
 		{
 			let response = await browser.runtime.sendMessage({message: "is current site whitelisted?", site});
 			document.getElementById(prefix + "-switch").checked = response !== "current site is whitelisted";
