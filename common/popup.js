@@ -60,15 +60,21 @@ async function init() {
 	// fill the popup
 	var port_to_background = browser.runtime.connect({name:"port_from_popup"});
 	var current_level = { level_id: "?" };
-	port_to_background.onMessage.addListener(function(msg) {
-		current_level = msg;
+
+	function enableRefreshIfNeeded() {
 		let pageLevel = pageConfiguration.currentLevel;
 
+		let level4comp = ({level_id, tweaks}) => JSON.stringify({level_id, tweaks});
+
 		let needsRefresh = !pageLevel ||
-			pageLevel.level_id !== current_level.level_id ||
-			pageLevel.tweaks !== current_level.tweaks;
+			level4comp(pageLevel) !== level4comp(current_level);
 
 		if (needsRefresh) showRefreshPageOption();
+	}
+
+	port_to_background.onMessage.addListener(function(msg) {
+		current_level = msg;
+		enableRefreshIfNeeded();
 
 		var selectEl = document.getElementById("level-select");
 		function addButton(level) {
@@ -151,9 +157,11 @@ async function init() {
 
 					tlevUI.value = tlevUI.nextElementSibling.value = parseInt(tlev_id);
 					tlevUI.onchange = () => {
+						if (!current_level.tweaks) current_level.tweaks = {};
 						updateStatus(current_level.tweaks[group_id] = tlevUI.nextElementSibling.value = tlevUI.value);
-						domains[site].tweaks = current_level.tweaks;
+						domains[site] = current_level;
 						saveDomainLevels();
+						enableRefreshIfNeeded();
 					}
 					tweaks.appendChild(tweakRow);
 				}

@@ -810,10 +810,9 @@ function updateLevels(res) {
 	var new_domains = res["domains"] || {};
 	for (let [d, {level_id, tweaks}] of Object.entries(new_domains)) {
 		let level = levels[level_id];
-		if (level !== undefined) {
-			domains[d] = level;
-		}
-		else if (tweaks) {
+		if (level === undefined) {
+			domains[d] = default_level;
+		} else if (tweaks) {
 			// this domain has "tweaked" wrapper groups from other levels, let's merge them
 			level = Object.assign({tweaks}, level);
 			for ([group, tlev_id] of Object.entries(tweaks)) {
@@ -877,7 +876,8 @@ function getCurrentLevelJSON(url) {
 		if (domain in domains) {
 			let l = domains[domain];
 			if (l.tweaks && !("wrapper_code" in l)) {
-			  l.wrapped_code = wrap_code(l.wrappers = wrapping_groups.get_wrappers(l)) || "";
+			  l.wrappers = wrapping_groups.get_wrappers(l);
+				l.wrapped_code = wrap_code(l) || "";
 			}
 			return [l, l.tweaks ? l.wrapped_code : wrapped_codes[l.level_id]];
 		}
