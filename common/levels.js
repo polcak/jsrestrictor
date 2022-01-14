@@ -800,11 +800,11 @@ function updateLevels(res) {
 	}
 	var new_default_level = res["__default__"];
 	if (new_default_level === undefined || new_default_level === null || !(new_default_level in levels)) {
-		default_level = Object.create(levels[L2]);
+		default_level = Object.assign({}, levels[L2]);
 		setDefaultLevel(L2);
 	}
 	else {
-		default_level = Object.create(levels[new_default_level]);
+		default_level = Object.assign({}, levels[new_default_level]);
 	}
 	default_level.is_default = true;
 	var new_domains = res["domains"] || {};
