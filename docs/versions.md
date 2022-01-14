@@ -1,4 +1,6 @@
-Title: Release history
+---
+title: Release history
+---
 
 ## 0.6.1
 
