@@ -1,8 +1,9 @@
 ---
 title: "RESULTS: Measurement of JavaScript API usage on the web"
+date: 2022-01-14 12:00
 ---
 
-A [previous blogpost](crawling.md) introduced a methodology to measure the usage of JavaScript APIs on the web by crawling the web. 
+A [previous blogpost](/crawling/) introduced a methodology to measure the usage of JavaScript APIs on the web by crawling the web. 
 The starting point of our web crawling research is the [work of Peter Snyder](https://www.peteresnyder.com/static/papers/improving-web-privacy-and-security-thesis.pdf). Most importantly,  we wanted to compare the differences in JS API usage between browsers with and without privacy extension (e.g., uBlock Origin). We have finished the development of the [crawling tool](https://github.com/martinbednar/web_crawler). We crawled thousands of websites and collected JavaScript calls on the visited web pages.
 
 This blog post introduces the methodology and results of the crawling.
@@ -22,7 +23,7 @@ We aim to research how JS APIs are used on websites. The main research questions
 
 The answers to these questions should help us better understand websites' behaviour. Based on the obtained data, we want to define the suspicious behaviour indicating that the website is trying to fingerprint the user's device.
 
-We plan to keep the [anti-fingerprint mechanism](fpdetection.md) updated based on derived heuristics. The heuristics are derived from the following statistics:
+We plan to keep the [anti-fingerprint mechanism](/fpdetection/) updated based on derived heuristics. The heuristics are derived from the following statistics:
 
 * How many APIs and endpoints does the website access?
 * How many JS calls did the website make?
@@ -129,21 +130,21 @@ All result tables are sorted by the `Difference [%]` column decreasing.
 
 **Average value** - Number of APIs used without uBlock Origin: **18.78**
 
-![image](crawling_results/APIs_without_uBlock.png)
+![image]({attach}/images/crawling_results/APIs_without_uBlock.png)
 
 **Average value** - Number of APIs used with uBlock Origin: **14.27**
 
-![image](crawling_results/APIs_with_uBlock.png)
+![image]({attach}/images/crawling_results/APIs_with_uBlock.png)
 
 ### The number of JavaScript calls on websites
 
 **Average value** - Number of JavaScript calls made without uBlock Origin: **10 629.92**
 
-![image](crawling_results/JScalls_without_uBlock.png)
+![image]({attach}/images/crawling_results/JScalls_without_uBlock.png)
 
 **Average value** - Number of JavaScript calls made with uBlock Origin: **7 176.2**
 
-![image](crawling_results/JScalls_with_uBlock.png)
+![image]({attach}/images/crawling_results/JScalls_with_uBlock.png)
 
 
 
@@ -264,7 +265,7 @@ Only the first 10 lines of the analysis results are usually listed below. Comple
 
 ## Measurement results for FingerPrint Detector
 
-We designed the web crawling primarily to retrieve data to create or evaluate heuristics for the [FingerPrint Detector (FPD)](fpdetection.md).
+We designed the web crawling primarily to retrieve data to create or evaluate heuristics for the [FingerPrint Detector (FPD)](/fpdetection/).
 The above results are helpful in understanding the JavaScript APIs usage on the web. For FPD, only the name of the endpoint and the weight of this endpoint are important. The weight expresses how often a given endpoint is used to create a fingerprint.
 
 The resulting table below was created from crawled data from websites of the Tranco list . Two data sets were combined to obtain more accurate results. The first dataset obtained while crawling with uBlock Origin, the second one obtained while crawling with uMatrix.
@@ -295,9 +296,9 @@ Again, only the first 10 lines of the FPD analysis result are listed below. Comp
 | Document.prototype.elementsFromPoint           |     12         | 12,469         | 11,365        |  46 938                   |     44               |  1 598              |  46 894            |  45 340           | 0,999                    | 0,966                 |
 | Navigator.prototype.javaEnabled                |     11         | 10,892         | 10,892        |  110 665                  |  3 677               |  3 679              |  106 988           |  106 986          | 0,967                    | 0,967                 |
 
-More about FingerPrint Detector is written in the [following blogpost](./fpdetection.md).
+More about FingerPrint Detector is written in the [following blogpost](/fpdetection/).
 
 ## Conclusion
 
 The crawl identified JavaScript endpoints, often used to create a browser fingerprint. The observed data allow assigning weights for each endpoint.
-[FingerPrint Detector](./fpdetection.md) configuration file uses the crawl results.
+[FingerPrint Detector](/fpdetection/) configuration file uses the crawl results.

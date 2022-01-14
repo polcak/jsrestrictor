@@ -1,22 +1,23 @@
 ---
 title: Catch websites red-handed fingerprinting your browser
+date: 2022-01-14 14:00
 ---
 
-We want to identify [fingerprinting](./fingerprinting.md) attempts by counting the number of different APIs employed by a page, especially those not frequently used for benign purposes. This blog post introduces a new fingerprinting protection mechanism - FingerPrint Detector (FPD) available in JavaScript Restrictor (JShelter) 0.6. This tool allows users to gain more control over browser fingerprinting, which has become an invisible threat to our privacy.
+We want to identify [fingerprinting](/fingerprinting/) attempts by counting the number of different APIs employed by a page, especially those not frequently used for benign purposes. This blog post introduces a new fingerprinting protection mechanism - FingerPrint Detector (FPD) available in JavaScript Restrictor (JShelter) 0.6. This tool allows users to gain more control over browser fingerprinting, which has become an invisible threat to our privacy.
 
 ## Heuristics as a template for the fingerprinting detection
 
-[Mitigation of browser fingerprinting is not straightforward](./fingerprinting.md). FPD does not attempt to prevent a script from taking a fingerprint. Neither does FPD falsify a fingerprint. Instead, FPD monitors the APIs that a web page accesses and detects suspicious activities. FPD quickly reacts in case of fingerprint extraction and blocks further web page communication, including storing information.
+[Mitigation of browser fingerprinting is not straightforward](/fingerprinting/). FPD does not attempt to prevent a script from taking a fingerprint. Neither does FPD falsify a fingerprint. Instead, FPD monitors the APIs that a web page accesses and detects suspicious activities. FPD quickly reacts in case of fingerprint extraction and blocks further web page communication, including storing information.
 
 Several studies over the last decade detected fingerprinting attempts. Many of them used a simple heuristic approach to create a set of conditions. If these conditions are met, suspicious activity is detected. Studies like [The Web Never Forgets](https://securehomes.esat.kuleuven.be/~gacar/persistent/the_web_never_forgets.pdf) and [A 1-million-site Measurement and Analysis](https://www.cs.princeton.edu/~arvindn/publications/OpenWPM_1_million_site_tracking_measurement.pdf) used this approach to measure the real-world occurrence of web tracking. At the same time, they verified the usability of heuristic-based detection. They found the detection effective with a very low false-positive rate. The most challenging part of this approach is a careful selection of detection conditions. Later, studies began to experiment with more sophisticated methods. For example, [Fingerprinting the Fingerprinters](https://web.cs.ucdavis.edu/~zubair/files/fpinspector-sp2021.pdf) used machine learning for fingerprinting detection. They managed to achieve even better precision, but at the cost of demanding model training.
 
-For JShelter, we settled down on using a simple heuristic approach, but with a little twist to it. Internet technology is constantly changing, so we want to make our heuristics as flexible as possible. Instead of hard-coding them, we propose a declarative way to describe the heuristics. This concept allows us to make changes with a new release and progressively [adapt to the latest changes in the field](./crawling_results.md). For this purpose, we defined JSON configuration files, which contain all the information required for fingerprinting detection. As these files make an input for our evaluation/detection logic, their content directly reflects how JShelter should evaluate websites in terms of fingerprinting.
+For JShelter, we settled down on using a simple heuristic approach, but with a little twist to it. Internet technology is constantly changing, so we want to make our heuristics as flexible as possible. Instead of hard-coding them, we propose a declarative way to describe the heuristics. This concept allows us to make changes with a new release and progressively [adapt to the latest changes in the field](/crawling_results/). For this purpose, we defined JSON configuration files, which contain all the information required for fingerprinting detection. As these files make an input for our evaluation/detection logic, their content directly reflects how JShelter should evaluate websites in terms of fingerprinting.
 
 On closer inspection, the configuration files contain two basic types of entries. Firstly, they define JavaScript endpoints, which are relevant for fingerprinting detection. Secondly, they group related endpoints. For example, we group endpoints according to their semantic properties. Imagine that there are two different endpoints. Both provide hardware information about the device. We can assign both endpoints to a group that covers access to hardware properties in this scenario. The configuration allows clustering groups to other groups and creating a hierarchy of groups. Ultimately, the configuration is a tree-like structure whose evaluation can detect browser fingerprinting.
 
 The whole evaluation process dynamically observes the API calls performed by a web page. Note that we analyse the calls themselves. Hence, the dynamic analysis overcomes any obfuscation of fingerprinting scripts.
 
-The current heuristics are based on many prior studies, [our own crawl](./crawling_results.md), and available tools focused on browser fingerprinting.
+The current heuristics are based on many prior studies, [our own crawl](/crawling_results/), and available tools focused on browser fingerprinting.
 
 * We extracted and modified detection rules from studies like:
 	* [Fingerprinting the Fingerprinters](https://web.cs.ucdavis.edu/~zubair/files/fpinspector-sp2021.pdf)
@@ -46,7 +47,7 @@ FPD stores the number of accessed calls in the context of a displayed page. It c
 
 The evaluation phase starts whenever a new HTTP request occurs. FPD counts the fingerprinting score from the observed calls in the past. If the fingerprinting score is above a specified threshold, FPD considers a web page to perform fingerprinting. In this case, FPD warns the user with a notification.
 
-![Notification example for Chrome (left) and Firefox (right).](./fpdetection/notifications.png)
+![Notification example for Chrome (left) and Firefox (right).]({attach}/images/fpdetection/notifications.png)
 
 ### Reactive phase
 
