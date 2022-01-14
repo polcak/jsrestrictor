@@ -42,7 +42,7 @@ The crawling process can be described in the following steps:
 2. If a privacy extension is required (in the script parameter), uBlock Origin will be installed as soon as the web browser is started.
 3. Python script running in the container visits web pages from a given list one by one.
 4. The browser waits for 30 seconds on each page. The customised web browser extension Web API Manager intercepts JS calls and stores the stats into the SQLite database.
-5. When all delegated pages are visited, either a new container can be started and crawling continues with a new list of web pages to visit, or crawling ends if all websites are visited.
+5. When the script finishes the crawl of assigned pages, it checks if there is a batch of pages not yet visited. If there is an unprocessed batch, the crawling continues with step 3 and the new list of web pages to visit. If the crawler visited all sites, the crawling ends.
 
 For now, we only visited the homepages because we wanted to visit as many different websites as possible. In the future, we plan to launch long-term crawling, which will include subpages. In particular, we want to focus on visiting login pages, where we expect fingerprint scripts to be included. Then, we can compare API calls on login pages and other pages.
 
@@ -299,5 +299,5 @@ More about FingerPrint Detector is written in the [following blogpost](./fpdetec
 
 ## Conclusion
 
-We were able to identify JavaScript endpoints, which are often used to create a browser fingerprint, and assign them weights according to their degree of use for the fingerprint.
-The crawl results will be used directly to create the FingerPrint Detector configuration file.
+The crawl identified JavaScript endpoints, often used to create a browser fingerprint. The observed data allow assigning weights for each endpoint.
+[FingerPrint Detector](./fpdetection.md) configuration file uses the crawl results.
