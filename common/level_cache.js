@@ -61,11 +61,11 @@ function getContentConfiguration(url, frameId, tabId) {
 				 */
 				level =  getCurrentLevelJSON(TabCache.get(tabId).url);
 			}
-			let [{is_default, wrappers}, code] = level;
+			let [{wrappers}, code] = level;
 			let {domainHash} = Hashes.getFor(url);
 			let fpdOn = isFpdOn(tabId);
 			resolve({
-				is_default,
+				currentLevel: level[0],
 				code,
 				wrappers,
 				domainHash,

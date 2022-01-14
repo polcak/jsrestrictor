@@ -9,7 +9,7 @@
 body {
 	padding: 1em;
 	margin: 1em;
-	min-width: 25em;
+	min-width: 38em;
 }
 
 header {
@@ -21,6 +21,11 @@ header {
 
 h3 {
 	font-size: 3ex;
+}
+
+.buttons {
+	text-align: end;
+	margin: 0 0 1em 0;
 }
 
 #logo {
@@ -213,9 +218,7 @@ input:checked + .slider:before {
 	padding-top:5px;
 }
 
-#btn-tweak {
-	float: right;
-}
+
 #btn-tweak:disabled {
 	display: none;
 }

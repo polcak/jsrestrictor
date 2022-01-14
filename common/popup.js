@@ -24,7 +24,7 @@
 //
 
 var site; // "https://www.example.com" from current tab will become "example.com"
-
+var pageConfiguration = {};
 /**
  * Enable the refresh page option.
  */
@@ -62,6 +62,14 @@ async function init() {
 	var current_level = { level_id: "?" };
 	port_to_background.onMessage.addListener(function(msg) {
 		current_level = msg;
+		let pageLevel = pageConfiguration.currentLevel;
+
+		let needsRefresh = !pageLevel ||
+			pageLevel.level_id !== current_level.level_id ||
+			pageLevel.tweaks !== current_level.tweaks;
+
+		if (needsRefresh) showRefreshPageOption();
+
 		var selectEl = document.getElementById("level-select");
 		function addButton(level) {
 			let b = document.createElement("button");
@@ -189,7 +197,7 @@ async function getCurrentSite() {
 		// Check whether content scripts are allowed on the current tab:
 		// if an exception is thrown, showing per-site settings is pointless,
 		// because we couldn't operate here anyway
-		await browser.tabs.executeScript({code: ""});
+		[pageConfiguration = {}] = await browser.tabs.executeScript({code: "pageConfiguration;"});
 
 		let [tab] = await browser.tabs.query({currentWindow: true, active: true});
 		// Obtain and normalize hostname
