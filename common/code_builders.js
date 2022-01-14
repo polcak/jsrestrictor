@@ -3,7 +3,7 @@
  *
  *  \author Copyright (C) 2019  Libor Polcak
  *  \author Copyright (C) 2021  Giorgio Maone
- *  \author Copyright (C) 2021  Marek Salon
+ *  \author Copyright (C) 2022  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -402,7 +402,7 @@ function wrap_code(level) {
 				for (let accessor of ["set", "get"]) {
 					if (typeof d[accessor] === "function") {
 						let f = d[accessor];
-						d[accessor] = exportFunction(d[accessor], obj, {});
+						d[accessor] = exportFunction(d[accessor], obj, {defineAs: `${accessor} ${prop}`});
 					}
 				}
 				if (typeof d.value === "object") d.value = forPage(d.value);

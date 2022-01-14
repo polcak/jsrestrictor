@@ -4,6 +4,7 @@
  *  \author Copyright (C) 2019-2021  Libor Polcak
  *  \author Copyright (C) 2019  Martin Timko
  *  \author Copyright (C) 2021  Matus Svancar
+ *	\author Copyright (C) 2022  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -96,6 +97,8 @@ var wrapping_groups = {
 				"Gamepad.prototype.timestamp",
 				// VR
 				"VRFrameData.prototype.timestamp",
+        // SENSOR
+        "Sensor.prototype.timestamp",
 			],
 		},
 		{
@@ -491,6 +494,38 @@ var wrapping_groups = {
 				"Geolocation.prototype.clearWatch"
 			],
 		},
+    {
+			name: "physical_environment",
+			description: "Wrapping APIs for scanning properties of the physical environment",
+			description2: [],
+			options: [
+				{
+          name: "emulateStationaryDevice",
+          description: "Emulate stationary device",
+          data_type: "Boolean",
+          ui_elem: "input-checkbox",
+          default: true,
+				},
+			],
+			wrappers: [
+        // GENERIC SENSOR API Sensors
+
+				// Magnetometer
+				"Magnetometer.prototype.x",
+        "Magnetometer.prototype.y",
+        "Magnetometer.prototype.z",
+
+        // Accelerometer, LinearAccelerationSensor, and GravitySensor
+        "Accelerometer.prototype.x",
+        "Accelerometer.prototype.y",
+        "Accelerometer.prototype.z",
+
+        // Here, we will add references to other GenericSensorAPI
+        // sensor wrappers (DeviceOrientationSensor, AmbientLightSensor,
+        // ProximitySensor, ...)
+        // We should also decide whether Bluetooth / NFC belongs here
+			],
+		},
 		{
 			name: "gamepads",
 			description: "Prevent websites from learning information on local gamepads",
@@ -650,6 +685,8 @@ var level_1 = {
 	"geolocation_locationObfuscationType": 2,
 	"analytics": true,
 	"windowname": true,
+  "physical_environment": true,
+  "physical_environment_emulateStationaryDevice": true,
 };
 
 var level_2 = {
@@ -679,6 +716,8 @@ var level_2 = {
 	"vr": true,
 	"analytics": true,
 	"windowname": true,
+  "physical_environment": true,
+  "physical_environment_emulateStationaryDevice": true,
 };
 
 var level_3 = {
@@ -719,6 +758,8 @@ var level_3 = {
 	"vr": true,
 	"analytics": true,
 	"windowname": true,
+  "physical_environment": true,
+  "physical_environment_emulateStationaryDevice": true,
 };
 
 const BUILTIN_LEVEL_NAMES = [L0, L1, L2, L3];

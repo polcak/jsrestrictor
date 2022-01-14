@@ -8,7 +8,7 @@ filenames = glob.glob("../common/wrappingS-*.js")
 output_dir = "content/wrappers/"
 
 titles = {
-    "ajax": "AJAX",
+    "ajax": "Ajax",
     "battery-cr": "Battery level",
     "be": "Beacon API",
     "dm": "Device memory",
@@ -31,6 +31,9 @@ titles = {
     "pt2": "Performance Timeline (L2)",
     "vr": "Virtual Reality 1.1",
     "xr": "Web XR",
+    "sensor-accelerometer": "Accelerometer",
+    "sensor-magnet": "Magnet",
+    "sensor": "Generic Sensor",
 }
 
 

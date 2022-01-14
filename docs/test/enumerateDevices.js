@@ -31,8 +31,13 @@ if (navigator.getGamepads().length === 0) {
 }
 else {
 	let ul = document.getElementById("gamepads");
-	navigator.getGamepads().forEach(function(gp) {
-		appendLi(ul, gp.id);
+	Array.prototype.forEach.call(navigator.getGamepads(), function(gp) {
+		if (gp === null || gp.id === undefined) {
+			appendLi(ul, String(gp));
+		}
+		else {
+			appendLi(ul, gp.id);
+		}
 	});
 }
 

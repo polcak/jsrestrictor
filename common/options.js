@@ -5,6 +5,7 @@
  *  \author Copyright (C) 2019  Martin Timko
  *  \author Copyright (C) 2020  Peter Hornak
  *  \author Copyright (C) 2020  Pavel Pohner
+ *  \author Copyright (C) 2022  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -302,11 +303,15 @@ document.getElementById("new_level").addEventListener("click",
 	() => prepare_level_config("Add new level"));
 
 document.getElementById("nbs-whitelist-add-button").addEventListener("click", () => add_to_whitelist("nbs"));
+document.getElementById("nbs-whitelist-input").addEventListener('keydown', (e) => {if (e.key === 'Enter') add_to_whitelist("nbs")});
 document.getElementById("nbs-whitelist-remove-button").addEventListener("click", () => remove_from_whitelist("nbs"));
+document.getElementById("nbs-whitelist-select").addEventListener('keydown', (e) => {if (e.key === 'Delete') remove_from_whitelist("nbs")});
 document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_slider, 200, "nbs")});
 
 document.getElementById("fpd-whitelist-add-button").addEventListener("click", () => add_to_whitelist("fpd"));
+document.getElementById("fpd-whitelist-input").addEventListener('keydown', (e) => {if (e.key === 'Enter') add_to_whitelist("fpd")});
 document.getElementById("fpd-whitelist-remove-button").addEventListener("click", () => remove_from_whitelist("fpd"));
+document.getElementById("fpd-whitelist-select").addEventListener('keydown', (e) => {if (e.key === 'Delete') remove_from_whitelist("fpd")});
 document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_slider, 200, "fpd")});
 
 function add_to_whitelist(prefix)

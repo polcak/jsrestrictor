@@ -176,14 +176,28 @@ function installUpdate() {
 			}
 			item.version = 2.9;
 		}
-		if (item.version < 2.10) {
+		if (item.version < 3) {
 			for (level in item["custom_levels"]) {
 				let l = item["custom_levels"][level];
 				if (l.gamepads) {
 					l.vr = true;
 				}
 			}
-			item.version = 2.10;
+			item.version = 3;
+		}
+		if (item.version < 4) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.hardware || l.battery || l.windowname) {
+					l.physical_environment = true;
+					l.physical_environment_emulateStationaryDevice = true;
+				}
+			}
+			item.version = 4;
+		}
+		if (item.version < 5) {
+			item.fpDetectionOn = false;
+			item.version = 5;
 		}
 		browser.storage.sync.set(item);
 	});

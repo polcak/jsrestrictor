@@ -2,6 +2,7 @@
 <!--
 SPDX-FileCopyrightText: 2021 2019 Libor Polčák
 SPDX-FileCopyrightText: 2021 2019 Martin Timko
+SPDX-FileCopyrightText: 2022 2021 Marek Saloň
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
@@ -24,6 +25,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 				<ul>
 					<li><a href="options.html">Main JSR settings</a></li>
 					<li><a href="options_domains.html">Specific domain level configuration</a></li>
+					<li><a href="options_advanced.html">Advanced options</a></li>
 					<li>
 						<p>External links</p>
 						<ul>
@@ -78,10 +80,6 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			We generally do <strong>not</strong> recommend disabling the Network boundary shield for domains
 			from the public Internet.
 		</p>
-		<p class="nbs_description">
-			Please note, that these domain names are checked with domain hierarchy, so whitelisting
-			<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
-		</p>
 		<fieldset>
 			<div>
 				<label id="switch-label" for="nbs-switch">Network boundary shield: </label>
@@ -102,6 +100,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		<div>
 			<button id="nbs-whitelist-remove-button" class="jsr-button"><strong>Enable</strong> the Network boundary shield
 				for the selected domains</button>
+			<p>
+				Please note, that these domain names are checked with domain hierarchy, so whitelisting
+				<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
+			</p>
 		</div>
 	</div>
 
@@ -119,10 +121,6 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			blocking all subsequent HTTP requests and cleaning browser storage. Take into account that <strong>this action will probably result in a broken web page</strong> and 
 			we strongly recommend to use whitelist for trusted domains. You can do so via pop-up menu of the extension or explicitly add domains to the list
 			below.
-		</p>
-		<p class="fpd_description">
-			Please note, that these domain names are checked with domain hierarchy, so whitelisting
-			<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
 		</p>
 		<fieldset>
 			<div>
@@ -144,6 +142,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		<div>
 			<button id="fpd-whitelist-remove-button" class="jsr-button"><strong>Enable</strong> the Fingerprinting detection
 				for the selected domains</button>
+			<p>
+				Please note, that these domain names are checked with domain hierarchy, so whitelisting
+				<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
+			</p>
 		</div>
 	</div>
 

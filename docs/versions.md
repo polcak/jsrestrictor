@@ -1,5 +1,14 @@
 Title: Release history
 
+## 0.6
+
+* New protection: Fingerprint detector, see the blogpost for explanation.
+* Physical environment wrapper group added. It contains `Sensor`, `Magnetometer`, `Accelerometer`, `LinearAccelerationSensor`, `GravitySensor` wrappers. Some readings might be inconsistent. `Gyroscope` and `Orientation` sensors will be a part of a future release.
+* It is possible to import/export configuration (Github issue #159).
+* Improved accessibility of the pop up and option pages.
+* Bugfix: Fix double injection of some wrappers. For example, this solves regression in Geolocation
+	wrapper introduced in 0.5.
+
 ## 0.5.5
 
 * Tighter content script initialization
