@@ -1,5 +1,11 @@
 Title: Release history
 
+## 0.6.1
+
+* Disable FPD by default, you are welcome to opt-in
+* Provide access to advanced options from the main options page
+* Fix update script to migrate to new configuration
+
 ## 0.6
 
 * New protection: Fingerprint detector, see the blogpost for explanation.
