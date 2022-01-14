@@ -9,5 +9,7 @@ JShelter requires these permissions:
  * **notifications**: for notifying users on blocked HTTP requests/hosts
  * **webNavigation**: for deploying wrappers as early as possible to avoid page scripts accessing
 	 unwrapped objects
+ * **browsingData**: Fingerprint Detector needs to remove data from any storage that can save the
+	 fingerprint
 
 jShelter stores all configuration data in the browser or in the user account. It does not upload any data to our servers.
