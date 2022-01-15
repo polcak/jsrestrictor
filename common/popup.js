@@ -128,9 +128,10 @@ async function init() {
 			function initTweaks() {
 				tweaks.innerHTML = "";
 				tweaks.appendChild(document.getElementById("tweak-head").content);
+				let {option_map} = wrapping_groups;
 				let tweakEntries =  Object.entries(Object.assign(defaultTweaks(), current_level.tweaks || {}))
 					.map(([group_id, tlev_id]) => {
-						let group = wrapping_groups.option_map[group_id];
+						let group = option_map[group_id];
 						let label = group.label || group.name;
 						return { group_id, tlev_id, label, group, toString() { return this.label } };
 					}
@@ -143,7 +144,25 @@ async function init() {
 					let tlevUI = tweakRow.querySelector(".tlev");
 					let status = tweakRow.querySelector(".status");
 					let updateStatus = lid => {
-						status.innerHTML = levels[lid][group_id] === true ? `<strong>ON</strong> <em>(TODO: show level ${lid} specific configuration)</em>` : "OFF";
+						let l = levels[lid];
+						if (l[group_id] === true) {
+							status.innerHTML = "<strong>ON</strong> ";
+							let optionsDes = document.createElement("em");
+							let prefix = `${group_id}_`;
+							let choices = [];
+							for (let optId of Object.keys(l).filter(k => k.startsWith(prefix))) {
+								let val = l[optId];
+								let opt = option_map[optId];
+								let des = opt.options && opt.options.length ? option_map[`${optId}_${val}`].description : val && opt.description || "";
+								if (des) choices.push(des);
+							}
+							if (choices.length) {
+								optionsDes.append(` - ${choices.join(" / ")}`);
+								status.appendChild(optionsDes);
+							}
+						} else {
+							status.innerHTML = "OFF";
+						}
 					}
 					updateStatus(tlev_id);
 				  tweakRow.querySelector(".description").textContent = group.description;
