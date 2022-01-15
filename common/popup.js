@@ -141,18 +141,24 @@ async function init() {
 					updateStatus(tlev_id);
 				  tweakRow.querySelector(".description").textContent = group.description;
 					let more = tweakRow.querySelector(".more");
+					let less = tweakRow.querySelector(".less");
 					let longDescription = group.description2;
 					if (!longDescription || longDescription.length === 0) {
+						less.remove();
 						more.remove();
 					} else {
 						more.onclick = function() {
-							let parent = this.parentNode.parentNode;
-							this.remove();
+							let parent = document.createElement("div");
 							for (let line of longDescription) {
 								parent.appendChild(document.createElement("p")).textContent = line;
 							}
+							more.replaceWith(parent);
 							return false;
 					  }
+						less.onclick = function() {
+							this.previousElementSibling.replaceWith(more);
+							return false;
+						}
 					}
 
 					tlevUI.value = tlevUI.nextElementSibling.value = parseInt(tlev_id);

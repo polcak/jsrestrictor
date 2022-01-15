@@ -254,3 +254,7 @@ input:checked + .slider:before {
 .more .description2 {
 	display: none;
 }
+
+.more + .less {
+	display: none;
+}
