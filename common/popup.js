@@ -128,10 +128,17 @@ async function init() {
 			function initTweaks() {
 				tweaks.innerHTML = "";
 				tweaks.appendChild(document.getElementById("tweak-head").content);
-				for (let [group_id, tlev_id] of Object.entries(Object.assign(defaultTweaks(), current_level.tweaks || {}))) {
-					let group = wrapping_groups.option_map[group_id];
+				let tweakEntries =  Object.entries(Object.assign(defaultTweaks(), current_level.tweaks || {}))
+					.map(([group_id, tlev_id]) => {
+						let group = wrapping_groups.option_map[group_id];
+						let label = group.label || group.name;
+						return { group_id, tlev_id, label, group, toString() { return this.label } };
+					}
+				).sort(new Intl.Collator('en').compare);
+
+				for (let { group_id, tlev_id, label, group} of tweakEntries) {
 					let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
-					tweakRow.querySelector("label").textContent = group_id;
+					tweakRow.querySelector("label").textContent = label;
 					tweakRow.querySelector(".hits").innerHTML = `<em>TODO: from FPD</em>`;
 					let tlevUI = tweakRow.querySelector(".tlev");
 					let status = tweakRow.querySelector(".status");
