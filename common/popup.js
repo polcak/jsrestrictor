@@ -25,6 +25,7 @@
 
 var site; // "https://www.example.com" from current tab will become "example.com"
 var pageConfiguration = {};
+var hits;
 /**
  * Enable the refresh page option.
  */
@@ -140,7 +141,12 @@ async function init() {
 				for (let { group_id, tlev_id, label, group} of tweakEntries) {
 					let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
 					tweakRow.querySelector("label").textContent = label;
-					tweakRow.querySelector(".hits").innerHTML = `<em>TODO: from FPD</em>`;
+					let groupHits = 0;
+					for (let wrapper of group.wrappers) {
+						if (hits[wrapper]) groupHits += hits[wrapper];
+					}
+					tweakRow.querySelector(".hits").textContent = groupHits;
+
 					let tlevUI = tweakRow.querySelector(".tlev");
 					let status = tweakRow.querySelector(".status");
 					let updateStatus = lid => {
@@ -241,6 +247,7 @@ async function getCurrentSite() {
 			`typeof pageConfiguration === "object" && pageConfiguration || {};`});
 
 		let [tab] = await browser.tabs.query({currentWindow: true, active: true});
+		hits = await browser.runtime.sendMessage({purpose: 'fpd-fetch-hits', tabId: tab.id});
 		// Obtain and normalize hostname
 		return site = wwwRemove(new URL(tab.url).hostname);
 	} catch (e) {
