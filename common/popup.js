@@ -226,14 +226,6 @@ document.getElementById('controls').addEventListener('click', function (e) {
 	window.close();
 });
 
-window.addEventListener("load", function() {
-	if (!site) {
-		return;
-	}
-	load_on_off_switch("nbs");
-	load_on_off_switch("fpd");
-});
-
 document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200, "nbs")});
 document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_whitelist, 200, "fpd")});
 
@@ -304,4 +296,10 @@ async function control_whitelist(prefix)
 	showRefreshPageOption();
 }
 
-init();
+addEventListener("DOMContentLoaded", async () => {
+	await init();
+	if (!site) return;
+	load_on_off_switch("nbs");
+	load_on_off_switch("fpd");
+});
+
