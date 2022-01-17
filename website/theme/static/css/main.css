@@ -391,6 +391,17 @@ section > header {
 /* Helper classes
 */
 
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute !important;
+  width: 1px;
+}
+
 .has-text-centered {
   text-align: center !important;
 }
@@ -406,6 +417,35 @@ section > header {
 .has-text-right {
   text-align: right !important;
 }
+
+/* Language selector
+*/
+
+.language-menu {
+  width: 100%;
+  max-width: 1344px;
+  margin: 0 auto;
+  background: pink;
+  padding: 0 var(--mg-medium);
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+}
+
+.select select {
+  color: var(--text-color);
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px solid var(--link-color);
+  border-radius: 0;
+  color: #363636;
+  cursor: pointer;
+  display: block;
+  font-size: 1em;
+  max-width: 100%;
+  outline: 0;
+}
+
 
 /* Sidebar navigation
 */

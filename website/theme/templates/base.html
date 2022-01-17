@@ -93,8 +93,22 @@
   </nav>
 
   <div {% if title == "Home" %} id="home" {% endif %} class="wrapper">
-    <div class="content-wrapper container">
 
+    <aside class="language-menu">
+      <div id="select-language">
+        <legend>Switch to</legend>
+        <label for="language-selector" class="visually-hidden">Select your preferred language</label>
+        <div class="select">
+          <select id="language-selector" name="language"
+            <option value="en-US">English (US)</option>
+            <option value="pt-pt">Português</option>
+            <option value="pl">Polski</option>
+          </select>
+        </div>
+      </div>
+    </aside>
+
+    <div class="content-wrapper container">
       {% block sidebar %}
       <div class="sidebar-overlay"></div>
       <div class="sidebar">
