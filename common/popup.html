@@ -3,7 +3,7 @@
 SPDX-FileCopyrightText: 2021 2019 Libor Polčák
 SPDX-FileCopyrightText: 2021 2019 Martin Timko
 SPDX-FileCopyrightText: 2021 2021 Marek Saloň
-SPDX-FileCopyrightText: 2021 2021 Giorgio Maone
+SPDX-FileCopyrightText: 2022 2021 Giorgio Maone
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
@@ -23,7 +23,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	<header>
 		<img class="logo" id="logo" src="../img/icon-128.png" />
 		<h3 id="titletext">JavaScript Restrictor</h3>
-		<img id="controls" src="../img/settings-128.png" title="Open settings"/>
+		<button class="controls global-settings" title="Open global settings">Open global settings</button>
 	</header>
 
 	<content id="site-settings">
@@ -33,14 +33,20 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		</div>
 
 		<section id="level_controls">
-			<div id="current_site_level_settings">
-				<div id="level-select">
-				</div>
-				<p id="current-level">
-				<strong id="level-text"></strong><span id="level-description"></span>
-				</p>
+			<div class="section-header toggle">
+				<label for="js-toggle">JavaScript Shield</label>
+				<input type="checkbox" id="js-toggle" class="controls" title="Edit JavaScript Shield settings" />
 			</div>
-			<div class="buttons"><button id="btn-tweak">Tweak for this site</button></div>
+			<div id="js-settings" class="section-body">
+				<div id="current_site_level_settings">
+					<div id="level-select">
+					</div>
+					<p id="current-level">
+					<strong id="level-text"></strong><span id="level-description"></span>
+					</p>
+				</div>
+				<div class="buttons"><button id="btn-tweak">Tweak for this site</button></div>
+			</div>
 		</section>
 
 		<section id="tweaks">
@@ -65,8 +71,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		</template>
 
 
-		<section id="binary_options">
-			<div id="nbs_whitelist">
+			<section id="nbs_whitelist">
 				<p class="off_message">Network Boundary Shield is globally off.</p>
 				<div class="switch_wrapper">
 						<label for="nbs-switch">Network Boundary Shield</label>
@@ -77,7 +82,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 				</div>
 			</div>
 
-			<div id="fpd_whitelist">
+			<section id="fpd_whitelist">
 				<p class="off_message">Fingerprinting detection is globally off.</p>
 				<div class="switch_wrapper">
 					<label for="fpd-switch">Fingerprinting detection</label>
@@ -86,10 +91,13 @@ SPDX-License-Identifier: GPL-3.0-or-later
 						<span class="slider"></span>
 					</label>
 				</div>
-			</div>
-		</section>
-	</content>
+			</section>
 
+	</content>
+	<footer id="globals">
+		<label for="global-settings">Global settings</label>
+		<button id="global-settings" class="controls global-settings" title="Open global settings">Open...</button>
+	</footer>
 </body>
 
 </html>

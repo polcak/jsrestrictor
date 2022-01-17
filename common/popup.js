@@ -5,6 +5,7 @@
  *  \author Copyright (C) 2019  Libor Polcak
  *  \author Copyright (C) 2020  Pavel Pohner
  *  \author Copyright (C) 2021  Marek Salon
+ *  \author Copyright (C) 2022  Giorgio Maone
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -221,10 +222,22 @@ async function init() {
 }
 
 // Open options in a new tab when clicking on the icon
-document.getElementById('controls').addEventListener('click', function (e) {
-	browser.runtime.openOptionsPage();
-	window.close();
-});
+for (let widget of document.querySelectorAll(".global-settings")) {
+	widget.addEventListener('click', e => {
+	  browser.runtime.openOptionsPage();
+	  window.close();
+  });
+}
+
+for (let widget of document.querySelectorAll('.controls[type=checkbox]')) {
+	let key = `controls-${widget.id}-checked`;
+	widget.checked = localStorage.getItem(key) === 'true';
+	(widget.onclick = () => {
+		let {checked} = widget;
+		widget.parentElement.classList.toggle("toggled", checked);
+		localStorage.setItem(key, checked);
+	})();
+}
 
 document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200, "nbs")});
 document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_whitelist, 200, "fpd")});
