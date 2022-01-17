@@ -2,6 +2,10 @@
 title: Release history
 ---
 
+## 0.6.2
+
+* Make sure that dynamically created iframes are not vulnerable to leaking unwrapped APIs (Update NSCL)
+
 ## 0.6.1
 
 * Disable FPD by default, you are welcome to opt-in
