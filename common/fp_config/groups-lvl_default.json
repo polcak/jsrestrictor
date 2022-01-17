@@ -138,7 +138,7 @@
                         }
                     ]
                 },
-				{
+                {
                     "name":"TimeInfo",
                     "description":"Information about exact time values.",
                     "criteria":[
@@ -191,20 +191,20 @@
                                     "weight":1
                                 }
                             ],
-							"groups":[
-								{
-									"name":"JSFontEnumStepOne"
-								},
-								{
-									"name":"JSFontEnumStepTwo",
-									"criteria":[
-										{
-											"access":15,
-											"weight":1
-										}
-									]
-								}
-							]
+                            "groups":[
+                                {
+                                    "name":"JSFontEnumStepOne"
+                                },
+                                {
+                                    "name":"JSFontEnumStepTwo",
+                                    "criteria":[
+                                        {
+                                            "access":15,
+                                            "weight":1
+                                        }
+                                    ]
+                                }
+                            ]
                         },
                         {
                             "name":"CanvasFontEnum",
@@ -214,18 +214,18 @@
                                     "weight":1
                                 }
                             ],
-							"groups":[
-								{
-									"name":"CanvasFontEnumStepOne"
-								},
-								{
-									"name":"CanvasFontEnumStepTwo"
-								}
-							]
+                            "groups":[
+                                {
+                                    "name":"CanvasFontEnumStepOne"
+                                },
+                                {
+                                    "name":"CanvasFontEnumStepTwo"
+                                }
+                            ]
                         }
                     ]
                 },
-				{
+                {
                     "name":"CanvasFingerprint",
                     "description":"Extraction of rendered image from 2D canvas.",
                     "criteria":[
@@ -258,7 +258,7 @@
                         }
                     ]
                 },
-				{
+                {
                     "name":"WebGLFingerprint",
                     "description":"Extraction of rendered image from WebGL canvas.",
                     "criteria":[
@@ -334,7 +334,7 @@
                         }
                     ]
                 },
-				{
+                {
                     "name":"WebRTCFingerprint",
                     "description":"Extraction of rendered image into fingerprint.",
                     "criteria":[
@@ -364,7 +364,7 @@
                         }
                     ]
                 },
-				{
+                {
                     "name":"AudioContextFingerprint",
                     "description":"Fingerprinting based on AudioContext processing.",
                     "criteria":[
