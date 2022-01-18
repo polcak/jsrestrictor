@@ -22,7 +22,7 @@
 //
 
 /**
- * \defgroup wrappers The implemented wrappers
+ * \defgroup wrappers JavaScript Shield
  *
  * \brief Wrappers are small pieces of code that modifies the original functionalty of a function,
  * or property defined by standards.
