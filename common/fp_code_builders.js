@@ -21,7 +21,7 @@
 
 /** \file
  *
- * \brief This file is part of Fingerprinting Detection (FPD) and contains helper functions for automated wrappers creation. 
+ * \brief This file is part of Fingerprinting Detector (FPD) and contains helper functions for automated wrappers creation. 
  * File also contains loading routine for FPD configuration files (groups-lvl_X.json, wrappers-lvl_X.json, etc...).
  *
  * \ingroup FPD

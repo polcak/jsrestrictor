@@ -21,16 +21,16 @@
 //
 
 /**
- * \defgroup FPD Fingerprinting Detection
+ * \defgroup FPD Fingerprinting Detector
  *
- * \brief Fingerprinting Detection (FPD) is a module that detects browser fingerprint extraction and prevents
+ * \brief Fingerprinting Detector (FPD) is a module that detects browser fingerprint extraction and prevents
  * its sharing. To learn more about Browser Fingerprinting topic, see study "Browser Fingerprinting: A survey" available
  * here: https://arxiv.org/pdf/1905.01051.pdf
  *
  * The FPD module uses JSR wrapping technique to inject logic that allows log API calls and accesses for every visited web page
  * and its frames. Logged JS APIs can be specified in wrappers-lvl_X.json file, where X represents corresponding JSR level.
  * 
- * Detection of fingeprinting activity is based on chosen heuristics that can be defined in form of API groups. Groups represents
+ * Detector of fingeprinting activity is based on chosen heuristics that can be defined in form of API groups. Groups represents
  * a set of APIs that have similar but specific purpose. Access to group is triggered when a certain amount APIs is accessed. 
  * Hierarchy of groups creates a tree structure, where access to root group means fingerprinting activity. Groups can be configured in
  * groups-lvl_X.json file, where X represents corresponding JSR level.
@@ -43,7 +43,7 @@
 
  /** \file
  *
- * \brief This file is part of Fingerprinting Detection (FPD) and contains API groups evaluation logic. File also contains
+ * \brief This file is part of Fingerprinting Detector (FPD) and contains API groups evaluation logic. File also contains
  * event listeners used for API logging, requests blocking and tabs management. 
  *
  * \ingroup FPD
