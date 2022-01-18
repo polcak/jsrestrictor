@@ -2,9 +2,14 @@
 title: Release history
 ---
 
-## 0.6.2
+## 0.6.3
 
 * Make sure that dynamically created iframes are not vulnerable to leaking unwrapped APIs (Update NSCL)
+* Fix FPD when run in a limited environment
+
+## 0.6.2
+
+* Fix required permissions for Chromium-based browsers - webNavigation is not needed
 
 ## 0.6.1
 
