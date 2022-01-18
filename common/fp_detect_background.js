@@ -225,15 +225,17 @@ function correctGroupCriteria(rootGroup, effectedGroups, level) {
 				// rootGroup is now also effected and added to "effectedGroups" with deleted subgroup
 				effectedGroups[rootGroup.name] = effectedGroups[rootGroup.name] || [];
 				effectedGroups[rootGroup.name].push(rootGroup.groups[groupIdx].name);
-				
-				//delete subgroup from rootGroup
-				rootGroup.groups.splice(groupIdx, 1);
 			}
 
 			// rootGroup is effected because at least one of its child was effected too
 			if (Object.keys(effectedGroups).includes(rootGroup.groups[groupIdx].name)) {
 				effectedGroups[rootGroup.name] = effectedGroups[rootGroup.name] || [];		
 			}
+		}
+
+		// remove deleted subgroups from original group object
+		if (effectedGroups[rootGroup.name]) {
+			rootGroup.groups = rootGroup.groups.filter((x) => (!effectedGroups[rootGroup.name].includes(x.name)))
 		}
 	}
 
