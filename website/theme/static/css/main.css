@@ -54,7 +54,8 @@
   --link-color-rgb: 197, 61, 27; /* original 231, 111, 81 */
   --hero-background-color: 224, 200, 66;
   --ghost-white: #fbf9ff;
-  --lightgray: #fefae0;
+  --light-gray: #fefae0;
+  --dark-gray: #222222;
   --mg-xlarge: 2rem;
   --mg-large: 1.5rem;
   --mg-medium: 1rem;
@@ -130,7 +131,7 @@ pre {
 }
 
 code {
-  background-color: var(--lightgray);
+  background-color: var(--light-gray);
   font-size: 0.875rem;
   font-weight: 400;
   padding: 0.25em 0.5em;
@@ -763,7 +764,7 @@ p.download-buttons {
     transition: transform 0.5s ease;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    background: var(--ghost-white);
+    background-color: var(--ghost-white);
     padding: var(--mg-medium);
   }
 
@@ -873,6 +874,10 @@ p.download-buttons {
 
   a { text-decoration-color: #e76f51; }
   a:hover { color: white; }
+
+  .sidebar {
+    background-color: var(--dark-gray);
+  }
 
   .menu-heading strong {
     color: #e76f51;
