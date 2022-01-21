@@ -6,6 +6,8 @@ title: Release history
 
 * Make sure that dynamically created iframes are not vulnerable to leaking unwrapped APIs (Update NSCL)
 * Fix FPD when run in a limited environment
+* Do not interfere with time explicitely given to Date object
+* Fix Network Boundary Shield name in the popup
 
 ## 0.6.2
 
