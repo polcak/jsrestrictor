@@ -6,6 +6,7 @@ This file contains wrapper for navigator.deviceMemory https://developer.mozilla.
 The goal is to prevent fingerprinting by modifying return value of navigator.deviceMemory parameter.
 
 This wrapper operates with three levels of protection:
+
 *	(0) - return random valid value from range [0.25 - real value]
 *	(1) - return random valid value from range [0.25 - 8]
 *	(2) - return 4
