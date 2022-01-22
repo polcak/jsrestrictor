@@ -1,0 +1,3 @@
+Due to an error "Make sure that dynamically created iframes are not vulnerable to leaking unwrapped APIs (Update NSCL)" was not part of the release.
+
+Only "Fix required permissions for Chromium-based browsers - webNavigation is not needed" changed in 0.6.2
