@@ -50,7 +50,7 @@ class __Config:
     # Full path to Chrome driver.
     chrome_driver = "<<JSR_project_root_directory_path>>/tests/common_files/webbrowser_drivers/chromedriver.exe"
     # Full path to JShelter package for Chrome (crx package).
-    chrome_jsr_extension ="<<JSR_project_root_directory_path>>/tests/common_files/JShelter/chrome_JShelter.crx"
+    chrome_jsr_extension ="<<JSR_project_root_directory_path>>/tests/common_files/JShelter/chrome.crx"
     # Support testing page - do not change without changing script values_getters.py
     # DO NOT SET CUSTOM level of protection FOR THIS SITE. DEFAULT LEVEL TO THIS SITE HAS TO BE APPLIED:
     testing_page = "https://polcak.github.io/jsrestrictor/test/test.html"

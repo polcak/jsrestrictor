@@ -30,7 +30,7 @@ New-Item -ItemType Directory -Path ".\tests\common_files\JShelter" -Force
 # Create xpi package of JShelter for Mozilla Firefox from zip archive created by make.
 Copy-Item ".\jshelter_firefox.zip" -Destination ".\tests\common_files\JShelter\firefox.xpi" -Force
 
-$JShleterPath = Get-Location
+$JShelterPath = Get-Location
 
 # Get path to chrome.exe.
 $Chrome = "C:\Program Files\Google\Chrome\Application"
@@ -46,7 +46,7 @@ cd $Chrome
 # Create crx package of JShelter for Google Chrome from source files.
 #  | Out-Null force PowerShell to wait when packaging by Chorme is completed.
 .\chrome.exe --pack-extension=$JShelterPath\build\chrome | Out-Null
-cd $JShleterPath
+cd $JShelterPath
 
 # Remove unnecessary file created during crx package creating.
 Remove-Item ".\build\chrome.pem" -Recurse -Force
