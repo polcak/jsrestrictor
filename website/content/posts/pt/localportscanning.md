@@ -72,11 +72,11 @@ need to be applied in this case.
 
 ## Network Boundary Shield to the rescue
 
-JSR contains a Network Boundary Shield (NBS) that blocks outgoing browser requests based on the observed behaviour, i.e. a
+JShelter contains a Network Boundary Shield (NBS) that blocks outgoing browser requests based on the observed behaviour, i.e. a
 page hosted on public internet tries to access local URLs.
 NBS just works and cannot be fooled by changes in the URL path, DNS cloaking or other techniques.
 
-![JSR blocks the scan](localportscanning/2_request_blocked.png)
+![JShelter blocks the scan](localportscanning/2_request_blocked.png)
 
 Firefox contains DNS API, so NBS works flawlessly. In Chromium-based browsers, the exact blocking
 behaviour depends on how quickly a scanning script can fire the requests and the precise
