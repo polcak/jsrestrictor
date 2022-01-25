@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -21,7 +21,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-## Check if log was added by JSR. Check with Simple method (equality of text strings).
+## Check if log was added by JShelter. Check with Simple method (equality of text strings).
 def was_log_added(log, logs_without_jsr):
     for log_without_jsr in logs_without_jsr:
         if log_without_jsr['level'] == log['level']:

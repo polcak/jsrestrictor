@@ -128,7 +128,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 			<input id="level_id" ${params.level_id != "" ? "disabled" : ""} value="${escape(params.level_id)}"></input>
 		</div>
 		<div>
-			<span class="table-left-column">This ID is displayed above the JSR icon. If you use an
+			<span class="table-left-column">This ID is displayed above the JShelter icon. If you use an
 					already existing ID, this custom level will replace the original level.</span>
 		</div>
 		<div class="main-section">

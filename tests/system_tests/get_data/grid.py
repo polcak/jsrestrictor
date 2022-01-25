@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -41,7 +41,7 @@ def start_nodes():
     nodes = []
     if Config.number_of_grid_nodes_on_this_device == 0:
         # Waiting on distributed environment when all Selenium Grid nodes will be running.
-        input("When all testing nodes will be running, press Enter to start JSR system testing.")
+        input("When all testing nodes will be running, press Enter to start JShelter system testing.")
     else:
         for node_number in range(Config.number_of_grid_nodes_on_this_device):
             nodes.append(Popen(start_node_command))

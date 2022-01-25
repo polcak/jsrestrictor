@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -21,16 +21,16 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-# Go to root directory of JSR project.
+# Go to root directory of JShelter project.
 cd ..\..\..\
 
-# Create directory for JSR package if does not exists. Like "touch" on Linux.
-New-Item -ItemType Directory -Path ".\tests\common_files\JSR" -Force
+# Create directory for JShelter package if does not exists. Like "touch" on Linux.
+New-Item -ItemType Directory -Path ".\tests\common_files\JShelter" -Force
 
-# Create xpi package of JSR for Mozilla Firefox from zip archive created by make.
-Copy-Item ".\firefox_JSR.zip" -Destination ".\tests\common_files\JSR\firefox_JSR.xpi" -Force
+# Create xpi package of JShelter for Mozilla Firefox from zip archive created by make.
+Copy-Item ".\jshelter_firefox.zip" -Destination ".\tests\common_files\JShelter\firefox.xpi" -Force
 
-$JSRPath = Get-Location
+$JShleterPath = Get-Location
 
 # Get path to chrome.exe.
 $Chrome = "C:\Program Files\Google\Chrome\Application"
@@ -43,16 +43,16 @@ if (-Not (Test-Path $Chrome\chrome.exe -PathType Leaf)) {
 }
 cd $Chrome
 
-# Create crx package of JSR for Google Chrome from source files.
+# Create crx package of JShelter for Google Chrome from source files.
 #  | Out-Null force PowerShell to wait when packaging by Chorme is completed.
-.\chrome.exe --pack-extension=$JSRPath\chrome_JSR | Out-Null
-cd $JSRPath
+.\chrome.exe --pack-extension=$JShelterPath\build\chrome | Out-Null
+cd $JShleterPath
 
 # Remove unnecessary file created during crx package creating.
-Remove-Item ".\chrome_JSR.pem" -Recurse -Force
+Remove-Item ".\build\chrome.pem" -Recurse -Force
 
-# Move crx package of JSR to right location (same as xpi package of JSR).
-Move-Item ".\chrome_JSR.crx" -Destination .\tests\common_files\JSR\chrome_JSR.crx -Force
+# Move crx package of JSR to right location (same as xpi package of JShelter).
+Move-Item ".\build\chrome.crx" -Destination .\tests\common_files\JShelter\chrome.crx -Force
 
 # Go back to common scripts directory.
 cd .\tests\common_files\scripts

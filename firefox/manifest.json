@@ -85,7 +85,7 @@
     "notifications",
     "browsingData"
   ],
-  "short_name": "JSR",
+  "short_name": "JShelter",
   "version": "0.6.3",
   "browser_specific_settings": {
     "gecko": {

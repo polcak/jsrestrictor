@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -25,7 +25,7 @@ from values_getters import get_audio
 
 ## AudioContext and AnalyserNode tests
 ##
-## All of these tests fail in Google Chrome on JSR level 3 - expected failure because of known bug:
+## All of these tests fail in Google Chrome on JShelter level 3 - expected failure because of known bug:
 ## selenium.common.exceptions.JavascriptException: Message: javascript error:
 ## Failed to execute 'getRandomValues' on 'Crypto': parameter 1 is not of type 'ArrayBufferView'.
 

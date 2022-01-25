@@ -1,5 +1,5 @@
 ﻿#
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -75,7 +75,7 @@ class Config(metaclass=MetaConfig):
     _number_of_sites_for_testing = 100
     # Run tests in this browsers.
     _tested_browsers = [BrowserType.CHROME]
-    # Run tests with JSR on this level.
+    # Run tests with JShelter on this level.
     _jsr_level = 3
     # Perform this tests for every website.
     _perform_tests = [TestType.LOGS, TestType.SCREENSHOTS]
@@ -95,4 +95,4 @@ class Config(metaclass=MetaConfig):
     # Paths to files neccessary for testing.
     _selenium_server_jar_path = './selenium/selenium-server-standalone.jar'
     _chrome_driver_path = '../../common_files/webbrowser_drivers/chromedriver.exe'
-    _jsr_extension_for_chrome_path = '../../common_files/JSR/chrome_JSR.crx'
+    _jsr_extension_for_chrome_path = '../../common_files/JShelter/chrome.crx'

@@ -39,7 +39,8 @@ def main():
     for browser_type in get_config("tested_browsers"):
         # create new browser of given type (Chrome, Firefox, etc.)
         my_browser = Browser(browser_type)
-        # set current browser as shared browser for all testing levels (do not create new browser for every JSR_level)
+        # set current browser as shared browser for all testing levels (do not create new browser
+        # for every JShelter_level)
         set_shared_browser(my_browser)
         # for every browser from configuration.py run set of test.
         for jsr_level in get_config("tested_jsr_levels"):
