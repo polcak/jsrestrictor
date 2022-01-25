@@ -55,7 +55,10 @@ submodules:
 
 debug: DEBUG=1
 debug: all
-
+	
+doxygen:
+	PROJECT_NAME="${PROJECT_NAME}" doxygen < doxyfile
+	
 clean:
 	rm -rf firefox_JSR.zip
 	rm -rf firefox_JSR
