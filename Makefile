@@ -11,8 +11,8 @@ DEBUG=0
 all: firefox chrome
 
 .PHONY: firefox chrome clean get_csv docs
-firefox: firefox_JSR.zip
-chrome: chrome_JSR.zip
+firefox: jshelter_firefox.zip
+chrome: jshelter_chrome.zip
 
 COMMON_FILES = $(shell find common/) \
 			   LICENSES/ \
@@ -34,33 +34,33 @@ submodules:
 	git submodule init
 	git submodule update
 
-%_JSR.zip: $(COMMON_FILES) get_csv submodules
-	@rm -rf $*_JSR/ $@
-	@cp -r common/ $*_JSR/
-	@cp -r $*/* $*_JSR/
-	@cp -r LICENSES $*_JSR/
-	@./fix_manifest.sh $*_JSR/manifest.json
-	@cp common/wrappingX* $*_JSR/
-	@nscl/include.sh $*_JSR
+jshelter_%.zip: $(COMMON_FILES) get_csv submodules
+	@mkdir -p build/
+	@rm -rf build/$*/ $@
+	@cp -r common/ build/$*/
+	@cp -r $*/* build/$*/
+	@cp -r LICENSES build/$*/
+	@./fix_manifest.sh build/$*/manifest.json
+	@cp common/wrappingX* build/$*/
+	@nscl/include.sh build/$*
 	@if [ $(DEBUG) -eq 0 ]; \
 	then \
-		find $*_JSR/ -type f -name "*.js" -exec sed -i '/console\.debug/d' {} + ; \
+		find build/$*/ -type f -name "*.js" -exec sed -i '/console\.debug/d' {} + ; \
 	fi
-	@rm -f $*_JSR/.*.sw[pno]
-	@rm -f $*_JSR/img/makeicons.sh
-	@find $*_JSR/ -name '*.license' -delete
-	@cd $*_JSR/ && zip -q -r ../$@ ./* --exclude \*.sw[pno]
-	@echo "LOG-WARNING: Number of lines in $*_JSR with console.log:"
-	@grep -re 'console.log' $*_JSR | wc -l
+	@rm -f build/$*/.*.sw[pno]
+	@rm -f build/$*/img/makeicons.sh
+	@find build/$*/ -name '*.license' -delete
+	@cd build/$*/ && zip -q -r ../../$@ ./* --exclude \*.sw[pno]
+	@echo "LOG-WARNING: Number of lines in build/$* with console.log:"
+	@grep -re 'console.log' build/$* | wc -l
 
 debug: DEBUG=1
 debug: all
 
 clean:
-	rm -rf firefox_JSR.zip
-	rm -rf firefox_JSR
-	rm -rf chrome_JSR.zip
-	rm -rf chrome_JSR
+	rm -rf build/
+	rm -rf jsheleter_firefox.zip
+	rm -rf jshelter_chrome.zip
 	rm -rf common/ipv4.dat
 	rm -rf common/ipv6.dat
 	rm -rf common/wrappingX*
