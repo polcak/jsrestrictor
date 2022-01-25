@@ -94,7 +94,7 @@ URL:
         <h4>I found a bug!</h4>
       </header>
       <div>
-        <p>If you have any questions or you spotted a bug, the project's <a href="https://pagure.io/JShelter/JShelter/issues">issue tracker</a> is the place for posting those. We especially appreciate feedback, so feel free to use the issue tracker for chiming in.</p>
+        <p>If you have any questions or you spotted a bug, the project's <a href="https://pagure.io/JShelter/webextension/issues">issue tracker</a> is the place for posting those. We especially appreciate feedback, so feel free to use the issue tracker for chiming in.</p>
 
       </div>
     </article>
@@ -104,7 +104,7 @@ URL:
         <h4>How can I help?</h4>
       </header>
       <div>
-        <p>Using JShelter and reporting any problems you find in our <a href="https://pagure.io/JShelter/JShelter/issues">issue tracker</a> is a huge help. If you want to contribute to the project itself, post your ideas on the issue tracker or just go ahead and make a pull request.</p>
+        <p>Using JShelter and reporting any problems you find in our <a href="https://pagure.io/JShelter/webextension/issues">issue tracker</a> is a huge help. If you want to contribute to the project itself, post your ideas on the issue tracker or just go ahead and make a pull request.</p>
       </div>
     </article>
 
