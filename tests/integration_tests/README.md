@@ -1,6 +1,6 @@
 # Instruction how to run integration tests
 
-Integration tests for web browser extension Javascript Restrictor automatically verify that
+Integration tests for web browser extension JShelter automatically verify that
 required JavaScript API is wrapped and conversely, that non-wrapped JavaScript API provides real values.
 
 It is necessary to partially set up manually a test environment before the first test run!
@@ -21,8 +21,8 @@ These programs and tools are required to be installed:
 No other versions of Google Chrome and especially Mozilla Firefox may be installed on the same machine.
 If you already have installed Mozilla Firefox Standard Edition, uninstall it before instalation of Mozilla Firefox ESR starts.
 Web browser driver automatically selects the installed version of the web browser so it is better to have installed only one correct version of each web browser.
-Web browsers may not have installed JSR extension. Python script will install it itself before running tests.
-If you already have installed JSR in web browser, delete JSR setting from Options page and then remove JSR extension from browser.
+Web browsers must not have installed JShelter extension. Python script will install it itself before running tests.
+If you already have installed JShelter in web browser, delete JShelter setting from Options page and then remove JShelter extension from browser.
 
 ### How to install Mozilla Firefox ESR on Linux
 If you have problems with installing Mozzila Firefox ESR on Linux, try this way:
@@ -44,7 +44,7 @@ You can follow [official Mozilla support](https://support.mozilla.org/en-US/kb/a
 Open [testing page](https://polcak.github.io/jsrestrictor/test/test.html) and click on button *Show GPS data*.
 Firefox will ask you if you want to enable the page to access location. Check option *Remember this decision* and then click *Allow*.
 
-Google Chrome is already prepared in default state for testing JSR, the Chrome settings do not need to be changed.
+Google Chrome is already prepared in default state for testing JShelter, the Chrome settings do not need to be changed.
 
 
 ## Download web browser drivers
@@ -67,9 +67,9 @@ Download the correct GeckoDriver to folder `../common_files/webbrowser_drivers` 
 
 1. Install Windows Subsystem for Linux (WSL): https://docs.microsoft.com/en-us/windows/wsl/install-win10.
 
-2. Convert EOL in the scripts `fix_manifest.sh` (in the root directory of JSR project) and `nscl/include.sh` from Windows (CR LF) to Unix (LF) - you can use the tool `dos2unix` in WSL to convert CR LF to LF.
+2. Convert EOL in the scripts `fix_manifest.sh` (in the root directory of JShelter project) and `nscl/include.sh` from Windows (CR LF) to Unix (LF) - you can use the tool `dos2unix` in WSL to convert CR LF to LF.
 
-3. Open root directory of JSR project in WSL and run command `make`.
+3. Open root directory of JShelter project in WSL and run command `make`.
 
 4. Open PowerShell in folder *integration_tests* and run command: `.\start_integration_tests.ps1`
 
@@ -96,4 +96,4 @@ If script does not find needed files into default location, it will prompts you 
 
 ## Integration tests configuration
 
-You can change selected browsers, which integration tests run in, and you can change JSR levels, which are tested, by modifing the file `./testing/configuration.py`.
+You can change selected browsers, which integration tests run in, and you can change JShelter levels, which are tested, by modifing the file `./testing/configuration.py`.

@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -53,7 +53,7 @@ def cosine_sim_vectors(vec1, vec2):
     return cosine_similarity(vec1, vec2)[0][0]
 
 
-## Check if log was added by JSR. Check with Cosine similarity method.
+## Check if log was added by JShelter. Check with Cosine similarity method.
 def was_log_added(log, logs_without_jsr):
     for log_without_jsr in logs_without_jsr:
         if log_without_jsr['level'] == log['level']:
@@ -66,7 +66,7 @@ def was_log_added(log, logs_without_jsr):
                 # Cosine similarity calculated from two vectors.
                 csim = cosine_sim_vectors(vectors[0], vectors[1])
                 if csim >= 0.6:
-                    # If similarity of logs is too high, tested log was not added by JSR.
-                    # It is issue already existing in page even without JSR.
+                    # If similarity of logs is too high, tested log was not added by JShelter.
+                    # It is issue already existing in page even without JShelter.
                     return False
     return True

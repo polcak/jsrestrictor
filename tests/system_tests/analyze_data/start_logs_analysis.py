@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -53,7 +53,7 @@ def html_footer():
 
 ## Build table with logs for one site. Insert to output HTML file.
 def build_site_logs_table(site, site_number):
-    output = "<br><h2>" + str(site_number) + ") " + site['site'] + "</h2><table><tr><th>Without JSR</th><th>With JSR</th></tr>"
+    output = "<br><h2>" + str(site_number) + ") " + site['site'] + "</h2><table><tr><th>Without JShelter</th><th>With JShelter</th></tr>"
     i = 0
     max_lenght = 0
     if site['logs_with_jsr'] != "ERROR_WHILE_LOADING_THIS_OR_PREVIOUS_PAGE":
