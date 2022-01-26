@@ -111,7 +111,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 	}
 	var fragment = document.createRange().createContextualFragment(`
 <div>
-		<p>Note that for fingerprintability prevention, JS Restrictor does not wrap objects that are not defined.</p>
+		<p>Note that for fingerprintability prevention, JShelter does not wrap objects that are not defined.</p>
 	${unsupported_apis}
 	<div>
 	  <h2>${action_descr}</h2>
