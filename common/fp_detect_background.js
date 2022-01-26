@@ -717,6 +717,9 @@ function refreshDb(tabId) {
 		if (fpDb[resource].hasOwnProperty(tabId)) {
 			delete fpDb[resource][tabId];
 		}
+		if (Object.keys(fpDb[resource]).length == 0) {
+			delete fpDb[resource];
+		}
 	}
 	if (latestEvals[tabId]) {
 		delete latestEvals[tabId];
