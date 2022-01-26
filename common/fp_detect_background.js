@@ -629,6 +629,19 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 					fpdWhitelist = result.fpdWhitelist;
 				});
 				break;
+			case "fpd-fetch-hits": {
+				let {tabId} = record;
+				// filter by tabId;
+				let hits = Object.create(null);
+				for ([resource, tabRecords] of Object.entries(fpDb)) {
+					let total = 0;
+					for (let stat of Object.values(tabRecords[tabId])) { // by type
+						total += stat.total;
+					}
+					hits[resource] = total;
+				}
+				return Promise.resolve(hits);
+			}
 		}
 	}
 });

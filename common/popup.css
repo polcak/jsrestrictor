@@ -1,46 +1,79 @@
 /*
  * SPDX-FileCopyrightText: 2021 2019 Libor Polčák
  * SPDX-FileCopyrightText: 2021 2019 Martin Timko
- * SPDX-FileCopyrightText: 2021 2021 Giorgio Maone
+ * SPDX-FileCopyrightText: 2022 2021 Giorgio Maone
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 body {
-	display: grid;
-	grid-template-columns: 32px 1fr 25px;
-	grid-template-areas:
-		"logo   jsr    controls"
-		"levels levels levels"
-		"bin bin bin";
-	grid-gap: 3em;
 	padding: 1em;
 	margin: 1em;
-	min-width: 25em;
+	min-width: 38em;
+}
+
+header, footer, .section-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	font-size: large;
+}
+
+header {
+	margin-bottom: .5em;
+	border-bottom: 2px solid #aaa;
+}
+
+
+footer {
+	margin-top: .5em;
+	border-top: 2px solid #aaa;
+}
+
+label[for]:first-child {
+  flex: 5;
+  display: block;
+	cursor: pointer;
+	padding: .2em 0;
 }
 
 h3 {
 	font-size: 3ex;
 }
 
+.buttons {
+	text-align: end;
+	margin: 0 0 1em 0;
+}
+
 #logo {
-	grid-area: logo;
 	width: 32px;
 }
 
 #titletext {
-	grid-area: jsr;
 	display: block;
 	font-size: large;
+	text-align: center;
 }
 
-#controls {
-	grid-area: controls;
-	width: 25px;
+#site-settings, #site-settings:not(.enabled) ~ #globals {
+	display: none;
+}
+#site-settings.enabled {
+	display: initial;
 }
 
-#level_controls {
-	grid-area: levels;
+#page-info {
+  display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#refresh-page {
+	font-size: large;
+	font-weight: bold;
 }
 
 #current-site {
@@ -76,27 +109,36 @@ h3 {
 	color:  black;
 }
 
-#controls {
-	font-weight: bold;
-	font-size: 1.5ex;
-	color: #4a4a4a;
-	margin: 0.7ex;
-	padding: 0.7ex;
-	border: 2px solid grey;
-	border-radius: 0.5ex;
-	margin-top: 1.3ex;
-	margin-left: 2ex;
+.controls {
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	background: transparent url(/img/settings-128.png) no-repeat center;
+	background-size: 100%;
+	margin: 4px;
+	padding: 4px;
+	border: none;
+	width: 32px;
+	height: 32px;
+	text-indent: -5000px;
+	transition-property: background-size;
+	transition-duration: .2s;
 }
 
-#controls:hover {
+.controls:hover {
 	cursor: pointer;
-	border: 2px solid black;
-	background-color: #c9c9c9;
-	color:  black;
+	background-size: 80%;
 }
 
-#binary_options {
-	grid-area: bin;
+.controls:checked {
+	background-size: 80%;
+	padding: 2px;
+	border: 2px solid #aaa;
+	border-radius: 16px;
+}
+
+.toggle:not(.toggled) ~ .section-body {
+	display: none;
 }
 
 .off_message{
@@ -116,6 +158,7 @@ h3 {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	align-items: center;
 }
 
 .switch_wrapper > label {
@@ -125,11 +168,12 @@ h3 {
 
 /* The switch - the box around the slider */
 .switch {
-	--off-bg: #888;
-	--on-bg: #8af;
+	--bg-color: white;
+	--off-color: gray;
+	--on-color:black;
 	position: relative;
 	display: inline-block;
-	width: 60px;
+	width: 64px;
 	height: 34px;
 	margin-left: 3px;
 }
@@ -150,10 +194,11 @@ h3 {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: var(--off-bg);
+	background-color: var(--off-color);
 	-webkit-transition: .4s;
 	transition: .4s;
-	font-size:10pt;
+	font-size: 14px;
+	font-weight: bold;
 	text-align: center;
 	vertical-align: middle;
 	line-height: 25px;
@@ -163,22 +208,22 @@ h3 {
 	position: absolute;
 	content: "";
 	height: 26px;
-	width: 26px;
+	width: 30px;
 	left: 4px;
 	bottom: 4px;
-	background-color: white;
+	background-color: var(--bg-color);
 	-webkit-transition: .4s;
 	transition: .4s;
-	color: gray;
+	color: var(--off-color);
 	content:"OFF";
 }
 
 input:checked + .slider {
-	background-color:  var(--on-bg);
+	background-color:  var(--on-color);
 }
 
 input:focus + .slider {
-	box-shadow: 0 0 1px var(--on-bg);
+	box-shadow: 0 0 1px var(--on-color);
 }
 
 input:checked + .slider:before {
@@ -186,7 +231,7 @@ input:checked + .slider:before {
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
 	content:"ON";
-	color:black;
+	color: var(--on-color);
 }
 
 #switch-label
@@ -195,4 +240,45 @@ input:checked + .slider:before {
 	vertical-align: middle;
 	font-size:14pt;
 	padding-top:5px;
+}
+
+
+#btn-tweak:disabled {
+	display: none;
+}
+
+#tweaks {
+	display: none;
+}
+
+.tweak {
+	display: flex;
+}
+
+.tweaking #tweaks {
+	display: grid;
+	grid: auto / auto 1fr 1fr;
+	gap: 1em;
+	align-items: center;
+}
+
+
+
+.head {
+	font-weight: bold;
+}
+
+.explainer {
+	grid-column-start: 1;
+	grid-column-end: -1;
+	padding-bottom: 3px;
+	border-bottom: 1px solid grey;
+}
+
+.more .description2 {
+	display: none;
+}
+
+.more + .less {
+	display: none;
 }
