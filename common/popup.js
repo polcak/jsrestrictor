@@ -256,6 +256,10 @@ async function getCurrentSite() {
 		// Obtain and normalize hostname
 		return site = wwwRemove(new URL(tab.url).hostname);
 	} catch (e) {
+		if (e.toString() === "Error: Missing host permission for the tab") {
+			await async_sleep(200); // recursively call itself, this exception occurs in Firefox during an inactive tab activation (tab page was not reload after the browser start)
+			return await getCurrentSite();
+		}
 		return site = null;
 	}
 }
