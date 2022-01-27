@@ -635,8 +635,10 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 				let hits = Object.create(null);
 				for ([resource, tabRecords] of Object.entries(fpDb)) {
 					let total = 0;
-					for (let stat of Object.values(tabRecords[tabId])) { // by type
-						total += stat.total;
+					if (tabRecords[tabId]) {
+						for (let stat of Object.values(tabRecords[tabId])) { // by type
+							total += stat.total;
+						}
 					}
 					hits[resource] = total;
 				}
