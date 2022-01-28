@@ -137,7 +137,7 @@ async function init() {
 						let label = group.label || group.name;
 						return { group_id, tlev_id, label, group, toString() { return this.label } };
 					}
-				).sort(new Intl.Collator('en').compare);
+				);
 
 				for (let { group_id, tlev_id, label, group} of tweakEntries) {
 					let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
