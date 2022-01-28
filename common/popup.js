@@ -135,16 +135,26 @@ async function init() {
 					.map(([group_id, tlev_id]) => {
 						let group = option_map[group_id];
 						let label = group.label || group.name;
+						group.groupHits = 0;
+						for (let wrapper of group.wrappers) {
+							if (hits[wrapper]) {
+								group.groupHits += hits[wrapper];
+							}
+						}
 						return { group_id, tlev_id, label, group, toString() { return this.label } };
 					}
-				).sort(new Intl.Collator('en').compare);
+				).sort(function (firstObj, secondObj) {
+					let firstGr = firstObj.group;
+					let secondGr = secondObj.group;
+					return secondGr.groupHits - firstGr.groupHits;
+				});
 
 				for (let { group_id, tlev_id, label, group} of tweakEntries) {
 					let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
 					tweakRow.querySelector("label").textContent = label;
-					let groupHits = 0;
-					for (let wrapper of group.wrappers) {
-						if (hits[wrapper]) groupHits += hits[wrapper];
+					let groupHits = group.groupHits;
+					if (groupHits >= 999) {
+						groupHits = "1000 or more";
 					}
 					tweakRow.querySelector(".hits").textContent = groupHits;
 

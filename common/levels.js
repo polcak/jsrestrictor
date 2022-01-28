@@ -54,7 +54,7 @@ var wrapping_groups = {
 			name: "time_precision",
 			label: "Time precision",
 			description: "Limit the precision of high resolution time stamps (Date, Performance, events, Gamepad API, Web VR API)",
-			description2: ["If you enable Geolocation API wrapping below, timestamps provided by the Geolocation API will be wrapped as well"],
+			description2: ["Timestamps provided by the Geolocation API are wrapped as well if you enable Geolocation API wrapping"],
 			options: [
 				{
 					description: "Manipulate time to",
