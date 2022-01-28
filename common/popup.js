@@ -144,7 +144,9 @@ async function init() {
 					tweakRow.querySelector("label").textContent = label;
 					let groupHits = 0;
 					for (let wrapper of group.wrappers) {
-						if (hits[wrapper]) groupHits += hits[wrapper];
+						if (hits[wrapper]) {
+							groupHits += hits[wrapper];
+						}
 					}
 					tweakRow.querySelector(".hits").textContent = groupHits;
 
