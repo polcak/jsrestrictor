@@ -148,6 +148,9 @@ async function init() {
 							groupHits += hits[wrapper];
 						}
 					}
+					if (groupHits >= 999) {
+						groupHits = "1000 or more";
+					}
 					tweakRow.querySelector(".hits").textContent = groupHits;
 
 					let tlevUI = tweakRow.querySelector(".tlev");
