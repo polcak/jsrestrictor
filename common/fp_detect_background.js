@@ -691,7 +691,7 @@ function isFpdWhitelisted(hostname) {
  * \param tabId Integer number representing ID of suspicious browser tab.
  */
  function notifyFingerprintBlocking(tabId) {
-	browser.notifications.create({
+	browser.notifications.create("fpd-" + tabId, {
 		"type": "basic",
 		"iconUrl": browser.runtime.getURL("img/icon-48.png"),
 		"title": "Fingerprinting activity detected!",
@@ -699,6 +699,9 @@ function isFpdWhitelisted(hostname) {
 			`Page: ${availableTabs[tabId].title.slice(0, 30)}\n` +
 			`Host: ${wwwRemove(new URL(availableTabs[tabId].url).hostname)}`
 	});
+	setTimeout(() => {
+		browser.notifications.clear("fpd-" + tabId);
+	}, 6000);
 }
 
 /**
