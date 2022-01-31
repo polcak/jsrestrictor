@@ -72,7 +72,7 @@ h3 {
 	align-items: center;
 }
 
-#refresh-page {
+#refresh-page, #global-settings {
 	font-size: large;
 	font-weight: bold;
 	vertical-align: 50%;

@@ -232,12 +232,10 @@ async function init() {
 }
 
 // Open options in a new tab when clicking on the icon
-for (let widget of document.querySelectorAll(".global-settings")) {
-	widget.addEventListener('click', e => {
+document.getElementById("global-settings").addEventListener('click', function(e) {
 	  browser.runtime.openOptionsPage();
 	  window.close();
   });
-}
 
 for (let widget of document.querySelectorAll('.controls[type=checkbox]')) {
 	let key = `controls-${widget.id}-checked`;
