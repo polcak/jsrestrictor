@@ -25,7 +25,6 @@ browser.runtime.onMessage.addListener(function (message, sender) {
         var {tabId, groups, latestEvals, exceptionWrappers} = message;
         createReport(tabId, groups, latestEvals, exceptionWrappers);
     }
-    return true;
 })
 
 function createReport(tabId, groups, latestEvals, exceptionWrappers) {
@@ -84,7 +83,6 @@ function createReport(tabId, groups, latestEvals, exceptionWrappers) {
     report.innerHTML += html;
 
     let toggleResources = (event) => {
-        console.log(event);
         let parent =  event.target.parentElement;
         for (let i = 0; i < parent.children.length; i++) {
             let child = parent.children[i];

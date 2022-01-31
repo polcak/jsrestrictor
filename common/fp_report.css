@@ -9,6 +9,8 @@ body {
 	padding: 1em;
 	margin: 1em;
 	min-width: 38em;
+	font-family: "Segoe UI", Tahoma, sans-serif;
+	font-size: 75%;
 }
 
 header {
