@@ -70,12 +70,6 @@ h3 {
 	display: initial;
 }
 
-#page-info {
-  display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-}
 
 #refresh-page, #global-settings {
 	font-size: large;
@@ -83,8 +77,14 @@ h3 {
 	vertical-align: 50%;
 }
 
+#page-info {
+	display: flex;
+}
+
 #current-site {
 	font-size: large;
+	text-align: center;
+	flex-grow: 1;
 }
 
 #level-select {
