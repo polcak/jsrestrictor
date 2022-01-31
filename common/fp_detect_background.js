@@ -454,7 +454,8 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
 	if (res.actualWeight) {
 		latestEvals[tabId].evalStats.push({ 
 			title: rootGroup,
-			message: `GROUP weight: ${res.actualWeight}`
+			type: "group",
+			weight: res.actualWeight
 		});
 	}
 
@@ -564,7 +565,11 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 		if (res.actualWeight) {
 			latestEvals[tabId].evalStats.push({
 				title: resource,
-				message: `RESOURCE ${res.type} (from ${groupName}) weight: ${res.actualWeight}, accesses: ${res.accesses}`
+				type: "resource",
+				resource: res.type,
+				group: groupName,
+				weight: res.actualWeight,
+				accesses: res.accesses
 			});
 		}
 	});
