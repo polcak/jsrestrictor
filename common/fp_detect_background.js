@@ -724,25 +724,22 @@ browser.notifications.onClicked.addListener((notificationId) => {
 			type: "popup",
 			height: 600,
 			width: 800
-		});
-
-		// get current FPD level for evaluated tab
-		var level = getCurrentLevelJSON(availableTabs[tabId].url)[0].level_id;
-		level = fp_levels.groups[level] ? level : "default";
-
-		// send data needed for FPD report creation
-		var reportId = browser.runtime.getURL("fp_report.html");
-		browser.tabs.query({url: reportId}).then(function(tabs) {
-			if (tabs) {
+		}).then((info) => {
+			// get current FPD level for evaluated tab
+			var level = getCurrentLevelJSON(availableTabs[tabId].url)[0].level_id;
+			level = fp_levels.groups[level] ? level : "default";
+			
+			var tab = info.tabs[0];
+			if (tab) {
 				// message delay to make a space for report page initialization
 				setTimeout(() => {
-					browser.tabs.sendMessage(tabs[0].id, {
+					browser.tabs.sendMessage(tab.id, {
 						tabId: tabId,
 						groups: {recursive: fp_levels.groups[level], sequential: fpGroups[level]},
 						latestEvals: latestEvals,
 						exceptionWrappers: exceptionWrappers
 					});
-				}, 500)
+				}, 200)
 			}
 		});
 	}
