@@ -710,6 +710,45 @@ function isFpdWhitelisted(hostname) {
 }
 
 /**
+ * Event listener that listen for click on notification when FPD detects fingerprinting.
+ *
+ * \param callback Function that open new window with FPD evaluation report.
+ */
+browser.notifications.onClicked.addListener((notificationId) => {
+	if (notificationId.startsWith("fpd")) {
+		var tabId = notificationId.split("-")[1];
+
+		// open popup window containing FPD report
+		browser.windows.create({
+			url: "/fp_report.html",
+			type: "popup",
+			height: 600,
+			width: 800
+		});
+
+		// get current FPD level for evaluated tab
+		var level = getCurrentLevelJSON(availableTabs[tabId].url)[0].level_id;
+		level = fp_levels.groups[level] ? level : "default";
+
+		// send data needed for FPD report creation
+		var reportId = browser.runtime.getURL("fp_report.html");
+		browser.tabs.query({url: reportId}).then(function(tabs) {
+			if (tabs) {
+				// message delay to make a space for report page initialization
+				setTimeout(() => {
+					browser.tabs.sendMessage(tabs[0].id, {
+						tabId: tabId,
+						groups: {recursive: fp_levels.groups[level], sequential: fpGroups[level]},
+						latestEvals: latestEvals,
+						exceptionWrappers: exceptionWrappers
+					});
+				}, 1000)
+			}
+		});
+	}
+});
+
+/**
  *  Contains information about tabs current state.
  */
 var availableTabs = {};
