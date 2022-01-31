@@ -7,9 +7,14 @@
  */
 
 body {
-	padding: 1em;
-	margin: 1em;
+	padding: 0.5em;
+	margin: 0em;
 	min-width: 38em;
+}
+
+content {
+	padding: 0.5em;
+	margin: 0.5em;
 }
 
 header, footer, .section-header {
