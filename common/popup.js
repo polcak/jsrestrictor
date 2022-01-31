@@ -71,7 +71,9 @@ async function init() {
 		let needsRefresh = !pageLevel ||
 			level4comp(pageLevel) !== level4comp(current_level);
 
-		if (needsRefresh) showRefreshPageOption();
+		if (needsRefresh) {
+			showRefreshPageOption();
+		}
 	}
 
 	port_to_background.onMessage.addListener(function(msg) {
