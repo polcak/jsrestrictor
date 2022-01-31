@@ -742,7 +742,7 @@ browser.notifications.onClicked.addListener((notificationId) => {
 						latestEvals: latestEvals,
 						exceptionWrappers: exceptionWrappers
 					});
-				}, 1000)
+				}, 500)
 			}
 		});
 	}

@@ -76,10 +76,46 @@ function createReport(tabId, groups, latestEvals, exceptionWrappers) {
     let generateResource = (resource) => {
         if (processedEvals[resource]) {
             let accessCount = processedEvals[resource].accesses >= 1000 ? "1000+" : processedEvals[resource].accesses;
-            html += "<h4>" + `${resource} - ${exceptionWrappers.includes(resource) ? "n/a" : accessCount}` + "</h4>";
+            html += `<h4 style="display:none"><span class="dot">-</span> ${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})</h4>`;
         }
     }
-    
+
     generateGroup(rootGroup);
     report.innerHTML += html;
+
+    let toggleResources = (event) => {
+        console.log(event);
+        let parent =  event.target.parentElement;
+        for (let i = 0; i < parent.children.length; i++) {
+            let child = parent.children[i];
+            if (child.tagName == "H4") {
+                if (child.style.display === "none") {
+                    child.style.display = "block";
+                } else {
+                    child.style.display = "none";
+                }
+            }
+        }
+    }
+
+    for (let element of document.querySelectorAll(".fpd-group")) {
+        let button;
+        let haveChild = false;
+        
+        for (let i = 0; i < element.children.length; i++) {
+            let child = element.children[i];
+            if (child.tagName == "H2") {
+                button = child;
+            }
+            if (child.tagName == "H4") {
+                haveChild = true;
+            }
+        }
+        
+        if (button && haveChild) {
+            button.classList.add("active");
+            button.addEventListener("click", toggleResources);
+        }
+    }
+
 }

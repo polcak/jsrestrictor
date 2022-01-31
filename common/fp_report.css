@@ -1,0 +1,56 @@
+/*
+
+ * SPDX-FileCopyrightText: 2022 2021 Marek Saloň
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+body {
+	padding: 1em;
+	margin: 1em;
+	min-width: 38em;
+}
+
+header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	font-size: large;
+	margin-bottom: .5em;
+	border-bottom: 2px solid #aaa;
+}
+
+#logo {
+	width: 32px;
+}
+
+#titletext {
+	display: block;
+	font-size: large;
+	text-align: center;
+}
+
+.fpd-group > .fpd-group  {
+	padding-left: 2em;
+	border-left: 2px solid #aaa;
+}
+
+.fpd-group > h2 {
+	display: inline-block;
+	margin: 0px 0px;
+	-webkit-transition: color 0.5s;
+	-moz-transition: color 0.5s;
+	-ms-transition: color 0.5s;
+	-o-transition: color 0.5s;
+	transition: color 0.5s;
+}
+
+.fpd-group > h2.active:hover { 
+	cursor: pointer;
+	color: #e76f51;
+}
+
+.dot {
+	color: #e76f51;
+}
