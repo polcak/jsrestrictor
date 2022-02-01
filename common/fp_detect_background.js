@@ -735,6 +735,7 @@ browser.notifications.onClicked.addListener((notificationId) => {
 				setTimeout(() => {
 					browser.tabs.sendMessage(tab.id, {
 						tabId: tabId,
+						tabObj: availableTabs[tabId],
 						groups: {recursive: fp_levels.groups[level], sequential: fpGroups[level]},
 						latestEvals: latestEvals,
 						exceptionWrappers: exceptionWrappers

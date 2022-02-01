@@ -22,12 +22,12 @@
 
 browser.runtime.onMessage.addListener(function (message, sender) {
     if (message.tabId && message.groups && message.latestEvals) {
-        var {tabId, groups, latestEvals, exceptionWrappers} = message;
-        createReport(tabId, groups, latestEvals, exceptionWrappers);
+        var {tabId, tabObj, groups, latestEvals, exceptionWrappers} = message;
+        createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers);
     }
 })
 
-function createReport(tabId, groups, latestEvals, exceptionWrappers) {
+function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
 	var report = document.getElementById("fpd-report");
     if (!latestEvals[tabId] || !latestEvals[tabId].evalStats) {
         report.innerHTML = "Error creating FPD report!"
@@ -35,7 +35,7 @@ function createReport(tabId, groups, latestEvals, exceptionWrappers) {
     }
     
     var rootGroup = groups.recursive.name;
-    var fpGroups = groups.sequential;  // fpGroups
+    var fpGroups = groups.sequential;
 
     var processedEvals = {};
     for (let item of latestEvals[tabId].evalStats) {
@@ -47,6 +47,17 @@ function createReport(tabId, groups, latestEvals, exceptionWrappers) {
         else {
             processedEvals[item.title].accesses = item.accesses ? item.accesses : 0;
         }
+    }
+
+    if (tabObj) {
+        let urlObj = new URL(tabObj.url);
+        let url = urlObj.hostname + urlObj.pathname;
+        document.getElementById("report-url").innerHTML = url;
+        let img = document.getElementById("pageFavicon");
+        img.src = tabObj.favIconUrl;
+        img.onload = function () {
+            this.style = "";
+        };
     }
 
     var html = "";
@@ -88,7 +99,7 @@ function createReport(tabId, groups, latestEvals, exceptionWrappers) {
             let child = parent.children[i];
             if (child.tagName == "H4") {
                 if (child.style.display === "none") {
-                    child.style.display = "block";
+                    child.style.display = "";
                 } else {
                     child.style.display = "none";
                 }
@@ -116,4 +127,18 @@ function createReport(tabId, groups, latestEvals, exceptionWrappers) {
         }
     }
 
+    let showAll = (event) => {
+        console.log(event);
+        for (let element of document.querySelectorAll(".fpd-group > h4")) {      
+            if (event.target.innerText == "Show All") {
+                element.style.display = "";
+            }
+            else {
+                element.style.display = "none";
+            }
+        }
+        event.target.innerText = event.target.innerText == "Show All" ? "Hide All" : "Show All";
+    }
+    
+    document.getElementById("showAll").addEventListener("click", showAll);
 }

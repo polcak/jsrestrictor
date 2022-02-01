@@ -19,18 +19,25 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	font-size: large;
-	margin-bottom: .5em;
+	margin-bottom: 0.5em;
 	border-bottom: 2px solid #aaa;
 }
 
+header > div {
+	min-width: 0;
+}
+
 #logo {
-	width: 32px;
+	width: 48px;
+	padding-left: 50px;
 }
 
 #titletext {
 	display: block;
 	font-size: large;
 	text-align: center;
+	margin: 0.2em 0px;
+	text-align: left;
 }
 
 .fpd-group > .fpd-group  {
@@ -55,4 +62,30 @@ header {
 
 .dot {
 	color: #e76f51;
+}
+
+#pageFavicon {
+	height: 18px;
+	margin: 2px 5px 2px 0px;
+}
+
+#page-container {
+	white-space: nowrap;
+}
+
+#report-url {
+	display: inline-block;
+	height: 20px;
+	max-width: 99%;
+	white-space: nowrap;
+	overflow: hidden !important;
+	text-overflow: ellipsis;
+	margin: 0px;
+	color: #e76f51;
+}
+
+#showAll {
+	float: right;
+	position: sticky;
+	top: 10px;
 }
