@@ -104,6 +104,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "htmlcanvaselement",
+			label: "Localy rendered images",
 			description: "Protect against canvas fingerprinting",
 			description2: [
 				"Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() return modified image data to prevent fingerprinting",
@@ -140,6 +141,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "audiobuffer",
+			label: "Locally generated audio and audio card information",
 			description: "Protect against audio fingerprinting",
 			description2: [
 				"Functions AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() and AnalyserNode.getFloatFrequencyData() are modified to alter audio data based on domain key"
@@ -175,6 +177,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "webgl",
+			label: "Localy rendered images and graphic card information",
 			description: "Protect against WEBGL fingerprinting",
 			description2: [
 				"Function WebGLRenderingContext.getParameter() returns modified/bottom values for certain parameters",
@@ -236,6 +239,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "plugins",
+			label: "Installed browser plugins",
 			description: "Protect against plugin fingerprinting",
 			description2: [],
 			options: [{
@@ -266,6 +270,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "enumerateDevices",
+			label: "Connected cameras and microphones",
 			description: "Prevent fingerprinting based on the multimedia devices connected to the computer",
 			description2: [
 				"Function MediaDevices.enumerateDevices() is modified to return empty or modified result"
@@ -298,6 +303,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "hardware",
+			label: "Device memory and CPU",
 			description: "Spoof hardware information to the most popular HW",
 			description2: [
 				"Getters navigator.deviceMemory and navigator.hardwareConcurrency return modified values",
@@ -332,6 +338,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "xhr",
+			label: "XMLHttpRequest requests",
 			description: "Filter XMLHttpRequest requests",
 			description2: [],
 			options: [
@@ -361,6 +368,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "arrays",
+			label: "ArrayBuffer",
 			description: "Protect against ArrayBuffer exploitation",
 			description2: [],
 			options: [
@@ -387,6 +395,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "shared_array",
+			label: "SharedArrayBuffer",
 			description: "Protect against SharedArrayBuffer exploitation:",
 			description2: [],
 			options: [
@@ -415,6 +424,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "webworker",
+			label: "WebWorker",
 			description: "Protect against WebWorker exploitation",
 			description2: [],
 			options: [
@@ -442,6 +452,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "geolocation",
+			label: "Physical location",
 			description: "Geolocation API wrapping",
 			description2: [],
 			options: [
@@ -497,6 +508,7 @@ var wrapping_groups = {
 		},
     {
 			name: "physical_environment",
+			label: "Physical environement sensors",
 			description: "Wrapping APIs for scanning properties of the physical environment",
 			description2: [],
 			options: [
@@ -529,6 +541,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "gamepads",
+			label: "Gamepads",
 			description: "Prevent websites from learning information on local gamepads",
 			description2: [],
 			default: true,
@@ -540,6 +553,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "vr",
+			label: "Virtual and augmented reality devices",
 			description: "Prevent websites from learning information on local Virtual Reality displays",
 			description2: [],
 			default: true,
@@ -553,6 +567,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "analytics",
+			label: "Unreliable transfers to server (beacons)",
 			description: "Prevent sending analytics through Beacon API",
 			description2: [],
 			default: true,
@@ -564,6 +579,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "battery",
+			label: "Hardware battery",
 			description: "Disable Battery status API",
 			description2: [],
 			default: true,
@@ -576,6 +592,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "windowname",
+			label: "Persistent identifier of the browser tab",
 			description: "Clear window.name value on the webpage loading",
 			description2: [],
 			default: true,
