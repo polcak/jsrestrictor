@@ -53,8 +53,8 @@ var wrapping_groups = {
 		{
 			name: "time_precision",
 			label: "Time precision",
-			description: "Limit the precision of high resolution time stamps (Date, Performance, events, Gamepad API, Web VR API)",
-			description2: ["Timestamps provided by the Geolocation API are wrapped as well if you enable Geolocation API wrapping"],
+			description: "Prevent attacks and fingerprinting techniques relying on precise time measurement (or make them harder).",
+			description2: ["Limit the precision of high resolution time stamps (Date, Performance, events, Gamepad API, Web VR API). Timestamps provided by the Geolocation API are wrapped as well if you enable Geolocation API wrapping"],
 			options: [
 				{
 					description: "Manipulate time to",
@@ -105,7 +105,7 @@ var wrapping_groups = {
 		{
 			name: "htmlcanvaselement",
 			label: "Localy rendered images",
-			description: "Protect against canvas fingerprinting",
+			description: "Protect against canvas fingerprinting.",
 			description2: [
 				"Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() return modified image data to prevent fingerprinting",
 				"CanvasRenderingContext2D.isPointInStroke() and CanvasRenderingContext2D.isPointInPath() are modified to lie with probability"
@@ -142,7 +142,7 @@ var wrapping_groups = {
 		{
 			name: "audiobuffer",
 			label: "Locally generated audio and audio card information",
-			description: "Protect against audio fingerprinting",
+			description: "Protect against audio fingerprinting, spoof details of your audio card.",
 			description2: [
 				"Functions AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() and AnalyserNode.getFloatFrequencyData() are modified to alter audio data based on domain key"
 			],
@@ -178,7 +178,7 @@ var wrapping_groups = {
 		{
 			name: "webgl",
 			label: "Localy rendered images and graphic card information",
-			description: "Protect against WEBGL fingerprinting",
+			description: "Protect against WEBGL fingerprinting, spoof details of your graphic card.",
 			description2: [
 				"Function WebGLRenderingContext.getParameter() returns modified/bottom values for certain parameters",
 				"WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() and .getExtension() return modified values",
@@ -304,7 +304,7 @@ var wrapping_groups = {
 		{
 			name: "hardware",
 			label: "Device memory and CPU",
-			description: "Spoof hardware information to the most popular HW",
+			description: "Spoof hardware information on the amount of RAM and CPU count.",
 			description2: [
 				"Getters navigator.deviceMemory and navigator.hardwareConcurrency return modified values",
 			],
@@ -338,9 +338,9 @@ var wrapping_groups = {
 		},
 		{
 			name: "xhr",
-			label: "XMLHttpRequest requests",
-			description: "Filter XMLHttpRequest requests",
-			description2: [],
+			label: "XMLHttpRequest requests (XHR)",
+			description: "Filter reliable XHR requests to server.",
+			description2: ["Note that these requests are broadly employed for benign purposes and also note that Fetch, SSE, WebRTC, and WebSockets APIs are not blocked. All provide similar and some even better means of communication with server. For practical usage, we recommend activating Fingerprint Detector instead of XHR wrappers. JShelter keeps the wrapper as it is useful for some users mainly for experimental reasons."],
 			options: [
 				{
 					ui_elem: "input-radio",
@@ -369,7 +369,7 @@ var wrapping_groups = {
 		{
 			name: "arrays",
 			label: "ArrayBuffer",
-			description: "Protect against ArrayBuffer exploitation",
+			description: "Protect against ArrayBuffer exploitation, for example, to prevent side channel attacks on memory layout (or make them harder).",
 			description2: [],
 			options: [
 				{
@@ -396,7 +396,7 @@ var wrapping_groups = {
 		{
 			name: "shared_array",
 			label: "SharedArrayBuffer",
-			description: "Protect against SharedArrayBuffer exploitation:",
+			description: "Protect against SharedArrayBuffer exploitation, for example, to prevent side channel attacks on memory layout (or make them harder).",
 			description2: [],
 			options: [
 				{
@@ -425,7 +425,7 @@ var wrapping_groups = {
 		{
 			name: "webworker",
 			label: "WebWorker",
-			description: "Protect against WebWorker exploitation",
+			description: "Protect against WebWorker exploitation, for example, to provide high resolution timers",
 			description2: [],
 			options: [
 				{
@@ -453,7 +453,7 @@ var wrapping_groups = {
 		{
 			name: "geolocation",
 			label: "Physical location",
-			description: "Geolocation API wrapping",
+			description: "Limit the information on real-world position provided by Geolocation API.",
 			description2: [],
 			options: [
 				{
@@ -509,7 +509,7 @@ var wrapping_groups = {
     {
 			name: "physical_environment",
 			label: "Physical environement sensors",
-			description: "Wrapping APIs for scanning properties of the physical environment",
+			description: "Limit the information provided by physical environment sensors like Magnetometer or Accelerometer.",
 			description2: [],
 			options: [
 				{
@@ -542,7 +542,7 @@ var wrapping_groups = {
 		{
 			name: "gamepads",
 			label: "Gamepads",
-			description: "Prevent websites from learning information on local gamepads",
+			description: "Prevent websites from accessing and learning information on local gamepads.",
 			description2: [],
 			default: true,
 			options: [],
@@ -554,7 +554,7 @@ var wrapping_groups = {
 		{
 			name: "vr",
 			label: "Virtual and augmented reality devices",
-			description: "Prevent websites from learning information on local Virtual Reality displays",
+			description: "Prevent websites from accessing and learning information on local virtual and augmented reality displays.",
 			description2: [],
 			default: true,
 			options: [],
@@ -568,8 +568,8 @@ var wrapping_groups = {
 		{
 			name: "analytics",
 			label: "Unreliable transfers to server (beacons)",
-			description: "Prevent sending analytics through Beacon API",
-			description2: [],
+			description: "Prevent unreliable transfers to server (beacons).",
+			description2: ["Such transfers are typically misused for analytics but occassionally may be used by e-shops or other pages.", "Prevent sending information through Beacon API."],
 			default: true,
 			options: [],
 			wrappers: [
@@ -593,8 +593,8 @@ var wrapping_groups = {
 		{
 			name: "windowname",
 			label: "Persistent identifier of the browser tab",
-			description: "Clear window.name value on the webpage loading",
-			description2: [],
+			description: "Clear window.name value on the webpage loading.",
+			description2: ["This API might be occasionally used for benign purposes.", "This API provides a possibility to detect cross-site browsing in one tab and broser session."],
 			default: true,
 			options: [],
 			wrappers: [
