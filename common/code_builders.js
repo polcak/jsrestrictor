@@ -274,21 +274,48 @@ var build_code = function(wrapper, ...args) {
 	if (wrapper.wrapping_function_body){
 		code += `${define_page_context_function(wrapper)}`;
 	}
-	if (wrapper["post_wrapping_code"] !== undefined) {
-		for (code_spec of wrapper["post_wrapping_code"]) {
-			if (code_spec.apply_if !== undefined) {
-				code += `if (${code_spec.apply_if}) {`
-			}
-			code += post_wrapping_functions[code_spec.code_type](code_spec);
-			if (code_spec.apply_if !== undefined) {
-				code += "}";
-			}
-			// if not wrapped because of apply_if condition, still needs to be wrapped for FPD
-			if (code_spec.apply_if !== undefined && code_spec.code_type == "object_properties") {
-				code += "else {" + generate_object_properties(code_spec, true) + "}";
+
+	let build_post_normal = () => {
+		if (wrapper["post_wrapping_code"] !== undefined) {
+			for (code_spec of wrapper["post_wrapping_code"]) {
+				if (code_spec.apply_if !== undefined) {
+					code += `if (${code_spec.apply_if}) {`
+				}
+				code += post_wrapping_functions[code_spec.code_type](code_spec);
+				if (code_spec.apply_if !== undefined) {
+					code += "}";
+				}
+				// if not wrapped because of apply_if condition in post wrapping object, still needs to be wrapped for FPD
+				if (code_spec.apply_if !== undefined && code_spec.code_type == "object_properties") {
+					code += "else {" + generate_object_properties(code_spec, true) + "}";
+				}
 			}
 		}
 	}
+
+	let build_post_fpd = () => {
+		if (wrapper["post_wrapping_code"] !== undefined) {
+			for (code_spec of wrapper["post_wrapping_code"]) {
+				// if not wrapped because of apply_if condition in post wrapping object, still needs to be wrapped for FPD
+				if (code_spec.apply_if !== undefined && code_spec.code_type == "object_properties") {
+					code += generate_object_properties(code_spec, true);
+				}
+			}
+		}
+	}
+
+	// if apply_if is present in main wrapper object and contains post wrapping code -> wrap for FPD only if condition is FALSE
+	if (wrapper.apply_if !== undefined) {
+		code += `if (${wrapper.apply_if}) {`
+		build_post_normal();
+		code += `} else {`
+		build_post_fpd();
+		code += `}`
+	}
+	else {
+		build_post_normal();
+	}
+
 	if (wrapper["wrapper_prototype"] !== undefined) {
 		let source = wrapper.wrapper_prototype;
 		code += `if (${target.prototype} !== ${source.prototype}) { // prevent cyclic __proto__ errors on Proxy
