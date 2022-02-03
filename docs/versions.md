@@ -2,6 +2,10 @@
 title: Release history
 ---
 
+## 0.6.4
+
+* Fix wrapping of `navigator.plugins` in Firefox. This regression appeared in 0.6 in the generated code resticted by `apply_if` condition.
+
 ## 0.6.3
 
 * Make sure that dynamically created iframes are not vulnerable to leaking unwrapped APIs (Update NSCL)
