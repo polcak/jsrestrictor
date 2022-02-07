@@ -2,6 +2,13 @@
 title: Release history
 ---
 
+## 0.6.5
+
+* Update NSCL to work around a change in Chrome permissions:
+ * Use HTTPS endpoint for Chromium (works around lack of file access by default on packed extensions), see
+    also https://forums.informaction.com/viewtopic.php?p=104921#p104921
+ * Also includes a work-around for object element initialization inconsistencies on Firefox
+
 ## 0.6.4
 
 * Fix wrapping of `navigator.plugins` in Firefox. This regression appeared in 0.6 in the generated code resticted by `apply_if` condition.

@@ -86,7 +86,7 @@
     "browsingData"
   ],
   "short_name": "JSR",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "browser_specific_settings": {
     "gecko": {
         "id": "jsr@javascriptrestrictor",
