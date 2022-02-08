@@ -902,3 +902,16 @@ function getCurrentLevelJSON(url) {
 	}
 	return [default_level, wrapped_codes[default_level.level_id]];
 }
+
+function getTweaksForLevel(level_id, tweaks_obj) {
+	tweaks_obj = tweaks_obj || {}; // Make sure that tweaks_obj is an object
+	function defaultTweaks() {
+		let tt = {};
+		let tlev_id = level_id;
+		for (let g of wrapping_groups.groups) {
+			tt[g.id] = tlev_id; // FIXME this code suppose that each group has the same number of levels as the extension itself, the level should hold this information
+		}
+		return tt;
+	}
+	return Object.assign(defaultTweaks(), tweaks_obj);
+}

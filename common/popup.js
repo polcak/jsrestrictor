@@ -28,6 +28,42 @@ var site; // "https://www.example.com" from current tab will become "example.com
 var pageConfiguration = {};
 var hits;
 var current_level;
+
+// Provide cusom handlers for Tweaks GUI
+let popup_tweaks = Object.create(tweaks_gui);
+popup_tweaks.get_current_tweaks = function() {
+	return getTweaksForLevel(current_level.level_id, current_level.tweaks);
+};
+popup_tweaks.tweak_changed = function(group_id, desired_tweak) {
+	if (!current_level.tweaks) {
+		current_level.tweaks = {};
+	}
+	current_level.tweaks[group_id] = desired_tweak;
+	domains[site] = current_level;
+	saveDomainLevels();
+	enableRefreshIfNeeded();
+};
+popup_tweaks.assign_custom_params = function(group) {
+	group.groupHits = 0;
+	for (let wrapper of group.wrappers) {
+		if (hits[wrapper]) {
+			group.groupHits += hits[wrapper];
+		}
+	}
+};
+popup_tweaks.customize_tweak_row = function (tweakRow, group) {
+	let groupHits = group.groupHits;
+	if (groupHits >= 999) {
+		groupHits = "1000 or more";
+	}
+	tweakRow.querySelector(".hits").textContent = groupHits;
+};
+popup_tweaks.cmp_groups = function (firstObj, secondObj) {
+	let firstGr = firstObj.group;
+	let secondGr = secondObj.group;
+	return secondGr.groupHits - firstGr.groupHits;
+};
+
 /**
  * Enable the refresh page option.
  */
@@ -124,120 +160,6 @@ function update_level_info() {
 	document.getElementById("level-description").textContent = ` - ${current_level.level_description}`;
 }
 
-function get_current_tweaks() {
-	function defaultTweaks() {
-		let tt = {}
-		let tlev_id = current_level.level_id;
-		for (let g of wrapping_groups.groups) {
-			tt[g.id] = tlev_id; // FIXME this code suppose that each group has the same number of levels as the extension itself, the level should hold this information
-		}
-		return tt;
-	}
-	return Object.assign(defaultTweaks(), current_level.tweaks || {});
-}
-
-function create_group_descriptors(option_map) {
-	let tweakEntries = Object.entries(get_current_tweaks()).map(([group_id, tlev_id]) => {
-			let group = option_map[group_id];
-			let label = group.label || group.name;
-			group.groupHits = 0;
-			for (let wrapper of group.wrappers) {
-				if (hits[wrapper]) {
-					group.groupHits += hits[wrapper];
-				}
-			}
-			return { group_id, tlev_id, label, group, toString() { return this.label } };
-		}
-	);
-	return tweakEntries;
-}
-
-function sort_group_descriptors(tweakEntries) {
-	return tweakEntries.sort(function (firstObj, secondObj) {
-		let firstGr = firstObj.group;
-		let secondGr = secondObj.group;
-		return secondGr.groupHits - firstGr.groupHits;
-	});
-}
-
-function add_tweak_row(tweaksContainer, option_map, group_id, tlev_id, label, group) {
-	let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
-	tweakRow.querySelector("label").textContent = label;
-	let groupHits = group.groupHits;
-	if (groupHits >= 999) {
-		groupHits = "1000 or more";
-	}
-	tweakRow.querySelector(".hits").textContent = groupHits;
-
-	let tlevUI = tweakRow.querySelector(".tlev");
-	let status = tweakRow.querySelector(".status");
-	let updateStatus = lid => {
-		let l = levels[lid];
-		if (l[group_id] === true) {
-			status.innerHTML = "<strong>ON</strong> ";
-			let optionsDes = document.createElement("em");
-			let prefix = `${group_id}_`;
-			let choices = [];
-			for (let optId of Object.keys(l).filter(k => k.startsWith(prefix))) {
-				let val = l[optId];
-				let opt = option_map[optId];
-				let des = opt.options && opt.options.length ? option_map[`${optId}_${val}`].description : val && opt.description || "";
-				if (des) choices.push(des);
-			}
-			if (choices.length) {
-				optionsDes.append(` - ${choices.join(" / ")}`);
-				status.appendChild(optionsDes);
-			}
-		} else {
-			status.innerHTML = "OFF";
-		}
-	}
-	updateStatus(tlev_id);
-  tweakRow.querySelector(".description").textContent = group.description;
-	let more = tweakRow.querySelector(".more");
-	let less = tweakRow.querySelector(".less");
-	let longDescription = group.description2;
-	if (!longDescription || longDescription.length === 0) {
-		less.remove();
-		more.remove();
-	} else {
-		more.onclick = function() {
-			let parent = document.createElement("div");
-			for (let line of longDescription) {
-				parent.appendChild(document.createElement("p")).textContent = line;
-			}
-			more.replaceWith(parent);
-			return false;
-	  }
-		less.onclick = function() {
-			this.previousElementSibling.replaceWith(more);
-			return false;
-		}
-	}
-
-	tlevUI.value = tlevUI.nextElementSibling.value = parseInt(tlev_id);
-	tlevUI.onchange = () => {
-		if (!current_level.tweaks) current_level.tweaks = {};
-		updateStatus(current_level.tweaks[group_id] = tlevUI.nextElementSibling.value = tlevUI.value);
-		domains[site] = current_level;
-		saveDomainLevels();
-		enableRefreshIfNeeded();
-	}
-	tweaksContainer.appendChild(tweakRow);
-}
-
-function create_tweaks_html(tweaksContainer) {
-	tweaksContainer.innerHTML = "";
-	tweaksContainer.appendChild(document.getElementById("tweak-head").content);
-	let {option_map} = wrapping_groups;
-	let tweakEntries = sort_group_descriptors(create_group_descriptors(option_map));
-
-	for (let { group_id, tlev_id, label, group} of tweakEntries) {
-		add_tweak_row(tweaksContainer, option_map, group_id, tlev_id, label, group);
-	}
-	document.body.classList.add("tweaking");
-}
-
 function update_tweaks() {
 	let tweaksContainer = document.getElementById("tweaks");
 	document.body.classList.remove("tweaking");
@@ -245,13 +167,13 @@ function update_tweaks() {
 	tweakBtn.disabled = true;
 
 	if (current_level.tweaks && Object.keys(current_level.tweaks).length) {
-		create_tweaks_html(tweaksContainer);
+		popup_tweaks.create_tweaks_html(tweaksContainer);
 		tweakBtn.disabled = true;
 	}
 	else if (parseInt(current_level.level_id)) {
 		tweakBtn.disabled = false;
 		tweakBtn.onclick = function() {
-			create_tweaks_html(tweaksContainer);
+			popup_tweaks.create_tweaks_html(tweaksContainer);
 			tweakBtn.disabled = true;
 		};
 	}
