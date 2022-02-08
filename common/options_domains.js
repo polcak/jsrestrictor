@@ -1,7 +1,7 @@
 /** \file
  * \brief Code that handles domain-specific levels handling in options
  *
- *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2019-2022  Libor Polcak
  *  \author Copyright (C) 2019  Martin Timko
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
@@ -59,12 +59,13 @@ function remove_domain(domain) {
 }
 
 function show_domain_level(levelsEl, domain) {
+	let tweaks = domains[domain].tweaks || {};
 	var displayedEl = document.getElementById(`dl-${escape(domain)}`);
 	if (displayedEl !== null) {
 		displayedEl.remove();
 	}
 	var fragment = document.createRange().createContextualFragment(`<li class="custom_domain_level" id="dl-${escape(domain)}" jsr_domain="${escape(domain)}">
-			<span>
+			<span class="domain">
 				${escape(domain)}
 			</span>
 			<select id="dl-change-${escape(domain)}"></select>
@@ -75,6 +76,7 @@ function show_domain_level(levelsEl, domain) {
 			<span id="li-removed-group-${escape(domain)}" class="hidden">
 				<button id="restore-dl-${escape(domain)}">Restore</button>
 			</span>
+			<div id="tweaks-${escape(domain)}"></div>
 		</li>`);
 	levelsEl.appendChild(fragment);
 	update_domain_level(document.getElementById(`dl-change-${escape(domain)}`), domains[domain].level_id);
@@ -84,10 +86,25 @@ function show_domain_level(levelsEl, domain) {
 		domains[domain] = {
 			level_id: domainLevel,
 		}
+		if (Object.keys(tweaks).length > 0) {
+			domains[domain].tweaks = tweaks;
+		}
 		saveDomainLevels();
 	});
 	document.getElementById(`delete-dl-${escape(domain)}`).addEventListener("click", remove_domain.bind(null, domain));
 	document.getElementById(`restore-dl-${escape(domain)}`).addEventListener("click", restore_domain.bind(null, domain, domains[domain]));
+	let tweaksEl = document.getElementById(`tweaks-${escape(domain)}`);
+	let tweaksBusiness = Object.create(tweaks_gui);
+	tweaksBusiness.get_current_tweaks = function() {
+		return getTweaksForLevel(domains[domain].level_id, tweaks);
+	};
+	tweaksBusiness.tweak_changed = function(group_id, desired_tweak) {
+		tweaks[group_id] = desired_tweak;
+		if (Object.keys(tweaks).length > 0) {
+			domains[domain].tweaks = tweaks;
+		}
+	}
+	tweaksBusiness.create_tweaks_html(tweaksEl);
 }
 
 function insert_domain_levels() {
@@ -101,7 +118,7 @@ function insert_domain_levels() {
 window.addEventListener("load", function() {
 	if (!levels_initialised) {
 		levels_updated_callbacks.push(insert_domain_levels);
-		levels_updated_callbacks.push(update_domain_level.bind(document.getElementById("domain-level")));
+		levels_updated_callbacks.push(update_domain_level.bind(null, document.getElementById("domain-level")));
 	}
 	else {
 		insert_domain_levels();
@@ -142,9 +159,8 @@ document.getElementById("save-all-domain-levels").addEventListener("click", func
 	e.preventDefault();
 	Array.prototype.forEach.call(document.getElementsByClassName("undo"), (el) => el.remove());
 	Array.prototype.forEach.call(document.getElementsByClassName("custom_domain_level"), function (el) {
-		domains[el.attributes["jsr_domain"].value] = {
-			level_id: el.getElementsByTagName("select")[0].value,
-		};
+		let new_val = el.getElementsByTagName("select")[0].value;
+		domains[el.attributes["jsr_domain"].value].level_id = new_val;
 	});
 	saveDomainLevels();
 });

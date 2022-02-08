@@ -176,6 +176,11 @@ section.content {
 	font-weight: bold;
 }
 
+.domain {
+	font-weight: bold;
+	font-size: xx-large;
+}
+
 #proxy-protection-config, #fingerprinting-protection-config
 {
 	display:flex;
@@ -291,4 +296,8 @@ section#sect-devel {
 
 fieldset {
 	border: 0;
+}
+
+.more + .less {
+	display: none;
 }
