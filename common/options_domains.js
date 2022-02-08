@@ -101,7 +101,7 @@ function insert_domain_levels() {
 window.addEventListener("load", function() {
 	if (!levels_initialised) {
 		levels_updated_callbacks.push(insert_domain_levels);
-		levels_updated_callbacks.push(update_domain_level.bind(document.getElementById("domain-level")));
+		levels_updated_callbacks.push(update_domain_level.bind(null, document.getElementById("domain-level")));
 	}
 	else {
 		insert_domain_levels();
