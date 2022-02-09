@@ -76,7 +76,7 @@ function show_domain_level(levelsEl, domain) {
 			<span id="li-removed-group-${escape(domain)}" class="hidden">
 				<button id="restore-dl-${escape(domain)}">Restore</button>
 			</span>
-			<div id="tweaks-${escape(domain)}"></div>
+			<div class="tweakgrid" id="tweaks-${escape(domain)}"></div>
 		</li>`);
 	levelsEl.appendChild(fragment);
 	update_domain_level(document.getElementById(`dl-change-${escape(domain)}`), domains[domain].level_id);
