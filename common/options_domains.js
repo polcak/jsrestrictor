@@ -79,10 +79,11 @@ function show_domain_level(levelsEl, domain) {
 			<div class="tweakgrid" id="tweaks-${escape(domain)}"></div>
 		</li>`);
 	levelsEl.appendChild(fragment);
-	update_domain_level(document.getElementById(`dl-change-${escape(domain)}`), domains[domain].level_id);
+	let levelSelectEl = document.getElementById(`dl-change-${escape(domain)}`);
+	update_domain_level(levelSelectEl, domains[domain].level_id);
 	document.getElementById(`overwrite-dl-${escape(domain)}`).addEventListener("click", function(e) {
 		e.preventDefault();
-		let domainLevel = document.getElementById(`dl-change-${escape(domain)}`).value;
+		let domainLevel = levelSelectEl.value;
 		domains[domain] = {
 			level_id: domainLevel,
 		}
@@ -105,7 +106,7 @@ function show_domain_level(levelsEl, domain) {
 		}
 	}
 	tweaksBusiness.create_tweaks_html(tweaksEl);
-	document.getElementById(`dl-change-${escape(domain)}`).addEventListener("change", function(e) {
+	levelSelectEl.addEventListener("change", function(e) {
 		let oldtweaks = domains[domain].tweaks || {};
 		domains[domain] = {
 			level_id: this.value,
