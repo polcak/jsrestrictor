@@ -105,6 +105,16 @@ function show_domain_level(levelsEl, domain) {
 		}
 	}
 	tweaksBusiness.create_tweaks_html(tweaksEl);
+	document.getElementById(`dl-change-${escape(domain)}`).addEventListener("change", function(e) {
+		let oldtweaks = domains[domain].tweaks || {};
+		domains[domain] = {
+			level_id: this.value,
+		}
+		if (Object.keys(oldtweaks).length > 0) {
+			domains[domain].tweaks = oldtweaks;
+		}
+		tweaksBusiness.create_tweaks_html(tweaksEl);
+	});
 }
 
 function insert_domain_levels() {
