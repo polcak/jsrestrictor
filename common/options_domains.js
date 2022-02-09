@@ -69,6 +69,8 @@ function show_domain_level(levelsEl, domain) {
 				${escape(domain)}
 			</span>
 			<select id="dl-change-${escape(domain)}"></select>
+			<span id="tweaks-text-${escape(domain)}">tweaked</span>
+			<button id="show-tweaks-${escape(domain)}" class="help">⤵</button>
 			<span id="li-exist-group-${escape(domain)}">
 				<button id="overwrite-dl-${escape(domain)}">Save</button>
 				<button id="delete-dl-${escape(domain)}">Remove</button>
@@ -95,6 +97,7 @@ function show_domain_level(levelsEl, domain) {
 	document.getElementById(`delete-dl-${escape(domain)}`).addEventListener("click", remove_domain.bind(null, domain));
 	document.getElementById(`restore-dl-${escape(domain)}`).addEventListener("click", restore_domain.bind(null, domain, domains[domain]));
 	let tweaksEl = document.getElementById(`tweaks-${escape(domain)}`);
+	let tweaksTextEl = document.getElementById(`tweaks-text-${escape(domain)}`);
 	let tweaksBusiness = Object.create(tweaks_gui);
 	tweaksBusiness.get_current_tweaks = function() {
 		return getTweaksForLevel(domains[domain].level_id, tweaks);
@@ -108,9 +111,17 @@ function show_domain_level(levelsEl, domain) {
 		}
 		if (Object.keys(tweaks).length > 0) {
 			domains[domain].tweaks = tweaks;
+			tweaksTextEl.classList.remove("hidden_descr");
+		}
+		else {
+			tweaksTextEl.classList.add("hidden_descr");
 		}
 	}
 	tweaksBusiness.create_tweaks_html(tweaksEl);
+	if (Object.keys(tweaks).length == 0) {
+		tweaksEl.classList.add("hidden_descr");
+		tweaksTextEl.classList.add("hidden_descr");
+	}
 	levelSelectEl.addEventListener("change", function(e) {
 		let oldtweaks = domains[domain].tweaks || {};
 		domains[domain] = {
@@ -120,6 +131,10 @@ function show_domain_level(levelsEl, domain) {
 			domains[domain].tweaks = oldtweaks;
 		}
 		tweaksBusiness.create_tweaks_html(tweaksEl);
+	});
+	document.getElementById(`show-tweaks-${escape(domain)}`).addEventListener("click", function(ev) {
+		tweaksEl.classList.toggle("hidden_descr");
+		ev.preventDefault();
 	});
 }
 

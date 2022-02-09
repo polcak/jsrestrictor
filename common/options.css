@@ -165,7 +165,7 @@ section.content {
 }
 
 .hidden_descr{
-	display: none;
+	display: none !important;
 }
 
 .help {
