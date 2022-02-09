@@ -45,6 +45,8 @@ let tweaks_gui = {
 
 			let tlevUI = tweakRow.querySelector(".tlev");
 			let status = tweakRow.querySelector(".status");
+			let help = tweakRow.querySelector(".help");
+			let explainer = tweakRow.querySelector(".explainer");
 			let updateStatus = lid => {
 				let l = levels[lid];
 				if (l[group_id] === true) {
@@ -95,6 +97,10 @@ let tweaks_gui = {
 				tlevUI.nextElementSibling.value = desired_tweak; // FIXME, display user-friendly description next to the range
 				this.tweak_changed(group_id, desired_tweak);
 				updateStatus(tlev_id);
+			});
+			help.addEventListener("click", function(ev) {
+				explainer.classList.toggle("hidden_descr");
+				ev.preventDefault();
 			});
 			tweaksContainer.appendChild(tweakRow);
 		},

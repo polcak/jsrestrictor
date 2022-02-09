@@ -161,6 +161,18 @@ h3 {
 	display: none;
 }
 
+.hidden_descr{
+	display: none;
+}
+
+.help {
+	margin-left: 1em;
+	background-color: blue;
+	color: white;
+	border-radius: 10px;
+	font-weight: bold;
+}
+
 .switch_wrapper {
 	display: flex;
 	flex-direction: row;
