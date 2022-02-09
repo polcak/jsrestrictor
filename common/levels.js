@@ -112,23 +112,23 @@ var wrapping_groups = {
 			],
 			options: [
 				{
-				description: "farbling type",
-				ui_elem: "select",
-				name: "method",
-				default: 0,
-				data_type: "Number",
-				options: [
-					{
-						value: 0,
-						description: "Alter image data based on domain and session hashes",
-					},
-					{
-						value: 1,
-						description: "Replace by white image",
-					}
-				],
-			}
-		],
+					description: "farbling type",
+					ui_elem: "select",
+					name: "method",
+					default: 0,
+					data_type: "Number",
+					options: [
+						{
+							value: 0,
+							description: "Alter image data based on domain and session hashes",
+						},
+						{
+							value: 1,
+							description: "Replace by white image",
+						}
+					],
+				}
+			],
 			wrappers: [
 				// H-C
 				"CanvasRenderingContext2D.prototype.getImageData",
