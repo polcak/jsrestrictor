@@ -27,6 +27,43 @@
 var site; // "https://www.example.com" from current tab will become "example.com"
 var pageConfiguration = {};
 var hits;
+var current_level;
+
+// Provide cusom handlers for Tweaks GUI
+let popup_tweaks = Object.create(tweaks_gui);
+popup_tweaks.get_current_tweaks = function() {
+	return getTweaksForLevel(current_level.level_id, current_level.tweaks);
+};
+popup_tweaks.tweak_changed = function(group_id, desired_tweak) {
+	if (!current_level.tweaks) {
+		current_level.tweaks = {};
+	}
+	current_level.tweaks[group_id] = desired_tweak;
+	domains[site] = current_level;
+	saveDomainLevels();
+	enableRefreshIfNeeded();
+};
+popup_tweaks.assign_custom_params = function(group) {
+	group.groupHits = 0;
+	for (let wrapper of group.wrappers) {
+		if (hits[wrapper]) {
+			group.groupHits += hits[wrapper];
+		}
+	}
+};
+popup_tweaks.customize_tweak_row = function (tweakRow, group) {
+	let groupHits = group.groupHits;
+	if (groupHits >= 999) {
+		groupHits = "1000 or more";
+	}
+	tweakRow.querySelector(".hits").textContent = groupHits;
+};
+popup_tweaks.cmp_groups = function (firstObj, secondObj) {
+	let firstGr = firstObj.group;
+	let secondGr = secondObj.group;
+	return secondGr.groupHits - firstGr.groupHits;
+};
+
 /**
  * Enable the refresh page option.
  */
@@ -51,7 +88,110 @@ function changeActiveLevel(activeEl) {
 	showRefreshPageOption();
 }
 
-async function init() {
+/**
+ * Control the state of the Refresh button
+ */
+function enableRefreshIfNeeded() {
+	let pageLevel = pageConfiguration.currentLevel;
+
+	let level4comp = ({level_id, tweaks}) => JSON.stringify({level_id, tweaks});
+
+	let needsRefresh = !pageLevel ||
+		level4comp(pageLevel) !== level4comp(current_level);
+
+	if (needsRefresh) {
+		showRefreshPageOption();
+	}
+}
+
+/**
+ * Save level settings for current page, show correct button
+ */
+function modify_level(level, levelButton) {
+	if (level) {
+		current_level = level;
+		saveDomainLevels();
+	  if (levelButton) {
+			changeActiveLevel(levelButton);
+		}
+		update_level_info();
+		update_tweaks();
+	}
+}
+
+/**
+ * Load levels and add level setting buttons
+ */
+function add_level_buttons() {
+	var selectEl = document.getElementById("level-select");
+	function addButton(level) {
+		let b = document.createElement("button");
+		b.id = `select-${level.level_id}`;
+		b.className = "level level_control";
+		b.textContent = level.level_id;
+	  b.title = level.level_text;
+		return selectEl.appendChild(b);
+	}
+	// Add default level button
+	addButton({level_id: "DEFAULT", level_text: `Default level (${default_level.level_id})`})
+	.addEventListener("click", ev => {
+		delete domains[site];
+		modify_level(default_level, ev.target);
+	});
+	// Load built-in and custom levels
+	for (let level_id in levels) {
+		let level = levels[level_id];
+		addButton(level).addEventListener("click", function (ev) {
+			domains[site] = {
+				level_id: level.level_id,
+			};
+			modify_level(level, ev.target);
+		});
+	}
+	let  currentEl = document.getElementById(`select-${current_level.is_default ? "DEFAULT" : current_level.level_id}`);
+	if (currentEl !== null) {
+		currentEl.classList.add("active");
+	}
+}
+
+
+function update_level_info() {
+	document.getElementById("level-text").textContent = current_level.level_text;
+	document.getElementById("level-description").textContent = ` - ${current_level.level_description}`;
+}
+
+function update_tweaks() {
+	let tweaksContainer = document.getElementById("tweaks");
+	document.body.classList.remove("tweaking");
+	let tweakBtn = document.getElementById("btn-tweak");
+	tweakBtn.disabled = true;
+
+	if (current_level.tweaks && Object.keys(current_level.tweaks).length) {
+		popup_tweaks.create_tweaks_html(tweaksContainer);
+		tweakBtn.disabled = true;
+	}
+	else if (parseInt(current_level.level_id)) {
+		tweakBtn.disabled = false;
+		tweakBtn.onclick = function() {
+			popup_tweaks.create_tweaks_html(tweaksContainer);
+			tweakBtn.disabled = true;
+		};
+	}
+}
+
+/**
+ * Fill the content of the JS Shield settings
+ */
+function fill_jsshield(msg) {
+	current_level = msg;
+	enableRefreshIfNeeded();
+
+	add_level_buttons();
+	update_level_info();
+	update_tweaks();
+}
+
+async function init_jsshield() {
   // get the site of current tab
 	site = await getCurrentSite();
 	// abort per-site options if it can't be accessed
@@ -61,183 +201,16 @@ async function init() {
 
 	// fill the popup
 	var port_to_background = browser.runtime.connect({name:"port_from_popup"});
-	var current_level = { level_id: "?" };
+	current_level = { level_id: "?" };
 
-	function enableRefreshIfNeeded() {
-		let pageLevel = pageConfiguration.currentLevel;
-
-		let level4comp = ({level_id, tweaks}) => JSON.stringify({level_id, tweaks});
-
-		let needsRefresh = !pageLevel ||
-			level4comp(pageLevel) !== level4comp(current_level);
-
-		if (needsRefresh) showRefreshPageOption();
-	}
-
-	port_to_background.onMessage.addListener(function(msg) {
-		current_level = msg;
-		enableRefreshIfNeeded();
-
-		var selectEl = document.getElementById("level-select");
-		function addButton(level) {
-			let b = document.createElement("button");
-			b.id = `select-${level.level_id}`;
-			b.className = "level level_control";
-			b.textContent = level.level_id;
-		  b.title = level.level_text;
-			return selectEl.appendChild(b);
-		}
-		addButton({level_id: "DEFAULT", level_text: `Default level (${default_level.level_id})`})
-		.addEventListener("click", ev => {
-			delete domains[site];
-		 	update(default_level, ev.target);
-		});
-		for (let level_id in levels) {
-			let level = levels[level_id];
-			addButton(level).addEventListener("click", ev => {
-				domains[site] = {
-					level_id: level.level_id,
-				};
-				update(level, ev.target);
-			});
-		}
-		let  currentEl = document.getElementById(`select-${current_level.is_default ? "DEFAULT" : current_level.level_id}`);
-		if (currentEl !== null) {
-			currentEl.classList.add("active");
-		}
-
-		update();
-
-		function update(level, element) {
-			if (level) {
-				current_level = level;
-				saveDomainLevels();
-			  if (element) changeActiveLevel(element);
-			}
-			document.getElementById("level-text").textContent = current_level.level_text;
-			document.getElementById("level-description").textContent = ` - ${current_level.level_description}`;
-			let tweaks = document.getElementById("tweaks");
-			document.body.classList.remove("tweaking");
-			let tweakBtn = document.getElementById("btn-tweak");
-			function defaultTweaks() {
-				let tt = {}, tlev_id = current_level.level_id;
-				for (let g of wrapping_groups.groups) {
-					tt[g.id] = tlev_id;
-				}
-				return tt;
-			}
-
-			function initTweaks() {
-				tweaks.innerHTML = "";
-				tweaks.appendChild(document.getElementById("tweak-head").content);
-				let {option_map} = wrapping_groups;
-				let tweakEntries =  Object.entries(Object.assign(defaultTweaks(), current_level.tweaks || {}))
-					.map(([group_id, tlev_id]) => {
-						let group = option_map[group_id];
-						let label = group.label || group.name;
-						group.groupHits = 0;
-						for (let wrapper of group.wrappers) {
-							if (hits[wrapper]) {
-								group.groupHits += hits[wrapper];
-							}
-						}
-						return { group_id, tlev_id, label, group, toString() { return this.label } };
-					}
-				).sort(function (firstObj, secondObj) {
-					let firstGr = firstObj.group;
-					let secondGr = secondObj.group;
-					return secondGr.groupHits - firstGr.groupHits;
-				});
-
-				for (let { group_id, tlev_id, label, group} of tweakEntries) {
-					let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
-					tweakRow.querySelector("label").textContent = label;
-					let groupHits = group.groupHits;
-					if (groupHits >= 999) {
-						groupHits = "1000 or more";
-					}
-					tweakRow.querySelector(".hits").textContent = groupHits;
-
-					let tlevUI = tweakRow.querySelector(".tlev");
-					let status = tweakRow.querySelector(".status");
-					let updateStatus = lid => {
-						let l = levels[lid];
-						if (l[group_id] === true) {
-							status.innerHTML = "<strong>ON</strong> ";
-							let optionsDes = document.createElement("em");
-							let prefix = `${group_id}_`;
-							let choices = [];
-							for (let optId of Object.keys(l).filter(k => k.startsWith(prefix))) {
-								let val = l[optId];
-								let opt = option_map[optId];
-								let des = opt.options && opt.options.length ? option_map[`${optId}_${val}`].description : val && opt.description || "";
-								if (des) choices.push(des);
-							}
-							if (choices.length) {
-								optionsDes.append(` - ${choices.join(" / ")}`);
-								status.appendChild(optionsDes);
-							}
-						} else {
-							status.innerHTML = "OFF";
-						}
-					}
-					updateStatus(tlev_id);
-				  tweakRow.querySelector(".description").textContent = group.description;
-					let more = tweakRow.querySelector(".more");
-					let less = tweakRow.querySelector(".less");
-					let longDescription = group.description2;
-					if (!longDescription || longDescription.length === 0) {
-						less.remove();
-						more.remove();
-					} else {
-						more.onclick = function() {
-							let parent = document.createElement("div");
-							for (let line of longDescription) {
-								parent.appendChild(document.createElement("p")).textContent = line;
-							}
-							more.replaceWith(parent);
-							return false;
-					  }
-						less.onclick = function() {
-							this.previousElementSibling.replaceWith(more);
-							return false;
-						}
-					}
-
-					tlevUI.value = tlevUI.nextElementSibling.value = parseInt(tlev_id);
-					tlevUI.onchange = () => {
-						if (!current_level.tweaks) current_level.tweaks = {};
-						updateStatus(current_level.tweaks[group_id] = tlevUI.nextElementSibling.value = tlevUI.value);
-						domains[site] = current_level;
-						saveDomainLevels();
-						enableRefreshIfNeeded();
-					}
-					tweaks.appendChild(tweakRow);
-				}
-				tweakBtn.disabled = true;
-				document.body.classList.add("tweaking");
-			}
-			tweakBtn.disabled = true;
-
-			if (current_level.tweaks && Object.keys(current_level.tweaks).length) {
-				initTweaks();
-			} else if (parseInt(current_level.level_id)) {
-				tweakBtn.disabled = false;
-				tweakBtn.onclick = function() {
-					initTweaks();
-				};
-			}
-		}
-	});
+	port_to_background.onMessage.addListener(fill_jsshield);
 }
 
 // Open options in a new tab when clicking on the icon
-for (let widget of document.querySelectorAll(".global-settings")) {
-	widget.addEventListener('click', e => {
+document.getElementById("global-settings").addEventListener('click', function(e) {
 	  browser.runtime.openOptionsPage();
 	  window.close();
   });
-}
 
 for (let widget of document.querySelectorAll('.controls[type=checkbox]')) {
 	let key = `controls-${widget.id}-checked`;
@@ -324,8 +297,10 @@ async function control_whitelist(prefix)
 }
 
 addEventListener("DOMContentLoaded", async () => {
-	await init();
-	if (!site) return;
+	await init_jsshield();
+	if (!site) {
+		return;
+	}
 	load_on_off_switch("nbs");
 	load_on_off_switch("fpd");
 });

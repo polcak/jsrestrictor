@@ -165,7 +165,7 @@ section.content {
 }
 
 .hidden_descr{
-	display: none;
+	display: none !important;
 }
 
 .help {
@@ -175,6 +175,25 @@ section.content {
 	border-radius: 10px;
 	font-weight: bold;
 }
+
+.domain {
+	font-weight: bold;
+	font-size: xx-large;
+}
+
+.tweakgrid {
+	display: grid;
+	grid: auto / auto 1fr;
+	gap: 1em;
+	align-items: center;
+}
+
+.explainer {
+	grid-column-start: 1;
+	grid-column-end: -1;
+	padding-bottom: 3px;
+}
+
 
 #proxy-protection-config, #fingerprinting-protection-config
 {
@@ -291,4 +310,8 @@ section#sect-devel {
 
 fieldset {
 	border: 0;
+}
+
+.more + .less {
+	display: none;
 }

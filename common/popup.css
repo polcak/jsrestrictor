@@ -7,9 +7,14 @@
  */
 
 body {
-	padding: 1em;
-	margin: 1em;
+	padding: 0.5em;
+	margin: 0em;
 	min-width: 38em;
+}
+
+content {
+	padding: 0.5em;
+	margin: 0.5em;
 }
 
 header, footer, .section-header {
@@ -49,12 +54,13 @@ h3 {
 
 #logo {
 	width: 32px;
+	display: inline;
 }
 
 #titletext {
-	display: block;
+	display: inline;
 	font-size: large;
-	text-align: center;
+	text-align: left;
 }
 
 #site-settings, #site-settings:not(.enabled) ~ #globals {
@@ -64,20 +70,21 @@ h3 {
 	display: initial;
 }
 
-#page-info {
-  display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-}
 
-#refresh-page {
+#refresh-page, #global-settings {
 	font-size: large;
 	font-weight: bold;
+	vertical-align: 50%;
+}
+
+#page-info {
+	display: flex;
 }
 
 #current-site {
 	font-size: large;
+	text-align: center;
+	flex-grow: 1;
 }
 
 #level-select {
@@ -152,6 +159,18 @@ h3 {
 
 .off > .switch_wrapper {
 	display: none;
+}
+
+.hidden_descr{
+	display: none;
+}
+
+.help {
+	margin-left: 1em;
+	background-color: blue;
+	color: white;
+	border-radius: 10px;
+	font-weight: bold;
 }
 
 .switch_wrapper {

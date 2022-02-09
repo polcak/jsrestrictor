@@ -53,8 +53,8 @@ var wrapping_groups = {
 		{
 			name: "time_precision",
 			label: "Time precision",
-			description: "Limit the precision of high resolution time stamps (Date, Performance, events, Gamepad API, Web VR API)",
-			description2: ["Timestamps provided by the Geolocation API are wrapped as well if you enable Geolocation API wrapping"],
+			description: "Prevent attacks and fingerprinting techniques relying on precise time measurement (or make them harder).",
+			description2: ["Limit the precision of high resolution time stamps (Date, Performance, events, Gamepad API, Web VR API). Timestamps provided by the Geolocation API are wrapped as well if you enable Geolocation API wrapping"],
 			options: [
 				{
 					description: "Manipulate time to",
@@ -104,7 +104,8 @@ var wrapping_groups = {
 		},
 		{
 			name: "htmlcanvaselement",
-			description: "Protect against canvas fingerprinting",
+			label: "Localy rendered images",
+			description: "Protect against canvas fingerprinting.",
 			description2: [
 				"Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() return modified image data to prevent fingerprinting",
 				"CanvasRenderingContext2D.isPointInStroke() and CanvasRenderingContext2D.isPointInPath() are modified to lie with probability"
@@ -140,7 +141,8 @@ var wrapping_groups = {
 		},
 		{
 			name: "audiobuffer",
-			description: "Protect against audio fingerprinting",
+			label: "Locally generated audio and audio card information",
+			description: "Protect against audio fingerprinting, spoof details of your audio card.",
 			description2: [
 				"Functions AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() and AnalyserNode.getFloatFrequencyData() are modified to alter audio data based on domain key"
 			],
@@ -175,7 +177,8 @@ var wrapping_groups = {
 		},
 		{
 			name: "webgl",
-			description: "Protect against WEBGL fingerprinting",
+			label: "Localy rendered images and graphic card information",
+			description: "Protect against WEBGL fingerprinting, spoof details of your graphic card.",
 			description2: [
 				"Function WebGLRenderingContext.getParameter() returns modified/bottom values for certain parameters",
 				"WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() and .getExtension() return modified values",
@@ -236,6 +239,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "plugins",
+			label: "Installed browser plugins",
 			description: "Protect against plugin fingerprinting",
 			description2: [],
 			options: [{
@@ -266,6 +270,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "enumerateDevices",
+			label: "Connected cameras and microphones",
 			description: "Prevent fingerprinting based on the multimedia devices connected to the computer",
 			description2: [
 				"Function MediaDevices.enumerateDevices() is modified to return empty or modified result"
@@ -298,7 +303,8 @@ var wrapping_groups = {
 		},
 		{
 			name: "hardware",
-			description: "Spoof hardware information to the most popular HW",
+			label: "Device memory and CPU",
+			description: "Spoof hardware information on the amount of RAM and CPU count.",
 			description2: [
 				"Getters navigator.deviceMemory and navigator.hardwareConcurrency return modified values",
 			],
@@ -332,8 +338,9 @@ var wrapping_groups = {
 		},
 		{
 			name: "xhr",
-			description: "Filter XMLHttpRequest requests",
-			description2: [],
+			label: "XMLHttpRequest requests (XHR)",
+			description: "Filter reliable XHR requests to server.",
+			description2: ["Note that these requests are broadly employed for benign purposes and also note that Fetch, SSE, WebRTC, and WebSockets APIs are not blocked. All provide similar and some even better means of communication with server. For practical usage, we recommend activating Fingerprint Detector instead of XHR wrappers. JShelter keeps the wrapper as it is useful for some users mainly for experimental reasons."],
 			options: [
 				{
 					ui_elem: "input-radio",
@@ -361,7 +368,8 @@ var wrapping_groups = {
 		},
 		{
 			name: "arrays",
-			description: "Protect against ArrayBuffer exploitation",
+			label: "ArrayBuffer",
+			description: "Protect against ArrayBuffer exploitation, for example, to prevent side channel attacks on memory layout (or make them harder).",
 			description2: [],
 			options: [
 				{
@@ -387,7 +395,8 @@ var wrapping_groups = {
 		},
 		{
 			name: "shared_array",
-			description: "Protect against SharedArrayBuffer exploitation:",
+			label: "SharedArrayBuffer",
+			description: "Protect against SharedArrayBuffer exploitation, for example, to prevent side channel attacks on memory layout (or make them harder).",
 			description2: [],
 			options: [
 				{
@@ -415,7 +424,8 @@ var wrapping_groups = {
 		},
 		{
 			name: "webworker",
-			description: "Protect against WebWorker exploitation",
+			label: "WebWorker",
+			description: "Protect against WebWorker exploitation, for example, to provide high resolution timers",
 			description2: [],
 			options: [
 				{
@@ -442,7 +452,8 @@ var wrapping_groups = {
 		},
 		{
 			name: "geolocation",
-			description: "Geolocation API wrapping",
+			label: "Physical location",
+			description: "Limit the information on real-world position provided by Geolocation API.",
 			description2: [],
 			options: [
 				{
@@ -497,7 +508,8 @@ var wrapping_groups = {
 		},
     {
 			name: "physical_environment",
-			description: "Wrapping APIs for scanning properties of the physical environment",
+			label: "Physical environement sensors",
+			description: "Limit the information provided by physical environment sensors like Magnetometer or Accelerometer.",
 			description2: [],
 			options: [
 				{
@@ -529,7 +541,8 @@ var wrapping_groups = {
 		},
 		{
 			name: "gamepads",
-			description: "Prevent websites from learning information on local gamepads",
+			label: "Gamepads",
+			description: "Prevent websites from accessing and learning information on local gamepads.",
 			description2: [],
 			default: true,
 			options: [],
@@ -540,7 +553,8 @@ var wrapping_groups = {
 		},
 		{
 			name: "vr",
-			description: "Prevent websites from learning information on local Virtual Reality displays",
+			label: "Virtual and augmented reality devices",
+			description: "Prevent websites from accessing and learning information on local virtual and augmented reality displays.",
 			description2: [],
 			default: true,
 			options: [],
@@ -553,8 +567,9 @@ var wrapping_groups = {
 		},
 		{
 			name: "analytics",
-			description: "Prevent sending analytics through Beacon API",
-			description2: [],
+			label: "Unreliable transfers to server (beacons)",
+			description: "Prevent unreliable transfers to server (beacons).",
+			description2: ["Such transfers are typically misused for analytics but occassionally may be used by e-shops or other pages.", "Prevent sending information through Beacon API."],
 			default: true,
 			options: [],
 			wrappers: [
@@ -564,6 +579,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "battery",
+			label: "Hardware battery",
 			description: "Disable Battery status API",
 			description2: [],
 			default: true,
@@ -576,8 +592,9 @@ var wrapping_groups = {
 		},
 		{
 			name: "windowname",
-			description: "Clear window.name value on the webpage loading",
-			description2: [],
+			label: "Persistent identifier of the browser tab",
+			description: "Clear window.name value on the webpage loading.",
+			description2: ["This API might be occasionally used for benign purposes.", "This API provides a possibility to detect cross-site browsing in one tab and broser session."],
 			default: true,
 			options: [],
 			wrappers: [
@@ -884,4 +901,17 @@ function getCurrentLevelJSON(url) {
 		}
 	}
 	return [default_level, wrapped_codes[default_level.level_id]];
+}
+
+function getTweaksForLevel(level_id, tweaks_obj) {
+	tweaks_obj = tweaks_obj || {}; // Make sure that tweaks_obj is an object
+	function defaultTweaks() {
+		let tt = {};
+		let tlev_id = level_id;
+		for (let g of wrapping_groups.groups) {
+			tt[g.id] = tlev_id; // FIXME this code suppose that each group has the same number of levels as the extension itself, the level should hold this information
+		}
+		return tt;
+	}
+	return Object.assign(defaultTweaks(), tweaks_obj);
 }

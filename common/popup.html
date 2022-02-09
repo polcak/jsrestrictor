@@ -16,20 +16,23 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	<script src="url.js" type="text/javascript"></script>
 	<script src="levels.js" type="text/javascript"></script>
 	<script src="helpers.js" type="text/javascript" defer></script>
+	<script src="tweaks_gui.js" type="text/javascript" defer></script>
 	<script src="popup.js" type="text/javascript" defer></script>
 </head>
 <body>
 
 	<header>
-		<img class="logo" id="logo" src="../img/icon-128.png" alt="JShelter logo" />
-		<h3 id="titletext">JShelter</h3>
-		<button class="controls global-settings" title="Open global settings">Open global settings</button>
+		<div>
+			<img class="logo" id="logo" src="../img/icon-128.png" alt="JShelter logo" />
+			<h3 id="titletext">JShelter</h3>
+		</div>
+		<button id="global-settings" title="Open global settings">Global settings</button>
 	</header>
 
 	<content id="site-settings">
 		<div id="page-info">
 			<h3 id="current-site"></h3>
-			<button id="refresh-page" disabled>Refresh</button>
+			<button id="refresh-page" disabled>Refresh page</button>
 		</div>
 
 		<section id="level_controls">
@@ -58,9 +61,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<label>Wrapper group name</label>
 			<div class="tweak">
 				<input class="tlev" type="range" min="0" max="3" /><output></output>
+				<button class="help">⤵</button>
 			</div>
 			<div class="hits"></div>
-			<div class="explainer">
+			<div class="explainer hidden_descr">
 				<div class="status"></div>
 				<p>
 					<span class="description"></span>
@@ -95,10 +99,6 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			</section>
 
 	</content>
-	<footer id="globals">
-		<label for="global-settings">Global settings</label>
-		<button id="global-settings" class="controls global-settings" title="Open global settings">Open...</button>
-	</footer>
 </body>
 
 </html>
