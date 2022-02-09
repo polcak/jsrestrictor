@@ -100,7 +100,12 @@ function show_domain_level(levelsEl, domain) {
 		return getTweaksForLevel(domains[domain].level_id, tweaks);
 	};
 	tweaksBusiness.tweak_changed = function(group_id, desired_tweak) {
-		tweaks[group_id] = desired_tweak;
+		if (desired_tweak == levelSelectEl.value) {
+			delete tweaks[group_id];
+		}
+		else {
+			tweaks[group_id] = desired_tweak;
+		}
 		if (Object.keys(tweaks).length > 0) {
 			domains[domain].tweaks = tweaks;
 		}
