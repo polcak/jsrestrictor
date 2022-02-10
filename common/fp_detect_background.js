@@ -325,7 +325,7 @@ function correctGroupCriteria(rootGroup, effectedGroups, level) {
  *
  * \param tabId Integer number representing ID of browser tab that is going to be evaluated.
  *
- * \returns 0 if no fingerprinting activity detected, otherwise weight value of root group
+ * \returns array where first item represents current weight of root group after evaluation and second item contain FP severity value
  */
 function evaluateGroups(tabId) {
 	// get url of evaluated tab
@@ -333,7 +333,7 @@ function evaluateGroups(tabId) {
 
 	// inaccesible or invalid url - do not evaluate
 	if (!url) {
-		return 0;
+		return [0, []];
 	}
 	
 	// clear old evalStats
@@ -351,10 +351,16 @@ function evaluateGroups(tabId) {
 	
 	// start recursive evaluation if all needed objects are defined
 	if (rootGroup && fpGroups[level] && fp_levels.wrappers[level]) {
-		return evaluateGroupsCriteria(rootGroup, level, tabId)[0].actualWeight;
+		let evalRes = evaluateGroupsCriteria(rootGroup, level, tabId)[0];
+		let finalSeverity = [];
+		if (fp_levels.groups[level].severity) {
+			let sortedSeverity = fp_levels.groups[level].severity.sort((x, y) => x[0] - y[0]);
+			finalSeverity = sortedSeverity.filter((x) => (x[0] <= evalRes.actualWeightsSum)).reverse()[0];
+		}
+		return [evalRes.actualWeight, finalSeverity];
 	}
 
-	return 0;
+	return [0, []];
 }
 
 /**
@@ -409,9 +415,10 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
 	// get maximal obtainable weight for rootGroup
 	res.maxWeight = fpGroups[level][rootGroup].criteria.reduce((x, {weight}) => (x > weight ? x : weight), 0);
 
-	// compute actualWeight of rootGroup with value of acsesses
+	// compute actualWeight of rootGroup with value of accesses
 	res.accesses = 0;
 	res.actualWeight = 0;
+	res.actualWeightsSum = 0;
 	if (groupTypes.length == 2) {
 		// groupTypes contains "value" and "percetange" - take weight of child items into account
 		var actualWeightsSum = scores.reduce((x, {actualWeight}) => (x + actualWeight), 0);
@@ -437,6 +444,7 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
 		// filter criteria and take weight of highest achieved criteria
 		var filteredCriteria = relativeCriteria.filter((x) => (x.value <= actualWeightsSum)).reverse()[0];
 		res.actualWeight = filteredCriteria ? filteredCriteria.weight : 0;
+		res.actualWeightsSum = actualWeightsSum;
 	}
 	else {
 		// groupTypes contains "access" - take access of child items into account
@@ -448,6 +456,7 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
 		// filter criteria and take weight of highest achieved criteria
 		var filteredCriteria = relevantCriteria.filter((x) => (x.access <= accessesSum)).reverse()[0];
 		res.actualWeight = filteredCriteria ? filteredCriteria.weight : 0;
+		res.actualWeightsSum = accessesSum;
 	}
 
 	// if group access was triggered (have some weight), save it to evalStats
@@ -455,7 +464,8 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
 		latestEvals[tabId].evalStats.push({ 
 			title: rootGroup,
 			type: "group",
-			weight: res.actualWeight
+			weight: res.actualWeight,
+			sum: res.actualWeightsSum
 		});
 	}
 
@@ -827,61 +837,69 @@ function cancelCallback(requestDetails) {
 		refreshDb(requestDetails.tabId);
 	}
 
-	// if FPD enabled for the site and actualWeight of root group is higher than 0 => suspicious activity
-	if (isFpdOn(requestDetails.tabId) && evaluateGroups(requestDetails.tabId)) {
-		// get url of tab asociated with this request
-		var tabUrl = availableTabs[requestDetails.tabId] ? availableTabs[requestDetails.tabId].url : undefined;
-
-		// create notification for user (only once for every tab load)
-		if (!latestEvals[requestDetails.tabId].stopNotifyFlag) {
-			latestEvals[requestDetails.tabId].stopNotifyFlag = true;
-			notifyFingerprintBlocking(requestDetails.tabId);
-		}
+	// if FPD enabled for the site continue with FP evaluation
+	if (isFpdOn(requestDetails.tabId)) {
 		
-		// clear local and session storage (using content script) for every frame in this tab (required?)
-		if (requestDetails.tabId >= 0) {
-			browser.tabs.sendMessage(requestDetails.tabId, {
-				cleanStorage: true
-			});
-		}
-	
-		// clear all browsing data for origin of tab url to prevent fingerprint caching
-		if (tabUrl) {
-			try {
-				// "origins" key only supported by Chromium browsers
-				browser.browsingData.remove({
-					"origins": [new URL(tabUrl).origin]
-				}, {
-					"cacheStorage": true,
-					"cookies": true,
-					"fileSystems": true,
-					"indexedDB": true,
-					"localStorage": true,
-					"serviceWorkers": true,
-					"webSQL": true
+		// start FP evaluation process and store result array
+		var evalResult = evaluateGroups(requestDetails.tabId);
+
+		// if actualWeight of root group is higher than 0 => reactive phase and applying measures
+		if (evalResult[0]) {
+
+			// get url of tab asociated with this request
+			var tabUrl = availableTabs[requestDetails.tabId] ? availableTabs[requestDetails.tabId].url : undefined;
+
+			// create notification for user (only once for every tab load)
+			if (!latestEvals[requestDetails.tabId].stopNotifyFlag) {
+				latestEvals[requestDetails.tabId].stopNotifyFlag = true;
+				notifyFingerprintBlocking(requestDetails.tabId);
+			}
+			
+			// clear local and session storage (using content script) for every frame in this tab (required?)
+			if (requestDetails.tabId >= 0) {
+				browser.tabs.sendMessage(requestDetails.tabId, {
+					cleanStorage: true
 				});
-			} 
-			catch (e) {
-				// need to use "hostnames" key for Firefox
-				if (e.message.includes("origins")) {
+			}
+		
+			// clear all browsing data for origin of tab url to prevent fingerprint caching
+			if (tabUrl) {
+				try {
+					// "origins" key only supported by Chromium browsers
 					browser.browsingData.remove({
-						"hostnames": extractSubDomains(new URL(tabUrl).hostname).filter((x) => (x.includes(".")))
+						"origins": [new URL(tabUrl).origin]
 					}, {
+						"cacheStorage": true,
 						"cookies": true,
+						"fileSystems": true,
 						"indexedDB": true,
 						"localStorage": true,
-						"serviceWorkers": true
+						"serviceWorkers": true,
+						"webSQL": true
 					});
-				}
-				else {
-					throw e;
+				} 
+				catch (e) {
+					// need to use "hostnames" key for Firefox
+					if (e.message.includes("origins")) {
+						browser.browsingData.remove({
+							"hostnames": extractSubDomains(new URL(tabUrl).hostname).filter((x) => (x.includes(".")))
+						}, {
+							"cookies": true,
+							"indexedDB": true,
+							"localStorage": true,
+							"serviceWorkers": true
+						});
+					}
+					else {
+						throw e;
+					}
 				}
 			}
-		}
 
-		return {
-			cancel: true
-		};
+			return {
+				cancel: true
+			};
+		}
 	}
 
 	return {
