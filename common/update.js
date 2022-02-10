@@ -211,7 +211,7 @@ function checkAndSaveConfig(conf) {
 	if (!("requestShieldOn" in conf) || typeof(conf.requestShieldOn) !== "booloean") {
 		conf.requestShieldOn = true;
 	}
-	if (!("fpDetectionOn" in conf) || typeof(conf.fpDetectionOn) !== "booloean") {
+	if (!("fpDetectionOn" in conf) || typeof(conf.fpDetectionOn) !== "boolean") {
 		conf.fpDetectionOn = false;
 	}
 	if (!("custom_levels" in conf) || typeof(conf.custom_levels) !== "object") {
