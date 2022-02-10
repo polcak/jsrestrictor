@@ -66,7 +66,7 @@ header > div {
 
 #pageFavicon {
 	height: 18px;
-	margin: 2px 5px 2px 0px;
+	margin-right: 2px;
 }
 
 #page-container {
@@ -88,4 +88,5 @@ header > div {
 	float: right;
 	position: sticky;
 	top: 10px;
+	cursor: pointer;
 }

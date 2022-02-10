@@ -20,6 +20,11 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+/**
+ * Event listener that listen for messages from background script to obtain data about FP evaluation.
+ *
+ * \param callback Function that initialize FPD report creation.
+ */
 browser.runtime.onMessage.addListener(function (message, sender) {
     if (message.tabId && message.groups && message.latestEvals) {
         var {tabId, tabObj, groups, latestEvals, exceptionWrappers} = message;
@@ -27,6 +32,15 @@ browser.runtime.onMessage.addListener(function (message, sender) {
     }
 })
 
+/**
+ * The function that populates FPD report page with data from the latest evaluation and hooks up listeners.
+ *
+ * \param tabId Integer number representing ID of evaluated browser tab.
+ * \param tabObj Object consisting of additional information about the tab specified by tabId value.
+ * \param groups Object containing both recursive (fp_levels.groups) and sequential (fpGroups) definition of heuristic groups.
+ * \param latestEvals Object that stores latest evaluation statistics for every examined tab.
+ * \param exceptionWrappers Object containing information about unsupported wrappers for used browser.
+ */
 function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
 	var report = document.getElementById("fpd-report");
     if (!latestEvals[tabId] || !latestEvals[tabId].evalStats) {
@@ -37,6 +51,7 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
     var rootGroup = groups.recursive.name;
     var fpGroups = groups.sequential;
 
+    // parse latestEvals to create more useful representation for FPD report generation
     var processedEvals = {};
     for (let item of latestEvals[tabId].evalStats) {
         processedEvals[item.title] = processedEvals[item.title] || {};
@@ -49,6 +64,7 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
         }
     }
 
+    // add page URL and FavIcon to header section of the report
     if (tabObj) {
         let urlObj = new URL(tabObj.url);
         let url = urlObj.hostname + urlObj.pathname;
@@ -56,12 +72,14 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
         let img = document.getElementById("pageFavicon");
         img.src = tabObj.favIconUrl;
         img.onload = function () {
+            // overwrite default behavior from CSS to show icon only when available
             this.style = "";
         };
     }
 
     var html = "";
 
+    // generate html code for evaluated group
     let generateGroup = (group) => {
         if (processedEvals[group]) {
             if (fpGroups[group].description) {
@@ -83,6 +101,7 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
         }
     }
 
+    // generate html code for evaluated resource (get,set,call)
     let generateResource = (resource) => {
         if (processedEvals[resource]) {
             let accessCount = processedEvals[resource].accesses >= 1000 ? "1000+" : processedEvals[resource].accesses;
@@ -90,9 +109,11 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
         }
     }
 
+    // start generating FPD report from the first group (root group)
     generateGroup(rootGroup);
     report.innerHTML += html;
 
+    // function that enables to show accessed resources of the group
     let toggleResources = (event) => {
         let parent =  event.target.parentElement;
         for (let i = 0; i < parent.children.length; i++) {
@@ -107,6 +128,7 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
         }
     }
 
+    // make group name clickable only if it makes sense - groups with resources
     for (let element of document.querySelectorAll(".fpd-group")) {
         let button;
         let haveChild = false;
@@ -127,8 +149,8 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
         }
     }
 
+    // show resources for every group in FPD report
     let showAll = (event) => {
-        console.log(event);
         for (let element of document.querySelectorAll(".fpd-group > h4")) {      
             if (event.target.innerText == "Show All") {
                 element.style.display = "";
