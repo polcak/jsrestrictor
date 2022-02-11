@@ -35,6 +35,12 @@ from web_browser_type import BrowserType
 #  This module can be edited when definition of default levels will be changed.
 
 
+#  Ignore Plugins and mimeTypes tests - explanation:
+#  The apparent modification of the plugins is caused by the Selenium environment in which the testing takes place.
+#  This difference only appears in a browser controlled by Selenium.
+#  This issue is not caused by JShield, but by Selenium.
+
+
 ## Expected values for default level 0 of JShelter.
 level0 = TestedValues(
     user_agent={BrowserType.FIREFOX: 'REAL VALUE',
@@ -72,9 +78,9 @@ level0 = TestedValues(
     time={'value': 'REAL VALUE',
           'accuracy': 'EXACTLY'},
     plugins={'count': {BrowserType.FIREFOX: 'REAL VALUE',
-                       BrowserType.CHROME: 'REAL VALUE'},
+                       BrowserType.CHROME: 'IGNORE'},
              'value': {BrowserType.FIREFOX: 'REAL VALUE',
-                       BrowserType.CHROME: 'REAL VALUE'}},
+                       BrowserType.CHROME: 'IGNORE'}},
     mimeTypes='REAL VALUE',
     get_channel= 'REAL VALUE',
     copy_channel= 'REAL VALUE',
@@ -137,11 +143,11 @@ level1 = TestedValues(
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 0.01},
-    plugins={'count': {BrowserType.FIREFOX: 'REAL VALUE',
-                       BrowserType.CHROME: 'REAL VALUE'},
-             'value': {BrowserType.FIREFOX: 'REAL VALUE',
-                       BrowserType.CHROME: 'REAL VALUE'}},
-    mimeTypes='REAL VALUE',
+    plugins={'count': {BrowserType.FIREFOX: 0,
+                       BrowserType.CHROME: 'IGNORE'},
+             'value': {BrowserType.FIREFOX: 'EMPTY',
+                       BrowserType.CHROME: 'IGNORE'}},
+    mimeTypes='SPOOF VALUE',
     get_channel= 'REAL VALUE',
     copy_channel= 'REAL VALUE',
     byte_time_domain= 'REAL VALUE',
@@ -203,11 +209,11 @@ level2 = TestedValues(
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 0.1},
-    plugins={'count': {BrowserType.FIREFOX: 'REAL VALUE',
-                       BrowserType.CHROME: 'PLUS_2'},
+    plugins={'count': {BrowserType.FIREFOX: 0,
+                       BrowserType.CHROME: 'IGNORE'},
              'value': {BrowserType.FIREFOX: 'EMPTY',
-                       BrowserType.CHROME: 'SPOOF VALUE'}},
-    mimeTypes='SPOOF VALUE',
+                       BrowserType.CHROME: 'IGNORE'}},
+    mimeTypes='EMPTY',
     get_channel= 'SPOOF VALUE',
     copy_channel= 'SPOOF VALUE',
     byte_time_domain= 'SPOOF VALUE',
