@@ -61,6 +61,64 @@ var sensorapi_prng_functions = `
     let min = number - tolerance * tolerance;
     let max = number + number * tolerance;
 
-    return prng() * (max - min) + min;
+    return sen_prng() * (max - min) + min;
+  }
+
+  // Rounds a number to a fixed amount of decimal places
+  // Returns a NUMBER
+  function fixedNumber(num, digits, base) {
+    var pow = Math.pow(base||10, digits);
+    return Math.round(num*pow) / pow;
+  }
+`;
+
+var device_orientation_functions = `
+  // Initial draw of the device orientation
+  // TODO: Limit to oriententations that make sense for a mobile device
+  function generateDeviceOrientation() {
+    var orient = {};
+    /*
+     * Yaw (couterclockwise rotation of the Z-axis)
+     * Pitch (counterclockwise rotation of the Y-axis)
+     * Roll (counterclockwise rotation of the X-axis)
+     */
+    var yaw = Math.floor(sen_prng() * 2 * Math.PI);
+    var pitch = Math.floor(sen_prng() * 2 * Math.PI);
+    var roll = Math.floor(sen_prng() * 2 * Math.PI);
+
+    orient.yaw = yaw;
+    orient.pitch = pitch;
+    orient.roll = roll;
+
+    // Calculate the rotation matrix
+    orient.rotMat = [
+      [Math.cos(yaw) * Math.cos(pitch),
+       Math.cos(yaw) * Math.sin(pitch) * Math.sin(roll) - Math.sin(yaw) * Math.cos(roll),
+       Math.cos(yaw) * Math.sin(pitch) * Math.cos(roll) + Math.sin(yaw) * Math.sin(roll)
+      ],
+      [Math.sin(yaw) * Math.cos(pitch),
+       Math.sin(yaw) * Math.sin(pitch) * Math.sin(roll) + Math.cos(yaw) * Math.cos(roll),
+       Math.sin(yaw) * Math.sin(pitch) * Math.cos(roll) - Math.cos(yaw) * Math.sin(roll)
+      ],
+      [(-1) * Math.sin(pitch),
+       Math.cos(pitch) * Math.sin(roll),
+       Math.cos(pitch) * Math.cos(roll)
+     ]
+    ];
+
+    return orient;
+  }
+
+  var orient = orient || generateDeviceOrientation();
+
+  // Multiplies a 3D strength vector (1x3) with a 3D rotation matrix (3x3)
+  // Returns the resulting 3D vector (1x3)
+  function multVectRot(vec, mat) {
+    var result = [
+      vec[0]*mat[0][0] + vec[1]*mat[0][1] + vec[2]*mat[0][2],
+      vec[0]*mat[1][0] + vec[1]*mat[1][1] + vec[2]*mat[1][2],
+      vec[0]*mat[2][0] + vec[1]*mat[2][1] + vec[2]*mat[2][2]
+    ]
+    return result;
   }
 `;

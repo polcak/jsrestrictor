@@ -42,26 +42,36 @@
   * WRAPPING
   * The wrapper replaces the "XYZ" getters of the Accelerometer sensor,
   * LinearAccelerationSensor, and GravitySensor. The wrapping's goal is to
-  * simulate a stationary device that is lying bottom down on a flat surface,
-  * e.g., a cell phone on the table. In such a case, only the `z` axis is
-  * affected by gravity. The `x` and `y` axes values should be set to zero.
+  * simulate a stationary device that can be possibly rotated. The rotation
+  * of the device is represented by the fake rotation matrix "orient.rotMat".
+  *
+  * The GravitySensor should provide readings of gravity acceleration applied
+  * to the device. This is represented by a vector made of x, y, z portions.
+  * To get this faked gravity vector for the device, the reference vector
+  * [0, 0, 9.8] is multipled with the rotation matrix. Wrappers for the
+  * GravitySensor's getters return x, y, z portions of the fake gravity vector.
+  *
+  * Next, the LinearAccelerationSensor should return acceleration values without
+  * the contribution of gravity. For a stationary device, it should be all zeroes.
   * Yet, there could be vibrations that may change values a little bit, e.g.,
-  * to spin around -0.1 to +0.1. This usually does not happed with every
-  * reading but only in intervals of seconds. And thus, after a few seconds
-  * we pseudo-randomly change these values. For the LinearAccelerationSensor,
-  * the returned values should represent the acceleration without the conribution
-  * of gravity. For stationary devices, the `x` and `y` are zeroes, while the 'z'
-  * portion fluctuates between 0 and 0.1 on the examined devices. The wrapper
-  * simulates the same behavior. Lastly, the GravitySensor's readings are calculated
-  * as the difference between the previous two.
+  * spin around -0.1 to +0.1, as seen on the examined devices. This usually does
+  * not happed with every reading but only in intervals of seconds. And thus,
+  * after a few seconds we pseudo-randomly change these values.
+  *
+  * Finally, the Accelerometer sensor combines the previous two. Our wrappers thus
+  * return tha values from the LinearAccelerationSensor with the fake gravity
+  * vector portions added.
   *
   *
   * POSSIBLE IMPROVEMENTS
-  * Currently, we assume te device is lying on a flat surface bottom down, and
-  * thus only the `z` is affected by gravity. As improvement, we can also
-  * assume the device is in an oblique position. In this case, the gravitational
-  * acceleration would affect two or three axes. Those will have to be updated
-  * properly to create a realistic behavior.
+  * Support for simulation of a non-stationary device where the rotation
+  * can change. Currently, the calculation of the gravity vector is done
+  * only once by the initDataGenerator() where the reference vector is
+  * multiplied with the rotation matrix. If orient.rotMat could change,
+  * the dataGen would have to be updated periodically.
+  * Moreover, such a change should also be taken into account in wrappers
+  * for other movement-related sensors (Gyroscope, etc.).
+  *
   *
   */
 
@@ -74,9 +84,9 @@
   */
   var init_data = `
     var currentReading = currentReading || {orig_x: null, orig_y: null, orig_z: null, timestamp: null,
-                      fake_x: null, fake_y: null, fake_z: null};
+                      fake_x: null, fake_y: null, fake_z: null, gVector: null};
     var previousReading = previousReading || {orig_x: null, orig_y: null, orig_z: null, timestamp: null,
-                      fake_x: null, fake_y: null, fake_z: null};
+                      fake_x: null, fake_y: null, fake_z: null, gVector: null};
     var emulateStationaryDevice = (typeof args === 'undefined') ? true : args[0];
     var debugMode = false;
 
@@ -100,20 +110,48 @@
   */
   function shake(axis) {
     val = sen_prng() * (axis.max - axis.min) + axis.min;
+
+    var precision = Math.pow(10, -1 * axis.decimalPlaces);
+    if (val < precision) {
+      val = 0;
+    }
+
     if (axis.canBeNegative) {
       val *= Math.round(sen_prng()) ? 1 : -1;
     }
-    axis.value = val.toFixed(axis.decimalPlaces);
+
+    if (val == 0) {
+      axis.value = 0;
+    } else {
+      axis.value = fixedNumber(val, axis.decimalPlaces);
+    }
   }
 
   /*
-    * \brief Initializes the data generator or creating fake accelerometer values
+    * \brief Initializes the data generator for creating fake accelerometer values
   */
   function initDataGenerator() {
     const NEXT_CHANGE_MS_MIN = 1000;
     const NEXT_CHANGE_MS_MAX = 10000;
 
+    /* Reference gravity vector
+     * For a non-rotated device lying bottom-down on a flat surface,
+     * only axis "z" is afected by g.
+     */
+    var referenceGravityVector = [0, 0, 9.8];
+
+    /*
+     * For a rotated device, the vector needs to be
+     * multiplied by the rotation matrix.
+     */
+    var deviceGravityVector = multVectRot(referenceGravityVector, orient.rotMat);
+
     dataGen = {
+      gVector: deviceGravityVector,
+
+      /*
+       * Values for the linear acceleration are fluctuating
+       */
       x: {
         name: "x",
         min: 0.0,
@@ -130,24 +168,17 @@
         canBeNegative: true,
         value: null,
       },
-      z: { // "z with gravity" (for Accelerometer)
-        name: "z_g",
-        min: 9.8,
-        max: 9.9,
-        decimalPlaces: 1,
-        canBeNegative: false,
-        value: null,
-      },
-      z_nograv: { // "z without gravity" (for LinearAccelerationSensor)
-        name: "z_ng",
+      z: {
+        name: "z",
         min: 0.0,
         max: 0.11,
         decimalPlaces: 1,
-        canBeNegative: false,
+        canBeNegative: true,
         value: null,
       },
       nextChangeTimeX: null, // miliseconds
       nextChangeTimeY: null,
+      nextChangeTimeZ: null,
 
       /*
         * \brief Updates the  x/y/z axes values based on the current timestamp
@@ -155,7 +186,7 @@
         * \param Current timestamp from the sensor object
       */
       update: function(currentTimestamp) {
-      // Simulate the accelerometer changes
+      // Simulate the Gyroscope changes
         if (this.shouldWeUpdateX(currentTimestamp)) {
           shake(this.x);
           this.setNextChangeX(currentTimestamp);
@@ -164,8 +195,11 @@
           shake(this.y);
           this.setNextChangeY(currentTimestamp);
         };
-        shake(this.z);
-        shake(this.z_nograv);
+        if (this.shouldWeUpdateZ(currentTimestamp)) {
+          shake(this.z);
+          this.setNextChangeZ(currentTimestamp);
+        };
+        console.log(this);
       },
 
       /*
@@ -203,6 +237,23 @@
       },
 
       /*
+        * \brief Boolean function that decides if the value on the axis Z
+        *        should be updated. Returns true if update is needed.
+        *
+        * \param Current timestamp from the sensor object
+      */
+      shouldWeUpdateZ: function(currentTimestamp) {
+        if (currentTimestamp === null || this.nextChangeTimeZ === null) {
+          return true;
+        }
+        if (currentTimestamp >= this.nextChangeTimeZ) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+
+      /*
         * \brief Sets the timestamp of the next update of value on the axis X.
         *
         * \param Current timestamp from the sensor object
@@ -226,6 +277,19 @@
           + NEXT_CHANGE_MS_MIN
         );
         this.nextChangeTimeY = currentTimestamp + interval_ms;
+      },
+
+      /*
+        * \brief Sets the timestamp of the next update of value on the axis Z.
+        *
+        * \param Current timestamp from the sensor object
+      */
+      setNextChangeZ: function(currentTimestamp) {
+        let interval_ms = Math.floor(
+          sen_prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
+          + NEXT_CHANGE_MS_MIN
+        );
+        this.nextChangeTimeZ = currentTimestamp + interval_ms;
       }
     }
 
@@ -239,6 +303,7 @@
     * \param The sensor object
   */
   function updateReadings(sensorObject) {
+
     // We need the original reading's timestamp to see if it differs
     // from the previous sample. If so, we need to update the faked x,y,z
     let previousTimestamp = previousReading.timestamp;
@@ -271,7 +336,7 @@
     currentReading.fake_x = dataGenerator.x.value;
     currentReading.fake_y = dataGenerator.y.value;
     currentReading.fake_z = dataGenerator.z.value;
-    currentReading.fake_z_nograv = dataGenerator.z_nograv.value;
+    currentReading.fake_gVector = dataGenerator.gVector;
 
     if (debugMode) {
       console.log(dataGenerator);
@@ -286,7 +351,7 @@
     var dataGenerator = dataGenerator || initDataGenerator();
     `;
 
-  var helping_functions = sensorapi_prng_functions
+  var helping_functions = sensorapi_prng_functions + device_orientation_functions
       + initDataGenerator + shake + updateReadings;
   var hc = init_data + orig_getters + helping_functions + generators;
 
@@ -310,12 +375,12 @@
               property_value: `
               function() {
                 updateReadings(this);
-                if (this.__proto__.constructor.name === 'LinearAccelerationSensor') {
-                  if (currentReading.fake_x != null) {
-                    return 0;
-                  }
+                if (this.__proto__.constructor.name === 'GravitySensor') {
+                  return fixedNumber(currentReading.fake_gVector[0], 1);
+                } else if (this.__proto__.constructor.name === 'LinearAccelerationSensor') {
+                  return fixedNumber(currentReading.fake_x, 1);
                 }
-                return currentReading.fake_x;
+                return fixedNumber(currentReading.fake_x + currentReading.fake_gVector[0], 1);
               }`,
             },
           ],
@@ -341,12 +406,12 @@
               property_value: `
               function() {
                 updateReadings(this);
-                if (this.__proto__.constructor.name === 'LinearAccelerationSensor') {
-                  if (currentReading.fake_y != null) {
-                    return 0;
-                  }
+                if (this.__proto__.constructor.name === 'GravitySensor') {
+                  return fixedNumber(currentReading.fake_gVector[1], 1);
+                } else if (this.__proto__.constructor.name === 'LinearAccelerationSensor') {
+                  return fixedNumber(currentReading.fake_y, 1);
                 }
-                return currentReading.fake_y;
+                return fixedNumber(currentReading.fake_y + currentReading.fake_gVector[1], 1);
               }`,
             },
           ],
@@ -373,11 +438,11 @@
               function() {
                 updateReadings(this);
                 if (this.__proto__.constructor.name === 'GravitySensor') {
-                  return (currentReading.fake_z - currentReading.fake_z_nograv);
+                  return fixedNumber(currentReading.fake_gVector[2], 1);
                 } else if (this.__proto__.constructor.name === 'LinearAccelerationSensor') {
-                  return currentReading.fake_z_nograv;
+                  return fixedNumber(currentReading.fake_z, 1);
                 }
-                return currentReading.fake_z;
+                return fixedNumber(currentReading.fake_z + currentReading.fake_gVector[2], 1);
               }`,
             },
           ],
