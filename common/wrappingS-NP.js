@@ -281,6 +281,12 @@
 						buffer.push(farblePlugin(plugins[i]));
 					}
 				}
+				if(args[0]==1){
+					for(var i = 0;i<plugins.length;i++){
+						buffer.push(plugins[i]);
+					}
+					shuffleArray(buffer);
+				}
 				if(args[0]==0 || args[0]==1){
 					var fakePlugin1 = fakePlugin(32, 16, 8);
 					var fakePlugin2 = fakePlugin(31, 15, 7);
