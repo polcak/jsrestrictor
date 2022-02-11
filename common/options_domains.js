@@ -59,7 +59,7 @@ function remove_domain(domain) {
 }
 
 function show_domain_level(levelsEl, domain) {
-	let tweaks = domains[domain].tweaks || {};
+	let tweaks = Object.assign({}, domains[domain].tweaks || {});
 	var displayedEl = document.getElementById(`dl-${escape(domain)}`);
 	if (displayedEl !== null) {
 		displayedEl.remove();
@@ -103,7 +103,7 @@ function show_domain_level(levelsEl, domain) {
 		return getTweaksForLevel(domains[domain].level_id, tweaks);
 	};
 	tweaksBusiness.tweak_changed = function(group_id, desired_tweak) {
-		if (desired_tweak == levelSelectEl.value) {
+		if ((desired_tweak === levels[levelSelectEl.value][group_id]) || (desired_tweak === 0 && levels[levelSelectEl.value][group_id] === undefined)) {
 			delete tweaks[group_id];
 		}
 		else {

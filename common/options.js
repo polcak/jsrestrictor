@@ -25,79 +25,12 @@
 //
 
 
-/// A map where to look for the values in HTML elements
-const html_element_value_source = {
-	"select": "value",
-	"input-checkbox": "checked",
-	"input-radio": "checked",
-};
+const MANDATORY_METADATA = ["level_id", "level_text", "level_description"];
+
 
 function prepare_level_config(action_descr, params = wrapping_groups.empty_level) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
-	function create_wrapping_groups_html() {
-		function process_group(html, group) {
-			function process_select_option(param_property, html, option) {
-				return html + `
-						<option value="${option.value}" ${params[param_property] === option.value ? "selected" : ""}>${option.description}</option>
-					`
-			}
-			function process_select(group_option) {
-				return `
-					<span class="table-left-column">${group_option.description}:</span>
-					<select id="${group_option.id}">
-							${group_option.options.reduce(process_select_option.bind(null, group_option.id), "")}
-					</select>
-				`;
-			}
-			function process_checkbox(group_option) {
-				return `
-					<input type="checkbox" id="${group_option.id}" ${params[group_option.id] ? "checked" : ""}>
-					<span class="section-header">${group_option.description}</span>
-				`;
-			}
-			function process_radio_option(param_property, html, option) {
-				return html + `
-						<input type="radio" id="${option.id}" name="${param_property}"  ${params[option.id] ? "checked" : ""}></input>
-						<span class="section-header">${option.description}</span>
-					`
-			}
-			function process_radio(group_option) {
-				return `
-					${group_option.options.reduce(process_radio_option.bind(null, group_option.id), "")}
-				`;
-			}
-			function process_option(html, option) {
-				processors = {
-					select: process_select,
-					"input-checkbox": process_checkbox,
-					"input-radio": process_radio,
-				};
-				return html + `
-					<div class="row">
-						${processors[option.ui_elem](option)}
-					</div>
-					`;
-			}
-			function process_descriptions(html, descr) {
-				return html + `
-					<span class="table-left-column">${descr}</span><br>
-				`;
-			}
-			let = supportedapis = are_all_api_unsupported(group.wrappers) ? "notsupportedapis" : "";
-			return html + `
-				<div class="main-section ${supportedapis}">
-					<input type="checkbox" id="${group.id}"  ${params[group.id] ? "checked" : ""}>
-					<span class="section-header">${group.description}:</span>
-				</div>
-					<div id="${group.name}_options" class="${supportedapis} ${params[group.id] ? "" : "hidden"}">
-						${group.description2.reduce(process_descriptions, "")}
-						${group.options.reduce(process_option, "")}
-					</div>
-			`;
-		}
-		return wrapping_groups.groups.reduce(process_group, "");
-	}
 	function find_unsupported_apis(html, wrapper) {
 		if (is_api_undefined(wrapper)) {
 			return html + `<li> <code>${wrapper}</code>.</li>`;
@@ -128,7 +61,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 			<input id="level_id" ${params.level_id != "" ? "disabled" : ""} value="${escape(params.level_id)}"></input>
 		</div>
 		<div>
-			<span class="table-left-column">This ID is displayed above the JShelter icon. If you use an
+			<span class="table-left-column">This ID is displayed in the pop up. If you use an
 					already existing ID, this custom level will replace the original level.</span>
 		</div>
 		<div class="main-section">
@@ -136,35 +69,35 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 			<input id="level_description" value="${escape(params.level_description)}"></input>
 		</div>
 
-		${create_wrapping_groups_html()}
+		<div id="tweaks"></div>
 		
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
-
 	configuration_area_el.appendChild(fragment);
-	function connect_options_group(group) {
-		document.getElementById(group.id).addEventListener("click", function(e) {
-			var options_el = document.getElementById(group.name + "_options");
-			if (this.checked) {
-				options_el.classList.remove("hidden");
-			}
-			else {
-				options_el.classList.add("hidden");
-			}
-		});
+
+	delete params["wrappers"];
+	let tweaks = Object.assign({}, wrapping_groups.empty_level, params);
+	let tweaksContainer = document.getElementById("tweaks");
+	let tweaksBusiness = Object.create(tweaks_gui);
+	tweaksBusiness.get_current_tweaks = function() {
+		let current = Object.assign({}, tweaks);
+		for (id of MANDATORY_METADATA) {
+			delete current[id];
+		}
+		return current;
+	};
+	tweaksBusiness.tweak_changed = function(group_id, desired_tweak) {
+		tweaks[group_id] = desired_tweak;
 	}
-	wrapping_groups.groups.forEach(g => connect_options_group(g));
+	tweaksBusiness.create_tweaks_html(tweaksContainer);
 
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
-		new_level = {};
-		for (property in wrapping_groups.empty_level) {
-			let p = wrapping_groups.option_map[property];
-			let convertor = (p && p.data_type) ? window[p.data_type] : (a) => a;
-			let elem = document.getElementById(property);
-			let value_getter = (p && p.ui_elem && (p.ui_elem in html_element_value_source)) ? html_element_value_source[p.ui_elem] : "value";
-			new_level[property] = convertor(elem[value_getter]);
+		let new_level = tweaks;
+		for (id of MANDATORY_METADATA) {
+			let elem = document.getElementById(id);
+			new_level[id] = elem.value;
 		};
 
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
