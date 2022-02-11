@@ -175,8 +175,9 @@
 		var counter = 0;
 		for(var i = 0;i<plugins.length;i++){
 			for(var j = 0;j>=0;j++){
+				// (plugins[i][j].type != "") <- Exclude fake plugins. Fake plugin has type == "".
 				if((typeof plugins[i][j] != 'undefined') && (ret.namedItem(plugins[i][j].name)==null) && (plugins[i][j].type != "")){
-					ret[counter] = plugins[i][j];
+					ret[counter] = farbleMime(plugins[i][j], plugins[i]);
 					ret[plugins[i][j].type] = plugins[i][j];
 					counter++;
 				}
