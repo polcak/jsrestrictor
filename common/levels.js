@@ -452,7 +452,7 @@ var wrapping_groups = {
 		},
 		{
 			name: "geolocation",
-			label: "Physical location",
+			label: "Physical location (geolocation)",
 			description: "Limit the information on real-world position provided by Geolocation API.",
 			description2: [],
 			options: [
