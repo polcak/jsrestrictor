@@ -2,6 +2,7 @@
  * \brief Wrappers for NavigatorPlugins
  *
  *  \author Copyright (C) 2021  Matus Svancar
+ *  \author Copyright (C) 2022  Martin Bednar
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  *  \license SPDX-License-Identifier: MPL-2.0
@@ -141,7 +142,7 @@
 	 *
 	 * \param plugins array of Plugin objects https://developer.mozilla.org/en-US/docs/Web/API/Plugin
 	 */
-	function fakePluginArray(plugins){
+	function fakePluginArrayF(plugins){
 		var ret = Object.create(PluginArray.prototype);
 		var count = 0;
 		for(var i = 0; i<plugins.length; i++) {
@@ -263,7 +264,7 @@
 	}
 	var methods = item + namedItem + refresh + shuffleArray + randomString;
 	var farbles = farblePlugin + farbleMime;
-	var fakes = fakeMime + fakePlugin + fakePluginArray + fakeMimeTypeArrayF;
+	var fakes = fakeMime + fakePlugin + fakePluginArrayF + fakeMimeTypeArrayF;
 	var wrappers = [
 		{
 			parent_object: "Navigator.prototype",
@@ -285,7 +286,7 @@
 					buffer.push(fakePlugin1, fakePlugin2);
 					shuffleArray(buffer);
 				}
-				var fakePluginArray = fakePluginArray(buffer);
+				var fakePluginArray = fakePluginArrayF(buffer);
 				var fakeMimeTypeArray = fakeMimeTypeArrayF(fakePluginArray);
 			`,
 			post_wrapping_code: [
