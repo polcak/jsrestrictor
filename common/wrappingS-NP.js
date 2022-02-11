@@ -294,7 +294,12 @@
 					shuffleArray(buffer);
 				}
 				var fakePluginArray = fakePluginArrayF(buffer);
-				var fakeMimeTypeArray = fakeMimeTypeArrayF(fakePluginArray);
+				if(args[0]==1 || args[0]==2){
+					var fakeMimeTypeArray = fakeMimeTypeArrayF([]);
+				}
+				else {
+					var fakeMimeTypeArray = fakeMimeTypeArrayF(fakePluginArray);
+				}
 			`,
 			post_wrapping_code: [
 				{
