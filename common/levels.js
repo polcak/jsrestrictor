@@ -5,6 +5,7 @@
  *  \author Copyright (C) 2019  Martin Timko
  *  \author Copyright (C) 2021  Matus Svancar
  *	\author Copyright (C) 2022  Marek Salon
+ *  \author Copyright (C) 2022  Martin Bednar
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -626,6 +627,7 @@ var level_1 = {
 	"level_text": "Minimal",
 	"level_description": "Minimal level of protection",
 	"time_precision": 1,
+	"plugins": 1,
 	"hardware": 1,
 	"geolocation": 2,
   "physical_environment": 1,
@@ -643,7 +645,7 @@ var level_2 = {
 	"htmlcanvaselement": 1,
 	"audiobuffer": 1,
 	"webgl": 1,
-	"plugins": 1,
+	"plugins": 2,
 	"enumerateDevices": 2,
 	"hardware": 1,
 	"geolocation": 3,
