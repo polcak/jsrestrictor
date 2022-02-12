@@ -1,7 +1,7 @@
 /** \file
  * \brief Library of functions for the Generic Sensor API wrappers
  *
- * \see https://www.w3.org/TR/magnetometer/
+ * \see https://www.w3.org/TR/generic-sensor/
  *
  *  \author Copyright (C) 2021  Radek Hranicky
  *
@@ -21,12 +21,17 @@
  //  You should have received a copy of the GNU General Public License
  //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  //
-
  /** \file
   * \ingroup wrappers
   *
   * Supporting fuctions for Generic Sensor API Wrappers
   */
+
+/*
+ * Functions for generating pseudorandom numbers.
+ * To make the behavior deterministic and same on the same domain,
+ * the generator uses domain hash as a seed.
+ */
 var sensorapi_prng_functions = `
   // Generates a 32-bit from a string. Inspired by MurmurHash3 algorithm
   // See: https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
@@ -55,9 +60,8 @@ var sensorapi_prng_functions = `
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
   }
 
+  // Generates a number around the input number
   function sen_generateAround(number, tolerance) {
-    // Generates a number around the input number
-
     let min = number - tolerance * tolerance;
     let max = number + number * tolerance;
 
@@ -72,8 +76,17 @@ var sensorapi_prng_functions = `
   }
 `;
 
+/*
+ * Functions for simulation of the device orientation.
+ * Those allow to create a fake orientation of the device in axis angles
+ * and create a rotation matrix. Support for multiplication of a 3D vector
+ * with the rotation matrix is included.
+ *
+ * Note: The code needs supporting function from the
+ * "sensorapi_prng_functions" above.
+ */
 var device_orientation_functions = `
-  // Initial draw of the device orientation
+  // Initial draw of the (fake) device orientation
   // TODO: Limit to oriententations that make sense for a mobile device
   function generateDeviceOrientation() {
     var orient = {};
