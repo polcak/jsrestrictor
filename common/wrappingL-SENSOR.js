@@ -62,7 +62,7 @@ var sensorapi_prng_functions = `
 
   // Generates a number around the input number
   function sen_generateAround(number, tolerance) {
-    let min = number - tolerance * tolerance;
+    let min = number - number * tolerance;
     let max = number + number * tolerance;
 
     return sen_prng() * (max - min) + min;
@@ -86,6 +86,26 @@ var sensorapi_prng_functions = `
  * "sensorapi_prng_functions" above.
  */
 var device_orientation_functions = `
+  // Calcultes a rotation matrix for the given yaw, pitch, and roll
+  // (in radians) of the device.
+  function calculateRotationMatrix(yaw, pitch, roll) {
+    var rotMat = [
+      [Math.cos(yaw) * Math.cos(pitch),
+       Math.cos(yaw) * Math.sin(pitch) * Math.sin(roll) - Math.sin(yaw) * Math.cos(roll),
+       Math.cos(yaw) * Math.sin(pitch) * Math.cos(roll) + Math.sin(yaw) * Math.sin(roll)
+      ],
+      [Math.sin(yaw) * Math.cos(pitch),
+       Math.sin(yaw) * Math.sin(pitch) * Math.sin(roll) + Math.cos(yaw) * Math.cos(roll),
+       Math.sin(yaw) * Math.sin(pitch) * Math.cos(roll) - Math.cos(yaw) * Math.sin(roll)
+      ],
+      [(-1) * Math.sin(pitch),
+       Math.cos(pitch) * Math.sin(roll),
+       Math.cos(pitch) * Math.cos(roll)
+      ]
+    ];
+    return rotMat;
+  }
+
   // Initial draw of the (fake) device orientation
   // TODO: Limit to oriententations that make sense for a mobile device
   function generateDeviceOrientation() {
@@ -104,20 +124,7 @@ var device_orientation_functions = `
     orient.roll = roll;
 
     // Calculate the rotation matrix
-    orient.rotMat = [
-      [Math.cos(yaw) * Math.cos(pitch),
-       Math.cos(yaw) * Math.sin(pitch) * Math.sin(roll) - Math.sin(yaw) * Math.cos(roll),
-       Math.cos(yaw) * Math.sin(pitch) * Math.cos(roll) + Math.sin(yaw) * Math.sin(roll)
-      ],
-      [Math.sin(yaw) * Math.cos(pitch),
-       Math.sin(yaw) * Math.sin(pitch) * Math.sin(roll) + Math.cos(yaw) * Math.cos(roll),
-       Math.sin(yaw) * Math.sin(pitch) * Math.cos(roll) - Math.cos(yaw) * Math.sin(roll)
-      ],
-      [(-1) * Math.sin(pitch),
-       Math.cos(pitch) * Math.sin(roll),
-       Math.cos(pitch) * Math.cos(roll)
-     ]
-    ];
+    orient.rotMat = calculateRotationMatrix(yaw, pitch, roll);
 
     return orient;
   }
