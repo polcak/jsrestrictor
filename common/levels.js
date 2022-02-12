@@ -525,6 +525,9 @@ var wrapping_groups = {
         "Gyroscope.prototype.y",
         "Gyroscope.prototype.z",
 
+        // AbsoluteOrientationSensor and RelativeOrientationSensor
+        "OrientationSensor.prototype.quaternion"
+
         // Here, we will add references to other GenericSensorAPI
         // sensor wrappers (DeviceOrientationSensor, AmbientLightSensor,
         // ProximitySensor, ...)
