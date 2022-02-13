@@ -28,11 +28,12 @@
    * \ingroup wrappers
    *
    * MOTIVATION
-   *
+   * Device orientation sensors can be easily used for fingerprinting. As it highly
+   * unlikely that two devices visiting the same site will be oriented exactly
+   * the same, the orientation itself can serve as a fingerprint.
    *
    *
    * WRAPPING
-   *
    * AbsoluteOrientationSensor returns a quaterion decribing the physical
    * orientation of the device in relation to the Earth's reference coordinate
    * system. The faked orientation of the device is saved inside the "orient"
@@ -274,7 +275,6 @@
               return currentReading.fake_quaternion;
             } else {
               // RelativeOrientationSensor
-              // TODO: update
               return currentReading.fake_quaternion_rel;
             }
           }`,

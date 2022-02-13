@@ -37,6 +37,9 @@
   * use the readings from the Accelerometer to determing the device's position
   * (See https://www.researchgate.net/publication/220990763_ACComplice_Location_
   * inference_using_accelerometers_on_smartphones).
+  * Accelerometer readings can also be used for determining human walking patterns
+  * (See https://www.researchgate.net/publication/322835708_Classifying_Human_
+  *  Walking_Patterns_using_Accelerometer_Data_from_Smartphone).
   *
   *
   * WRAPPING

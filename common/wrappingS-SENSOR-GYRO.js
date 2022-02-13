@@ -25,13 +25,19 @@
  /** \file
   * \ingroup wrappers
   * MOTIVATION
-  *
+  * Gyroscope readings can be used for speech recognition: https://crypto.stanford.edu/gyrophone/
+  * and various fingerprinting operations. For stationary devices, the resonance of the unique internal or
+  * external sounds affects angular velocities affect the Gyroscope and allow to create a fingerprint:
+  * https://www.researchgate.net/publication/356678825_Mobile_Device_Fingerprint_Identification_Using_Gyroscope_Resonance
+  * For moving devices, one of the options is using the Gyroscope analyze human walking patterns:
+  * https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7071017/
   *
   *
   * WRAPPING
-  * For stationary devices, the `x` and `y` are zeroes, while the 'z'
-  * portion fluctuates between -0.002 and 0.002 on the examined devices. The wrapper
-  * simulates the same behavior.
+  * The Gyroscope sensor provides readings of the angular velocity of the device alongthe x/y/z axes.
+  * For a stationary device, all velocities should be zero in an ideal state. As we observed on the
+  * examined devices, device sensor imperfections andlittle vibrations cause the `x`, `y` and `z` to
+  * oscillate between -0.002 and 0.002 on the examined devices. The wrapper simulates the same behavior.
   *
   *
   * POSSIBLE IMPROVEMENTS
@@ -381,5 +387,5 @@
       ],
     },
   ]
-    add_wrappers(wrappers);
+  add_wrappers(wrappers);
 })()

@@ -84,6 +84,34 @@ var sensorapi_prng_functions = `
  *
  * Note: The code needs supporting function from the
  * "sensorapi_prng_functions" above.
+ *
+ * In case of a non-rotated phone with a display oriented directly to the
+ * face of the user, the device's axes are oriented as follows:
+ *   x-axis is oriented from the user's left to the right
+ *   y-axis from the bottom side of the display towards the top side
+ *   z-axis is perpendicular to the display, it leads from the phone's
+ *          display towards the user's face
+ *
+ * The yaw, pitch, and roll define the rotation of the phone in the Earth's
+ * reference coordinate system. In case, all are 0:
+ *   x is oriented towards the EAST
+ *   y is oriented towards the NORTH (Earth's magnetic)
+ *  -z is oriented toward the center of the Earth
+ *
+ *                   y (roll)
+ *                  /  (NORTH if yaw = pitch = 0)
+ *                 /
+ *          +----------+
+ *         /     /    /
+ *  (top) / z(yaw)   /
+ *       /   |/     /
+ *      /    +-----/----> x (pitch)
+ *     /          /      (EAST if yaw = roll = 0)
+ *    /   _ _    /
+ *   /   /__/   /
+ *  +----------+
+ *  (bottom)
+ *
  */
 var device_orientation_functions = `
   // Calcultes a rotation matrix for the given yaw, pitch, and roll

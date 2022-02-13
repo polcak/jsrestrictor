@@ -527,11 +527,6 @@ var wrapping_groups = {
 
         // AbsoluteOrientationSensor and RelativeOrientationSensor
         "OrientationSensor.prototype.quaternion"
-
-        // Here, we will add references to other GenericSensorAPI
-        // sensor wrappers (DeviceOrientationSensor, AmbientLightSensor,
-        // ProximitySensor, ...)
-        // We should also decide whether Bluetooth / NFC belongs here
 			],
 		},
 		{
