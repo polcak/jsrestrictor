@@ -69,9 +69,13 @@
   * generated from the `domainHash` which ensures deterministic behavior for the given
   * website. First, we choose the desired total strength `M` of the magnetic field at
   * our simulated location. This is a pseudo-random number from 25 to 60 uT, like on
-  * the Earth. In the current implementation, we simulate a stationary device with
-  * a pseudo-randomly drawn orientation. Therefore, we choose the orientation of the
-  * device by generating a number from -1 to 1 for each axis. Those values we call
+  * the Earth.
+  *
+  * We support two variants of settings the initial axes orientaton:
+  * - A pseudorandom draw (RANDOM_AXES_ORIENTATION = true) - the original implementation
+  * - Calculation from the faked device rotation (shared by other wrappers) - improved version
+  *
+  * For both methods, the orientation is defined by a number from -1 to 1 for each axis:
   * `baseX`, `baseY`, and `baseZ`. By modifying the above-shown formula, we calculate
   * the `multiplier` that needs to be applied to the base values to get the desired field.
   * The calculation is done as follows:
@@ -110,9 +114,10 @@
   *
   *
   * POSSIBLE IMPROVEMENTS
-  * The initial toss-up of the device orientation can be utilized in other sensors, e.g.,
-  * the Absolute Orientation Sensor frequently uses an underlying magnetometer device.
-  * The orientation should be unified across the individual wrappers.
+  * Non-stationary devices can be supported if the baseX,Y,Z is updated with each movement.
+  * Do more experiments in real environments and possibly update the reference magnetic field
+  * vector, or the sine generator, e.g. by simulating temporary pseudorandom electromagnetic
+  * interferences, etc.
   */
 
   /*
@@ -250,14 +255,76 @@
     const PERIOD_MIN = MIN_SAMPLING_RATE;
     const PERIOD_MAX = 60000 // 1 minute
 
-    let m = generateBaseField();
-    baseX = generateAxisBase();
-    baseY = generateAxisBase();
-    baseZ = generateAxisBase();
+    // Defines whether the axes orientation is generated pseudorandomly
+    // true = A PRNG is used to draw the orientation of x/y/z axes
+    // false = orientation is calculated from the Earth's reference
+    //         coordinate system and the (faked) orientation of the
+    //         phone defined by the global rotation matrix (orient.rotMat)
+    const RANDOM_AXES_ORIENTATION = false;
 
-    baseX2 = Math.pow(baseX,2)
-    baseY2 = Math.pow(baseY,2)
-    baseZ2 = Math.pow(baseZ,2)
+    let m = generateBaseField();
+
+    // Base of each axis
+    var baseX = 0;
+    var baseY = 0;
+    var baseZ = 0;
+
+    // Calculate the axes base
+    if (RANDOM_AXES_ORIENTATION) {
+      /*
+       * Pseudorandom axes orientation
+       *
+       * The generateRandomAxisBase() is used to draw a number between
+       * -1 and 1 for each axis base.
+       */
+      baseX = generateRandomAxisBase();
+      baseY = generateRandomAxisBase();
+      baseZ = generateRandomAxisBase();
+    } else {
+      /*
+       * Calculation of axes orientation from the device's rotation
+       *
+       * The magnetic field vector is oriented towards the Earth's magnetic
+       * north and towards the center of the earth.
+       */
+      referenceMagVec = [0, 0.4, -0.6];
+
+      /*
+       * Actual field's strengths in all directions, based on the orientation:
+       * (Tested on Samsung Galaxy S21 Ultra [And12] and Xiaomi Redmi 9 [And11])
+       *
+       * Legend:
+       * -- ... highly negative
+       * -  ... negative
+       * 0  ... zero
+       * +  ... positive
+       * ++ ... highly positive
+       *
+       * +-------+-------+------+---+---+---+
+       * |  yaw  | pitch | roll | x | y | z |
+       * +-------+-------+------+---+---+---+
+       * |  0       0       0     0   +  -- |
+       * |  PI      0       0     0   -  -- |
+       * |  PI/2    0       0     -   0  -- |
+       * | -PI/2    0       0     +   0  -- |
+       * +----------------------------------+
+       */
+
+      // The vector is rotated using the device's fake rotation matrix
+      var deviceMagVec  = multVectRot(referenceMagVec, orient.rotMat);
+
+      console.log("ROT");
+      console.log(deviceMagVec);
+
+      // The orientation is taken from the elements of the vector
+      baseX = deviceMagVec[0];
+      baseY = deviceMagVec[1];
+      baseZ = deviceMagVec[2];
+    }
+
+    var baseX2 = Math.pow(baseX,2)
+    var baseY2 = Math.pow(baseY,2)
+    var baseZ2 = Math.pow(baseZ,2)
 
     // The total magnetic field strength is calculated as:
     //   m = sqrt(x^2, y^2, z^2)
@@ -338,7 +405,7 @@
   /*
     * \brief Pseudorandomly draws the orientation of X, Y, Z axes
   */
-  function generateAxisBase() {
+  function generateRandomAxisBase() {
     // Returns a number in (-1,1)
     var v = sen_prng(); // Random in [0,1)
     v *= Math.round(sen_prng()) ? 1 : -1; // 50% change for positive / negative
@@ -398,9 +465,9 @@
     var fieldGenerator = fieldGenerator || initFieldGenerator();
     `;
 
-  var helping_functions = sensorapi_prng_functions
+  var helping_functions = sensorapi_prng_functions + device_orientation_functions
           + SineCfg + configureSines + initFieldGenerator
-          + generateBaseField + generateAxisBase + updateReadings;
+          + generateBaseField + generateRandomAxisBase + updateReadings;
   var hc = init_data + orig_getters + helping_functions + generators;
 
   var wrappers = [
