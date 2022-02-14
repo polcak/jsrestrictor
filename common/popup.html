@@ -3,7 +3,7 @@
 SPDX-FileCopyrightText: 2021 2019 Libor Polčák
 SPDX-FileCopyrightText: 2021 2019 Martin Timko
 SPDX-FileCopyrightText: 2021 2021 Marek Saloň
-SPDX-FileCopyrightText: 2021 2021 Giorgio Maone
+SPDX-FileCopyrightText: 2022 2021 Giorgio Maone
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
@@ -16,48 +16,88 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	<script src="url.js" type="text/javascript"></script>
 	<script src="levels.js" type="text/javascript"></script>
 	<script src="helpers.js" type="text/javascript" defer></script>
+	<script src="tweaks_gui.js" type="text/javascript" defer></script>
 	<script src="popup.js" type="text/javascript" defer></script>
 </head>
 <body>
 
-	<img class="logo" id="logo" src="../img/icon-128.png" />
-	<h3 id="titletext">JavaScript Restrictor</h3>
-	<img id="controls" src="../img/settings-128.png" title="Open settings"/>
-
-	<section id="level_controls">
-		<div id="current_site_level_settings">
-			<h3 id="set-level-on">Set level on:</h3>
-			<p id="current-site"></p>
-			<div id="level-select">
-			</div>
+	<header>
+		<div>
+			<img class="logo" id="logo" src="../img/icon-128.png" alt="JShelter logo" />
+			<h3 id="titletext">JShelter</h3>
 		</div>
-	</section>
+		<button id="global-settings" title="Open global settings">Global settings</button>
+	</header>
 
-
-	<section id="binary_options">
-		<div id="nbs_whitelist">
-			<p class="off_message">Network Boundary Shield is globally off.</p>
-			<div class="switch_wrapper">
-					<label for="nbs-switch">Network Boundary Shield</label>
-					<label class="switch">
-						<input id="nbs-switch" type="checkbox" checked>
-						<span class="slider"></span>
-				</label>
-			</div>
+	<content id="site-settings">
+		<div id="page-info">
+			<h3 id="current-site"></h3>
+			<button id="refresh-page" disabled>Refresh page</button>
 		</div>
 
-		<div id="fpd_whitelist">
-			<p class="off_message">Fingerprinting detection is globally off.</p>
-			<div class="switch_wrapper">
+		<section id="level_controls">
+			<div class="section-header toggle">
+				<label for="js-toggle">JavaScript Shield</label>
+				<input type="checkbox" id="js-toggle" class="controls" title="Edit JavaScript Shield settings" />
+			</div>
+			<div id="js-settings" class="section-body">
+				<div id="current_site_level_settings">
+					<div id="level-select">
+					</div>
+					<p id="current-level">
+					<strong id="level-text"></strong><span id="level-description"></span>
+					</p>
+				</div>
+				<div class="buttons"><button id="btn-tweak">Tweak for this site</button></div>
+				<div id="tweaks"></div>
+			</div>
+		</section>
+
+
+		<template id="tweak-head">
+			<span class="head">Wrappers</span><span></span><span class="head">Number of calls</span>
+		</template>
+		<template id="tweak-row">
+			<label>Wrapper group name</label>
+			<div class="tweak">
+				<input class="tlev" type="range" min="0" max="3" /><output></output>
+				<button class="help">⤵</button>
+			</div>
+			<div class="hits"></div>
+			<div class="explainer hidden_descr">
+				<div class="status"></div>
+				<p>
+					<span class="description"></span>
+					<div class="more"></div>
+				</p>
+			</div>
+		</template>
+
+
+			<section id="nbs_whitelist">
+				<p class="off_message">Network Boundary Shield is globally off.</p>
+				<div class="switch_wrapper">
+						<label for="nbs-switch">Network Boundary Shield</label>
+						<label class="switch">
+							<input id="nbs-switch" type="checkbox" checked>
+							<span class="slider"></span>
+					</label>
+				</div>
+			</div>
+	   </section>
+
+		 <section id="fpd_whitelist">
+				<p class="off_message">Fingerprinting detection is globally off.</p>
+				<div class="switch_wrapper">
 					<label for="fpd-switch">Fingerprinting detection</label>
 					<label class="switch">
 						<input id="fpd-switch" type="checkbox" checked>
 						<span class="slider"></span>
-				</label>
-			</div>
-		</div>
-	</section>
+					</label>
+				</div>
+			</section>
 
+	</content>
 </body>
 
 </html>

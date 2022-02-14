@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -35,7 +35,7 @@ def methods_toString(browser):
 	return get_methods_toString(browser.driver)
 
 
-## Test methods.toString(). They should be always unchanged by JSR.
+## Test methods.toString(). They should be always unchanged by JShelter.
 def test_methods_toString(browser, methods_toString):
 	for method in methods_toString:
 		assert methods_toString[method] == browser.real.methods_toString[method]

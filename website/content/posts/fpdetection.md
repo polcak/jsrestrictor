@@ -3,7 +3,7 @@ title: Catch websites red-handed fingerprinting your browser
 date: 2022-01-14 14:00
 ---
 
-We want to identify [fingerprinting](/fingerprinting/) attempts by counting the number of different APIs employed by a page, especially those not frequently used for benign purposes. This blog post introduces a new fingerprinting protection mechanism - FingerPrint Detector (FPD) available in JavaScript Restrictor (JShelter) 0.6. This tool allows users to gain more control over browser fingerprinting, which has become an invisible threat to our privacy.
+We want to identify [fingerprinting](/fingerprinting/) attempts by counting the number of different APIs employed by a page, especially those not frequently used for benign purposes. This blog post introduces a new fingerprinting protection mechanism - FingerPrint Detector (FPD) available in JShelter 0.6. This tool allows users to gain more control over browser fingerprinting, which has become an invisible threat to our privacy.
 
 ## Heuristics as a template for the fingerprinting detection
 

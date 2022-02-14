@@ -27,13 +27,13 @@
  * its sharing. To learn more about Browser Fingerprinting topic, see study "Browser Fingerprinting: A survey" available
  * here: https://arxiv.org/pdf/1905.01051.pdf
  *
- * The FPD module uses JSR wrapping technique to inject logic that allows log API calls and accesses for every visited web page
- * and its frames. Logged JS APIs can be specified in wrappers-lvl_X.json file, where X represents corresponding JSR level.
+ * The FPD module uses wrapping technique to inject logic that allows log API calls and accesses for every visited web page
+ * and its frames. Logged JS APIs can be specified in wrappers-lvl_X.json file, where X represents corresponding JShelter level.
  * 
  * Detector of fingeprinting activity is based on chosen heuristics that can be defined in form of API groups. Groups represents
  * a set of APIs that have similar but specific purpose. Access to group is triggered when a certain amount APIs is accessed. 
  * Hierarchy of groups creates a tree structure, where access to root group means fingerprinting activity. Groups can be configured in
- * groups-lvl_X.json file, where X represents corresponding JSR level.
+ * groups-lvl_X.json file, where X represents corresponding JShelter level.
  *
  * The FPD evaluate API groups with every request made in scope of certain browser tab. When FPD detects fingerprinting activity, 
  * blocking of subsequent requests is issued. Local browsing data of fingerprinting origin are cleared to prevent caching extracted 
@@ -629,6 +629,21 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 					fpdWhitelist = result.fpdWhitelist;
 				});
 				break;
+			case "fpd-fetch-hits": {
+				let {tabId} = record;
+				// filter by tabId;
+				let hits = Object.create(null);
+				for ([resource, tabRecords] of Object.entries(fpDb)) {
+					let total = 0;
+					if (tabRecords[tabId]) {
+						for (let stat of Object.values(tabRecords[tabId])) { // by type
+							total += stat.total;
+						}
+					}
+					hits[resource] = total;
+				}
+				return Promise.resolve(hits);
+			}
 		}
 	}
 });
@@ -703,6 +718,9 @@ function refreshDb(tabId) {
 	for (let resource in fpDb) {
 		if (fpDb[resource].hasOwnProperty(tabId)) {
 			delete fpDb[resource][tabId];
+		}
+		if (Object.keys(fpDb[resource]).length == 0) {
+			delete fpDb[resource];
 		}
 	}
 	if (latestEvals[tabId]) {

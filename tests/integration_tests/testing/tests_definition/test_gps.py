@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -58,8 +58,8 @@ def test_accuracy(browser, position, expected):
             assert position['accuracy'] == browser.real.geolocation.accuracy
         else:
             if expected.geolocation.accuracy['accuracy'] == 'EXACTLY':                
-                # x is real position (position returned without JSR)
-                # y should be real position too (position returned with JSR level 0)
+                # x is real position (position returned without JShelter)
+                # y should be real position too (position returned with JShelter level 0)
                 #
                 # It is clear that x and y will not be exact same values. This is due to the netural GPS inaccuracy.
 				# A small difference is tolerated.

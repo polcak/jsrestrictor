@@ -28,9 +28,10 @@ import values_getters
 
 ## Init and return real values.
 #
-#  Get values from browser without JSR installed.
+#  Get values from browser without JShelter installed.
 #  Object of class TestedValues is created and returned.
-#  Returned object contains real values that are compared during testing with values from browser with JSR installed.
+#  Returned object contains real values that are compared during testing with values from browser
+#  with JShelter installed.
 def init(driver):
     position = values_getters.get_position(driver)
     navigator = values_getters.get_navigator(driver)

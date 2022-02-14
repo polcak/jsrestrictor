@@ -269,7 +269,7 @@
 			wrapping_function_args: "successCallback, errorCallback, origOptions",
 			/** \fn fake navigator.geolocation.watchPosition
 			 * navigator.geolocation.watchPosition intended use concerns tracking user position changes.
-			 * JSR provides four modes of operaion:
+			 * JShelter provides four modes of operaion:
 			 * * current position approximation: Always return the same data, the same as getCurrentPosition()
 			 * * accurate data: Return exact position but fake timestamp
 			 */

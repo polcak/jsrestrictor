@@ -118,3 +118,13 @@ function strToUint(str, length){
 	}
 	return "0b"+ret;
 };
+
+/**
+ * \brief Asynchronously sleep for given number of milliseconds
+ * \param ms Number of milliseconds to sleep
+ */
+async function async_sleep(ms) {
+	return new Promise((resolve) => {
+		setTimeout(resolve, ms);
+	});
+}

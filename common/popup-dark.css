@@ -67,10 +67,15 @@ select:-webkit-autofill {
    --darkreader-selection-text: #e8e6e3;
 }
 
-.level {
+.level:not(.active) {
 	color: rgb(247,224,50);
 }
 
-#controls {
-	background-color: rgb(247,224,50);
+.controls {
+	filter: invert(1);
+    border-color: #444;
+}
+
+footer, header {
+    border-color: #444;
 }

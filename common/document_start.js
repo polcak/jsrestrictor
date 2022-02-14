@@ -24,10 +24,10 @@
 //
 
 var wrappersPort;
-var injectionConfigured = false;
-function configureInjection({code, wrappers, domainHash, sessionHash, fpdOn}) {
-	if (injectionConfigured) return; // one shot
-	injectionConfigured = true;
+var pageConfiguration = null;
+function configureInjection({currentLevel, code, wrappers, domainHash, sessionHash, fpdOn}) {
+	if (pageConfiguration) return; // one shot
+	pageConfiguration = {currentLevel, fpdOn};
 	if (!code) return true; // nothing to wrap, bail out!
 	if (!fpdOn) {
 		code = code.replace(/\/\/ FPD_S[\s\S]*?\/\/ FPD_E/, ''); // remove fpd wrappers from injected code

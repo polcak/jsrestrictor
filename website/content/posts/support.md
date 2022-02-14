@@ -12,7 +12,7 @@ We are very excited to improve the extension further. We will focus on the follo
 
 ### 1. Investigate fingerprinting scripts and prepare wrappers
 
-Review the previously identified APIs suitable for fingerprinting. Select APIs suitable for JSR and
+Review the previously identified APIs suitable for fingerprinting. Select APIs suitable for JShelter and
 add wrappers for these APIs. This work has already started, see issue #66. Additionally, we want to focus
 on identification of methods used for fingeprinting such as those identified by Iqbal et al., see
 https://uiowa-irl.github.io/FP-Inspector/
@@ -28,14 +28,14 @@ fingerprint to the server, (3) prevent storing the fingerprint for later usage.
 ### 3. Code ported from Chrome Zero
 
 In version 0.3, we integrated features of Chrome Zero 7 as it is no longer maintained. By
-integrating the functionality to JSR, we want to keep the counter-meassures available in a
+integrating the functionality to JShelter, we want to keep the counter-meassures available in a
 maintained extension. However, we do not have sufficient tests for the functionality.
 
 ### 4. Evaluation and porting of code from Brave
 
 Brave browser currently implements anti-fingerprinting techniques that aim at providing white lies
 about the browser environment. We want to evaluate the messures and select techniques that are
-suitable for JSR.
+suitable for JShelter.
 
 ### 5. Fixing known bugs
 

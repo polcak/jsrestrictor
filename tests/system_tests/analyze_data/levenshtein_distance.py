@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -23,7 +23,7 @@
 
 import Levenshtein
 
-## Check if log was added by JSR. Check with Levenshtein distance method.
+## Check if log was added by JShelter. Check with Levenshtein distance method.
 def was_log_added(log, logs_without_jsr):
     for log_without_jsr in logs_without_jsr:
         if log_without_jsr['level'] == log['level']:
@@ -37,7 +37,7 @@ def was_log_added(log, logs_without_jsr):
                 # How many percent of strings are similar
                 percentage_similarity = (message_length - levenshtein_dst) / message_length
                 if percentage_similarity > 0.6:
-                    # If similarity of logs is too high, tested log was not added by JSR.
-                    # It is issue already existing in page even without JSR.
+                    # If similarity of logs is too high, tested log was not added by JShelter.
+                    # It is issue already existing in page even without JShelter.
                     return False
     return True

@@ -25,7 +25,7 @@
 /**
  * Wrapping groups
  *
- * Used to control the built-in levels and options GUI.
+ * Used to control the built-in levels and GUI (e.g. level tweaks).
  */
 var wrapping_groups = {
 	empty_level: { /// Automatically populated
@@ -33,17 +33,13 @@ var wrapping_groups = {
 		level_id: "",
 		level_description: "",
 	},
-	option_map: {}, ///Automatically populated
-	associated_params: {}, ///Automatically populated
+	group_map: {}, ///Automatically populated
+	group_names: [], ///Automatically populated
 	get_wrappers: function(level) {
 		wrappers = [];
 		for (group of wrapping_groups.groups) {
-			if (level[group.id] === true) {
-				let arg_names = wrapping_groups.associated_params[group.id];
-				let arg_values = arg_names.reduce(function(prev, name) {
-					prev.push(level[name]);
-					return prev;
-				}, []);
+			if ((level[group.id] !== undefined) && level[group.id] !== 0) {
+				let arg_values = group.params[level[group.id] - 1].config;
 				group.wrappers.forEach((w) => wrappers.push([w, ...arg_values]));
 			}
 		}
@@ -52,36 +48,24 @@ var wrapping_groups = {
 	groups: [
 		{
 			name: "time_precision",
-			description: "Limit the precision of high resolution time stamps (Date, Performance, events, Gamepad API, Web VR API)",
-			description2: ["If you enable Geolocation API wrapping below, timestamps provided by the Geolocation API will be wrapped as well"],
-			options: [
+			label: "Time precision",
+			description: "Prevent attacks and fingerprinting techniques relying on precise time measurement (or make them harder).",
+			description2: ["Limit the precision of high resolution time stamps (Date, Performance, events, Gamepad API, Web VR API). Timestamps provided by the Geolocation API are wrapped as well if you enable Geolocation API wrapping"],
+			params: [
 				{
-					description: "Manipulate time to",
-					ui_elem: "select",
-					name: "precision",
-					default: 1,
-					data_type: "Number",
-					options: [
-						{
-							value: 2,
-							description: "Hundredths of a second (1.230)",
-						},
-						{
-							value: 1,
-							description: "Tenths of a second (1.200)",
-						},
-						{
-							value: 0,
-							description: "Full seconds (1.000)",
-						},
-					],
+					short: "Poor",
+					description: "Round time to hundredths of a second (1.230)",
+					config: [2, false],
 				},
 				{
-					ui_elem: "input-checkbox",
-					name: "randomize",
-					description: "Apply additional randomization after rounding (note that the random noise is influenced by the selected precision and consequently is more effective with lower time precision)",
-					data_type: "Boolean",
-					default: false,
+					short: "Low",
+					description: "Round time to tenths of a second (1.200)",
+					config: [1, false],
+				},
+				{
+					short: "High",
+					description: "Randomize decimal digits with noise (1.451)",
+					config: [0, true],
 				},
 			],
 			wrappers: [
@@ -103,30 +87,24 @@ var wrapping_groups = {
 		},
 		{
 			name: "htmlcanvaselement",
-			description: "Protect against canvas fingerprinting",
+			label: "Localy rendered images",
+			description: "Protect against canvas fingerprinting.",
 			description2: [
 				"Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() return modified image data to prevent fingerprinting",
 				"CanvasRenderingContext2D.isPointInStroke() and CanvasRenderingContext2D.isPointInPath() are modified to lie with probability"
 			],
-			options: [
+			params: [
 				{
-				description: "farbling type",
-				ui_elem: "select",
-				name: "method",
-				default: 0,
-				data_type: "Number",
-				options: [
-					{
-						value: 0,
-						description: "Alter image data based on domain and session hashes",
-					},
-					{
-						value: 1,
-						description: "Replace by white image",
-					}
-				],
-			}
-		],
+					short: "White lie",
+					description: "Alter image data based on domain hash",
+					config: [0],
+				},
+				{
+					short: "Strict",
+					description: "Replace by white image",
+					config: [1],
+				},
+			],
 			wrappers: [
 				// H-C
 				"CanvasRenderingContext2D.prototype.getImageData",
@@ -139,28 +117,22 @@ var wrapping_groups = {
 		},
 		{
 			name: "audiobuffer",
-			description: "Protect against audio fingerprinting",
+			label: "Locally generated audio and audio card information",
+			description: "Protect against audio fingerprinting, spoof details of your audio card.",
 			description2: [
 				"Functions AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() and AnalyserNode.getFloatFrequencyData() are modified to alter audio data based on domain key"
 			],
-			options: [
+			params: [
 				{
-					description: "farbling type",
-					ui_elem: "select",
-					name: "method",
-					default: 0,
-					data_type: "Number",
-					options: [
-						{
-							value: 0,
-							description: "Add amplitude noise based on domain hash",
-						},
-						{
-							value: 1,
-							description: "Replace by white noise based on domain hash",
-						}
-					],
-				}
+					short: "White lie",
+					description: "Add amplitude noise based on domain hash",
+					config: [0],
+				},
+				{
+					short: "Strict",
+					description: "Replace by white noise based on domain hash",
+					config: [1],
+				},
 			],
 			wrappers: [
 				// AUDIO
@@ -174,29 +146,25 @@ var wrapping_groups = {
 		},
 		{
 			name: "webgl",
-			description: "Protect against WEBGL fingerprinting",
+			label: "Localy rendered images and graphic card information",
+			description: "Protect against WEBGL fingerprinting, spoof details of your graphic card.",
 			description2: [
 				"Function WebGLRenderingContext.getParameter() returns modified/bottom values for certain parameters",
 				"WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() and .getExtension() return modified values",
 				"Function WebGLRenderingContext.readPixels() returns modified image data to prevent fingerprinting"
 		],
-			options: [{
-				description: "farbling type",
-				ui_elem: "select",
-				name: "method",
-				default: 0,
-				data_type: "Number",
-				options: [
-					{
-						value: 0,
-						description: "Generate random numbers/strings based on domain hash, modified canvas",
-					},
-					{
-						value: 1,
-						description: "Return bottom values (null, empty string), empty canvas",
-					}
-				],
-			}],
+			params: [
+				{
+					short: "White lie",
+					description: "Generate random numbers/strings based on domain hash, modified canvas",
+					config: [0],
+				},
+				{
+					short: "Strict",
+					description: "Return bottom values (null, empty string), empty canvas",
+					config: [1],
+				},
+			],
 			wrappers: [
 				// WEBGL
 				"WebGLRenderingContext.prototype.getParameter",
@@ -235,29 +203,26 @@ var wrapping_groups = {
 		},
 		{
 			name: "plugins",
+			label: "Installed browser plugins",
 			description: "Protect against plugin fingerprinting",
 			description2: [],
-			options: [{
-				description: "farbling type",
-				ui_elem: "select",
-				name: "method",
-				default: 0,
-				data_type: "Number",
-				options: [
-					{
-						value: 0,
-						description: "Edit current and add two fake plugins",
-					},
-					{
-						value: 1,
-						description: "Return two fake plugins",
-					},
-					{
-						value: 2,
-						description: "Return empty"
-					}
-				],
-			}],
+			params: [
+				{
+					short: "White lie",
+					description: "Edit current and add two fake plugins",
+					config: [0],
+				},
+				{
+					short: "Fake",
+					description: "Return two fake plugins",
+					config: [1],
+				},
+				{
+					short: "Empty",
+					description: "Return empty",
+					config: [2],
+				},
+			],
 			wrappers: [
 				// NP
 				"Navigator.prototype.plugins", // also modifies "Navigator.prototype.mimeTypes",
@@ -265,31 +230,28 @@ var wrapping_groups = {
 		},
 		{
 			name: "enumerateDevices",
+			label: "Connected cameras and microphones",
 			description: "Prevent fingerprinting based on the multimedia devices connected to the computer",
 			description2: [
 				"Function MediaDevices.enumerateDevices() is modified to return empty or modified result"
 		],
-			options: [{
-				description: "farbling type",
-				ui_elem: "select",
-				name: "method",
-				default: 0,
-				data_type: "Number",
-				options: [
-					{
-						value: 0,
-						description: "Randomize order",
-					},
-					{
-						value: 1,
-						description: "Add 0-4 fake devices and randomize order",
-					},
-					{
-						value: 2,
-						description: "Return empty promise"
-					}
-				],
-			}],
+			params: [
+				{
+					short: "White lie",
+					description: "Randomize order",
+					config: [0],
+				},
+				{
+					short: "Add fake",
+					description: "Add 0-4 fake devices and randomize order",
+					config: [1],
+				},
+				{
+					short: "Empty",
+					description: "Return empty",
+					config: [2],
+				},
+			],
 			wrappers: [
 				// MCS
 				"MediaDevices.prototype.enumerateDevices",
@@ -297,31 +259,28 @@ var wrapping_groups = {
 		},
 		{
 			name: "hardware",
-			description: "Spoof hardware information to the most popular HW",
+			label: "Device memory and CPU",
+			description: "Spoof hardware information on the amount of RAM and CPU count.",
 			description2: [
 				"Getters navigator.deviceMemory and navigator.hardwareConcurrency return modified values",
 			],
-			options: [{
-				description: "farbling type",
-				ui_elem: "select",
-				name: "method",
-				default: 0,
-				data_type: "Number",
-				options: [
-					{
-						value: 0,
-						description: "Return random valid value between minimum and real value",
-					},
-					{
-						value: 1,
-						description: "Return random valid value between minimum and 8.0",
-					},
-					{
-						value: 2,
-						description: "Return 4 for navigator.deviceMemory and 2 for navigator.hardwareConcurrency"
-					}
-				],
-			}],
+			params: [
+				{
+					short: "Low",
+					description: "Return random valid value between minimum and real value",
+					config: [0],
+				},
+				{
+					short: "Medium",
+					description: "Return random valid value between minimum and 8",
+					config: [1],
+				},
+				{
+					short: "High",
+					description: "Return 4 for navigator.deviceMemory and 2 for navigator.hardwareConcurrency",
+					config: [2],
+				},
+			],
 			wrappers: [
 				// HTML-LS
 				"Navigator.prototype.hardwareConcurrency",
@@ -331,25 +290,19 @@ var wrapping_groups = {
 		},
 		{
 			name: "xhr",
-			description: "Filter XMLHttpRequest requests",
-			description2: [],
-			options: [
+			label: "XMLHttpRequest requests (XHR)",
+			description: "Filter reliable XHR requests to server.",
+			description2: ["Note that these requests are broadly employed for benign purposes and also note that Fetch, SSE, WebRTC, and WebSockets APIs are not blocked. All provide similar and some even better means of communication with server. For practical usage, we recommend activating Fingerprint Detector instead of XHR wrappers. JShelter keeps the wrapper as it is useful for some users mainly for experimental reasons."],
+			params: [
 				{
-					ui_elem: "input-radio",
-					name: "behaviour",
-					data_type: "Boolean",
-					options: [
-						{
-							value: "block",
-							description: "Block all XMLHttpRequest.",
-							default: false,
-						},
-						{
-							value: "ask",
-							description: "Ask before executing an XHR request.",
-							default: true,
-						},
-					],
+					short: "Ask",
+					description: "Ask before executing an XHR request",
+					config: [false, true],
+				},
+				{
+					short: "Block",
+					description: "Block all XMLHttpRequests",
+					config: [true, false],
 				},
 			],
 			wrappers: [
@@ -360,15 +313,19 @@ var wrapping_groups = {
 		},
 		{
 			name: "arrays",
-			description: "Protect against ArrayBuffer exploitation",
+			label: "ArrayBuffer",
+			description: "Protect against ArrayBuffer exploitation, for example, to prevent side channel attacks on memory layout (or make them harder).",
 			description2: [],
-			options: [
+			params: [
 				{
-					ui_elem: "input-checkbox",
-					name: "mapping",
-					description: "Use random mapping of array indexing to memory.",
-					data_type: "Boolean",
-					default: false,
+					short: "Shift",
+					description: "Shift indexes to make memory page boundaries detection harder",
+					config: [false],
+				},
+				{
+					short: "Randomize",
+					description: "Use random mapping of array indexing to memory",
+					config: [true],
 				},
 			],
 			wrappers: [
@@ -386,25 +343,19 @@ var wrapping_groups = {
 		},
 		{
 			name: "shared_array",
-			description: "Protect against SharedArrayBuffer exploitation:",
+			label: "SharedArrayBuffer",
+			description: "Protect against SharedArrayBuffer exploitation, for example, to prevent side channel attacks on memory layout (or make them harder).",
 			description2: [],
-			options: [
+			params: [
 				{
-					ui_elem: "input-radio",
-					name: "approach",
-					data_type: "Boolean",
-					options: [
-						{
-							value: "block",
-							description: "Block SharedArrayBuffer.",
-							default: true,
-						},
-						{
-							value: "polyfill",
-							description: "Randomly slow messages to prevent high resolution timers.",
-							default: false,
-						},
-					],
+					short: "Medium",
+					description: "Randomly slow messages to prevent high resolution timers",
+					config: [false],
+				},
+				{
+					short: "Strict",
+					description: "Block SharedArrayBuffer",
+					config: [true],
 				},
 			],
 			wrappers: [
@@ -414,25 +365,19 @@ var wrapping_groups = {
 		},
 		{
 			name: "webworker",
-			description: "Protect against WebWorker exploitation",
+			label: "WebWorker",
+			description: "Protect against WebWorker exploitation, for example, to provide high resolution timers",
 			description2: [],
-			options: [
+			params: [
 				{
-					ui_elem: "input-radio",
-					name: "approach",
-					data_type: "Boolean",
-					options: [
-						{
-							value: "polyfill",
-							description: "Remove real parallelism, use WebWorker polyfill.",
-							default: true,
-						},
-						{
-							value: "slow",
-							description: "Randomly slow messages to prevent high resolution timers.",
-							default: false,
-						},
-					],
+					short: "Medium",
+					description: "Randomly slow messages to prevent high resolution timers",
+					config: [false],
+				},
+				{
+					short: "Strict",
+					description: "Remove real parallelism, use WebWorker polyfill",
+					config: [true],
 				},
 			],
 			wrappers: [
@@ -441,45 +386,39 @@ var wrapping_groups = {
 		},
 		{
 			name: "geolocation",
-			description: "Geolocation API wrapping",
+			label: "Physical location (geolocation)",
+			description: "Limit the information on real-world position provided by Geolocation API.",
 			description2: [],
-			options: [
+			params: [
 				{
-					description: "Location obfuscation",
-					ui_elem: "select",
-					name: "locationObfuscationType",
-					default: 0,
-					data_type: "Number",
-					options: [
-						{
-							value: 0,
-							description: "Turn location services off",
-						},
-						//{
-						//	value: 1,
-						//	description: "Use the position below",
-						//},
-						{
-							value: 2,
-							description: "Use accuracy of hundreds of meters",
-						},
-						{
-							value: 3,
-							description: "Use accuracy of kilometers",
-						},
-						{
-							value: 4,
-							description: "Use accuracy of tens of kilometers",
-						},
-						{
-							value: 5,
-							description: "Use accuracy of hundreds of kilometers",
-						},
-						{
-							value: -1,
-							description: "Provide accurate data (use when you really need to provide exact location)",
-						},
-					],
+					short: "Poor",
+					description: "Provide accurate data (use when you really need to provide exact location and you want to protect geolocation timestamps)",
+					config: [-1],
+				},
+				{
+					short: "Very low",
+					description: "Use accuracy of hundreds of meters",
+					config: [2],
+				},
+				{
+					short: "Low",
+					description: "Use accuracy of kilometers",
+					config: [3],
+				},
+				{
+					short: "Medium",
+					description: "Use accuracy of tens of kilometers",
+					config: [4],
+				},
+				{
+					short: "High",
+					description: "Use accuracy of hundreds of kilometers",
+					config: [5],
+				},
+				{
+					short: "Strict",
+					description: "Turn location services off",
+					config: [0],
 				},
 			],
 			wrappers: [
@@ -496,15 +435,14 @@ var wrapping_groups = {
 		},
     {
 			name: "physical_environment",
-			description: "Wrapping APIs for scanning properties of the physical environment",
+			label: "Physical environement sensors",
+			description: "Limit the information provided by physical environment sensors like Magnetometer or Accelerometer.",
 			description2: [],
-			options: [
+			params: [
 				{
-          name: "emulateStationaryDevice",
-          description: "Emulate stationary device",
-          data_type: "Boolean",
-          ui_elem: "input-checkbox",
-          default: true,
+					short: "High",
+					description: "Emulate stationary device",
+					config: [true],
 				},
 			],
 			wrappers: [
@@ -531,10 +469,16 @@ var wrapping_groups = {
 		},
 		{
 			name: "gamepads",
-			description: "Prevent websites from learning information on local gamepads",
+			label: "Gamepads",
+			description: "Prevent websites from accessing and learning information on local gamepads.",
 			description2: [],
-			default: true,
-			options: [],
+			params: [
+				{
+					short: "Strict",
+					description: "Hide all gamepads",
+					config: [true],
+				},
+			],
 			wrappers: [
 				// GAMEPAD
 				"Navigator.prototype.getGamepads",
@@ -542,10 +486,16 @@ var wrapping_groups = {
 		},
 		{
 			name: "vr",
-			description: "Prevent websites from learning information on local Virtual Reality displays",
+			label: "Virtual and augmented reality devices",
+			description: "Prevent websites from accessing and learning information on local virtual and augmented reality displays.",
 			description2: [],
-			default: true,
-			options: [],
+			params: [
+				{
+					short: "Strict",
+					description: "Hide all devices",
+					config: [],
+				},
+			],
 			wrappers: [
 				// VR
 				"Navigator.prototype.activeVRDisplays",
@@ -555,10 +505,16 @@ var wrapping_groups = {
 		},
 		{
 			name: "analytics",
-			description: "Prevent sending analytics through Beacon API",
-			description2: [],
-			default: true,
-			options: [],
+			label: "Unreliable transfers to server (beacons)",
+			description: "Prevent unreliable transfers to server (beacons).",
+			description2: ["Such transfers are typically misused for analytics but occassionally may be used by e-shops or other pages.", "Prevent sending information through Beacon API."],
+			params: [
+				{
+					short: "Disable",
+					description: "The wrapper performs no action",
+					config: [],
+				},
+			],
 			wrappers: [
 				// BEACON
 				"Navigator.prototype.sendBeacon",
@@ -566,10 +522,16 @@ var wrapping_groups = {
 		},
 		{
 			name: "battery",
+			label: "Hardware battery",
 			description: "Disable Battery status API",
 			description2: [],
-			default: true,
-			options: [],
+			params: [
+				{
+					short: "Disable",
+					description: "Disable the API",
+					config: [],
+				},
+			],
 			wrappers: [
 				// BATTERY
 				"Navigator.prototype.getBattery",
@@ -578,10 +540,16 @@ var wrapping_groups = {
 		},
 		{
 			name: "windowname",
-			description: "Clear window.name value on the webpage loading",
-			description2: [],
-			default: true,
-			options: [],
+			label: "Persistent identifier of the browser tab",
+			description: "Clear window.name value on the webpage loading.",
+			description2: ["This API might be occasionally used for benign purposes.", "This API provides a possibility to detect cross-site browsing in one tab and broser session."],
+			params: [
+				{
+					short: "Strict",
+					description: "Clear during page reload",
+					config: [],
+				},
+			],
 			wrappers: [
 				// WINDOW-NAME
 				"window.name",
@@ -628,32 +596,11 @@ function are_all_api_unsupported(wrappers) {
 /// Automatically populate infered metadata in wrapping_groups.
 wrapping_groups.groups.forEach(function (group) {
 	group.id = group.name;
-	group.data_type = "Boolean";
-	group.ui_elem = "input-checkbox";
-	wrapping_groups.empty_level[group.id] = are_all_api_unsupported(group.wrappers) ? true : Boolean(group.default);
-	wrapping_groups.option_map[group.id] = group
-	wrapping_groups.associated_params[group.id] = [];
-	group.options.forEach((function (gid, option) {
-		option.id = `${gid}_${option.name}`;
-		if (option.default !== undefined) {
-			wrapping_groups.empty_level[option.id] = option.default;
-			wrapping_groups.associated_params[group.id].push(option.id);
-		}
-		wrapping_groups.option_map[option.id] = option;
-		if (option.options !== undefined) {
-			option.options.forEach((function (oid, choice) {
-				choice.id = `${oid}_${choice.value}`;
-				if (choice.default !== undefined) {
-					wrapping_groups.empty_level[choice.id] = choice.default;
-					wrapping_groups.associated_params[group.id].push(choice.id);
-				}
-				if (choice.ui_elem === undefined && option.ui_elem !== undefined) {
-					choice.ui_elem = option.ui_elem;
-				}
-				wrapping_groups.option_map[choice.id] = choice;
-			}).bind(null, option.id));
-		}
-	}).bind(null, group.id));
+	if (!are_all_api_unsupported(group.wrappers)) {
+		wrapping_groups.group_names.push(group.name);
+		wrapping_groups.empty_level[group.id] = 0;
+	}
+	wrapping_groups.group_map[group.id] = group
 });
 
 // *****************************************************************************
@@ -678,18 +625,13 @@ var level_1 = {
 	"level_id": L1,
 	"level_text": "Minimal",
 	"level_description": "Minimal level of protection",
-	"time_precision": true,
-	"time_precision_precision": 2,
-	"time_precision_randomize": false,
-	"hardware": true,
-	"hardware_method": 0,
-	"battery": true,
-	"geolocation": true,
-	"geolocation_locationObfuscationType": 2,
-	"analytics": true,
-	"windowname": true,
-  "physical_environment": true,
-  "physical_environment_emulateStationaryDevice": true,
+	"time_precision": 1,
+	"hardware": 1,
+	"geolocation": 2,
+  "physical_environment": 1,
+	"analytics": 1,
+	"battery": 1,
+	"windowname": 1,
 };
 
 var level_2 = {
@@ -697,30 +639,20 @@ var level_2 = {
 	"level_id": L2,
 	"level_text": "Recommended",
 	"level_description": "Recommended level of protection for most sites",
-	"time_precision": true,
-	"time_precision_precision": 1,
-	"time_precision_randomize": false,
-	"hardware": true,
-	"hardware_method": 0,
-	"battery": true,
-	"htmlcanvaselement": true,
-	"htmlcanvaselement_method": 0,
-	"audiobuffer": true,
-	"audiobuffer_method": 0,
-	"webgl": true,
-	"webgl_method": 0,
-	"plugins": true,
-	"plugins_method": 0,
-	"enumerateDevices": true,
-	"enumerateDevices_method": 1,
-	"geolocation": true,
-	"geolocation_locationObfuscationType": 3,
-	"gamepads": true,
-	"vr": true,
-	"analytics": true,
-	"windowname": true,
-  "physical_environment": true,
-  "physical_environment_emulateStationaryDevice": true,
+	"time_precision": 2,
+	"htmlcanvaselement": 1,
+	"audiobuffer": 1,
+	"webgl": 1,
+	"plugins": 1,
+	"enumerateDevices": 2,
+	"hardware": 1,
+	"geolocation": 3,
+  "physical_environment": 1,
+	"gamepads": 1,
+	"vr": 1,
+	"analytics": 1,
+	"battery": 1,
+	"windowname": 1,
 };
 
 var level_3 = {
@@ -728,41 +660,24 @@ var level_3 = {
 	"level_id": L3,
 	"level_text": "High",
 	"level_description": "High level of protection",
-	"time_precision": true,
-	"time_precision_precision": 0,
-	"time_precision_randomize": true,
-	"hardware": true,
-	"hardware_method": 2,
-	"battery": true,
-	"htmlcanvaselement": true,
-	"htmlcanvaselement_method": 1,
-	"audiobuffer": true,
-	"audiobuffer_method": 1,
-	"webgl": true,
-	"webgl_method": 1,
-	"plugins": true,
-	"plugins_method": 2,
-	"enumerateDevices": true,
-	"enumerateDevices_method": 2,
-	"xhr": true,
-	"xhr_behaviour_block": false,
-	"xhr_behaviour_ask": true,
-	"arrays": true,
-	"arrays_mapping": true,
-	"shared_array": true,
-	"shared_array_approach_block": true,
-	"shared_array_approach_polyfill": false,
-	"webworker": true,
-	"webworker_approach_polyfill": true,
-	"webworker_approach_slow": false,
-	"geolocation": true,
-	"geolocation_locationObfuscationType": 0,
-	"gamepads": true,
-	"vr": true,
-	"analytics": true,
-	"windowname": true,
-  "physical_environment": true,
-  "physical_environment_emulateStationaryDevice": true,
+	"time_precision": 3,
+	"htmlcanvaselement": 2,
+	"audiobuffer": 2,
+	"webgl": 2,
+	"plugins": 3,
+	"enumerateDevices": 3,
+	"hardware": 3,
+	"xhr": 1,
+	"arrays": 2,
+	"shared_array": 2,
+	"webworker": 2,
+	"geolocation": 6,
+  "physical_environment": 1,
+	"gamepads": 1,
+	"vr": 1,
+	"analytics": 1,
+	"battery": 1,
+	"windowname": 1,
 };
 
 const BUILTIN_LEVEL_NAMES = [L0, L1, L2, L3];
@@ -803,19 +718,26 @@ function updateLevels(res) {
 	}
 	var new_default_level = res["__default__"];
 	if (new_default_level === undefined || new_default_level === null || !(new_default_level in levels)) {
-		default_level = Object.create(levels[L2]);
+		default_level = Object.assign({}, levels[L2]);
 		setDefaultLevel(L2);
 	}
 	else {
-		default_level = Object.create(levels[new_default_level]);
+		default_level = Object.assign({}, levels[new_default_level]);
 	}
 	default_level.is_default = true;
 	var new_domains = res["domains"] || {};
-	for (let d in new_domains) {
-		levid = levels[new_domains[d].level_id];
-		if (levid !== undefined) {
-			domains[d] = levid;
+	for (let [d, {level_id, tweaks}] of Object.entries(new_domains)) {
+		let level = levels[level_id];
+		if (level === undefined) {
+			domains[d] = default_level;
 		}
+		else if (tweaks) {
+			// this domain has "tweaked" wrapper groups from other levels, let's merge them
+			level = Object.assign({}, level, tweaks);
+			level.tweaks = tweaks;
+			delete level.wrappers; // we will lazy instantiate them on demand in getCurrentLevelJSON()
+		}
+		domains[d] = level;
 	}
 	var orig_levels_updated_callbacks = levels_updated_callbacks;
 	levels_updated_callbacks = [];
@@ -836,11 +758,21 @@ function setDefaultLevel(level) {
 function saveDomainLevels() {
 	tobesaved = {};
 	for (k in domains) {
-		let level_id = domains[k].level_id;
+		let {level_id, tweaks} = domains[k];
 		if (k[k.length - 1] === ".") {
 			k = k.substring(0, k.length-1);
 		}
-		tobesaved[k] = {level_id: level_id};
+		if (tweaks) {
+			for (let [group, param] of Object.entries(tweaks)) {
+				if (param === (levels[level_id][group] || 0)) {
+					delete tweaks[group]; // remove redundant entries
+				}
+			}
+			if (Object.keys(tweaks).length === 0) {
+				tweaks = undefined;
+			}
+		}
+		tobesaved[k] = tweaks ? {level_id, tweaks} : {level_id};
 	}
 	browser.storage.sync.set({domains: tobesaved});
 }
@@ -850,8 +782,23 @@ function getCurrentLevelJSON(url) {
 	for (let domain of subDomains.reverse()) {
 		if (domain in domains) {
 			let l = domains[domain];
-			return [l, wrapped_codes[l.level_id]];
+			if (l.tweaks && !("wrapper_code" in l)) {
+			  l.wrappers = wrapping_groups.get_wrappers(l);
+				l.wrapped_code = wrap_code(l) || "";
+			}
+			return [l, l.tweaks ? l.wrapped_code : wrapped_codes[l.level_id]];
 		}
 	}
 	return [default_level, wrapped_codes[default_level.level_id]];
+}
+
+function getTweaksForLevel(level_id, tweaks_obj) {
+	tweaks_obj = tweaks_obj || {}; // Make sure that tweaks_obj is an object
+	let working = Object.assign({}, wrapping_groups.empty_level, levels[level_id], tweaks_obj);
+	Object.keys(working).forEach(function(key) {
+		if (!wrapping_groups.group_names.includes(key)) {
+			delete working[key];
+		}
+	});
+	return working;
 }
