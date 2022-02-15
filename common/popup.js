@@ -223,8 +223,8 @@ document.getElementById("global-settings").addEventListener('click', function(e)
 	})();
 }
 
-document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200, "nbs")});
-document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_whitelist, 200, "fpd")});
+document.getElementById("nbs-switch").addEventListener("change", () => {setTimeout(control_whitelist, 200, "nbs")});
+document.getElementById("fpd-switch").addEventListener("change", () => {setTimeout(control_whitelist, 200, "fpd")});
 
 async function getCurrentSite() {
 	if (typeof site !== "undefined") return site;
