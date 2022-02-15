@@ -71,7 +71,7 @@ h3 {
 }
 
 
-#refresh-page, #global-settings {
+#refresh-page, #global-settings, .js-toggle {
 	font-size: large;
 	font-weight: bold;
 	vertical-align: 50%;
@@ -116,32 +116,32 @@ h3 {
 	color:  black;
 }
 
-.controls {
-	appearance: none;
-	-moz-appearance: none;
-	-webkit-appearance: none;
-	background: transparent url(/img/settings-128.png) no-repeat center;
-	background-size: 100%;
-	margin: 4px;
-	padding: 4px;
-	border: none;
-	width: 32px;
-	height: 32px;
-	text-indent: -5000px;
-	transition-property: background-size;
-	transition-duration: .2s;
+input#js-toggle {
+	position: absolute;
+	visibility: hidden;
+	opacity: 0;
 }
 
-.controls:hover {
-	cursor: pointer;
-	background-size: 80%;
+label.js-toggle {
+	background-color: #e9e9ed;
+	padding: 0.5ex;
+	border: 1px black solid;
 }
 
-.controls:checked {
-	background-size: 80%;
-	padding: 2px;
-	border: 2px solid #aaa;
-	border-radius: 16px;
+label.js-toggle:hover {
+	background-color: #c9c9c9;
+}
+
+input#js-toggle:checked + label {
+	background-color: #c9c9c9;
+}
+
+input#js-toggle:checked + label:after {
+	content: " -";
+}
+
+label.js-toggle:after {
+	content: " ⤵"
 }
 
 .toggle:not(.toggled) ~ .section-body {

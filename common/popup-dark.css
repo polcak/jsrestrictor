@@ -79,3 +79,13 @@ select:-webkit-autofill {
 footer, header {
     border-color: #444;
 }
+
+label.js-toggle {
+	background-color: black;
+	border: 1px #444 solid;
+}
+
+label.js-toggle:hover, input#js-toggle:checked + label {
+	background-color: #c9c9c9;
+	color: black;
+}

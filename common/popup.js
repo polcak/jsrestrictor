@@ -212,7 +212,8 @@ document.getElementById("global-settings").addEventListener('click', function(e)
 	  window.close();
   });
 
-for (let widget of document.querySelectorAll('.controls[type=checkbox]')) {
+{
+	let widget = document.getElementById('js-toggle');
 	let key = `controls-${widget.id}-checked`;
 	widget.checked = localStorage.getItem(key) === 'true';
 	(widget.onchange = () => {
