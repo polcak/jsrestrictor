@@ -215,7 +215,7 @@ document.getElementById("global-settings").addEventListener('click', function(e)
 for (let widget of document.querySelectorAll('.controls[type=checkbox]')) {
 	let key = `controls-${widget.id}-checked`;
 	widget.checked = localStorage.getItem(key) === 'true';
-	(widget.onclick = () => {
+	(widget.onchange = () => {
 		let {checked} = widget;
 		widget.parentElement.classList.toggle("toggled", checked);
 		localStorage.setItem(key, checked);
