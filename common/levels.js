@@ -511,7 +511,7 @@ var wrapping_groups = {
 			description2: ["Such transfers are typically misused for analytics but occassionally may be used by e-shops or other pages.", "Prevent sending information through Beacon API."],
 			params: [
 				{
-					short: "Disable",
+					short: "Disabled",
 					description: "The wrapper performs no action",
 					config: [],
 				},
@@ -528,7 +528,7 @@ var wrapping_groups = {
 			description2: [],
 			params: [
 				{
-					short: "Disable",
+					short: "Disabled",
 					description: "Disable the API",
 					config: [],
 				},
