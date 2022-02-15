@@ -458,10 +458,13 @@ var wrapping_groups = {
         "Accelerometer.prototype.y",
         "Accelerometer.prototype.z",
 
-        // Here, we will add references to other GenericSensorAPI
-        // sensor wrappers (DeviceOrientationSensor, AmbientLightSensor,
-        // ProximitySensor, ...)
-        // We should also decide whether Bluetooth / NFC belongs here
+        // Gyroscope
+        "Gyroscope.prototype.x",
+        "Gyroscope.prototype.y",
+        "Gyroscope.prototype.z",
+
+        // AbsoluteOrientationSensor and RelativeOrientationSensor
+        "OrientationSensor.prototype.quaternion"
 			],
 		},
 		{

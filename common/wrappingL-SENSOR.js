@@ -1,7 +1,7 @@
 /** \file
  * \brief Library of functions for the Generic Sensor API wrappers
  *
- * \see https://www.w3.org/TR/magnetometer/
+ * \see https://www.w3.org/TR/generic-sensor/
  *
  *  \author Copyright (C) 2021  Radek Hranicky
  *
@@ -21,12 +21,17 @@
  //  You should have received a copy of the GNU General Public License
  //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  //
-
  /** \file
   * \ingroup wrappers
   *
   * Supporting fuctions for Generic Sensor API Wrappers
   */
+
+/*
+ * Functions for generating pseudorandom numbers.
+ * To make the behavior deterministic and same on the same domain,
+ * the generator uses domain hash as a seed.
+ */
 var sensorapi_prng_functions = `
   // Generates a 32-bit from a string. Inspired by MurmurHash3 algorithm
   // See: https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
@@ -55,12 +60,113 @@ var sensorapi_prng_functions = `
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
   }
 
+  // Generates a number around the input number
   function sen_generateAround(number, tolerance) {
-    // Generates a number around the input number
-
-    let min = number - tolerance * tolerance;
+    let min = number - number * tolerance;
     let max = number + number * tolerance;
 
-    return prng() * (max - min) + min;
+    return sen_prng() * (max - min) + min;
+  }
+
+  // Rounds a number to a fixed amount of decimal places
+  // Returns a NUMBER
+  function fixedNumber(num, digits, base) {
+    var pow = Math.pow(base||10, digits);
+    return Math.round(num*pow) / pow;
+  }
+`;
+
+/*
+ * Functions for simulation of the device orientation.
+ * Those allow to create a fake orientation of the device in axis angles
+ * and create a rotation matrix. Support for multiplication of a 3D vector
+ * with the rotation matrix is included.
+ *
+ * Note: The code needs supporting function from the
+ * "sensorapi_prng_functions" above.
+ *
+ * In case of a non-rotated phone with a display oriented directly to the
+ * face of the user, the device's axes are oriented as follows:
+ *   x-axis is oriented from the user's left to the right
+ *   y-axis from the bottom side of the display towards the top side
+ *   z-axis is perpendicular to the display, it leads from the phone's
+ *          display towards the user's face
+ *
+ * The yaw, pitch, and roll define the rotation of the phone in the Earth's
+ * reference coordinate system. In case, all are 0:
+ *   x is oriented towards the EAST
+ *   y is oriented towards the NORTH (Earth's magnetic)
+ *  -z is oriented toward the center of the Earth
+ *
+ *                   y (roll)
+ *                  /  (NORTH if yaw = pitch = 0)
+ *                 /
+ *          +----------+
+ *         /     /    /
+ *  (top) / z(yaw)   /
+ *       /   |/     /
+ *      /    +-----/----> x (pitch)
+ *     /          /      (EAST if yaw = roll = 0)
+ *    /   _ _    /
+ *   /   /__/   /
+ *  +----------+
+ *  (bottom)
+ *
+ */
+var device_orientation_functions = `
+  // Calcultes a rotation matrix for the given yaw, pitch, and roll
+  // (in radians) of the device.
+  function calculateRotationMatrix(yaw, pitch, roll) {
+    var rotMat = [
+      [Math.cos(yaw) * Math.cos(pitch),
+       Math.cos(yaw) * Math.sin(pitch) * Math.sin(roll) - Math.sin(yaw) * Math.cos(roll),
+       Math.cos(yaw) * Math.sin(pitch) * Math.cos(roll) + Math.sin(yaw) * Math.sin(roll)
+      ],
+      [Math.sin(yaw) * Math.cos(pitch),
+       Math.sin(yaw) * Math.sin(pitch) * Math.sin(roll) + Math.cos(yaw) * Math.cos(roll),
+       Math.sin(yaw) * Math.sin(pitch) * Math.cos(roll) - Math.cos(yaw) * Math.sin(roll)
+      ],
+      [(-1) * Math.sin(pitch),
+       Math.cos(pitch) * Math.sin(roll),
+       Math.cos(pitch) * Math.cos(roll)
+      ]
+    ];
+    return rotMat;
+  }
+
+  // Initial draw of the (fake) device orientation
+  // TODO: Limit to oriententations that make sense for a mobile device
+  function generateDeviceOrientation() {
+    var orient = {};
+    /*
+     * Yaw (couterclockwise rotation of the Z-axis)
+     * Pitch (counterclockwise rotation of the Y-axis)
+     * Roll (counterclockwise rotation of the X-axis)
+     */
+    var yaw = Math.floor(sen_prng() * 2 * Math.PI);
+    var pitch = Math.floor(sen_prng() * 2 * Math.PI);
+    var roll = Math.floor(sen_prng() * 2 * Math.PI);
+
+    orient.yaw = yaw;
+    orient.pitch = pitch;
+    orient.roll = roll;
+
+    // Calculate the rotation matrix
+    orient.rotMat = calculateRotationMatrix(yaw, pitch, roll);
+
+    return orient;
+  }
+
+  var orient = orient || generateDeviceOrientation();
+
+  // Multiplies a 3D strength vector (1x3) with a 3D rotation matrix (3x3)
+  // Returns the resulting 3D vector (1x3)
+  function multVectRot(vec, mat) {
+    var result = [
+      vec[0]*mat[0][0] + vec[1]*mat[0][1] + vec[2]*mat[0][2],
+      vec[0]*mat[1][0] + vec[1]*mat[1][1] + vec[2]*mat[1][2],
+      vec[0]*mat[2][0] + vec[1]*mat[2][1] + vec[2]*mat[2][2]
+    ]
+    return result;
   }
 `;
