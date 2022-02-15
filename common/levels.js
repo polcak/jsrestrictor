@@ -617,7 +617,7 @@ const L3 = "3";
 var level_0 = {
 	"builtin": true,
 	"level_id": L0,
-	"level_text": "Turn wrappers off",
+	"level_text": "Turn JavaScript shield off",
 	"level_description": "No protection at all",
 };
 
