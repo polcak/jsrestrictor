@@ -143,11 +143,12 @@ let tweaks_gui = {
 	/**
 	 * Compare two groups
 	 *
-	 * The default implementation keeps the original positions.
+	 * The default implementation keeps the original positions. Note that Array.prototype.sort assigns
+	 * items in a different order in Firefox and Chrome-based browsers.
 	 *
-	 * \return less than 0: secondGr will be sorted before firstGr.
+	 * \return 0: No change in position.
 	 */
 	cmp_groups: function(firstGr, secondGr) {
-		return -1;
+		return 0;
 	}
 }
