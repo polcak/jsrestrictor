@@ -2,6 +2,7 @@
  * \brief Wrappers for NavigatorPlugins
  *
  *  \author Copyright (C) 2021  Matus Svancar
+ *  \author Copyright (C) 2022  Martin Bednar
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  *  \license SPDX-License-Identifier: MPL-2.0
@@ -141,7 +142,7 @@
 	 *
 	 * \param plugins array of Plugin objects https://developer.mozilla.org/en-US/docs/Web/API/Plugin
 	 */
-	function fakePluginArray(plugins){
+	function fakePluginArrayF(plugins){
 		var ret = Object.create(PluginArray.prototype);
 		var count = 0;
 		for(var i = 0; i<plugins.length; i++) {
@@ -174,8 +175,9 @@
 		var counter = 0;
 		for(var i = 0;i<plugins.length;i++){
 			for(var j = 0;j>=0;j++){
+				// (plugins[i][j].type != "") <- Exclude fake plugins. Fake plugin has type == "".
 				if((typeof plugins[i][j] != 'undefined') && (ret.namedItem(plugins[i][j].name)==null) && (plugins[i][j].type != "")){
-					ret[counter] = plugins[i][j];
+					ret[counter] = farbleMime(plugins[i][j], plugins[i]);
 					ret[plugins[i][j].type] = plugins[i][j];
 					counter++;
 				}
@@ -263,7 +265,7 @@
 	}
 	var methods = item + namedItem + refresh + shuffleArray + randomString;
 	var farbles = farblePlugin + farbleMime;
-	var fakes = fakeMime + fakePlugin + fakePluginArray + fakeMimeTypeArrayF;
+	var fakes = fakeMime + fakePlugin + fakePluginArrayF + fakeMimeTypeArrayF;
 	var wrappers = [
 		{
 			parent_object: "Navigator.prototype",
@@ -279,14 +281,25 @@
 						buffer.push(farblePlugin(plugins[i]));
 					}
 				}
+				if(args[0]==1){
+					for(var i = 0;i<plugins.length;i++){
+						buffer.push(plugins[i]);
+					}
+					shuffleArray(buffer);
+				}
 				if(args[0]==0 || args[0]==1){
 					var fakePlugin1 = fakePlugin(32, 16, 8);
 					var fakePlugin2 = fakePlugin(31, 15, 7);
 					buffer.push(fakePlugin1, fakePlugin2);
 					shuffleArray(buffer);
 				}
-				var fakePluginArray = fakePluginArray(buffer);
-				var fakeMimeTypeArray = fakeMimeTypeArrayF(fakePluginArray);
+				var fakePluginArray = fakePluginArrayF(buffer);
+				if(args[0]==1 || args[0]==2){
+					var fakeMimeTypeArray = fakeMimeTypeArrayF([]);
+				}
+				else {
+					var fakeMimeTypeArray = fakeMimeTypeArrayF(fakePluginArray);
+				}
 			`,
 			post_wrapping_code: [
 				{
