@@ -37,8 +37,9 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 		<section id="level_controls">
 			<div class="section-header toggle">
-				<label for="js-toggle">JavaScript Shield</label>
-				<input type="checkbox" id="js-toggle" class="controls" title="Edit JavaScript Shield settings" />
+				<label for="jss-switch">JavaScript Shield</label>
+				<input type="checkbox" id="js-toggle" name="js-toggle" title="Edit JavaScript Shield settings" />
+				<label for="js-toggle" class="js-toggle">Modify for this site</label>
 			</div>
 			<div id="js-settings" class="section-body">
 				<div id="current_site_level_settings">
@@ -48,7 +49,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 					<strong id="level-text"></strong><span id="level-description"></span>
 					</p>
 				</div>
-				<div class="buttons"><button id="btn-tweak">Tweak for this site</button></div>
+				<div class="buttons"><button id="btn-tweak">Detail tweaks of JS shield for this site</button></div>
 				<div id="tweaks"></div>
 			</div>
 		</section>
@@ -80,7 +81,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 						<label for="nbs-switch">Network Boundary Shield</label>
 						<label class="switch">
 							<input id="nbs-switch" type="checkbox" checked>
-							<span class="slider"></span>
+							<label for="nbs-switch" class="slider"></label>
 					</label>
 				</div>
 			</div>
@@ -92,7 +93,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 					<label for="fpd-switch">Fingerprinting detection</label>
 					<label class="switch">
 						<input id="fpd-switch" type="checkbox" checked>
-						<span class="slider"></span>
+						<label for="fpd-switch" class="slider"></label>
 					</label>
 				</div>
 			</section>

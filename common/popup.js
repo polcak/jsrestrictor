@@ -212,18 +212,19 @@ document.getElementById("global-settings").addEventListener('click', function(e)
 	  window.close();
   });
 
-for (let widget of document.querySelectorAll('.controls[type=checkbox]')) {
+{
+	let widget = document.getElementById('js-toggle');
 	let key = `controls-${widget.id}-checked`;
 	widget.checked = localStorage.getItem(key) === 'true';
-	(widget.onclick = () => {
+	(widget.onchange = () => {
 		let {checked} = widget;
 		widget.parentElement.classList.toggle("toggled", checked);
 		localStorage.setItem(key, checked);
 	})();
 }
 
-document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200, "nbs")});
-document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_whitelist, 200, "fpd")});
+document.getElementById("nbs-switch").addEventListener("change", () => {setTimeout(control_whitelist, 200, "nbs")});
+document.getElementById("fpd-switch").addEventListener("change", () => {setTimeout(control_whitelist, 200, "fpd")});
 
 async function getCurrentSite() {
 	if (typeof site !== "undefined") return site;
