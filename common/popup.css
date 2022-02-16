@@ -301,3 +301,7 @@ input:checked + .slider:before {
 .more + .less {
 	display: none;
 }
+
+.hidden {
+	display: none;
+}

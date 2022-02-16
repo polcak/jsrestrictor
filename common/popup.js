@@ -28,6 +28,7 @@ var site; // "https://www.example.com" from current tab will become "example.com
 var pageConfiguration = {};
 var hits;
 var current_level;
+var default_lev_button;
 
 // Provide cusom handlers for Tweaks GUI
 let popup_tweaks = Object.create(tweaks_gui);
@@ -120,6 +121,64 @@ function modify_level(level, levelButton) {
 }
 
 /**
+ * Disable JSS for this page.
+ */
+async function disable_jss(orig_level) {
+	//document.getElementById("jss-switch").checked = false;
+	current_level = Object.assign(orig_level ? {restore: orig_level.level_id} : {}, level_0);
+	if (orig_level && orig_level.tweaks) {
+		current_level.restore_tweaks = orig_level.tweaks;
+	}
+	document.getElementById("js-settings").classList.add("hidden");
+	document.getElementById("js-toggle-btn").classList.add("hidden");
+	domains[site] = current_level;
+	modify_level(current_level);
+	document.getElementById("jss-switch").onchange = () => {
+		enable_jss(orig_level);
+		let widget = document.getElementById("js-toggle");
+		widget.checked = true;
+		widget.parentElement.classList.toggle("toggled", true);
+	};
+}
+
+async function enable_jss(level) {
+	let isdefault = !domains[site];
+	if (!level) {
+		level = Object.assign({}, default_level);
+		if (level.level_id === level_0.level_id) {
+			level = Object.assign({}, level_2);
+			isdefault = false;
+		}
+		else {
+			isdefault = true;
+		}
+	}
+	if (level.level_id === level_0.level_id) {
+		document.getElementById("jss-switch").checked = false;
+		let restore = level.restore;
+		if (restore) {
+			disable_jss(Object.assign(level.restore_tweaks ? {tweaks: level.restore_tweaks} : {}, levels[restore]));
+		}
+		else {
+			disable_jss();
+		}
+		return;
+	}
+	if (isdefault) {
+		delete domains[site];
+	}
+	else {
+		domains[site] = level;
+	}
+	modify_level(level, isdefault ? default_lev_button : levels[level.level_id].button);
+	document.getElementById("js-settings").classList.remove("hidden");
+	document.getElementById("js-toggle-btn").classList.remove("hidden");
+	document.getElementById("jss-switch").onchange = () => {
+		isdefault ? disable_jss() : disable_jss(current_level);
+	};
+}
+
+/**
  * Load levels and add level setting buttons
  */
 function add_level_buttons() {
@@ -130,11 +189,12 @@ function add_level_buttons() {
 		b.className = "level level_control";
 		b.textContent = level.level_id;
 	  b.title = level.level_text;
+		level.button = b;
 		return selectEl.appendChild(b);
 	}
 	// Add default level button
-	addButton({level_id: "DEFAULT", level_text: `Default level (${default_level.level_id})`})
-	.addEventListener("click", ev => {
+	default_lev_button = addButton({level_id: "DEFAULT", level_text: `Default level (${default_level.level_id})`});
+	default_lev_button.addEventListener("click", ev => {
 		delete domains[site];
 		modify_level(default_level, ev.target);
 	});
@@ -184,6 +244,7 @@ function update_tweaks() {
  */
 function fill_jsshield(msg) {
 	current_level = msg;
+	enable_jss(msg);
 	enableRefreshIfNeeded();
 
 	add_level_buttons();
