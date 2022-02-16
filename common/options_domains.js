@@ -58,13 +58,55 @@ function remove_domain(domain) {
 	saveDomainLevels();
 }
 
+function show_restore_domain_level(levelLiEl, domain) {
+	let level = Object.assign({}, levels[domains[domain].restore]);
+	if (domains[domain].restore_tweaks) {
+		level.tweaks = domains[domain].restore_tweaks;
+	}
+	if (!level) {
+		return false;
+	}
+	var fragment = document.createRange().createContextualFragment(`
+			<span class="domain">
+				${escape(domain)}
+			</span>
+			<span>JavaScript shield disabled</span>
+			<button id="enable-jss-${escape(domain)}">Restore level ${escape(level.level_id)}</button>`);
+	levelLiEl.appendChild(fragment);
+	document.getElementById(`enable-jss-${escape(domain)}`).addEventListener("click", function(e) {
+		e.preventDefault();
+		domains[domain] = level;
+		levelLiEl.innerHTML = "";
+		saveDomainLevels();
+		show_domain_level_custom_level(levelLiEl, domain);
+	});
+	return true;
+}
+
 function show_domain_level(levelsEl, domain) {
-	let tweaks = Object.assign({}, domains[domain].tweaks || {});
 	var displayedEl = document.getElementById(`dl-${escape(domain)}`);
 	if (displayedEl !== null) {
 		displayedEl.remove();
 	}
 	var fragment = document.createRange().createContextualFragment(`<li class="custom_domain_level" id="dl-${escape(domain)}" jsr_domain="${escape(domain)}">
+		</li>`);
+	levelsEl.appendChild(fragment);
+	let levelLiEl = document.getElementById(`dl-${escape(domain)}`);
+	if (domains[domain].restore) {
+		if (show_restore_domain_level(levelLiEl, domain)) {
+			return;
+		}
+		else {
+			domains[domain] = level_0;
+			saveDomainLevels();
+		}
+	}
+	show_domain_level_custom_level(levelLiEl, domain);
+}
+
+function show_domain_level_custom_level(levelLiEl, domain) {
+	let tweaks = Object.assign({}, domains[domain].tweaks || {});
+	var fragment = document.createRange().createContextualFragment(`
 			<span class="domain">
 				${escape(domain)}
 			</span>
@@ -78,9 +120,8 @@ function show_domain_level(levelsEl, domain) {
 			<span id="li-removed-group-${escape(domain)}" class="hidden">
 				<button id="restore-dl-${escape(domain)}">Restore</button>
 			</span>
-			<div class="tweakgrid" id="tweaks-${escape(domain)}"></div>
-		</li>`);
-	levelsEl.appendChild(fragment);
+			<div class="tweakgrid" id="tweaks-${escape(domain)}"></div>`);
+	levelLiEl.appendChild(fragment);
 	let levelSelectEl = document.getElementById(`dl-change-${escape(domain)}`);
 	update_domain_level(levelSelectEl, domains[domain].level_id);
 	document.getElementById(`overwrite-dl-${escape(domain)}`).addEventListener("click", function(e) {

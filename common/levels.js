@@ -728,16 +728,24 @@ function updateLevels(res) {
 	}
 	default_level.is_default = true;
 	var new_domains = res["domains"] || {};
-	for (let [d, {level_id, tweaks}] of Object.entries(new_domains)) {
+	for (let [d, {level_id, tweaks, restore, restore_tweaks}] of Object.entries(new_domains)) {
 		let level = levels[level_id];
 		if (level === undefined) {
 			domains[d] = default_level;
 		}
-		else if (tweaks) {
-			// this domain has "tweaked" wrapper groups from other levels, let's merge them
-			level = Object.assign({}, level, tweaks);
-			level.tweaks = tweaks;
-			delete level.wrappers; // we will lazy instantiate them on demand in getCurrentLevelJSON()
+		else {
+			if (tweaks) {
+				// this domain has "tweaked" wrapper groups from other levels, let's merge them
+				level = Object.assign({}, level, tweaks);
+				level.tweaks = tweaks;
+				delete level.wrappers; // we will lazy instantiate them on demand in getCurrentLevelJSON()
+			}
+			if (restore) {
+				level.restore = restore;
+				if (restore_tweaks) {
+					level.restore_tweaks = restore_tweaks;
+				}
+			}
 		}
 		domains[d] = level;
 	}
@@ -760,7 +768,7 @@ function setDefaultLevel(level) {
 function saveDomainLevels() {
 	tobesaved = {};
 	for (k in domains) {
-		let {level_id, tweaks} = domains[k];
+		let {level_id, tweaks, restore, restore_tweaks} = domains[k];
 		if (k[k.length - 1] === ".") {
 			k = k.substring(0, k.length-1);
 		}
@@ -775,6 +783,12 @@ function saveDomainLevels() {
 			}
 		}
 		tobesaved[k] = tweaks ? {level_id, tweaks} : {level_id};
+		if (restore) {
+			tobesaved[k].restore = restore;
+			if (restore_tweaks) {
+				tobesaved[k].restore_tweaks = restore_tweaks;
+			}
+		}
 	}
 	browser.storage.sync.set({domains: tobesaved});
 }

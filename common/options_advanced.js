@@ -13,6 +13,12 @@ document.getElementById("levels-storage-load").addEventListener("click", functio
 });
 
 document.getElementById("levels-storage-save").addEventListener("click", function() {
-	checkAndSaveConfig(JSON.parse(document.getElementById("levels-storage-text").value));
+	try {
+		checkAndSaveConfig(JSON.parse(document.getElementById("levels-storage-text").value));
+	}
+	catch (e) {
+		alert("The configuration is not valid.");
+		return;
+	}
 	load_config_to_text();
 });
