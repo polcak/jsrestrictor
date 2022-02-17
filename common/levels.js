@@ -465,7 +465,10 @@ var wrapping_groups = {
         "Gyroscope.prototype.z",
 
         // AbsoluteOrientationSensor and RelativeOrientationSensor
-        "OrientationSensor.prototype.quaternion"
+        "OrientationSensor.prototype.quaternion",
+
+        // AmbientLightSensor
+        "AmbientLightSensor.prototype.illuminance"
 			],
 		},
 		{
