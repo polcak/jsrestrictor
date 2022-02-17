@@ -29,6 +29,7 @@ var pageConfiguration = {};
 var hits;
 var current_level;
 var default_lev_button;
+var fpd_active = false;
 
 // Provide cusom handlers for Tweaks GUI
 let popup_tweaks = Object.create(tweaks_gui);
@@ -56,6 +57,15 @@ popup_tweaks.customize_tweak_row = function (tweakRow, group) {
 	let groupHits = group.groupHits;
 	if (groupHits >= 999) {
 		groupHits = "1000 or more";
+	}
+	else if (groupHits == 0 && !fpd_active) {
+		let main = current_level[group.name];
+		let tweaks = current_level.tweaks;
+		if (!(tweaks && (tweaks[group.name] > 0))) {
+			if ((tweaks && tweaks[group.name] === 0) || (!(main > 0))) {
+				groupHits = "0 (unreliable)";
+			}
+		}
 	}
 	tweakRow.querySelector(".hits").textContent = groupHits;
 };
@@ -335,6 +345,7 @@ async function load_on_off_switch(prefix)
 		{
 			let response = await browser.runtime.sendMessage({purpose: "fpd-whitelist-check", url: site});
 			document.getElementById(prefix + "-switch").checked = !response;
+			fpd_active = !response;
 		}
 	}
 }
