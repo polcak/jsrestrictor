@@ -276,6 +276,7 @@ function fill_jsshield(msg) {
 	current_level = msg;
 	enable_jss(msg);
 	enableRefreshIfNeeded();
+	fpdGetSeverity();
 
 	add_level_buttons();
 	update_level_info();
@@ -337,6 +338,22 @@ async function getCurrentSite() {
 		}
 		return site = null;
 	}
+}
+
+async function fpdGetSeverity() {
+	let [tab] = await browser.tabs.query({currentWindow: true, active: true});
+	let response = await browser.runtime.sendMessage({purpose: "fpd-fetch-severity", tabId: tab.id});
+	if (response) {
+		let element = document.getElementById("severity_value");
+		if (response[1]) {
+			element.innerText = response[1];
+			document.getElementById("severity_container").style.display = "";
+		}
+		if (response[2]) {
+			element.style.color = response[2];
+		}
+	}
+	setTimeout(fpdGetSeverity, 3000);
 }
 
 /// Load switch state from storage for current site

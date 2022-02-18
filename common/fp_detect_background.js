@@ -646,6 +646,14 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 					fpdWhitelist = result.fpdWhitelist;
 				});
 				break;
+			case "fpd-fetch-severity": {
+				// send severity value of the latest evaluation
+				let severity = [];
+				if (record.tabId && isFpdOn(record.tabId) && latestEvals[record.tabId]) {
+					severity = latestEvals[record.tabId].severity;
+				}
+				return Promise.resolve(severity);
+			}
 			case "fpd-fetch-hits": {
 				let {tabId} = record;
 				// filter by tabId;
@@ -842,6 +850,11 @@ function cancelCallback(requestDetails) {
 		
 		// start FP evaluation process and store result array
 		var evalResult = evaluateGroups(requestDetails.tabId);
+
+		// store latest severity value after evaluation of given tab
+		if (evalResult[1]) {
+			latestEvals[requestDetails.tabId].severity = evalResult[1];
+		}
 
 		// if actualWeight of root group is higher than 0 => reactive phase and applying measures
 		if (evalResult[0]) {
