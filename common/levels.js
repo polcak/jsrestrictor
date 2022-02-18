@@ -35,6 +35,7 @@ var wrapping_groups = {
 		level_description: "",
 	},
 	group_map: {}, ///Automatically populated
+	wrapper_map: {}, ///Automatically populated
 	group_names: [], ///Automatically populated
 	get_wrappers: function(level) {
 		wrappers = [];
@@ -605,6 +606,9 @@ wrapping_groups.groups.forEach(function (group) {
 		wrapping_groups.empty_level[group.id] = 0;
 	}
 	wrapping_groups.group_map[group.id] = group
+	for (wrapper_name of group.wrappers) {
+		wrapping_groups.wrapper_map[wrapper_name] = group.name;
+	}
 });
 
 // *****************************************************************************
