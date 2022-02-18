@@ -53,12 +53,12 @@ popup_tweaks.customize_tweak_row = function (tweakRow, group) {
 	if (groupHits >= 999) {
 		groupHits = "1000 or more";
 	}
-	else if (groupHits == 0 && !fpd_active) {
+	else if (!fpd_active) {
 		let main = current_level[group.name];
 		let tweaks = current_level.tweaks;
 		if (!(tweaks && (tweaks[group.name] > 0))) {
 			if ((tweaks && tweaks[group.name] === 0) || (!(main > 0))) {
-				groupHits = "0 (unreliable)";
+				groupHits = String(groupHits) + " (unreliable)";
 			}
 		}
 	}
