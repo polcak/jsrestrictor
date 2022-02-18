@@ -46,12 +46,7 @@ popup_tweaks.tweak_changed = function(group_id, desired_tweak) {
 	enableRefreshIfNeeded();
 };
 popup_tweaks.assign_custom_params = function(group) {
-	group.groupHits = 0;
-	for (let wrapper of group.wrappers) {
-		if (hits[wrapper]) {
-			group.groupHits += hits[wrapper];
-		}
-	}
+	group.groupHits = hits[group.name] || 0;
 };
 popup_tweaks.customize_tweak_row = function (tweakRow, group) {
 	let groupHits = group.groupHits;

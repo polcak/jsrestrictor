@@ -642,7 +642,11 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 							total += stat.total;
 						}
 					}
-					hits[resource] = total;
+					let group_name = wrapping_groups.wrapper_map[resource];
+					if (group_name) {
+						get_or_create(hits, group_name, 0);
+						hits[group_name] += total;
+					}
 				}
 				return Promise.resolve(hits);
 			}
