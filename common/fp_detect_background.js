@@ -646,6 +646,12 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 					fpdWhitelist = result.fpdWhitelist;
 				});
 				break;
+			case "fpd-create-report":
+				// create FPD report for the tab
+				if (record.tabId) {
+					generateFpdReport(record.tabId);
+				}
+				break;
 			case "fpd-fetch-severity": {
 				// send severity value of the latest evaluation
 				let severity = [];
@@ -735,34 +741,42 @@ function isFpdWhitelisted(hostname) {
 browser.notifications.onClicked.addListener((notificationId) => {
 	if (notificationId.startsWith("fpd")) {
 		var tabId = notificationId.split("-")[1];
-
-		// open popup window containing FPD report
-		browser.windows.create({
-			url: "/fp_report.html",
-			type: "popup",
-			height: 600,
-			width: 800
-		}).then((info) => {
-			// get current FPD level for evaluated tab
-			var level = getCurrentLevelJSON(availableTabs[tabId].url)[0].level_id;
-			level = fp_levels.groups[level] ? level : "default";
-			
-			var tab = info.tabs[0];
-			if (tab) {
-				// message delay to make a space for report page initialization
-				setTimeout(() => {
-					browser.tabs.sendMessage(tab.id, {
-						tabId: tabId,
-						tabObj: availableTabs[tabId],
-						groups: {recursive: fp_levels.groups[level], sequential: fpGroups[level]},
-						latestEvals: latestEvals,
-						exceptionWrappers: exceptionWrappers
-					});
-				}, 200)
-			}
-		});
+		generateFpdReport(tabId);
 	}
 });
+
+/**
+ * The function that generates a report about fingerprinting evaluation in a separate window.
+ *
+ * \param tabId Integer number representing ID of evaluated browser tab.
+ */
+function generateFpdReport(tabId) {
+	// open popup window containing FPD report
+	browser.windows.create({
+		url: "/fp_report.html",
+		type: "popup",
+		height: 600,
+		width: 800
+	}).then((info) => {
+		// get current FPD level for evaluated tab
+		var level = getCurrentLevelJSON(availableTabs[tabId].url)[0].level_id;
+		level = fp_levels.groups[level] ? level : "default";
+		
+		var tab = info.tabs[0];
+		if (tab) {
+			// message delay to make a space for report page initialization
+			setTimeout(() => {
+				browser.tabs.sendMessage(tab.id, {
+					tabId: tabId,
+					tabObj: availableTabs[tabId],
+					groups: {recursive: fp_levels.groups[level], sequential: fpGroups[level]},
+					latestEvals: latestEvals,
+					exceptionWrappers: exceptionWrappers
+				});
+			}, 200)
+		}
+	});
+}
 
 /**
  *  Contains information about tabs current state.
