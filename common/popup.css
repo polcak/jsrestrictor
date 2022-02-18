@@ -180,7 +180,7 @@ label.js-toggle:after {
 	align-items: center;
 }
 
-.switch_wrapper > label {
+.switch_wrapper > label, #page-info > label {
 	font-size: large;
 	white-space: nowrap;
 }
