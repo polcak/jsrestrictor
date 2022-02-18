@@ -24,9 +24,9 @@
  * \ingroup wrappers
  *
  * This wrapper aims on prevention of microarchitectural attacks like Meltdown and Spectre. This
- * code was originally a part of https://github.com/IAIK/ChromeZero.
+ * code was originally a part of [ChromeZero](https://github.com/IAIK/ChromeZero).
  *
- * \bug subarray() method always ruturns the full array.
+ * \bug The `subarray()` method always ruturns the full array.
  *
  * The wrappers support the following behaviour:
  *
@@ -34,7 +34,7 @@
  *   be removed.
  * * Random mapping: All items are mapped randomly. This is a slower method but more reliable.
  *
- * \see https://www.fit.vut.cz/study/thesis/22374/?year=0&sup=Pol%C4%8D%C3%A1k, especially Sect. 5.1
+ * \see <https://www.fit.vut.cz/study/thesis/22374/?year=0&sup=Pol%C4%8D%C3%A1k>, especially Sect. 5.1
  */
 
 

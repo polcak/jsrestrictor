@@ -26,7 +26,7 @@
  * \ingroup wrappers
  *
  * This wrapper aims on prevention of microarchitectural attacks. This
- * code was originally a part of https://github.com/IAIK/ChromeZero.
+ * code was originally a part of [ChromeZero](https://github.com/IAIK/ChromeZero).
  *
  * The wrappers support the following behaviour:
  *
@@ -40,7 +40,7 @@ ISBN 978-3-319-66398-2.
  * \see Schwarz, M., Lipp, M. a Gruss, D. JavaScript Zero: Real JavaScript and Zero
  *      Side-Channel Attacks. NDSS'18.
  *
- * \see https://www.fit.vut.cz/study/thesis/22374/?year=0&sup=Pol%C4%8D%C3%A1k
+ * \see <https://www.fit.vut.cz/study/thesis/22374/?year=0&sup=Pol%C4%8D%C3%A1k>
  */
 
 

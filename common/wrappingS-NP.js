@@ -31,10 +31,9 @@
 //  \copyright Copyright (c) 2020 The Brave Authors.
 
 /** \file
- * This file contains wrappers for NavigatorPlugins
+ * This file contains wrappers for NavigatorPlugins. See the MDN docs on the [plugins](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/plugins)
+ * and [MIME types](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/mimeTypes).
  *
- *   * https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/plugins
- *   * https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/mimeTypes
  * \ingroup wrappers
  *
  * The goal is to prevent fingerprinting by modifying value returned by getters navigator.plugins and navigator.mimeTypes
@@ -45,8 +44,8 @@
  *	 * (1) - replace by shuffled PluginArray with two fake plugins, empty MimeTypeArray
  *	 * (2) - replace by empty PluginArray and MimeTypeArray
  *
- * These approaches are inspired by the algorithms created by Brave Software <https://brave.com>
- * available at https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc
+ * These approaches are inspired by the algorithms created by [Brave Software](https://brave.com)
+ * available [here](https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc).
  *
  */
 

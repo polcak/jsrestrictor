@@ -33,10 +33,10 @@
 //  \copyright Copyright (c) 2020 The Brave Authors.
 
 /** \file
- * This file contains wrapper for navigator.deviceMemory https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory
+ * This file contains a wrapper for [navigator.deviceMemory](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory).
  * \ingroup wrappers
  *
- * The goal is to prevent fingerprinting by modifying return value of navigator.deviceMemory parameter.
+ * The goal is to prevent fingerprinting by modifying the return value of the `navigator.deviceMemory` parameter.
  *
  * This wrapper operates with three levels of protection:
  *
@@ -44,8 +44,8 @@
  *	* (1) - return random valid value from range [0.25 - 8]
  *	* (2) - return 4
  *
- * These approaches are inspired by the algorithms created by Brave Software <https://brave.com>
- * available at <https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/core/frame/navigator_device_memory.cc>
+ * These approaches are inspired by the algorithms created by [Brave Software](https://brave.com)
+ * available [here](https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/core/frame/navigator_device_memory.cc).
  *
  */
 
