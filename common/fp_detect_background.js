@@ -459,15 +459,13 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
 		res.actualWeightsSum = accessesSum;
 	}
 
-	// if group access was triggered (have some weight), save it to evalStats
-	if (res.actualWeight) {
-		latestEvals[tabId].evalStats.push({ 
-			title: rootGroup,
-			type: "group",
-			weight: res.actualWeight,
-			sum: res.actualWeightsSum
-		});
-	}
+	// update group statistics in latestEvals
+	latestEvals[tabId].evalStats.push({ 
+		title: rootGroup,
+		type: "group",
+		weight: res.actualWeight,
+		sum: res.actualWeightsSum
+	});
 
 	return [res];
 }
@@ -570,18 +568,16 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 		scores.push(res)
 	}
 
-	// if resource was accessed and gained weight, save it to evalStats
+	// update resource statistics in latestEvals
 	scores.forEach(function (res) {
-		if (res.actualWeight) {
-			latestEvals[tabId].evalStats.push({
-				title: resource,
-				type: "resource",
-				resource: res.type,
-				group: groupName,
-				weight: res.actualWeight,
-				accesses: res.accesses
-			});
-		}
+		latestEvals[tabId].evalStats.push({
+			title: resource,
+			type: "resource",
+			resource: res.type,
+			group: groupName,
+			weight: res.actualWeight,
+			accesses: res.accesses
+		});
 	});
 
 	return scores;
