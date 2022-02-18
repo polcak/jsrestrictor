@@ -36,6 +36,9 @@ var queryInfo = {
 
 // get level for updated tab
 function tabUpdate(tabid, changeInfo) {
+	if (changeInfo.status === "loading") {
+		delete tab_status[tabid];
+	}
 	var url = changeInfo["url"] || tab_urls[tabid];
 	if (url === undefined) {
 		return wrapping_groups.empty_level;
