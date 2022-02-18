@@ -73,8 +73,9 @@ var fpdWhitelist = {};
  *		}
  *
  *	*values in quotations are substituted by concrete names				
+ *
  */
-var fpDb = {};
+var fpDb = new Observable();
 
 /**
  *  Stores latest evaluation statistics for every examined tab. This statistics contains data about accessed groups and resources
@@ -605,6 +606,7 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 				// increase counter for total accesses
 				fpCounterObj["total"] = fpCounterObj["total"] || 0;
 				fpCounterObj["total"] += 1;
+				fpDb.update(record.resource, sender.tab.id, record.type, fpCounterObj["total"]);
 				break;
 			case "fpd-state-change":
 				browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
