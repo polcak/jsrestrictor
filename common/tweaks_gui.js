@@ -56,7 +56,7 @@ let tweaks_gui = {
 			}
 
 			tlevUI.value = parseInt(tlev_id);
-			let updateLevelInfo = function () {
+			let updateLevelInfo = function (changed) {
 				let desired_tweak = parseInt(tlevUI.value);
 				if (desired_tweak !== 0) {
 					let l = group.params[desired_tweak - 1];
@@ -67,10 +67,13 @@ let tweaks_gui = {
 					tlevUI.nextElementSibling.value = "Unprotected";
 					status.innerHTML = "<strong>Unprotected</strong>";
 				}
-				this.tweak_changed(group_id, desired_tweak);
+				if (changed) {
+					this.tweak_changed(group_id, desired_tweak);
+				}
 			}.bind(this);
 			updateLevelInfo();
-			tlevUI.addEventListener("change", updateLevelInfo);
+			tlevUI.addEventListener("input", updateLevelInfo.bind(this, false));
+			tlevUI.addEventListener("change", updateLevelInfo.bind(this, true));
 
 			help.addEventListener("click", function(ev) {
 				explainer.classList.toggle("hidden_descr");
