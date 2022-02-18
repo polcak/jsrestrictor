@@ -21,12 +21,11 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-var tab_levels = {};
+var tab_status = {};
 var tab_urls = {};
-var current_level = {level_id: "?"};
 
-function updateBadge(level) {
-	browser.browserAction.setBadgeText({text: "" + level["level_id"]});
+function updateBadge(text, tabid) {
+	browser.browserAction.setBadgeText({text: text, tabId: tabid});
 }
 
 // get active tab and pass it
@@ -39,25 +38,14 @@ var queryInfo = {
 function tabUpdate(tabid, changeInfo) {
 	var url = changeInfo["url"] || tab_urls[tabid];
 	if (url === undefined) {
-		return;
+		return wrapping_groups.empty_level;
 	}
-	current_level = getCurrentLevelJSON(url)[0];
-	tab_levels[tabid] = current_level;
+	let current_level = getCurrentLevelJSON(url)[0];
 	tab_urls[tabid] = url;
-	updateBadge(current_level);
+	return current_level;
 }
-// get level for activated tab
-async function tabActivate(activeInfo) {
-	let {tabId} = activeInfo;
-	if (!(tabId in tab_levels)) {
-		tabUpdate(tabId, await browser.tabs.get(tabId));
-	}
-	current_level = tab_levels[tabId] || {level_id: "?"};
-	updateBadge(current_level);
-}
-// on tab reload or tab change, update badge
+// on tab reload or tab change, update metadata
 browser.tabs.onUpdated.addListener(tabUpdate);     // reload tab
-browser.tabs.onActivated.addListener(tabActivate); // change tab
 
 // Communication channels
 
@@ -72,7 +60,7 @@ async function connected(port) {
 	if (port.name === "port_from_popup") {
 		/// We always send back current level
 		let [tab] = await browser.tabs.query(queryInfo);
-		tabUpdate(tab.id, tab.url);
+		let current_level = tabUpdate(tab.id, tab.url);
 		port.postMessage(current_level);
 		port.onMessage.addListener(function(msg) {
 			port.postMessage(current_level);
@@ -80,3 +68,19 @@ async function connected(port) {
 	}
 }
 browser.runtime.onConnect.addListener(connected);
+
+/**
+ * Listen to detected API calls and update badge accordingly
+ */
+fpDb.add_observer({
+	notify: function(api, tabid, type, count) {
+		let group_name = wrapping_groups.wrapper_map[api];
+		if (!group_name) {
+			return; // The API does not belong to any group
+		}
+		let tab_stats = get_or_create(tab_status, tabid, {});
+		tab_stats[group_name] = true;
+		updateBadge(String(Object.keys(tab_stats).length), tabid);
+	}
+});
+browser.tabs.onRemoved.addListener(tabid => delete tab_status[tabid]);
