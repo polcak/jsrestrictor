@@ -276,7 +276,7 @@ input:checked + .slider:before {
 
 .tweaking #tweaks {
 	display: grid;
-	grid: auto / auto 1fr 1fr;
+	grid: auto / auto 1fr 3em 4em;
 	gap: 1em;
 	align-items: center;
 }

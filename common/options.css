@@ -181,9 +181,9 @@ section.content {
 	font-size: large;
 }
 
-.tweakgrid {
+.tweakgrid, #tweaks {
 	display: grid;
-	grid: auto / auto 1fr;
+	grid: auto / auto auto 5ex 1fr;
 	gap: 1em;
 	align-items: center;
 }
