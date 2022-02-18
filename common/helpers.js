@@ -33,6 +33,15 @@ function escape(str) {
 }
 
 /**
+ * Get a property of an object, create it if it does not exist
+ */
+function get_or_create(parent, child, default_value) {
+	let obj = parent[child] || default_value;
+	parent[child] = obj;
+	return obj;
+}
+
+/**
  * Transform byte to Hex value
  */
 function byteToHex(byte) {
