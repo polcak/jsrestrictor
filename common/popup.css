@@ -95,25 +95,9 @@ h3 {
 }
 
 .level {
-	font-weight: bold;
 	font-size: large;
-	color: #4a4a4a;
 	margin: 0.7ex;
 	padding: 0.7ex;
-	border: 2px solid grey;
-	border-radius: 0.5ex;
-}
-
-.level:hover {
-	cursor: pointer;
-	background-color: #c9c9c9;
-	color: black;
-}
-
-.active {
-	border: 2px solid black;
-	background-color: #c9c9c9;
-	color:  black;
 }
 
 input#js-toggle {
@@ -123,17 +107,20 @@ input#js-toggle {
 }
 
 label.js-toggle {
-	background-color: #e9e9ed;
 	padding: 0.5ex;
-	border: 1px black solid;
+	border: 1px var(--separator-color) solid;
+	background-color: var(--button-background-color);
+	color: var(--button-text-color);
 }
 
 label.js-toggle:hover {
-	background-color: #c9c9c9;
+	background-color: var(--button-background-hover-color);
+	color: var(--button-text-hover-color);
 }
 
 input#js-toggle:checked + label {
-	background-color: #c9c9c9;
+	background-color: var(--button-background-active-color);
+	color: var(--button-text-active-color);
 }
 
 input#js-toggle:checked + label:after {
@@ -161,18 +148,6 @@ label.js-toggle:after {
 	display: none;
 }
 
-.hidden_descr{
-	display: none;
-}
-
-.help {
-	margin-left: 1em;
-	background-color: blue;
-	color: white;
-	border-radius: 10px;
-	font-weight: bold;
-}
-
 .switch_wrapper {
 	display: flex;
 	flex-direction: row;
@@ -184,83 +159,6 @@ label.js-toggle:after {
 	font-size: large;
 	white-space: nowrap;
 }
-
-/* The switch - the box around the slider */
-.switch {
-	--bg-color: white;
-	--off-color: gray;
-	--on-color:black;
-	position: relative;
-	display: inline-block;
-	width: 64px;
-	height: 34px;
-	margin-left: 3px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-	opacity: 0;
-	width: 0;
-	height: 0;
-
-}
-
-/* ON/OFF slider */
-.slider {
-	position: absolute;
-	cursor: pointer;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: var(--off-color);
-	-webkit-transition: .4s;
-	transition: .4s;
-	font-size: 14px;
-	font-weight: bold;
-	text-align: center;
-	vertical-align: middle;
-	line-height: 25px;
-}
-
-.slider:before {
-	position: absolute;
-	content: "";
-	height: 26px;
-	width: 30px;
-	left: 4px;
-	bottom: 4px;
-	background-color: var(--bg-color);
-	-webkit-transition: .4s;
-	transition: .4s;
-	color: var(--off-color);
-	content:"OFF";
-}
-
-input:checked + .slider {
-	background-color:  var(--on-color);
-}
-
-input:focus + .slider {
-	box-shadow: 0 0 1px var(--on-color);
-}
-
-input:checked + .slider:before {
-	-webkit-transform: translateX(26px);
-	-ms-transform: translateX(26px);
-	transform: translateX(26px);
-	content:"ON";
-	color: var(--on-color);
-}
-
-#switch-label
-{
-	text-align: center;
-	vertical-align: middle;
-	font-size:14pt;
-	padding-top:5px;
-}
-
 
 #btn-tweak:disabled {
 	display: none;
@@ -285,21 +183,6 @@ input:checked + .slider:before {
 
 .head {
 	font-weight: bold;
-}
-
-.explainer {
-	grid-column-start: 1;
-	grid-column-end: -1;
-	padding-bottom: 3px;
-	border-bottom: 1px solid grey;
-}
-
-.more .description2 {
-	display: none;
-}
-
-.more + .less {
-	display: none;
 }
 
 .hidden {
