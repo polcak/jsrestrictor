@@ -443,7 +443,7 @@ var wrapping_groups = {
 			params: [
 				{
 					short: "High",
-					description: "Emulate stationary device",
+					description: "Emulate stationary device based on domain hash",
 					config: [true],
 				},
 			],
