@@ -162,6 +162,23 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
         }
         event.target.innerText = event.target.innerText == "Show All" ? "Hide All" : "Show All";
     }
+
+    // show description/help for the report
+    let showDescription = (event) => {
+        for (let element of document.querySelectorAll(".description")) {      
+            element.classList.toggle("hidden");
+        }
+    }
+
+    // show all groups/resources even if not accessed
+    let showNotAccessed = (event) => {
+        for (let element of document.querySelectorAll(".no-access")) {      
+            console.log(element);
+            element.classList.remove("no-access");
+        }
+    }
     
     document.getElementById("showAll").addEventListener("click", showAll);
+    document.getElementById("help").addEventListener("click", showDescription);
+    document.getElementById("unhideAll").addEventListener("click", showNotAccessed);
 }

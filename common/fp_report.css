@@ -98,3 +98,21 @@ header > div {
 	top: 10px;
 	cursor: pointer;
 }
+
+#help {
+	margin-left: 1em;
+	background-color: blue;
+	color: white;
+	border-radius: 10px;
+	font-weight: bold;
+}
+
+.description {
+	font-size: x-small;
+}
+
+#unhideAll {
+	cursor: pointer;
+	color: #e76f51;
+	text-decoration: underline;
+}
