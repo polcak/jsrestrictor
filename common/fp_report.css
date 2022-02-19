@@ -64,6 +64,14 @@ header > div {
 	color: #e76f51;
 }
 
+.hidden {
+	display: none;
+}
+
+.no-access {
+	display: none;
+}
+
 #pageFavicon {
 	height: 18px;
 	margin-right: 2px;

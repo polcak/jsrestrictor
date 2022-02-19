@@ -83,7 +83,7 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
     let generateGroup = (group) => {
         if (processedEvals[group]) {
             if (fpGroups[group].description) {
-                html += "<div id=\"" + group + "\" class=\"fpd-group\">";
+                html += "<div id=\"" + group + "\" class=\"fpd-group access\">";
                 html += "<h2>" + group + "</h2>";
                 html += "<p>" + fpGroups[group].description + "</p>";
             }
@@ -104,8 +104,10 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
     // generate html code for evaluated resource (get,set,call)
     let generateResource = (resource) => {
         if (processedEvals[resource]) {
-            let accessCount = processedEvals[resource].accesses >= 1000 ? "1000+" : processedEvals[resource].accesses;
-            html += `<h4 style="display:none"><span class="dot">-</span> ${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})</h4>`;
+            let accessRaw = processedEvals[resource].accesses;
+            let accessCount = accessRaw >= 1000 ? "1000+" : accessRaw;
+            html += `<h4 class="hidden ${accessRaw > 0 ? "access" : "no-access"}"><span class="dot">-</span> ` +
+            `${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})</h4>`;
         }
     }
 
@@ -113,17 +115,21 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
     generateGroup(rootGroup);
     report.innerHTML += html;
 
+    // hide groups with no relevant entries
+    let groupElements = document.querySelectorAll(".fpd-group.access");
+    for (let i = groupElements.length; i > 0; i--) {
+        if (!document.querySelectorAll(`#${groupElements[i-1].id} > .access`).length) {
+            groupElements[i-1].classList.replace("access", "no-access");
+        }
+    }
+
     // function that enables to show accessed resources of the group
     let toggleResources = (event) => {
         let parent =  event.target.parentElement;
         for (let i = 0; i < parent.children.length; i++) {
             let child = parent.children[i];
             if (child.tagName == "H4") {
-                if (child.style.display === "none") {
-                    child.style.display = "";
-                } else {
-                    child.style.display = "none";
-                }
+                child.classList.toggle("hidden");
             }
         }
     }
@@ -152,12 +158,7 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
     // show resources for every group in FPD report
     let showAll = (event) => {
         for (let element of document.querySelectorAll(".fpd-group > h4")) {      
-            if (event.target.innerText == "Show All") {
-                element.style.display = "";
-            }
-            else {
-                element.style.display = "none";
-            }
+            element.classList.toggle("hidden");
         }
         event.target.innerText = event.target.innerText == "Show All" ? "Hide All" : "Show All";
     }
