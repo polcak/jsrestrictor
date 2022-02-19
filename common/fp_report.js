@@ -67,7 +67,7 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
     // add page URL and FavIcon to header section of the report
     if (tabObj) {
         let urlObj = new URL(tabObj.url);
-        let url = urlObj.hostname + urlObj.pathname;
+        let url = urlObj.hostname + (urlObj.pathname.length > 1 ? urlObj.pathname : "");
         document.getElementById("report-url").innerHTML = url;
         let img = document.getElementById("pageFavicon");
         img.src = tabObj.favIconUrl;
@@ -158,7 +158,12 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
     // show resources for every group in FPD report
     let showAll = (event) => {
         for (let element of document.querySelectorAll(".fpd-group > h4")) {      
-            element.classList.toggle("hidden");
+            if (event.target.innerText == "Show All") {
+                element.classList.remove("hidden");
+            }
+            else {
+                element.classList.add("hidden");
+            }
         }
         event.target.innerText = event.target.innerText == "Show All" ? "Hide All" : "Show All";
     }

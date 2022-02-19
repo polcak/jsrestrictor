@@ -361,7 +361,7 @@ async function fpdGetSeverity() {
 			element.style.color = response[2];
 		}
 	}
-	setTimeout(fpdGetSeverity, 3000);
+	setTimeout(fpdGetSeverity, 2000);
 }
 
 /// Load switch state from storage for current site
