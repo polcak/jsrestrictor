@@ -53,12 +53,12 @@ function prepare_level_config(action_descr, params) {
 
 		<!-- Metadata -->
 		<div class="main-section">
-			<span class="section-header">Name:</span>
+			<label for="level_text">Name:</label>
 			<input id="level_text" value="${escape(params.level_text)}"></input>
 			<input type="hidden" id="level_id" ${params.level_id != "" ? "disabled" : ""} value="${escape(params.level_id)}"></input>
 		</div>
 		<div class="main-section">
-			<span class="section-header">Description:</span>
+			<label for="level_description">Description:</label>
 			<input id="level_description" value="${escape(params.level_description)}"></input>
 		</div>
 
