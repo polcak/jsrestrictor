@@ -81,7 +81,6 @@ body {
 a {
   color: var(--text-color);
   text-decoration-color: var(--link-color);
-  transition: all 0.3s ease-in;
   padding-top: var(--mg-tiny);
   padding-bottom: var(--mg-tiny);
   position: relative;
@@ -423,6 +422,7 @@ section > header {
 
 .menu-list li.active a {
   color: var(--link-color);
+  font-weight: 600;
 }
 
 .menu-heading strong {
@@ -454,7 +454,7 @@ section > header {
 }
 
 .menu-list a:hover {
-  font-weight: 600;
+  color: var(--link-color);
 }
 
 .menu-list li ul {
@@ -861,6 +861,12 @@ p.download-buttons {
 
 }
 
+@media screen and (prefers-color-scheme: dark) and (max-width: 840px) {
+  .sidebar {
+    background-color: var(--dark-gray);
+  }
+}
+
 @media screen and (prefers-color-scheme: dark) {
 
   html {
@@ -872,15 +878,17 @@ p.download-buttons {
    color: var(--ghost-white);
   }
 
-  a { text-decoration-color: #e76f51; }
+  a { text-decoration-color: var(--light-link-color); }
   a:hover { color: white; }
 
-  .sidebar {
-    background-color: var(--dark-gray);
+  .menu-heading strong,
+  .menu-list li.active,
+  .menu-list li.active a {
+    color: var(--light-link-color);
   }
 
-  .menu-heading strong {
-    color: #e76f51;
+  .menu-list a:hover {
+    color: var(--light-link-color);
   }
 
   .hero {
