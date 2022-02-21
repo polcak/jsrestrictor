@@ -192,13 +192,13 @@ function add_level_buttons() {
 		let b = document.createElement("button");
 		b.id = `select-${level.level_id}`;
 		b.className = "level level_control";
-		b.textContent = level.level_id;
-	  b.title = level.level_text;
+		b.textContent = level.level_text;
+		b.title = level.level_description;
 		level.button = b;
 		return selectEl.appendChild(b);
 	}
 	// Add default level button
-	default_lev_button = addButton({level_id: "DEFAULT", level_text: `Default level (${default_level.level_id})`});
+	default_lev_button = addButton({level_id: "DEFAULT", level_description: "You can set of of the levels as the global default level. Use this level for this page.", level_text: `Default level (${default_level.level_text})`});
 	default_lev_button.addEventListener("click", ev => {
 		delete domains[site];
 		modify_level(default_level, ev.target);
