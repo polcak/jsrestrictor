@@ -24,9 +24,3 @@ tests/fpd_tests/wrappers*
 tests/fpd_tests/tests/resources.js
 
 website/output
-website/content/pages/build.md
-website/content/pages/credits.md
-website/content/pages/levels.md
-website/content/pages/license.md
-website/content/pages/permissions.md
-website/content/pages/versions.md
