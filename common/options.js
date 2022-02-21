@@ -145,7 +145,7 @@ function show_existing_level(levelsEl, level) {
 	let currentId = `level-${level}`;
 	var fragment = document.createRange().createContextualFragment(`<li id="li-${escape(level)}">
 		<button class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
-			${escape(level)}: ${escape(levels[level].level_text)}
+			${escape(levels[level].level_text)}
 		</button>
 		<label for="${escape(currentId)}">${escape(levels[level].level_description)}</label>
 		</li>`);
