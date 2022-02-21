@@ -28,7 +28,7 @@
 const MANDATORY_METADATA = ["level_id", "level_text", "level_description"];
 
 
-function prepare_level_config(action_descr, params = wrapping_groups.empty_level) {
+function prepare_level_config(action_descr, params) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
 	function find_unsupported_apis(html, wrapper) {
@@ -55,14 +55,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 		<div class="main-section">
 			<span class="section-header">Name:</span>
 			<input id="level_text" value="${escape(params.level_text)}"></input>
-		</div>
-		<div class="main-section">
-			<span class="section-header">Short ID:</span>
-			<input id="level_id" ${params.level_id != "" ? "disabled" : ""} value="${escape(params.level_id)}"></input>
-		</div>
-		<div>
-			<span class="table-left-column">This ID is displayed in the pop up. If you use an
-					already existing ID, this custom level will replace the original level.</span>
+			<input type="hidden" id="level_id" ${params.level_id != "" ? "disabled" : ""} value="${escape(params.level_id)}"></input>
 		</div>
 		<div class="main-section">
 			<span class="section-header">Description:</span>
@@ -101,10 +94,6 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 		};
 
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
-			if (new_level.level_id.length > 3) {
-				alert("Level ID too long, provide 3 characters or less");
-				return;
-			}
 			async function updateLevels(new_level, stored_levels) {
 				custom_levels = stored_levels.custom_levels;
 				let ok = false;
@@ -156,7 +145,7 @@ function show_existing_level(levelsEl, level) {
 	let currentId = `level-${level}`;
 	var fragment = document.createRange().createContextualFragment(`<li id="li-${escape(level)}">
 		<button class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
-			${escape(level)}: ${escape(levels[level].level_text)}
+			${escape(levels[level].level_text)}
 		</button>
 		<label for="${escape(currentId)}">${escape(levels[level].level_description)}</label>
 		</li>`);
@@ -232,8 +221,17 @@ window.addEventListener("load", function() {
 	load_on_off_switch("fpd");
 });
 
-document.getElementById("new_level").addEventListener("click",
-	() => prepare_level_config("Add new level"));
+document.getElementById("new_level").addEventListener("click", function() {
+	let new_level = Object.assign({}, wrapping_groups.empty_level);
+	let seq = Object.keys(levels).length;
+	let new_id;
+	do {
+		new_id = "Custom" + String(seq);
+		seq++;
+	}	while (levels[new_id] !== undefined)
+	new_level.level_id = new_id;
+	prepare_level_config("Add new level", new_level)
+});
 
 document.getElementById("nbs-whitelist-add-button").addEventListener("click", () => add_to_whitelist("nbs"));
 document.getElementById("nbs-whitelist-input").addEventListener('keydown', (e) => {if (e.key === 'Enter') add_to_whitelist("nbs")});
