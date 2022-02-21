@@ -689,8 +689,6 @@ var level_3 = {
 	"windowname": 1,
 };
 
-const BUILTIN_LEVEL_NAMES = [L0, L1, L2, L3];
-
 var levels = {};
 var default_level = {};
 var domains = {};
