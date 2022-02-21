@@ -10,8 +10,6 @@ Before starting, it's important to keep in mind that:
   generated from the source code comments, so these shouldn't be edited
   directly -- edit the original source comments instead (inside the `common/`
   project directory)
-- Other pages are copied from the project's `docs/` dir, so be sure to edit
-  those instead of the files inside `content/pages`.
 
 ## Adding new pages
 
