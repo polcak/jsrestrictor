@@ -633,7 +633,7 @@ var level_2 = {
 	"level_id": L2,
 	"level_text": "Recommended",
 	"level_description": "Recommended level of protection for most sites",
-	"time_precision": 2,
+	"time_precision": 3,
 	"htmlcanvaselement": 1,
 	"audiobuffer": 1,
 	"webgl": 1,
