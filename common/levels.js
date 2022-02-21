@@ -619,6 +619,7 @@ const L0 = "0";
 const L1 = "1";
 const L2 = "2";
 const L3 = "3";
+const L_EXPERIMENTAL = "Experiment"; // Use a long ID so that it is not in conflict with pre0.7 user-defined levels
 
 /// Built-in levels
 var level_0 = {
@@ -671,6 +672,31 @@ var level_3 = {
 	"windowname": 1,
 };
 
+var level_experimental = {
+	"builtin": true,
+	"level_id": L_EXPERIMENTAL,
+	"level_text": "Experimental",
+	"level_description": "Strict level protections with additional wrappers enabled",
+	"time_precision": 3,
+	"htmlcanvaselement": 2,
+	"audiobuffer": 2,
+	"webgl": 2,
+	"plugins": 3,
+	"enumerateDevices": 3,
+	"hardware": 3,
+	"xhr": 1,
+	"arrays": 2,
+	"shared_array": 2,
+	"webworker": 2,
+	"geolocation": 6,
+  "physical_environment": 1,
+	"gamepads": 1,
+	"vr": 1,
+	"analytics": 1,
+	"battery": 1,
+	"windowname": 1,
+};
+
 var levels = {};
 var default_level = {};
 var domains = {};
@@ -679,7 +705,8 @@ function init_levels() {
 	levels = {
 		[level_0.level_id]: level_0,
 		[level_2.level_id]: level_2,
-		[level_3.level_id]: level_3
+		[level_3.level_id]: level_3,
+		[level_experimental.level_id]: level_experimental
 	};
 	default_level = Object.create(levels[L2]);
 	default_level.level_text = "Default";
