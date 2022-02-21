@@ -619,6 +619,7 @@ const L0 = "0";
 const L1 = "1";
 const L2 = "2";
 const L3 = "3";
+const L_EXPERIMENTAL = "Experiment"; // Use a long ID so that it is not in conflict with pre0.7 user-defined levels
 
 /// Built-in levels
 var level_0 = {
@@ -628,27 +629,12 @@ var level_0 = {
 	"level_description": "No protection at all",
 };
 
-var level_1 = {
-	"builtin": true,
-	"level_id": L1,
-	"level_text": "Minimal",
-	"level_description": "Minimal level of protection",
-	"time_precision": 1,
-	"plugins": 1,
-	"hardware": 1,
-	"geolocation": 2,
-  "physical_environment": 1,
-	"analytics": 1,
-	"battery": 1,
-	"windowname": 1,
-};
-
 var level_2 = {
 	"builtin": true,
 	"level_id": L2,
 	"level_text": "Recommended",
 	"level_description": "Recommended level of protection for most sites",
-	"time_precision": 2,
+	"time_precision": 3,
 	"htmlcanvaselement": 1,
 	"audiobuffer": 1,
 	"webgl": 1,
@@ -667,8 +653,30 @@ var level_2 = {
 var level_3 = {
 	"builtin": true,
 	"level_id": L3,
-	"level_text": "High",
-	"level_description": "High level of protection",
+	"level_text": "Strict",
+	"level_description": "Enable all non-experimental protection. Return fake values for the wrapped APIs",
+	"time_precision": 3,
+	"htmlcanvaselement": 2,
+	"audiobuffer": 2,
+	"webgl": 2,
+	"plugins": 3,
+	"enumerateDevices": 3,
+	"hardware": 3,
+	"webworker": 2,
+	"geolocation": 6,
+  "physical_environment": 1,
+	"gamepads": 1,
+	"vr": 1,
+	"analytics": 1,
+	"battery": 1,
+	"windowname": 1,
+};
+
+var level_experimental = {
+	"builtin": true,
+	"level_id": L_EXPERIMENTAL,
+	"level_text": "Experimental",
+	"level_description": "Strict level protections with additional wrappers enabled",
 	"time_precision": 3,
 	"htmlcanvaselement": 2,
 	"audiobuffer": 2,
@@ -689,8 +697,6 @@ var level_3 = {
 	"windowname": 1,
 };
 
-const BUILTIN_LEVEL_NAMES = [L0, L1, L2, L3];
-
 var levels = {};
 var default_level = {};
 var domains = {};
@@ -698,9 +704,9 @@ var wrapped_codes = {};
 function init_levels() {
 	levels = {
 		[level_0.level_id]: level_0,
-		[level_1.level_id]: level_1,
 		[level_2.level_id]: level_2,
-		[level_3.level_id]: level_3
+		[level_3.level_id]: level_3,
+		[level_experimental.level_id]: level_experimental
 	};
 	default_level = Object.create(levels[L2]);
 	default_level.level_text = "Default";

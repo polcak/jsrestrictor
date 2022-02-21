@@ -150,8 +150,29 @@ function show_existing_level(levelsEl, level) {
 		<label for="${escape(currentId)}">${escape(levels[level].level_description)}</label>
 		</li>`);
 	levelsEl.appendChild(fragment);
-	if (levels[level].builtin !== true) {
-		var lielem = document.getElementById(`li-${level}`); // Note that FF here requires unescaped ID
+	var lielem = document.getElementById(`li-${level}`); // Note that FF here requires unescaped ID
+	if (levels[level].builtin === true) {
+		var view = document.createElement("button");
+		view.id = `show-tweaks-${escape(level)}`;
+		view.classList.add("help");
+		view.appendChild(document.createTextNode("⤵"));
+		var tweaksEl = document.createElement("div");
+		tweaksEl.classList.add("tweakgrid");
+		tweaksEl.classList.add("hidden_descr");
+		tweaksEl.id = `tweaks-${escape(level)}`;
+		lielem.appendChild(view);
+		lielem.appendChild(tweaksEl);
+		let tweaksBusiness = Object.create(tweaks_gui);
+		tweaksBusiness.get_current_tweaks = function() {
+			return getTweaksForLevel(level, {});
+		};
+		tweaksBusiness.create_tweaks_html(tweaksEl);
+		view.addEventListener("click", function(ev) {
+			tweaksEl.classList.toggle("hidden_descr");
+			ev.preventDefault();
+		});
+	}
+	else {
 		var existPref = document.createElement("span");
 		existPref.setAttribute("id", `li-exist-group-${escape(level)}`);
 		lielem.appendChild(existPref);
