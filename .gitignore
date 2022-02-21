@@ -24,3 +24,4 @@ tests/fpd_tests/wrappers*
 tests/fpd_tests/tests/resources.js
 
 website/output
+website/content/wrappers/*
