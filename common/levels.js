@@ -628,21 +628,6 @@ var level_0 = {
 	"level_description": "No protection at all",
 };
 
-var level_1 = {
-	"builtin": true,
-	"level_id": L1,
-	"level_text": "Minimal",
-	"level_description": "Minimal level of protection",
-	"time_precision": 1,
-	"plugins": 1,
-	"hardware": 1,
-	"geolocation": 2,
-  "physical_environment": 1,
-	"analytics": 1,
-	"battery": 1,
-	"windowname": 1,
-};
-
 var level_2 = {
 	"builtin": true,
 	"level_id": L2,
@@ -696,7 +681,6 @@ var wrapped_codes = {};
 function init_levels() {
 	levels = {
 		[level_0.level_id]: level_0,
-		[level_1.level_id]: level_1,
 		[level_2.level_id]: level_2,
 		[level_3.level_id]: level_3
 	};
