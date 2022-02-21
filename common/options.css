@@ -221,3 +221,7 @@ fieldset {
 .more + .less {
 	display: none;
 }
+
+#levels-config #levels-list input[type=range] {
+	pointer-events:none; /* https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events */
+}
