@@ -333,6 +333,29 @@ function installUpdate() {
 			}
 			item.version = 6;
 		}
+		if (item.version < 6.1) {
+			// Turn FPD automatically on for advanced users - i.e. the user selected level 3 or a custom
+			// level as the default level
+			if (!([0, 1, 2, "0", "1", "2"].includes(item.__default__))) {
+				item.fpDetectionOn = true;
+			}
+			// We no longer ship level 1 as its content is not defined well, the tweaks allow the user
+			// to relax the level conditions specifically to each page
+			for (domain in item.domains) {
+				let level = item.domains[domain];
+				// Select the default level if the default level is not 3 (if level 3 is the default, set
+				// level 2)
+				if (level.level_id == "1") {
+					if ([2, 3, "2", "3"].includes(item.__default__)) {
+						level.level_id = "2";
+					}
+					else {
+						level.level_id = String(item.__default__);
+					}
+				}
+			}
+			item.version = 6.1;
+		}
 		browser.storage.sync.set(item);
 	});
 }
