@@ -61,8 +61,8 @@ var fpdWhitelist = {};
 
 /**
  * API logs database of following structure:
- * 		"resource" : {
- * 			"tabId" : {
+ * 		"tabId" : {
+ * 			"resource" : {
  * 				"type" : {
  * 					arguments {
  * 						arg : "access count"
@@ -525,25 +525,26 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 		
 		// compute actualWeight of resource in context of parent group from logs located in fpDb object
 		res.actualWeight = 0;
-		if (fpDb[resource] && fpDb[resource][tabId] && fpDb[resource][tabId][res.type]) {
+		if (fpDb[tabId] && fpDb[tabId][resource] && fpDb[tabId][resource][res.type]) {
+			let record = fpDb[tabId][resource][res.type];
 			// logs for given resource and type exist
 			if (groupObj.arguments) {
 				// if arguments logging is defined, evaluate resource accordingly
 				
 				if (groupObj.arguments == "diff") {
 					// "diff" - accesses depend on number of different arguments
-					res.accesses = Object.keys(fpDb[resource][tabId][res.type].args).length;		
+					res.accesses = Object.keys(record.args).length;		
 				}
 				else if (groupObj.arguments == "same") {
 					// "same" - accesses depend on maximum number of same arguments calls
-					res.accesses = Object.values(fpDb[resource][tabId][res.type].args).reduce((x, y) => x > y ? x : y);
+					res.accesses = Object.values(record.args).reduce((x, y) => x > y ? x : y);
 				}
 				else {
 					// try to interpret arguments as regular expression and take accesses that match this expression
 					try {
 						let re = new RegExp(...groupObj.arguments);
-						res.accesses = Object.keys(fpDb[resource][tabId][res.type].args).reduce(
-							(x, y) => (re.test(y) ? x + fpDb[resource][tabId][res.type].args[y] : x), 0);
+						res.accesses = Object.keys(record.args).reduce(
+							(x, y) => (re.test(y) ? x + record.args[y] : x), 0);
 					} catch {
 						res.accesses = 0;
 					}
@@ -551,7 +552,7 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 			}
 			else {
 				// arguments logging not defined, simply take total accesses to resource
-				res.accesses = fpDb[resource][tabId][res.type].total
+				res.accesses = record.total
 			}
 
 			// sort criteria by value
@@ -601,12 +602,12 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 		switch (record.purpose) {
 			case "fp-detection":
 				// check objects existance => if do not exist, create new one
-				fpDb[record.resource] = fpDb[record.resource] || {};
-				fpDb[record.resource][sender.tab.id] = fpDb[record.resource][sender.tab.id] || {};
-				fpDb[record.resource][sender.tab.id][record.type] = fpDb[record.resource][sender.tab.id][record.type] || {};
+				fpDb[sender.tab.id] = fpDb[sender.tab.id] || {};
+				fpDb[sender.tab.id][record.resource] = fpDb[sender.tab.id][record.resource] || {};
+				fpDb[sender.tab.id][record.resource][record.type] = fpDb[sender.tab.id][record.resource][record.type] || {};
 				
 				// object that contains access counters
-				const fpCounterObj = fpDb[record.resource][sender.tab.id][record.type];
+				const fpCounterObj = fpDb[sender.tab.id][record.resource][record.type];
 				const argsStr = record.args.join();
 				fpCounterObj["args"] = fpCounterObj["args"] || {};
 				
@@ -660,12 +661,13 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 				let {tabId} = record;
 				// filter by tabId;
 				let hits = Object.create(null);
-				for ([resource, tabRecords] of Object.entries(fpDb)) {
-					let total = 0;
-					if (tabRecords[tabId]) {
-						for (let stat of Object.values(tabRecords[tabId])) { // by type
+				if (fpDb[tabId]) {
+					for ([resource, recordObj] of Object.entries(fpDb[tabId])) {
+						let total = 0;
+						for (let stat of Object.values(recordObj)) { // by type
 							total += stat.total;
 						}
+						hits[resource] = total;
 					}
 					let group_name = wrapping_groups.wrapper_map[resource];
 					if (group_name) {
@@ -794,13 +796,8 @@ browser.tabs.query({}).then(function(results) {
  * \param tabId Integer number representing ID of browser tab.
  */
 function refreshDb(tabId) {
-	for (let resource in fpDb) {
-		if (fpDb[resource].hasOwnProperty(tabId)) {
-			delete fpDb[resource][tabId];
-		}
-		if (Object.keys(fpDb[resource]).length == 0) {
-			delete fpDb[resource];
-		}
+	if (fpDb[tabId]) {
+		delete fpDb[tabId];
 	}
 	if (latestEvals[tabId]) {
 		delete latestEvals[tabId];
