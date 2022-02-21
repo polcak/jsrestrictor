@@ -20,7 +20,7 @@
 	--separator-color: grey; /* Combine with background color */
 	--button-background-color: #dddddd; /* Light grey */
 	--button-text-color: black;
-	--button-background-active-color: #c0c0c0; /* middle dark grey */
+	--button-background-active-color: var(--light-logo);
 	--button-text-active-color: black;
 	--button-background-hover-color: #c9c9c9; /* low dark grey */
 	--button-text-hover-color: black;
