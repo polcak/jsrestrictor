@@ -147,7 +147,8 @@ function show_existing_level(levelsEl, level) {
 		<button class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
 			${escape(levels[level].level_text)}
 		</button>
-		<label for="${escape(currentId)}">${escape(levels[level].level_description)}</label>
+		<span></span>
+		<p><label for="${escape(currentId)}">${escape(levels[level].level_description)}</label></p>
 		</li>`);
 	levelsEl.appendChild(fragment);
 	var lielem = document.getElementById(`li-${level}`); // Note that FF here requires unescaped ID
@@ -160,7 +161,7 @@ function show_existing_level(levelsEl, level) {
 		tweaksEl.classList.add("tweakgrid");
 		tweaksEl.classList.add("hidden_descr");
 		tweaksEl.id = `tweaks-${escape(level)}`;
-		lielem.appendChild(view);
+		lielem.getElementsByTagName('button')[0].insertAdjacentElement("afterend", view);
 		lielem.appendChild(tweaksEl);
 		let tweaksBusiness = Object.create(tweaks_gui);
 		tweaksBusiness.get_current_tweaks = function() {
@@ -193,6 +194,7 @@ function show_existing_level(levelsEl, level) {
 		restore.addEventListener("click", restore_level.bind(restore, level, levels[level]));
 		restore.appendChild(document.createTextNode("Restore"));
 	}
+	prepareHiddenHelpText(lielem.getElementsByTagName('p'));
 	var current = document.getElementById(currentId)
 	current.addEventListener("click", function() {
 		for (let child of levelsEl.children) {
@@ -412,20 +414,24 @@ function control_slider(prefix)
 	}
 }
 
+function prepareHiddenHelpText(elements) {
+	Array.prototype.forEach.call(elements, it => it.classList.add("hidden_descr"));
+	var ctrl = document.createElement("button");
+	ctrl.innerText = "?";
+	ctrl.classList.add("help");
+	ctrl.addEventListener("click", function(ev) {
+		Array.prototype.forEach.call(elements, it => it.classList.toggle("hidden_descr"));
+		ev.preventDefault();
+	});
+	elements[0].previousElementSibling.insertAdjacentElement("beforeend", ctrl);
+}
+
 window.addEventListener("DOMContentLoaded", function() {
 	function prepareHelpText(prefix) {
-		var descr = document.getElementsByClassName(prefix + "_description");
-		Array.prototype.forEach.call(descr, it => it.classList.add("hidden_descr"));
-		var ctrl = document.createElement("button");
-		ctrl.innerText = "?";
-		ctrl.classList.add("help");
-		ctrl.addEventListener("click", function(ev) {
-			Array.prototype.forEach.call(descr, it => it.classList.toggle("hidden_descr"));
-			ev.preventDefault();
-		});
-		descr[0].previousElementSibling.insertAdjacentElement("beforeend", ctrl);
+		prepareHiddenHelpText(document.getElementsByClassName(prefix + "_description"));
 	}
 
+	prepareHelpText("jss");
 	prepareHelpText("nbs");
 	prepareHelpText("fpd");
 });
