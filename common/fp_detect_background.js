@@ -625,6 +625,10 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 					fpDetectionEnabled = result.fpDetectionOn;
 				});
 				break;
+			case "fpd-whitelist-check": {
+				// answer to popup, when asking whether is the site whitelisted
+				return Promise.resolve(isFpdWhitelisted(record.url));
+			}
 			case "add-fpd-whitelist":
 				// obtain current hostname and whitelist it
 				var currentHost = record.url;
@@ -678,20 +682,6 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 				return Promise.resolve(hits);
 			}
 		}
-	}
-});
-
-/**
- *
- * The listener sends message response which contains information if the current site is whitelisted or not.
- * 
- * \param record Receives full message.
- * \param sender Sender of the message.
- */
-browser.runtime.onMessage.addListener(function (record, sender) {
-	// message came from popup,js, asking whether is this site whitelisted
-	if (record.purpose == "fpd-whitelist-check") {
-		return Promise.resolve(isFpdWhitelisted(record.url));
 	}
 });
 
