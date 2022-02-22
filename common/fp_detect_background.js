@@ -765,10 +765,11 @@ function generateFpdReport(tabId) {
 			// message delay to make a space for report page initialization
 			setTimeout(() => {
 				browser.tabs.sendMessage(tab.id, {
-					tabId: tabId,
+					purpose: "report-generate",
 					tabObj: availableTabs[tabId],
-					groups: {recursive: fp_levels.groups[level], sequential: fpGroups[level]},
-					latestEvals: latestEvals,
+					groups: {root: fp_levels.groups[level].name, all: fpGroups[level]},
+					fpDb: fpDb[tabId],
+					latestEvals: latestEvals[tabId],
 					exceptionWrappers: exceptionWrappers
 				});
 			}, 200)

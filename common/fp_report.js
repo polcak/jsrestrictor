@@ -25,43 +25,37 @@
  *
  * \param callback Function that initialize FPD report creation.
  */
-browser.runtime.onMessage.addListener(function (message, sender) {
-    if (message.tabId && message.groups && message.latestEvals) {
-        var {tabId, tabObj, groups, latestEvals, exceptionWrappers} = message;
-        createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers);
+browser.runtime.onMessage.addListener(function (message) {
+    if (message.purpose == "report-generate") {
+        createReport(message);
     }
 })
 
 /**
  * The function that populates FPD report page with data from the latest evaluation and hooks up listeners.
  *
- * \param tabId Integer number representing ID of evaluated browser tab.
- * \param tabObj Object consisting of additional information about the tab specified by tabId value.
- * \param groups Object containing both recursive (fp_levels.groups) and sequential (fpGroups) definition of heuristic groups.
- * \param latestEvals Object that stores latest evaluation statistics for every examined tab.
- * \param exceptionWrappers Object containing information about unsupported wrappers for used browser.
+ * \param data Information about latest fingerprinting evaluation consisting of all essential FPD objects.
  */
-function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
+function createReport(data) {
+    var {tabObj, groups, latestEvals, fpDb, exceptionWrappers} = data;
 	var report = document.getElementById("fpd-report");
-    if (!latestEvals[tabId] || !latestEvals[tabId].evalStats) {
-        report.innerHTML = "Error creating FPD report!"
+    if (!tabObj || !groups || !groups.root || !groups.all || !fpDb ||!latestEvals) {
+        report.innerHTML = "Error: Missing information, cannot create report!"
         return;
     }
-    
-    var rootGroup = groups.recursive.name;
-    var fpGroups = groups.sequential;
 
     // parse latestEvals to create more useful representation for FPD report generation
     var processedEvals = {};
-    for (let item of latestEvals[tabId].evalStats) {
+    for (let item of latestEvals.evalStats) {
         processedEvals[item.title] = processedEvals[item.title] || {};
         processedEvals[item.title].type = item.type;
-        if (processedEvals[item.title].accesses) {
-            processedEvals[item.title].accesses += item.accesses ? item.accesses : 0;
+        let total = 0;
+        if (fpDb[item.title]) {
+            for (let stat of Object.values(fpDb[item.title])) {
+                total += stat.total;
+            }
         }
-        else {
-            processedEvals[item.title].accesses = item.accesses ? item.accesses : 0;
-        }
+        processedEvals[item.title].total = total;
     }
 
     // add page URL and FavIcon to header section of the report
@@ -82,12 +76,12 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
     // generate html code for evaluated group
     let generateGroup = (group) => {
         if (processedEvals[group]) {
-            if (fpGroups[group].description) {
+            if (groups.all[group].description) {
                 html += "<div id=\"" + group + "\" class=\"fpd-group access\">";
                 html += "<h2>" + group + "</h2>";
-                html += "<p>" + fpGroups[group].description + "</p>";
+                html += "<p>" + groups.all[group].description + "</p>";
             }
-            for (let [item, type] of Object.entries(fpGroups[group].items)) {
+            for (let [item, type] of Object.entries(groups.all[group].items)) {
                 if (type == "group") {
                     generateGroup(item);
                 }
@@ -95,7 +89,7 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
                     generateResource(item)
                 }
             }
-            if (fpGroups[group].description) {
+            if (groups.all[group].description) {
                 html += "</div>";
             }
         }
@@ -104,7 +98,7 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
     // generate html code for evaluated resource (get,set,call)
     let generateResource = (resource) => {
         if (processedEvals[resource]) {
-            let accessRaw = processedEvals[resource].accesses;
+            let accessRaw = processedEvals[resource].total;
             let accessCount = accessRaw >= 1000 ? "1000+" : accessRaw;
             html += `<h4 class="hidden ${accessRaw > 0 ? "access" : "no-access"}"><span class="dot">-</span> ` +
             `${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})</h4>`;
@@ -112,7 +106,7 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
     }
 
     // start generating FPD report from the first group (root group)
-    generateGroup(rootGroup);
+    generateGroup(groups.root);
     report.innerHTML += html;
 
     // hide groups with no relevant entries
@@ -169,16 +163,15 @@ function createReport(tabId, tabObj, groups, latestEvals, exceptionWrappers) {
     }
 
     // show description/help for the report
-    let showDescription = (event) => {
+    let showDescription = () => {
         for (let element of document.querySelectorAll(".description")) {      
             element.classList.toggle("hidden");
         }
     }
 
     // show all groups/resources even if not accessed
-    let showNotAccessed = (event) => {
+    let showNotAccessed = () => {
         for (let element of document.querySelectorAll(".no-access")) {      
-            console.log(element);
             element.classList.remove("no-access");
         }
     }
