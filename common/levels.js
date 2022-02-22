@@ -625,15 +625,15 @@ const L_EXPERIMENTAL = "Experiment"; // Use a long ID so that it is not in confl
 var level_0 = {
 	"builtin": true,
 	"level_id": L0,
-	"level_text": "Turn JavaScript shield off",
-	"level_description": "No protection at all",
+	"level_text": "Turn JavaScript Shield off",
+	"level_description": "JavaScript APIs are not wrapped. Use this level if you trust the oprator of the visited page(s) or if you do not like JavaScript Shield but apply other protection mechanisms.",
 };
 
 var level_2 = {
 	"builtin": true,
 	"level_id": L2,
 	"level_text": "Recommended",
-	"level_description": "Recommended level of protection for most sites",
+	"level_description": "The results of API calls are faked so that your browser appears as a different browser for different fingerprinters. The results of API calls are modified in different way on different domains so that your cross-site fingerprint is not stable. The generated fingerprint values also differ with each browser restart. If you need a different fingerprint for the same website without restart, use incognito mode. Keep in mind that even if you log out from a site, clear your cookies, change your IP address, the modified APIs will provide a way to compute the same fingerprint. Restart your browser if you want to change your fingerprint.",
 	"time_precision": 3,
 	"htmlcanvaselement": 1,
 	"audiobuffer": 1,
@@ -654,7 +654,7 @@ var level_3 = {
 	"builtin": true,
 	"level_id": L3,
 	"level_text": "Strict",
-	"level_description": "Enable all non-experimental protection. Return fake values for the wrapped APIs",
+	"level_description": "Enable all non-experimental protection. The wrapped APIs return fake values. Some APIs are blocked completely, others provide meaningful but rare values. Some return values are meaningless. This level will make you fingerprintable because the results of API calls are generally modified in the same way on all webistes and in each session. Use this level if you want to limit the information provided by your browser. If you are worried about fingerprinters, make sure the Fingerprint Detector is activated.",
 	"time_precision": 3,
 	"htmlcanvaselement": 2,
 	"audiobuffer": 2,
@@ -676,7 +676,7 @@ var level_experimental = {
 	"builtin": true,
 	"level_id": L_EXPERIMENTAL,
 	"level_text": "Experimental",
-	"level_description": "Strict level protections with additional wrappers enabled",
+	"level_description": "Strict level protections with additional wrappers enabled (including APIs known to regularly break webpages and APIs that do not work perfectly. Use this level if you want to experiment with JShelter. Use Recommended or Strict level with active Fingerprint Detector for your regular activities.",
 	"time_precision": 3,
 	"htmlcanvaselement": 2,
 	"audiobuffer": 2,

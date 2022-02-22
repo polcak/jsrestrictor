@@ -147,7 +147,7 @@ function show_existing_level(levelsEl, level) {
 		<button class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
 			${escape(levels[level].level_text)}
 		</button>
-		<label for="${escape(currentId)}">${escape(levels[level].level_description)}</label>
+		<p><label for="${escape(currentId)}">${escape(levels[level].level_description)}</label></p>
 		</li>`);
 	levelsEl.appendChild(fragment);
 	var lielem = document.getElementById(`li-${level}`); // Note that FF here requires unescaped ID
@@ -160,7 +160,7 @@ function show_existing_level(levelsEl, level) {
 		tweaksEl.classList.add("tweakgrid");
 		tweaksEl.classList.add("hidden_descr");
 		tweaksEl.id = `tweaks-${escape(level)}`;
-		lielem.appendChild(view);
+		lielem.getElementsByTagName('p')[0].appendChild(view);
 		lielem.appendChild(tweaksEl);
 		let tweaksBusiness = Object.create(tweaks_gui);
 		tweaksBusiness.get_current_tweaks = function() {
@@ -426,6 +426,7 @@ window.addEventListener("DOMContentLoaded", function() {
 		descr[0].previousElementSibling.insertAdjacentElement("beforeend", ctrl);
 	}
 
+	prepareHelpText("jss");
 	prepareHelpText("nbs");
 	prepareHelpText("fpd");
 });
