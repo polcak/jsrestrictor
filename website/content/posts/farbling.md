@@ -17,7 +17,7 @@ With all this in [mind](https://brave.com/brave-fingerprinting-and-privacy-budge
 
 ### How does farbling work?
 
-Farbling uses generated session and [eTLD+1](https://web.dev/same-site-same-origin/) keys to deterministically change outputs of certain APIs commonly used for browser fingerprinting. These white lies result in different websites calculating different fingerprints. Moreover, a previously visited website calculates a different fingerprint in a new browsing session.
+Farbling uses generated session and [eTLD+1](https://web.dev/same-site-same-origin/) keys to deterministically change outputs of certain APIs commonly used for browser fingerprinting. These little lies result in different websites calculating different fingerprints. Moreover, a previously visited website calculates a different fingerprint in a new browsing session.
 
 Farbling implementation is publicly available on Github [issue](https://github.com/brave/brave-browser/issues/8787) with discussions on design decisions, future plans and possible changes in a separate [issue](https://github.com/brave/brave-browser/issues/11770).
 
