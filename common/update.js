@@ -379,6 +379,9 @@ function checkAndSaveConfig(conf) {
 	if (!("whitelistedHosts" in conf) || typeof(conf.whitelistedHosts) !== "object") {
 		conf.whitelistedHosts = {};
 	}
+	if (!("fpdWhitelist" in conf) || typeof(conf.fpdWhitelist) !== "object") {
+		conf.fpdWhitelist = {};
+	}
 	browser.storage.sync.set(conf);
 	installUpdate();
 	return "OK";
