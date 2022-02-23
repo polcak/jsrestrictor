@@ -118,6 +118,9 @@ browser.storage.sync.get(["fpdWhitelist"]).then(function(result) {
 		fpdWhitelist = result.fpdWhitelist;
 });
 
+// unify default color of popup badge between different browsers
+browser.browserAction.setBadgeBackgroundColor({color: "#6E7378"});
+
 // take care of unsupported resources for cross-browser behaviour uniformity
 balanceUnsupportedWrappers();
 /// \endcond
@@ -325,15 +328,19 @@ function correctGroupCriteria(rootGroup, effectedGroups, level) {
  *
  * \param tabId Integer number representing ID of browser tab that is going to be evaluated.
  *
- * \returns array where first item represents current weight of root group after evaluation and second item contain FP severity value
+ * \returns object where "weight" property represents evaluated weight of root group and "severity" property contain severity array
  */
 function evaluateGroups(tabId) {
 	// get url of evaluated tab
 	var url = availableTabs[tabId] ? availableTabs[tabId].url : "";
+	var ret = {
+		weight: 0,
+		severity: []
+	}
 
 	// inaccesible or invalid url - do not evaluate
 	if (!url) {
-		return [0, []];
+		return ret;
 	}
 	
 	// clear old evalStats
@@ -352,15 +359,14 @@ function evaluateGroups(tabId) {
 	// start recursive evaluation if all needed objects are defined
 	if (rootGroup && fpGroups[level] && fp_levels.wrappers[level]) {
 		let evalRes = evaluateGroupsCriteria(rootGroup, level, tabId)[0];
-		let finalSeverity = [];
+		ret.weight = evalRes.actualWeight;
 		if (fp_levels.groups[level].severity) {
 			let sortedSeverity = fp_levels.groups[level].severity.sort((x, y) => x[0] - y[0]);
-			finalSeverity = sortedSeverity.filter((x) => (x[0] <= evalRes.actualWeightsSum)).reverse()[0];
+			ret.severity = sortedSeverity.filter((x) => (x[0] <= evalRes.actualWeightsSum)).reverse()[0];
 		}
-		return [evalRes.actualWeight, finalSeverity];
 	}
 
-	return [0, []];
+	return ret;
 }
 
 /**
@@ -850,12 +856,17 @@ function cancelCallback(requestDetails) {
 		var evalResult = evaluateGroups(requestDetails.tabId);
 
 		// store latest severity value after evaluation of given tab
-		if (evalResult[1]) {
-			latestEvals[requestDetails.tabId].severity = evalResult[1];
+		if (evalResult.severity) {
+			latestEvals[requestDetails.tabId].severity = evalResult.severity;
+		}
+
+		// modify color of browserAction
+		if (evalResult.severity[2]) {
+			browser.browserAction.setBadgeBackgroundColor({color: evalResult.severity[2], tabId: requestDetails.tabId});
 		}
 
 		// if actualWeight of root group is higher than 0 => reactive phase and applying measures
-		if (evalResult[0]) {
+		if (evalResult.weight) {
 
 			// get url of tab asociated with this request
 			var tabUrl = availableTabs[requestDetails.tabId] ? availableTabs[requestDetails.tabId].url : undefined;
