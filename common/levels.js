@@ -97,7 +97,7 @@ var wrapping_groups = {
 			],
 			params: [
 				{
-					short: "White lie",
+					short: "Little lies",
 					description: "Alter image data based on domain hash",
 					config: [0],
 				},
@@ -126,7 +126,7 @@ var wrapping_groups = {
 			],
 			params: [
 				{
-					short: "White lie",
+					short: "Little lies",
 					description: "Add amplitude noise based on domain hash",
 					config: [0],
 				},
@@ -157,8 +157,8 @@ var wrapping_groups = {
 		],
 			params: [
 				{
-					short: "White lie",
-					description: "Generate random numbers/strings based on domain hash, modified canvas",
+					short: "Little lies",
+					description: "Generate random numbers/strings and modify canvas using domain hash",
 					config: [0],
 				},
 				{
@@ -210,7 +210,7 @@ var wrapping_groups = {
 			description2: [],
 			params: [
 				{
-					short: "White lie",
+					short: "Little lies",
 					description: "Edit current and add two fake plugins",
 					config: [0],
 				},
@@ -239,7 +239,7 @@ var wrapping_groups = {
 		],
 			params: [
 				{
-					short: "White lie",
+					short: "Little lies",
 					description: "Randomize order",
 					config: [0],
 				},
