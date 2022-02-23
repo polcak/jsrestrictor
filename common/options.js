@@ -147,6 +147,7 @@ function show_existing_level(levelsEl, level) {
 		<button class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
 			${escape(levels[level].level_text)}
 		</button>
+		<span class="help_ovisible">${escape(create_short_text(levels[level].level_description, 50))}</span>
 		<span></span>
 		<p><label for="${escape(currentId)}">${escape(levels[level].level_description)}</label></p>
 		</li>`);
@@ -194,7 +195,7 @@ function show_existing_level(levelsEl, level) {
 		restore.addEventListener("click", restore_level.bind(restore, level, levels[level]));
 		restore.appendChild(document.createTextNode("Restore"));
 	}
-	prepareHiddenHelpText(lielem.getElementsByTagName('p'));
+	prepareHiddenHelpText(lielem.getElementsByTagName('p'), lielem.getElementsByClassName('help_ovisible'));
 	var current = document.getElementById(currentId)
 	current.addEventListener("click", function() {
 		for (let child of levelsEl.children) {
@@ -414,16 +415,17 @@ function control_slider(prefix)
 	}
 }
 
-function prepareHiddenHelpText(elements) {
-	Array.prototype.forEach.call(elements, it => it.classList.add("hidden_descr"));
+function prepareHiddenHelpText(originally_hidden_elements, originally_visible_elements = []) {
+	Array.prototype.forEach.call(originally_hidden_elements, it => it.classList.add("hidden_descr"));
+	let all_elements = Array.from(originally_hidden_elements).concat(Array.from(originally_visible_elements));
 	var ctrl = document.createElement("button");
 	ctrl.innerText = "?";
 	ctrl.classList.add("help");
 	ctrl.addEventListener("click", function(ev) {
-		Array.prototype.forEach.call(elements, it => it.classList.toggle("hidden_descr"));
+		Array.prototype.forEach.call(all_elements, it => it.classList.toggle("hidden_descr"));
 		ev.preventDefault();
 	});
-	elements[0].previousElementSibling.insertAdjacentElement("beforeend", ctrl);
+	originally_hidden_elements[0].previousElementSibling.insertAdjacentElement("beforeend", ctrl);
 }
 
 window.addEventListener("DOMContentLoaded", function() {
