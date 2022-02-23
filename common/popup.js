@@ -221,8 +221,33 @@ function add_level_buttons() {
 
 
 function update_level_info() {
+	const LIMIT = 300;
 	document.getElementById("level-text").textContent = current_level.level_text;
-	document.getElementById("level-description").textContent = ` - ${current_level.level_description}`;
+	let descriptionEl = document.getElementById("level-description");
+	let moreEl = document.getElementById("current_site_level_settings").querySelector(".more");
+	let lessEl = document.getElementById("current_site_level_settings").querySelector(".less");
+	let shortDescr = create_short_text(current_level.level_description, LIMIT);
+	descriptionEl.textContent = ` - ${shortDescr}`;
+	if (current_level.level_description != shortDescr) {
+		lessEl.classList.add("hidden_descr");
+		moreEl.classList.remove("hidden_descr");
+		moreEl.onclick = function() {
+			descriptionEl.textContent = " - " + current_level.level_description;
+			moreEl.classList.add("hidden_descr");
+			lessEl.classList.remove("hidden_descr");
+			return false;
+		}
+		lessEl.onclick = function() {
+			descriptionEl.textContent = ` - ${shortDescr}`;
+			lessEl.classList.add("hidden_descr");
+			moreEl.classList.remove("hidden_descr");
+			return false;
+		}
+	}
+	else {
+		lessEl.classList.add("hidden_descr");
+		moreEl.classList.add("hidden_descr");
+	}
 }
 
 function update_tweaks() {

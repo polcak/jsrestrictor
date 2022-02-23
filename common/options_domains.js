@@ -222,7 +222,8 @@ function update_domain_level(dlel, set_value) {
 	var finalValue = set_value || dlel.value;
 	dlel.textContent = "";
 	for (let levelid in levels) {
-		dlel.appendChild(document.createRange().createContextualFragment(`<option value="${escape(levelid)}">${escape(levels[levelid].level_text)}: ${escape(levels[levelid].level_description)}</option>`));
+		let descr = levels[levelid].level_description;
+		dlel.appendChild(document.createRange().createContextualFragment(`<option value="${escape(levelid)}">${escape(levels[levelid].level_text)}: ${escape(create_short_text(descr, 50))}</option>`));
 	};
 	dlel.value = finalValue;
 }

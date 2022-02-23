@@ -177,3 +177,36 @@ Observable.prototype = {
 		}
 	}
 };
+
+/**
+ * Return beginning sentences from a long description
+ *
+ * \param text The original text
+ * \param limit The suggested maximal length of the returned text
+ *
+ * \return A sentence or more sentences from the begining of the text
+ *
+ * Do not return information in parentheses. Always return at least one sentense. Return as much
+ * sentences as possible upto the LIMIT.
+ */
+function create_short_text(text, LIMIT) {
+	if (text.length > LIMIT) {
+		let remove_parentheses = / \([^)]*\)/;;
+		text = text.replace(remove_parentheses, "");
+		let sentences = text.split(".");
+		sentences = sentences.map(s => s + ".");
+		let done = false;
+		text = sentences.reduce(function (acc, current) {
+			if (!done) {
+				if ((acc.length + current.length) <= LIMIT) {
+					return acc + current;
+				}
+				else {
+					done = true;
+				}
+			}
+			return acc;
+		});
+	}
+	return text;
+}
