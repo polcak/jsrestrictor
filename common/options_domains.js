@@ -22,19 +22,6 @@
 //
 
 
-function escape(str)
-{
-	var map =
-	{
-		'&': '&amp;',
-		'<': '&lt;',
-		'>': '&gt;',
-		'"': '&quot;',
-		"'": '&#039;'
-	};
-	return str.replace(/[&<>"']/g, (c) =>  map[c]);
-}
-
 function restore_domain(domain, settings) {
 	domains[domain] = settings;
 	saveDomainLevels();
