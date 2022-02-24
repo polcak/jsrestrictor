@@ -103,7 +103,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .help {
-	margin-left: 1em;
+	margin-left: 0.5em;
 	background-color: var(--help-icon-background);
 	color: var(--help-icon-color);
 	border-radius: 10px;
