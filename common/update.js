@@ -334,11 +334,6 @@ function installUpdate() {
 			item.version = 6;
 		}
 		if (item.version < 6.1) {
-			// Turn FPD automatically on for advanced users - i.e. the user selected level 3 or a custom
-			// level as the default level
-			if (!([0, 1, 2, "0", "1", "2"].includes(item.__default__))) {
-				item.fpDetectionOn = true;
-			}
 			// We no longer ship level 1 as its content is not defined well, the tweaks allow the user
 			// to relax the level conditions specifically to each page
 			for (domain in item.domains) {
