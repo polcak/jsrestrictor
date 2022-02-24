@@ -45,9 +45,7 @@ var sensorapi_prng_functions = `
 
   // Get seed for PRNG: prefer existing seed, then domain hash, session hash
   var sen_seed = sen_seed ||
-    ((typeof domainHash === 'undefined') ?
-    sen_generateSeed(Hashes.sessionHash) :
-    sen_generateSeed(domainHash));
+    sen_generateSeed(domainHash);
 
 
   // PRNG based on Mulberry32 algorithm
