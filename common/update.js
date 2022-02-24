@@ -194,10 +194,10 @@ function checkAndSaveConfig(conf) {
 	if (!("version" in conf && typeof(conf.version) === "number")) {
 		conf.version = 2.1;
 	}
-	if (!("requestShieldOn" in conf) || typeof(conf.requestShieldOn) !== "booloean") {
+	if (!("requestShieldOn" in conf) || typeof(conf.requestShieldOn) !== "boolean") {
 		conf.requestShieldOn = true;
 	}
-	if (!("fpDetectionOn" in conf) || typeof(conf.fpDetectionOn) !== "booloean") {
+	if (!("fpDetectionOn" in conf) || typeof(conf.fpDetectionOn) !== "boolean") {
 		conf.fpDetectionOn = false;
 	}
 	if (!("custom_levels" in conf) || typeof(conf.custom_levels) !== "object") {
