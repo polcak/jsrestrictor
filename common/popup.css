@@ -1,50 +1,90 @@
 /*
  * SPDX-FileCopyrightText: 2021 2019 Libor Polčák
  * SPDX-FileCopyrightText: 2021 2019 Martin Timko
- * SPDX-FileCopyrightText: 2021 2021 Giorgio Maone
+ * SPDX-FileCopyrightText: 2022 2021 Giorgio Maone
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 body {
-	display: grid;
-	grid-template-columns: 32px 1fr 25px;
-	grid-template-areas:
-		"logo   jsr    controls"
-		"levels levels levels"
-		"bin bin bin";
-	grid-gap: 3em;
-	padding: 1em;
-	margin: 1em;
-	min-width: 25em;
+	padding: 0.5em;
+	margin: 0em;
+	min-width: 38em;
+}
+
+content {
+	padding: 0.5em;
+	margin: 0.5em;
+}
+
+header, footer, .section-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	font-size: large;
+}
+
+header {
+	margin-bottom: .5em;
+	border-bottom: 2px solid #aaa;
+}
+
+
+footer {
+	margin-top: .5em;
+	border-top: 2px solid #aaa;
+}
+
+label[for]:first-child {
+  flex: 5;
+  display: block;
+	cursor: pointer;
+	padding: .2em 0;
 }
 
 h3 {
 	font-size: 3ex;
 }
 
+.buttons {
+	text-align: end;
+	margin: 0 0 1em 0;
+}
+
 #logo {
-	grid-area: logo;
 	width: 32px;
+	display: inline;
 }
 
 #titletext {
-	grid-area: jsr;
-	display: block;
+	display: inline;
 	font-size: large;
+	text-align: left;
 }
 
-#controls {
-	grid-area: controls;
-	width: 25px;
+#site-settings, #site-settings:not(.enabled) ~ #globals {
+	display: none;
+}
+#site-settings.enabled {
+	display: initial;
 }
 
-#level_controls {
-	grid-area: levels;
+
+#refresh-page, #global-settings, .js-toggle {
+	font-size: large;
+	font-weight: bold;
+	vertical-align: 50%;
+}
+
+#page-info {
+	display: flex;
 }
 
 #current-site {
 	font-size: large;
+	text-align: center;
+	flex-grow: 1;
 }
 
 #level-select {
@@ -55,48 +95,44 @@ h3 {
 }
 
 .level {
-	font-weight: bold;
 	font-size: large;
-	color: #4a4a4a;
 	margin: 0.7ex;
 	padding: 0.7ex;
-	border: 2px solid grey;
-	border-radius: 0.5ex;
 }
 
-.level:hover {
-	cursor: pointer;
-	background-color: #c9c9c9;
-	color: black;
+input#js-toggle {
+	position: absolute;
+	visibility: hidden;
+	opacity: 0;
 }
 
-.active {
-	border: 2px solid black;
-	background-color: #c9c9c9;
-	color:  black;
+label.js-toggle {
+	padding: 0.5ex;
+	border: 1px var(--separator-color) solid;
+	background-color: var(--button-background-color);
+	color: var(--button-text-color);
 }
 
-#controls {
-	font-weight: bold;
-	font-size: 1.5ex;
-	color: #4a4a4a;
-	margin: 0.7ex;
-	padding: 0.7ex;
-	border: 2px solid grey;
-	border-radius: 0.5ex;
-	margin-top: 1.3ex;
-	margin-left: 2ex;
+label.js-toggle:hover {
+	background-color: var(--button-background-hover-color);
+	color: var(--button-text-hover-color);
 }
 
-#controls:hover {
-	cursor: pointer;
-	border: 2px solid black;
-	background-color: #c9c9c9;
-	color:  black;
+input#js-toggle:checked + label {
+	background-color: var(--button-background-active-color);
+	color: var(--button-text-active-color);
 }
 
-#binary_options {
-	grid-area: bin;
+input#js-toggle:checked + label:after {
+	content: " -";
+}
+
+label.js-toggle:after {
+	content: " ⤵"
+}
+
+.toggle:not(.toggled) ~ .section-body {
+	display: none;
 }
 
 .off_message{
@@ -116,83 +152,39 @@ h3 {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	align-items: center;
 }
 
-.switch_wrapper > label {
+.switch_wrapper > label, #page-info > label {
 	font-size: large;
 	white-space: nowrap;
 }
 
-/* The switch - the box around the slider */
-.switch {
-	--off-bg: #888;
-	--on-bg: #8af;
-	position: relative;
-	display: inline-block;
-	width: 60px;
-	height: 34px;
-	margin-left: 3px;
+#btn-tweak:disabled {
+	display: none;
 }
 
-/* Hide default HTML checkbox */
-.switch input {
-	opacity: 0;
-	width: 0;
-	height: 0;
-
+#tweaks {
+	display: none;
 }
 
-/* ON/OFF slider */
-.slider {
-	position: absolute;
-	cursor: pointer;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: var(--off-bg);
-	-webkit-transition: .4s;
-	transition: .4s;
-	font-size:10pt;
-	text-align: center;
-	vertical-align: middle;
-	line-height: 25px;
+.tweak {
+	display: flex;
 }
 
-.slider:before {
-	position: absolute;
-	content: "";
-	height: 26px;
-	width: 26px;
-	left: 4px;
-	bottom: 4px;
-	background-color: white;
-	-webkit-transition: .4s;
-	transition: .4s;
-	color: gray;
-	content:"OFF";
+.tweaking #tweaks {
+	display: grid;
+	grid: auto / auto auto 5ex 1fr;
+	gap: 1em;
+	align-items: center;
 }
 
-input:checked + .slider {
-	background-color:  var(--on-bg);
+
+
+.head {
+	font-weight: bold;
 }
 
-input:focus + .slider {
-	box-shadow: 0 0 1px var(--on-bg);
-}
-
-input:checked + .slider:before {
-	-webkit-transform: translateX(26px);
-	-ms-transform: translateX(26px);
-	transform: translateX(26px);
-	content:"ON";
-	color:black;
-}
-
-#switch-label
-{
-	text-align: center;
-	vertical-align: middle;
-	font-size:14pt;
-	padding-top:5px;
+.hidden {
+	display: none;
 }

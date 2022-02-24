@@ -199,6 +199,158 @@ function installUpdate() {
 			item.fpDetectionOn = false;
 			item.version = 5;
 		}
+		if (item.version < 6) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				// time_precision
+				if (l.time_precision) {
+					if (l.time_precision_randomize || l.time_precision_precision < 1) {
+						l.time_precision = 3;
+					}
+					else if (l.time_precision_precision == 1) {
+						l.time_precision = 2;
+					}
+					else if (l.time_precision_precision > 1) {
+						l.time_precision = 1;
+					}
+					else {
+						delete l.time_precision;
+					}
+				}
+				else {
+					delete l.time_precision;
+				}
+				delete l.time_precision_precision;
+				delete l.time_precision_randomize;
+				// regular farbling
+				for (farblable of ["htmlcanvaselement", "audiobuffer", "webgl", "plugins", "enumerateDevices", "hardware"]) {
+					if (l[farblable]) {
+						if (l[farblable + "_method"] !== undefined) {
+							l[farblable] = l[farblable + "_method"] + 1;
+						}
+						else {
+							l[farblable] = 2;
+						}
+					}
+					else {
+						delete l[farblable];
+					}
+					delete l[farblable + "_method"];
+				}
+				// xhr
+				if (l.xhr) {
+					if (l.xhr_behaviour_block && !l.xhr_behaviour_ask) {
+						l.xhr = 2;
+					}
+					else {
+						l.xhr = 1;
+					}
+				}
+				else {
+					delete l.xhr;
+				}
+				delete l.xhr_behaviour_block;
+				delete l.xhr_behaviour_ask;
+				// arrays
+				if (l.arrays) {
+					if (l.arrays_mapping) {
+						l.arrays = 2;
+					}
+					else {
+						l.arrays = 1;
+					}
+				}
+				else {
+					delete l.arrays;
+				}
+				delete l.arrays_mapping;
+				//sharred_array
+				if (l.shared_array) {
+					if (l.shared_array_approach_block) {
+						l.shared_array = 2;
+					}
+					else {
+						l.shared_array = 1;
+					}
+				}
+				else {
+					delete l.shared_array;
+				}
+				delete l.shared_array_approach_block;
+				delete l.shared_array_approach_polyfill;
+				// webworker
+				if (l.webworker) {
+					if (l.webworker_approach_polyfill) {
+						l.webworker = 2;
+					}
+					else {
+						l.webworker = 1;
+					}
+				}
+				else {
+					delete l.webworker;
+				}
+				delete l.webworker_approach_polyfill;
+				delete l.webworker_approach_slow;
+				// geolocation
+				if (l.geolocation) {
+					if (l.geolocation_locationObfuscationType == 0) {
+						l.geolocation = 6;
+					}
+					else if (l.geolocation_locationObfuscationType == 2) {
+						l.geolocation = 2;
+					}
+					else if (l.geolocation_locationObfuscationType == 3) {
+						l.geolocation = 3;
+					}
+					else if (l.geolocation_locationObfuscationType == 4) {
+						l.geolocation = 4;
+					}
+					else if (l.geolocation_locationObfuscationType == 5) {
+						l.geolocation = 5;
+					}
+					else if (l.geolocation_locationObfuscationType == -1) {
+						l.geolocation = 1;
+					}
+					else {
+						l.geolocation = 3;
+					}
+				}
+				else {
+					delete l.geolocation;
+				}
+				delete l.geolocation_locationObfuscationType;
+				// others
+				for (wrap of ["physical_environment", "gamepads", "vr", "analytics", "battery", "windowname"]) {
+					if (l[wrap]) {
+						l[wrap] = 1;
+					}
+					else {
+						delete l[wrap];
+					}
+				}
+				delete l.physical_environment_emulateStationaryDevice;
+			}
+			item.version = 6;
+		}
+		if (item.version < 6.1) {
+			// We no longer ship level 1 as its content is not defined well, the tweaks allow the user
+			// to relax the level conditions specifically to each page
+			for (domain in item.domains) {
+				let level = item.domains[domain];
+				// Select the default level if the default level is not 3 (if level 3 is the default, set
+				// level 2)
+				if (level.level_id == "1") {
+					if ([2, 3, "2", "3"].includes(item.__default__)) {
+						level.level_id = "2";
+					}
+					else {
+						level.level_id = String(item.__default__);
+					}
+				}
+			}
+			item.version = 6.1;
+		}
 		browser.storage.sync.set(item);
 	});
 }
@@ -208,7 +360,7 @@ function checkAndSaveConfig(conf) {
 	if (!("version" in conf && typeof(conf.version) === "number")) {
 		conf.version = 2.1;
 	}
-	if (!("requestShieldOn" in conf) || typeof(conf.requestShieldOn) !== "booloean") {
+	if (!("requestShieldOn" in conf) || typeof(conf.requestShieldOn) !== "boolean") {
 		conf.requestShieldOn = true;
 	}
 	if (!("fpDetectionOn" in conf) || typeof(conf.fpDetectionOn) !== "boolean") {

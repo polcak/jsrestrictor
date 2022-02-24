@@ -8,32 +8,32 @@ SPDX-License-Identifier: GPL-3.0-or-later
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="common.css">
   <link rel="stylesheet" type="text/css" href="options.css">
-  <link rel="stylesheet" type="text/css" href="options-dark.css" media="(prefers-color-scheme: dark)">
   <script src="/nscl/lib/browser-polyfill.js" type="text/javascript"></script>
   <script src="levels.js" type="text/javascript"></script>
   <script src="helpers.js" type="text/javascript" defer></script>
+  <script src="tweaks_gui.js" type="text/javascript" defer></script>
   <script src="options_domains.js" type="text/javascript" defer></script>
-	<title>JavaScript Restrictor options - per domain protection</title>
+	<title>JShelter options - per domain protection</title>
 </head>
 <body>
 			<section class="logo">
-				<img src="img/icon-128.png" alt="JavaScript Restrictor">
+				<img src="img/icon-128.png" alt="JShelter logo">
 			</section>
 			<nav class="menu">
 				<ul>
-					<li><a href="options.html">Main JSR settings</a></li>
-					<li><a href="options_domains.html">Specific domain level configuration</a></li>
+					<li><a href="options.html">Main settings</a></li>
+					<li><a href="options_domains.html">JS Shield details</a></li>
 					<li><a href="options_advanced.html">Advanced options</a></li>
 					<li>
 						<p>External links</p>
 						<ul>
 							<li><a href="https://polcak.github.io/jsrestrictor/test/test.html">Test page</a></li>
-							<li><a href="https://polcak.github.io/jsrestrictor/levels.html">Levels</a></li>
-							<li><a href="https://polcak.github.io/jsrestrictor/permissions.html">Permissions</a></li>
-							<li><a href="https://github.com/polcak/jsrestrictor/">Source code</a></li>
-							<li><a href="https://github.com/polcak/jsrestrictor/issues">Open issues</a></li>
-							<li><a href="https://polcak.github.io/jsrestrictor/credits.html">Credits</a></li>
+							<li><a href="https://JShelter.org/permissions/">Permissions</a></li>
+							<li><a href="https://pagure.io/JShelter/webextension/">Source code</a></li>
+							<li><a href="https://pagure.io/JShelter/webextension/issues">Issue tracker</a></li>
+							<li><a href="https://JShelter.org/credits/">Credits</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -42,12 +42,12 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 	<section class="content">
 
-    <h1>JavaScript Restrictor</h1>
+    <h1>JShelter JavaScript shield per-website configuration</h1>
 
 <section id="configuration_area">
 
   <div id="second-row">
-    <h2 id="set-domain-level">Set level of protection for website:</h2> 
+    <h2 id="set-domain-level">Set JavaScript shield for website:</h2> 
     <form id="domain-form">
       <input id="domain-text" type="text" placeholder="example.com or en.example.com">
       <select id="domain-level">
@@ -58,6 +58,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
       </select>
       <button id="add_domain" type="submit" class="jsr-button">Add to list</button>
     </form>
+    <h2>A list of website with redefined JavaScript Shield:</h2> 
     <ul id="domain-level-list">
     </ul>
     <button id="save-all-domain-levels">Save all</button>
@@ -66,5 +67,27 @@ SPDX-License-Identifier: GPL-3.0-or-later
 </section>
 
 	</section>
+
+
+
+		<template id="tweak-head">
+		</template>
+		<template id="tweak-row">
+			<label>Wrapper group name</label>
+			<div class="tweak">
+				<input class="tlev" type="range" min="0" max="3" /><output></output>
+			</div>
+			<button class="help">⤵</button>
+			<div class="tweakfill"></div>
+			<div class="explainer hidden_descr">
+				<div class="status"></div>
+				<p>
+					<span class="description"></span>
+					<div class="more"></div>
+				</p>
+			</div>
+		</template>
+
+
 </body>
 </html>

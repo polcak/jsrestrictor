@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -24,7 +24,8 @@
 from json import dumps
 
 
-## From the class Logs object for every website is created. One object contains logs from browsers with and without JSR
+## From the class Logs object for every website is created. One object contains logs from browsers
+with and without JShelter
 #  when the same page is loaded.
 class Logs:
     site = ''

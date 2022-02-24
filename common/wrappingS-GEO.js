@@ -47,9 +47,9 @@
  *
  * When modifying position:
  *
- * * Repeated calls of navigator.geolocation.getCurrentPosition() return the same position
+ * * Repeated calls of `navigator.geolocation.getCurrentPosition()` return the same position
  * without page load and typically return another position after page reload.
- * * navigator.geolocation.watchPosition() does not change position.
+ * * `navigator.geolocation.watchPosition()` does not change position.
  */
 
 (function() {
@@ -334,7 +334,7 @@
 			wrapping_function_args: "successCallback, errorCallback, origOptions",
 			/** \fn fake Geolocation.prototype.watchPosition
 			 * Geolocation.prototype.watchPosition intended use concerns tracking user position changes.
-			 * JSR provides four modes of operaion:
+			 * JShelter provides four modes of operaion:
 			 * * current position approximation: Always return the same data, the same as getCurrentPosition()
 			 * * accurate data: Return exact position but fake timestamp
 			 */

@@ -1,6 +1,6 @@
 Title: How to write a new wrapper
 
-The primary focus of jShelter is to provide security and privacy oriented wrappers of JavaScript APIs. As some of the code is very similar for each wrapper, we use a unified approach to describe wrappers. The approach is described below. This approach also helps to automatically modify `toString` conversions of the wrapped APIs, i.e. a correctly written wrapper creates a modified function but `wrapper.toString()` returns the original string. Finally, this approach also helps in generating code dealing with the [Firefox bug described in #25](https://github.com/polcak/jShelterestrictor/issues/25).
+The primary focus of jShelter is to provide security and privacy oriented wrappers of JavaScript APIs. As some of the code is very similar for each wrapper, we use a unified approach to describe wrappers. The approach is described below. This approach also helps to automatically modify `toString` conversions of the wrapped APIs, i.e. a correctly written wrapper creates a modified function but `wrapper.toString()` returns the original string.
 
 ## File structure
 

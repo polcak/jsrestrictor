@@ -33,6 +33,15 @@ function escape(str) {
 }
 
 /**
+ * Get a property of an object, create it if it does not exist
+ */
+function get_or_create(parent, child, default_value) {
+	let obj = parent[child] || default_value;
+	parent[child] = obj;
+	return obj;
+}
+
+/**
  * Transform byte to Hex value
  */
 function byteToHex(byte) {
@@ -118,3 +127,86 @@ function strToUint(str, length){
 	}
 	return "0b"+ret;
 };
+
+/**
+ * \brief Asynchronously sleep for given number of milliseconds
+ * \param ms Number of milliseconds to sleep
+ */
+async function async_sleep(ms) {
+	return new Promise((resolve) => {
+		setTimeout(resolve, ms);
+	});
+}
+
+
+/**
+ * \brief Observable desing patter implementation.
+ *
+ *  All observers notified with each change.
+ */
+function Observable() {
+	Object.defineProperty(this, "observers", {
+		value: [],
+		writable: true,
+		configurable: true,
+		enumerable: false});
+};
+Observable.prototype = {
+	/**
+	 * \brief Notifies all observers
+	 *
+	 * \param notification An object passed to each observer.
+	 */
+	update: function(...args) {
+		for (o of this.observers) {
+			o.notify(...args);
+		}
+	},
+	/**
+	 * Adds an observer.
+	 *
+	 * \param observer An object implementing notify();
+	 */
+	add_observer: function(observer) {
+		this.observers.push(observer);
+	},
+	remove_observer: function(observer) {
+		const index = this.observers.indexOf(observer);
+		if (index > -1) {
+			array.splice(index, 1);
+		}
+	}
+};
+
+/**
+ * Return beginning sentences from a long description
+ *
+ * \param text The original text
+ * \param limit The suggested maximal length of the returned text
+ *
+ * \return A sentence or more sentences from the begining of the text
+ *
+ * Do not return information in parentheses. Always return at least one sentense. Return as much
+ * sentences as possible upto the LIMIT.
+ */
+function create_short_text(text, LIMIT) {
+	if (text.length > LIMIT) {
+		let remove_parentheses = / \([^)]*\)/;;
+		text = text.replace(remove_parentheses, "");
+		let sentences = text.split(".");
+		sentences = sentences.map(s => s + ".");
+		let done = false;
+		text = sentences.reduce(function (acc, current) {
+			if (!done) {
+				if ((acc.length + current.length) <= LIMIT) {
+					return acc + current;
+				}
+				else {
+					done = true;
+				}
+			}
+			return acc;
+		});
+	}
+	return text;
+}

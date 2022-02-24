@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -34,7 +34,7 @@ from web_browser_type import BrowserType
 from configuration import Config
 
 
-## Find URL of JSR option page after JSR was installed to browser.
+## Find URL of JShelter option page after JShelter was installed to browser.
 def find_options_jsr_page_url(driver, browser_type):
     sleep(1)
     # KNOWN ISSUE: Tab in browser is sometimes not switched by this command.
@@ -53,7 +53,7 @@ def find_options_jsr_page_url(driver, browser_type):
                 return "chrome-extension://" + elem.split(':')[0][:-1] + "/options.html"
 
 
-## Set JSR level in web browser.
+## Set JShelter level in web browser.
 def set_jsr_level(driver, browser_type, level):
     options_page = find_options_jsr_page_url(driver, browser_type)
     driver.get(options_page)

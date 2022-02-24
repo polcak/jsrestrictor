@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -37,7 +37,7 @@ from configuration import get_config
 #  Javascript is called and returned values are processed and returned.
 
 
-## Get geolocation data through JSR test page.
+## Get geolocation data through JShelter test page.
 #
 #  Geolocation data is obtained asynchronously. Interaction with page is needed.
 #  We need element on page where geolocation data is shown after its loading.
@@ -124,7 +124,7 @@ def get_referrer(driver):
 #  Draw 3 elements to canvas and then get canvas data and test if data is spoofed.
 #  Spoofed canvas means that canvas is represented by array with only 0 values.
 ##
-## This getter return "ERROR" in Google Chrome on JSR level 3 because of known bug:
+## This getter return "ERROR" in Google Chrome on JShelter level 3 because of known bug:
 ## selenium.common.exceptions.JavascriptException: Message: javascript error:
 ## Failed to execute 'getRandomValues' on 'Crypto': parameter 1 is not of type 'ArrayBufferView'.
 def is_canvas_spoofed(driver):

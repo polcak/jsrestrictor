@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -23,7 +23,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-# Go to root directory of JSR project.
+# Go to root directory of JShelter project.
 cd ../../../
 
 # Set executable permission.
@@ -35,20 +35,20 @@ make clean
 # Build.
 make
 
-# Create directory for JSR package if does not exists.
-mkdir -p ./tests/common_files/JSR
+# Create directory for JShelter package if does not exists.
+mkdir -p ./tests/common_files/JShelter
 
-# Create xpi package of JSR for Mozilla Firefox from zip archive created by make.
-cp -f ./firefox_JSR.zip ./tests/common_files/JSR/firefox_JSR.xpi
+# Create xpi package of JShelter for Mozilla Firefox from zip archive created by make.
+cp -f ./jshelter_firefox.zip ./tests/common_files/JShelter/firefox.xpi
 
-# Create crx package of JSR for Google Chrome from source files.
-google-chrome --pack-extension=./chrome_JSR >/dev/null 2>&1
+# Create crx package of JShelter for Google Chrome from source files.
+google-chrome --pack-extension=./build/chrome >/dev/null 2>&1
 
 # Remove unnecessary file created during crx package creating.
-rm -rf ./chrome_JSR.pem
+rm -rf ./build/chrome.pem
 
-# Move crx package of JSR to right location (same as xpi package of JSR).
-mv -f ./chrome_JSR.crx ./tests/common_files/JSR/chrome_JSR.crx
+# Move crx package of JShelter to right location (same as xpi package of JShelter).
+mv -f ./build/chrome.crx ./tests/common_files/JShelter/chrome.crx
 
 # Go back to common scripts directory.
 cd ./tests/common_files/scripts

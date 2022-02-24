@@ -1,10 +1,7 @@
 /** \file
- * \brief Wrappers for the Accelerometer Sensor, LinearAccelerationSensor,
- * and GravitySensor
+ * \brief Wrappers for the Gyroscope Sensor
  *
- * \see https://www.w3.org/TR/accelerometer/
- * \see https://www.w3.org/TR/accelerometer/#linearaccelerationsensor
- * \see https://www.w3.org/TR/accelerometer/#gravitysensor
+ * \see https://www.w3.org/TR/Gyroscope/
  *
  *  \author Copyright (C) 2021  Radek Hranicky
  *
@@ -28,40 +25,24 @@
  /** \file
   * \ingroup wrappers
   * MOTIVATION
-  * Readings from the Accelerometer, LinearAccelerationSensor, and GravitySensor
-  * of the Generic Sensor API should be secured as they provide a potentially
-  * valuable data for creating fingerprints. There are multiple options.
-  * A unique fingerprint can be obtained by describing the device's vibrations
-  * (See https://link.springer.com/chapter/10.1007/978-3-319-30806-7_7).
-  * Using trajectory inference and matching of the model to map data, one may
-  * use the readings from the Accelerometer to determing the device's position
-  * (See https://www.researchgate.net/publication/220990763_ACComplice_Location_
-  * inference_using_accelerometers_on_smartphones).
+  * Gyroscope readings can be used for speech recognition: https://crypto.stanford.edu/gyrophone/
+  * and various fingerprinting operations. For stationary devices, the resonance of the unique internal or
+  * external sounds affects angular velocities affect the Gyroscope and allow to create a fingerprint:
+  * https://www.researchgate.net/publication/356678825_Mobile_Device_Fingerprint_Identification_Using_Gyroscope_Resonance
+  * For moving devices, one of the options is using the Gyroscope analyze human walking patterns:
+  * https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7071017/
   *
   *
   * WRAPPING
-  * The wrapper replaces the "XYZ" getters of the Accelerometer sensor,
-  * LinearAccelerationSensor, and GravitySensor. The wrapping's goal is to
-  * simulate a stationary device that is lying bottom down on a flat surface,
-  * e.g., a cell phone on the table. In such a case, only the `z` axis is
-  * affected by gravity. The `x` and `y` axes values should be set to zero.
-  * Yet, there could be vibrations that may change values a little bit, e.g.,
-  * to spin around -0.1 to +0.1. This usually does not happed with every
-  * reading but only in intervals of seconds. And thus, after a few seconds
-  * we pseudo-randomly change these values. For the LinearAccelerationSensor,
-  * the returned values should represent the acceleration without the conribution
-  * of gravity. For stationary devices, the `x` and `y` are zeroes, while the 'z'
-  * portion fluctuates between 0 and 0.1 on the examined devices. The wrapper
-  * simulates the same behavior. Lastly, the GravitySensor's readings are calculated
-  * as the difference between the previous two.
+  * The Gyroscope sensor provides readings of the angular velocity of the device alongthe x/y/z axes.
+  * For a stationary device, all velocities should be zero in an ideal state. As we observed on the
+  * examined devices, device sensor imperfections andlittle vibrations cause the `x`, `y` and `z` to
+  * oscillate between -0.002 and 0.002 on the examined devices. The wrapper simulates the same behavior.
   *
   *
   * POSSIBLE IMPROVEMENTS
-  * Currently, we assume te device is lying on a flat surface bottom down, and
-  * thus only the `z` is affected by gravity. As improvement, we can also
-  * assume the device is in an oblique position. In this case, the gravitational
-  * acceleration would affect two or three axes. Those will have to be updated
-  * properly to create a realistic behavior.
+  * Support for simulation of a non-stationary device. This would require
+  * modifications to other movement-related sensors (Accelerometer, etc.)
   *
   */
 
@@ -87,9 +68,9 @@
     * \brief Property getters of the original sensor object
   */
   var orig_getters = `
-    var origGetX = Object.getOwnPropertyDescriptor(Accelerometer.prototype, "x").get;
-    var origGetY = Object.getOwnPropertyDescriptor(Accelerometer.prototype, "y").get;
-    var origGetZ = Object.getOwnPropertyDescriptor(Accelerometer.prototype, "z").get;
+    var origGetX = Object.getOwnPropertyDescriptor(Gyroscope.prototype, "x").get;
+    var origGetY = Object.getOwnPropertyDescriptor(Gyroscope.prototype, "y").get;
+    var origGetZ = Object.getOwnPropertyDescriptor(Gyroscope.prototype, "z").get;
     var origGetTimestamp = Object.getOwnPropertyDescriptor(Sensor.prototype, "timestamp").get;
     `;
 
@@ -100,54 +81,58 @@
   */
   function shake(axis) {
     val = sen_prng() * (axis.max - axis.min) + axis.min;
+
+    var precision = Math.pow(10, -1 * axis.decimalPlaces);
+    if (val < precision) {
+      val = 0;
+    }
+
     if (axis.canBeNegative) {
       val *= Math.round(sen_prng()) ? 1 : -1;
     }
-    axis.value = val.toFixed(axis.decimalPlaces);
+
+    if (val == 0) {
+      axis.value = 0;
+    } else {
+      axis.value = fixedNumber(val, axis.decimalPlaces);
+    }
   }
 
   /*
-    * \brief Initializes the data generator or creating fake accelerometer values
+    * \brief Initializes the data generator for creating fake Gyroscope values
   */
   function initDataGenerator() {
-    const NEXT_CHANGE_MS_MIN = 1000;
-    const NEXT_CHANGE_MS_MAX = 10000;
+    const NEXT_CHANGE_MS_MIN = 500;
+    const NEXT_CHANGE_MS_MAX = 2000;
 
     dataGen = {
       x: {
         name: "x",
         min: 0.0,
-        max: 0.11,
-        decimalPlaces: 1,
+        max: 0.0021,
+        decimalPlaces: 3,
         canBeNegative: true,
         value: null,
       },
       y: {
         name: "y",
         min: 0.0,
-        max: 0.11,
-        decimalPlaces: 1,
+        max: 0.0021,
+        decimalPlaces: 3,
         canBeNegative: true,
         value: null,
       },
-      z: { // "z with gravity" (for Accelerometer)
-        name: "z_g",
-        min: 9.8,
-        max: 9.9,
-        decimalPlaces: 1,
-        canBeNegative: false,
-        value: null,
-      },
-      z_nograv: { // "z without gravity" (for LinearAccelerationSensor)
-        name: "z_ng",
+      z: {
+        name: "z",
         min: 0.0,
-        max: 0.11,
-        decimalPlaces: 1,
-        canBeNegative: false,
+        max: 0.0021,
+        decimalPlaces: 3,
+        canBeNegative: true,
         value: null,
       },
       nextChangeTimeX: null, // miliseconds
       nextChangeTimeY: null,
+      nextChangeTimeZ: null,
 
       /*
         * \brief Updates the  x/y/z axes values based on the current timestamp
@@ -155,7 +140,7 @@
         * \param Current timestamp from the sensor object
       */
       update: function(currentTimestamp) {
-      // Simulate the accelerometer changes
+      // Simulate the Gyroscope changes
         if (this.shouldWeUpdateX(currentTimestamp)) {
           shake(this.x);
           this.setNextChangeX(currentTimestamp);
@@ -164,8 +149,10 @@
           shake(this.y);
           this.setNextChangeY(currentTimestamp);
         };
-        shake(this.z);
-        shake(this.z_nograv);
+        if (this.shouldWeUpdateZ(currentTimestamp)) {
+          shake(this.z);
+          this.setNextChangeZ(currentTimestamp);
+        };
       },
 
       /*
@@ -203,6 +190,23 @@
       },
 
       /*
+        * \brief Boolean function that decides if the value on the axis Z
+        *        should be updated. Returns true if update is needed.
+        *
+        * \param Current timestamp from the sensor object
+      */
+      shouldWeUpdateZ: function(currentTimestamp) {
+        if (currentTimestamp === null || this.nextChangeTimeZ === null) {
+          return true;
+        }
+        if (currentTimestamp >= this.nextChangeTimeZ) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+
+      /*
         * \brief Sets the timestamp of the next update of value on the axis X.
         *
         * \param Current timestamp from the sensor object
@@ -226,6 +230,19 @@
           + NEXT_CHANGE_MS_MIN
         );
         this.nextChangeTimeY = currentTimestamp + interval_ms;
+      },
+
+      /*
+        * \brief Sets the timestamp of the next update of value on the axis Z.
+        *
+        * \param Current timestamp from the sensor object
+      */
+      setNextChangeZ: function(currentTimestamp) {
+        let interval_ms = Math.floor(
+          sen_prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
+          + NEXT_CHANGE_MS_MIN
+        );
+        this.nextChangeTimeZ = currentTimestamp + interval_ms;
       }
     }
 
@@ -239,6 +256,7 @@
     * \param The sensor object
   */
   function updateReadings(sensorObject) {
+
     // We need the original reading's timestamp to see if it differs
     // from the previous sample. If so, we need to update the faked x,y,z
     let previousTimestamp = previousReading.timestamp;
@@ -271,7 +289,6 @@
     currentReading.fake_x = dataGenerator.x.value;
     currentReading.fake_y = dataGenerator.y.value;
     currentReading.fake_z = dataGenerator.z.value;
-    currentReading.fake_z_nograv = dataGenerator.z_nograv.value;
 
     if (debugMode) {
       console.log(dataGenerator);
@@ -292,14 +309,14 @@
 
   var wrappers = [
     {
-      parent_object: "Accelerometer.prototype",
+      parent_object: "Gyroscope.prototype",
       parent_object_property: "x",
       wrapped_objects: [],
       helping_code: hc,
       post_wrapping_code: [
         {
           code_type: "object_properties",
-          parent_object: "Accelerometer.prototype",
+          parent_object: "Gyroscope.prototype",
           parent_object_property: "x",
           wrapped_objects: [],
           /**  \brief replaces Sensor.prototype.x getter to return a faked value
@@ -310,11 +327,6 @@
               property_value: `
               function() {
                 updateReadings(this);
-                if (this.__proto__.constructor.name === 'LinearAccelerationSensor') {
-                  if (currentReading.fake_x != null) {
-                    return 0;
-                  }
-                }
                 return currentReading.fake_x;
               }`,
             },
@@ -323,14 +335,14 @@
       ],
     },
     {
-      parent_object: "Accelerometer.prototype",
+      parent_object: "Gyroscope.prototype",
       parent_object_property: "y",
       wrapped_objects: [],
       helping_code: hc,
       post_wrapping_code: [
         {
           code_type: "object_properties",
-          parent_object: "Accelerometer.prototype",
+          parent_object: "Gyroscope.prototype",
           parent_object_property: "y",
           wrapped_objects: [],
           /**  \brief replaces Sensor.prototype.y getter to return a faked value
@@ -341,11 +353,6 @@
               property_value: `
               function() {
                 updateReadings(this);
-                if (this.__proto__.constructor.name === 'LinearAccelerationSensor') {
-                  if (currentReading.fake_y != null) {
-                    return 0;
-                  }
-                }
                 return currentReading.fake_y;
               }`,
             },
@@ -354,14 +361,14 @@
       ],
     },
     {
-      parent_object: "Accelerometer.prototype",
+      parent_object: "Gyroscope.prototype",
       parent_object_property: "z",
       wrapped_objects: [],
       helping_code: hc,
       post_wrapping_code: [
         {
           code_type: "object_properties",
-          parent_object: "Accelerometer.prototype",
+          parent_object: "Gyroscope.prototype",
           parent_object_property: "z",
           wrapped_objects: [],
           /**  \brief replaces Sensor.prototype.z getter to return a faked value
@@ -372,11 +379,6 @@
               property_value: `
               function() {
                 updateReadings(this);
-                if (this.__proto__.constructor.name === 'GravitySensor') {
-                  return (currentReading.fake_z - currentReading.fake_z_nograv);
-                } else if (this.__proto__.constructor.name === 'LinearAccelerationSensor') {
-                  return currentReading.fake_z_nograv;
-                }
                 return currentReading.fake_z;
               }`,
             },
@@ -385,5 +387,5 @@
       ],
     },
   ]
-    add_wrappers(wrappers);
+  add_wrappers(wrappers);
 })()

@@ -2,8 +2,7 @@
 !.gitignore
 !.reuse
 *.zip
-chrome_JSR/
-firefox_JSR/
+build/
 ipv4.csv
 common/ipv4.dat
 ipv6.csv
@@ -25,9 +24,4 @@ tests/fpd_tests/wrappers*
 tests/fpd_tests/tests/resources.js
 
 website/output
-website/content/pages/build.md
-website/content/pages/credits.md
-website/content/pages/levels.md
-website/content/pages/license.md
-website/content/pages/permissions.md
-website/content/pages/versions.md
+website/content/wrappers/*

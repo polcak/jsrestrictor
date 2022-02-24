@@ -96,7 +96,7 @@ title: Release history
  * We use NSCL to wrap APIs in iframes and workers
    * It is no longer possible to access unwrapped functions from iframes and workers (Pagure issue #2, Github issue #56)
 * Ignore trailing '.' in domain names when selecting appropriate custom level.
-* Do not freeze wrappers to prevent fingeprintability of the users of JSR. We wrap the correct function
+* Do not freeze wrappers to prevent fingeprintability of the users of JShelter. We wrap the correct function
 	in the prototype chain instead.
 * navigator.getGamepads() wrapper added
 * navigator.activeVRDisplays() and navigator.xr wrappers added
@@ -168,7 +168,7 @@ ide-Channel Attacks](https://misc0110.net/web/files/jszero.pdf)
 *  Network boundary shield prevents web pages to use the browser as a proxy between local network and the public Internet. See the [Force Point report](https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf) for an example of the attack. The protection encapsulates the WebRequest API, so it captures all outgoing requests.
 * Allow multiple custom levels
 * Do not modify DOM of displayed pages (the modifications were detectable by the page scripts and may
-	reveal that the user is running JSR)
+	reveal that the user is running JShelter)
 * Canvas fingerprinting: originally, only `toDataURL` was blocked. The extension now blocks `CanvasRenderingContext2D.prototype.getImageData` and `HTMLCanvasElement.prototype.toBlob`.
 * Block additionaly methods to get performance data.
 * Unfortunately, we do not migrate old settings as the levels were redesigned and several features

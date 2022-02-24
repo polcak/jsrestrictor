@@ -40,28 +40,28 @@
   {% endif %}
 
   <script type="text/javascript">
-  /** @licstart  The following is the entire license notice for the
-   *  JavaScript code in this page
-   *
-   *   Copyright (C) 2021 Manufactura Independente
-   *
-   *   The JavaScript code in this page is free software: you can
-   *   redistribute it and/or modify it under the terms of the GNU
-   *   General Public License (GNU GPL) as published by the Free Software
-   *   Foundation, either version 3 of the License, or (at your option)
-   *   any later version.  The code is distributed WITHOUT ANY WARRANTY;
-   *   without even the implied warranty of MERCHANTABILITY or FITNESS
-   *   FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-   *
-   *   As additional permission under GNU GPL version 3 section 7, you
-   *   may distribute non-source (e.g., minimized or compacted) forms of
-   *   that code without the copy of the GNU GPL normally required by
-   *   section 4, provided you include this license notice and a URL
-   *   through which recipients can access the Corresponding Source.
-   *
-   *  @licend  The above is the entire license notice
-   *  for the JavaScript code in this page.
-   */
+    /** @licstart  The following is the entire license notice for the
+     *  JavaScript code in this page
+     *
+     *   Copyright (C) 2021 Manufactura Independente
+     *
+     *   The JavaScript code in this page is free software: you can
+     *   redistribute it and/or modify it under the terms of the GNU
+     *   General Public License (GNU GPL) as published by the Free Software
+     *   Foundation, either version 3 of the License, or (at your option)
+     *   any later version.  The code is distributed WITHOUT ANY WARRANTY;
+     *   without even the implied warranty of MERCHANTABILITY or FITNESS
+     *   FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+     *
+     *   As additional permission under GNU GPL version 3 section 7, you
+     *   may distribute non-source (e.g., minimized or compacted) forms of
+     *   that code without the copy of the GNU GPL normally required by
+     *   section 4, provided you include this license notice and a URL
+     *   through which recipients can access the Corresponding Source.
+     *
+     *  @licend  The above is the entire license notice
+     *  for the JavaScript code in this page.
+     */
   </script>
 
 </head>
@@ -81,11 +81,11 @@
         </a>
         <a class="navbar-item" href="/">
           {% block titlearea %}
-            <img src="/theme/images/jshelter-logo.svg" alt="Dark orange square with a little white hermitt crab cuttout. {{ SITENAME }} logo">
-            <p>
-              <strong>{{ SITENAME }} </strong>
-              <span>{{ DESCRIPTION }}</span>
-            </p>
+          <img src="/theme/images/jshelter-logo.svg" alt="Dark orange square with a little white hermitt crab cuttout. {{ SITENAME }} logo">
+          <p>
+            <strong>{{ SITENAME }} </strong>
+            <span>{{ DESCRIPTION }}</span>
+          </p>
           {% endblock %}
         </a>
       </div><!-- /.navbar-brand -->
@@ -112,13 +112,13 @@
                 {% for pagename in ['install', 'permissions', 'levels', 'versions', 'credits', 'license'] %}
                 {% set p = (pages|get_by_slug(pagename)) %}
                 {% if p %}
-                  {% if pagename == slug %}
-                  <li class="active">
+                {% if pagename == slug %}
+                <li class="active">
                   {% else %}
-                  <li>
+                <li>
                   {% endif %}
-                    <a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a>
-                  </li>
+                  <a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a>
+                </li>
                 {% endif %}
                 {% endfor %}
               </ul>
@@ -127,7 +127,13 @@
               <ul>
                 <li {% if slug == 'nbs' %} class="active" {% endif %}><a href="{{ SITEURL }}/nbs">Network Boundary Shield</a></li>
                 {% for p in pages if p.category == "wrappers" %}
-                <li><a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a></li>
+                {% if p.url.strip('/') == slug %}
+                <li class="active">
+                  {% else %}
+                <li>
+                  {% endif %}
+                  <a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a>
+                </li>
                 {% endfor %}
               </ul>
             </li>
@@ -159,55 +165,56 @@
       {% block footer %}
       <div class="container grid">
         <!-- copied from docs/_includes/footer.html -->
-          <div class="supporters">
-            <p>
-              This project was funded through the NGI0 PET Fund, a fund established by NLnet with financial support
-              from the European Commission's Next Generation Internet programme, under the aegis of DG
-              Communications Networks, Content and Technology under grant agreement No 825310 as
-              <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a href="https://nlnet.nl/project/JShelter">JShelter</a> projects. This
-              project was supported by the <a href="https://www.fit.vut.cz/research/project/1063/.en">MV CR VI20172020062 project</a>.
-            </p>
-          </div>
-          <div class="license">
-            <p>
-              This program is free software: you can redistribute it and/or modify
-              it under the terms of the GNU General Public License as published by
-              the Free Software Foundation, either
-              <a href="https://www.gnu.org/licenses/gpl-3.0">version 3</a> of the License, or
-              (at your option) any later version.
-            </p>
-            <p>View the source code at <a href="https://pagure.io/JShelter/webextension">Pagure.io</a>.</p>
-          </div>
-          <div class="credits">
-            <ul>
-              <li>
-                <strong>Developers</strong>
-                <ul>
-                  <li><a href="https://www.fit.vutbr.cz/~polcak">Libor Polčák</a></li>
-                  <li>Martin Bednář</li>
-                  <li>Giorgio Maone</li>
-                  <li>Zbyněk Červinka</li>
-                  <li>Martin Timko</li>
-                  <li>Pavel Pohner</li>
-                  <li>Pater Horňák</li>
-                </ul>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <strong>FSF team</strong>
-                <ul>
-                  <li>John Hsieh</li>
-                  <li>Michael McMahon</li>
-                  <li>Ruben Rodriguez</li>
-                </ul>
-              </li>
-              <li>
-                <strong>Design and website development</strong>
-                <a href="https://manufacturaindependente.org/">Manufactura Independente</a>
-              </li>
-            </ul>
-          </div>
+        <div class="supporters">
+          <p>
+            This project was funded through the NGI0 PET Fund, a fund established by NLnet with financial support
+            from the European Commission's Next Generation Internet programme, under the aegis of DG
+            Communications Networks, Content and Technology under grant agreement No 825310 as
+            <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a href="https://nlnet.nl/project/JShelter">JShelter</a> projects. This
+            project was supported by the <a href="https://www.fit.vut.cz/research/project/1063/.en">MV CR VI20172020062 project</a>.
+          </p>
+        </div>
+        <div class="license">
+          <p>
+            This program is free software: you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either
+            <a href="https://www.gnu.org/licenses/gpl-3.0">version 3</a> of the License, or
+            (at your option) any later version.
+          </p>
+          <p>View the source code at <a href="https://pagure.io/JShelter/webextension">Pagure.io</a>.</p>
+          <p>There is an <a href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}">Atom feed</a> available for the blog content.</p>
+        </div>
+        <div class="credits">
+          <ul>
+            <li>
+              <strong>Developers</strong>
+              <ul>
+                <li><a href="https://www.fit.vutbr.cz/~polcak">Libor Polčák</a></li>
+                <li>Martin Bednář</li>
+                <li>Giorgio Maone</li>
+                <li>Zbyněk Červinka</li>
+                <li>Martin Timko</li>
+                <li>Pavel Pohner</li>
+                <li>Pater Horňák</li>
+              </ul>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <strong>FSF team</strong>
+              <ul>
+                <li>John Hsieh</li>
+                <li>Michael McMahon</li>
+                <li>Ruben Rodriguez</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Design and website development</strong>
+              <a href="https://manufacturaindependente.org/">Manufactura Independente</a>
+            </li>
+          </ul>
+        </div>
       </div><!-- /.container.grid -->
       <div class="container">
         <ul class="supporter-logos">
@@ -228,7 +235,6 @@
 
   {% block extrascripts %}{% endblock %}
   <script>
-
     // mobile navigation
     var navBurguer = document.getElementsByClassName('navbar-burger')[0];
     var sidebarNav = document.getElementsByClassName('sidebar')[0];
@@ -239,7 +245,6 @@
       sidebarNav.classList.toggle('is-shown');
       sidebarOverlay.classList.toggle('is-shown');
     }
-
   </script>
 
 </body>

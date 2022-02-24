@@ -30,13 +30,14 @@
  * user decide.
  *
  * \bug There are two flaws in the current implementation:
+ *
  *  * There are many ways (see e.g. https://github.com/cure53/HTTPLeaks) to replace
  *    XHR and consequently evade the wrapper. This can be mitigating by monitoring
  *    the requests using Web Request API.
  *  * The confirm method puts a lot of responsibility on the user who needs to
  *    have a good knowledge about the requests on each visited page.
  *
- * \note We expect to remove the wrapper once we release JShleter
+ * \note We expect to remove the wrapper once we release JShelter
  * with Fingerprint Detector (FPD). FPD should solve both issues above.
  */
 

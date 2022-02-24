@@ -1,5 +1,6 @@
 {
     "name":"FingerprintingActivity",
+    "description":"Definition of fingerprinting behavior by FPD module.",
     "criteria":[
         {
             "value":3,
@@ -9,6 +10,7 @@
     "groups":[
         {
             "name":"BrowserProperties",
+            "description":"Fingerprinting methods based on simple information gathering by accessing certain APIs.",
             "criteria":[
                 {
                     "value":7,
@@ -60,7 +62,7 @@
                 },
                 {
                     "name":"NavigatorNetwork",
-                    "description":"Information about connection to internet.",
+                    "description":"Information about internet connection.",
                     "criteria":[
                         {
                             "value":3,
@@ -162,6 +164,7 @@
         },
         {
             "name":"AlgorithmicMethods",
+            "description":"Fingerprinting methods based on specific procedures, calculations or processing.",
             "criteria":[
                 {
                     "value":1,
@@ -336,7 +339,7 @@
                 },
                 {
                     "name":"WebRTCFingerprint",
-                    "description":"Extraction of rendered image into fingerprint.",
+                    "description":"Leakage of public or local IP address.",
                     "criteria":[
                         {
                             "percentage":100,
@@ -378,6 +381,7 @@
         },
         {
             "name":"CrawlFpInspector",
+            "description":"APIs often abused for fingerprinting according to FP-Inspector study.",
             "criteria":[
                 {
                     "percentage":10,

@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: jsrestrictor
+Upstream-Name: JShelter
 Upstream-Contact: Libor Polcak <polcak@fit.vutbr.cz>
-Source: https://github.com/polcak/jsrestrictor
+Source: https://pagure.io/JShelter/webextension
 
 # Files that we think are not copyrightable 
 Files: .gitignore .gitmodules tests/common_files/webbrowser_drivers/DOWNLOAD WEB DRIVERS HERE.md tests/unit_tests/package-lock.json tests/unit_tests/package.json

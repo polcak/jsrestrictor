@@ -10,7 +10,7 @@ Title: Credits
 
 **Zbyněk Červinka** developed a [proof-of-concept version](https://github.com/cervinka-zbynek/masters-thesis) of this extension as a part of his [master's thesis](https://www.fit.vut.cz/study/thesis/21274/) (in Czech).
 
-**Martin Timko** developed first public versions upto [0.2.1](https://github.com/polcak/jsrestrictor/releases/tag/0.2.1) as a part of his [master's thesis](https://www.fit.vut.cz/study/thesis/21824/). He also ported the extension to Chrome and Opera.
+**Martin Timko** developed first public versions upto [0.2.1](https://pagure.io/JShelter/webextension/archive/0.2.1/webextension-0.2.1.zip) as a part of his [master's thesis](https://www.fit.vut.cz/study/thesis/21824/). He also ported the extension to Chrome and Opera.
 
 **Pavel Pohner** developed the Network Boundary Scanner as a part of his master's thesis.
 

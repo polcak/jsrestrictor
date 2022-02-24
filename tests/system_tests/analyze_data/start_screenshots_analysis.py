@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -87,13 +87,13 @@ def html_footer():
 ## Build table with screenshots and diferences of screenshots for one site. Insert to output HTML file.
 def build_site_screenshots_comparison(site, site_name, site_number, average_color_of_differences):
     output = '<table class="site-container visible" mean_pixel_value_of_diff="' + str(average_color_of_differences) + '"><tr class="site-container-header"><td class="site-container-td"><h2>' + str(site_number) +\
-             ") "  + site_name + '</h2></td><td class="site-container-td"><h3>Mean pixel value in Differences image: ' + str(average_color_of_differences) + '</h3></td></tr><tr><td colspan="2" class="site-container-td"><table><tr><th>Without JSR</th><th>With JSR</th></tr>'
+             ") "  + site_name + '</h2></td><td class="site-container-td"><h3>Mean pixel value in Differences image: ' + str(average_color_of_differences) + '</h3></td></tr><tr><td colspan="2" class="site-container-td"><table><tr><th>Without JShelter</th><th>With JShelter</th></tr>'
     output += '<tr><td><img src="' + site + '/without_jsr.png"></td><td><img src="' + site + '/with_jsr.png"></td></tr></table>'
     output += '<table class="differences-table"><tr><th>Differences</th></tr><tr><td><img src="' + site + '/differences.png"></td></tr></table></td></tr></table>'
     return output
 
 
-## Create difference image between screenshot with JSR and screenshot without JSR by substracting
+## Create difference image between screenshot with JShelter and screenshot without JShelter by substracting
 #  one image from another.
 def create_differences_img(site):
     screen_without_jsr = cv2.imread("../data/screenshots/" + site + "/without_jsr.png")

@@ -1,0 +1,190 @@
+/*
+ * SPDX-FileCopyrightText: 2022 Libor Polčák
+ * SPDX-FileCopyrightText: 2021-2022 Ana Isabel Carvalho
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+:root {
+	--text-color: #333333; /* Very dark grey */
+	--background-color: white;
+	--background-color-input: white;
+	--light-logo: #f5ab8d; /* Logo light red */
+	--light-logo-contrast: #333333; /* Very dark grey */
+	--dark-logo: #e76f51; /* Logo dark red */
+	--dark-logo-contrast: white;
+	--help-icon-color: white;  
+	--help-icon-background: blue;
+	--title-color: var(--dark-logo);
+	--good-news: darkgreen; /* Combine with background color */
+	--separator-color: grey; /* Combine with background color */
+	--button-background-color: #dddddd; /* Light grey */
+	--button-text-color: black;
+	--button-background-active-color: var(--light-logo);
+	--button-text-active-color: black;
+	--button-background-hover-color: #c9c9c9; /* low dark grey */
+	--button-text-hover-color: black;
+	--menu-color: blue;
+	--menu-background: white;
+	--attention-color: var(--dark-logo-contrast);
+	--attention-background: var(--dark-logo);
+	--slider-bg-color: white;
+	--slider-off-color: gray;
+	--slider-on-color: var(--light-logo);
+	--slider-text-color: black;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+	:root {
+		--text-color: #e8e6e3; /* Almost white */
+		--background-color: #181a1b; /* Very very dark grey */
+		--background-color-input: var(--background-color);
+		--help-icon-color: blue;  
+		--help-icon-background: white;
+		--title-color: var(--light-logo);
+		--good-news: lightgreen;
+		--separator-color: lightgrey;
+		--button-background-color:	#c9c9c9; /* low dark grey */
+		--button-text-color: black;
+		--button-background-active-color: var(--dark-logo);
+		--button-text-active-color: var(--dark-logo-contrast);
+		--button-background-hover-color: darkgrey; /* Light grey */
+		--button-text-hover-color: white;
+		--menu-color: lightblue;
+		--menu-background: var(--background-color);
+		--attention-color: var(--light-logo-contrast);
+		--attention-background: var(--light-logo);
+	}
+}
+
+body {
+	color: var(--text-color);
+	background-color: var(--background-color);
+}
+
+input[type=text], select, textarea {
+	color: var(--text-color);
+	background-color: var(--background-color-input);
+}
+
+button {
+	background-color: var(--button-background-color);
+	color: var(--button-text-color);
+}
+
+button:hover {
+	cursor: pointer;
+	background-color: var(--button-background-hover-color);
+	color: var(--button-text-hover-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: var(--title-color);
+}
+
+.level {
+	font-weight: bold;
+	border: 2px solid var(--separator-color);
+	border-radius: 0.5ex;
+	background-color: var(--button-background-color);
+	color: var(--button-text-color);
+}
+
+.level:hover {
+	cursor: pointer;
+	background-color: var(--button-background-hover-color);
+	color: var(--button-text-hover-color);
+}
+
+.active {
+	border: 2px solid var(--button-text-active-color);
+	background-color: var(--button-background-active-color);
+	color: var(--button-text-active-color);
+}
+
+.help {
+	margin-left: 0.5em;
+	background-color: var(--help-icon-background);
+	color: var(--help-icon-color);
+	border-radius: 10px;
+	font-weight: bold;
+}
+
+.hidden_descr {
+	display: none !important;
+}
+
+.explainer {
+	grid-column-start: 1;
+	grid-column-end: -1;
+	padding-bottom: 3px;
+	border-bottom: 1px solid var(--separator-color);
+}
+
+/******************************************************************************
+ * Slider
+ */
+/* The switch - the box around the slider */
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 64px;
+	height: 34px;
+	margin-left: 3px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+
+}
+
+/* ON/OFF slider */
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: var(--slider-off-color);
+	-webkit-transition: .4s;
+	transition: .4s;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 25px;
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 30px;
+	left: 4px;
+	bottom: 4px;
+	background-color: var(--slider-bg-color);
+	-webkit-transition: .4s;
+	transition: .4s;
+	color: var(--off-color);
+	content:"OFF";
+}
+
+input:checked + .slider {
+	background-color:  var(--slider-on-color);
+}
+
+input:focus + .slider {
+	box-shadow: 0 0 1px var(--slider-on-color);
+}
+
+input:checked + .slider:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+	content:"ON";
+	color: var(--slider-text-color);
+}

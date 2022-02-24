@@ -25,79 +25,12 @@
 //
 
 
-/// A map where to look for the values in HTML elements
-const html_element_value_source = {
-	"select": "value",
-	"input-checkbox": "checked",
-	"input-radio": "checked",
-};
+const MANDATORY_METADATA = ["level_id", "level_text", "level_description"];
 
-function prepare_level_config(action_descr, params = wrapping_groups.empty_level) {
+
+function prepare_level_config(action_descr, params) {
 	var configuration_area_el = document.getElementById("configuration_area");
 	configuration_area_el.textContent = "";
-	function create_wrapping_groups_html() {
-		function process_group(html, group) {
-			function process_select_option(param_property, html, option) {
-				return html + `
-						<option value="${option.value}" ${params[param_property] === option.value ? "selected" : ""}>${option.description}</option>
-					`
-			}
-			function process_select(group_option) {
-				return `
-					<span class="table-left-column">${group_option.description}:</span>
-					<select id="${group_option.id}">
-							${group_option.options.reduce(process_select_option.bind(null, group_option.id), "")}
-					</select>
-				`;
-			}
-			function process_checkbox(group_option) {
-				return `
-					<input type="checkbox" id="${group_option.id}" ${params[group_option.id] ? "checked" : ""}>
-					<span class="section-header">${group_option.description}</span>
-				`;
-			}
-			function process_radio_option(param_property, html, option) {
-				return html + `
-						<input type="radio" id="${option.id}" name="${param_property}"  ${params[option.id] ? "checked" : ""}></input>
-						<span class="section-header">${option.description}</span>
-					`
-			}
-			function process_radio(group_option) {
-				return `
-					${group_option.options.reduce(process_radio_option.bind(null, group_option.id), "")}
-				`;
-			}
-			function process_option(html, option) {
-				processors = {
-					select: process_select,
-					"input-checkbox": process_checkbox,
-					"input-radio": process_radio,
-				};
-				return html + `
-					<div class="row">
-						${processors[option.ui_elem](option)}
-					</div>
-					`;
-			}
-			function process_descriptions(html, descr) {
-				return html + `
-					<span class="table-left-column">${descr}</span><br>
-				`;
-			}
-			let = supportedapis = are_all_api_unsupported(group.wrappers) ? "notsupportedapis" : "";
-			return html + `
-				<div class="main-section ${supportedapis}">
-					<input type="checkbox" id="${group.id}"  ${params[group.id] ? "checked" : ""}>
-					<span class="section-header">${group.description}:</span>
-				</div>
-					<div id="${group.name}_options" class="${supportedapis} ${params[group.id] ? "" : "hidden"}">
-						${group.description2.reduce(process_descriptions, "")}
-						${group.options.reduce(process_option, "")}
-					</div>
-			`;
-		}
-		return wrapping_groups.groups.reduce(process_group, "");
-	}
 	function find_unsupported_apis(html, wrapper) {
 		if (is_api_undefined(wrapper)) {
 			return html + `<li> <code>${wrapper}</code>.</li>`;
@@ -111,7 +44,7 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 	}
 	var fragment = document.createRange().createContextualFragment(`
 <div>
-		<p>Note that for fingerprintability prevention, JS Restrictor does not wrap objects that are not defined.</p>
+		<p>Note that for fingerprintability prevention, JShelter does not wrap objects that are not defined.</p>
 	${unsupported_apis}
 	<div>
 	  <h2>${action_descr}</h2>
@@ -120,58 +53,47 @@ function prepare_level_config(action_descr, params = wrapping_groups.empty_level
 
 		<!-- Metadata -->
 		<div class="main-section">
-			<span class="section-header">Name:</span>
+			<label for="level_text">Name:</label>
 			<input id="level_text" value="${escape(params.level_text)}"></input>
+			<input type="hidden" id="level_id" ${params.level_id != "" ? "disabled" : ""} value="${escape(params.level_id)}"></input>
 		</div>
 		<div class="main-section">
-			<span class="section-header">Short ID:</span>
-			<input id="level_id" ${params.level_id != "" ? "disabled" : ""} value="${escape(params.level_id)}"></input>
-		</div>
-		<div>
-			<span class="table-left-column">This ID is displayed above the JSR icon. If you use an
-					already existing ID, this custom level will replace the original level.</span>
-		</div>
-		<div class="main-section">
-			<span class="section-header">Description:</span>
+			<label for="level_description">Description:</label>
 			<input id="level_description" value="${escape(params.level_description)}"></input>
 		</div>
 
-		${create_wrapping_groups_html()}
+		<div id="tweaks"></div>
 		
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
-
 	configuration_area_el.appendChild(fragment);
-	function connect_options_group(group) {
-		document.getElementById(group.id).addEventListener("click", function(e) {
-			var options_el = document.getElementById(group.name + "_options");
-			if (this.checked) {
-				options_el.classList.remove("hidden");
-			}
-			else {
-				options_el.classList.add("hidden");
-			}
-		});
+
+	delete params["wrappers"];
+	let tweaks = Object.assign({}, wrapping_groups.empty_level, params);
+	let tweaksContainer = document.getElementById("tweaks");
+	let tweaksBusiness = Object.create(tweaks_gui);
+	tweaksBusiness.get_current_tweaks = function() {
+		let current = Object.assign({}, tweaks);
+		for (id of MANDATORY_METADATA) {
+			delete current[id];
+		}
+		return current;
+	};
+	tweaksBusiness.tweak_changed = function(group_id, desired_tweak) {
+		tweaks[group_id] = desired_tweak;
 	}
-	wrapping_groups.groups.forEach(g => connect_options_group(g));
+	tweaksBusiness.create_tweaks_html(tweaksContainer);
 
 	document.getElementById("save").addEventListener("click", function(e) {
 		e.preventDefault();
-		new_level = {};
-		for (property in wrapping_groups.empty_level) {
-			let p = wrapping_groups.option_map[property];
-			let convertor = (p && p.data_type) ? window[p.data_type] : (a) => a;
-			let elem = document.getElementById(property);
-			let value_getter = (p && p.ui_elem && (p.ui_elem in html_element_value_source)) ? html_element_value_source[p.ui_elem] : "value";
-			new_level[property] = convertor(elem[value_getter]);
+		let new_level = tweaks;
+		for (id of MANDATORY_METADATA) {
+			let elem = document.getElementById(id);
+			new_level[id] = elem.value;
 		};
 
 		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
-			if (new_level.level_id.length > 3) {
-				alert("Level ID too long, provide 3 characters or less");
-				return;
-			}
 			async function updateLevels(new_level, stored_levels) {
 				custom_levels = stored_levels.custom_levels;
 				let ok = false;
@@ -223,13 +145,36 @@ function show_existing_level(levelsEl, level) {
 	let currentId = `level-${level}`;
 	var fragment = document.createRange().createContextualFragment(`<li id="li-${escape(level)}">
 		<button class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
-			${escape(level)}: ${escape(levels[level].level_text)}
+			${escape(levels[level].level_text)}
 		</button>
-		<label for="${escape(currentId)}">${escape(levels[level].level_description)}</label>
+		<span class="help_ovisible">${escape(create_short_text(levels[level].level_description, 50))}</span>
+		<span></span>
+		<p><label for="${escape(currentId)}">${escape(levels[level].level_description)}</label></p>
 		</li>`);
 	levelsEl.appendChild(fragment);
-	if (levels[level].builtin !== true) {
-		var lielem = document.getElementById(`li-${level}`); // Note that FF here requires unescaped ID
+	var lielem = document.getElementById(`li-${level}`); // Note that FF here requires unescaped ID
+	if (levels[level].builtin === true) {
+		var view = document.createElement("button");
+		view.id = `show-tweaks-${escape(level)}`;
+		view.classList.add("help");
+		view.appendChild(document.createTextNode("⤵"));
+		var tweaksEl = document.createElement("div");
+		tweaksEl.classList.add("tweakgrid");
+		tweaksEl.classList.add("hidden_descr");
+		tweaksEl.id = `tweaks-${escape(level)}`;
+		lielem.getElementsByTagName('button')[0].insertAdjacentElement("afterend", view);
+		lielem.appendChild(tweaksEl);
+		let tweaksBusiness = Object.create(tweaks_gui);
+		tweaksBusiness.get_current_tweaks = function() {
+			return getTweaksForLevel(level, {});
+		};
+		tweaksBusiness.create_tweaks_html(tweaksEl);
+		view.addEventListener("click", function(ev) {
+			tweaksEl.classList.toggle("hidden_descr");
+			ev.preventDefault();
+		});
+	}
+	else {
 		var existPref = document.createElement("span");
 		existPref.setAttribute("id", `li-exist-group-${escape(level)}`);
 		lielem.appendChild(existPref);
@@ -250,6 +195,7 @@ function show_existing_level(levelsEl, level) {
 		restore.addEventListener("click", restore_level.bind(restore, level, levels[level]));
 		restore.appendChild(document.createTextNode("Restore"));
 	}
+	prepareHiddenHelpText(lielem.getElementsByTagName('p'), lielem.getElementsByClassName('help_ovisible'));
 	var current = document.getElementById(currentId)
 	current.addEventListener("click", function() {
 		for (let child of levelsEl.children) {
@@ -299,8 +245,17 @@ window.addEventListener("load", function() {
 	load_on_off_switch("fpd");
 });
 
-document.getElementById("new_level").addEventListener("click",
-	() => prepare_level_config("Add new level"));
+document.getElementById("new_level").addEventListener("click", function() {
+	let new_level = Object.assign({}, wrapping_groups.empty_level);
+	let seq = Object.keys(levels).length;
+	let new_id;
+	do {
+		new_id = "Custom" + String(seq);
+		seq++;
+	}	while (levels[new_id] !== undefined)
+	new_level.level_id = new_id;
+	prepare_level_config("Add new level", new_level)
+});
 
 document.getElementById("nbs-whitelist-add-button").addEventListener("click", () => add_to_whitelist("nbs"));
 document.getElementById("nbs-whitelist-input").addEventListener('keydown', (e) => {if (e.key === 'Enter') add_to_whitelist("nbs")});
@@ -460,20 +415,25 @@ function control_slider(prefix)
 	}
 }
 
+function prepareHiddenHelpText(originally_hidden_elements, originally_visible_elements = []) {
+	Array.prototype.forEach.call(originally_hidden_elements, it => it.classList.add("hidden_descr"));
+	let all_elements = Array.from(originally_hidden_elements).concat(Array.from(originally_visible_elements));
+	var ctrl = document.createElement("button");
+	ctrl.innerText = "?";
+	ctrl.classList.add("help");
+	ctrl.addEventListener("click", function(ev) {
+		Array.prototype.forEach.call(all_elements, it => it.classList.toggle("hidden_descr"));
+		ev.preventDefault();
+	});
+	originally_hidden_elements[0].previousElementSibling.insertAdjacentElement("beforeend", ctrl);
+}
+
 window.addEventListener("DOMContentLoaded", function() {
 	function prepareHelpText(prefix) {
-		var descr = document.getElementsByClassName(prefix + "_description");
-		Array.prototype.forEach.call(descr, it => it.classList.add("hidden_descr"));
-		var ctrl = document.createElement("button");
-		ctrl.innerText = "?";
-		ctrl.classList.add("help");
-		ctrl.addEventListener("click", function(ev) {
-			Array.prototype.forEach.call(descr, it => it.classList.toggle("hidden_descr"));
-			ev.preventDefault();
-		});
-		descr[0].previousElementSibling.insertAdjacentElement("beforeend", ctrl);
+		prepareHiddenHelpText(document.getElementsByClassName(prefix + "_description"));
 	}
 
+	prepareHelpText("jss");
 	prepareHelpText("nbs");
 	prepareHelpText("fpd");
 });

@@ -1,7 +1,7 @@
 {
   "name": "unit_tests",
   "version": "1.0.0",
-  "description": "JSR unit tests.",
+  "description": "JShelter unit tests.",
   "main": "",
   "scripts": {
     "test": "./start_unit_tests.sh",

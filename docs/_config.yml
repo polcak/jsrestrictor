@@ -1,7 +1,0 @@
-defaults:
-  -
-    scope:
-       path: ""
-    values:
-      title: JavaScript Restrictor
-      layout: default
