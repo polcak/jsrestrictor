@@ -138,7 +138,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	</div>
 
 	<div id="fingerprinting-protection-config">
-		<h2>Fingerprinting detection</h2>
+		<h2>Fingerprinting detector</h2>
 		<p class="fpd_description">
 			Fingerprinting detection prevents web pages to extract fingerprint of your browser using JavaScript properties. See our <a
 			  href="https://jshelter.org/fpdetection/">
@@ -146,7 +146,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<a
 				href="https://arxiv.org/pdf/1905.01051.pdf">Browser Fingerprinting: A survey</a> for a closer description of browser fingerprinting.
 		<p class="fpd_description">
-			For now, fingerprinting detection is turned off by default. By enabling it, you will be notified whenever JShelter detects fingerprinting
+			For now, fingerprinting detector is turned off by default. By enabling it, you will be notified whenever JShelter detects fingerprinting
 			behaviour on visited web page. As a countermeasure against leaking your fingerprint to unwanted parties, every detection is followed by 
 			blocking all subsequent HTTP requests and cleaning browser storage. Take into account that <strong>this action will probably result in a broken web page</strong> and 
 			we strongly recommend to use whitelist for trusted domains. You can do so via pop-up menu of the extension or explicitly add domains to the list
@@ -154,7 +154,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		</p>
 		<fieldset>
 			<div>
-				<label class="shield-onoff-label" for="fpd-switch">Fingerprinting detection: </label>
+				<label class="shield-onoff-label" for="fpd-switch">Fingerprinting detector: </label>
 				<label class="switch">
 					<input id="fpd-switch" type="checkbox" checked>
 					<span class="slider"></span>
@@ -163,14 +163,14 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		</fieldset>
 			<fieldset>
 				<input id="fpd-whitelist-input" type="text" name="fpd-whitelist-hostname" placeholder="example.com">
-				<button id="fpd-whitelist-add-button" class="jsr-button"><strong>Disable</strong> the Fingerprinting detection
+				<button id="fpd-whitelist-add-button" class="jsr-button"><strong>Disable</strong> the Fingerprinting detector
 					for the domain</button>
 			</fieldset>
 		<select id="fpd-whitelist-select" name="sometext" size="5" multiple>
 	
 		</select>
 		<div>
-			<button id="fpd-whitelist-remove-button" class="jsr-button"><strong>Enable</strong> the Fingerprinting detection
+			<button id="fpd-whitelist-remove-button" class="jsr-button"><strong>Enable</strong> the Fingerprinting detector
 				for the selected domains</button>
 			<p>
 				Please note, that these domain names are checked with domain hierarchy, so whitelisting
