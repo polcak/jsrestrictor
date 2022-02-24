@@ -601,8 +601,15 @@ function wrap_code(level) {
 				},
 				create(proto, descriptors) {
 					let unwrappedProto = unX(proto);
-					let obj = unwrappedProto === proto ? unX(createObj(unwrappedProto)) : forPage(Object.create(proto));
-					if (obj.__proto__ !== proto) debugger;
+					let obj = unX(createObj(unwrappedProto));
+					try {
+						if (proto && !obj.__proto__) {
+							obj = Object.create(XPCNativeWrapper(proto));
+						}
+					} catch (e) {
+						// access denied to obj.__proto__, wrappers mismatch
+						obj = forPage(Object.create(proto));
+					}
 					return descriptors ? this.defineProperties(obj, descriptors) && obj : obj;
 				},
 
