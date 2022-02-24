@@ -393,27 +393,27 @@ var wrapping_groups = {
 			description2: [],
 			params: [
 				{
-					short: "Poor",
+					short: "Timestamp-only",
 					description: "Provide accurate data (use when you really need to provide exact location and you want to protect geolocation timestamps)",
 					config: [-1],
 				},
 				{
-					short: "Very low",
+					short: "Village",
 					description: "Use accuracy of hundreds of meters",
 					config: [2],
 				},
 				{
-					short: "Low",
+					short: "Town",
 					description: "Use accuracy of kilometers",
 					config: [3],
 				},
 				{
-					short: "Medium",
+					short: "Region",
 					description: "Use accuracy of tens of kilometers",
 					config: [4],
 				},
 				{
-					short: "High",
+					short: "Long distance",
 					description: "Use accuracy of hundreds of kilometers",
 					config: [5],
 				},
