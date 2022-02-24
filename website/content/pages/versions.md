@@ -2,6 +2,33 @@
 title: Release history
 ---
 
+## 0.7
+
+* JavaScript Restrictor rebranded to JShelter.
+* The extension officially consists of JavaScript Shield (originally called wrappers), NBS, and FPD.
+	Unified way to disable each component in the pop up. This should prevent users from disabling NBS
+	thinking they disabled JSS.
+* New UI to create and tweak JavaScript Shield levels.
+* Pop up redesigned. Try not to confuse the user about global/per-page settings.
+* It is possible to create per-domain JavaScript Shield tweaks, i.e. enable or disable specific
+	group of wrappers for certain domain only without the necessity to create a new level.
+* The wrapping strength is defined by the user with a range input.
+* The badge icon does not show level ID anymore. JShelter shows the number of wrapping groups
+	accessed by the current page. Report the number of calls for wrapped APIs in the pop up.
+* Level 1 removed as it was not properly maintained.
+* Timestamp protection in level 2 increased to match level 3.
+* XHR wrappings and (sharred) array buffers not wrapped anymore as XHR is superseded by FPD and
+	array buffers break other APIs.
+* New experimental level added that is based on original level 3.
+* Better and much longer description of built-in levels.
+* Added support for device rotation. Accelerometer, LinearAccelerationSensor, GravitySensor, and Magnetometer now adjust the gravity vector by the rotation matrix.
+* AmbientLightSensor, Gyroscope, AbsoluteOrientationSensor, and RelativeOrientationSensor wrappers added.
+* Accessibility improvements in pop up.
+* New colour scheme based on the logo and JShelter.org web site for both light and dark theme.
+* Load FPD settings from advanced options correctly.
+* Some inconsistences in update mechanism of hardware and  enumerateDevices found and fixed.
+* Level settings are not backward-comptible, backup 0.6.x configuration if you plan to downgrade.
+
 ## 0.6.5
 
 * Update NSCL to work around a change in Chrome permissions:
