@@ -31,65 +31,54 @@
 
 
 var alea =`
-function Alea(seed) {
-  var me = this,
-    mash = create_mash();
-
-  me.next = function() {
-    var t = 2091639 * me.s0 + me.c * 2.3283064365386963e-10; // 2^-32
-    me.s0 = me.s1;
-    me.s1 = me.s2;
-    return me.s2 = t - (me.c = t | 0);
-  };
+function Alea(...args) {
+  var mash = create_mash();
 
   // Apply the seeding algorithm from Baagoe.
-  me.c = 1;
-  me.s0 = mash(' ');
-  me.s1 = mash(' ');
-  me.s2 = mash(' ');
-  me.s0 -= mash(seed);
-  if (me.s0 < 0) {
-    me.s0 += 1;
-  }
-  me.s1 -= mash(seed);
-  if (me.s1 < 0) {
-    me.s1 += 1;
-  }
-  me.s2 -= mash(seed);
-  if (me.s2 < 0) {
-    me.s2 += 1;
+  this.c = 1;
+  this.s0 = mash(' ');
+  this.s1 = mash(' ');
+  this.s2 = mash(' ');
+
+  for (var i = 0; i < args.length; i++) {
+    this.s0 -= mash(args[i]);
+    if (this.s0 < 0) {
+      this.s0 += 1;
+    }
+    this.s1 -= mash(args[i]);
+    if (this.s1 < 0) {
+      this.s1 += 1;
+    }
+    this.s2 -= mash(args[i]);
+    if (this.s2 < 0) {
+      this.s2 += 1;
+    }
   }
   mash = null;
 }
-
-function copy(f, t) {
-  t.c = f.c;
-  t.s0 = f.s0;
-  t.s1 = f.s1;
-  t.s2 = f.s2;
-  return t;
+Alea.prototype = {
+  next: function() {
+    var t = 2091639 * this.s0 + this.c * 2.3283064365386963e-10; // 2^-32
+    this.s0 = this.s1;
+    this.s1 = this.s2;
+    return this.s2 = t - (this.c = t | 0);
+  }
 }
 
-function impl(seed, opts) {
-  var xg = new Alea(seed),
-    state = opts && opts.state,
-    prng = xg.next;
-  prng.int32 = function() {
+function impl(...seed) {
+  var xg = new Alea(...seed);
+  var prng = xg.next.bind(xg);
+  prng.uint32 = function() {
     return (xg.next() * 0x100000000) | 0;
   }
-  prng.double = function() {
+  prng.fract53 = function() {
     return prng() + (prng() * 0x200000 | 0) * 1.1102230246251565e-16; // 2^-53
   };
   prng.quick = prng;
-  if (state) {
-    if (typeof(state) == 'object') copy(state, xg);
-    prng.state = function() {
-      return copy(xg, {});
-    }
-  }
   return prng;
 }
 
+// Original at https://github.com/nquinlan/better-random-numbers-for-javascript-mirror/blob/master/support/js/Mash.js
 function create_mash() {
   var n = 0xefc8249d;
 
