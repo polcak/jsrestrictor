@@ -245,13 +245,14 @@ ISBN 978-3-319-66398-2.
 			parent_object_property: "hardwareConcurrency",
 			wrapped_objects: [],
 			helping_code: `
+				var hw_prng = alea(domainHash, "Navigator.prototype.hardwareConcurrency");
 				var ret = 2;
 				if(args[0]==0){
 					var realValue = navigator.hardwareConcurrency;
-					ret = Math.floor(2+prng()*(realValue-2));
+					ret = Math.floor(2+hw_prng()*(realValue-2));
 				}
 				else if(args[0]==1){
-					ret = Math.floor(2+(prng()*6));
+					ret = Math.floor(2+(hw_prng()*6));
 				}
 			`,
 			post_wrapping_code: [

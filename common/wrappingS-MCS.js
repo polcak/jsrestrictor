@@ -74,13 +74,14 @@
 	 * \param browserEnum enum specifying browser 0 - Chrome 1 - Firefox
 	 */
 	function fakeDevice(device){
+		var fd_prng = alea(domainHash, "S-MCS fakeDevice");
 		var kinds = ["videoinput", "audioinput", "audiooutput"];
 		let browserEnum = device.groupId.length == 44 ? 1 : 0;
 		var deviceId = browserEnum == 1 ? randomString(43, browserEnum)+ "=" : "";
 		let fakeData = {
 			deviceId,
 			groupId: deviceRandomString(browserEnum),
-			kind: kinds[Math.floor(prng() * 3)],
+			kind: kinds[Math.floor(fd_prng() * 3)],
 			label: "",
 		};
 		let json = JSON.stringify(fakeData);
@@ -125,7 +126,8 @@
 								return result;
 							};
 							if (level === 1 && result.length) {
-								let additional = Math.floor(prng()*4);
+								var enumd_prng = alea(domainHash, "MediaDevices.prototype.enumerateDevices");
+								let additional = Math.floor(enumd_prng()*4);
 								console.debug("Random additional devices to add:", additional);
 								if (additional > 0) {
 									let adding = [];

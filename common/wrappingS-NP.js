@@ -213,14 +213,15 @@
 	 * Replaces words in name and description parameters in PDF plugins (default plugins in most browsers)
 	 */
 	function farblePlugin(plugin){
+		var fp_prng = alea(domainHash, "S-NP farblePlugin");
 		var name = plugin.name;
 		var description = plugin.description;
 		if(plugin.name.includes("PDF")){
 			let chrome = ["Chrome ", "Chromium ", "Web ", "Browser ", "OpenSource ", "Online ", "JavaScript ", ""];
 			let pdf = ["PDF ", "Portable Document Format ", "portable-document-format ", "document ", "doc ", "PDF and PS ", "com.adobe.pdf "];
 			let viewer = ["Viewer", "Renderer", "Display", "Plugin", "plug-in", "plug in", "extension", ""];
-			name = chrome[Math.floor(prng() * (chrome.length))]+pdf[Math.floor(prng() * (pdf.length))]+viewer[Math.floor(prng() * (viewer.length))];
-			description = pdf[Math.floor(prng() * (pdf.length))];
+			name = chrome[Math.floor(fp_prng() * (chrome.length))]+pdf[Math.floor(fp_prng() * (pdf.length))]+viewer[Math.floor(fp_prng() * (viewer.length))];
+			description = pdf[Math.floor(fp_prng() * (pdf.length))];
 		}
 		var ret = Object.create(Plugin.prototype);
 		var counter = 0;
