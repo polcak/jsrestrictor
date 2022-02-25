@@ -33,7 +33,7 @@
 var alea =`
 function Alea(seed) {
   var me = this,
-    mash = Mash();
+    mash = create_mash();
 
   me.next = function() {
     var t = 2091639 * me.s0 + me.c * 2.3283064365386963e-10; // 2^-32
@@ -90,7 +90,7 @@ function impl(seed, opts) {
   return prng;
 }
 
-function Mash() {
+function create_mash() {
   var n = 0xefc8249d;
 
   var mash = function(data) {
