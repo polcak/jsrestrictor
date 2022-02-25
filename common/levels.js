@@ -390,7 +390,7 @@ var wrapping_groups = {
 			name: "geolocation",
 			label: "Physical location (geolocation)",
 			description: "Limit the information on real-world position provided by Geolocation API.",
-			description2: [],
+			description2: ["Use domain hash for the position spoofing so the position will be the same at one domain for the whole session."],
 			params: [
 				{
 					short: "Timestamp-only",
