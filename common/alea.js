@@ -29,7 +29,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
+/**
+ * alea creates a function that is functionally equivalent to Math.random.
+ *
+ * That is, successive calls of the returned function return Number values
+ * with positive sign, greater than or equal to 0 but less than 1, chosen
+ * pseudo-randomly with approximately uniform distribution over that range.
+ *
+ * The internal state of random, and hence the sequence of pseudo-random
+ * numbers it returns, is determined by the arguments to alea. Two functions
+ * returned by calls to alea with the same argument values will return exactly
+ * the same sequence of pseudo-random numbers. String and Number arguments
+ * should provide repeatable output across platforms. Object arguments[3]
+ * provide repeatable output on the same platform, but not necessarily on others.
+ *
+ * Please call alea() with at least one argument, the implementation with
+ * nno arguments described by Baagøe was not implemented here. This provides
+ * easy means to provide somewhat unpredictable numbers, like Math.random does.
+ *
+ * Example usage: let module_prng = alea(domainHash, "MyModuleName"); module_prng();
+ *
+ * See more details in the README.md at
+ * https://github.com/nquinlan/better-random-numbers-for-javascript-mirror
+ */
 var alea =`
 function Alea(...args) {
   var mash = create_mash();
