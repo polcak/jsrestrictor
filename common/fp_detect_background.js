@@ -783,6 +783,7 @@ var availableTabs = {};
 browser.tabs.query({}).then(function(results) {
     results.forEach(function(tab) {
         availableTabs[tab.id] = tab;
+		periodicEvaluation(tab.id, 500);
     });
 });
 /// \endcond
@@ -799,6 +800,9 @@ function refreshDb(tabId) {
 	if (latestEvals[tabId]) {
 		delete latestEvals[tabId];
 	}
+	if (availableTabs[tabId] && availableTabs[tabId].timerId) {
+		clearTimeout(availableTabs[tabId].timerId);
+	}
 }
 
 /**
@@ -810,6 +814,7 @@ browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 	availableTabs[tabId] = tab;
 	if (changeInfo.status == "loading") {
 		refreshDb(tabId);
+		periodicEvaluation(tab.id, 500);
 	}
 });
 
@@ -819,8 +824,8 @@ browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
  * \param callback Function that updates availableTabs and refreshes fpDb.
  */
 browser.tabs.onRemoved.addListener(function (tabId) {
-	delete availableTabs[tabId];
 	refreshDb(tabId);
+	delete availableTabs[tabId];
 });
 
 /**
@@ -837,7 +842,7 @@ browser.webRequest.onBeforeRequest.addListener(
 /**
  * The function that makes decisions about requests blocking. If blocking enabled, also clear browsing data.
  *
- * \param requestDetails Details about request.
+ * \param requestDetails Details about the request.
  * 
  * \returns Object containing key "cancel" with value true if request is blocked, otherwise with value false
  */
@@ -849,37 +854,63 @@ function cancelCallback(requestDetails) {
 		refreshDb(requestDetails.tabId);
 	}
 
+	return evaluateFingerprinting(requestDetails.tabId)
+}
+
+/**
+ * The function that periodically starts fingerprinting evaluation without the need for a request. 
+ * Delay is increased exponentially and doubles in every call.
+ *
+ * \param tabId Integer number representing ID of browser tab.
+ * \param delay Initial value of a delay in milliseconds.
+ */
+function periodicEvaluation(tabId, delay) {
+	evaluateFingerprinting(tabId);
+	if (availableTabs[tabId]) {
+		// limit max delay to 90s per tab
+		availableTabs[tabId].timerId = setTimeout(periodicEvaluation, delay, tabId, delay > 90000 ? delay : delay*2);
+	}
+}
+
+/**
+ * The function that starts evaluation process and if fingerprinting is detected, it reacts accordingly.
+ *
+ * \param tabId Integer number representing ID of evaluated browser tab.
+ * 
+ * \returns Object containing key "cancel" with value true if request is blocked, otherwise with value false
+ */
+function evaluateFingerprinting(tabId) {
 	// if FPD enabled for the site continue with FP evaluation
-	if (isFpdOn(requestDetails.tabId)) {
+	if (isFpdOn(tabId)) {
 		
 		// start FP evaluation process and store result array
-		var evalResult = evaluateGroups(requestDetails.tabId);
-
+		var evalResult = evaluateGroups(tabId);
+		
 		// store latest severity value after evaluation of given tab
 		if (evalResult.severity) {
-			latestEvals[requestDetails.tabId].severity = evalResult.severity;
+			latestEvals[tabId].severity = evalResult.severity;
 		}
 
 		// modify color of browserAction
 		if (evalResult.severity[2]) {
-			browser.browserAction.setBadgeBackgroundColor({color: evalResult.severity[2], tabId: requestDetails.tabId});
+			browser.browserAction.setBadgeBackgroundColor({color: evalResult.severity[2], tabId: tabId});
 		}
 
 		// if actualWeight of root group is higher than 0 => reactive phase and applying measures
 		if (evalResult.weight) {
 
 			// get url of tab asociated with this request
-			var tabUrl = availableTabs[requestDetails.tabId] ? availableTabs[requestDetails.tabId].url : undefined;
+			var tabUrl = availableTabs[tabId] ? availableTabs[tabId].url : undefined;
 
 			// create notification for user (only once for every tab load)
-			if (!latestEvals[requestDetails.tabId].stopNotifyFlag) {
-				latestEvals[requestDetails.tabId].stopNotifyFlag = true;
-				notifyFingerprintBlocking(requestDetails.tabId);
+			if (!latestEvals[tabId].stopNotifyFlag) {
+				latestEvals[tabId].stopNotifyFlag = true;
+				notifyFingerprintBlocking(tabId);
 			}
 			
 			// clear local and session storage (using content script) for every frame in this tab (required?)
-			if (requestDetails.tabId >= 0) {
-				browser.tabs.sendMessage(requestDetails.tabId, {
+			if (tabId >= 0) {
+				browser.tabs.sendMessage(tabId, {
 					cleanStorage: true
 				});
 			}
