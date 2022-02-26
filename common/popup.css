@@ -179,12 +179,20 @@ label.js-toggle:after {
 	align-items: center;
 }
 
-
-
 .head {
 	font-weight: bold;
 }
 
 .hidden {
 	display: none;
+}
+
+#severity_value {
+	color: #e8e6e3;
+	cursor: pointer;
+}
+
+#severity_value:hover {
+	color: #e8e6e3;
+	filter: brightness(110%);
 }

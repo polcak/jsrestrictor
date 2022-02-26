@@ -354,11 +354,10 @@ async function fpdGetSeverity() {
 		let element = document.getElementById("severity_value");
 		if (response[1]) {
 			element.innerText = response[1];
-			element.style.cursor = "pointer";
-			document.getElementById("severity_container").style.display = "";
+			document.getElementById("severity_container").classList.remove("hidden");
 		}
 		if (response[2]) {
-			element.style.color = response[2];
+			element.style.backgroundColor = response[2];
 		}
 	}
 	setTimeout(fpdGetSeverity, 2000);

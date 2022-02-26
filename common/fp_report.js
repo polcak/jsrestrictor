@@ -144,7 +144,7 @@ function createReport(data) {
         }
         
         if (button && haveChild) {
-            button.classList.add("active");
+            button.classList.add("clickable");
             button.addEventListener("click", toggleResources);
         }
     }
