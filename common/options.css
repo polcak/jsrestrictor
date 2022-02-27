@@ -150,7 +150,7 @@ section.content {
 }
 
 .hidden{
-	visibility: hidden;
+	display: none;
 }
 
 .domain {
@@ -189,14 +189,6 @@ section.content {
 	font-size: 12pt;
 }
 
-.shield-onoff-label
-{
-	text-align: center;
-	vertical-align: middle;
-	font-size:14pt;
-	padding-top:5px;
-}
-
 .unsupported_api {
 	color: var(--good-news);
 }
@@ -224,4 +216,23 @@ fieldset {
 
 #levels-config #levels-list input[type=range] {
 	pointer-events:none; /* https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events */
+}
+
+.protection-title {
+	display: flex;
+	align-items:center;
+}
+
+.protection-title > .shield-onoff-label {
+	padding-right: 10px;
+}
+
+.settings-container {
+	display: flex;
+	align-items:center;
+}
+
+.setting-label {
+	padding-bottom: 5px;
+	font-size: 14pt;
 }

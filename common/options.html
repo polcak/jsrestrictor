@@ -85,7 +85,13 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	</div>
 
   	<div id="proxy-protection-config">
-		<h2>Network boundary shield</h2>
+		<div class="protection-title">
+			<label class="shield-onoff-label" for="nbs-switch"><h2>Network boundary shield</h2></label>
+			<label class="switch">
+				<input id="nbs-switch" type="checkbox" checked>
+				<span class="slider"></span>
+			</label>
+		</div>
 		<p class="nbs_description">
 			Network boundary shield prevents web pages to use the browser as a proxy between local network
 			and the public Internet. See our <a
@@ -110,35 +116,36 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			We generally do <strong>not</strong> recommend disabling the Network boundary shield for domains
 			from the public Internet.
 		</p>
-		<fieldset>
+		<fieldset class="settings-container">
+			<label class="setting-label">Manage whitelist </label>
+			<button id="nbs-whitelist-show" class="help">⤵</button>
+		</fieldset>
+		<div id="nbs-whitelist-container" class="hidden">
 			<div>
-				<label class="shield-onoff-label" for="nbs-switch">Network boundary shield: </label>
-				<label class="switch">
-					<input id="nbs-switch" type="checkbox" checked>
-					<span class="slider"></span>
-				</label>
+				<input id="nbs-whitelist-input" type="text" name="nbs-whitelist-hostname" placeholder="example.com">
+				<button id="nbs-whitelist-add-button" class="jsr-button"><strong>Disable</strong> for the domain</button>
 			</div>
-		</fieldset>
-		<fieldset>
-			<input id="nbs-whitelist-input" type="text" name="nbs-whitelist-hostname" placeholder="example.com">
-			<button id="nbs-whitelist-add-button" class="jsr-button"><strong>Disable</strong> the Network boundary shield
-				for the domain</button>
-		</fieldset>
-  		<select id="nbs-whitelist-select" name="sometext" size="5" multiple>
+			<select id="nbs-whitelist-select" name="sometext" size="10" multiple>
 
-		</select>
-		<div>
-			<button id="nbs-whitelist-remove-button" class="jsr-button"><strong>Enable</strong> the Network boundary shield
-				for the selected domains</button>
-			<p>
-				Please note, that these domain names are checked with domain hierarchy, so whitelisting
-				<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
-			</p>
+			</select>
+			<div>
+				<button id="nbs-whitelist-remove-button" class="jsr-button"><strong>Enable</strong> for the selected domains</button>
+				<p>
+					Please note, that these domain names are checked with domain hierarchy, so whitelisting
+					<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
+				</p>
+			</div>
 		</div>
 	</div>
 
 	<div id="fingerprinting-protection-config">
-		<h2>Fingerprinting detector</h2>
+		<div class="protection-title">
+			<label class="shield-onoff-label" for="fpd-switch"><h2>Fingerprinting detector</h2></label>
+			<label class="switch">
+				<input id="fpd-switch" type="checkbox" checked>
+				<span class="slider"></span>
+			</label>
+		</div>
 		<p class="fpd_description">
 			Fingerprinting detection prevents web pages to extract fingerprint of your browser using JavaScript properties. See our <a
 			  href="https://jshelter.org/fpdetection/">
@@ -152,30 +159,25 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			we strongly recommend to use whitelist for trusted domains. You can do so via pop-up menu of the extension or explicitly add domains to the list
 			below.
 		</p>
-		<fieldset>
-			<div>
-				<label class="shield-onoff-label" for="fpd-switch">Fingerprinting detector: </label>
-				<label class="switch">
-					<input id="fpd-switch" type="checkbox" checked>
-					<span class="slider"></span>
-				</label>
-			</div>
+		<fieldset class="settings-container">
+			<label class="setting-label">Manage whitelist </label>
+			<button id="fpd-whitelist-show" class="help">⤵</button>
 		</fieldset>
-			<fieldset>
+		<div id="fpd-whitelist-container" class="hidden">
+			<div>
 				<input id="fpd-whitelist-input" type="text" name="fpd-whitelist-hostname" placeholder="example.com">
-				<button id="fpd-whitelist-add-button" class="jsr-button"><strong>Disable</strong> the Fingerprinting detector
-					for the domain</button>
-			</fieldset>
-		<select id="fpd-whitelist-select" name="sometext" size="5" multiple>
-	
-		</select>
-		<div>
-			<button id="fpd-whitelist-remove-button" class="jsr-button"><strong>Enable</strong> the Fingerprinting detector
-				for the selected domains</button>
-			<p>
-				Please note, that these domain names are checked with domain hierarchy, so whitelisting
-				<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
-			</p>
+				<button id="fpd-whitelist-add-button" class="jsr-button"><strong>Disable</strong> for the domain</button>
+			</div>
+			<select id="fpd-whitelist-select" name="sometext" size="10" multiple>
+		
+			</select>
+			<div>
+				<button id="fpd-whitelist-remove-button" class="jsr-button"><strong>Enable</strong> for the selected domains</button>
+				<p>
+					Please note, that these domain names are checked with domain hierarchy, so whitelisting
+					<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
+				</p>
+			</div>
 		</div>
 	</div>
 
