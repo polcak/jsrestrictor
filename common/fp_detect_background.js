@@ -52,12 +52,17 @@
 /**
  * FPD enable flag. Evaluate only when active.
  */
- var fpDetectionEnabled;
+ var fpDetectionOn;
 
- /**
- * Associtive array of hosts, that are currently among trusted ones.
- */
+/**
+* Associtive array of hosts, that are currently among trusted ones.
+*/
 var fpdWhitelist = {};
+
+/**
+* Associtive array of settings supported by this module.
+*/
+var fpdSettings = {};
 
 /**
  * API logs database of following structure:
@@ -100,23 +105,55 @@ var unsupportedWrappers = {};
  */
 var exceptionWrappers = ["CSSStyleDeclaration.prototype.fontFamily"];
 
+/**
+* Definition of settings supported by this module.
+*/
+const FPD_DEF_SETTINGS = {
+	behavior: {
+		description: "Set preffered behavior of FPD module.",
+		description2: ["NOTE: You can choose from three modes."],
+		label: "Behavior setting",
+		params: [
+			{
+				// 0
+				short: "Color",
+				description: "Notify by color"
+			},
+			{
+				// 1
+				short: "Notification",
+				description: "Notify by notification"
+			},
+			{
+				// 2
+				short: "Blocking",
+				description: "Block requests"
+			},
+		]
+	}
+};
+
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 // fill up fpGroups object with necessary data for evaluation
 for (let groupsLevel in fp_levels.groups) {
 	fpGroups[groupsLevel] = fpGroups[groupsLevel] || {};
 	processGroupsRecursive(fp_levels.groups[groupsLevel], groupsLevel);
 }
-// load enabled flag from storage
-browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
-	if (result.fpDetectionOn != undefined)
-		fpDetectionEnabled = result.fpDetectionOn;
-});
 
-// load fpd whitelist from storage
-browser.storage.sync.get(["fpdWhitelist"]).then(function(result) {
-	if (result.fpdWhitelist != undefined)
-		fpdWhitelist = result.fpdWhitelist;
-});
+{
+	// load configuration and settings from storage 
+	let loadConfiguration = (name) => {
+		browser.storage.sync.get([name]).then(function(result) {
+			if (result[name] != undefined) {
+				this[name] = result[name];
+			}
+		});
+	}
+
+	loadConfiguration("fpDetectionOn");
+	loadConfiguration("fpdWhitelist");
+	loadConfiguration("fpdSettings");
+}
 
 // unify default color of popup badge between different browsers
 browser.browserAction.setBadgeBackgroundColor({color: "#6E7378"});
@@ -628,7 +665,7 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 				break;
 			case "fpd-state-change":
 				browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
-					fpDetectionEnabled = result.fpDetectionOn;
+					fpDetectionOn = result.fpDetectionOn;
 				});
 				break;
 			case "fpd-whitelist-check": {
@@ -667,6 +704,18 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 				}
 				return Promise.resolve(severity);
 			}
+			case "fpd-get-settings": {
+				// send settings definition and current values
+				return Promise.resolve({
+					def: FPD_DEF_SETTINGS,
+					val: fpdSettings
+				});
+			}
+			case "fpd-set-settings":
+				// update current settings
+				fpdSettings[record.id] = record.value;
+				browser.storage.sync.set({"fpdSettings": fpdSettings});
+				break;
 			case "fpd-fetch-hits": {
 				let {tabId} = record;
 				// filter by tabId;
@@ -972,7 +1021,7 @@ function isFpdOn(tabId) {
 		return false;
 	}
 	let url = wwwRemove(new URL(availableTabs[tabId].url).hostname);
-	if (fpDetectionEnabled && !isFpdWhitelisted(url)) {
+	if (fpDetectionOn && !isFpdWhitelisted(url)) {
 		return true;
 	}
 	return false;

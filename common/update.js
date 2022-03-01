@@ -382,6 +382,9 @@ function checkAndSaveConfig(conf) {
 	if (!("fpdWhitelist" in conf) || typeof(conf.fpdWhitelist) !== "object") {
 		conf.fpdWhitelist = {};
 	}
+	if (!("fpdSettings" in conf) || typeof(conf.fpdSettings) !== "object") {
+		conf.fpdSettings = {};
+	}
 	browser.storage.sync.set(conf);
 	installUpdate();
 	return "OK";

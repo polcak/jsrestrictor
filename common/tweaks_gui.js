@@ -38,13 +38,16 @@ let tweaks_gui = {
 			return tweakEntries.sort((firstObj, secondObj) => this.cmp_groups(firstObj, secondObj));
 		},
 
-	add_tweak_row: function (tweaksContainer, group_map, group_id, tlev_id, label, group) {
+	add_tweak_row: function (tweaksContainer, group_map, group_id, tlev_id, label, group, no_default=false) {
 			let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
 			tweakRow.querySelector("label").textContent = label;
 			this.customize_tweak_row(tweakRow, group);
 
 			let tlevUI = tweakRow.querySelector(".tlev");
 			tlevUI.max = group.params.length; // 0 (off) .. array length
+			if (no_default) { // without 0 (off)
+				tlevUI.max = tlevUI.max-1;
+			}
 			let status = tweakRow.querySelector(".status");
 			let help = tweakRow.querySelector(".help");
 			let explainer = tweakRow.querySelector(".explainer");
@@ -58,14 +61,22 @@ let tweaks_gui = {
 			tlevUI.value = parseInt(tlev_id);
 			let updateLevelInfo = function (changed) {
 				let desired_tweak = parseInt(tlevUI.value);
-				if (desired_tweak !== 0) {
-					let l = group.params[desired_tweak - 1];
-					tlevUI.nextElementSibling.value = l.short;
-					status.innerHTML = `<strong>${l.description}</strong>`;
+				let showStatus = (short, desc) => {
+					tlevUI.nextElementSibling.value = short;
+					status.innerHTML = `<strong>${desc}</strong>`;
+				}
+				if (no_default) {
+					let l = group.params[desired_tweak];
+					showStatus(l.short, l.description);
 				}
 				else {
-					tlevUI.nextElementSibling.value = "Unprotected";
-					status.innerHTML = "<strong>Unprotected</strong>";
+					if (desired_tweak !== 0) {
+						let l = group.params[desired_tweak - 1];
+						showStatus(l.short, l.description);
+					}
+					else {
+						showStatus("Unprotected", "Unprotected");
+					}
 				}
 				if (changed) {
 					this.tweak_changed(group_id, desired_tweak);

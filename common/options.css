@@ -231,8 +231,3 @@ fieldset {
 	display: flex;
 	align-items:center;
 }
-
-.setting-label {
-	padding-bottom: 5px;
-	font-size: 14pt;
-}

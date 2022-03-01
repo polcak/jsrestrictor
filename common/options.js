@@ -241,6 +241,7 @@ window.addEventListener("load", function() {
 	}
 	loadWhitelist("nbs");
 	load_on_off_switch("nbs");
+	load_module_settings("fpd");
 	loadWhitelist("fpd");
 	load_on_off_switch("fpd");
 });
@@ -270,6 +271,26 @@ document.getElementById("fpd-whitelist-input").addEventListener('keydown', (e) =
 document.getElementById("fpd-whitelist-remove-button").addEventListener("click", () => remove_from_whitelist("fpd"));
 document.getElementById("fpd-whitelist-select").addEventListener('keydown', (e) => {if (e.key === 'Delete') remove_from_whitelist("fpd")});
 document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_slider, 200, "fpd")});
+
+async function load_module_settings(prefix) {
+	let settings = await browser.runtime.sendMessage({purpose: prefix + "-get-settings"});
+	if (settings) {
+		let tweaksBusiness = Object.create(tweaks_gui);
+		tweaksBusiness.tweak_changed = function(key, val) {
+			browser.runtime.sendMessage({purpose: prefix + "-set-settings", id: key, value: val});
+		}
+
+		let targetElement = document.getElementById(prefix + "-settings");
+		for ([key, setting] of Object.entries(settings.def)) {
+			var fragment = document.createRange().createContextualFragment(`
+			<fieldset class="settings-container">
+				<div id="${prefix}-${key}-setting" class="tweakgrid"></div>
+			</fieldset>`);
+			tweaksBusiness.add_tweak_row(fragment.firstElementChild.firstElementChild, {}, key, settings.val[key], setting.label, setting, true);
+			targetElement.appendChild(fragment);
+		}
+	}
+}
 
 function show_whitelist(prefix) {
 	var whitelist = document.getElementById(prefix + "-whitelist-container");
