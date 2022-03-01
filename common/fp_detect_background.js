@@ -55,13 +55,13 @@
  var fpDetectionOn;
 
 /**
-* Associtive array of hosts, that are currently among trusted ones.
-*/
+ * Associtive array of hosts, that are currently among trusted ones.
+ */
 var fpdWhitelist = {};
 
 /**
-* Associtive array of settings supported by this module.
-*/
+ * Associtive array of settings supported by this module.
+ */
 var fpdSettings = {};
 
 /**
@@ -110,24 +110,24 @@ var exceptionWrappers = ["CSSStyleDeclaration.prototype.fontFamily"];
 */
 const FPD_DEF_SETTINGS = {
 	behavior: {
-		description: "Set preffered behavior of FPD module.",
-		description2: ["NOTE: You can choose from three modes."],
+		description: "Specify preffered behavior of the module.",
+		description2: ["NOTE: Blocking behavior may break some functionality on fingerprinting websites. It also removes browser data (cache, cookies, etc.) of these websites."],
 		label: "Behavior setting",
 		params: [
 			{
 				// 0
 				short: "Color",
-				description: "Notify by color"
+				description: "Use extension icon badge color to signalize severity of possible fingerprinting."
 			},
 			{
 				// 1
 				short: "Notification",
-				description: "Notify by notification"
+				description: "Use notifications to notify users whenever a high severity fingerprinting occurs. (+color)"
 			},
 			{
 				// 2
 				short: "Blocking",
-				description: "Block requests"
+				description: "Allow the extension to interrupt network traffic from fingerprinting websites to prevent fingerprint leakage. (+notification and color)"
 			},
 		]
 	}
@@ -757,16 +757,42 @@ function isFpdWhitelisted(hostname) {
 }
 
 /**
+ * The function that returns FPD setting for given url.
+ *
+ * \param tabId Tab identifier for which FPD setting is needed.
+ * 
+ * \returns Boolean value TRUE if FPD is on, otherwise FALSE.
+ */
+ function isFpdOn(tabId) {
+	if (!availableTabs[tabId]) {
+		return false;
+	}
+	let url = wwwRemove(new URL(availableTabs[tabId].url).hostname);
+	if (fpDetectionOn && !isFpdWhitelisted(url)) {
+		return true;
+	}
+	return false;
+}
+
+/**
  * The function that creates notification and informs user about fingerprinting activity.
  *
  * \param tabId Integer number representing ID of suspicious browser tab.
  */
  function notifyFingerprintBlocking(tabId) {
+	let msg;
+	if (fpdSettings.behavior == 2) {
+		msg = "Blocking all subsequent requests.";
+	}
+	if (fpdSettings.behavior == 1) {
+		msg = "Click the notification for more details.";
+	}
+
 	browser.notifications.create("fpd-" + tabId, {
-		"type": "basic",
-		"iconUrl": browser.runtime.getURL("img/icon-48.png"),
-		"title": "Fingerprinting activity detected!",
-		"message": `Blocking all subsequent requests.\n\n` +
+		type: "basic",
+		iconUrl: browser.runtime.getURL("img/icon-48.png"),
+		title: "Fingerprinting activity detected!",
+		message: `${msg}\n\n` +
 			`Page: ${availableTabs[tabId].title.slice(0, 30)}\n` +
 			`Host: ${wwwRemove(new URL(availableTabs[tabId].url).hostname)}`
 	});
@@ -950,79 +976,64 @@ function evaluateFingerprinting(tabId) {
 			// get url of tab asociated with this request
 			var tabUrl = availableTabs[tabId] ? availableTabs[tabId].url : undefined;
 
-			// create notification for user (only once for every tab load)
-			if (!latestEvals[tabId].stopNotifyFlag) {
+			// create notification for user if behavior is "notification" or higher (only once for every tab load)
+			if (fpdSettings.behavior > 0 && !latestEvals[tabId].stopNotifyFlag) {
 				latestEvals[tabId].stopNotifyFlag = true;
 				notifyFingerprintBlocking(tabId);
 			}
-			
-			// clear local and session storage (using content script) for every frame in this tab (required?)
-			if (tabId >= 0) {
-				browser.tabs.sendMessage(tabId, {
-					cleanStorage: true
-				});
-			}
-		
-			// clear all browsing data for origin of tab url to prevent fingerprint caching
-			if (tabUrl) {
-				try {
-					// "origins" key only supported by Chromium browsers
-					browser.browsingData.remove({
-						"origins": [new URL(tabUrl).origin]
-					}, {
-						"cacheStorage": true,
-						"cookies": true,
-						"fileSystems": true,
-						"indexedDB": true,
-						"localStorage": true,
-						"serviceWorkers": true,
-						"webSQL": true
+
+			// block request and clear cache data only if "blocking" behavior is set
+			if (fpdSettings.behavior == 2) {
+				
+				// clear local and session storage (using content script) for every frame in this tab (required?)
+				if (tabId >= 0) {
+					browser.tabs.sendMessage(tabId, {
+						cleanStorage: true
 					});
-				} 
-				catch (e) {
-					// need to use "hostnames" key for Firefox
-					if (e.message.includes("origins")) {
+				}
+			
+				// clear all browsing data for origin of tab url to prevent fingerprint caching
+				if (tabUrl) {
+					try {
+						// "origins" key only supported by Chromium browsers
 						browser.browsingData.remove({
-							"hostnames": extractSubDomains(new URL(tabUrl).hostname).filter((x) => (x.includes(".")))
+							"origins": [new URL(tabUrl).origin]
 						}, {
+							"cacheStorage": true,
 							"cookies": true,
+							"fileSystems": true,
 							"indexedDB": true,
 							"localStorage": true,
-							"serviceWorkers": true
+							"serviceWorkers": true,
+							"webSQL": true
 						});
-					}
-					else {
-						throw e;
+					} 
+					catch (e) {
+						// need to use "hostnames" key for Firefox
+						if (e.message.includes("origins")) {
+							browser.browsingData.remove({
+								"hostnames": extractSubDomains(new URL(tabUrl).hostname).filter((x) => (x.includes(".")))
+							}, {
+								"cookies": true,
+								"indexedDB": true,
+								"localStorage": true,
+								"serviceWorkers": true
+							});
+						}
+						else {
+							throw e;
+						}
 					}
 				}
-			}
 
-			return {
-				cancel: true
-			};
+				return {
+					cancel: true
+				};
+			}
 		}
 	}
 
 	return {
 		cancel: false
 	};
-}
-
-/**
- * The function that returns FPD setting for given url.
- *
- * \param tabId Tab identifier for which FPD setting is needed.
- * 
- * \returns Boolean value TRUE if FPD is on, otherwise FALSE.
- */
-
-function isFpdOn(tabId) {
-	if (!availableTabs[tabId]) {
-		return false;
-	}
-	let url = wwwRemove(new URL(availableTabs[tabId].url).hostname);
-	if (fpDetectionOn && !isFpdWhitelisted(url)) {
-		return true;
-	}
-	return false;
 }

@@ -81,7 +81,9 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		</p>
 		<ul id="levels-list">
 		</ul>
-		<button id="new_level" class="jsr-button">Add custom level</button>
+		<fieldset>
+			<button id="new_level" class="jsr-button">Add custom level</button>
+		</fieldset>
 	</div>
 
   	<div id="proxy-protection-config">
@@ -119,10 +121,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		<div id="nbs-settings">
 
 		</div>
-		<fieldset class="settings-container">
+		<fieldset>
 			<button id="nbs-whitelist-show" class="jsr-button">Manage whitelist ⤵</button>
 		</fieldset>
-		<div id="nbs-whitelist-container" class="hidden">
+		<fieldset id="nbs-whitelist-container" class="hidden">
 			<div>
 				<input id="nbs-whitelist-input" type="text" name="nbs-whitelist-hostname" placeholder="example.com">
 				<button id="nbs-whitelist-add-button" class="jsr-button"><strong>Disable</strong> for the domain</button>
@@ -137,7 +139,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 					<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
 				</p>
 			</div>
-		</div>
+		</fieldset>
 	</div>
 
 	<div id="fingerprinting-protection-config">
@@ -164,10 +166,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		<div id="fpd-settings">
 
 		</div>
-		<fieldset class="settings-container">
+		<fieldset>
 			<button id="fpd-whitelist-show" class="jsr-button">Manage whitelist ⤵</button>
 		</fieldset>
-		<div id="fpd-whitelist-container" class="hidden">
+		<fieldset id="fpd-whitelist-container" class="hidden">
 			<div>
 				<input id="fpd-whitelist-input" type="text" name="fpd-whitelist-hostname" placeholder="example.com">
 				<button id="fpd-whitelist-add-button" class="jsr-button"><strong>Disable</strong> for the domain</button>
@@ -182,7 +184,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 					<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
 				</p>
 			</div>
-		</div>
+		</fieldset>
 	</div>
 
 </section>

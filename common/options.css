@@ -226,8 +226,3 @@ fieldset {
 .protection-title > .shield-onoff-label {
 	padding-right: 10px;
 }
-
-.settings-container {
-	display: flex;
-	align-items:center;
-}

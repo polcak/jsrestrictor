@@ -283,7 +283,7 @@ async function load_module_settings(prefix) {
 		let targetElement = document.getElementById(prefix + "-settings");
 		for ([key, setting] of Object.entries(settings.def)) {
 			var fragment = document.createRange().createContextualFragment(`
-			<fieldset class="settings-container">
+			<fieldset>
 				<div id="${prefix}-${key}-setting" class="tweakgrid"></div>
 			</fieldset>`);
 			tweaksBusiness.add_tweak_row(fragment.firstElementChild.firstElementChild, {}, key, settings.val[key], setting.label, setting, true);
@@ -293,6 +293,7 @@ async function load_module_settings(prefix) {
 }
 
 function show_whitelist(prefix) {
+	loadWhitelist(prefix);
 	var whitelist = document.getElementById(prefix + "-whitelist-container");
 	whitelist.classList.toggle("hidden");
 }
@@ -435,12 +436,21 @@ function control_slider(prefix)
 	{
 		if (prefix == "nbs") setStorageAndSendMessage({"requestShieldOn": true}, {message:"turn request shield on"});
 		if (prefix == "fpd") setStorageAndSendMessage({"fpDetectionOn": true}, {purpose:"fpd-state-change"});
+		toggleSettings(prefix, true);
 	}
 	else
 	{
 		if (prefix == "nbs") setStorageAndSendMessage({"requestShieldOn": false}, {message:"turn request shield off"});
 		if (prefix == "fpd") setStorageAndSendMessage({"fpDetectionOn": false}, {purpose:"fpd-state-change"});
+		toggleSettings(prefix, false);
 	}
+}
+
+function toggleSettings(prefix, enable) {
+	tweaksArr = document.querySelectorAll(`#${prefix}-settings input.tlev`);
+	tweaksArr.forEach((node) => {
+		node.disabled = !enable;
+	})
 }
 
 function prepareHiddenHelpText(originally_hidden_elements, originally_visible_elements = []) {
