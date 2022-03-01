@@ -129,25 +129,28 @@ function createReport(data) {
     }
 
     // make group name clickable only if it makes sense - groups with resources
-    for (let element of document.querySelectorAll(".fpd-group")) {
-        let button;
-        let haveChild = false;
-        
-        for (let i = 0; i < element.children.length; i++) {
-            let child = element.children[i];
-            if (child.tagName == "H2") {
-                button = child;
+    let makeClickableTitles = () => {
+        for (let element of document.querySelectorAll(".fpd-group")) {
+            let button;
+            let haveChild = false;
+            
+            for (let i = 0; i < element.children.length; i++) {
+                let child = element.children[i];
+                if (child.tagName == "H2") {
+                    button = child;
+                }
+                if (child.tagName == "H4" && !child.classList.contains("no-access")) {
+                    haveChild = true;
+                }
             }
-            if (child.tagName == "H4") {
-                haveChild = true;
+            
+            if (button && haveChild) {
+                button.classList.add("clickable");
+                button.addEventListener("click", toggleResources);
             }
-        }
-        
-        if (button && haveChild) {
-            button.classList.add("clickable");
-            button.addEventListener("click", toggleResources);
         }
     }
+    makeClickableTitles();
 
     // show resources for every group in FPD report
     let showAll = (event) => {
@@ -174,6 +177,7 @@ function createReport(data) {
         for (let element of document.querySelectorAll(".no-access")) {      
             element.classList.remove("no-access");
         }
+        makeClickableTitles();
     }
     
     document.getElementById("showAll").addEventListener("click", showAll);
