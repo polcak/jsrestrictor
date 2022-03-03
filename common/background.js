@@ -3,6 +3,7 @@
  *
  *  \author Copyright (C) 2019  Libor Polcak
  *  \author Copyright (C) 2019  Martin Timko
+ * 	\author Copyright (C) 2022  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -20,6 +21,56 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
+
+/**
+ * Object holding records of all currently used optional permissions (per module/setting).
+ * When an optional permission is no longer used, it is automatically removed.
+ */
+var permissionsManager = {
+	all: {},
+
+	updatePermissions: function(module, setting, newPermissions) {
+		this.addPermissions(module, setting, newPermissions);
+		oldPermissions = new Set();
+		for (let [key, val] of Object.entries(this.all)) {
+			if (val[module] && val[module].has(setting)) {
+				oldPermissions.add(key);
+			}
+		}
+		let diff = [...oldPermissions].filter(x => !newPermissions.includes(x));
+		this.removePermissions(module, setting, diff);
+	},
+	
+	addPermissions: function(module, setting, permissions) {
+		permissions.forEach(p => {
+			this.all[p] = this.all[p] || {};
+			this.all[p][module] = this.all[p][module] || new Set();
+			this.all[p][module].add(setting);
+		});
+	},
+
+	removePermissions: function(module, setting, permissions) {
+		permissions.forEach(p => {
+			if (this.all[p] && this.all[p][module] && this.all[p][module].has(setting)) {
+				this.all[p][module].delete(setting);
+			}
+			if (!this.all[p][module].size) {
+				delete this.all[p][module];
+			}
+			if (Object.keys(this.all[p]).length === 0) {
+				delete this.all[p];
+				browser.permissions.remove({permissions: [p]});
+			}
+		});
+	}
+};
+
+// listen for permissions update from popup/options page
+browser.runtime.onMessage.addListener(function (message) {
+	if (message && message.action === "update-permissions") {
+		return Promise.resolve(permissionsManager.updatePermissions(message.module, message.setting, message.permissions));
+	}
+});
 
 var tab_status = {};
 var tab_urls = {};

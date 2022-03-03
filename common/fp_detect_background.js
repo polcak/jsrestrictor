@@ -127,7 +127,8 @@ const FPD_DEF_SETTINGS = {
 			{
 				// 2
 				short: "Blocking",
-				description: "Allow the extension to interrupt network traffic from fingerprinting websites to prevent fingerprint leakage. (+notification and color)"
+				description: "Allow the extension to interrupt network traffic from fingerprinting websites to prevent fingerprint leakage. (+notification and color)",
+				permissions: ["browsingData"]
 			},
 		]
 	}
@@ -993,7 +994,7 @@ function evaluateFingerprinting(tabId) {
 				}
 			
 				// clear all browsing data for origin of tab url to prevent fingerprint caching
-				if (tabUrl) {
+				if (tabUrl && browser.browsingData) {
 					try {
 						// "origins" key only supported by Chromium browsers
 						browser.browsingData.remove({
