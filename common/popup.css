@@ -85,6 +85,8 @@ h3 {
 	font-size: large;
 	text-align: center;
 	flex-grow: 1;
+	margin-right: 5px;
+	margin-left: 5px;
 }
 
 #level-select {
@@ -107,7 +109,7 @@ input#js-toggle {
 }
 
 label.js-toggle {
-	height: 25px;
+	max-height: 34px;
 	padding: 3.5px;
 	cursor: pointer;
 	border: 1px var(--separator-color) solid;
