@@ -211,7 +211,7 @@
 			wrapping_code_function_call_window: true,
 			original_function: "parent.CanvasRenderingContext2D.prototype.getImageData",
 			replace_original_function: true,
-			wrapping_function_args: "sx, sy, sw, sh",
+			wrapping_function_args: "...args",
 			/** \fn fake CanvasRenderingContext2D.prototype.getImageData
 			 * \brief Returns a fake image data of the same height and width as stored in the original canvas.
 			 *
@@ -225,7 +225,7 @@
 				fake.setAttribute("height", this.canvas.height);
 				var stx = fake.getContext("2d");
 				farble(this,stx);
-				return origGetImageData.call(stx, sx, sy, sw, sh);
+				return origGetImageData.call(stx, ...args);
 			`,
 			post_wrapping_code: create_post_wrappers("HTMLIFrameElement.prototype"),
 		},
