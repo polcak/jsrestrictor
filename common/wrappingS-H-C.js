@@ -133,7 +133,7 @@
 				original_name: "CanvasRenderingContext2D.prototype.getImageData",
 				wrapped_name: "origGetImageData",
 			}],
-			helping_code: helping_code + strToUint + `
+			helping_code: helping_code + strToUint + farbleCanvasDataBrave.toString() + `
 				var farble = function(context, fake) {
 					if(approach === 1){
 						fake.fillStyle = "white";
@@ -144,24 +144,7 @@
 						const width = context.canvas.width;
 						const height = context.canvas.height;
 						var imageData = origGetImageData.call(context, 0, 0, width, height);
-						// PRNG function needs to depend on the original canvas, so that the same
-						// image is farbled the same way but different images are farbled differently
-						// See https://pagure.io/JShelter/webextension/issue/23
-						var thiscanvas_prng = alea(domainHash, "H-C", imageData.data);
-						var data_count = BigInt(BigInt(width) * BigInt(height) * 4n);
-
-						for (let i = 0n; i < data_count; i++) {
-							if ((i % 4n) === 3n) {
-								// Do not modify alpha
-								continue;
-							}
-							if (thiscanvas_prng() > 0.5) { // Modify data with probability of 0.5
-								// Possible improvements:
-								// Copy a neighbor pixel (possibly with modifications
-								// Make bigger canges than xoring with 1
-								imageData.data[i] ^= 1;
-							}
-						}
+						farbleCanvasDataBrave(imageData.data, width, height);
 						// Do not modify the original canvas, always modify the fake canvas.
 						// Always farble the whole image so that the farbled data do not depend
 						// on the page-specified extraction data rectangle.
