@@ -1,0 +1,50 @@
+"One entry (one new script) in array 'scripts' in global.json":
+
+		{
+			"name": "name of the source script without file extension (.js)",
+			"remove_custom_namespace": true "or" false,
+			"src_script_requirements": [
+				{
+					"type": "const or var or ...",
+					"requirements": [
+						{
+							"from": "file or library",
+							"objects": [
+								"array of names of objects to be imported from file or library"
+							]
+						},
+						{
+							"import": "file or library",
+							"as": "name for whole imported file or library"
+						}
+					]
+				}
+			],
+			"test_script_requirements": [
+				{
+					"type": "const or var or ...",
+					"requirements": [
+						{
+							"from": "file or library",
+							"objects": [
+								"array of names of objects to be imported from file or library"
+							]
+						},
+						{
+							"import": "file or library",
+							"as": "name for whole imported file or library"
+						}
+					]
+				}
+			],
+			"inject_code_to_src":
+			{
+				"begin": "code to be injected at the begging of source script after requirements",
+				"end": "code to be injected at the end of source script before exports"
+			},
+			"extra_exports": [
+				"Names of objects to be exported from source file (separated by comma).",
+				"Global functions and vars should be exported automatically and it is not necessary to introduce them here.",
+				"This is only for special cases when standart automatical export is insufficient."
+			]
+		}

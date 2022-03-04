@@ -22,20 +22,54 @@
 //
 
 
-// get root domain. e.g. fit.vutbr.cz --> vutbr.cz
-function extractRootDomain(thisDomain) {
-    // var thisDomain = extractHostname(thisUrl);
-    var splitArr = thisDomain.split('.');
-    var arrLen = splitArr.length;
-    //extracting the root domain here
-    //if there is a subdomain 
-    if (arrLen > 2) {
-        thisDomain = splitArr[arrLen - 2] + '.' + splitArr[arrLen - 1];
-        //check to see if it's using a Country Code Top Level Domain (ccTLD) (e.g. ".co.uk")
-        if (splitArr[arrLen - 2].length == 2 && splitArr[arrLen - 1].length == 2) {
-            //this is using a ccTLD
-            thisDomain = splitArr[arrLen - 3] + '.' + thisDomain;
-        }
-    }
-    return thisDomain;
+/**
+ * Get all sub domains for a domain.
+ *
+ * @param thisDomain Domain name string, e.g. www.fit.vutbr.cz
+ *                   IPv4 address, e.g. 147.229.9.23
+ *                   IPv6 address, e.g. 2001:67c:1220:809::93e5:917
+ *
+ * @returns List of strings representing all subdomains, including TLD. The
+ * list starts with the most generic domain and continues with the more and
+ * more specific domains. For example, www.fit.vutbr.cz -> [ "cz", "vutbr.cz",
+ * "fit.vutbr.cz", "www.fit.vutbr.cz" ] 
+ */
+function extractSubDomains(thisDomain) {
+	var splitArr = thisDomain.split('.');
+	var arrLen = splitArr.length;
+	// Check if the string is an IPv4 address
+	if (arrLen == 4) {
+		let correct = true; // initial value
+		try {
+			for (num of splitArr) {
+				let octet = Number(num);
+				if (octet !== octet /* NaN */ || octet < 0 || octet > 255) {
+					correct = false;
+				}
+			}
+		}
+		catch (error) {
+			correct = false;
+		}
+		if (correct === true) {
+			return [thisDomain]; // It is an IPv4 address
+		}
+	}
+	// Ignore the trailing "."
+	if (splitArr[arrLen - 1] === "") {
+		splitArr.pop();
+		arrLen -= 1;
+	}
+	if (arrLen === 0) {
+		return [""];
+	}
+	// Create the list of subdomains
+	let domains = [];
+	let subDomain = splitArr[arrLen - 1];
+	domains.push(subDomain);
+	for (let i = arrLen - 2; i >= 0; i--) {
+		subDomain = splitArr[i] + '.' + subDomain;
+		domains.push(subDomain);
+	}
+	return domains;
 }

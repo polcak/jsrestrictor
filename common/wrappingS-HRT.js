@@ -4,6 +4,7 @@
 //  internet.
 //
 //  Copyright (C) 2019  Libor Polcak
+//  Copyright (C) 2020  Peter Hornak
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,13 +34,17 @@
 					wrapped_name: "origNow",
 				}
 			],
-			helping_code: rounding_function,
+			helping_code: rounding_function + noise_function + `
+				let precision = args[0];
+				let doNoise = args[1];
+			`,
 			wrapping_function_args: "",
 			wrapping_function_body: `
 					var originalPerformanceValue = origNow.call(window.performance);
-					return rounding_function(originalPerformanceValue, args[0]);
-				`
+					var limit_precision = doNoise ? noise_function : rounding_function;
+					return limit_precision(originalPerformanceValue, precision);
+			`,
 		},
-	]
+	];
 	add_wrappers(wrappers);
 })();

@@ -3,280 +3,97 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="options.css">
+  <script src="levels.js" type="text/javascript"></script>
+  <script src="helpers.js" type="text/javascript" defer></script>
+  <script src="options.js" type="text/javascript" defer></script>
 </head>
 <body>
+			<section class="logo">
+				<img src="img/icon-128.png" alt="JavaScript Restrictor">
+			</section>
+			<nav class="menu">
+				<ul>
+					<li><a href="options.html">Main JSR settings</a></li>
+					<li><a href="options_domains.html">Specific domain level configuration</a></li>
+					<li>
+						<p>External links</p>
+						<ul>
+							<li><a href="https://polcak.github.io/jsrestrictor/test/test.html">Test page</a></li>
+							<li><a href="https://www.fit.vutbr.cz/~ipolcak/firefox_csp_bug/csp.php">Test page
+									for CSP bug in Firefox</a></li>
+							<li><a href="https://polcak.github.io/jsrestrictor/levels.html">Levels</a></li>
+							<li><a href="https://polcak.github.io/jsrestrictor/permissions.html">Permissions</a></li>
+							<li><a href="https://github.com/polcak/jsrestrictor/">Source code</a></li>
+							<li><a href="https://github.com/polcak/jsrestrictor/issues">Open issues</a></li>
+							<li><a href="https://polcak.github.io/jsrestrictor/credits.html">Credits</a></li>
+						</ul>
+					</li>
+				</ul>
+			</nav>
 
-<div id="content">
-  <div id="title">
-    <img src="/img/icon-64.png">
-    <h2>JavaScript Restrictor</h2>
-    <div id="help">
-      <a id="test-link" class="links" href="https://polcak.github.io/jsrestrictor/test/test.html" target="_blank">Test page</a>
-      <a id="help-link" class="links" href="https://polcak.github.io/jsrestrictor" target="_blank">Help & About</a>
-    </div>
-  </div>
-  
 
+	<section class="content">
 
-  <div id="first-row">
-    <h2 id="set-default-level">Set default level of protection to:</h2> 
-    <div id="levels-default">
-      <span class="level" id="level-0" title="No protection at all">0</span>
-      <span class="level" id="level-1" title="Minimal level of protection">1</span>
-      <span class="level" id="level-2" title="Normal level (recomended for most sites)">2</span>
-      <span class="level" id="level-3" title="Maximum anonymity and security as possible (tinfoil hat)">3</span>
-      <span class="level" id="level-4" title="Your level of protection (custom level settings)">Custom</span>
-    </div>
+    <h1>JavaScript Restrictor</h1>
+
+<section id="configuration_area">
+  <div id="levels-config">
+    <h2 id="set-default-level">Configured levels and default level:</h2> 
+    <ul id="levels-list">
+    </ul>
     <p id="levels-link" class="links">For more info about levels visit: <a href="https://polcak.github.io/jsrestrictor/levels.html" target="_blank">Levels description</a></p>
+    <button id="new_level" class="jsr-button">Add custom level</button>
   </div>
 
+  <div id="proxy-protection-config">
+	<h2>Network boundary shield</h2>
+  	<div>
+			<label id="switch-label">Network boundary shield: </label>
+	  	<label class="switch">
+			  <input id="switch-checkbox" type="checkbox" checked>
+			  <span class="slider"></span>
+		</label>
+	</div>
+	<p>
+		Network boundary shield prevents web pages to use the browser as a proxy between local network
+		and the public Internet. See the
+		<a
+			href="https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf">Force
+			Point report</a> for an example of the attack.
+		The protection encapsulates the WebRequest API, so it captures all outgoing requests.
+	</p>
+	<p>
+		Generally, you want Network boundary shield protection active, however, some pages can be
+		broken, because they require interaction between public Internet and local network, for example,
+		some Intranet information systems might be broken by the Network boundary shield.
+	</p>
+	<p>
+		You can disable the Network boundary shield by adding the domain (e.g. example.com) to the
+		list below. The domains and all their subdomains listed bellow are not blocked by the Network
+		boundary shield. To selectively deactivate the Network boundary shield, insert the domains to the list (excluding "www", but including all other domains eg. ".com").
+		We generally do <strong>not</strong> recommend disabling the Network boundary shield for domains
+		from the public Internet.
+	</p>
+	<p>
+		Please note, that these domain names are checked with domain hierarchy, so whitelisting
+		<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
+	</p>
+  	<div>
+	  	<input id="whitelist-input" type="text" name="whitelist-hostname" placeholder="example.com">
+			<button id="whitelist-add-button" class="jsr-button">Deactivate the Network boundary shield
+				for the domain</button>
+	</div>
+  	<select id="whitelist-select" name="sometext" size="5" multiple>
 
-  <div id="second-row">
-    <h2 id="set-domain-level">Set level of protection for website:</h2> 
-    <form id="domain-form">
-      <input id="domain-text" type="text" placeholder="example.com or en.example.com">
-      <select id="domain-level">
-        <option value="0" selected>level 0</option>
-        <option value="1">level 1</option>
-        <option value="2">level 2</option>
-        <option value="3">level 3</option>
-        <option value="4">custom level</option>
-      </select>
-      <button id="add-domain" type="submit" data-action="add-domain-level" class="save-button">Add to list</button>
-    </form>
-    <h2 id="domain-show-hide" class="show-hide">Show/Hide list</h2>
-    <table id="domain-list-table" class="tg">
-      
-    </table>
-    <h3 id="delete-list" class="show-hide-2">Delete all</h2>
+	</select>
+	<div>
+		<button id="whitelist-remove-button" class="jsr-button">Reactivate the Network boundary shield
+			for the selected domains</button>
+	</div>
   </div>
 
+</section>
 
-
-  <div id="third-row">
-    <div id="custom-title-div">
-      <h2 id="custom-title">Custom level settings:</h2>
-      <!-- <h2 id="custom-show-hide" class="show-hide">Show/Hide settings</h2> -->
-    </div>
-    <form id="custom-form">
-      <!-- USER AGENT -->
-      <div class="main-section">
-        <input type="checkbox" id="useragent_main_checkbox">
-        <span class="section-header">Spoof user agent (inspired by Tor browser):</span>
-      </div>
-      <div class="subsection">
-        <div class="row">
-          <select id="useragent_type_of_restriction" class="long-select">
-            <option value="a" selected>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0</option>
-            <option value="b">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729 Safari/537.36</option>
-          </select>
-        </div>
-        <span class="table-left-column"><strong> User-Agent HTTP webRequest & JS navigator.userAgent:</strong> based on your selection</span>
-        <br>
-        <span class="table-left-column"><strong>JS navigator.vendor:</strong>"Google Inc." for Chrome/Opera, empty string for Firefox </span>
-        <br>
-        <span class="table-left-column"><strong>JS navigator.platform:</strong> Win32</span>
-        <br>
-        <span class="table-left-column"><strong>JS navigator.appVersion:</strong> 5.0 (Windows)</span>
-        <br>
-        <span class="table-left-column"><strong>JS navigator.oscpu:</strong> undefined</span>
-        <br>
-      </div>
-
-      <!-- REFERRER / REFERER -->
-      <div class="main-section">
-        <input type="checkbox" id="referer_main_checkbox">
-        <span class="section-header">Empty Referer HTTP webRequest & JS document.referrer:</span>
-      </div>
-      <div class="subsection">
-          <span class="table-left-column">Set to empty string. Make websites think we always go to them directly rather than being referred</span>
-      </div>
-
-      <!-- LANGUAGE -->
-      <div class="main-section">
-        <input type="checkbox" id="language_main_checkbox">
-        <span class="section-header">Spoof browser language to English only:</span>
-      </div>
-      <div class="subsection">
-          <span class="table-left-column"><strong>Accept-Language HTTP webRequest & JS navigator.language/s:</strong> en-US, en</span>
-      </div>
-      
-      <!-- DO NOT TRACK -->
-      <div class="main-section">
-        <input type="checkbox" id="DNT_enabled_main_checkbox">
-        <span class="section-header">Set Do-Not-Track setting (navigator.doNotTrack):</span>
-      </div>
-      <div class="subsection">
-        <div class="row">
-          <select id="DNT_enabled_type_of_restriction" class="long-select">
-            <option value="a" selected>Always yes</option>
-            <option value="b">Always no</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- DATE -->
-      <div class="main-section">
-        <input type="checkbox" id="window_date_main_checkbox">
-        <span class="section-header">Reduce the time accuracy of "Date" object:</span>
-      </div>
-      <div class="subsection">
-        <div class="row">
-          <span class="table-left-column">Round time to:</span>
-          <select id="window_date_time_round_precision">
-            <option value="-1">hundredths of a second (1.230)</option>
-            <option value="-2" selected>tenths of a second (1.200)</option>
-            <option value="-3">full seconds (1.000)</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- PERFORMANCE -->
-      <div class="main-section">
-        <input type="checkbox" id="performance_now_main_checkbox">
-        <span class="section-header">Reduce the "performance.now()" accuracy:</span>
-      </div>
-      <div class="subsection">
-        <div class="row">
-          <span class="table-left-column">Round "performance.now()" value to:</span>
-          <select id="performance_now_value_round_precision">
-            <option value="0">ones (1234)</option>
-            <option value="-1">tens (1230)</option>
-            <option value="-2" selected>hundreds (1200)</option>
-            <option value="-3">thousands (1000)</option>
-          </select>
-        </div>
-      </div>
-      
-      <!-- CANVAS -->
-      <div class="main-section">
-        <input type="checkbox" id="htmlcanvaselement_main_checkbox">
-        <span class="section-header">Protect against canvas fingerprinting:</span>
-      </div>
-      <div class="subsection">
-          <span class="table-left-column">Canvas return white image data by modifiing canvas.toDataURL() function</span>
-      </div>
-
-      <!-- GPS -->
-      <div class="main-section">
-        <input type="checkbox" id="navigator_geolocation_main_checkbox">
-        <span class="section-header">Reduce accuracy of geolocation data:</span>
-      </div>
-      <div class="subsection">
-        <div class="row">
-          <select id="navigator_geolocation_type_of_restriction" class="long-select">
-            <option value="a" selected>Round location data to:</option>
-            <option value="b">Null all location data (all set to zero)</option>
-          </select>
-        </div>
-        <div class="row gps">
-          <span class="table-left-column">Latitude value in decimal degrees:</span>
-          <select id="navigator_geolocation_rounding_precision_of_item_a">
-            <option value="0">round to ones (12.00000)</option>
-            <option value="1">round to 1 decimal place (12.30000)</option>
-            <option value="2">round to 2 decimals (12.34000)</option>
-            <option value="3">round to 3 decimals (12.34500)</option>
-            <option value="4" selected>round to 4 decimals (12.34560)</option>
-            <option value="5">round to 5 decimals (12.34567)</option>
-          </select>
-        </div>
-        <div class="row gps">
-          <span class="table-left-column">Longitude value in decimal degrees:</span>
-          <select id="navigator_geolocation_rounding_precision_of_item_b">
-            <option value="0">round to ones (12.00000)</option>
-            <option value="1">round to 1 decimal place (12.30000)</option>
-            <option value="2">round to 2 decimals (12.34000)</option>
-            <option value="3">round to 3 decimals (12.34500)</option>
-            <option value="4" selected>round to 4 decimals (12.34560)</option>
-            <option value="5">round to 5 decimals (12.34567)</option>
-          </select>
-        </div>
-        <div class="row gps">
-          <span class="table-left-column">Altitude value in meters:</span>
-          <select id="navigator_geolocation_rounding_precision_of_item_c">
-            <option value="0">round to ones (1234)</option>
-            <option value="-1">round to tens (1230)</option>
-            <option value="-2" selected>round to hundreds (1200)</option>
-            <option value="-3">round to thousands (1000)</option>
-          </select>
-        </div>
-        <div class="row gps">
-          <span class="table-left-column">Latitude and longitude accuracy in meters:</span>
-          <select id="navigator_geolocation_rounding_precision_of_item_d">
-            <option value="-1">round to tens (1230)</option>
-            <option value="-2" selected>round to hundreds (1200)</option>
-            <option value="-3">round to thousands (1000)</option>
-          </select>
-        </div>
-        <div class="row gps">
-          <span class="table-left-column">Altitude accuracy in meters:</span>
-          <select id="navigator_geolocation_rounding_precision_of_item_e">
-            <option value="-1">round to tens (1230)</option>
-            <option value="-2" selected>round to hundreds (1200)</option>
-            <option value="-3">round to thousands (1000)</option>
-          </select>
-        </div>
-        <div class="row gps">
-          <span class="table-left-column">Heading (direction of device) in degrees:</span>
-          <select id="navigator_geolocation_rounding_precision_of_item_f">
-            <option value="-1">round to tens (1230)</option>
-            <option value="-2" selected>round to hundreds (1200)</option>
-            <option value="-3">round to thousands (1000)</option>
-          </select>
-        </div>
-        <div class="row gps">
-          <span class="table-left-column">Velocity of the device in meters per second:</span>
-          <select id="navigator_geolocation_rounding_precision_of_item_g">
-            <option value="-1">round to tens (1230)</option>
-            <option value="-2" selected>round to hundreds (1200)</option>
-            <option value="-3">round to thousands (1000)</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- HARDWARE -->
-      <div class="main-section">
-        <input type="checkbox" id="hardware_main_checkbox">
-        <span class="section-header">Spoof hardware information to the most popular HW:</span>
-      </div>
-      <div class="subsection">
-          <span class="table-left-column"><strong>JS navigator.deviceMemory:</strong> 4</span>
-          <br>
-          <span class="table-left-column"><strong>JS navigator.hardwareConcurrency:</strong> 2</span>
-      </div>
-
-      <!-- COOKIE ENABLED -->
-      <div class="main-section">
-        <input type="checkbox" id="cookie_enabled_main_checkbox">
-        <span class="section-header"><i>Set navigator.cookieEnabled value:</i></span><span id="experimental">(experimental only)</span>
-      </div>
-      <div class="subsection">
-        <div class="row">
-          <select id="cookie_enabled_type_of_restriction" class="long-select">
-            <option value="a" selected>Always true</option>
-            <option value="b">Always false</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- XMLHTTPREQUEST -->
-      <div class="main-section">
-        <input type="checkbox" id="xmlhttprequest_main_checkbox">
-        <span class="section-header"><i>Filter XMLHttpRequest requests:</i></span> <span id="experimental">(experimental only)</span>
-      </div>
-      <div class="subsection">
-        <div class="row">
-          <select id="xmlhttprequest_type_of_restriction" class="long-select">
-            <option value="a" selected>Always ask user to allow every XMLHttpRequest request</option>
-            <option value="b">Block all XMLHttpRequest requests</option>
-          </select>
-        </div>
-      </div>
-      <button type="submit" id="save" class="save-button">Save custom level</button>
-    </form>
-  </div>
-</div>
-  <script src="levels.js" type="text/javascript"></script>
-  <script src="options.js" type="text/javascript"></script>
+	</section>
 </body>
 </html>

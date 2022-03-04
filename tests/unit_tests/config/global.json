@@ -1,0 +1,288 @@
+{
+	"scripts": [
+		{
+			"name": "helpers",
+			"remove_custom_namespace": false,
+			"src_script_requirements": [
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./helpers.js",
+							"objects": [
+								"escape",
+								"gen_random32"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "browser",
+			"remove_custom_namespace": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"import": "sinon-chrome",
+							"as": "chrome"
+						}
+					]
+				}
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./browser.js",
+							"objects": [
+								"browser"
+							]
+						}
+					]
+				}
+			],
+			"extra_exports": [
+				"browser"
+			]
+		},
+		{
+			"name": "url",
+			"remove_custom_namespace": false,
+			"src_script_requirements": [
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./url.js",
+							"objects": [
+								"extractSubDomains"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "levels",
+			"remove_custom_namespace": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"import": "sinon-chrome",
+							"as": "chrome"
+						},
+						{
+							"import": "navigator",
+							"as": "navigator"
+						},
+						{
+							"import": "window",
+							"as": "window"
+						},
+						{
+							"from": "./url.js",
+							"objects": [
+								"extractSubDomains"
+							]
+						},
+						{
+							"from": "./helpers.js",
+							"objects": [
+								"wwwRemove"
+							]
+						}
+					]
+				}
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./levels.js",
+							"objects": [
+								"wrapping_groups",
+								"is_api_undefined",
+								"are_all_api_unsupported",
+								"level_0",
+								"level_1",
+								"level_2",
+								"level_3",
+								"levels",
+								"default_level",
+								"domains",
+								"wrapped_codes",
+								"init_levels",
+								"updateLevels",
+								"changedLevels",
+								"setDefaultLevel",
+								"saveDomainLevels",
+								"getCurrentLevelJSON"
+							]
+						},
+						{
+							"from": "./code_builders.js",
+							"objects": [
+								"wrap_code"
+							]
+						}
+					]
+				}
+			],
+			"inject_code_to_src": 
+			{
+				"begin": "function gen_random32() { return 0.2 * 4294967295; }",
+				"end": "domains = {}; domains['stackoverflow.com'] = level_3; domains['polcak.github.io'] = level_2; domains['github.io'] = level_3; domains['swatblog.rtgp.xyz'] = level_1; domains['mail.google.com'] = level_0; domains['example.net'] = level_3; domains['vas-hosting.cz'] = level_2; domains['crm4.dynamics.com'] = level_1; domains['dynamics.com'] = level_2; domains['csob.cz'] = level_0;"
+			}
+		},
+		{
+			"name": "code_builders",
+			"remove_custom_namespace": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrapping.js",
+							"objects": [
+								"build_wrapping_code"
+							]
+						}
+					]
+				}
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./code_builders.js",
+							"objects": [
+								"enclose_wrapping",
+								"enclose_wrapping2",
+								"define_page_context_function",
+								"generate_assign_function_code",
+								"generate_object_properties",
+								"generate_delete_properties",
+								"build_code",
+								"wrap_code"
+							]
+						},
+						{
+							"from": "./levels.js",
+							"objects": [
+								"levels",
+								"wrapping_groups"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "wrapping",
+			"remove_custom_namespace": false,
+			"src_script_requirements": [
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrapping.js",
+							"objects": [
+								"build_wrapping_code",
+								"add_wrappers",
+								"rounding_function",
+								"noise_function"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "background",
+			"remove_custom_namespace": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./levels.js",
+							"objects": [
+								"getCurrentLevelJSON"
+							]
+						},
+						{
+							"import": "sinon-chrome",
+							"as": "chrome"
+						}
+					]
+				}
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./background.js",
+							"objects": [
+								"build_wrapping_code",
+								"add_wrappers",
+								"rounding_function",
+								"noise_function"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "wrappingS-GEO",
+			"remove_custom_namespace": true,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrapping.js",
+							"objects": [
+								"add_wrappers"
+							]
+						}
+					]
+				}
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrappingS-GEO.js",
+							"objects": [
+								"processOriginalGPSDataObject_globals",
+								"processOriginalGPSDataObject",
+								"wrappers"
+							]
+						}
+					]
+				}
+			],
+			"inject_code_to_src":
+			{
+				"begin": "function gen_random32() { return 0.2 * 4294967295; }"
+			}
+		}
+	]
+}

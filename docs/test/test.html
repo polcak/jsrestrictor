@@ -8,20 +8,17 @@
 	<script type="text/javascript" src="canvas.js"></script>
 	<script type="text/javascript" src="gps.js"></script>
 	<script type="text/javascript" src="xmlhttprequest.js"></script>
-	<script type="text/javascript" src="userAgent.js"></script>
 	<script type="text/javascript" src="hw.js"></script>
+	<script type="text/javascript" src="enumerateDevices.js" defer></script>
 	<link rel="stylesheet" type="text/css" href="global.css">
 </head>
-<body onload="initClock(); updatePerformanceLabelEvery(200); getUserAgent(); getHW();">
+<body onload="initClock(); updatePerformanceLabelEvery(200); getHW();">
 	<p><a href="https://polcak.github.io/jsrestrictor/">Home Page</a></p>
 	<p>You can try <a href="https://amiunique.org/">Am I Unique</a> or <a href="https://panopticlick.eff.org/">Panopticlick</a> to learn how identifiable you are on the Internet and test JavaScript Restrictor Extension</p>
 	<hr>
 	
 	<h1>Simple examples for implemented browser extension</h1>
 	<hr>
-	<h2>User agent / Browser information</h2>
-	<div id="user-agent"></div>
-	<br><br><br><hr>
 
 	<h2>window.Date example</h2>
 	<div id="content-wrapper">
@@ -81,13 +78,21 @@
 	<h2>navigator.geolocation example</h2>
 
 	<div id="map"></div>
-<!-- 	<iframe width="600" height="450" allowfullscreen="" class="maps" frameborder="0" id="mapnavi" name="mapnavi" src="https://www.google.com/maps/embed/v1/place?zoom=11&q=49.1951%2C16.6068&key=AIzaSyC-5CY9mOCeg5Y3IhPqi_Yd0-DZtWrJl-E" /> -->
 
 	<button onclick="showGPSData();">Show GPS data</button><br><br>
+	
+	Redraw map, when position changes
+	<button onclick="watchGPSPosition();">Watch position</button><br><br>
+	<button id="clearWatchButton" onclick="clearGPSWatch();" disabled>Clear watch</button><br><br>
 	<div id="placeToWriteGPSDetails"></div>
+	<div id="placeToWriteWatchPositionId"></div>
 
 	<br><br><br><hr>
 
+
+	<h2>Your multimedia devices (cameras, microphones) connected to the computer</h2>
+	<ul id="enumerateDevices"></ul>
+	<br><br><br><hr>
 
 	<h2>window.XMLHttpRequest example</h2>
 	<button onclick="runRequest();">Run XMLHttpRequest on a test URL</button>

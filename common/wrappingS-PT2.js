@@ -4,6 +4,7 @@
 //  internet.
 //
 //  Copyright (C) 2019  Libor Polcak
+//  Copyright (C) 2020  Peter Hornak
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,59 +24,97 @@
  * Create private namespace
  */
 (function() {
-	var common_function_body = `
-				var measures = origFunc.call(this, ...args);
-				var ret = [];
-				for (measure of measures) {
-					ret.push({
-						entryType: measure.entryType,
-						name: measure.name,
-						startTime: rounding_function(measure.startTime, precision),
-						duration: rounding_function(measure.duration, precision),
-						toJSON: function() {return this},
-					});
+	var helping_code = `var precision = args[0];
+	var doNoise = args[1];
+	var pastValues = {};
+	${rounding_function}
+	${noise_function}
+				var func = rounding_function;
+				if (doNoise === true){
+					func = function(value, precision) {
+						let params = [value, precision];
+						if (params in pastValues) {
+							return pastValues[params];
+						}
+						let result = noise_function(...params);
+						pastValues[params] = result;
+						return result;
+					}
 				}
-				return ret;
 			`;
+
 	var wrappers = [
 		{
-			parent_object: "performance",
-			parent_object_property: "getEntries",
-			wrapped_objects: [
+			parent_object: "PerformanceEntry",
+			parent_object_property: "prototype",
+			wrapped_objects: [],
+			helping_code: helping_code,
+			post_wrapping_code: [
 				{
-					original_name: "performance.getEntries",
-					wrapped_name: "origFunc",
-				}
-			],
-			helping_code: rounding_function + "var precision = args[0];",
-			wrapping_function_args: "...args",
-			wrapping_function_body: common_function_body
-		},
-		{
-			parent_object: "performance",
-			parent_object_property: "getEntriesByName",
-			wrapped_objects: [
+					code_type: "object_properties",
+					parent_object: "PerformanceEntry.prototype",
+					parent_object_property: "startTime",
+					wrapped_objects: [
+						{
+							original_name: "Object.getOwnPropertyDescriptor(PerformanceEntry.prototype, 'startTime')['get']",
+							wrapped_name: "originalST",
+						},
+					],
+					wrapped_properties: [
+						{
+							property_name: "get",
+							property_value: `
+								function() {
+									let originalVal = originalST.call(this, ...arguments);
+									return func(originalVal, precision);
+								}`,
+						},
+					],
+				},
 				{
-					original_name: "performance.getEntriesByName",
-					wrapped_name: "origFunc",
-				}
-			],
-			helping_code: rounding_function + "var precision = args[0];",
-			wrapping_function_args: "...args",
-			wrapping_function_body: common_function_body
-		},
-		{
-			parent_object: "performance",
-			parent_object_property: "getEntriesByType",
-			wrapped_objects: [
+					code_type: "object_properties",
+					parent_object: "PerformanceEntry.prototype",
+					parent_object_property: "duration",
+					wrapped_objects: [
+						{
+							original_name: "Object.getOwnPropertyDescriptor(PerformanceEntry.prototype, 'duration')['get']",
+							wrapped_name: "originalD",
+						},
+					],
+					wrapped_properties: [
+						{
+							property_name: "get",
+							property_value: `
+								function() {
+									let originalVal = originalD.call(this, ...arguments);
+									return func(this.startTime + originalVal, precision) - this.startTime;
+								}`,
+						},
+					],
+				},
 				{
-					original_name: "performance.getEntriesByType",
-					wrapped_name: "origFunc",
-				}
+					code_type: "object_properties",
+					parent_object: "PerformanceEntry.prototype",
+					parent_object_property: "toJSON",
+					wrapped_objects: [],
+					wrapped_properties: [
+						{
+							property_name: "value",
+							property_value: `
+								function() {
+									let res = {
+										entryType: this.entryType,
+										name: this.name,
+										startTime: this.startTime,
+										duration: this.duration,
+										toJSON: function() {return this},
+									};
+									return res.toJSON();
+								}`,
+						},
+					],
+				},
 			],
-			helping_code: rounding_function + "var precision = args[0];",
-			wrapping_function_args: "...args",
-			wrapping_function_body: common_function_body
 		},
 	]
 	add_wrappers(wrappers);

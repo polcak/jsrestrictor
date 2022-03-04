@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 #  JavaScript Restrictor is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
@@ -21,7 +21,7 @@
 #
 
 pushd common/
-	WRAPPING=`ls wrapping*.js | sort | awk '{ print "\"" $0 "\"" }' | tr '\n' ',' |  sed 's/,$/\n/'`
+	WRAPPING=`ls wrapping*.js | sort | awk '{ print "\"" $0 "\"" }' | tr '\n' ',' |  sed 's/,$//'`
 popd
 
-sed -i "s/WRAPPING/${WRAPPING}/" $1
+sed -i -e "s/WRAPPING/${WRAPPING}/" $1

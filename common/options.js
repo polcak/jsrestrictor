@@ -3,9 +3,10 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2019  Martin Timko
 //  Copyright (C) 2019  Libor Polcak
-//  Copyright (C) 2018  Zbynek Cervinka
+//  Copyright (C) 2019  Martin Timko
+//  Copyright (C) 2020  Peter Hornak
+//	Copyright (C) 2020  Pavel Pohner
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,306 +23,420 @@
 //
 
 
-if ((typeof chrome) !== "undefined") {
-  var browser = chrome;
+//Chrome compatibility
+if ((typeof browser) === "undefined") {
+	var browser = chrome;
 }
 
-//// JSR Custom settings ////
-// save JSR Custom settings
-function saveOptions(e) {
-  browser.storage.sync.set({
-    extension_settings_data: {
-      window_date: {
-        main_checkbox: document.querySelector("#window_date_main_checkbox").checked,
-        time_round_precision: document.querySelector("#window_date_time_round_precision").value
-      },
-      window_performance_now: {
-        main_checkbox: document.querySelector("#performance_now_main_checkbox").checked,
-        value_round_precision: document.querySelector("#performance_now_value_round_precision").value
-      },
-      window_html_canvas_element: {
-        main_checkbox: document.querySelector("#htmlcanvaselement_main_checkbox").checked
-      },
-      navigator_geolocation: {
-        main_checkbox: document.querySelector("#navigator_geolocation_main_checkbox").checked,
-        type_of_restriction: document.querySelector("#navigator_geolocation_type_of_restriction").value,
-        gps_a: document.querySelector("#navigator_geolocation_rounding_precision_of_item_a").value,
-        gps_b: document.querySelector("#navigator_geolocation_rounding_precision_of_item_b").value,
-        gps_c: document.querySelector("#navigator_geolocation_rounding_precision_of_item_c").value,
-        gps_d: document.querySelector("#navigator_geolocation_rounding_precision_of_item_d").value,
-        gps_e: document.querySelector("#navigator_geolocation_rounding_precision_of_item_e").value,
-        gps_f: document.querySelector("#navigator_geolocation_rounding_precision_of_item_f").value,
-        gps_g: document.querySelector("#navigator_geolocation_rounding_precision_of_item_g").value
-      },
-      window_xmlhttprequest: {
-        main_checkbox: document.querySelector("#xmlhttprequest_main_checkbox").checked,
-        type_of_restriction: document.querySelector("#xmlhttprequest_type_of_restriction").value
-      },
-      user_agent: {
-        main_checkbox: document.querySelector("#useragent_main_checkbox").checked,
-        type_of_restriction: document.querySelector("#useragent_type_of_restriction").value
-      },
-      referer: {
-        main_checkbox: document.querySelector("#referer_main_checkbox").checked
-      },
-      language: {
-        main_checkbox: document.querySelector("#language_main_checkbox").checked
-      },
-      hardware: {
-        main_checkbox: document.querySelector("#hardware_main_checkbox").checked
-      },
-      cookie_enabled: {
-        main_checkbox: document.querySelector("#cookie_enabled_main_checkbox").checked,
-        type_of_restriction: document.querySelector("#cookie_enabled_type_of_restriction").value
-      },
-      DNT_enabled: {
-        main_checkbox: document.querySelector("#DNT_enabled_main_checkbox").checked,
-        type_of_restriction: document.querySelector("#DNT_enabled_type_of_restriction").value
-      }
-    }
-  });
-  // change button text
-  savedText();
-  e.preventDefault();
+/// A map where to look for the values in HTML elements
+const html_element_value_source = {
+	"select": "value",
+	"input-checkbox": "checked",
+	"input-radio": "checked",
+};
+
+function prepare_level_config(action_descr, params = wrapping_groups.empty_level) {
+	var configuration_area_el = document.getElementById("configuration_area");
+	configuration_area_el.textContent = "";
+	function create_wrapping_groups_html() {
+		function process_group(html, group) {
+			function process_select_option(param_property, html, option) {
+				return html + `
+						<option value="${option.value}" ${params[param_property] === option.value ? "selected" : ""}>${option.description}</option>
+					`
+			}
+			function process_select(group_option) {
+				return `
+					<span class="table-left-column">${group_option.description}:</span>
+					<select id="${group_option.id}">
+							${group_option.options.reduce(process_select_option.bind(null, group_option.id), "")}
+					</select>
+				`;
+			}
+			function process_checkbox(group_option) {
+				return `
+					<input type="checkbox" id="${group_option.id}" ${params[group_option.id] ? "checked" : ""}>
+					<span class="section-header">${group_option.description}</span>
+				`;
+			}
+			function process_radio_option(param_property, html, option) {
+				return html + `
+						<input type="radio" id="${option.id}" name="${param_property}"  ${params[option.id] ? "checked" : ""}></input>
+						<span class="section-header">${option.description}</span>
+					`
+			}
+			function process_radio(group_option) {
+				return `
+					${group_option.options.reduce(process_radio_option.bind(null, group_option.id), "")}
+				`;
+			}
+			function process_option(html, option) {
+				processors = {
+					select: process_select,
+					"input-checkbox": process_checkbox,
+					"input-radio": process_radio,
+				};
+				return html + `
+					<div class="row">
+						${processors[option.ui_elem](option)}
+					</div>
+					`;
+			}
+			function process_descriptions(html, descr) {
+				return html + `
+					<span class="table-left-column">${descr}</span><br>
+				`;
+			}
+			let = supportedapis = are_all_api_unsupported(group.wrappers) ? "notsupportedapis" : "";
+			return html + `
+				<div class="main-section ${supportedapis}">
+					<input type="checkbox" id="${group.id}"  ${params[group.id] ? "checked" : ""}>
+					<span class="section-header">${group.description}:</span>
+				</div>
+					<div id="${group.name}_options" class="${supportedapis} ${params[group.id] ? "" : "hidden"}">
+						${group.description2.reduce(process_descriptions, "")}
+						${group.options.reduce(process_option, "")}
+					</div>
+			`;
+		}
+		return wrapping_groups.groups.reduce(process_group, "");
+	}
+	function find_unsupported_apis(html, wrapper) {
+		if (is_api_undefined(wrapper)) {
+			return html + `<li> <code>${wrapper}</code>.</li>`;
+		}
+		return html;
+	}
+	var unsupported_apis = wrapping_groups.groups.reduce((acc, group) =>
+		group.wrappers.reduce(find_unsupported_apis, acc), "");
+	if (unsupported_apis !== "") {
+		unsupported_apis = `<div class="unsupported_api"><p>Your browser does not support:</p>${unsupported_apis}</div>`;
+	}
+	var fragment = document.createRange().createContextualFragment(`
+<div>
+		<p>Note that for fingerprintability prevention, JS Restrictor does not wrap objects that are not defined.</p>
+	${unsupported_apis}
+	<div>
+	  <h2>${action_descr}</h2>
+	</div>
+	<form>
+
+		<!-- Metadata -->
+		<div class="main-section">
+			<span class="section-header">Name:</span>
+			<input id="level_text" value="${escape(params.level_text)}"></input>
+		</div>
+		<div class="main-section">
+			<span class="section-header">Short ID:</span>
+			<input id="level_id" ${params.level_id != "" ? "disabled" : ""} value="${escape(params.level_id)}"></input>
+		</div>
+		<div>
+			<span class="table-left-column">This ID is displayed above the JSR icon. If you use an
+					already existing ID, this custom level will replace the original level.</span>
+		</div>
+		<div class="main-section">
+			<span class="section-header">Description:</span>
+			<input id="level_description" value="${escape(params.level_description)}"></input>
+		</div>
+
+		${create_wrapping_groups_html()}
+		
+		<button id="save" class="jsr-button">Save custom level</button>
+	</form>
+</div>`);
+
+	configuration_area_el.appendChild(fragment);
+	function connect_options_group(group) {
+		document.getElementById(group.id).addEventListener("click", function(e) {
+			var options_el = document.getElementById(group.name + "_options");
+			if (this.checked) {
+				options_el.classList.remove("hidden");
+			}
+			else {
+				options_el.classList.add("hidden");
+			}
+		});
+	}
+	wrapping_groups.groups.forEach(g => connect_options_group(g));
+
+	document.getElementById("save").addEventListener("click", function(e) {
+		e.preventDefault();
+		new_level = {};
+		for (property in wrapping_groups.empty_level) {
+			let p = wrapping_groups.option_map[property];
+			let convertor = (p && p.data_type) ? window[p.data_type] : (a) => a;
+			let elem = document.getElementById(property);
+			let value_getter = (p && p.ui_elem && (p.ui_elem in html_element_value_source)) ? html_element_value_source[p.ui_elem] : "value";
+			new_level[property] = convertor(elem[value_getter]);
+		};
+
+		if (new_level.level_id.length > 0 && new_level.level_text.length > 0 && new_level.level_description.length) {
+			if (new_level.level_id.length > 3) {
+				alert("Level ID too long, provide 3 characters or less");
+				return;
+			}
+			async function updateLevels(new_level, stored_levels) {
+				custom_levels = stored_levels.custom_levels;
+				let ok = false;
+				if (new_level.level_id in custom_levels) {
+					ok = window.confirm("Custom level " + new_level.level_id + " already exists. It will be overriden.");
+				}
+				else {
+					ok = true;
+				}
+				if (ok) {
+					custom_levels[new_level.level_id] = new_level;
+					try {
+						await browser.storage.sync.set({custom_levels: custom_levels});
+						location = "";
+					}
+					catch (err) {
+						alert("Custom level were not updated, please try again later.");
+					}
+				}
+			}
+			browser.storage.sync.get("custom_levels", updateLevels.bind(null, new_level));
+		}
+		else {
+			alert("Please provide all required fields: ID, Name, and Decription");
+		}
+	});
 }
 
-// get custom settings 
-function restoreOptions() {
-  browser.storage.sync.get('extension_settings_data', function(res) {
-    document.querySelector("#window_date_main_checkbox").checked = res.extension_settings_data.window_date.main_checkbox;
-    document.querySelector("#window_date_time_round_precision").value = res.extension_settings_data.window_date.time_round_precision;
-    document.querySelector("#performance_now_main_checkbox").checked = res.extension_settings_data.window_performance_now.main_checkbox;
-    document.querySelector("#performance_now_value_round_precision").value = res.extension_settings_data.window_performance_now.value_round_precision;
-    document.querySelector("#htmlcanvaselement_main_checkbox").checked = res.extension_settings_data.window_html_canvas_element.main_checkbox;
-    document.querySelector("#navigator_geolocation_main_checkbox").checked = res.extension_settings_data.navigator_geolocation.main_checkbox;
-    document.querySelector("#navigator_geolocation_type_of_restriction").value = res.extension_settings_data.navigator_geolocation.type_of_restriction;
-    if (document.querySelector("#navigator_geolocation_type_of_restriction").value == "b") {  // if GSP is to null everything -> change options opacity
-      gpsOpacity();
-    }
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_a").value = res.extension_settings_data.navigator_geolocation.gps_a;
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_b").value = res.extension_settings_data.navigator_geolocation.gps_b;
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_c").value = res.extension_settings_data.navigator_geolocation.gps_c;
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_d").value = res.extension_settings_data.navigator_geolocation.gps_d;
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_e").value = res.extension_settings_data.navigator_geolocation.gps_e;
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_f").value = res.extension_settings_data.navigator_geolocation.gps_f;
-    document.querySelector("#navigator_geolocation_rounding_precision_of_item_g").value = res.extension_settings_data.navigator_geolocation.gps_g;
-    document.querySelector("#xmlhttprequest_main_checkbox").checked = res.extension_settings_data.window_xmlhttprequest.main_checkbox;
-    document.querySelector("#xmlhttprequest_type_of_restriction").value = res.extension_settings_data.window_xmlhttprequest.type_of_restriction;
-    document.querySelector("#useragent_main_checkbox").checked = res.extension_settings_data.user_agent.main_checkbox;
-    document.querySelector("#useragent_type_of_restriction").value = res.extension_settings_data.user_agent.type_of_restriction;
-    document.querySelector("#referer_main_checkbox").checked = res.extension_settings_data.referer.main_checkbox;
-    document.querySelector("#language_main_checkbox").checked = res.extension_settings_data.language.main_checkbox;
-    document.querySelector("#hardware_main_checkbox").checked = res.extension_settings_data.hardware.main_checkbox;
-    document.querySelector("#cookie_enabled_main_checkbox").checked = res.extension_settings_data.cookie_enabled.main_checkbox;
-    document.querySelector("#cookie_enabled_type_of_restriction").value = res.extension_settings_data.cookie_enabled.type_of_restriction;
-    document.querySelector("#DNT_enabled_main_checkbox").checked = res.extension_settings_data.DNT_enabled.main_checkbox;
-    document.querySelector("#DNT_enabled_type_of_restriction").value = res.extension_settings_data.DNT_enabled.type_of_restriction;
-  });
-}
-document.addEventListener('DOMContentLoaded', restoreOptions);
-document.querySelector("#custom-form").addEventListener("submit", saveOptions);
-
-// show / hide custom level settings -- no need 
-// document.getElementById('custom-form').style.display = "none"; ////////////////////////// NA KONCI ODKOMENTUJ nech je defaultne skryte
-// document.getElementById('custom-show-hide').addEventListener('click', function (e) {
-//   var x = document.getElementById("custom-form");
-//   if (x.style.display === "none") {
-//     x.style.display = "block";
-//   } else {
-//     x.style.display = "none";
-//   }
-// });
-
-// change save settings button text to "Saved"
-function savedText(){
-  document.getElementById("save").innerHTML="Saved ";
-  document.getElementById("save").style.paddingLeft = "59px";
-  document.getElementById("save").style.paddingRight = "60px";
+function edit_level(id) {
+	prepare_level_config("Edit level " + escape(id), levels[id]);
 }
 
-// change seve settings button text to "Save custom level" on change
-document.getElementById("window_date_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("window_date_time_round_precision").addEventListener("change", savedTextBack);
-document.getElementById("performance_now_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("performance_now_value_round_precision").addEventListener("change", savedTextBack);
-document.getElementById("htmlcanvaselement_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_type_of_restriction").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_a").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_b").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_c").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_d").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_e").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_f").addEventListener("change", savedTextBack);
-document.getElementById("navigator_geolocation_rounding_precision_of_item_g").addEventListener("change", savedTextBack);
-document.getElementById("xmlhttprequest_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("xmlhttprequest_type_of_restriction").addEventListener("change", savedTextBack);
-document.getElementById("useragent_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("useragent_type_of_restriction").addEventListener("change", savedTextBack);
-document.getElementById("referer_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("language_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("hardware_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("cookie_enabled_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("cookie_enabled_type_of_restriction").addEventListener("change", savedTextBack);
-document.getElementById("DNT_enabled_main_checkbox").addEventListener("change", savedTextBack);
-document.getElementById("DNT_enabled_type_of_restriction").addEventListener("change", savedTextBack);
-
-// change text back
-function savedTextBack () {
-  document.getElementById("save").innerHTML="Save custom level";
-  document.getElementById("save").style.paddingLeft = "";
-  document.getElementById("save").style.paddingRight = "";
+function restore_level(id, level_params) {
+	function restoreLevel(settings) {
+		var custom_levels = settings.custom_levels;
+		custom_levels[id] = level_params;
+		browser.storage.sync.set({"custom_levels": custom_levels});
+		var existPref = document.getElementById(`li-exist-group-${escape(id)}`);
+		existPref.classList.remove("hidden");
+		var removedPref = document.getElementById(`li-removed-group-${escape(id)}`);
+		removedPref.classList.add("hidden");
+		var lielem = document.getElementById(`li-${id}`);
+		lielem.classList.remove("undo");
+	}
+	browser.storage.sync.get("custom_levels", restoreLevel);
 }
 
-
-//// JSR Domain List ////
-
-// on submit add domain to list
-document.querySelector("#domain-form").addEventListener("submit", addDomain);
-// on load or update generate list
-document.addEventListener('DOMContentLoaded', loadSettings);
-browser.storage.onChanged.addListener(loadSettings);
-
-// add domain to list, remove useless www first
-function addDomain (e) {
-      var removeWWW = document.querySelector("#domain-text").value;
-      removeWWW = removeWWW.replace(/^www\./,'');
-    browser.storage.sync.set({
-      [removeWWW]: document.querySelector("#domain-level").value
-    });
-    document.querySelector("#domain-form").reset();
-  e.preventDefault();
+function show_existing_level(levelsEl, level) {
+	let currentId = `level-${level}`;
+	var fragment = document.createRange().createContextualFragment(`<li id="li-${escape(level)}">
+		<span class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
+			${escape(level)}: ${escape(levels[level].level_text)}
+		</span>
+		<span>${escape(levels[level].level_description)}</span>
+		</li>`);
+	levelsEl.appendChild(fragment);
+	if (!([L0, L1, L2, L3].includes(level))) {
+		var lielem = document.getElementById(`li-${level}`); // Note that FF here requires unescaped ID
+		var existPref = document.createElement("span");
+		existPref.setAttribute("id", `li-exist-group-${escape(level)}`);
+		lielem.appendChild(existPref);
+		var edit = document.createElement("button");
+		existPref.appendChild(edit);
+		edit.addEventListener("click", edit_level.bind(edit, level));
+		edit.appendChild(document.createTextNode("Edit"));
+		var remove = document.createElement("button");
+		existPref.appendChild(remove);
+		remove.addEventListener("click", remove_level.bind(remove, level));
+		remove.appendChild(document.createTextNode("Remove"));
+		var removedPref = document.createElement("span");
+		removedPref.setAttribute("id", `li-removed-group-${escape(level)}`);
+		removedPref.classList.add("hidden");
+		lielem.appendChild(removedPref);
+		var restore = document.createElement("button");
+		removedPref.appendChild(restore);
+		restore.addEventListener("click", restore_level.bind(restore, level, levels[level]));
+		restore.appendChild(document.createTextNode("Restore"));
+	}
+	var current = document.getElementById(currentId)
+	current.addEventListener("click", function() {
+		for (let child of levelsEl.children) {
+			child.children[0].classList.remove("active");
+		}
+		this.classList.add("active");
+		setDefaultLevel(level);
+	});
 }
 
-// go through storage JSON and generate table - list of domains
-//item[domain] == level
-function loadSettings() {
-  browser.storage.sync.get(null, function(item) {
-  // create table
-  var fullTable = "<thead id=\"domain-list-head\"><th class=\"table-head\">Domain</th><th class=\"table-head\">Level</th></thead>";
-  for (var domain in item) {
-    if (item.hasOwnProperty(domain)) {
-      if ((domain != "extension_settings_data") && (domain != "__default__")) {
-        var lvl;
-        if (item[domain] == LC) {
-          lvl = "Custom";
-        } else {
-          lvl = item[domain];
-        }
-        var row = "<tr><td class=\"td-domain\">"+ domain +"</td><td class=\"td-level\">"+ lvl +"</td><td class=\"td-delete\" id=\""+ domain +"\"></td>";
-        fullTable += row;
-      }
-      if (domain == "__default__") {
-        document.querySelector("#levels-default #level-"+ item[domain]).classList.add("active");
-      }
-    }
-  }
-  document.getElementById("domain-list-table").innerHTML = fullTable;
-  setEventOnClick();
-  });
+function remove_level(id) {
+	function remove_level(settings) {
+		var custom_levels = settings.custom_levels;
+		// See https://alistapart.com/article/neveruseawarning/
+		var existPref = document.getElementById(`li-exist-group-${escape(id)}`);
+		existPref.classList.add("hidden");
+		var removedPref = document.getElementById(`li-removed-group-${escape(id)}`);
+		removedPref.classList.remove("hidden");
+		var lielem = document.getElementById(`li-${id}`);
+		lielem.classList.add("undo");
+		delete custom_levels[id];
+		browser.storage.sync.set({"custom_levels": custom_levels});
+	}
+	browser.storage.sync.get("custom_levels", remove_level);
 }
 
-// set trash icon event for removing some domain from list
-function setEventOnClick() {
-  document.querySelectorAll('td').forEach(e => e.addEventListener("click", function() {
-    removeDomain(e.id);
-  }));
+function insert_levels() {
+	// Insert all known levels to GUI
+	var allLevelsElement = document.getElementById("levels-list");
+	for (let level in levels) {
+		show_existing_level(allLevelsElement, level);
+	}
+	// Select default level
+	document.getElementById("level-" + default_level.level_id).classList.add("active");
 }
 
-// if GPS is set to "Null location data..." fade out rest of the GPS options 
-document.getElementById('navigator_geolocation_type_of_restriction').addEventListener('click', gpsOpacity);
-function gpsOpacity () {
-  var x = document.getElementsByClassName("gps");
-  if(document.getElementById('navigator_geolocation_type_of_restriction').selectedIndex == 1){
-    for (var i = 0; i < x.length; i++) {
-      x[i].style.opacity = fadeOut;
-    }
-  } else {
-    for (var i = 0; i < x.length; i++) {
-      x[i].style.opacity = fadeIn;
-    }
-  }
-}
-
-
-// show hide domain list
-document.getElementById('domain-show-hide').addEventListener('click', function (e) {
-  var x = document.getElementById("domain-list-table");
-  var y = document.getElementById("delete-list");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-    y.style.display = "table";
-  } else {
-    x.style.display = "none";
-    y.style.display = "none";
-  }
+window.addEventListener("load", function() {
+	if (!levels_initialised) {
+		levels_updated_callbacks.push(insert_levels);
+	}
+	else {
+		insert_levels();
+	}
+	loadWhitelist();
+	load_on_off_switch();
 });
-      
-// set event for "Delete all"
-document.querySelector("#delete-list").addEventListener('click', function (e) {
-    document.getElementById('domain-show-hide').click();
-    removeList();
-});
-// remove domain from list
-function removeDomain(domain) {
-  browser.storage.sync.remove(domain, function(){});
+
+document.getElementById("new_level").addEventListener("click",
+	() => prepare_level_config("Add new level"));
+
+document.getElementById("whitelist-add-button").addEventListener("click", () => add_to_whitelist());
+document.getElementById("whitelist-remove-button").addEventListener("click", () => remove_from_whitelist());
+document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_http_request_shield, 200)});
+
+function add_to_whitelist()
+{	
+	//obtain input value
+	var to_whitelist = document.getElementById("whitelist-input").value;
+	if (to_whitelist.trim() !== '')
+	{
+		var listbox = document.getElementById("whitelist-select");
+		//Check if it's not in whitelist already
+		for (var i = 0; i < listbox.length; i++)
+		{
+			if (to_whitelist == listbox.options[i].text)
+			{
+				alert("Hostname is already in the whitelist.");
+				return;
+			}
+		}
+		//Insert it
+		listbox.options[listbox.options.length] = new Option(to_whitelist, to_whitelist);
+		//Update background
+		update_whitelist(listbox);
+
+	}
+	else
+	{
+		alert("Please fill in the hostname first.");
+	}
+
 }
 
-  // go through storage JSON and remove all list of domains
-function removeList() {
-  browser.storage.sync.get(null, function(item) {
-    for (var domain in item) {
-      if (item.hasOwnProperty(domain)) {
-        if ((domain != "extension_settings_data") && (domain != "__default__")) {
-            var removeIt = browser.storage.sync.remove(domain);
-        }
-      }
+function remove_from_whitelist()
+{	
+	var listbox = document.getElementById("whitelist-select");
+	var selectedIndexes = getSelectValues(listbox);
+
+	var j = 0;
+	for (var i = 0; i < selectedIndexes.length; i++)
+	{
+		listbox.remove(selectedIndexes[i]-j);
+		j++;
+	}
+	update_whitelist(listbox);
+}
+
+function update_whitelist(listbox)
+{
+	//Create new associative array
+	var whitelistedHosts = new Object();
+	//Obtain all whitelisted hosts from listbox
+	for (var i = 0; i < listbox.length; i++)
+		{
+			whitelistedHosts[listbox.options[i].text] = true;
+		}
+		//Overwrite the whitelist in storage
+		browser.storage.sync.set({"whitelistedHosts":whitelistedHosts});
+		//Send message to background to update whitelist from storage
+		sendMessage({message:"whitelist updated"});
+}
+
+function sendMessage(message)
+{
+	browser.runtime.sendMessage(message);
+}
+
+//Auxilary function for obtaining selected values from listbox
+function getSelectValues(select) 
+{
+  var result = [];
+  var options = select && select.options;
+  var opt;
+
+  for (var i=0, iLen=options.length; i<iLen; i++) {
+    opt = options[i];
+
+    if (opt.selected) {
+      result.push(i);
     }
-  });
-}
-
-// -- debug only -- clear all storage -- debug only --
-function clearStorage() {
-  browser.storage.sync.clear(function(){
-  });
-}
-
-// -- debug only -- print storage -- debug only --
-function printStorageConsole() {
-  browser.storage.sync.get(null, function(item) {
-    console.log(item);
-  });
-}
-var timoerr = true; // historical meaning for author, do NOT remove
-
-
-//// JSR Default level ////
-
-const fadeOut = "0.3";
-const fadeIn = "1.0";
-
-// set event for changing default level
-document.querySelector("#levels-default #level-0").addEventListener("click", function() {setDefaultLevelTo(L0);});
-document.querySelector("#levels-default #level-1").addEventListener("click", function() {setDefaultLevelTo(L1);});
-document.querySelector("#levels-default #level-2").addEventListener("click", function() {setDefaultLevelTo(L2);});
-document.querySelector("#levels-default #level-3").addEventListener("click", function() {setDefaultLevelTo(L3);});
-document.querySelector("#levels-default #level-4").addEventListener("click", function() {setDefaultLevelTo(LC);});
-
-// set default level to the selected level
-function setDefaultLevelTo(level) {
-  browser.storage.sync.set({
-      __default__: level
-  });
-  clearAllLevels();
-  // add active class to new default level
-  document.querySelector("#levels-default #level-"+ level).classList.add("active");
-}
-
-// remove active class for all levels
-function clearAllLevels() {
-  for (var i = 0; i <= 4; i++) {
-      var elm = document.querySelector("#levels-default #level-"+ i);
-      elm.classList.remove("active");
   }
+  return result;
+}
+//Function called on window load, obtains whitelist from storage
+//Displays it in listbox
+function loadWhitelist()
+{	
+	var listbox = document.getElementById("whitelist-select");
+	//Get the whitelist
+	browser.storage.sync.get(["whitelistedHosts"], function(result)
+	{
+		if (result.whitelistedHosts != undefined)
+      	{
+      		//Create list box options for each item
+	        var it = 0;
+	        Object.keys(result.whitelistedHosts).forEach(function(key, index) {
+	        	listbox.options[it++] = new Option(key, key);
+			}, result.whitelistedHosts);
+  		}
+	});
+}
+//Function called on window load, obtains whether is the protection on or off
+function load_on_off_switch()
+{
+	var checkbox = document.getElementById("switch-checkbox");
+	//Obtain the information from storage
+	browser.storage.sync.get(["requestShieldOn"], function(result)
+	{
+		//Check the box
+		if (result.requestShieldOn || result.requestShieldOn == undefined)
+		{
+			checkbox.checked = true;
+		}
+		else
+		{
+			checkbox.checked = false;
+		}
+	});
 }
 
+//OnClick event handler for On/Off slider
+function control_http_request_shield()
+{
+	var checkbox = document.getElementById("switch-checkbox");
+	//Send appropriate message and store state into storage
+	if (checkbox.checked)	//Turn ON
+	{
+		sendMessage({message:"turn request shield on"});
+		browser.storage.sync.set({"requestShieldOn": true});
+	}
+	else
+	{
+		sendMessage({message:"turn request shield off"});
+		browser.storage.sync.set({"requestShieldOn": false});
+	}
+
+}
