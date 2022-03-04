@@ -533,6 +533,11 @@
 	 *	* (1) - empty array
 	 */
 	function farblePixels(gl, x, y, width, height, format, type, outpixels, offset) {
+		if (format === gl.ALPHA) {
+			// We do not modify alpha
+			origReadPixels.call(gl, x, y, width, height, gl.ALPHA, type, outpixels, offset);
+			return;
+		}
 		if(args[0]===1) {
 			return;
 		}
