@@ -37,23 +37,31 @@
  * \param height Height of the original canvas.
  * \param width Width of the original canvas.
  */
-function farbleCanvasDataBrave(data, width, height) {
+function farbleCanvasDataBrave(rowIterator, width) {
 	// PRNG function needs to depend on the original canvas, so that the same
 	// image is farbled the same way but different images are farbled differently
 	// See https://pagure.io/JShelter/webextension/issue/23
-	var thiscanvas_prng = alea(domainHash, "CanvasFarbling", data);
-	var data_count = BigInt(BigInt(width) * BigInt(height) * 4n);
-
-	for (let i = 0n; i < data_count; i++) {
-		if ((i % 4n) === 3n) {
-			// Do not modify alpha
-			continue;
+	let mash = new Mash();
+	for (row of rowIterator()) {
+		for (pchan of row) {
+			mash.addNumber(pchan);
 		}
-		if (thiscanvas_prng() > 0.5) { // Modify data with probability of 0.5
-			// Possible improvements:
-			// Copy a neighbor pixel (possibly with modifications
-			// Make bigger canges than xoring with 1
-			data[i] ^= 1;
+	}
+	var thiscanvas_prng = alea(domainHash, "CanvasFarbling", mash.finalize());
+	var data_count = BigInt(BigInt(width) * 4n);
+
+	for (row of rowIterator()) {
+		for (let i = 0n; i < data_count; i++) {
+			if ((i % 4n) === 3n) {
+				// Do not modify alpha
+				continue;
+			}
+			if (thiscanvas_prng() > 0.5) { // Modify data with probability of 0.5
+				// Possible improvements:
+				// Copy a neighbor pixel (possibly with modifications
+				// Make bigger canges than xoring with 1
+				row[i] ^= 1;
+			}
 		}
 	}
 }

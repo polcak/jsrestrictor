@@ -144,7 +144,15 @@
 						const width = context.canvas.width;
 						const height = context.canvas.height;
 						var imageData = origGetImageData.call(context, 0, 0, width, height);
-						farbleCanvasDataBrave(imageData.data, width, height);
+						const BYTES_PER_ROW = width * 4;
+						farbleCanvasDataBrave(function*() {
+							let data = imageData.data;
+							let offset = 0;
+							while (offset < data.length) {
+								yield imageData.data.subarray(offset, offset + BYTES_PER_ROW);
+								offset += BYTES_PER_ROW;
+							}
+						}, width);
 						// Do not modify the original canvas, always modify the fake canvas.
 						// Always farble the whole image so that the farbled data do not depend
 						// on the page-specified extraction data rectangle.

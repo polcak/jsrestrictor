@@ -518,7 +518,7 @@
 	/**
 	 * \brief Modifies pixels array
 	 *
-	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
+	 * \param gl WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param x starting x position
 	 * \param y starting y position
 	 * \param width width to be read (in pixels)
@@ -532,25 +532,25 @@
 	 *	* (0) - slightly changed image data according to domain and session keys
 	 *	* (1) - empty array
 	 */
-	function farblePixels(ctx, x, y, width, height, format, type, pixels, offset) {
+	function farblePixels(gl, x, y, width, height, format, type, outpixels, offset) {
 		if(args[0]===1) {
 			return;
 		}
 		else if(args[0]===0) {
-			origReadPixels.call(ctx, x, y, width, height, format, type, pixels, offset);
-			var pixel_count = BigInt(width * height);
-			var channel = domainHash[0].charCodeAt(0) % 3;
-			var canvas_key = domainHash;
-			var v = BigInt(strToUint(domainHash,8));
-			for (let i = 0; i < 32; i++) {
-				var bit = canvas_key[i];
-				for (let j = 8; j >= 0; j--) {
-					var pixel_index = (4 * Number(v % pixel_count) + channel);
-					pixels[pixel_index] = pixels[pixel_index] ^ (bit & 0x1);
-					bit = bit >> 1;
-					v = lfsr_next(v);
+			// Read and modify pixels of the whole canvas to produce the same results no matter the view
+			let pixels = new Uint8Array(gl.drawingBufferWidth * gl.drawingBufferHeight * 4);
+			origReadPixels.call(gl, 0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+			const BYTES_PER_ROW = gl.drawingBufferWidth * 4;
+			farbleCanvasDataBrave(function* () {
+				// We need to flip the canvas
+				let offset = pixels.length - BYTES_PER_ROW;
+				while (offset >= 0) {
+					yield pixels.subarray(offset, offset + BYTES_PER_ROW);
+					offset -= BYTES_PER_ROW;
 				}
-			}
+			}, gl.drawingBufferWidth);
+			// And modify data according to the original parameters
+			outpixels.set(pixels); // FIXME
 		}
 	};
  	var wrappers = [
@@ -937,7 +937,7 @@
 					wrapped_name: "origReadPixels",
 				}
 			],
-			helping_code: lfsr_next + strToUint + farblePixels,
+			helping_code: strToUint + farbleCanvasDataBrave.toString() + farblePixels,
 			original_function: "parent.WebGLRenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGLRenderingContext.prototype.readPixels
@@ -960,7 +960,7 @@
 					wrapped_name: "origReadPixels",
 				}
 			],
-			helping_code: lfsr_next + strToUint + farblePixels,
+			helping_code: strToUint + farbleCanvasDataBrave.toString() + farblePixels,
 			original_function: "parent.WebGL2RenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGL2RenderingContext.prototype.readPixels
