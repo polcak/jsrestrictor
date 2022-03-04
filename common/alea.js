@@ -54,79 +54,79 @@
  */
 var alea =`
 function Alea(...args) {
-  var mash = new Mash();
+	var mash = new Mash();
 
-  // Apply the seeding algorithm from Baagoe.
-  this.c = 1;
-  this.s0 = mash.addData(' ').finalize();
-  this.s1 = mash.addData(' ').finalize();
-  this.s2 = mash.addData(' ').finalize();
+	// Apply the seeding algorithm from Baagoe.
+	this.c = 1;
+	this.s0 = mash.addData(' ').finalize();
+	this.s1 = mash.addData(' ').finalize();
+	this.s2 = mash.addData(' ').finalize();
 
-  for (var i = 0; i < args.length; i++) {
-    this.s0 -= mash.addData(args[i]).finalize();
-    if (this.s0 < 0) {
-      this.s0 += 1;
-    }
-    this.s1 -= mash.addData(args[i]).finalize();
-    if (this.s1 < 0) {
-      this.s1 += 1;
-    }
-    this.s2 -= mash.addData(args[i]).finalize();
-    if (this.s2 < 0) {
-      this.s2 += 1;
-    }
-  }
-  mash = null;
+	for (var i = 0; i < args.length; i++) {
+		this.s0 -= mash.addData(args[i]).finalize();
+		if (this.s0 < 0) {
+			this.s0 += 1;
+		}
+		this.s1 -= mash.addData(args[i]).finalize();
+		if (this.s1 < 0) {
+			this.s1 += 1;
+		}
+		this.s2 -= mash.addData(args[i]).finalize();
+		if (this.s2 < 0) {
+			this.s2 += 1;
+		}
+	}
+	mash = null;
 }
 Alea.prototype = {
-  next: function() {
-    var t = 2091639 * this.s0 + this.c * 2.3283064365386963e-10; // 2^-32
-    this.s0 = this.s1;
-    this.s1 = this.s2;
-    return this.s2 = t - (this.c = t | 0);
-  }
+	next: function() {
+		var t = 2091639 * this.s0 + this.c * 2.3283064365386963e-10; // 2^-32
+		this.s0 = this.s1;
+		this.s1 = this.s2;
+		return this.s2 = t - (this.c = t | 0);
+	}
 }
 
 function impl(...seed) {
-  var xg = new Alea(...seed);
-  var prng = xg.next.bind(xg);
-  prng.uint32 = function() {
-    return (xg.next() * 0x100000000) | 0;
-  }
-  prng.fract53 = function() {
-    return prng() + (prng() * 0x200000 | 0) * 1.1102230246251565e-16; // 2^-53
-  };
-  prng.quick = prng;
-  return prng;
+	var xg = new Alea(...seed);
+	var prng = xg.next.bind(xg);
+	prng.uint32 = function() {
+		return (xg.next() * 0x100000000) | 0;
+	}
+	prng.fract53 = function() {
+		return prng() + (prng() * 0x200000 | 0) * 1.1102230246251565e-16; // 2^-53
+	};
+	prng.quick = prng;
+	return prng;
 }
 
 // Original at https://github.com/nquinlan/better-random-numbers-for-javascript-mirror/blob/master/support/js/Mash.js
 function Mash()
 {
-  this.n = 0xefc8249d;
+	this.n = 0xefc8249d;
 }
 Mash.prototype = {
-  addData: function(data) {
-    data = String(data);
-    for (var i = 0; i < data.length; i++) {
-      this.addNumber(data.charCodeAt(i));
-    }
-    return this;
-  },
-  addNumber: function(num) {
-    this.n += num;
-    var h = 0.02519603282416938 * this.n;
-    this.n = h >>> 0;
-    h -= this.n;
-    h *= this.n;
-    this.n = h >>> 0;
-    h -= this.n;
-    this.n += h * 0x100000000; // 2^32
-    return this;
-  },
-  finalize: function() {
-    return (this.n >>> 0) * 2.3283064365386963e-10; // 2^-32
-  }
+	addData: function(data) {
+		data = String(data);
+		for (var i = 0; i < data.length; i++) {
+			this.addNumber(data.charCodeAt(i));
+		}
+		return this;
+	},
+	addNumber: function(num) {
+		this.n += num;
+		var h = 0.02519603282416938 * this.n;
+		this.n = h >>> 0;
+		h -= this.n;
+		h *= this.n;
+		this.n = h >>> 0;
+		h -= this.n;
+		this.n += h * 0x100000000; // 2^32
+		return this;
+	},
+	finalize: function() {
+		return (this.n >>> 0) * 2.3283064365386963e-10; // 2^-32
+	}
 }
 var alea = impl;
 `
