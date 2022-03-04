@@ -571,7 +571,7 @@ function wrap_code(level) {
 					return obj;
 				}
 			}
-
+			let createObj = unX(xrayWindow).Object.create;
 			WrapHelper = {
 				XRAY, // boolean, are we in a xray environment (i.e. on Firefox)?
 				shared: {}, // shared storage object for in inter-wrapper coordination
@@ -600,7 +600,16 @@ function wrap_code(level) {
 					return Object.defineProperties(obj, descriptors, ...args);
 				},
 				create(proto, descriptors) {
-					let obj = forPage(Object.create(unX(proto)));
+					let unwrappedProto = unX(proto);
+					let obj = unX(createObj(unwrappedProto));
+					try {
+						if (proto && !obj.__proto__) {
+							obj = Object.create(XPCNativeWrapper(proto));
+						}
+					} catch (e) {
+						// access denied to obj.__proto__, wrappers mismatch
+						obj = forPage(Object.create(proto));
+					}
 					return descriptors ? this.defineProperties(obj, descriptors) && obj : obj;
 				},
 
