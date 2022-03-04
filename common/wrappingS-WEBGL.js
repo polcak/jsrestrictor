@@ -550,7 +550,46 @@
 				}
 			}, gl.drawingBufferWidth);
 			// And modify data according to the original parameters
-			outpixels.set(pixels); // FIXME
+			const DESIRED_WIDTH = width * 4;
+			const XXMAX = x + width;
+			function insertEmpty(pos) {
+				outpixels[pos  ] = 0;
+				outpixels[pos+1] = 0;
+				outpixels[pos+2] = 0;
+				outpixels[pos+3] = 255;
+			}
+			for (let i = 0; i < height; i++) {
+				// Go through the number of desired rows
+				let xx = x;
+				let yy = y + i;
+				if (yy < 0 || yy >= gl.drawingBufferHeight) {
+					for (let j = 0; j < DESIRED_WIDTH; j += 4) {
+						insertEmpty(i*DESIRED_WIDTH+j);
+					}
+				}
+				else {
+					let j = i*DESIRED_WIDTH;
+					while (xx < 0 && xx < XXMAX) {
+						insertEmpty(j);
+						j += 4;
+						xx++;
+					}
+					while (xx < XXMAX && xx < gl.drawingBufferWidth) {
+						let offset_orig = (yy * gl.drawingBufferWidth + xx) * 4;
+						outpixels[j  ] = pixels[offset_orig];
+						outpixels[j+1] = pixels[offset_orig+1];
+						outpixels[j+2] = pixels[offset_orig+2];
+						outpixels[j+3] = pixels[offset_orig+3];
+						j += 4;
+						xx++;
+					}
+					while (xx < XXMAX) {
+						insertEmpty(j);
+						j += 4;
+						xx++;
+					}
+				}
+			}
 		}
 	};
  	var wrappers = [
