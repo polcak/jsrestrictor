@@ -54,24 +54,24 @@
  */
 var alea =`
 function Alea(...args) {
-  var mash = create_mash();
+  var mash = new Mash();
 
   // Apply the seeding algorithm from Baagoe.
   this.c = 1;
-  this.s0 = mash(' ');
-  this.s1 = mash(' ');
-  this.s2 = mash(' ');
+  this.s0 = mash.addData(' ').finalize();
+  this.s1 = mash.addData(' ').finalize();
+  this.s2 = mash.addData(' ').finalize();
 
   for (var i = 0; i < args.length; i++) {
-    this.s0 -= mash(args[i]);
+    this.s0 -= mash.addData(args[i]).finalize();
     if (this.s0 < 0) {
       this.s0 += 1;
     }
-    this.s1 -= mash(args[i]);
+    this.s1 -= mash.addData(args[i]).finalize();
     if (this.s1 < 0) {
       this.s1 += 1;
     }
-    this.s2 -= mash(args[i]);
+    this.s2 -= mash.addData(args[i]).finalize();
     if (this.s2 < 0) {
       this.s2 += 1;
     }
@@ -101,25 +101,32 @@ function impl(...seed) {
 }
 
 // Original at https://github.com/nquinlan/better-random-numbers-for-javascript-mirror/blob/master/support/js/Mash.js
-function create_mash() {
-  var n = 0xefc8249d;
-
-  var mash = function(data) {
+function Mash()
+{
+  this.n = 0xefc8249d;
+}
+Mash.prototype = {
+  addData: function(data) {
     data = String(data);
     for (var i = 0; i < data.length; i++) {
-      n += data.charCodeAt(i);
-      var h = 0.02519603282416938 * n;
-      n = h >>> 0;
-      h -= n;
-      h *= n;
-      n = h >>> 0;
-      h -= n;
-      n += h * 0x100000000; // 2^32
+      this.addNumber(data.charCodeAt(i));
     }
-    return (n >>> 0) * 2.3283064365386963e-10; // 2^-32
-  };
-
-  return mash;
+    return this;
+  },
+  addNumber: function(num) {
+    this.n += num;
+    var h = 0.02519603282416938 * this.n;
+    this.n = h >>> 0;
+    h -= this.n;
+    h *= this.n;
+    this.n = h >>> 0;
+    h -= this.n;
+    this.n += h * 0x100000000; // 2^32
+    return this;
+  },
+  finalize: function() {
+    return (this.n >>> 0) * 2.3283064365386963e-10; // 2^-32
+  }
 }
 var alea = impl;
 `
