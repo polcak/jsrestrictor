@@ -2,6 +2,11 @@
 title: Release history
 ---
 
+## 0.7.1
+
+* Apply proper shielding for `navigator.plugins` in Firefox.
+* Hide FPD notification after a while to prevent windows notification spam in chromium-based browsers
+
 ## 0.7
 
 * JavaScript Restrictor rebranded to JShelter.
