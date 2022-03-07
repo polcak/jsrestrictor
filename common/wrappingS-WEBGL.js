@@ -538,6 +538,10 @@
 			origReadPixels.call(gl, x, y, width, height, gl.ALPHA, type, outpixels, offset);
 			return;
 		}
+		else if (typeof outpixels === "number") {
+			/// \bug We do not support calls without explicit buffers, NOOP
+			return;
+		}
 		if(args[0]===1) {
 			return;
 		}
