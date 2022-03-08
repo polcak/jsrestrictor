@@ -127,10 +127,10 @@
 					ret = 0;
 					break;
 				case 0x9245: // UNMASKED_VENDOR_WEBGL
-					ret = vendor;
+					ret = unmasked_vendor;
 					break;
 				case 0x9246:
-					ret = renderer; // UNMASKED_RENDERER_WEBGL
+					ret = unmasked_renderer; // UNMASKED_RENDERER_WEBGL
 					break;
 				default:
 					ret = origGetParameter.call(ctx, pname);
@@ -163,10 +163,10 @@
 					ret = farbleGLint(result, pname);
 					break;
 				case 0x9245: // UNMASKED_VENDOR_WEBGL
-					ret = vendor;
+					ret = unmasked_vendor;
 					break;
 				case 0x9246: // UNMASKED_RENDERER_WEBGL
-					ret = renderer;
+					ret = unmasked_renderer;
 					break;
 				default:
 					ret = origGetParameter.call(ctx, pname);
@@ -174,6 +174,10 @@
 			return ret;
 		}
 	};
+	let farbleGetParameterString = `
+				var unmasked_vendor = randomString(8, 0);
+				var unmasked_renderer = randomString(8, 0);`+
+				farbleGetParameter;
 	/**
 	 * \brief Returns null or output of given function
 	 *
@@ -638,10 +642,8 @@
 					wrapped_name: "origGetParameter",
 				}
 			],
-			helping_code: farbleGLint + randomString +`
-				var vendor = randomString(8, 0);
-				var renderer = randomString(8, 0);`+
-				farbleGetParameter,
+			helping_code: farbleGLint + randomString +
+				farbleGetParameterString,
 			original_function: "parent.WebGLRenderingContext.prototype.getParameter",
 			wrapping_function_args: "constant",
 			/** \fn fake WebGLRenderingContext.prototype.getParameter
@@ -664,10 +666,8 @@
 					wrapped_name: "origGetParameter",
 				}
 			],
-			helping_code: farbleGLint + randomString +`
-				var vendor = randomString(8, 0);
-				var renderer = randomString(8, 0);`+
-				farbleGetParameter,
+			helping_code: farbleGLint + randomString +
+				farbleGetParameterString,
 			original_function: "parent.WebGL2RenderingContext.prototype.getParameter",
 			wrapping_function_args: "constant",
 			/** \fn fake WebGL2RenderingContext.prototype.getParameter
