@@ -181,10 +181,11 @@
 		}
 	};
 	let farbleGetParameterString = `
-				var unmasked_vendor = randomString(8, 0);
-				var vendor = randomString(8, 0);
-				var unmasked_renderer = randomString(8, 0);
-				var renderer = randomString(8, 0);
+				var webgl_prng = alea(domainHash, "WebGL wrappers");
+				var unmasked_vendor = randomString(8, 0, webgl_prng);
+				var vendor = randomString(8, 0, webgl_prng);
+				var unmasked_renderer = randomString(8, 0, webgl_prng);
+				var renderer = randomString(8, 0, webgl_prng);
 				`+
 				farbleGetParameter;
 	/**

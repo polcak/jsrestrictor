@@ -67,7 +67,7 @@
 				value: ""
 			},
 			description:{
-				value: randomString(32, 0)
+				value: randomString(32, 0, fp_prng)
 			},
 			enabledPlugin:{
 				value: null
@@ -117,13 +117,13 @@
 				value: mime
 			},
 			name:{
-				value: randomString(nameLength, 0)
+				value: randomString(nameLength, 0, fp_prng)
 			},
 			filename:{
-				value: randomString(filenameLength, 0)
+				value: randomString(filenameLength, 0, fp_prng)
 			},
 			description:{
-				value: randomString(descLength, 0)
+				value: randomString(descLength, 0, fp_prng)
 			},
 			version:{
 				value: null
@@ -245,7 +245,7 @@
 				value: name
 			},
 			filename:{
-				value: randomString(32, 0),
+				value: randomString(32, 0, fp_prng),
 			},
 			description:{
 				value: description

@@ -94,7 +94,7 @@ function lfsr_next(v) {
  * \param length Number length of generated string
  * \param charSetEnum Number enum choosing charset
  */
-function randomString(length, charSetEnum) {
+function randomString(length, charSetEnum, prng) {
 	var ret = "";
 	var charSets = ["abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_ ", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/"];
 	var charSet = charSets[charSetEnum];

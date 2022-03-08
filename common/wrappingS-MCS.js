@@ -76,7 +76,7 @@
 	function fakeDevice(device, fd_prng){
 		var kinds = ["videoinput", "audioinput", "audiooutput"];
 		let browserEnum = device.groupId.length == 44 ? 1 : 0;
-		var deviceId = browserEnum == 1 ? randomString(43, browserEnum)+ "=" : "";
+		var deviceId = browserEnum == 1 ? randomString(43, browserEnum, fd_prng)+ "=" : "";
 		let fakeData = {
 			deviceId,
 			groupId: deviceRandomString(browserEnum),
