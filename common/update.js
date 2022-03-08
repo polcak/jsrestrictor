@@ -38,7 +38,7 @@ function installUpdate() {
 	 *    domains: {}, // associative array of levels associated with specific domains (key, the domain => object)
 	 *      {level_id: short string of the level in use
 	 *      }
-	 *	  whitelistedHosts: {} // associative array of hosts that are removed from http protection control (hostname => boolean)
+	 *	  nbsWhitelist: {} // associative array of hosts that are removed from http protection control (hostname => boolean)
 	 *	  requestShieldOn: {} // Boolean, if it's TRUE or undefined, the http request protection is turned on,  if it's FALSE, the protection si turned off
 	 *	  fpDetectionOn: {} // Boolean, if it's TRUE, the fingerprint detection is turned on,  if it's FALSE or undefined, the protection si turned off
 	 *
@@ -376,8 +376,8 @@ function checkAndSaveConfig(conf) {
 	if (!("domains" in conf) || typeof(conf.domains) !== "object") {
 		conf.domains = {};
 	}
-	if (!("whitelistedHosts" in conf) || typeof(conf.whitelistedHosts) !== "object") {
-		conf.whitelistedHosts = {};
+	if (!("nbsWhitelist" in conf) || typeof(conf.nbsWhitelist) !== "object") {
+		conf.nbsWhitelist = {};
 	}
 	if (!("fpdWhitelist" in conf) || typeof(conf.fpdWhitelist) !== "object") {
 		conf.fpdWhitelist = {};

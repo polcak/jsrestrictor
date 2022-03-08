@@ -365,7 +365,7 @@ function update_whitelist(listbox, prefix)
 		whitelistedHosts[listbox.options[i].text] = true;
 	}
 
-	if (prefix == "nbs") setStorageAndSendMessage({"whitelistedHosts":whitelistedHosts}, {message:"whitelist updated"});
+	if (prefix == "nbs") setStorageAndSendMessage({"nbsWhitelist":whitelistedHosts}, {message:"whitelist updated"});
 	if (prefix == "fpd") setStorageAndSendMessage({"fpdWhitelist":whitelistedHosts}, {purpose:"update-fpd-whitelist"});
 }
 
@@ -400,7 +400,7 @@ function loadWhitelist(prefix)
 	var listbox = document.getElementById(prefix + "-whitelist-select");
 	
 	var whitelistName;
-	if (prefix == "nbs") whitelistName = "whitelistedHosts";
+	if (prefix == "nbs") whitelistName = "nbsWhitelist";
 	if (prefix == "fpd") whitelistName = "fpdWhitelist";
 	
 	//Get the whitelist

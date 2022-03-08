@@ -74,9 +74,9 @@ var localIPV6DNSZones;
 var doNotBlockHosts = new Object();
 
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
-browser.storage.sync.get(["whitelistedHosts"]).then(function(result){
-		if (result.whitelistedHosts != undefined)
-			doNotBlockHosts = result.whitelistedHosts;
+browser.storage.sync.get(["nbsWhitelist"]).then(function(result){
+		if (result.nbsWhitelist != undefined)
+			doNotBlockHosts = result.nbsWhitelist;
 	});
 
 /// Hook up the listener for receiving messages
@@ -516,8 +516,8 @@ function commonMessageListener(message, sender)
 	if (message.message === "whitelist updated")
 	{
 		//actualize current doNotBlockHosts from storage
-		browser.storage.sync.get(["whitelistedHosts"]).then(function(result){
-			doNotBlockHosts = result.whitelistedHosts;
+		browser.storage.sync.get(["nbsWhitelist"]).then(function(result){
+			doNotBlockHosts = result.nbsWhitelist;
 		});
 	}
 	//Mesage came from popup.js, whitelist this site
@@ -526,7 +526,7 @@ function commonMessageListener(message, sender)
 			//Obtain current hostname and whitelist it
 			var currentHost = message.site;
 			doNotBlockHosts[currentHost] = true;
-			browser.storage.sync.set({"whitelistedHosts":doNotBlockHosts});
+			browser.storage.sync.set({"nbsWhitelist":doNotBlockHosts});
 	}
 	//Message came from popup.js, remove whitelisted site
 	else if (message.message === "remove site from whitelist")
@@ -534,7 +534,7 @@ function commonMessageListener(message, sender)
 			//Obtain current hostname and remove it
 			currentHost = message.site;
 			delete doNotBlockHosts[currentHost];
-			browser.storage.sync.set({"whitelistedHosts":doNotBlockHosts});
+			browser.storage.sync.set({"nbsWhitelist":doNotBlockHosts});
 	}
 	//HTTP request shield was turned on
 	else if (message.message === "turn request shield on")
