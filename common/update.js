@@ -379,6 +379,9 @@ function checkAndSaveConfig(conf) {
 	if (!("nbsWhitelist" in conf) || typeof(conf.nbsWhitelist) !== "object") {
 		conf.nbsWhitelist = {};
 	}
+	if (!("nbsSettings" in conf) || typeof(conf.nbsSettings) !== "object") {
+		conf.nbsSettings = {};
+	}
 	if (!("fpdWhitelist" in conf) || typeof(conf.fpdWhitelist) !== "object") {
 		conf.fpdWhitelist = {};
 	}

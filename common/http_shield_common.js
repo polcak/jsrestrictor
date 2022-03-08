@@ -73,15 +73,49 @@ var localIPV6DNSZones;
  */
 var doNotBlockHosts = new Object();
 
+/**
+ * Associtive array of settings supported by this module.
+ */
+ var nbsSettings = {};
+
+/**
+* Definition of settings supported by this module.
+*/
+const NBS_DEF_SETTINGS = {
+	notifications: {
+		description: "Turn on/off notifications about suspicious requests being blocked.",
+		description2: ["NOTE: Notifications about blocked hosts remain active either way."],
+		label: "Notifications",
+		params: [
+			{
+				// 0
+				short: "Off",
+				description: "Request blocking notifications turned off."
+			},
+			{
+				// 1
+				short: "On",
+				description: "Request blocking notifications turned on."
+			}
+		]
+	}
+};
+
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 browser.storage.sync.get(["nbsWhitelist"]).then(function(result){
-		if (result.nbsWhitelist != undefined)
-			doNotBlockHosts = result.nbsWhitelist;
-	});
+	if (result.nbsWhitelist != undefined)
+		doNotBlockHosts = result.nbsWhitelist;
+});
+
+browser.storage.sync.get(["nbsSettings"]).then(function(result){
+	if (result.nbsSettings != undefined)
+		nbsSettings = result.nbsSettings;
+});
 
 /// Hook up the listener for receiving messages
 browser.runtime.onMessage.addListener(commonMessageListener);
 browser.runtime.onMessage.addListener(messageListener);
+browser.runtime.onMessage.addListener(settingsListener);
 
 /// Check the storage for requestShieldOn object
 browser.storage.sync.get(["requestShieldOn"]).then(function(result){
@@ -453,7 +487,7 @@ function expandIPV6(ip6addr)
  *
  * \returns TRUE when domain (or subdomain) is whitelisted, FALSE otherwise.
  */
-function checkWhitelist(hostname)
+function isNbsWhitelisted(hostname)
 {
 	//Calling a function from url.js
 	var domains = extractSubDomains(hostname);
@@ -477,12 +511,14 @@ function checkWhitelist(hostname)
  * \param resource Type of the resource.
  */
 function notifyBlockedRequest(origin, target, resource) {
-	browser.notifications.create({
-		"type": "basic",
-		"iconUrl": browser.runtime.getURL("img/icon-48.png"),
-		"title": "Network boundary shield blocked suspicious request!",
-		"message": `Request from ${origin} to ${target} blocked.\n\nMake sure that you are on a benign page. If you want to allow web requests from ${origin}, please, go to the JS Restrictor settings and add an exception.`
-	});
+	if (nbsSettings.notifications) {
+		browser.notifications.create({
+			"type": "basic",
+			"iconUrl": browser.runtime.getURL("img/icon-48.png"),
+			"title": "Network boundary shield blocked suspicious request!",
+			"message": `Request from ${origin} to ${target} blocked.\n\nMake sure that you are on a benign page. If you want to allow web requests from ${origin}, please, go to the JS Restrictor settings and add an exception.`
+		});
+	}
 }
 
 /**
@@ -498,10 +534,32 @@ function notifyBlockedRequest(origin, target, resource) {
 	 //Message came from popup,js, asking whether is this site whitelisted
 	 if (message === "is current site whitelisted?")
 	 {
-		 return Promise.resolve(`current site is ${checkWhitelist(site) ? '' : 'not '}whitelisted`);
+		 return Promise.resolve(`current site is ${isNbsWhitelisted(site) ? '' : 'not '}whitelisted`);
 	 }
  }
- 
+
+/**
+ * \brief The event listener, hooked up to the webExtension onMessage event.
+ *
+ * The listener sends message response which contains information about cuurent module settings.
+ * 
+ * \param message Receives full message.
+ */
+function settingsListener(message)
+{
+	if (message.purpose === "nbs-get-settings") {
+		// send settings definition and current values
+		return Promise.resolve({
+			def: NBS_DEF_SETTINGS,
+			val: nbsSettings
+		});
+	}
+	else if (message.purpose === "nbs-set-settings") {
+		// update current settings
+		nbsSettings[message.id] = message.value;
+		browser.storage.sync.set({"nbsSettings": nbsSettings});
+	}
+}
 
 /**
  * Event listener hooked up to webExtensions onMessage event.

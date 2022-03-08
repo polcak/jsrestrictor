@@ -239,6 +239,7 @@ window.addEventListener("load", function() {
 	else {
 		insert_levels();
 	}
+	load_module_settings("nbs");
 	loadWhitelist("nbs");
 	load_on_off_switch("nbs");
 	load_module_settings("fpd");

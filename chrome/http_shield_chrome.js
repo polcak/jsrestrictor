@@ -99,7 +99,7 @@ function beforeSendHeadersListener(requestDetail) {
 	targetUrl.hostname = wwwRemove(targetUrl.hostname);
 
 	//Host found among user's trusted hosts, allow it right away
-	if (checkWhitelist(sourceUrl.hostname))
+	if (isNbsWhitelisted(sourceUrl.hostname))
 	{
 		return {cancel:false};
 	}

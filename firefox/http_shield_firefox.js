@@ -68,7 +68,7 @@ async function beforeSendHeadersListener(requestDetail)
 	var sourceResolution = "";
 
 	//Host found among user's trusted hosts, allow it right away
-	if (checkWhitelist(sourceUrl.hostname))
+	if (isNbsWhitelisted(sourceUrl.hostname))
 	{
 		return {cancel:false};
 	}

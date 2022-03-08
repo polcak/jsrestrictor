@@ -112,7 +112,7 @@ const FPD_DEF_SETTINGS = {
 	behavior: {
 		description: "Specify preffered behavior of the module.",
 		description2: ["NOTE: Blocking behavior may break some functionality on fingerprinting websites. It also removes browser data (cache, cookies, etc.) of these websites."],
-		label: "Behavior setting",
+		label: "Behavior",
 		params: [
 			{
 				// 0
