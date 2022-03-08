@@ -74,8 +74,11 @@
 	function farbleGLint(number, pname) {
 		var ret = 0;
 		if(number > 0){
-      var temp = (Number("0x"+domainHash.slice(29,domainHash.length-28))^pname)%3;
-			ret = number - (temp == 1 ? 1:0);
+			let mash = new Mash();
+			mash.addNumber(STATIC_RANDOM_VALUE);
+			mash.addNumber(number);
+			mash.addNumber(pname);
+			ret = Math.floor(mash.finalize() * number);
 		}
 		return ret;
 	}
@@ -182,6 +185,7 @@
 				var vendor = randomString(8, 0, webgl_prng);
 				var unmasked_renderer = randomString(8, 0, webgl_prng);
 				var renderer = randomString(8, 0, webgl_prng);
+				const STATIC_RANDOM_VALUE = webgl_prng.uint32();
 				`+
 				farbleGetParameter;
 	/**
