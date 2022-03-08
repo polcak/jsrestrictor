@@ -95,7 +95,9 @@
 			switch (pname) {
 				case 0x1F02: // VERSION: WebGL 1.0/ WebGL 2.0
 				case 0x1F01: // RENDERER
+				case 0x9246: // UNMASKED_RENDERER_WEBGL
 				case 0x1F00: // VENDOR
+				case 0x9245: // UNMASKED_VENDOR_WEBGL
 				case 0x8B8C: // SHADING_LANGUAGE_VERSION
 					ret = "";
 					break;
@@ -125,12 +127,6 @@
 				case 0x8073: // MAX_3D_TEXTURE_SIZE
 				case 0x88FF: // MAX_ARRAY_TEXTURE_LAYERS
 					ret = 0;
-					break;
-				case 0x9245: // UNMASKED_VENDOR_WEBGL
-					ret = unmasked_vendor;
-					break;
-				case 0x9246:
-					ret = unmasked_renderer; // UNMASKED_RENDERER_WEBGL
 					break;
 				default:
 					ret = origGetParameter.call(ctx, pname);
