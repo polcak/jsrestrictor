@@ -93,37 +93,37 @@
 		if(args[0]===1) {
 			var ret;
 			switch (pname) {
-				case 0x1F02:
-				case 0x1F01:
-				case 0x1F00:
-				case 0x8B8C:
+				case 0x1F02: // VERSION: WebGL 1.0/ WebGL 2.0
+				case 0x1F01: // RENDERER
+				case 0x1F00: // VENDOR
+				case 0x8B8C: // SHADING_LANGUAGE_VERSION
 					ret = "";
 					break;
-				case 0x8F36:
-				case 0x8F37:
-				case 0x8CA6:
+				case 0x8F36: // COPY_READ_BUFFER
+				case 0x8F37: // COPY_WRITE_BUFFER
+				case 0x8CA6: // DRAW_FRAMEBUFFER_BINDING
 					ret = null;
 					break;
-				case 0x8A2B:
-				case 0x8B4A:
-				case 0x9122:
-				case 0x8B4B:
-				case 0x8C8A:
-				case 0x8B49:
-				case 0x8A2D:
-				case 0x9125:
-				case 0x8A2F:
-				case 0x8A2E:
-				case 0x8A31:
-				case 0x8A33:
-				case 0x8A30:
+				case 0x8B4A: // MAX_VERTEX_UNIFORM_COMPONENTS
+				case 0x8A2B: // MAX_VERTEX_UNIFORM_BLOCKS
+				case 0x9122: // MAX_VERTEX_OUTPUT_COMPONENTS
+				case 0x8B4B: // MAX_VARYING_COMPONENTS
+				case 0x8C8A: // MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS
+				case 0x8B49: // MAX_FRAGMENT_UNIFORM_COMPONENTS
+				case 0x8A2D: // MAX_FRAGMENT_UNIFORM_BLOCKS
+				case 0x9125: // MAX_FRAGMENT_INPUT_COMPONENTS
+				case 0x8A2F: // MAX_UNIFORM_BUFFER_BINDINGS
+				case 0x8A2E: // MAX_COMBINED_UNIFORM_BLOCKS
+				case 0x8A31: // MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS
+				case 0x8A33: // MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS
+				case 0x8A30: // MAX_UNIFORM_BLOCK_SIZE
 					ret = 0;
 					break;
-				case 0x9245:
+				case 0x9245: // UNMASKED_VENDOR_WEBGL
 					ret = vendor;
 					break;
 				case 0x9246:
-					ret = renderer;
+					ret = renderer; // UNMASKED_RENDERER_WEBGL
 					break;
 				default:
 					ret = origGetParameter.call(ctx, pname);
@@ -133,32 +133,32 @@
 		else if(args[0]===0) {
 			var ret;
 			switch (pname) {
-				case 0x8B4A:
-				case 0x8A2B:
-				case 0x9122:
-				case 0x8B4B:
-				case 0x8C8A:
-				case 0x8B49:
-				case 0x8A2D:
-				case 0x9125:
-				case 0x8A2F:
-				case 0x8A2E:
-				case 0x8A31:
-				case 0x8A33:
-				case 0x8869:
-				case 0x8DFB:
-				case 0x8B4C:
-				case 0x0D33:
-				case 0x851C:
-				case 0x8073:
-				case 0x88FF:
+				case 0x8B4A: // MAX_VERTEX_UNIFORM_COMPONENTS
+				case 0x8A2B: // MAX_VERTEX_UNIFORM_BLOCKS
+				case 0x9122: // MAX_VERTEX_OUTPUT_COMPONENTS
+				case 0x8B4B: // MAX_VARYING_COMPONENTS
+				case 0x8C8A: // MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS
+				case 0x8B49: // MAX_FRAGMENT_UNIFORM_COMPONENTS
+				case 0x8A2D: // MAX_FRAGMENT_UNIFORM_BLOCKS
+				case 0x9125: // MAX_FRAGMENT_INPUT_COMPONENTS
+				case 0x8A2F: // MAX_UNIFORM_BUFFER_BINDINGS
+				case 0x8A2E: // MAX_COMBINED_UNIFORM_BLOCKS
+				case 0x8A31: // MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS
+				case 0x8A33: // MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS
+				case 0x8869: // MAX_VERTEX_ATTRIBS
+				case 0x8DFB: // MAX_VERTEX_UNIFORM_VECTORS
+				case 0x8B4C: // MAX_VERTEX_TEXTURE_IMAGE_UNITS
+				case 0x0D33: // MAX_TEXTURE_SIZE
+				case 0x851C: // MAX_CUBE_MAP_TEXTURE_SIZE
+				case 0x8073: // MAX_3D_TEXTURE_SIZE
+				case 0x88FF: // MAX_ARRAY_TEXTURE_LAYERS
 					var result = origGetParameter.call(ctx, pname);
 					ret = farbleGLint(result, pname);
 					break;
-				case 0x9245:
+				case 0x9245: // UNMASKED_VENDOR_WEBGL
 					ret = vendor;
 					break;
-				case 0x9246:
+				case 0x9246: // UNMASKED_RENDERER_WEBGL
 					ret = renderer;
 					break;
 				default:
