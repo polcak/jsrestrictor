@@ -59,6 +59,7 @@
 			parent_object_property: "deviceMemory",
 			wrapped_objects: [],
 			helping_code: `
+				let dm_prng = alea(domainHash, "navigator.deviceMemory");
 				var validValues = [0.25, 0.5, 1.0, 2.0, 4.0, 8.0];
 				var ret = 4;
 				var realValue = navigator.deviceMemory;
@@ -70,10 +71,10 @@
 					if(maxIndex == -1){
 						maxIndex = validValues.length-1;
 					}
-					ret = validValues[Math.floor((prng()*(maxIndex+1)))];
+					ret = validValues[Math.floor((dm_prng()*(maxIndex+1)))];
 				}
 				else if(args[0]==1){
-					ret = validValues[Math.floor(prng()*(validValues.length))];
+					ret = validValues[Math.floor(dm_prng()*(validValues.length))];
 				}
 			`,
 			post_wrapping_code: [
