@@ -232,17 +232,19 @@ function insert_levels() {
 	document.getElementById("level-" + default_level.level_id).classList.add("active");
 }
 
-window.addEventListener("load", function() {
+window.addEventListener("load", async function() {
 	if (!levels_initialised) {
 		levels_updated_callbacks.push(insert_levels);
 	}
 	else {
 		insert_levels();
 	}
-	load_module_settings("nbs");
+	await Promise.all([
+		load_module_settings("nbs"),
+		load_module_settings("fpd")
+	])
 	loadWhitelist("nbs");
 	load_on_off_switch("nbs");
-	load_module_settings("fpd");
 	loadWhitelist("fpd");
 	load_on_off_switch("fpd");
 });
@@ -399,6 +401,7 @@ function getSelectValues(select)
 function loadWhitelist(prefix)
 {	
 	var listbox = document.getElementById(prefix + "-whitelist-select");
+	listbox.options.length = 0;
 	
 	var whitelistName;
 	if (prefix == "nbs") whitelistName = "nbsWhitelist";
@@ -434,10 +437,12 @@ function load_on_off_switch(prefix)
 		if (result[flagName] || result[flagName] == undefined)
 		{
 			checkbox.checked = true;
+			toggleSettings(prefix, true);
 		}
 		else
 		{
 			checkbox.checked = false;
+			toggleSettings(prefix, false);
 		}
 	});
 }
