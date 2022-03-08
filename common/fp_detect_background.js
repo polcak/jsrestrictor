@@ -1000,6 +1000,8 @@ function evaluateFingerprinting(tabId) {
 						browser.browsingData.remove({
 							"origins": [new URL(tabUrl).origin]
 						}, {
+							"appcache": true,
+							"cache": true,
 							"cacheStorage": true,
 							"cookies": true,
 							"fileSystems": true,
@@ -1008,13 +1010,14 @@ function evaluateFingerprinting(tabId) {
 							"serviceWorkers": true,
 							"webSQL": true
 						});
-					} 
+					}
 					catch (e) {
 						// need to use "hostnames" key for Firefox
 						if (e.message.includes("origins")) {
 							browser.browsingData.remove({
 								"hostnames": extractSubDomains(new URL(tabUrl).hostname).filter((x) => (x.includes(".")))
 							}, {
+								"cache": true,
 								"cookies": true,
 								"indexedDB": true,
 								"localStorage": true,
