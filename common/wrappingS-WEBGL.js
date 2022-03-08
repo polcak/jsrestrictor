@@ -168,6 +168,12 @@
 				case 0x9246: // UNMASKED_RENDERER_WEBGL
 					ret = unmasked_renderer;
 					break;
+				case 0x1F01: // RENDERER
+					ret = renderer;
+					break;
+				case 0x1F00: // VENDOR
+					ret = vendor;
+					break;
 				default:
 					ret = origGetParameter.call(ctx, pname);
 			}
@@ -176,7 +182,10 @@
 	};
 	let farbleGetParameterString = `
 				var unmasked_vendor = randomString(8, 0);
-				var unmasked_renderer = randomString(8, 0);`+
+				var vendor = randomString(8, 0);
+				var unmasked_renderer = randomString(8, 0);
+				var renderer = randomString(8, 0);
+				`+
 				farbleGetParameter;
 	/**
 	 * \brief Returns null or output of given function
