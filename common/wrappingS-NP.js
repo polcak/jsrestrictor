@@ -212,8 +212,7 @@
 	 *
 	 * Replaces words in name and description parameters in PDF plugins (default plugins in most browsers)
 	 */
-	function farblePlugin(plugin){
-		var fp_prng = alea(domainHash, "S-NP farblePlugin");
+	function farblePlugin(plugin, fp_prng){
 		var name = plugin.name;
 		var description = plugin.description;
 		if(plugin.name.includes("PDF")){
@@ -274,11 +273,12 @@
 			wrapped_objects: [],
 			helping_code:
 				methods + farbles + fakes +`
+				var fp_prng = alea(domainHash, "S-NP");
 				var plugins = navigator.plugins;
 				var buffer = [];
 				if(args[0]==0){
 					for(var i = 0;i<plugins.length;i++){
-						buffer.push(farblePlugin(plugins[i]));
+						buffer.push(farblePlugin(plugins[i]), fp_prng);
 					}
 				}
 				if(args[0]==1){
