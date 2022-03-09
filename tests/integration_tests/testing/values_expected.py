@@ -3,8 +3,8 @@
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
-#  Copyright (C) 2021  Martin Bednar
 #  Copyright (C) 2021  Matus Svancar
+#  Copyright (C) 2022  Martin Bednar
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -77,11 +77,11 @@ level0 = TestedValues(
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 'EXACTLY'},
-    plugins={'count': {BrowserType.FIREFOX: 'REAL VALUE',
+    plugins={'count': {BrowserType.FIREFOX: 0,
                        BrowserType.CHROME: 'IGNORE'},
-             'value': {BrowserType.FIREFOX: 'REAL VALUE',
+             'value': {BrowserType.FIREFOX: 'EMPTY',
                        BrowserType.CHROME: 'IGNORE'}},
-    mimeTypes='REAL VALUE',
+    mimeTypes='IGNORE',
     get_channel= 'REAL VALUE',
     copy_channel= 'REAL VALUE',
     byte_time_domain= 'REAL VALUE',
@@ -144,10 +144,10 @@ level1 = TestedValues(
     time={'value': 'REAL VALUE',
           'accuracy': 0.01},
     plugins={'count': {BrowserType.FIREFOX: 0,
-                       BrowserType.CHROME: 'IGNORE'},
+                       BrowserType.CHROME: 'REAL VALUE'},
              'value': {BrowserType.FIREFOX: 'EMPTY',
-                       BrowserType.CHROME: 'IGNORE'}},
-    mimeTypes='SPOOF VALUE',
+                       BrowserType.CHROME: 'REAL VALUE'}},
+    mimeTypes='REAL VALUE',
     get_channel= 'REAL VALUE',
     copy_channel= 'REAL VALUE',
     byte_time_domain= 'REAL VALUE',
@@ -213,7 +213,7 @@ level2 = TestedValues(
                        BrowserType.CHROME: 'IGNORE'},
              'value': {BrowserType.FIREFOX: 'EMPTY',
                        BrowserType.CHROME: 'IGNORE'}},
-    mimeTypes='EMPTY',
+    mimeTypes='SPOOF VALUE',
     get_channel= 'SPOOF VALUE',
     copy_channel= 'SPOOF VALUE',
     byte_time_domain= 'SPOOF VALUE',
