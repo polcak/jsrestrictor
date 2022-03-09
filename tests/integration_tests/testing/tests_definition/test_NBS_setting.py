@@ -3,7 +3,7 @@
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
-#  Copyright (C) 2021  Martin Bednar
+#  Copyright (C) 2022  Martin Bednar
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -24,6 +24,7 @@
 import pytest
 from selenium.webdriver.common.by import By
 from time import sleep
+from web_browser_type import BrowserType
 
 
 def switch_NBS_setting(browser):
@@ -42,6 +43,11 @@ def get_NBS_setting(browser):
 ## Test turnning NBS off in popup.
 ## Sleep 0.5 second to changes take effect.
 def test_switching_NBS(browser):
+    if browser.type == BrowserType.CHROME:
+        # Not able to test NBS switch in Google Chrome.
+        # Can not show popup.html in Chrome. Popup.html is not accesible and testable.
+        assert True
+        return()
     NBS_setting_values = ['"ON"', '"OFF"']
     
     original_setting = get_NBS_setting(browser)
