@@ -680,7 +680,7 @@ function redefineDataViewFunctions(target, offsetF, doMapping) {
 		`
 	};
 
-	var typedTypes = ['Uint8Array', 'Int8Array', 'Uint8ClampedArray', 'Int16Array', 'Uint16Array', 'Int32Array', 'Uint32Array', 'Float32Array', 'Float64Array'];
+	var typedTypes = ['Uint8Array', 'Int8Array', 'Uint8ClampedArray', 'Int16Array', 'Uint16Array', 'Int32Array', 'Uint32Array', 'Float32Array', 'Float64Array', 'BigInt64Array', 'BigUint64Array'];
 	for (let p of typedTypes) {
 		let wrapper = {...DEFAULT_TYPED_ARRAY_WRAPPER};
 		wrapper.parent_object_property = wrapper.parent_object_property.replace('_PROPERTY_', p);

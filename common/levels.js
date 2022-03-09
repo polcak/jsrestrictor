@@ -341,6 +341,8 @@ var wrapping_groups = {
 				"window.Uint32Array",
 				"window.Float32Array",
 				"window.Float64Array",
+				'window.BigInt64Array',
+				'window.BigUint64Array',
 			],
 		},
 		{
