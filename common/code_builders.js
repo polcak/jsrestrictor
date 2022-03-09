@@ -73,10 +73,11 @@ function define_page_context_function(wrapper) {
 	let originalF = ${originalF};
 	var fp_call_count = 0;
 	let replacementF = function(${wrapper.wrapping_function_args}) {
-		{
+		try {
 			let args = [].slice.apply(arguments);
 			${create_counter_call(wrapper, "call")}
-		}`
+		}
+		catch (e) { /* No action: let the wrapper continue uninterupted. TODO: let the user decide? */ }`
 	
 	// if apply_if condition is present, we need to wrap for FPD anyhow
 	if (wrapper.apply_if !== undefined) {
