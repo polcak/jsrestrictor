@@ -28,7 +28,7 @@ import random
 
 
 domains = ["messenger.com", "email.seznam.cz", "facebook.com", "www.fit.vutbr.cz"]
-levels = ['0', '1', '2', '3']
+levels = ['0', '2', '3', 'Experiment']
 
 
 def set_domain_level(browser, domain, level):

@@ -35,7 +35,7 @@ class __Config:
     # Browsers in which tests will be run.
     tested_browsers = [BrowserType.CHROME, BrowserType.FIREFOX]
     # Default levels of JShelter which will be tested.
-    tested_jsr_levels = [0, 1, 2, 3]
+    tested_jsr_levels = [0, 2, 3, "Experiment"]
 
 
 
