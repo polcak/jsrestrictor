@@ -28,14 +28,15 @@ from time import sleep
 
 def switch_NBS_setting(browser):
     browser.driver.get(browser._jsr_options_page.replace("/options.html", "/popup.html"))
-    browser.driver.find_elements(By.CLASS_NAME, 'switch')[0].click()
+    sleep(1)
+    browser.driver.find_elements(By.CLASS_NAME, 'slider')[1].click()
     sleep(1)
 
 
 def get_NBS_setting(browser):
     browser.driver.get(browser._jsr_options_page.replace("/options.html", "/popup.html"))
-    sleep(1)
-    return(browser.driver.execute_script("return window.getComputedStyle(document.querySelector('#shield-switch + .slider'),':before').getPropertyValue('content')"))
+    sleep(2)
+    return(browser.driver.execute_script("return window.getComputedStyle(document.querySelector('#nbs_whitelist .switch_wrapper .switch .slider'),':before').getPropertyValue('content')"))
 
 
 ## Test turnning NBS off in popup.
