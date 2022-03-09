@@ -666,6 +666,7 @@ function wrap_code(level) {
 		.replace('// WRAPPERS //', joinCode(level.wrappers.map(x => build(x, false))))
 		.replace('// FPD //', joinCode(Object.keys(fpd_build_wrapping_code).map(x => build(x, true))));
 
+	console.debug(code);
 	return `(${code})();`;
 }
 
