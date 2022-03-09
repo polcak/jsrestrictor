@@ -151,17 +151,23 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			</label>
 		</div>
 		<p class="fpd_description">
-			Fingerprinting detection prevents web pages to extract fingerprint of your browser using JavaScript properties. See our <a
-			  href="https://jshelter.org/fpdetection/">
+			Fingerprinting detector provides a mechanism that informs users about fingerprinting activity on visited web pages. The detector also prevents 
+			web pages from extracting browser fingerprint, if a user chooses to do so. See our <a
+			href="https://jshelter.org/fpdetection/">
 				blog post</a> or
 			<a
 				href="https://arxiv.org/pdf/1905.01051.pdf">Browser Fingerprinting: A survey</a> for a closer description of browser fingerprinting.
 		<p class="fpd_description">
-			For now, fingerprinting detector is turned off by default. By enabling it, you will be notified whenever JShelter detects fingerprinting
-			behaviour on visited web page. As a countermeasure against leaking your fingerprint to unwanted parties, every detection is followed by 
-			blocking all subsequent HTTP requests and cleaning browser storage. Take into account that <strong>this action will probably result in a broken web page</strong> and 
-			we strongly recommend to use whitelist for trusted domains. You can do so via pop-up menu of the extension or explicitly add domains to the list
-			below.
+			By enabling the detector, you will be notified whenever it detects fingerprinting behavior on a visited web page. The detector measure severity of
+			potential fingerprint with each page visit. Then, it assigns a severity value to the page according to our heuristic system. This value is presented to you by
+			badge color of JShelter icon and also in popup window. If a high severity fingerprint occurs, you will be notified by a separate notification. It's possible
+			to show details about the fingerprint by generating a fingerprint report. You can access it via popup window or by clicking directly on the notification.
+		</p>
+		<p class="fpd_description">		
+			The default behavior of Fingerprinting detector can be adjusted to your liking. You can choose "blocking" behavior, which works as a countermeasure against leaking your fingerprint
+			to unwanted parties. In this case, every positive detection is followed by blocking all subsequent HTTP requests and cleaning browser storage. Take into account that <strong>this action
+			will probably result in a broken web page</strong> and we strongly recommend to use a whitelist for trusted domains. Switching off the detector for a domain in the popup window will add
+			the domain to the whitelist. This domain won't be evaluated or blocked in the future. You can manage all the whitelisted domains below.
 		</p>
 		<div id="fpd-settings">
 
