@@ -262,11 +262,17 @@ var build_code = function(wrapper, ...args) {
 	}
 
 	for (let {original_name = target, wrapped_name, callable_name} of wrapper.wrapped_objects || []) {
-		if (original_name !== target) code += `
-		if (typeof ${original_name} === undefined) return;
-		`;
-		if (wrapped_name) code += `var ${wrapped_name} = window.${original_name};`;
-		if (callable_name) code += `var ${callable_name} = WrapHelper.pageAPI(window.${original_name});`;
+		if (original_name !== target) {
+			code += `
+				if (typeof ${original_name} === undefined) return;
+				`;
+		}
+		if (wrapped_name) {
+			code += `var ${wrapped_name} = window.${original_name};`;
+		}
+		if (callable_name) {
+			code += `var ${callable_name} = WrapHelper.pageAPI(window.${original_name});`;
+		}
 	}
 	code += `
 		${wrapper.helping_code || ''}`;
