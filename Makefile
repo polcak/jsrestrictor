@@ -40,7 +40,7 @@ jshelter_%.zip: $(COMMON_FILES) get_csv submodules
 	@cp -r common/ build/$*/
 	@cp -r $*/* build/$*/
 	@cp -r LICENSES build/$*/
-	@./fix_manifest.sh build/$*/manifest.json
+	@./generate_fpd.sh
 	@cp common/wrappingX* build/$*/
 	@nscl/include.sh build/$*
 	@if [ $(DEBUG) -eq 0 ]; \
@@ -50,6 +50,7 @@ jshelter_%.zip: $(COMMON_FILES) get_csv submodules
 	@rm -f build/$*/.*.sw[pno]
 	@rm -f build/$*/img/makeicons.sh
 	@find build/$*/ -name '*.license' -delete
+	@./fix_manifest.sh build/$*/
 	@cd build/$*/ && zip -q -r ../../$@ ./* --exclude \*.sw[pno]
 	@echo "LOG-WARNING: Number of lines in build/$* with console.log:"
 	@grep -re 'console.log' build/$* | wc -l
