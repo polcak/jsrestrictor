@@ -19,12 +19,11 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<h3 id="titletext">FingerPrint Detector Report<button id="help" class="help">?</button></h3>
 			<p class="description hidden">
 				This report lists all JavaScript API endpoints that were accessed by the web page and are considered critical in terms of browser fingerprinting.
-				FingerPrint Detector (FPD) uses this data to decide whether the page is collecting a browser fingerprint and how severe the fingerprint might be.
-				Individual endpoints are assigned to groups based on their semantic properties and show a number of page accesses in brackets.
+				Fingerprint Detector (FPD) uses this data to decide whether the page is collecting a browser fingerprint.
 			</p>
 			<p class="description hidden">
-				Default behavior is set to show only groups and endpoints that were accessed at least once. If you want to show all groups and their respective endpoints
-				used by FPD, click <span id="unhideAll">here</span>.
+				FPD processes API calls in groups based on their semantic properties. This window shows the detected number of API calls on the visited page.
+				The default view shows only groups accessed at least once. If you want to see all APIs monitored by FPD, click <span id="unhideAll">here</span>.
 			</p>
 			<div id="page-container">
 				<img id="pageFavicon" style="display: none">
