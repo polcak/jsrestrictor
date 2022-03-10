@@ -156,8 +156,13 @@ for (let groupsLevel in fp_levels.groups) {
 	loadConfiguration("fpdSettings");
 }
 
-// unify default color of popup badge between different browsers
+// unify default color of popup badge background between different browsers
 browser.browserAction.setBadgeBackgroundColor({color: "#6E7378"});
+
+// unify default color of popup badge text between different browsers
+if (typeof browser.browserAction.setBadgeTextColor === "function") {
+	browser.browserAction.setBadgeTextColor({color: "#FFFFFF"});
+}
 
 // take care of unsupported resources for cross-browser behaviour uniformity
 balanceUnsupportedWrappers();
