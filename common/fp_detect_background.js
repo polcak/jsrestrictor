@@ -117,17 +117,17 @@ const FPD_DEF_SETTINGS = {
 			{
 				// 0
 				short: "Color",
-				description: "Use extension icon badge color to signalize severity of possible fingerprinting."
+				description: "Use extension icon badge color to signalize likelihood of ongoing fingerprinting."
 			},
 			{
 				// 1
 				short: "Notification",
-				description: "Use notifications to notify users whenever a high severity fingerprinting occurs. (+color)"
+				description: "In addition to badge color, show a notification whenever there is a high likelihood of fingerprinting."
 			},
 			{
 				// 2
 				short: "Blocking",
-				description: "Allow the extension to interrupt network traffic from fingerprinting websites to prevent fingerprint leakage. (+notification and color)",
+				description: "Allow the extension to interrupt network traffic whenever there is a high likelihood of fingerprinting to prevent possible fingerprint leakage.",
 				permissions: ["browsingData"]
 			},
 		]
