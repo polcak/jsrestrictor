@@ -351,6 +351,22 @@ function installUpdate() {
 			}
 			item.version = 6.1;
 		}
+		if (item.version < 6.2) {
+			if (item.fpDetectionOn) {
+				item.fpdSettings = {
+					behavior: 2
+				};
+			}
+			else {
+				item.fpdSettings = {
+					behavior: 1
+				};
+			}
+			item.fpDetectionOn = true;
+			item.nbsWhitelist = item.whitelistedHosts;
+			delete item.whitelistedHosts;
+			item.version = 6.2;
+		}
 		browser.storage.sync.set(item);
 	});
 }
