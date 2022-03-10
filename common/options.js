@@ -281,19 +281,7 @@ async function load_module_settings(prefix) {
 		let tweaksBusiness = Object.create(tweaks_gui);
 		tweaksBusiness.tweak_changed = function(key, val) {
 			let permissions = settings.def[key].params[val].permissions || [];
-			// request optional permissions from user if needed for given setting
-			browser.permissions.request({permissions: permissions}).then(
-				(granted) => {
-					// if permissions changed, modify permissions manager in background
-					browser.runtime.sendMessage({
-						action: "update-permissions",
-						module: prefix,
-						setting: key,
-						permissions: granted ? permissions : []
-					});
-				}
-			);
-			// inform module that settings have changed
+			browser.permissions.request({permissions: permissions});
 			browser.runtime.sendMessage({purpose: prefix + "-set-settings", id: key, value: val});
 		}
 
