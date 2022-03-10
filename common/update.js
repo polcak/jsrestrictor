@@ -365,6 +365,9 @@ function installUpdate() {
 			item.fpDetectionOn = true;
 			item.nbsWhitelist = item.whitelistedHosts;
 			delete item.whitelistedHosts;
+			item.nbsSettings = {
+				notifications: 1
+			};
 			item.version = 6.2;
 		}
 		browser.storage.sync.set(item);
