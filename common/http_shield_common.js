@@ -3,6 +3,7 @@
  *
  *  \author Copyright (C) 2020  Pavel Pohner
  *  \author Copyright (C) 2020-2021 Martin Bednář
+ *  \author Copyright (C) 2022 Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -116,6 +117,12 @@ browser.storage.sync.get(["nbsSettings"]).then(function(result){
 browser.runtime.onMessage.addListener(commonMessageListener);
 browser.runtime.onMessage.addListener(messageListener);
 browser.runtime.onMessage.addListener(settingsListener);
+
+// Listen for permissions removal to adapt settings accordingly
+browser.permissions.onRemoved.addListener((permissions) => {
+	correctSettingsForRemovedPermissions(permissions.permissions, nbsSettings, NBS_DEF_SETTINGS);
+	browser.storage.sync.set({"nbsSettings": nbsSettings});
+});
 
 /// Check the storage for requestShieldOn object
 browser.storage.sync.get(["requestShieldOn"]).then(function(result){

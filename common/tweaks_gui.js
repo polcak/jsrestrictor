@@ -61,21 +61,24 @@ let tweaks_gui = {
 			tlevUI.value = parseInt(tlev_id);
 			let updateLevelInfo = function (changed) {
 				let desired_tweak = parseInt(tlevUI.value);
-				let showStatus = (short, desc) => {
-					tlevUI.nextElementSibling.value = short;
-					status.innerHTML = `<strong>${desc}</strong>`;
+				let showStatus = (l) => {
+					tlevUI.nextElementSibling.value = l.short;
+					status.innerHTML = `<strong>${l.description}</strong>`;
+					if (l.description2) {
+						for (let line of l.description2) {
+							status.innerHTML += `<p>${line}</p>`;
+						}
+					}
 				}
 				if (no_default) {
-					let l = group.params[desired_tweak];
-					showStatus(l.short, l.description);
+					showStatus(group.params[desired_tweak]);
 				}
 				else {
 					if (desired_tweak !== 0) {
-						let l = group.params[desired_tweak - 1];
-						showStatus(l.short, l.description);
+						showStatus(group.params[desired_tweak - 1]);
 					}
 					else {
-						showStatus("Unprotected", "Unprotected");
+						showStatus({short:"Unprotected", description:"Unprotected"});
 					}
 				}
 				if (changed) {

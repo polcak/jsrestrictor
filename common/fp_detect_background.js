@@ -1,7 +1,7 @@
 /** \file
  * \brief Functions that help to automate process of building wrapping code for FPD module
  *
- *  \author Copyright (C) 2021  Marek Salon
+ *  \author Copyright (C) 2021-2022  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -111,7 +111,7 @@ var exceptionWrappers = ["CSSStyleDeclaration.prototype.fontFamily"];
 const FPD_DEF_SETTINGS = {
 	behavior: {
 		description: "Specify preffered behavior of the module.",
-		description2: ["NOTE: Blocking behavior may break some functionality on fingerprinting websites. It also removes browser data (cache, cookies, etc.) of these websites."],
+		description2: [],
 		label: "Behavior",
 		params: [
 			{
@@ -126,10 +126,25 @@ const FPD_DEF_SETTINGS = {
 			},
 			{
 				// 2
-				short: "Blocking",
-				description: "Allow the extension to interrupt network traffic whenever there is a high likelihood of fingerprinting to prevent possible fingerprint leakage.",
-				permissions: ["browsingData"]
+				short: "Limited Blocking",
+				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
+				description2: [
+					"• Interrupt network traffic for the page to prevent possible fingerprint leakage.", 
+					"• Clear <strong>localStorage</strong> and <strong>sessionStorage</strong> of the page to remove possibly cached fingerprint.",
+					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
+				]
 			},
+			{
+				// 3
+				short: "Full Blocking",
+				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
+				description2: [
+					"• Interrupt network traffic for the page to prevent possible fingerprint leakage.",
+					"• Clear <strong>all</strong> available storage mechanisms of the page where fingerprint may be cached. (Requires <strong>BrowsingData</strong> permission.)",
+					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
+				],
+				permissions: ["browsingData"]
+			}
 		]
 	}
 };
@@ -787,7 +802,7 @@ function isFpdWhitelisted(hostname) {
  */
  function notifyFingerprintBlocking(tabId) {
 	let msg;
-	if (fpdSettings.behavior == 2) {
+	if (fpdSettings.behavior > 1) {
 		msg = "Blocking all subsequent requests.";
 	}
 	if (fpdSettings.behavior == 1) {
@@ -909,6 +924,16 @@ browser.tabs.onRemoved.addListener(function (tabId) {
 });
 
 /**
+ * Event listener that listen for removal of optional permissions.
+ *
+ * \param callback Function that updates settings to values, which don't require removed permissions.
+ */
+browser.permissions.onRemoved.addListener((permissions) => {
+	correctSettingsForRemovedPermissions(permissions.permissions, fpdSettings, FPD_DEF_SETTINGS);
+	browser.storage.sync.set({"fpdSettings": fpdSettings});
+});
+
+/**
  * Event listener that listen for requests through webRequest API.
  *
  * \param cancelCallback Function that makes decision of blocking requests according to groups evaluation.
@@ -989,7 +1014,7 @@ function evaluateFingerprinting(tabId) {
 			}
 
 			// block request and clear cache data only if "blocking" behavior is set
-			if (fpdSettings.behavior == 2) {
+			if (fpdSettings.behavior > 1) {
 				
 				// clear local and session storage (using content script) for every frame in this tab (required?)
 				if (tabId >= 0) {
@@ -999,7 +1024,7 @@ function evaluateFingerprinting(tabId) {
 				}
 			
 				// clear all browsing data for origin of tab url to prevent fingerprint caching
-				if (tabUrl && browser.browsingData) {
+				if (tabUrl && fpdSettings.behavior > 2) {
 					try {
 						// "origins" key only supported by Chromium browsers
 						browser.browsingData.remove({
