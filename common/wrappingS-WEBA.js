@@ -56,25 +56,6 @@
  */
 (function() {
 	/**
-	 * \brief shifts number bits to pick new number
-	 * \param v number to shift
-	 */
-	function lfsr_next32(v) {
-		return ((v >>> 1) | (((v << 30) ^ (v << 29)) & (~(~0 << 31) << 30)));
-	};
-	/**
-	 * \brief seeded pseudo random sequence using lfsr_next32
-	 * \param seed Number used as seed at first call
-	 */
-	function pseudoRandomSequence(seed){
-		if (typeof this.v == 'undefined'){
-				this.v = seed;
-			}
-		const maxUInt32n = 4294967295;
-		this.v = lfsr_next32(this.v);
-		return ((this.v>>>0) / maxUInt32n) / 10;
-	};
-	/**
 	 * \brief Modifies audio data
 	 *
 	 * \param arr typed array with data - Uint8Array or Float32Array
@@ -83,29 +64,62 @@
 	 *	* (0) - multiplies values by fudge factor based on domain key
 	 *	* (1) - replace values by white noise based on domain key
 	 */
-	function audioFarble(arr){
-		if(args[0] == 0){
-			var fudge = BigInt(strToUint(domainHash,8))*1000n;
-			var maxUInt64 = 18446744073709551615n;
-			var fudge_factor = 0.99 + (Number(fudge / maxUInt64) / 100000);
-			for (var i = 0; i < arr.length; i++) {
-				arr[i] = arr[i]*fudge_factor;
-			}
+	function audioFarble(array){
+		// PRNG function needs to depend on the original audio, so that the same
+		// audio is farbled the same way but different audio is farbled differently
+		// See https://pagure.io/JShelter/webextension/issue/23
+		const MAXUINT32 = 4294967295;
+		let mash = new Mash();
+		for (value of array) {
+			mash.addNumber((value * MAXUINT32) | 0);
 		}
-		else if(args[0] == 1){
-		var seed = Number(strToUint(domainHash,4));
-			for (var i = 0; i < arr.length; i++) {
-				arr[i] = pseudoRandomSequence(seed);
-			}
+		var thisaudio_prng = alea(domainHash, "AudioFarbling", mash.finalize());
+
+		for (i in array) {
+			// Possible improvements:
+			// Copy a neighbor data (possibly with modifications
+			// Make bigger canges than xoring with 1
+			array[i] *= 0.99 + thisaudio_prng() / 100;
 		}
 	};
+	function audioFarbleInt(array) {
+		// PRNG function needs to depend on the original audio, so that the same
+		// audio is farbled the same way but different audio is farbled differently
+		// See https://pagure.io/JShelter/webextension/issue/23
+		let mash = new Mash();
+		for (value of array) {
+			mash.addNumber(value);
+		}
+		var thisaudio_prng = alea(domainHash, "AudioFarbling", mash.finalize());
+
+		for (i in array) {
+			if (thisaudio_prng() > 0.5) { // Modify data with probability of 0.5
+				// Possible improvements:
+				// Copy a neighbor data (possibly with modifications
+				// Make bigger canges than xoring with 1
+				array[i] ^= 1;
+			}
+		}
+	}
+	function whiteNoiseInt(array) {
+		noise_prng = alea(Date.now(), prng());
+		for (i in array) {
+			array[i] = (noise_prng() * 256) | 0;
+		}
+	}
+	function whiteNoiseFloat(array) {
+		noise_prng = alea(Date.now(), prng());
+		for (i in array) {
+			array[i] = (noise_prng() * 2) -1;
+		}
+	}
 	/** @var String audioFarbleBody.
 	 *
 	 * Contains functions for modyfing audio data according to chosen level of protection -
 	 * (0) - replace by white noise (range <0,0.1>) based on domain key
 	 * (1) - multiply array by fudge factor based on domain key
 	 */
-	var audioFarbleBody = strToUint + lfsr_next32 + pseudoRandomSequence + audioFarble;
+	var audioFarbleBody = strToUint + audioFarble;
 	var wrappers = [
 		{
 			parent_object: "AudioBuffer.prototype",
@@ -116,7 +130,7 @@
 					wrapped_name: "origGetChannelData",
 				}
 			],
-			helping_code: audioFarbleBody,
+			helping_code: "var behaviour = args[0];" + audioFarbleBody + whiteNoiseFloat,
 			original_function: "parent.AudioBuffer.prototype.getChannelData",
 			wrapping_function_args: "channel",
 			/** \fn fake AudioBuffer.prototype.getChannelData
@@ -127,7 +141,12 @@
 			 */
 			wrapping_function_body: `
 				var floatArr = origGetChannelData.call(this, channel);
-				audioFarble(floatArr);
+				if (behaviour == 0) {
+					audioFarble(floatArr);
+				}
+				else if (behaviour == 1) {
+					whiteNoiseFloat(destination);
+				}
 				return floatArr;
 			`,
 		},
@@ -140,7 +159,7 @@
 					wrapped_name: "origCopyFromChannel",
 				}
 			],
-			helping_code: audioFarbleBody,
+			helping_code: "var behaviour = args[0];" +  audioFarbleBody + whiteNoiseFloat,
 			original_function: "parent.AudioBuffer.prototype.copyFromChannel",
 			wrapping_function_args: "destination, channel, start",
 			/** \fn fake AudioBuffer.prototype.copyFromChannel
@@ -150,8 +169,13 @@
 			 * audioFarble with destination array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
-				origCopyFromChannel.call(this, destination, channel, start);
-				audioFarble(destination);
+				if (behaviour == 0) {
+					origCopyFromChannel.call(this, destination, channel, start);
+					audioFarble(destination);
+				}
+				else if (behaviour == 1) {
+					whiteNoiseFloat(destination);
+				}
 			`,
 		},
 		{
@@ -163,7 +187,7 @@
 					wrapped_name: "origGetByteTimeDomainData",
 				}
 			],
-			helping_code:audioFarbleBody,
+			helping_code: "var behaviour = args[0];" +  audioFarbleInt + whiteNoiseInt,
 			wrapping_function_args: "destination",
 			/** \fn fake AnalyserNode.prototype.getByteTimeDomainData
 			 * \brief Modifies destination array after calling original function.
@@ -172,8 +196,13 @@
 			 * audioFarble with destination array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
-				origGetByteTimeDomainData.call(this, destination);
-				audioFarble(destination);
+				if (behaviour == 0) {
+					origGetByteTimeDomainData.call(this, destination);
+					audioFarbleInt(destination);
+				}
+				else if (behaviour == 1) {
+					whiteNoiseInt(destination);
+				}
 			`,
 		},
 		{
@@ -185,7 +214,7 @@
 					wrapped_name: "origGetFloatTimeDomainData",
 				}
 			],
-			helping_code:audioFarbleBody,
+			helping_code: "var behaviour = args[0];" +  audioFarbleBody + whiteNoiseFloat,
 			wrapping_function_args: "destination",
 			/** \fn fake AnalyserNode.prototype.getFloatTimeDomainData
 			 * \brief Modifies destination array after calling original function.
@@ -194,8 +223,13 @@
 			 * audioFarble with destination array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
-				origGetFloatTimeDomainData.call(this, destination);
-				audioFarble(destination);
+				if (behaviour == 0) {
+					origGetFloatTimeDomainData.call(this, destination);
+					audioFarble(destination);
+				}
+				else if (behaviour == 1) {
+					whiteNoiseFloat(destination);
+				}
 			`,
 		},
 		{
@@ -207,7 +241,7 @@
 					wrapped_name: "origGetByteFrequencyData",
 				}
 			],
-			helping_code:audioFarbleBody,
+			helping_code: "var behaviour = args[0];" +  audioFarbleInt + whiteNoiseInt,
 			wrapping_function_args: "destination",
 			/** \fn fake AnalyserNode.prototype.getByteFrequencyData
 			 * \brief Modifies destination array after calling original function.
@@ -216,8 +250,13 @@
 			 * audioFarble with destination array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
-				origGetByteFrequencyData.call(this, destination);
-				audioFarble(destination);
+				if (behaviour == 0) {
+					origGetByteFrequencyData.call(this, destination);
+					audioFarbleInt(destination);
+				}
+				else if (behaviour == 1) {
+					whiteNoiseInt(destination);
+				}
 			`,
 		},
 		{
@@ -229,7 +268,7 @@
 					wrapped_name: "origGetFloatFrequencyData",
 				}
 			],
-			helping_code:audioFarbleBody,
+			helping_code: "var behaviour = args[0];" +  audioFarbleBody + whiteNoiseFloat,
 			wrapping_function_args: "destination",
 			/** \fn fake AnalyserNode.prototype.getFloatFrequencyData
 			 * \brief Modifies destination array after calling original function.
@@ -238,8 +277,13 @@
 			 * audioFarble with destination array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
-				origGetFloatFrequencyData.call(this, destination);
-				audioFarble(destination);
+				if (behaviour == 0) {
+					origGetFloatFrequencyData.call(this, destination);
+					audioFarble(destination);
+				}
+				else if (behaviour == 1) {
+					whiteNoiseFloat(destination);
+				}
 			`,
 		}
 	];
