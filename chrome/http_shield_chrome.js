@@ -294,10 +294,12 @@ function onResponseStartedListener(responseDetails)
  * \param host Host added to the black-list (blockedHosts).
  */
 function notifyBlockedHost(host) {
-	browser.notifications.create({
-		"type": "basic",
-		"iconUrl": browser.extension.getURL("img/icon-48.png"),
-		"title": "Network boundary shield blocked suspicious host!",
-		"message": `Host ${host} send suspicious request and therefore was added to black-list and all other HTTP request by this host will be blocked.\n\nIf you want to allow web requests from ${host}, please, go to the JS Restrictor settings and add an exception.`
-	});
+	if (nbsSettings && nbsSettings.notifications) {
+		browser.notifications.create({
+			"type": "basic",
+			"iconUrl": browser.extension.getURL("img/icon-48.png"),
+			"title": "Network boundary shield blocked suspicious host!",
+			"message": `Host ${host} send suspicious request and therefore was added to black-list and all other HTTP request by this host will be blocked.\n\nIf you want to allow web requests from ${host}, please, go to the JS Restrictor settings and add an exception.`
+		});
+	}
 }

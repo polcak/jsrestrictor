@@ -83,19 +83,19 @@ var doNotBlockHosts = new Object();
 */
 const NBS_DEF_SETTINGS = {
 	notifications: {
-		description: "Turn on/off notifications about suspicious requests being blocked.",
-		description2: ["NOTE: Notifications about blocked hosts remain active either way."],
+		description: "Turn on/off notifications about suspicious requests or hosts being blocked.",
+		description2: [],
 		label: "Notifications",
 		params: [
 			{
 				// 0
 				short: "Off",
-				description: "Request blocking notifications turned off."
+				description: "Blocking notifications turned off."
 			},
 			{
 				// 1
 				short: "On",
-				description: "Request blocking notifications turned on."
+				description: "Blocking notifications turned on."
 			}
 		]
 	}
