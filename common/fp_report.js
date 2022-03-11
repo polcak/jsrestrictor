@@ -21,9 +21,9 @@
 //
 
 /**
- * Event listener that listen for messages from background script to obtain data about FP evaluation.
+ * Event listener that listens for messages from background script to obtain data about FP evaluation.
  *
- * \param callback Function that initialize FPD report creation.
+ * \param callback Function that initializes FPD report creation from received data.
  */
 browser.runtime.onMessage.addListener(function (message) {
     if (message.purpose == "report-generate") {
@@ -32,15 +32,27 @@ browser.runtime.onMessage.addListener(function (message) {
 })
 
 /**
+ * Event listener that listens for a load of FPD report page. If the page is reloaded, load cached data.
+ *
+ * \param callback Function that initializes FPD report creation from cached data.
+ */
+window.addEventListener('load', () => {
+    if (window.name) {
+        createReport(JSON.parse(window.name));
+    }
+});
+
+/**
  * The function that populates FPD report page with data from the latest evaluation and hooks up listeners.
  *
  * \param data Information about latest fingerprinting evaluation consisting of all essential FPD objects.
  */
 function createReport(data) {
+    window.name = JSON.stringify(data);
     var {tabObj, groups, latestEvals, fpDb, exceptionWrappers} = data;
 	var report = document.getElementById("fpd-report");
-    if (!tabObj || !groups || !groups.root || !groups.all || !fpDb ||!latestEvals) {
-        report.innerHTML = "Error: Missing information, cannot create report!"
+    if (!tabObj || !groups || !groups.root || !groups.all || !fpDb || !latestEvals) {
+        report.innerHTML = "ERROR: Missing data, cannot create report! Try to reload the page and reopen the report."
         return;
     }
 
