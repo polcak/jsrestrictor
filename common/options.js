@@ -279,10 +279,20 @@ async function load_module_settings(prefix) {
 	let settings = await browser.runtime.sendMessage({purpose: prefix + "-get-settings"});
 	if (settings) {
 		let tweaksBusiness = Object.create(tweaks_gui);
+		tweaksBusiness.previousValues = new Object();
 		tweaksBusiness.tweak_changed = function(key, val) {
 			let permissions = settings.def[key].params[val].permissions || [];
-			browser.permissions.request({permissions: permissions});
-			browser.runtime.sendMessage({purpose: prefix + "-set-settings", id: key, value: val});
+			browser.permissions.request({permissions: permissions}).then((granted) => {
+				if (granted) {
+					tweaksBusiness.previousValues[key] = val;
+				}
+				else {
+					let inputElement = document.querySelector(`#${prefix}-${key}-setting input`);
+					inputElement.value = tweaksBusiness.previousValues[key];
+					inputElement.dispatchEvent(new Event("input"));
+				}
+				browser.runtime.sendMessage({purpose: prefix + "-set-settings", id: key, value: tweaksBusiness.previousValues[key]});
+			});
 		}
 
 		let targetElement = document.getElementById(prefix + "-settings");
@@ -291,6 +301,7 @@ async function load_module_settings(prefix) {
 			<fieldset>
 				<div id="${prefix}-${key}-setting" class="tweakgrid"></div>
 			</fieldset>`);
+			tweaksBusiness.previousValues[key] = settings.val[key];
 			tweaksBusiness.add_tweak_row(fragment.firstElementChild.firstElementChild, {}, key, settings.val[key], setting.label, setting, true);
 			targetElement.appendChild(fragment);
 		}
