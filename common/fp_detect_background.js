@@ -711,6 +711,20 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 					fpdWhitelist = result.fpdWhitelist;
 				});
 				break;
+			case "fpd-get-report-data": {
+				// get current FPD level for evaluated tab
+				if (record.tabId) {
+					var level = getCurrentLevelJSON(availableTabs[record.tabId].url)[0].level_id;
+					level = fp_levels.groups[level] ? level : "default";
+					return Promise.resolve({
+						tabObj: availableTabs[record.tabId],
+						groups: {root: fp_levels.groups[level].name, all: fpGroups[level]},
+						fpDb: fpDb[record.tabId],
+						latestEvals: latestEvals[record.tabId],
+						exceptionWrappers: exceptionWrappers
+					});
+				}
+			}
 			case "fpd-create-report":
 				// create FPD report for the tab
 				if (record.tabId) {
@@ -842,29 +856,10 @@ browser.notifications.onClicked.addListener((notificationId) => {
 function generateFpdReport(tabId) {
 	// open popup window containing FPD report
 	browser.windows.create({
-		url: "/fp_report.html",
+		url: "/fp_report.html?id=" + tabId,
 		type: "popup",
 		height: 600,
 		width: 800
-	}).then((info) => {
-		// get current FPD level for evaluated tab
-		var level = getCurrentLevelJSON(availableTabs[tabId].url)[0].level_id;
-		level = fp_levels.groups[level] ? level : "default";
-		
-		var tab = info.tabs[0];
-		if (tab) {
-			// message delay to make a space for report page initialization
-			setTimeout(() => {
-				browser.tabs.sendMessage(tab.id, {
-					purpose: "report-generate",
-					tabObj: availableTabs[tabId],
-					groups: {root: fp_levels.groups[level].name, all: fpGroups[level]},
-					fpDb: fpDb[tabId],
-					latestEvals: latestEvals[tabId],
-					exceptionWrappers: exceptionWrappers
-				});
-			}, 200)
-		}
 	});
 }
 

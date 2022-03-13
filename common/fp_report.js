@@ -21,25 +21,17 @@
 //
 
 /**
- * Event listener that listens for messages from background script to obtain data about FP evaluation.
+ * Event listener that listens for a load of FPD report page. If the page is loaded, fetch FPD data from background.
  *
- * \param callback Function that initializes FPD report creation from received data.
- */
-browser.runtime.onMessage.addListener(function (message) {
-    if (message.purpose == "report-generate") {
-        createReport(message);
-    }
-})
-
-/**
- * Event listener that listens for a load of FPD report page. If the page is reloaded, load cached data.
- *
- * \param callback Function that initializes FPD report creation from cached data.
+ * \param callback Function that initializes FPD report creation from fetched data.
  */
 window.addEventListener('load', () => {
-    if (window.name) {
-        createReport(JSON.parse(window.name));
-    }
+    browser.runtime.sendMessage({
+        purpose: "fpd-get-report-data", 
+        tabId: new URLSearchParams(window.location.search).get("id")
+    }).then((result) => {
+        createReport(result);
+    });
 });
 
 /**
@@ -48,7 +40,6 @@ window.addEventListener('load', () => {
  * \param data Information about latest fingerprinting evaluation consisting of all essential FPD objects.
  */
 function createReport(data) {
-    window.name = JSON.stringify(data);
     var {tabObj, groups, latestEvals, fpDb, exceptionWrappers} = data;
 	var report = document.getElementById("fpd-report");
     if (!tabObj || !groups || !groups.root || !groups.all || !fpDb || !latestEvals) {
