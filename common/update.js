@@ -354,7 +354,7 @@ function installUpdate() {
 		if (item.version < 6.2) {
 			if (item.fpDetectionOn) {
 				item.fpdSettings = {
-					behavior: 2
+					behavior: 3
 				};
 			}
 			else {
