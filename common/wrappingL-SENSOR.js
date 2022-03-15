@@ -50,6 +50,9 @@ var sensorapi_prng_functions = `
 
   // PRNG based on Mulberry32 algorithm
   // See: https://gist.github.com/tommyettinger/46a874533244883189143505d203312c
+	// To the extent possible under law, the author has dedicated all copyright
+	// and related and neighboring rights to this software to the public domain
+	// worldwide.
   function sen_prng() {
     // expects "seed" variable to be a 32-bit value
     var t = sen_seed += 0x6D2B79F5;
