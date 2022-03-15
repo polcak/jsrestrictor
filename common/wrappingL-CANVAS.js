@@ -54,7 +54,7 @@ function farbleCanvasDataBrave(rowIterator, width) {
 				// Do not modify alpha
 				continue;
 			}
-			if (thiscanvas_prng() > 0.5) { // Modify data with probability of 0.5
+			if (thiscanvas_prng.get_bits(1)) { // Modify data with probability of 0.5
 				// Possible improvements:
 				// Copy a neighbor pixel (possibly with modifications
 				// Make bigger canges than xoring with 1
