@@ -68,14 +68,20 @@ function Alea(...args) {
 	}
 	this.seed = mash.n | 0; // Create a 32-bit UInt
 	mash = null;
+	this.xoring = [];
+	for (let i = 0; i < 64; i += 8) {
+		this.xoring.push(parseInt(domainHash.slice(i, i+8), 16) >>> 0); // Store 32-bit unsigned integers
+	}
 }
 Alea.prototype = {
+	current: 0,
 	next: function() {
 		this.seed += 0x6D2B79F5;
 		var t = this.seed;
+		this.current = (this.current + t) & 7;
 		t = Math.imul(t ^ t >>> 15, t | 1);
 		t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-		return ((t ^ t >>> 14) >>> 0);
+		return (((t ^ t >>> 14) ^ this.xoring[this.current]) >>> 0); // '>>> 0' casts to unsigned
 	},
 	normalized: function() {
 		return this.next() / 4294967296;
