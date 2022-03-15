@@ -65,6 +65,7 @@
 	 *	* (1) - replace values by white noise based on domain key
 	 */
 	function audioFarble(array){
+		console.debug(); /* Intentionally one the same line */let start_time = Date.now();
 		// PRNG function needs to depend on the original audio, so that the same
 		// audio is farbled the same way but different audio is farbled differently
 		// See https://pagure.io/JShelter/webextension/issue/23
@@ -73,7 +74,9 @@
 		for (value of array) {
 			mash.addNumber((value * MAXUINT32) | 0);
 		}
+		console.debug("Timing audioFarble seed init", Date.now() - start_time);
 		var thisaudio_prng = alea(domainHash, "AudioFarbling", mash.finalize());
+		console.debug("Timing audioFarble prng init", Date.now() - start_time);
 
 		for (i in array) {
 			// Possible improvements:
@@ -81,8 +84,10 @@
 			// Make bigger canges than xoring with 1
 			array[i] *= 0.99 + thisaudio_prng() / 100;
 		}
+		console.debug("Timing audioFarble farbled", Date.now() - start_time);
 	};
 	function audioFarbleInt(array) {
+		console.debug(); /* Intentionally one the same line */let start_time = Date.now();
 		// PRNG function needs to depend on the original audio, so that the same
 		// audio is farbled the same way but different audio is farbled differently
 		// See https://pagure.io/JShelter/webextension/issue/23
@@ -90,7 +95,9 @@
 		for (value of array) {
 			mash.addNumber(value);
 		}
+		console.debug("Timing audioFarbleInt seed init", Date.now() - start_time);
 		var thisaudio_prng = alea(domainHash, "AudioFarbling", mash.finalize());
+		console.debug("Timing audioFarbleInt prng init", Date.now() - start_time);
 
 		for (i in array) {
 			if (thisaudio_prng() > 0.5) { // Modify data with probability of 0.5
@@ -100,6 +107,7 @@
 				array[i] ^= 1;
 			}
 		}
+		console.debug("Timing audioFarbleInt farbled", Date.now() - start_time);
 	}
 	function whiteNoiseInt(array) {
 		noise_prng = alea(Date.now(), prng());
