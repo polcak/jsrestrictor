@@ -77,7 +77,12 @@ var doNotBlockHosts = new Object();
 /**
  * Associtive array of settings supported by this module.
  */
- var nbsSettings = {};
+var nbsSettings = {};
+
+/**
+ * Object holding active notifications of this module.
+ */
+var nbsNotifications = {};
 
 /**
 * Definition of settings supported by this module.
@@ -509,23 +514,71 @@ function isNbsWhitelisted(hostname)
 }
 
 /**
- * Creates and presents notification to the user.
- * Works with webExtensions notification API.
- * Creates notification about blocked request.
+ * Log data about NBS blocking in context of tabs.
+ * This data will be used for notification creation.
  *
  * \param origin Origin of the request.
  * \param target Target of the request.
- * \param resource Type of the resource.
+ * \param tabId Tab ID of blocked request.
  */
-function notifyBlockedRequest(origin, target, resource) {
+function notifyBlockedRequest(origin, target, tabId) {
 	if (nbsSettings.notifications) {
-		browser.notifications.create({
+		nbsNotifications[tabId] = nbsNotifications[tabId] || {};
+		nbsNotifications[tabId].records = nbsNotifications[tabId].records || {};
+		nbsNotifications[tabId].records[`${origin},${target}`] = (nbsNotifications[tabId].records[`${origin},${target}`] || 0) + 1;
+		nbsNotifications[tabId].total = (nbsNotifications[tabId].total || 0) + 1;
+	}
+}
+
+// Listen for tab update to reinitialize cumulative notifications
+browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+	if (changeInfo.status == "loading") {
+		if (nbsNotifications[tabId] && nbsNotifications[tabId].timerId) {
+			clearTimeout(nbsNotifications[tabId].timerId);
+		}
+		delete nbsNotifications[tabId];
+		createCumulativeNotification(tabId);
+	}
+});
+
+// Listen for tab remove to clear notifications data of the tab
+browser.tabs.onRemoved.addListener(function (tabId) {
+	if (nbsNotifications[tabId] && nbsNotifications[tabId].timerId) {
+		clearTimeout(nbsNotifications[tabId].timerId);
+	}
+	delete nbsNotifications[tabId];
+});
+
+/**
+ * Creates and presents notification about blocked requests.
+ * Function is called each second up to the point when notification is shown.
+ *
+ * \param tabId Integer number representing ID of browser tab.
+ */
+function createCumulativeNotification(tabId) {
+	nbsNotifications[tabId] = nbsNotifications[tabId] || {};
+	if (nbsNotifications[tabId].last && (nbsNotifications[tabId].last == nbsNotifications[tabId].total || nbsNotifications[tabId].total == 100)) {
+		let host = wwwRemove(new URL(availableTabs[tabId].url).hostname);
+		let message = `Blocked ${nbsNotifications[tabId].total == 100 ? "more than 100" : nbsNotifications[tabId].total} attempts from ${host} to access local network.`;
+		let records = Object.keys(nbsNotifications[tabId].records);
+		if (records.length == 1) {
+			let [origin, target] = records[0].split(",");
+			let count = nbsNotifications[tabId].records[records[0]];
+			message = `Blocked ${count} request${count == 1 ? "" : "s"} from ${origin} to ${target}.`;
+		}
+		browser.notifications.create("nbs-" + tabId, {
 			"type": "basic",
 			"iconUrl": browser.runtime.getURL("img/icon-48.png"),
-			"title": "Network boundary shield blocked suspicious request!",
-			"message": `Request from ${origin} to ${target} blocked.\n\nMake sure that you are on a benign page. If you want to allow web requests from ${origin}, please, go to the JS Restrictor settings and add an exception.`
+			"title": "Network boundary shield blocked suspicious requests!",
+			"message": message
 		});
+		setTimeout(() => {
+			browser.notifications.clear("nbs-" + tabId);
+		}, 6000);
+		return;
 	}
+	nbsNotifications[tabId].last = nbsNotifications[tabId].total;
+	nbsNotifications[tabId].timerId = setTimeout(createCumulativeNotification, 1000, tabId);
 }
 
 /**

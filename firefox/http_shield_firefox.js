@@ -176,7 +176,7 @@ async function beforeSendHeadersListener(requestDetail)
 	//Blocking direction Public -> Private
 	if (!isSourcePrivate && isDestinationPrivate)
 	{
-		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
+		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.tabId);
 		return {cancel:true}
 	}
 	else //Permitting others
