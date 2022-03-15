@@ -528,57 +528,79 @@ function notifyBlockedRequest(origin, target, tabId) {
 		nbsNotifications[tabId].records[`${origin},${target}`] = (nbsNotifications[tabId].records[`${origin},${target}`] || 0) + 1;
 		nbsNotifications[tabId].total = (nbsNotifications[tabId].total || 0) + 1;
 	}
+	// start notifying a user when the first blocked request occurs
+	if (nbsNotifications[tabId].total == 1) {
+		setTimeout(showNbsNotification, 2000, tabId);
+		createCumulativeNotification(tabId);
+	}
 }
 
-// Listen for tab update to reinitialize cumulative notifications
-browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+// Listen for tab update to clear notifications data of the tab
+browser.tabs.onUpdated.addListener(function (tabId, changeInfo) {
 	if (changeInfo.status == "loading") {
-		if (nbsNotifications[tabId] && nbsNotifications[tabId].timerId) {
-			clearTimeout(nbsNotifications[tabId].timerId);
-		}
-		delete nbsNotifications[tabId];
-		createCumulativeNotification(tabId);
+		clearNbsNotification(tabId);
 	}
 });
 
 // Listen for tab remove to clear notifications data of the tab
-browser.tabs.onRemoved.addListener(function (tabId) {
-	if (nbsNotifications[tabId] && nbsNotifications[tabId].timerId) {
-		clearTimeout(nbsNotifications[tabId].timerId);
-	}
-	delete nbsNotifications[tabId];
-});
+browser.tabs.onRemoved.addListener(clearNbsNotification);
 
 /**
- * Creates and presents notification about blocked requests.
- * Function is called each second up to the point when notification is shown.
+ * Clear notification data for the tab.
+ * 
+ * \param tabId Tab ID of notification.
+ */
+function clearNbsNotification(tabId) {
+	if (nbsNotifications[tabId]) {
+		if (nbsNotifications[tabId].timerId) {
+			clearTimeout(nbsNotifications[tabId].timerId);
+		}
+		delete nbsNotifications[tabId];
+	}
+}
+
+/**
+ * Create second notification containing a summary of accumulated data.
+ * This notification is shown after the initial one if a page continues to access local network.
  *
  * \param tabId Integer number representing ID of browser tab.
  */
-function createCumulativeNotification(tabId) {
-	nbsNotifications[tabId] = nbsNotifications[tabId] || {};
-	if (nbsNotifications[tabId].last && (nbsNotifications[tabId].last == nbsNotifications[tabId].total || nbsNotifications[tabId].total == 100)) {
-		let host = wwwRemove(new URL(availableTabs[tabId].url).hostname);
-		let message = `Blocked ${nbsNotifications[tabId].total == 100 ? "more than 100" : nbsNotifications[tabId].total} attempts from ${host} to access local network.`;
-		let records = Object.keys(nbsNotifications[tabId].records);
-		if (records.length == 1) {
-			let [origin, target] = records[0].split(",");
-			let count = nbsNotifications[tabId].records[records[0]];
-			message = `Blocked ${count} request${count == 1 ? "" : "s"} from ${origin} to ${target}.`;
+async function createCumulativeNotification(tabId) {
+	if (nbsNotifications[tabId].last == nbsNotifications[tabId].total) {
+		let active = await browser.notifications.getAll();
+		if (!Object.keys(active).includes("nbs-" + tabId)) {
+			showNbsNotification(tabId);
 		}
-		browser.notifications.create("nbs-" + tabId, {
-			"type": "basic",
-			"iconUrl": browser.runtime.getURL("img/icon-48.png"),
-			"title": "Network boundary shield blocked suspicious requests!",
-			"message": message
-		});
-		setTimeout(() => {
-			browser.notifications.clear("nbs-" + tabId);
-		}, 6000);
 		return;
 	}
 	nbsNotifications[tabId].last = nbsNotifications[tabId].total;
-	nbsNotifications[tabId].timerId = setTimeout(createCumulativeNotification, 1000, tabId);
+	nbsNotifications[tabId].timerId = setTimeout(createCumulativeNotification, 4000, tabId);
+}
+
+/**
+ * Creates and presents notification about blocked requests.
+ *
+ * \param tabId Integer number representing ID of browser tab.
+ */
+function showNbsNotification(tabId) {
+	nbsNotifications[tabId].last = nbsNotifications[tabId].total;
+	let host = wwwRemove(new URL(availableTabs[tabId].url).hostname);
+	let message = `Blocked ${nbsNotifications[tabId].total} attempts from ${host} to access local network.`;
+	let records = Object.keys(nbsNotifications[tabId].records);
+	if (records.length == 1) {
+		let [origin, target] = records[0].split(",");
+		let count = nbsNotifications[tabId].records[records[0]];
+		message = `Blocked ${count} request${count == 1 ? "" : "s"} from ${origin} to ${target}.`;
+	}
+	browser.notifications.create("nbs-" + tabId, {
+		"type": "basic",
+		"iconUrl": browser.runtime.getURL("img/icon-48.png"),
+		"title": "Network boundary shield blocked suspicious requests!",
+		"message": message
+	});
+	setTimeout(() => {
+		browser.notifications.clear("nbs-" + tabId);
+	}, 6000);
 }
 
 /**
