@@ -75,6 +75,8 @@ function Alea(...args) {
 }
 Alea.prototype = {
 	current: 0,
+	stored_random: 0,
+	random_bits: 0,
 	next: function() {
 		this.seed += 0x6D2B79F5;
 		var t = this.seed;
@@ -85,6 +87,25 @@ Alea.prototype = {
 	},
 	normalized: function() {
 		return this.next() / 4294967296;
+	},
+	get_bits: function(count) {// 0 < count <= 32
+		if (count === 32) {
+			return this.next();
+		}
+		else if (count <= this.random_bits) {
+			let mask = ((1 << count) >>> 0) - 1;
+			let ret = this.stored_random & mask;
+			this.stored_random = this.stored_random >>> count;
+			this.random_bits -= count;
+			return ret;
+		}
+		else {
+			let needed = count - this.random_bits;
+			let ret = this.stored_random << needed;
+			this.random_bits = 32;
+			this.stored_random = this.next();
+			return ret | this.get_bits(needed);
+		}
 	}
 }
 
@@ -95,7 +116,7 @@ function impl(...seed) {
 	prng.fract53 = function() {
 		return prng() + (prng() * 0x200000 | 0) * 1.1102230246251565e-16; // 2^-53
 	};
-	prng.quick = prng;
+	prng.get_bits = xg.get_bits.bind(xg);
 	return prng;
 }
 
