@@ -47,6 +47,7 @@ function configureInjection({currentLevel, code, wrappers, domainHash, sessionHa
 	}
 	var aleaCode = `(() => {
 	var domainHash =  ${JSON.stringify(domainHash)};
+	${crc16}
 	${alea}
 	var prng = alea(domainHash); // Do not use this in wrappers, create your own prng to generate repeatable sequences
 	${code}

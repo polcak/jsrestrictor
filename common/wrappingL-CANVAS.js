@@ -41,13 +41,11 @@ function farbleCanvasDataBrave(rowIterator, width) {
 	// PRNG function needs to depend on the original canvas, so that the same
 	// image is farbled the same way but different images are farbled differently
 	// See https://pagure.io/JShelter/webextension/issue/23
-	let mash = new Mash();
+	let crc = new CRC16();
 	for (row of rowIterator()) {
-		for (pchan of row) {
-			mash.addNumber(pchan);
-		}
+		crc.next(row);
 	}
-	var thiscanvas_prng = alea(domainHash, "CanvasFarbling", mash.finalize());
+	var thiscanvas_prng = alea(domainHash, "CanvasFarbling", crc.crc);
 	var data_count = BigInt(BigInt(width) * 4n);
 
 	for (row of rowIterator()) {
