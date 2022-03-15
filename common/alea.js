@@ -1,12 +1,16 @@
 /** \file
-* \brief A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010
+* \brief Random number generator
 *
-* This code is available at
+* A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010 and 
+* Tommy Ettinger (tommy.ettinger@gmail.com)
+*
+* Original code is available at
 * http://baagoe.com/en/RandomMusings/javascript/
 * https://github.com/nquinlan/better-random-numbers-for-javascript-mirror
+* https://gist.github.com/tommyettinger/46a874533244883189143505d203312c
 *
-* SPDX-License-Identifier: MIT
-* \license Original work is under MIT license
+* SPDX-License-Identifier: GPL3
+* \license Original work is under MIT license and in public domain, the derived code is under GPL3
 */
 //
 // Copyright (C) 2010 by Johannes Baagøe <baagoe@baagoe.org>
@@ -57,42 +61,31 @@ function Alea(...args) {
 	var mash = new Mash();
 
 	// Apply the seeding algorithm from Baagoe.
-	this.c = 1;
-	this.s0 = mash.addData(' ').finalize();
-	this.s1 = mash.addData(' ').finalize();
-	this.s2 = mash.addData(' ').finalize();
+	mash.addData(' ');
 
 	for (var i = 0; i < args.length; i++) {
-		this.s0 -= mash.addData(args[i]).finalize();
-		if (this.s0 < 0) {
-			this.s0 += 1;
-		}
-		this.s1 -= mash.addData(args[i]).finalize();
-		if (this.s1 < 0) {
-			this.s1 += 1;
-		}
-		this.s2 -= mash.addData(args[i]).finalize();
-		if (this.s2 < 0) {
-			this.s2 += 1;
-		}
+		mash.addData(args[i]);
 	}
+	this.seed = mash.n | 0; // Create a 32-bit UInt
 	mash = null;
 }
 Alea.prototype = {
 	next: function() {
-		var t = 2091639 * this.s0 + this.c * 2.3283064365386963e-10; // 2^-32
-		this.s0 = this.s1;
-		this.s1 = this.s2;
-		return this.s2 = t - (this.c = t | 0);
+		this.seed += 0x6D2B79F5;
+		var t = this.seed;
+		t = Math.imul(t ^ t >>> 15, t | 1);
+		t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+		return ((t ^ t >>> 14) >>> 0);
+	},
+	normalized: function() {
+		return this.next() / 4294967296;
 	}
 }
 
 function impl(...seed) {
 	var xg = new Alea(...seed);
-	var prng = xg.next.bind(xg);
-	prng.uint32 = function() {
-		return (xg.next() * 0x100000000) | 0;
-	}
+	var prng = xg.normalized.bind(xg);
+	prng.uint32 = xg.next.bind(xg);
 	prng.fract53 = function() {
 		return prng() + (prng() * 0x200000 | 0) * 1.1102230246251565e-16; // 2^-53
 	};
