@@ -133,10 +133,7 @@
 				original_name: "CanvasRenderingContext2D.prototype.getImageData",
 				wrapped_name: "origGetImageData",
 			}],
-			helping_code: helping_code + strToUint + `
-				function lfsr_next(v) {
-					return BigInt.asUintN(64, ((v >> 1n) | (((v << 62n) ^ (v << 61n)) & (~(~0n << 63n) << 62n))));
-				}
+			helping_code: helping_code + strToUint + farbleCanvasDataBrave.toString() + `
 				var farble = function(context, fake) {
 					if(approach === 1){
 						fake.fillStyle = "white";
@@ -147,23 +144,19 @@
 						const width = context.canvas.width;
 						const height = context.canvas.height;
 						var imageData = origGetImageData.call(context, 0, 0, width, height);
-						fake.putImageData(imageData, 0, 0);
-						var fakeData = origGetImageData.call(fake, 0, 0, width, height);
-						var pixel_count = BigInt(width * height);
-						var channel = domainHash[0].charCodeAt(0) % 3;
-						var canvas_key = domainHash;
-						var v = BigInt(strToUint(domainHash,8));
-
-						for (let i = 0; i < 32; i++) {
-							var bit = canvas_key[i];
-							for (let j = 8; j >= 0; j--) {
-								var pixel_index = (4 * Number(v % pixel_count) + channel);
-								fakeData.data[pixel_index] = fakeData.data[pixel_index] ^ (bit & 0x1);
-								bit = bit >> 1;
-								v = lfsr_next(v);
+						const BYTES_PER_ROW = width * 4;
+						farbleCanvasDataBrave(function*() {
+							let data = imageData.data;
+							let offset = 0;
+							while (offset < data.length) {
+								yield imageData.data.subarray(offset, offset + BYTES_PER_ROW);
+								offset += BYTES_PER_ROW;
 							}
-						}
-						fake.putImageData(fakeData, 0, 0);
+						}, width);
+						// Do not modify the original canvas, always modify the fake canvas.
+						// Always farble the whole image so that the farbled data do not depend
+						// on the page-specified extraction data rectangle.
+						fake.putImageData(imageData, 0, 0);
 					}
 				};`,
 			wrapping_code_function_name: "wrapping",

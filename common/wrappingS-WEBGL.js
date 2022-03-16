@@ -74,8 +74,11 @@
 	function farbleGLint(number, pname) {
 		var ret = 0;
 		if(number > 0){
-      var temp = (Number("0x"+domainHash.slice(29,domainHash.length-28))^pname)%3;
-			ret = number - (temp == 1 ? 1:0);
+			let mash = new Mash();
+			mash.addNumber(STATIC_RANDOM_VALUE);
+			mash.addNumber(number);
+			mash.addNumber(pname);
+			ret = Math.floor(mash.finalize() * number);
 		}
 		return ret;
 	}
@@ -93,37 +96,40 @@
 		if(args[0]===1) {
 			var ret;
 			switch (pname) {
-				case 0x1F02:
-				case 0x1F01:
-				case 0x1F00:
-				case 0x8B8C:
+				case 0x1F02: // VERSION: WebGL 1.0/ WebGL 2.0
+				case 0x1F01: // RENDERER
+				case 0x9246: // UNMASKED_RENDERER_WEBGL
+				case 0x1F00: // VENDOR
+				case 0x9245: // UNMASKED_VENDOR_WEBGL
+				case 0x8B8C: // SHADING_LANGUAGE_VERSION
 					ret = "";
 					break;
-				case 0x8F36:
-				case 0x8F37:
-				case 0x8CA6:
+				case 0x8F36: // COPY_READ_BUFFER
+				case 0x8F37: // COPY_WRITE_BUFFER
+				case 0x8CA6: // DRAW_FRAMEBUFFER_BINDING
 					ret = null;
 					break;
-				case 0x8A2B:
-				case 0x8B4A:
-				case 0x9122:
-				case 0x8B4B:
-				case 0x8C8A:
-				case 0x8B49:
-				case 0x8A2D:
-				case 0x9125:
-				case 0x8A2F:
-				case 0x8A2E:
-				case 0x8A31:
-				case 0x8A33:
-				case 0x8A30:
+				case 0x8B4A: // MAX_VERTEX_UNIFORM_COMPONENTS
+				case 0x8A2B: // MAX_VERTEX_UNIFORM_BLOCKS
+				case 0x9122: // MAX_VERTEX_OUTPUT_COMPONENTS
+				case 0x8B4B: // MAX_VARYING_COMPONENTS
+				case 0x8C8A: // MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS
+				case 0x8B49: // MAX_FRAGMENT_UNIFORM_COMPONENTS
+				case 0x8A2D: // MAX_FRAGMENT_UNIFORM_BLOCKS
+				case 0x9125: // MAX_FRAGMENT_INPUT_COMPONENTS
+				case 0x8A2F: // MAX_UNIFORM_BUFFER_BINDINGS
+				case 0x8A2E: // MAX_COMBINED_UNIFORM_BLOCKS
+				case 0x8A31: // MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS
+				case 0x8A33: // MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS
+				case 0x8A30: // MAX_UNIFORM_BLOCK_SIZE
+				case 0x8869: // MAX_VERTEX_ATTRIBS
+				case 0x8DFB: // MAX_VERTEX_UNIFORM_VECTORS
+				case 0x8B4C: // MAX_VERTEX_TEXTURE_IMAGE_UNITS
+				case 0x0D33: // MAX_TEXTURE_SIZE
+				case 0x851C: // MAX_CUBE_MAP_TEXTURE_SIZE
+				case 0x8073: // MAX_3D_TEXTURE_SIZE
+				case 0x88FF: // MAX_ARRAY_TEXTURE_LAYERS
 					ret = 0;
-					break;
-				case 0x9245:
-					ret = vendor;
-					break;
-				case 0x9246:
-					ret = renderer;
 					break;
 				default:
 					ret = origGetParameter.call(ctx, pname);
@@ -133,33 +139,39 @@
 		else if(args[0]===0) {
 			var ret;
 			switch (pname) {
-				case 0x8B4A:
-				case 0x8A2B:
-				case 0x9122:
-				case 0x8B4B:
-				case 0x8C8A:
-				case 0x8B49:
-				case 0x8A2D:
-				case 0x9125:
-				case 0x8A2F:
-				case 0x8A2E:
-				case 0x8A31:
-				case 0x8A33:
-				case 0x8869:
-				case 0x8DFB:
-				case 0x8B4C:
-				case 0x0D33:
-				case 0x851C:
-				case 0x8073:
-				case 0x88FF:
+				case 0x8B4A: // MAX_VERTEX_UNIFORM_COMPONENTS
+				case 0x8A2B: // MAX_VERTEX_UNIFORM_BLOCKS
+				case 0x9122: // MAX_VERTEX_OUTPUT_COMPONENTS
+				case 0x8B4B: // MAX_VARYING_COMPONENTS
+				case 0x8C8A: // MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS
+				case 0x8B49: // MAX_FRAGMENT_UNIFORM_COMPONENTS
+				case 0x8A2D: // MAX_FRAGMENT_UNIFORM_BLOCKS
+				case 0x9125: // MAX_FRAGMENT_INPUT_COMPONENTS
+				case 0x8A2F: // MAX_UNIFORM_BUFFER_BINDINGS
+				case 0x8A2E: // MAX_COMBINED_UNIFORM_BLOCKS
+				case 0x8A31: // MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS
+				case 0x8A33: // MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS
+				case 0x8869: // MAX_VERTEX_ATTRIBS
+				case 0x8DFB: // MAX_VERTEX_UNIFORM_VECTORS
+				case 0x8B4C: // MAX_VERTEX_TEXTURE_IMAGE_UNITS
+				case 0x0D33: // MAX_TEXTURE_SIZE
+				case 0x851C: // MAX_CUBE_MAP_TEXTURE_SIZE
+				case 0x8073: // MAX_3D_TEXTURE_SIZE
+				case 0x88FF: // MAX_ARRAY_TEXTURE_LAYERS
 					var result = origGetParameter.call(ctx, pname);
 					ret = farbleGLint(result, pname);
 					break;
-				case 0x9245:
-					ret = vendor;
+				case 0x9245: // UNMASKED_VENDOR_WEBGL
+					ret = unmasked_vendor;
 					break;
-				case 0x9246:
+				case 0x9246: // UNMASKED_RENDERER_WEBGL
+					ret = unmasked_renderer;
+					break;
+				case 0x1F01: // RENDERER
 					ret = renderer;
+					break;
+				case 0x1F00: // VENDOR
+					ret = vendor;
 					break;
 				default:
 					ret = origGetParameter.call(ctx, pname);
@@ -167,6 +179,15 @@
 			return ret;
 		}
 	};
+	let farbleGetParameterString = `
+				var webgl_prng = alea(domainHash, "WebGL wrappers");
+				var unmasked_vendor = randomString(8, 0, webgl_prng);
+				var vendor = randomString(8, 0, webgl_prng);
+				var unmasked_renderer = randomString(8, 0, webgl_prng);
+				var renderer = randomString(8, 0, webgl_prng);
+				const STATIC_RANDOM_VALUE = webgl_prng.uint32();
+				`+
+				farbleGetParameter;
 	/**
 	 * \brief Returns null or output of given function
 	 *
@@ -518,7 +539,7 @@
 	/**
 	 * \brief Modifies pixels array
 	 *
-	 * \param ctx WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
+	 * \param gl WebGLRenderingContext (https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext)
 	 * \param x starting x position
 	 * \param y starting y position
 	 * \param width width to be read (in pixels)
@@ -532,23 +553,91 @@
 	 *	* (0) - slightly changed image data according to domain and session keys
 	 *	* (1) - empty array
 	 */
-	function farblePixels(ctx, x, y, width, height, format, type, pixels, offset) {
+	function farblePixels(gl, x, y, width, height, format, type, outpixels, offset) {
+		if (format === gl.ALPHA) {
+			// We do not modify alpha
+			origReadPixels.call(gl, x, y, width, height, gl.ALPHA, type, outpixels, offset);
+			return;
+		}
+		else if (typeof outpixels === "number") {
+			/// \bug We do not support calls without explicit buffers, NOOP
+			return;
+		}
+		else if (format !== gl.RGBA || type !== gl.UNSIGNED_BYTE) {
+			/*
+			 * \bug https://www.khronos.org/registry/OpenGL/specs/es/2.0/es_full_spec_2.0.pdf, section
+			 * 4.3.1: "Only two combinations of format and type are accepted. The first is format RGBA
+			 * and type UNSIGNED_BYTE. The second is an implementation-chosen format from among those
+			 * defined in table 3.4, excluding formats LUMINANCE and LUMINANCE_ALPHA." Brave (tested in
+			 * Debian), Firefox (Debian, Windows), Edge (Windows) and Chromuim (Debian) return
+			 * gl.getParameter(gl.IMPLEMENTATION_COLOR_READ_FORMAT).toString(16) == 0x1908 (RGBA) and
+			 * gl.getParameter(gl.IMPLEMENTATION_COLOR_READ_TYPE).toString(16) == 0x1401 (UNSIGNED_BYTE).
+			 * Hence in other cases we raise the excpetion generated by the call.
+			 */
+			try {
+				let pixels = new outpixels.__proto__.constructor(outpixels.length);
+				origReadPixels.call(gl, x, y, width, height, format, type, pixels, offset);
+			}
+			finally {} // There needs to be a catch/finally block
+			console.debug("JShelter has reached a block that should be ineccessible");
+			// Note that we do not modify the given outpixels
+			return;
+		}
 		if(args[0]===1) {
 			return;
 		}
 		else if(args[0]===0) {
-			origReadPixels.call(ctx, x, y, width, height, format, type, pixels, offset);
-			var pixel_count = BigInt(width * height);
-			var channel = domainHash[0].charCodeAt(0) % 3;
-			var canvas_key = domainHash;
-			var v = BigInt(strToUint(domainHash,8));
-			for (let i = 0; i < 32; i++) {
-				var bit = canvas_key[i];
-				for (let j = 8; j >= 0; j--) {
-					var pixel_index = (4 * Number(v % pixel_count) + channel);
-					pixels[pixel_index] = pixels[pixel_index] ^ (bit & 0x1);
-					bit = bit >> 1;
-					v = lfsr_next(v);
+			// Read and modify pixels of the whole canvas to produce the same results no matter the view
+			let pixels = new Uint8Array(gl.drawingBufferWidth * gl.drawingBufferHeight * 4);
+			origReadPixels.call(gl, 0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+			const BYTES_PER_ROW = gl.drawingBufferWidth * 4;
+			farbleCanvasDataBrave(function* () {
+				// We need to flip the canvas
+				let offset = pixels.length - BYTES_PER_ROW;
+				while (offset >= 0) {
+					yield pixels.subarray(offset, offset + BYTES_PER_ROW);
+					offset -= BYTES_PER_ROW;
+				}
+			}, gl.drawingBufferWidth);
+			// And modify data according to the original parameters
+			const DESIRED_WIDTH = width * 4;
+			const XXMAX = x + width;
+			function insertEmpty(pos) {
+				outpixels[pos  ] = 0;
+				outpixels[pos+1] = 0;
+				outpixels[pos+2] = 0;
+				outpixels[pos+3] = 255;
+			}
+			for (let i = 0; i < height; i++) {
+				// Go through the number of desired rows
+				let xx = x;
+				let yy = y + i;
+				if (yy < 0 || yy >= gl.drawingBufferHeight) {
+					for (let j = 0; j < DESIRED_WIDTH; j += 4) {
+						insertEmpty(i*DESIRED_WIDTH+j);
+					}
+				}
+				else {
+					let j = i*DESIRED_WIDTH;
+					while (xx < 0 && xx < XXMAX) {
+						insertEmpty(j);
+						j += 4;
+						xx++;
+					}
+					while (xx < XXMAX && xx < gl.drawingBufferWidth) {
+						let offset_orig = (yy * gl.drawingBufferWidth + xx) * 4;
+						outpixels[j  ] = pixels[offset_orig];
+						outpixels[j+1] = pixels[offset_orig+1];
+						outpixels[j+2] = pixels[offset_orig+2];
+						outpixels[j+3] = pixels[offset_orig+3];
+						j += 4;
+						xx++;
+					}
+					while (xx < XXMAX) {
+						insertEmpty(j);
+						j += 4;
+						xx++;
+					}
 				}
 			}
 		}
@@ -563,10 +652,8 @@
 					wrapped_name: "origGetParameter",
 				}
 			],
-			helping_code: farbleGLint + randomString +`
-				var vendor = randomString(8, 0);
-				var renderer = randomString(8, 0);`+
-				farbleGetParameter,
+			helping_code: farbleGLint + randomString +
+				farbleGetParameterString,
 			original_function: "parent.WebGLRenderingContext.prototype.getParameter",
 			wrapping_function_args: "constant",
 			/** \fn fake WebGLRenderingContext.prototype.getParameter
@@ -589,10 +676,8 @@
 					wrapped_name: "origGetParameter",
 				}
 			],
-			helping_code: farbleGLint + randomString +`
-				var vendor = randomString(8, 0);
-				var renderer = randomString(8, 0);`+
-				farbleGetParameter,
+			helping_code: farbleGLint + randomString +
+				farbleGetParameterString,
 			original_function: "parent.WebGL2RenderingContext.prototype.getParameter",
 			wrapping_function_args: "constant",
 			/** \fn fake WebGL2RenderingContext.prototype.getParameter
@@ -937,7 +1022,7 @@
 					wrapped_name: "origReadPixels",
 				}
 			],
-			helping_code: lfsr_next + strToUint + farblePixels,
+			helping_code: strToUint + farbleCanvasDataBrave.toString() + farblePixels,
 			original_function: "parent.WebGLRenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGLRenderingContext.prototype.readPixels
@@ -960,7 +1045,7 @@
 					wrapped_name: "origReadPixels",
 				}
 			],
-			helping_code: lfsr_next + strToUint + farblePixels,
+			helping_code: strToUint + farbleCanvasDataBrave.toString() + farblePixels,
 			original_function: "parent.WebGL2RenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGL2RenderingContext.prototype.readPixels

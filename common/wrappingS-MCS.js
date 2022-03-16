@@ -73,11 +73,10 @@
 	 *
 	 * \param browserEnum enum specifying browser 0 - Chrome 1 - Firefox
 	 */
-	function fakeDevice(device){
-		var fd_prng = alea(domainHash, "S-MCS fakeDevice");
+	function fakeDevice(device, fd_prng){
 		var kinds = ["videoinput", "audioinput", "audiooutput"];
 		let browserEnum = device.groupId.length == 44 ? 1 : 0;
-		var deviceId = browserEnum == 1 ? randomString(43, browserEnum)+ "=" : "";
+		var deviceId = browserEnum == 1 ? randomString(43, browserEnum, fd_prng)+ "=" : "";
 		let fakeData = {
 			deviceId,
 			groupId: deviceRandomString(browserEnum),
@@ -116,6 +115,7 @@
 					callable_name: "origEnumerateDevices",
 				}],
 			helping_code: farbleEnumerateDevices + shuffleArray + deviceRandomString + randomString + fakeDevice + `
+				var fd_prng = alea(domainHash, "S-MCS MediaDevices.prototype.enumerateDevices");
 				let [level] = args;
 				let cachedDevices = level < 2 ?
 					origEnumerateDevices.call(navigator.mediaDevices).then(result => {
@@ -133,7 +133,7 @@
 									let adding = [];
 									while (additional-- > 0) {
 										adding.push(origEnumerateDevices.call(navigator.mediaDevices).then(([device]) => {
-											let fake = fakeDevice(device);
+											let fake = fakeDevice(device, fd_prng);
 											console.debug("Faking", fake);
 											result.push(fake);
 										}));

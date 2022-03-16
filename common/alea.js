@@ -1,12 +1,16 @@
 /** \file
-* \brief A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010
+* \brief Random number generator
 *
-* This code is available at
+* A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010 and 
+* Tommy Ettinger (tommy.ettinger@gmail.com)
+*
+* Original code is available at
 * http://baagoe.com/en/RandomMusings/javascript/
 * https://github.com/nquinlan/better-random-numbers-for-javascript-mirror
+* https://gist.github.com/tommyettinger/46a874533244883189143505d203312c
 *
-* SPDX-License-Identifier: MIT
-* \license Original work is under MIT license
+* SPDX-License-Identifier: GPL3
+* \license Original work is under MIT license and in public domain, the derived code is under GPL3
 */
 //
 // Copyright (C) 2010 by Johannes Baagøe <baagoe@baagoe.org>
@@ -57,46 +61,62 @@ function Alea(...args) {
 	var mash = new Mash();
 
 	// Apply the seeding algorithm from Baagoe.
-	this.c = 1;
-	this.s0 = mash.addData(' ').finalize();
-	this.s1 = mash.addData(' ').finalize();
-	this.s2 = mash.addData(' ').finalize();
+	mash.addData(' ');
 
 	for (var i = 0; i < args.length; i++) {
-		this.s0 -= mash.addData(args[i]).finalize();
-		if (this.s0 < 0) {
-			this.s0 += 1;
-		}
-		this.s1 -= mash.addData(args[i]).finalize();
-		if (this.s1 < 0) {
-			this.s1 += 1;
-		}
-		this.s2 -= mash.addData(args[i]).finalize();
-		if (this.s2 < 0) {
-			this.s2 += 1;
-		}
+		mash.addData(args[i]);
 	}
+	this.seed = mash.n | 0; // Create a 32-bit UInt
 	mash = null;
+	this.xoring = [];
+	for (let i = 0; i < 64; i += 8) {
+		this.xoring.push(parseInt(domainHash.slice(i, i+8), 16) >>> 0); // Store 32-bit unsigned integers
+	}
 }
 Alea.prototype = {
+	current: 0,
+	stored_random: 0,
+	random_bits: 0,
 	next: function() {
-		var t = 2091639 * this.s0 + this.c * 2.3283064365386963e-10; // 2^-32
-		this.s0 = this.s1;
-		this.s1 = this.s2;
-		return this.s2 = t - (this.c = t | 0);
+		this.seed += 0x6D2B79F5;
+		var t = this.seed;
+		this.current = (this.current + t) & 7;
+		t = Math.imul(t ^ t >>> 15, t | 1);
+		t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+		return (((t ^ t >>> 14) ^ this.xoring[this.current]) >>> 0); // '>>> 0' casts to unsigned
+	},
+	normalized: function() {
+		return this.next() / 4294967296;
+	},
+	get_bits: function(count) {// 0 < count <= 32
+		if (count === 32) {
+			return this.next();
+		}
+		else if (count <= this.random_bits) {
+			let mask = ((1 << count) >>> 0) - 1;
+			let ret = this.stored_random & mask;
+			this.stored_random = this.stored_random >>> count;
+			this.random_bits -= count;
+			return ret;
+		}
+		else {
+			let needed = count - this.random_bits;
+			let ret = this.stored_random << needed;
+			this.random_bits = 32;
+			this.stored_random = this.next();
+			return ret | this.get_bits(needed);
+		}
 	}
 }
 
 function impl(...seed) {
 	var xg = new Alea(...seed);
-	var prng = xg.next.bind(xg);
-	prng.uint32 = function() {
-		return (xg.next() * 0x100000000) | 0;
-	}
+	var prng = xg.normalized.bind(xg);
+	prng.uint32 = xg.next.bind(xg);
 	prng.fract53 = function() {
 		return prng() + (prng() * 0x200000 | 0) * 1.1102230246251565e-16; // 2^-53
 	};
-	prng.quick = prng;
+	prng.get_bits = xg.get_bits.bind(xg);
 	return prng;
 }
 
