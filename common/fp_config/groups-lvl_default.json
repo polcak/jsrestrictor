@@ -1,6 +1,13 @@
 {
     "name":"FingerprintingActivity",
     "description":"Definition of fingerprinting behavior by FPD module.",
+    "severity": [
+        [0, "None", "#3CA519"],
+        [1, "Low", "#80B012"],
+        [2, "Moderate", "#CD9600"],
+        [3, "High", "#E64B19"],
+        [5, "Very High", "#C8004B"]
+    ],
     "criteria":[
         {
             "value":3,

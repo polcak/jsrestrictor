@@ -68,7 +68,7 @@ async function beforeSendHeadersListener(requestDetail)
 	var sourceResolution = "";
 
 	//Host found among user's trusted hosts, allow it right away
-	if (checkWhitelist(sourceUrl.hostname))
+	if (isNbsWhitelisted(sourceUrl.hostname))
 	{
 		return {cancel:false};
 	}
@@ -176,7 +176,7 @@ async function beforeSendHeadersListener(requestDetail)
 	//Blocking direction Public -> Private
 	if (!isSourcePrivate && isDestinationPrivate)
 	{
-		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
+		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.tabId);
 		return {cancel:true}
 	}
 	else //Permitting others

@@ -3,8 +3,8 @@
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
-#  Copyright (C) 2020  Martin Bednar
 #  Copyright (C) 2021  Matus Svancar
+#  Copyright (C) 2022  Martin Bednar
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -44,11 +44,11 @@ from configuration import get_config
 #  Function waits maximally 10 seconds for loading geolocation data.
 def get_position(driver):
     driver.get(get_config("testing_page"))
-    driver.find_element_by_xpath("//button[text()='Show GPS data']").click()
+    driver.find_element(By.XPATH, "//button[text()='Show GPS data']").click()
     WebDriverWait(driver, 10).until(
         ec.presence_of_element_located((By.ID, 'mapnavi'))
     )
-    location = driver.find_element_by_id('placeToWriteGPSDetails').text
+    location = driver.find_element(By.ID, 'placeToWriteGPSDetails').text
     location = location.replace(" ", "").split()
     position = {}
     for property in location:
@@ -130,10 +130,10 @@ def get_referrer(driver):
 def is_canvas_spoofed(driver):
     try:
         driver.get(get_config("testing_page"))
-        driver.find_element_by_xpath("//button[text()='Add line to canvas']").click()
-        driver.find_element_by_xpath("//button[text()='Add circle to canvas']").click()
-        driver.find_element_by_xpath("//button[text()='Add text to canvas']").click()
-        driver.find_element_by_xpath("//button[text()='Get data and show image in canvas frame']").click()
+        driver.find_element(By.XPATH, "//button[text()='Add line to canvas']").click()
+        driver.find_element(By.XPATH, "//button[text()='Add circle to canvas']").click()
+        driver.find_element(By.XPATH, "//button[text()='Add text to canvas']").click()
+        driver.find_element(By.XPATH, "//button[text()='Get data and show image in canvas frame']").click()
         is_spoofed = driver.execute_script("var canvas = document.getElementById('canvas1'); return !canvas.getContext('2d')"
                                      ".getImageData(0, 0, canvas.width, canvas.height).data.some(channel => channel !== 255)")
     except:
@@ -269,7 +269,7 @@ def get_webgl_precisions(driver, name):
 ## returns object with attributes output by AudioContext.getChannelData, AudioContext.copyFromChannel, AnalyserNode.getFloatFrequencyData, AnalyserNode.getByteFrequencyData, AnalyserNode.getFloatTimeDomainData, AnalyserNode.getByteTimeDomainData which are saved in testing page
 def get_audio(driver):
     driver.get(get_config("testing_page"))
-    driver.find_element_by_xpath("//button[text()='Test audio']").click()
+    driver.find_element(By.XPATH, "//button[text()='Test audio']").click()
     sleep(3)
     audio = {'get_channel': driver.execute_script("return document.getElementById('channel_data_result').innerHTML;"),
              'copy_channel': driver.execute_script("return document.getElementById('copy_result').innerHTML;"),

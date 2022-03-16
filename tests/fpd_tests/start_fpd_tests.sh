@@ -193,8 +193,8 @@ browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 browser.runtime.onMessage.addListener(function (record, sender) {
 	let prepareDb = (tabId) => {
 		let tabLogs = {};
-		for (let resource in fpDb) {
-			tabLogs[resource] = fpDb[resource][tabId]
+		for (let resource in fpDb[tabId]) {
+			tabLogs[resource] = fpDb[tabId][resource]
 		}
 		refreshDb(tabId);
 		return tabLogs;

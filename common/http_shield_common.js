@@ -3,6 +3,7 @@
  *
  *  \author Copyright (C) 2020  Pavel Pohner
  *  \author Copyright (C) 2020-2021 Martin Bednář
+ *  \author Copyright (C) 2022 Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -73,15 +74,60 @@ var localIPV6DNSZones;
  */
 var doNotBlockHosts = new Object();
 
+/**
+ * Associtive array of settings supported by this module.
+ */
+var nbsSettings = {};
+
+/**
+ * Object holding active notifications of this module.
+ */
+var nbsNotifications = {};
+
+/**
+* Definition of settings supported by this module.
+*/
+const NBS_DEF_SETTINGS = {
+	notifications: {
+		description: "Turn on/off notifications about suspicious requests or hosts being blocked.",
+		description2: [],
+		label: "Notifications",
+		params: [
+			{
+				// 0
+				short: "Off",
+				description: "Blocking notifications turned off."
+			},
+			{
+				// 1
+				short: "On",
+				description: "Blocking notifications turned on."
+			}
+		]
+	}
+};
+
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
-browser.storage.sync.get(["whitelistedHosts"]).then(function(result){
-		if (result.whitelistedHosts != undefined)
-			doNotBlockHosts = result.whitelistedHosts;
-	});
+browser.storage.sync.get(["nbsWhitelist"]).then(function(result){
+	if (result.nbsWhitelist != undefined)
+		doNotBlockHosts = result.nbsWhitelist;
+});
+
+browser.storage.sync.get(["nbsSettings"]).then(function(result){
+	if (result.nbsSettings != undefined)
+		nbsSettings = result.nbsSettings;
+});
 
 /// Hook up the listener for receiving messages
 browser.runtime.onMessage.addListener(commonMessageListener);
 browser.runtime.onMessage.addListener(messageListener);
+browser.runtime.onMessage.addListener(settingsListener);
+
+// Listen for permissions removal to adapt settings accordingly
+browser.permissions.onRemoved.addListener((permissions) => {
+	correctSettingsForRemovedPermissions(permissions.permissions, nbsSettings, NBS_DEF_SETTINGS);
+	browser.storage.sync.set({"nbsSettings": nbsSettings});
+});
 
 /// Check the storage for requestShieldOn object
 browser.storage.sync.get(["requestShieldOn"]).then(function(result){
@@ -453,7 +499,7 @@ function expandIPV6(ip6addr)
  *
  * \returns TRUE when domain (or subdomain) is whitelisted, FALSE otherwise.
  */
-function checkWhitelist(hostname)
+function isNbsWhitelisted(hostname)
 {
 	//Calling a function from url.js
 	var domains = extractSubDomains(hostname);
@@ -468,21 +514,93 @@ function checkWhitelist(hostname)
 }
 
 /**
- * Creates and presents notification to the user.
- * Works with webExtensions notification API.
- * Creates notification about blocked request.
+ * Log data about NBS blocking in context of tabs.
+ * This data will be used for notification creation.
  *
  * \param origin Origin of the request.
  * \param target Target of the request.
- * \param resource Type of the resource.
+ * \param tabId Tab ID of blocked request.
  */
-function notifyBlockedRequest(origin, target, resource) {
-	browser.notifications.create({
+function notifyBlockedRequest(origin, target, tabId) {
+	if (nbsSettings.notifications) {
+		nbsNotifications[tabId] = nbsNotifications[tabId] || {};
+		nbsNotifications[tabId].records = nbsNotifications[tabId].records || {};
+		nbsNotifications[tabId].records[`${origin},${target}`] = (nbsNotifications[tabId].records[`${origin},${target}`] || 0) + 1;
+		nbsNotifications[tabId].total = (nbsNotifications[tabId].total || 0) + 1;
+	}
+	// start notifying a user when the first blocked request occurs
+	if (nbsNotifications[tabId].total == 1) {
+		setTimeout(showNbsNotification, 2000, tabId);
+		createCumulativeNotification(tabId);
+	}
+}
+
+// Listen for tab update to clear notifications data of the tab
+browser.tabs.onUpdated.addListener(function (tabId, changeInfo) {
+	if (changeInfo.status == "loading") {
+		clearNbsNotification(tabId);
+	}
+});
+
+// Listen for tab remove to clear notifications data of the tab
+browser.tabs.onRemoved.addListener(clearNbsNotification);
+
+/**
+ * Clear notification data for the tab.
+ * 
+ * \param tabId Tab ID of notification.
+ */
+function clearNbsNotification(tabId) {
+	if (nbsNotifications[tabId]) {
+		if (nbsNotifications[tabId].timerId) {
+			clearTimeout(nbsNotifications[tabId].timerId);
+		}
+		delete nbsNotifications[tabId];
+	}
+}
+
+/**
+ * Create second notification containing a summary of accumulated data.
+ * This notification is shown after the initial one if a page continues to access local network.
+ *
+ * \param tabId Integer number representing ID of browser tab.
+ */
+async function createCumulativeNotification(tabId) {
+	if (nbsNotifications[tabId].last == nbsNotifications[tabId].total) {
+		let active = await browser.notifications.getAll();
+		if (!Object.keys(active).includes("nbs-" + tabId)) {
+			showNbsNotification(tabId);
+		}
+		return;
+	}
+	nbsNotifications[tabId].last = nbsNotifications[tabId].total;
+	nbsNotifications[tabId].timerId = setTimeout(createCumulativeNotification, 4000, tabId);
+}
+
+/**
+ * Creates and presents notification about blocked requests.
+ *
+ * \param tabId Integer number representing ID of browser tab.
+ */
+function showNbsNotification(tabId) {
+	nbsNotifications[tabId].last = nbsNotifications[tabId].total;
+	let host = wwwRemove(new URL(availableTabs[tabId].url).hostname);
+	let message = `Blocked ${nbsNotifications[tabId].total} attempts from ${host} to access local network.`;
+	let records = Object.keys(nbsNotifications[tabId].records);
+	if (records.length == 1) {
+		let [origin, target] = records[0].split(",");
+		let count = nbsNotifications[tabId].records[records[0]];
+		message = `Blocked ${count} request${count == 1 ? "" : "s"} from ${origin} to ${target}.`;
+	}
+	browser.notifications.create("nbs-" + tabId, {
 		"type": "basic",
 		"iconUrl": browser.runtime.getURL("img/icon-48.png"),
-		"title": "Network boundary shield blocked suspicious request!",
-		"message": `Request from ${origin} to ${target} blocked.\n\nMake sure that you are on a benign page. If you want to allow web requests from ${origin}, please, go to the JS Restrictor settings and add an exception.`
+		"title": "Network boundary shield blocked suspicious requests!",
+		"message": message
 	});
+	setTimeout(() => {
+		browser.notifications.clear("nbs-" + tabId);
+	}, 6000);
 }
 
 /**
@@ -498,10 +616,32 @@ function notifyBlockedRequest(origin, target, resource) {
 	 //Message came from popup,js, asking whether is this site whitelisted
 	 if (message === "is current site whitelisted?")
 	 {
-		 return Promise.resolve(`current site is ${checkWhitelist(site) ? '' : 'not '}whitelisted`);
+		 return Promise.resolve(`current site is ${isNbsWhitelisted(site) ? '' : 'not '}whitelisted`);
 	 }
  }
- 
+
+/**
+ * \brief The event listener, hooked up to the webExtension onMessage event.
+ *
+ * The listener sends message response which contains information about cuurent module settings.
+ * 
+ * \param message Receives full message.
+ */
+function settingsListener(message)
+{
+	if (message.purpose === "nbs-get-settings") {
+		// send settings definition and current values
+		return Promise.resolve({
+			def: NBS_DEF_SETTINGS,
+			val: nbsSettings
+		});
+	}
+	else if (message.purpose === "nbs-set-settings") {
+		// update current settings
+		nbsSettings[message.id] = message.value;
+		browser.storage.sync.set({"nbsSettings": nbsSettings});
+	}
+}
 
 /**
  * Event listener hooked up to webExtensions onMessage event.
@@ -516,8 +656,8 @@ function commonMessageListener(message, sender)
 	if (message.message === "whitelist updated")
 	{
 		//actualize current doNotBlockHosts from storage
-		browser.storage.sync.get(["whitelistedHosts"]).then(function(result){
-			doNotBlockHosts = result.whitelistedHosts;
+		browser.storage.sync.get(["nbsWhitelist"]).then(function(result){
+			doNotBlockHosts = result.nbsWhitelist;
 		});
 	}
 	//Mesage came from popup.js, whitelist this site
@@ -526,7 +666,7 @@ function commonMessageListener(message, sender)
 			//Obtain current hostname and whitelist it
 			var currentHost = message.site;
 			doNotBlockHosts[currentHost] = true;
-			browser.storage.sync.set({"whitelistedHosts":doNotBlockHosts});
+			browser.storage.sync.set({"nbsWhitelist":doNotBlockHosts});
 	}
 	//Message came from popup.js, remove whitelisted site
 	else if (message.message === "remove site from whitelist")
@@ -534,7 +674,7 @@ function commonMessageListener(message, sender)
 			//Obtain current hostname and remove it
 			currentHost = message.site;
 			delete doNotBlockHosts[currentHost];
-			browser.storage.sync.set({"whitelistedHosts":doNotBlockHosts});
+			browser.storage.sync.set({"nbsWhitelist":doNotBlockHosts});
 	}
 	//HTTP request shield was turned on
 	else if (message.message === "turn request shield on")

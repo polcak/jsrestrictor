@@ -1,7 +1,7 @@
 /** \file
  * \brief Functions that help to automate process of building wrapping code for FPD module
  *
- *  \author Copyright (C) 2021  Marek Salon
+ *  \author Copyright (C) 2021-2022  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -52,17 +52,22 @@
 /**
  * FPD enable flag. Evaluate only when active.
  */
- var fpDetectionEnabled;
+ var fpDetectionOn;
 
- /**
+/**
  * Associtive array of hosts, that are currently among trusted ones.
  */
 var fpdWhitelist = {};
 
 /**
+ * Associtive array of settings supported by this module.
+ */
+var fpdSettings = {};
+
+/**
  * API logs database of following structure:
- * 		"resource" : {
- * 			"tabId" : {
+ * 		"tabId" : {
+ * 			"resource" : {
  * 				"type" : {
  * 					arguments {
  * 						arg : "access count"
@@ -100,23 +105,79 @@ var unsupportedWrappers = {};
  */
 var exceptionWrappers = ["CSSStyleDeclaration.prototype.fontFamily"];
 
+/**
+* Definition of settings supported by this module.
+*/
+const FPD_DEF_SETTINGS = {
+	behavior: {
+		description: "Specify preffered behavior of the module.",
+		description2: [],
+		label: "Behavior",
+		params: [
+			{
+				// 0
+				short: "Color",
+				description: "Use extension icon badge color to signalize likelihood of ongoing fingerprinting."
+			},
+			{
+				// 1
+				short: "Notification",
+				description: "In addition to badge color, show a notification whenever there is a high likelihood of fingerprinting."
+			},
+			{
+				// 2
+				short: "Limited Blocking",
+				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
+				description2: [
+					"• Interrupt network traffic for the page to prevent possible fingerprint leakage.", 
+					"• Clear <strong>localStorage</strong> and <strong>sessionStorage</strong> of the page to remove possibly cached fingerprint.",
+					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
+				]
+			},
+			{
+				// 3
+				short: "Full Blocking",
+				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
+				description2: [
+					"• Interrupt network traffic for the page to prevent possible fingerprint leakage.",
+					"• Clear <strong>all</strong> available storage mechanisms of the page where fingerprint may be cached. (Requires <strong>BrowsingData</strong> permission.)",
+					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
+				],
+				permissions: ["browsingData"]
+			}
+		]
+	}
+};
+
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 // fill up fpGroups object with necessary data for evaluation
 for (let groupsLevel in fp_levels.groups) {
 	fpGroups[groupsLevel] = fpGroups[groupsLevel] || {};
 	processGroupsRecursive(fp_levels.groups[groupsLevel], groupsLevel);
 }
-// load enabled flag from storage
-browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
-	if (result.fpDetectionOn != undefined)
-		fpDetectionEnabled = result.fpDetectionOn;
-});
 
-// load fpd whitelist from storage
-browser.storage.sync.get(["fpdWhitelist"]).then(function(result) {
-	if (result.fpdWhitelist != undefined)
-		fpdWhitelist = result.fpdWhitelist;
-});
+{
+	// load configuration and settings from storage 
+	let loadConfiguration = (name) => {
+		browser.storage.sync.get([name]).then(function(result) {
+			if (result[name] != undefined) {
+				this[name] = result[name];
+			}
+		});
+	}
+
+	loadConfiguration("fpDetectionOn");
+	loadConfiguration("fpdWhitelist");
+	loadConfiguration("fpdSettings");
+}
+
+// unify default color of popup badge background between different browsers
+browser.browserAction.setBadgeBackgroundColor({color: "#6E7378"});
+
+// unify default color of popup badge text between different browsers
+if (typeof browser.browserAction.setBadgeTextColor === "function") {
+	browser.browserAction.setBadgeTextColor({color: "#FFFFFF"});
+}
 
 // take care of unsupported resources for cross-browser behaviour uniformity
 balanceUnsupportedWrappers();
@@ -325,15 +386,19 @@ function correctGroupCriteria(rootGroup, effectedGroups, level) {
  *
  * \param tabId Integer number representing ID of browser tab that is going to be evaluated.
  *
- * \returns 0 if no fingerprinting activity detected, otherwise weight value of root group
+ * \returns object where "weight" property represents evaluated weight of root group and "severity" property contain severity array
  */
 function evaluateGroups(tabId) {
 	// get url of evaluated tab
 	var url = availableTabs[tabId] ? availableTabs[tabId].url : "";
+	var ret = {
+		weight: 0,
+		severity: []
+	}
 
 	// inaccesible or invalid url - do not evaluate
 	if (!url) {
-		return 0;
+		return ret;
 	}
 	
 	// clear old evalStats
@@ -351,10 +416,15 @@ function evaluateGroups(tabId) {
 	
 	// start recursive evaluation if all needed objects are defined
 	if (rootGroup && fpGroups[level] && fp_levels.wrappers[level]) {
-		return evaluateGroupsCriteria(rootGroup, level, tabId)[0].actualWeight;
+		let evalRes = evaluateGroupsCriteria(rootGroup, level, tabId)[0];
+		ret.weight = evalRes.actualWeight;
+		if (fp_levels.groups[level].severity) {
+			let sortedSeverity = fp_levels.groups[level].severity.sort((x, y) => x[0] - y[0]);
+			ret.severity = sortedSeverity.filter((x) => (x[0] <= evalRes.actualWeightsSum)).reverse()[0];
+		}
 	}
 
-	return 0;
+	return ret;
 }
 
 /**
@@ -409,9 +479,10 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
 	// get maximal obtainable weight for rootGroup
 	res.maxWeight = fpGroups[level][rootGroup].criteria.reduce((x, {weight}) => (x > weight ? x : weight), 0);
 
-	// compute actualWeight of rootGroup with value of acsesses
+	// compute actualWeight of rootGroup with value of accesses
 	res.accesses = 0;
 	res.actualWeight = 0;
+	res.actualWeightsSum = 0;
 	if (groupTypes.length == 2) {
 		// groupTypes contains "value" and "percetange" - take weight of child items into account
 		var actualWeightsSum = scores.reduce((x, {actualWeight}) => (x + actualWeight), 0);
@@ -437,6 +508,7 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
 		// filter criteria and take weight of highest achieved criteria
 		var filteredCriteria = relativeCriteria.filter((x) => (x.value <= actualWeightsSum)).reverse()[0];
 		res.actualWeight = filteredCriteria ? filteredCriteria.weight : 0;
+		res.actualWeightsSum = actualWeightsSum;
 	}
 	else {
 		// groupTypes contains "access" - take access of child items into account
@@ -448,15 +520,16 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
 		// filter criteria and take weight of highest achieved criteria
 		var filteredCriteria = relevantCriteria.filter((x) => (x.access <= accessesSum)).reverse()[0];
 		res.actualWeight = filteredCriteria ? filteredCriteria.weight : 0;
+		res.actualWeightsSum = accessesSum;
 	}
 
-	// if group access was triggered (have some weight), save it to evalStats
-	if (res.actualWeight) {
-		latestEvals[tabId].evalStats.push({ 
-			title: rootGroup,
-			message: `GROUP weight: ${res.actualWeight}`
-		});
-	}
+	// update group statistics in latestEvals
+	latestEvals[tabId].evalStats.push({ 
+		title: rootGroup,
+		type: "group",
+		weight: res.actualWeight,
+		sum: res.actualWeightsSum
+	});
 
 	return [res];
 }
@@ -516,25 +589,26 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 		
 		// compute actualWeight of resource in context of parent group from logs located in fpDb object
 		res.actualWeight = 0;
-		if (fpDb[resource] && fpDb[resource][tabId] && fpDb[resource][tabId][res.type]) {
+		if (fpDb[tabId] && fpDb[tabId][resource] && fpDb[tabId][resource][res.type]) {
+			let record = fpDb[tabId][resource][res.type];
 			// logs for given resource and type exist
 			if (groupObj.arguments) {
 				// if arguments logging is defined, evaluate resource accordingly
 				
 				if (groupObj.arguments == "diff") {
 					// "diff" - accesses depend on number of different arguments
-					res.accesses = Object.keys(fpDb[resource][tabId][res.type].args).length;		
+					res.accesses = Object.keys(record.args).length;		
 				}
 				else if (groupObj.arguments == "same") {
 					// "same" - accesses depend on maximum number of same arguments calls
-					res.accesses = Object.values(fpDb[resource][tabId][res.type].args).reduce((x, y) => x > y ? x : y);
+					res.accesses = Object.values(record.args).reduce((x, y) => x > y ? x : y);
 				}
 				else {
 					// try to interpret arguments as regular expression and take accesses that match this expression
 					try {
 						let re = new RegExp(...groupObj.arguments);
-						res.accesses = Object.keys(fpDb[resource][tabId][res.type].args).reduce(
-							(x, y) => (re.test(y) ? x + fpDb[resource][tabId][res.type].args[y] : x), 0);
+						res.accesses = Object.keys(record.args).reduce(
+							(x, y) => (re.test(y) ? x + record.args[y] : x), 0);
 					} catch {
 						res.accesses = 0;
 					}
@@ -542,7 +616,7 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 			}
 			else {
 				// arguments logging not defined, simply take total accesses to resource
-				res.accesses = fpDb[resource][tabId][res.type].total
+				res.accesses = record.total
 			}
 
 			// sort criteria by value
@@ -559,14 +633,16 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 		scores.push(res)
 	}
 
-	// if resource was accessed and gained weight, save it to evalStats
+	// update resource statistics in latestEvals
 	scores.forEach(function (res) {
-		if (res.actualWeight) {
-			latestEvals[tabId].evalStats.push({
-				title: resource,
-				message: `RESOURCE ${res.type} (from ${groupName}) weight: ${res.actualWeight}, accesses: ${res.accesses}`
-			});
-		}
+		latestEvals[tabId].evalStats.push({
+			title: resource,
+			type: "resource",
+			resource: res.type,
+			group: groupName,
+			weight: res.actualWeight,
+			accesses: res.accesses
+		});
 	});
 
 	return scores;
@@ -590,12 +666,12 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 		switch (record.purpose) {
 			case "fp-detection":
 				// check objects existance => if do not exist, create new one
-				fpDb[record.resource] = fpDb[record.resource] || {};
-				fpDb[record.resource][sender.tab.id] = fpDb[record.resource][sender.tab.id] || {};
-				fpDb[record.resource][sender.tab.id][record.type] = fpDb[record.resource][sender.tab.id][record.type] || {};
+				fpDb[sender.tab.id] = fpDb[sender.tab.id] || {};
+				fpDb[sender.tab.id][record.resource] = fpDb[sender.tab.id][record.resource] || {};
+				fpDb[sender.tab.id][record.resource][record.type] = fpDb[sender.tab.id][record.resource][record.type] || {};
 				
 				// object that contains access counters
-				const fpCounterObj = fpDb[record.resource][sender.tab.id][record.type];
+				const fpCounterObj = fpDb[sender.tab.id][record.resource][record.type];
 				const argsStr = record.args.join();
 				fpCounterObj["args"] = fpCounterObj["args"] || {};
 				
@@ -610,9 +686,13 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 				break;
 			case "fpd-state-change":
 				browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
-					fpDetectionEnabled = result.fpDetectionOn;
+					fpDetectionOn = result.fpDetectionOn;
 				});
 				break;
+			case "fpd-whitelist-check": {
+				// answer to popup, when asking whether is the site whitelisted
+				return Promise.resolve(isFpdWhitelisted(record.url));
+			}
 			case "add-fpd-whitelist":
 				// obtain current hostname and whitelist it
 				var currentHost = record.url;
@@ -631,40 +711,66 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 					fpdWhitelist = result.fpdWhitelist;
 				});
 				break;
+			case "fpd-get-report-data": {
+				// get current FPD level for evaluated tab
+				if (record.tabId) {
+					var level = getCurrentLevelJSON(availableTabs[record.tabId].url)[0].level_id;
+					level = fp_levels.groups[level] ? level : "default";
+					return Promise.resolve({
+						tabObj: availableTabs[record.tabId],
+						groups: {root: fp_levels.groups[level].name, all: fpGroups[level]},
+						fpDb: fpDb[record.tabId],
+						latestEvals: latestEvals[record.tabId],
+						exceptionWrappers: exceptionWrappers
+					});
+				}
+			}
+			case "fpd-create-report":
+				// create FPD report for the tab
+				if (record.tabId) {
+					generateFpdReport(record.tabId);
+				}
+				break;
+			case "fpd-fetch-severity": {
+				// send severity value of the latest evaluation
+				let severity = [];
+				if (record.tabId && isFpdOn(record.tabId) && latestEvals[record.tabId]) {
+					severity = latestEvals[record.tabId].severity;
+				}
+				return Promise.resolve(severity);
+			}
+			case "fpd-get-settings": {
+				// send settings definition and current values
+				return Promise.resolve({
+					def: FPD_DEF_SETTINGS,
+					val: fpdSettings
+				});
+			}
+			case "fpd-set-settings":
+				// update current settings
+				fpdSettings[record.id] = record.value;
+				browser.storage.sync.set({"fpdSettings": fpdSettings});
+				break;
 			case "fpd-fetch-hits": {
 				let {tabId} = record;
 				// filter by tabId;
 				let hits = Object.create(null);
-				for ([resource, tabRecords] of Object.entries(fpDb)) {
-					let total = 0;
-					if (tabRecords[tabId]) {
-						for (let stat of Object.values(tabRecords[tabId])) { // by type
+				if (fpDb[tabId]) {
+					for ([resource, recordObj] of Object.entries(fpDb[tabId])) {
+						let total = 0;
+						for (let stat of Object.values(recordObj)) { // by type
 							total += stat.total;
 						}
-					}
-					let group_name = wrapping_groups.wrapper_map[resource];
-					if (group_name) {
-						get_or_create(hits, group_name, 0);
-						hits[group_name] += total;
+						let group_name = wrapping_groups.wrapper_map[resource];
+						if (group_name) {
+							get_or_create(hits, group_name, 0);
+							hits[group_name] += total;
+						}
 					}
 				}
 				return Promise.resolve(hits);
 			}
 		}
-	}
-});
-
-/**
- *
- * The listener sends message response which contains information if the current site is whitelisted or not.
- * 
- * \param record Receives full message.
- * \param sender Sender of the message.
- */
-browser.runtime.onMessage.addListener(function (record, sender) {
-	// message came from popup,js, asking whether is this site whitelisted
-	if (record.purpose == "fpd-whitelist-check") {
-		return Promise.resolve(isFpdWhitelisted(record.url));
 	}
 });
 
@@ -686,22 +792,75 @@ function isFpdWhitelisted(hostname) {
 }
 
 /**
+ * The function that returns FPD setting for given url.
+ *
+ * \param tabId Tab identifier for which FPD setting is needed.
+ * 
+ * \returns Boolean value TRUE if FPD is on, otherwise FALSE.
+ */
+ function isFpdOn(tabId) {
+	if (!availableTabs[tabId]) {
+		return false;
+	}
+	let url = wwwRemove(new URL(availableTabs[tabId].url).hostname);
+	if (fpDetectionOn && !isFpdWhitelisted(url)) {
+		return true;
+	}
+	return false;
+}
+
+/**
  * The function that creates notification and informs user about fingerprinting activity.
  *
  * \param tabId Integer number representing ID of suspicious browser tab.
  */
  function notifyFingerprintBlocking(tabId) {
+	let msg;
+	if (fpdSettings.behavior > 1) {
+		msg = "Blocking all subsequent requests.";
+	}
+	if (fpdSettings.behavior == 1) {
+		msg = "Click the notification for more details.";
+	}
+
 	browser.notifications.create("fpd-" + tabId, {
-		"type": "basic",
-		"iconUrl": browser.runtime.getURL("img/icon-48.png"),
-		"title": "Fingerprinting activity detected!",
-		"message": `Blocking all subsequent requests.\n\n` +
+		type: "basic",
+		iconUrl: browser.runtime.getURL("img/icon-48.png"),
+		title: "Fingerprinting activity detected!",
+		message: `${msg}\n\n` +
 			`Page: ${availableTabs[tabId].title.slice(0, 30)}\n` +
 			`Host: ${wwwRemove(new URL(availableTabs[tabId].url).hostname)}`
 	});
 	setTimeout(() => {
 		browser.notifications.clear("fpd-" + tabId);
 	}, 6000);
+}
+
+/**
+ * Event listener that listen for click on notification when FPD detects fingerprinting.
+ *
+ * \param callback Function that open new window with FPD evaluation report.
+ */
+browser.notifications.onClicked.addListener((notificationId) => {
+	if (notificationId.startsWith("fpd")) {
+		var tabId = notificationId.split("-")[1];
+		generateFpdReport(tabId);
+	}
+});
+
+/**
+ * The function that generates a report about fingerprinting evaluation in a separate window.
+ *
+ * \param tabId Integer number representing ID of evaluated browser tab.
+ */
+function generateFpdReport(tabId) {
+	// open popup window containing FPD report
+	browser.windows.create({
+		url: "/fp_report.html?id=" + tabId,
+		type: "popup",
+		height: 600,
+		width: 800
+	});
 }
 
 /**
@@ -714,6 +873,7 @@ var availableTabs = {};
 browser.tabs.query({}).then(function(results) {
     results.forEach(function(tab) {
         availableTabs[tab.id] = tab;
+		periodicEvaluation(tab.id, 500);
     });
 });
 /// \endcond
@@ -724,16 +884,14 @@ browser.tabs.query({}).then(function(results) {
  * \param tabId Integer number representing ID of browser tab.
  */
 function refreshDb(tabId) {
-	for (let resource in fpDb) {
-		if (fpDb[resource].hasOwnProperty(tabId)) {
-			delete fpDb[resource][tabId];
-		}
-		if (Object.keys(fpDb[resource]).length == 0) {
-			delete fpDb[resource];
-		}
+	if (fpDb[tabId]) {
+		delete fpDb[tabId];
 	}
 	if (latestEvals[tabId]) {
 		delete latestEvals[tabId];
+	}
+	if (availableTabs[tabId] && availableTabs[tabId].timerId) {
+		clearTimeout(availableTabs[tabId].timerId);
 	}
 }
 
@@ -746,6 +904,7 @@ browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 	availableTabs[tabId] = tab;
 	if (changeInfo.status == "loading") {
 		refreshDb(tabId);
+		periodicEvaluation(tab.id, 500);
 	}
 });
 
@@ -755,8 +914,18 @@ browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
  * \param callback Function that updates availableTabs and refreshes fpDb.
  */
 browser.tabs.onRemoved.addListener(function (tabId) {
-	delete availableTabs[tabId];
 	refreshDb(tabId);
+	delete availableTabs[tabId];
+});
+
+/**
+ * Event listener that listen for removal of optional permissions.
+ *
+ * \param callback Function that updates settings to values, which don't require removed permissions.
+ */
+browser.permissions.onRemoved.addListener((permissions) => {
+	correctSettingsForRemovedPermissions(permissions.permissions, fpdSettings, FPD_DEF_SETTINGS);
+	browser.storage.sync.set({"fpdSettings": fpdSettings});
 });
 
 /**
@@ -773,7 +942,7 @@ browser.webRequest.onBeforeRequest.addListener(
 /**
  * The function that makes decisions about requests blocking. If blocking enabled, also clear browsing data.
  *
- * \param requestDetails Details about request.
+ * \param requestDetails Details about the request.
  * 
  * \returns Object containing key "cancel" with value true if request is blocked, otherwise with value false
  */
@@ -785,83 +954,115 @@ function cancelCallback(requestDetails) {
 		refreshDb(requestDetails.tabId);
 	}
 
-	// if FPD enabled for the site and actualWeight of root group is higher than 0 => suspicious activity
-	if (isFpdOn(requestDetails.tabId) && evaluateGroups(requestDetails.tabId)) {
-		// get url of tab asociated with this request
-		var tabUrl = availableTabs[requestDetails.tabId] ? availableTabs[requestDetails.tabId].url : undefined;
+	return evaluateFingerprinting(requestDetails.tabId)
+}
 
-		// create notification for user (only once for every tab load)
-		if (!latestEvals[requestDetails.tabId].stopNotifyFlag) {
-			latestEvals[requestDetails.tabId].stopNotifyFlag = true;
-			notifyFingerprintBlocking(requestDetails.tabId);
-		}
+/**
+ * The function that periodically starts fingerprinting evaluation without the need for a request. 
+ * Delay is increased exponentially and doubles in every call.
+ *
+ * \param tabId Integer number representing ID of browser tab.
+ * \param delay Initial value of a delay in milliseconds.
+ */
+function periodicEvaluation(tabId, delay) {
+	evaluateFingerprinting(tabId);
+	if (availableTabs[tabId]) {
+		// limit max delay to 90s per tab
+		availableTabs[tabId].timerId = setTimeout(periodicEvaluation, delay, tabId, delay > 90000 ? delay : delay*2);
+	}
+}
+
+/**
+ * The function that starts evaluation process and if fingerprinting is detected, it reacts accordingly.
+ *
+ * \param tabId Integer number representing ID of evaluated browser tab.
+ * 
+ * \returns Object containing key "cancel" with value true if request is blocked, otherwise with value false
+ */
+function evaluateFingerprinting(tabId) {
+	// if FPD enabled for the site continue with FP evaluation
+	if (isFpdOn(tabId)) {
 		
-		// clear local and session storage (using content script) for every frame in this tab (required?)
-		if (requestDetails.tabId >= 0) {
-			browser.tabs.sendMessage(requestDetails.tabId, {
-				cleanStorage: true
-			});
+		// start FP evaluation process and store result array
+		var evalResult = evaluateGroups(tabId);
+		
+		// store latest severity value after evaluation of given tab
+		if (evalResult.severity) {
+			latestEvals[tabId].severity = evalResult.severity;
 		}
-	
-		// clear all browsing data for origin of tab url to prevent fingerprint caching
-		if (tabUrl) {
-			try {
-				// "origins" key only supported by Chromium browsers
-				browser.browsingData.remove({
-					"origins": [new URL(tabUrl).origin]
-				}, {
-					"cacheStorage": true,
-					"cookies": true,
-					"fileSystems": true,
-					"indexedDB": true,
-					"localStorage": true,
-					"serviceWorkers": true,
-					"webSQL": true
-				});
-			} 
-			catch (e) {
-				// need to use "hostnames" key for Firefox
-				if (e.message.includes("origins")) {
-					browser.browsingData.remove({
-						"hostnames": extractSubDomains(new URL(tabUrl).hostname).filter((x) => (x.includes(".")))
-					}, {
-						"cookies": true,
-						"indexedDB": true,
-						"localStorage": true,
-						"serviceWorkers": true
+
+		// modify color of browserAction
+		if (evalResult.severity[2]) {
+			browser.browserAction.setBadgeBackgroundColor({color: evalResult.severity[2], tabId: tabId});
+		}
+
+		// if actualWeight of root group is higher than 0 => reactive phase and applying measures
+		if (evalResult.weight) {
+
+			// get url of tab asociated with this request
+			var tabUrl = availableTabs[tabId] ? availableTabs[tabId].url : undefined;
+
+			// create notification for user if behavior is "notification" or higher (only once for every tab load)
+			if (fpdSettings.behavior > 0 && !latestEvals[tabId].stopNotifyFlag) {
+				latestEvals[tabId].stopNotifyFlag = true;
+				notifyFingerprintBlocking(tabId);
+			}
+
+			// block request and clear cache data only if "blocking" behavior is set
+			if (fpdSettings.behavior > 1) {
+				
+				// clear local and session storage (using content script) for every frame in this tab (required?)
+				if (tabId >= 0) {
+					browser.tabs.sendMessage(tabId, {
+						cleanStorage: true
 					});
 				}
-				else {
-					throw e;
+			
+				// clear all browsing data for origin of tab url to prevent fingerprint caching
+				if (tabUrl && fpdSettings.behavior > 2) {
+					try {
+						// "origins" key only supported by Chromium browsers
+						browser.browsingData.remove({
+							"origins": [new URL(tabUrl).origin]
+						}, {
+							"appcache": true,
+							"cache": true,
+							"cacheStorage": true,
+							"cookies": true,
+							"fileSystems": true,
+							"indexedDB": true,
+							"localStorage": true,
+							"serviceWorkers": true,
+							"webSQL": true
+						});
+					}
+					catch (e) {
+						// need to use "hostnames" key for Firefox
+						if (e.message.includes("origins")) {
+							browser.browsingData.remove({
+								"hostnames": extractSubDomains(new URL(tabUrl).hostname).filter((x) => (x.includes(".")))
+							}, {
+								"cache": true,
+								"cookies": true,
+								"indexedDB": true,
+								"localStorage": true,
+								"serviceWorkers": true
+							});
+						}
+						else {
+							throw e;
+						}
+					}
 				}
+
+				return {
+					cancel: true
+				};
 			}
 		}
-
-		return {
-			cancel: true
-		};
 	}
 
 	return {
 		cancel: false
 	};
-}
-
-/**
- * The function that returns FPD setting for given url.
- *
- * \param tabId Tab identifier for which FPD setting is needed.
- * 
- * \returns Boolean value TRUE if FPD is on, otherwise FALSE.
- */
-
-function isFpdOn(tabId) {
-	if (!availableTabs[tabId]) {
-		return false;
-	}
-	let url = wwwRemove(new URL(availableTabs[tabId].url).hostname);
-	if (fpDetectionEnabled && !isFpdWhitelisted(url)) {
-		return true;
-	}
-	return false;
 }

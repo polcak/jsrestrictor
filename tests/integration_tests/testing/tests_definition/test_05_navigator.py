@@ -3,8 +3,8 @@
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
-#  Copyright (C) 2020  Martin Bednar
 #  Copyright (C) 2021  Matus Svancar
+#  Copyright (C) 2022  Martin Bednar
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -109,7 +109,9 @@ def test_oscpu(browser, navigator, expected):
 
 ## Test plugins count
 def test_plugins_count(browser, navigator, expected):
-    if expected.navigator.plugins['count'][browser.type] == 'REAL VALUE':
+    if expected.navigator.plugins['count'][browser.type] == 'IGNORE':
+        return
+    elif expected.navigator.plugins['count'][browser.type] == 'REAL VALUE':
         assert len(navigator['plugins']) == len(browser.real.navigator.plugins)
     elif expected.navigator.plugins['count'][browser.type] == 'PLUS_2':
         assert len(navigator['plugins']) == len(browser.real.navigator.plugins) + 2
@@ -118,7 +120,9 @@ def test_plugins_count(browser, navigator, expected):
 
 ## Test plugins array value
 def test_plugins(browser, navigator, expected):
-    if expected.navigator.plugins['value'][browser.type] == 'REAL VALUE':
+    if expected.navigator.plugins['count'][browser.type] == 'IGNORE':
+        return
+    elif expected.navigator.plugins['value'][browser.type] == 'REAL VALUE':
         assert navigator['plugins'] == browser.real.navigator.plugins
     elif expected.navigator.plugins['value'][browser.type] == 'EMPTY':
         assert not navigator['plugins']
@@ -127,7 +131,9 @@ def test_plugins(browser, navigator, expected):
 
 ## Test mimeTypes
 def test_mime_types(browser, navigator, expected):
-    if expected.navigator.mimeTypes == 'EMPTY':
+    if expected.navigator.mimeTypes == 'IGNORE':
+        return
+    elif expected.navigator.mimeTypes == 'EMPTY':
         assert navigator['mimeTypes'] == []
     elif expected.navigator.mimeTypes == 'SPOOF VALUE':
         if browser.real.navigator.mimeTypes == []:

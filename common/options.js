@@ -232,13 +232,17 @@ function insert_levels() {
 	document.getElementById("level-" + default_level.level_id).classList.add("active");
 }
 
-window.addEventListener("load", function() {
+window.addEventListener("load", async function() {
 	if (!levels_initialised) {
 		levels_updated_callbacks.push(insert_levels);
 	}
 	else {
 		insert_levels();
 	}
+	await Promise.all([
+		load_module_settings("nbs"),
+		load_module_settings("fpd")
+	])
 	loadWhitelist("nbs");
 	load_on_off_switch("nbs");
 	loadWhitelist("fpd");
@@ -257,17 +261,58 @@ document.getElementById("new_level").addEventListener("click", function() {
 	prepare_level_config("Add new level", new_level)
 });
 
+document.getElementById("nbs-whitelist-show").addEventListener("click", () => show_whitelist("nbs"));
 document.getElementById("nbs-whitelist-add-button").addEventListener("click", () => add_to_whitelist("nbs"));
 document.getElementById("nbs-whitelist-input").addEventListener('keydown', (e) => {if (e.key === 'Enter') add_to_whitelist("nbs")});
 document.getElementById("nbs-whitelist-remove-button").addEventListener("click", () => remove_from_whitelist("nbs"));
 document.getElementById("nbs-whitelist-select").addEventListener('keydown', (e) => {if (e.key === 'Delete') remove_from_whitelist("nbs")});
 document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_slider, 200, "nbs")});
 
+document.getElementById("fpd-whitelist-show").addEventListener("click", () => show_whitelist("fpd"));
 document.getElementById("fpd-whitelist-add-button").addEventListener("click", () => add_to_whitelist("fpd"));
 document.getElementById("fpd-whitelist-input").addEventListener('keydown', (e) => {if (e.key === 'Enter') add_to_whitelist("fpd")});
 document.getElementById("fpd-whitelist-remove-button").addEventListener("click", () => remove_from_whitelist("fpd"));
 document.getElementById("fpd-whitelist-select").addEventListener('keydown', (e) => {if (e.key === 'Delete') remove_from_whitelist("fpd")});
 document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_slider, 200, "fpd")});
+
+async function load_module_settings(prefix) {
+	let settings = await browser.runtime.sendMessage({purpose: prefix + "-get-settings"});
+	if (settings) {
+		let tweaksBusiness = Object.create(tweaks_gui);
+		tweaksBusiness.previousValues = new Object();
+		tweaksBusiness.tweak_changed = function(key, val) {
+			let permissions = settings.def[key].params[val].permissions || [];
+			browser.permissions.request({permissions: permissions}).then((granted) => {
+				if (granted) {
+					tweaksBusiness.previousValues[key] = val;
+				}
+				else {
+					let inputElement = document.querySelector(`#${prefix}-${key}-setting input`);
+					inputElement.value = tweaksBusiness.previousValues[key];
+					inputElement.dispatchEvent(new Event("input"));
+				}
+				browser.runtime.sendMessage({purpose: prefix + "-set-settings", id: key, value: tweaksBusiness.previousValues[key]});
+			});
+		}
+
+		let targetElement = document.getElementById(prefix + "-settings");
+		for ([key, setting] of Object.entries(settings.def)) {
+			var fragment = document.createRange().createContextualFragment(`
+			<fieldset>
+				<div id="${prefix}-${key}-setting" class="tweakgrid"></div>
+			</fieldset>`);
+			tweaksBusiness.previousValues[key] = settings.val[key];
+			tweaksBusiness.add_tweak_row(fragment.firstElementChild.firstElementChild, {}, key, settings.val[key], setting.label, setting, true);
+			targetElement.appendChild(fragment);
+		}
+	}
+}
+
+function show_whitelist(prefix) {
+	loadWhitelist(prefix);
+	var whitelist = document.getElementById(prefix + "-whitelist-container");
+	whitelist.classList.toggle("hidden");
+}
 
 function add_to_whitelist(prefix)
 {	
@@ -322,7 +367,7 @@ function update_whitelist(listbox, prefix)
 		whitelistedHosts[listbox.options[i].text] = true;
 	}
 
-	if (prefix == "nbs") setStorageAndSendMessage({"whitelistedHosts":whitelistedHosts}, {message:"whitelist updated"});
+	if (prefix == "nbs") setStorageAndSendMessage({"nbsWhitelist":whitelistedHosts}, {message:"whitelist updated"});
 	if (prefix == "fpd") setStorageAndSendMessage({"fpdWhitelist":whitelistedHosts}, {purpose:"update-fpd-whitelist"});
 }
 
@@ -355,9 +400,10 @@ function getSelectValues(select)
 function loadWhitelist(prefix)
 {	
 	var listbox = document.getElementById(prefix + "-whitelist-select");
+	listbox.options.length = 0;
 	
 	var whitelistName;
-	if (prefix == "nbs") whitelistName = "whitelistedHosts";
+	if (prefix == "nbs") whitelistName = "nbsWhitelist";
 	if (prefix == "fpd") whitelistName = "fpdWhitelist";
 	
 	//Get the whitelist
@@ -390,10 +436,12 @@ function load_on_off_switch(prefix)
 		if (result[flagName] || result[flagName] == undefined)
 		{
 			checkbox.checked = true;
+			toggleSettings(prefix, true);
 		}
 		else
 		{
 			checkbox.checked = false;
+			toggleSettings(prefix, false);
 		}
 	});
 }
@@ -407,12 +455,21 @@ function control_slider(prefix)
 	{
 		if (prefix == "nbs") setStorageAndSendMessage({"requestShieldOn": true}, {message:"turn request shield on"});
 		if (prefix == "fpd") setStorageAndSendMessage({"fpDetectionOn": true}, {purpose:"fpd-state-change"});
+		toggleSettings(prefix, true);
 	}
 	else
 	{
 		if (prefix == "nbs") setStorageAndSendMessage({"requestShieldOn": false}, {message:"turn request shield off"});
 		if (prefix == "fpd") setStorageAndSendMessage({"fpDetectionOn": false}, {purpose:"fpd-state-change"});
+		toggleSettings(prefix, false);
 	}
+}
+
+function toggleSettings(prefix, enable) {
+	tweaksArr = document.querySelectorAll(`#${prefix}-settings input.tlev`);
+	tweaksArr.forEach((node) => {
+		node.disabled = !enable;
+	})
 }
 
 function prepareHiddenHelpText(originally_hidden_elements, originally_visible_elements = []) {

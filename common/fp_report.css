@@ -1,0 +1,116 @@
+/*
+
+ * SPDX-FileCopyrightText: 2022 2021 Marek Saloň
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+body {
+	padding: 1em;
+	margin: 1em;
+	min-width: 38em;
+	font-family: "Segoe UI", Tahoma, sans-serif;
+	font-size: 75%;
+}
+
+header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	font-size: large;
+	margin-bottom: 0.5em;
+	border-bottom: 2px solid #aaa;
+}
+
+header > div {
+	min-width: 0;
+}
+
+h4 {
+	color: var(--text-color);
+}
+
+#logo {
+	width: 48px;
+	padding-left: 50px;
+}
+
+#titletext {
+	display: block;
+	font-size: large;
+	text-align: center;
+	margin: 0.2em 0px;
+	text-align: left;
+	color: var(--title-color);
+}
+
+.fpd-group > .fpd-group  {
+	padding-left: 2em;
+	border-left: 2px solid #aaa;
+}
+
+.fpd-group > h2 {
+	display: inline-block;
+	color: var(--title-color);
+	margin: 0px 0px;
+	-webkit-transition: color 0.5s;
+	-moz-transition: color 0.5s;
+	-ms-transition: color 0.5s;
+	-o-transition: color 0.5s;
+	transition: color 0.5s;
+}
+
+.fpd-group > h2.clickable:hover { 
+	cursor: pointer;
+	color: var(--text-color);
+}
+
+.dot {
+	color: var(--title-color);
+}
+
+.hidden {
+	display: none;
+}
+
+.no-access {
+	display: none;
+}
+
+#pageFavicon {
+	height: 18px;
+	margin-right: 2px;
+}
+
+#page-container {
+	white-space: nowrap;
+}
+
+#report-url {
+	display: inline-block;
+	height: 20px;
+	max-width: 99%;
+	white-space: nowrap;
+	overflow: hidden !important;
+	text-overflow: ellipsis;
+	margin: 0px;
+	color: var(--text-color);
+}
+
+#showAll {
+	float: right;
+	position: sticky;
+	top: 10px;
+	cursor: pointer;
+}
+
+.description {
+	font-size: x-small;
+}
+
+#unhideAll {
+	cursor: pointer;
+	color: var(--title-color);
+	text-decoration: underline;
+}

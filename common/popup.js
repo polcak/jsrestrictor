@@ -276,6 +276,7 @@ function fill_jsshield(msg) {
 	current_level = msg;
 	enable_jss(msg);
 	enableRefreshIfNeeded();
+	fpdGetSeverity();
 
 	add_level_buttons();
 	update_level_info();
@@ -337,6 +338,29 @@ async function getCurrentSite() {
 		}
 		return site = null;
 	}
+}
+
+
+document.getElementById("severity_value").addEventListener("click", async function () {
+	let [tab] = await browser.tabs.query({currentWindow: true, active: true});
+	browser.runtime.sendMessage({purpose: "fpd-create-report", tabId: tab.id});
+});
+
+/// Get fingerprinting severity from FPD and show it in a popup
+async function fpdGetSeverity() {
+	let [tab] = await browser.tabs.query({currentWindow: true, active: true});
+	let response = await browser.runtime.sendMessage({purpose: "fpd-fetch-severity", tabId: tab.id});
+	if (response) {
+		let element = document.getElementById("severity_value");
+		if (response[1]) {
+			element.innerText = response[1];
+			document.getElementById("severity_container").classList.remove("hidden");
+		}
+		if (response[2]) {
+			element.style.backgroundColor = response[2];
+		}
+	}
+	setTimeout(fpdGetSeverity, 2000);
 }
 
 /// Load switch state from storage for current site

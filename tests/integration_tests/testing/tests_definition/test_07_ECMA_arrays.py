@@ -3,7 +3,7 @@
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
-#  Copyright (C) 2020  Martin Bednar
+#  Copyright (C) 2022  Martin Bednar
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -22,30 +22,27 @@
 #
 
 import pytest
-from datetime import datetime
-import time
-import random
+from selenium.webdriver.common.by import By
 
-from math_operations import is_in_accuracy
 from configuration import get_config
-
 
 ## Setup method - it is run before time tests execution starts.
 #
-#  This setup method open testing page - it is necessary in Mozilla Firefox.
-#  In Mozilla Firefox: Time is spoofed only when page is opened.
+#  This setup method open testing page.
 @pytest.fixture(scope='module', autouse=True)
 def load_test_page(browser):
     browser.driver.get(get_config("testing_page"))
 
 
-## Test hours.
-#  Hours should be real value. Maximal deviation should be 1 (change hour during command execution or another timezone).
-def test_hours_minutes_seconds(browser):
-    js_time = browser.driver.execute_script("let d = new Date();"
-                                            "return d.getHours()*60*60 + d.getMinutes()*60 + d.getSeconds()")
-    p_now = datetime.now()
-    p_time = p_now.hour * 60 * 60 + p_now.minute * 60 + p_now.second
-    # Values do not have to be strictly equal.
-    # A deviation of less than 4 is tolerated.
-    assert abs(js_time - p_time) < 4
+## Test crypto.getRandomValues.
+#  Random values should be generated. No error in Javascript runtime should appear.
+# \bug Known bug: JShelter, Firefox, level 3: Uncaught TypeError: Crypto.getRandomValues: Argument 1 does not implement interface ArrayBufferView.
+# Bug is caused by passing a proxy object to the function, but the actual object is expected (not the proxy).
+@pytest.mark.xfail
+def test_crypto_getRandomValues(browser):
+    ul = browser.driver.find_element(By.ID,"getRandomValues")
+    if len(ul.text) > 0:
+        items = ul.find_elements(By.TAG_NAME,"li")
+        assert len(items) > 0
+    else:
+        pytest.fail("No random value generated. Probable JavaScript error: Crypto.getRandomValues: Argument 1 does not implement interface ArrayBufferView.")

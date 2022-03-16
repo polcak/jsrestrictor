@@ -229,168 +229,168 @@
   }
 
   /*
-    * \brief Initializes the fake magnetic field generator
+    * \brief Fake magnetic field generator class
     *        (Modify the constants below to change the generator's behavior.)
   */
-  function initFieldGenerator() {
-    // Specifies, how much the values may (pseudorandomly) oscillate,
-    // i.e., how much the may relatively differ from the chosen center value
-    // in both positiva and negative way
-    const FLUCTUATION_MIN = 0.20;
-    const FLUCTUATION_MAX = 0.45;
-    const AXES_OSCILLATE_DIFFERENTLY = true;
+  class FieldGenerator {
+    constructor() {
+      // Specifies, how much the values may (pseudorandomly) oscillate,
+      // i.e., how much the may relatively differ from the chosen center value
+      // in both positiva and negative way
+      this.FLUCTUATION_MIN = 0.20;
+      this.FLUCTUATION_MAX = 0.45;
+      this.AXES_OSCILLATE_DIFFERENTLY = true;
 
-    const NUMBER_OF_SINES_MIN = 25;
-    const NUMBER_OF_SINES_MAX = 30;
+      this.NUMBER_OF_SINES_MIN = 25;
+      this.NUMBER_OF_SINES_MAX = 30;
 
-    // Shifts the phase of each axis randomly [0, 2*PI)
-    const RANDOM_PHASE_SHIFT = true;
+      // Shifts the phase of each axis randomly [0, 2*PI)
+      this.RANDOM_PHASE_SHIFT = true;
 
-    // Minimum sampling rate of the device(s)
-    // Motivation: It does not have sense to waste computing resources
-    // by oscillating in periods smaller than this value
-    const MIN_SAMPLING_RATE = 100; // [ms]
+      // Minimum sampling rate of the device(s)
+      // Motivation: It does not have sense to waste computing resources
+      // by oscillating in periods smaller than this value
+      this.MIN_SAMPLING_RATE = 100; // [ms]
 
-    // Period configuration
-    const PERIOD_MIN = MIN_SAMPLING_RATE;
-    const PERIOD_MAX = 60000 // 1 minute
+      // Period configuration
+      this.PERIOD_MIN = this.MIN_SAMPLING_RATE;
+      this.PERIOD_MAX = 60000 // 1 minute
 
-    // Defines whether the axes orientation is generated pseudorandomly
-    // true = A PRNG is used to draw the orientation of x/y/z axes
-    // false = orientation is calculated from the Earth's reference
-    //         coordinate system and the (faked) orientation of the
-    //         phone defined by the global rotation matrix (orient.rotMat)
-    const RANDOM_AXES_ORIENTATION = false;
+      // Defines whether the axes orientation is generated pseudorandomly
+      // true = A PRNG is used to draw the orientation of x/y/z axes
+      // false = orientation is calculated from the Earth's reference
+      //         coordinate system and the (faked) orientation of the
+      //         phone defined by the global rotation matrix (orient.rotMat)
+      this.RANDOM_AXES_ORIENTATION = false;
 
-    let m = generateBaseField();
+      let m = generateBaseField();
 
-    // Base of each axis
-    var baseX = 0;
-    var baseY = 0;
-    var baseZ = 0;
+      // Base of each axis
+      var baseX = 0;
+      var baseY = 0;
+      var baseZ = 0;
 
-    // Calculate the axes base
-    if (RANDOM_AXES_ORIENTATION) {
-      /*
-       * Pseudorandom axes orientation
-       *
-       * The generateRandomAxisBase() is used to draw a number between
-       * -1 and 1 for each axis base.
-       */
-      baseX = generateRandomAxisBase();
-      baseY = generateRandomAxisBase();
-      baseZ = generateRandomAxisBase();
-    } else {
-      /*
-       * Calculation of axes orientation from the device's rotation
-       *
-       * The magnetic field vector is oriented towards the Earth's magnetic
-       * north and towards the center of the earth.
-       */
-      referenceMagVec = [0, 0.4, -0.6];
+      // Calculate the axes base
+      if (this.RANDOM_AXES_ORIENTATION) {
+        /*
+         * Pseudorandom axes orientation
+         *
+         * The generateRandomAxisBase() is used to draw a number between
+         * -1 and 1 for each axis base.
+         */
+        baseX = generateRandomAxisBase();
+        baseY = generateRandomAxisBase();
+        baseZ = generateRandomAxisBase();
+      } else {
+        /*
+         * Calculation of axes orientation from the device's rotation
+         *
+         * The magnetic field vector is oriented towards the Earth's magnetic
+         * north and towards the center of the earth.
+         */
+        let referenceMagVec = [0, 0.4, -0.6];
 
-      /*
-       * Actual field's strengths in all directions, based on the orientation:
-       * (Tested on Samsung Galaxy S21 Ultra [And12] and Xiaomi Redmi 9 [And11])
-       *
-       * Legend:
-       * -- ... highly negative
-       * -  ... negative
-       * 0  ... zero
-       * +  ... positive
-       * ++ ... highly positive
-       *
-       * +-------+-------+------+---+---+---+
-       * |  yaw  | pitch | roll | x | y | z |
-       * +-------+-------+------+---+---+---+
-       * |  0       0       0     0   +  -- |
-       * |  PI      0       0     0   -  -- |
-       * |  PI/2    0       0     -   0  -- |
-       * | -PI/2    0       0     +   0  -- |
-       * +----------------------------------+
-       */
+        /*
+         * Actual field's strengths in all directions, based on the orientation:
+         * (Tested on Samsung Galaxy S21 Ultra [And12] and Xiaomi Redmi 9 [And11])
+         *
+         * Legend:
+         * -- ... highly negative
+         * -  ... negative
+         * 0  ... zero
+         * +  ... positive
+         * ++ ... highly positive
+         *
+         * +-------+-------+------+---+---+---+
+         * |  yaw  | pitch | roll | x | y | z |
+         * +-------+-------+------+---+---+---+
+         * |  0       0       0     0   +  -- |
+         * |  PI      0       0     0   -  -- |
+         * |  PI/2    0       0     -   0  -- |
+         * | -PI/2    0       0     +   0  -- |
+         * +----------------------------------+
+         */
 
-      // The vector is rotated using the device's fake rotation matrix
-      var deviceMagVec  = multVectRot(referenceMagVec, orient.rotMat);
+        // The vector is rotated using the device's fake rotation matrix
+        var deviceMagVec  = multVectRot(referenceMagVec, orient.rotMat);
 
-      console.log("ROT");
-      console.log(deviceMagVec);
+        if (debugMode) {
+          console.debug(deviceMagVec);
+        }
 
-      // The orientation is taken from the elements of the vector
-      baseX = deviceMagVec[0];
-      baseY = deviceMagVec[1];
-      baseZ = deviceMagVec[2];
-    }
+        // The orientation is taken from the elements of the vector
+        baseX = deviceMagVec[0];
+        baseY = deviceMagVec[1];
+        baseZ = deviceMagVec[2];
+      }
 
-    var baseX2 = Math.pow(baseX,2)
-    var baseY2 = Math.pow(baseY,2)
-    var baseZ2 = Math.pow(baseZ,2)
+      var baseX2 = Math.pow(baseX,2)
+      var baseY2 = Math.pow(baseY,2)
+      var baseZ2 = Math.pow(baseZ,2)
 
-    // The total magnetic field strength is calculated as:
-    //   m = sqrt(x^2, y^2, z^2)
-    // where x,y,z are strengs in individual directions (axes).
-    //
-    // For x,y,z, the algorithm generates a sine-based fluctuation around
-    // a center value for each axis. For axis x, it is calculated as:
-    //   x = baseX * multiplier
-    //
-    // At this moment, we have calculate the basis (-1,1) for each axis.
-    // Now, we calculate the multiplier:
-    //
-    //                   m + sqrt(baseX^2 + baseY^2 + baseZ^2)
-    // multiplier = +/- -------------------------------------
-    //                       baseX^2 + baseY^2 + baseZ^2
-    //
-    // Values at axis X will oscillate around: baseX * multiplier, etc.
+      // The total magnetic field strength is calculated as:
+      //   m = sqrt(x^2, y^2, z^2)
+      // where x,y,z are strengs in individual directions (axes).
+      //
+      // For x,y,z, the algorithm generates a sine-based fluctuation around
+      // a center value for each axis. For axis x, it is calculated as:
+      //   x = baseX * multiplier
+      //
+      // At this moment, we have calculate the basis (-1,1) for each axis.
+      // Now, we calculate the multiplier:
+      //
+      //                   m + sqrt(baseX^2 + baseY^2 + baseZ^2)
+      // multiplier = +/- -------------------------------------
+      //                       baseX^2 + baseY^2 + baseZ^2
+      //
+      // Values at axis X will oscillate around: baseX * multiplier, etc.
 
-    mult = (m * Math.sqrt(baseX2 + baseY2 + baseZ2))
-                       / (baseX2 + baseY2 + baseZ2);
+      let mult = (m * Math.sqrt(baseX2 + baseY2 + baseZ2))
+                    / (baseX2 + baseY2 + baseZ2);
 
-    fieldGen = {
-      baseField: m,
-      multiplier: mult,
-      x: {
+      this.baseField = m,
+      this.multiplier = mult,
+      this.x = {
         base: baseX,
         center: baseX * mult,
         sines: [],
         value: null
-      },
-      y: {
+      };
+      this.y = {
         base: baseY,
         center: baseY * mult,
         sines: [],
         value: null
-      },
-      z: {
+      };
+      this.z = {
         base: baseZ,
         center: baseZ * mult,
         sines: [],
         value: null
-      },
-      // Update x/y/z values based on timestamp
-      update: function(t) {
-        // Simulate the magnetic field fluctuation based on settings
-        // Center is added only once - we want to y-shift the result, not individial sines
-        this.x.value = this.x.center + this.x.sines.reduce(function (val, s) {
-          return val + (Math.sin(t * (TWOPI/s.period) + s.shift) * s.amplitude);
-        }, 0);
-        this.y.value = this.y.center + this.y.sines.reduce(function (val, s) {
-          return val + (Math.sin(t * (TWOPI/s.period) + s.shift) * s.amplitude);
-        }, 0);
-        this.z.value = this.z.center + this.z.sines.reduce(function (val, s) {
-          return val + (Math.sin(t * (TWOPI/s.period) + s.shift) * s.amplitude);
-        }, 0);
-      }
+      };
+
+      this.x.sines = configureSines(this.NUMBER_OF_SINES_MIN, this.NUMBER_OF_SINES_MAX, this.x.center,
+                                    this.FLUCTUATION_MIN, this.FLUCTUATION_MAX, this.PERIOD_MIN, this.PERIOD_MAX);
+      this.y.sines = configureSines(this.NUMBER_OF_SINES_MIN, this.NUMBER_OF_SINES_MAX, this.y.center,
+                                    this.FLUCTUATION_MIN, this.FLUCTUATION_MAX, this.PERIOD_MIN, this.PERIOD_MAX);
+      this.z.sines = configureSines(this.NUMBER_OF_SINES_MIN, this.NUMBER_OF_SINES_MAX, this.z.center,
+                                    this.FLUCTUATION_MIN, this.FLUCTUATION_MAX, this.PERIOD_MIN, this.PERIOD_MAX);
     }
 
-    fieldGen.x.sines = configureSines(NUMBER_OF_SINES_MIN, NUMBER_OF_SINES_MAX, fieldGen.x.center,
-                                  FLUCTUATION_MIN, FLUCTUATION_MAX, PERIOD_MIN, PERIOD_MAX);
-    fieldGen.y.sines = configureSines(NUMBER_OF_SINES_MIN, NUMBER_OF_SINES_MAX, fieldGen.y.center,
-                                  FLUCTUATION_MIN, FLUCTUATION_MAX, PERIOD_MIN, PERIOD_MAX);
-    fieldGen.z.sines = configureSines(NUMBER_OF_SINES_MIN, NUMBER_OF_SINES_MAX, fieldGen.z.center,
-                                  FLUCTUATION_MIN, FLUCTUATION_MAX, PERIOD_MIN, PERIOD_MAX);
-
-    return fieldGen;
+    // Updates the x/y/z values based on timestamp
+    update(t) {
+      // Simulate the magnetic field fluctuation based on settings
+      // Center is added only once - we want to y-shift the result, not individial sines
+      this.x.value = this.x.center + this.x.sines.reduce(function (val, s) {
+        return val + (Math.sin(t * (TWOPI/s.period) + s.shift) * s.amplitude);
+      }, 0);
+      this.y.value = this.y.center + this.y.sines.reduce(function (val, s) {
+        return val + (Math.sin(t * (TWOPI/s.period) + s.shift) * s.amplitude);
+      }, 0);
+      this.z.value = this.z.center + this.z.sines.reduce(function (val, s) {
+        return val + (Math.sin(t * (TWOPI/s.period) + s.shift) * s.amplitude);
+      }, 0);
+    }
   }
 
   /*
@@ -453,7 +453,7 @@
     currentReading.fake_z = fieldGenerator.z.value;
 
     if (debugMode) {
-      console.log(fieldGenerator);
+      console.debug(fieldGenerator);
     }
   }
 
@@ -462,11 +462,11 @@
   */
   var generators = `
     // Initialize the field generator, if not initialized before
-    var fieldGenerator = fieldGenerator || initFieldGenerator();
+    var fieldGenerator = fieldGenerator || new FieldGenerator();
     `;
 
   var helping_functions = sensorapi_prng_functions + device_orientation_functions
-          + SineCfg + configureSines + initFieldGenerator
+          + SineCfg + configureSines + FieldGenerator
           + generateBaseField + generateRandomAxisBase + updateReadings;
   var hc = init_data + orig_getters + helping_functions + generators;
 

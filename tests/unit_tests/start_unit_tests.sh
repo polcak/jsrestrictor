@@ -4,7 +4,7 @@
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
-#  Copyright (C) 2021 Martin Bednar
+#  Copyright (C) 2022 Martin Bednar
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -122,7 +122,7 @@ for k in $(jq '.scripts | keys | .[]' ./config/global.json); do
 	remove_custom_namespace=$(jq -r '.remove_custom_namespace' <<< "$script")
 	if [ $remove_custom_namespace == "true" ]
 	then
-		sed -i -e "s/(function() {//" -e "s/})();//" -e "s/successCallback(/return(/" ./tmp/$source_script_name
+		sed -i -e "s/(function() {//" -e "s/(function () {//" -e "s/})();//" -e "s/successCallback(/return(/" ./tmp/$source_script_name
 	fi
 	
 	# Modify source script - convert "let" variables to "var" variables if necessary.

@@ -38,7 +38,7 @@ function installUpdate() {
 	 *    domains: {}, // associative array of levels associated with specific domains (key, the domain => object)
 	 *      {level_id: short string of the level in use
 	 *      }
-	 *	  whitelistedHosts: {} // associative array of hosts that are removed from http protection control (hostname => boolean)
+	 *	  nbsWhitelist: {} // associative array of hosts that are removed from http protection control (hostname => boolean)
 	 *	  requestShieldOn: {} // Boolean, if it's TRUE or undefined, the http request protection is turned on,  if it's FALSE, the protection si turned off
 	 *	  fpDetectionOn: {} // Boolean, if it's TRUE, the fingerprint detection is turned on,  if it's FALSE or undefined, the protection si turned off
 	 *
@@ -351,6 +351,25 @@ function installUpdate() {
 			}
 			item.version = 6.1;
 		}
+		if (item.version < 6.2) {
+			if (item.fpDetectionOn) {
+				item.fpdSettings = {
+					behavior: 3
+				};
+			}
+			else {
+				item.fpdSettings = {
+					behavior: 1
+				};
+			}
+			item.fpDetectionOn = true;
+			item.nbsWhitelist = item.whitelistedHosts;
+			delete item.whitelistedHosts;
+			item.nbsSettings = {
+				notifications: 1
+			};
+			item.version = 6.2;
+		}
 		browser.storage.sync.set(item);
 	});
 }
@@ -376,8 +395,17 @@ function checkAndSaveConfig(conf) {
 	if (!("domains" in conf) || typeof(conf.domains) !== "object") {
 		conf.domains = {};
 	}
-	if (!("whitelistedHosts" in conf) || typeof(conf.whitelistedHosts) !== "object") {
-		conf.whitelistedHosts = {};
+	if (!("nbsWhitelist" in conf) || typeof(conf.nbsWhitelist) !== "object") {
+		conf.nbsWhitelist = {};
+	}
+	if (!("nbsSettings" in conf) || typeof(conf.nbsSettings) !== "object") {
+		conf.nbsSettings = {};
+	}
+	if (!("fpdWhitelist" in conf) || typeof(conf.fpdWhitelist) !== "object") {
+		conf.fpdWhitelist = {};
+	}
+	if (!("fpdSettings" in conf) || typeof(conf.fpdSettings) !== "object") {
+		conf.fpdSettings = {};
 	}
 	browser.storage.sync.set(conf);
 	installUpdate();

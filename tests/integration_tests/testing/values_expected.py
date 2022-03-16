@@ -3,8 +3,8 @@
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
-#  Copyright (C) 2021  Martin Bednar
 #  Copyright (C) 2021  Matus Svancar
+#  Copyright (C) 2022  Martin Bednar
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -77,11 +77,11 @@ level0 = TestedValues(
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
           'accuracy': 'EXACTLY'},
-    plugins={'count': {BrowserType.FIREFOX: 'REAL VALUE',
+    plugins={'count': {BrowserType.FIREFOX: 0,
                        BrowserType.CHROME: 'IGNORE'},
-             'value': {BrowserType.FIREFOX: 'REAL VALUE',
+             'value': {BrowserType.FIREFOX: 'EMPTY',
                        BrowserType.CHROME: 'IGNORE'}},
-    mimeTypes='REAL VALUE',
+    mimeTypes='IGNORE',
     get_channel= 'REAL VALUE',
     copy_channel= 'REAL VALUE',
     byte_time_domain= 'REAL VALUE',
@@ -144,10 +144,10 @@ level1 = TestedValues(
     time={'value': 'REAL VALUE',
           'accuracy': 0.01},
     plugins={'count': {BrowserType.FIREFOX: 0,
-                       BrowserType.CHROME: 'IGNORE'},
+                       BrowserType.CHROME: 'REAL VALUE'},
              'value': {BrowserType.FIREFOX: 'EMPTY',
-                       BrowserType.CHROME: 'IGNORE'}},
-    mimeTypes='SPOOF VALUE',
+                       BrowserType.CHROME: 'REAL VALUE'}},
+    mimeTypes='REAL VALUE',
     get_channel= 'REAL VALUE',
     copy_channel= 'REAL VALUE',
     byte_time_domain= 'REAL VALUE',
@@ -183,7 +183,7 @@ level2 = TestedValues(
     cookie_enabled='REAL VALUE',
     oscpu='REAL VALUE',
     gps_accuracy={'value': 'REAL VALUE',
-                  'accuracy': 100},
+                  'accuracy': 1},
     altitude={'value': 'REAL VALUE',
               'accuracy': 100},
     altitude_accurac={'value': 'REAL VALUE',
@@ -199,7 +199,7 @@ level2 = TestedValues(
     speed={'value': 'REAL VALUE',
            'accuracy': 100},
     timestamp={'value': 'REAL VALUE',
-               'accuracy': 0.1},
+               'accuracy': 0.001},
     device_memory={BrowserType.FIREFOX: None,
                    BrowserType.CHROME: 'SPOOF VALUE',
                    'valid_values': {0.25,0.5,1,2,4,8}},
@@ -208,12 +208,12 @@ level2 = TestedValues(
     IOdevices= {0,1,2,3,4,5,6,7,8,9},
     referrer='REAL VALUE',
     time={'value': 'REAL VALUE',
-          'accuracy': 0.1},
+          'accuracy': 1},
     plugins={'count': {BrowserType.FIREFOX: 0,
                        BrowserType.CHROME: 'IGNORE'},
              'value': {BrowserType.FIREFOX: 'EMPTY',
                        BrowserType.CHROME: 'IGNORE'}},
-    mimeTypes='EMPTY',
+    mimeTypes='SPOOF VALUE',
     get_channel= 'SPOOF VALUE',
     copy_channel= 'SPOOF VALUE',
     byte_time_domain= 'SPOOF VALUE',
@@ -221,7 +221,7 @@ level2 = TestedValues(
     byte_frequency= 'SPOOF VALUE',
     float_frequency= 'SPOOF VALUE',
     performance={'value': 'REAL VALUE',
-                 'accuracy': 100},
+                 'accuracy': 1},
     protect_canvas=False,
     canvas_imageData = 'SPOOF VALUE',
     canvas_dataURL = 'SPOOF VALUE',

@@ -54,3 +54,7 @@ def expected():
         return values_expected.level3
     elif get_shared_browser().jsr_level == 4:
         return values_expected.level4
+    elif get_shared_browser().jsr_level == "Experiment":
+        return values_expected.level3
+    else:
+        return values_expected.level3

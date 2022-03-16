@@ -310,6 +310,112 @@
 			{
 				"begin": "var browser = JSON.parse(JSON.stringify(sinon_browser)); browser.storage.sync.get = function(param) { return Promise.resolve(param); }; browser.runtime.onMessage.addListener = function(){return;}; browser.runtime.getURL = function(){return;};"
 			}
+		},
+		{
+			"name": "wrappingS-ECMA-SHARED",
+			"remove_custom_namespace": true,
+			"let_to_var": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrapping.js",
+							"objects": [
+								"add_wrappers"
+							]
+						}
+					]
+				}
+			],
+			"extra_exports": [
+				"proxyHandler",
+				"wrappingFunctionBody",
+				"wrappers"
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrappingS-ECMA-SHARED.js",
+							"objects": [
+								"proxyHandler",
+								"wrappingFunctionBody",
+								"wrappers"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "wrappingS-ECMA-ARRAY",
+			"remove_custom_namespace": true,
+			"let_to_var": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrapping.js",
+							"objects": [
+								"add_wrappers"
+							]
+						}
+					]
+				}
+			],
+			"extra_exports": [
+				"packIEEE754",
+				"unpackIEEE754",
+				"unpackF64",
+				"packF64",
+				"unpackF32",
+				"packF32",
+				"constructDecorator",
+				"offsetDecorator",
+				"redefineNewArrayFunctions",
+				"redefineNewArrayConstructors",
+				"proxyHandler",
+				"getByteDecorator",
+				"setByteDecorator",
+				"getFloatDecorator",
+				"setFloatDecorator",
+				"getBigIntDecorator",
+				"setBigIntDecorator",
+				"redefineDataViewFunctions"
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrappingS-ECMA-ARRAY.js",
+							"objects": [
+								"packIEEE754",
+								"unpackIEEE754",
+								"unpackF64",
+								"packF64",
+								"unpackF32",
+								"packF32",
+								"constructDecorator",
+								"offsetDecorator",
+								"redefineNewArrayFunctions",
+								"redefineNewArrayConstructors",
+								"proxyHandler",
+								"getByteDecorator",
+								"setByteDecorator",
+								"getFloatDecorator",
+								"setFloatDecorator",
+								"getBigIntDecorator",
+								"setBigIntDecorator",
+								"redefineDataViewFunctions"
+							]
+						}
+					]
+				}
+			]
 		}
 	]
 }

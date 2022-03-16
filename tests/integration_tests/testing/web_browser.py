@@ -95,10 +95,11 @@ class Browser:
         if self.type == BrowserType.CHROME:
             self.driver.get('chrome://system/')
             WebDriverWait(self.driver, 10).until(
-                ec.presence_of_element_located((By.ID, 'extensions-value-btn'))
+                ec.presence_of_element_located((By.ID, 'expandAll'))
             )
-            for elem in self.driver.find_element_by_id('extensions-value').text.splitlines():
-                if 'JavaScript Restrictor' in elem:
+            self.driver.find_element(By.ID, 'expandAll').click()
+            for elem in self.driver.find_element(By.ID, 'extensions-value').text.splitlines():
+                if 'JShelter' in elem:
                     self._jsr_options_page = "chrome-extension://" + elem.split(':')[0][:-1] + "/options.html"
 
     ## Create new browser of given type (Chrome, Firefox).

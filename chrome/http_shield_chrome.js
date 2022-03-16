@@ -99,7 +99,7 @@ function beforeSendHeadersListener(requestDetail) {
 	targetUrl.hostname = wwwRemove(targetUrl.hostname);
 
 	//Host found among user's trusted hosts, allow it right away
-	if (checkWhitelist(sourceUrl.hostname))
+	if (isNbsWhitelisted(sourceUrl.hostname))
 	{
 		return {cancel:false};
 	}
@@ -107,14 +107,14 @@ function beforeSendHeadersListener(requestDetail) {
 	//Host found among blocked hosts, cancel HTTPS request right away
 	if (sourceUrl.hostname in blockedHosts)
 	{
-		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
+		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.tabId);
 		return {cancel:true};
 	}
 	
 	//Blocking direction Public -> Private
 	if (isRequestFromPublicToPrivateNet(sourceUrl.hostname, targetUrl.hostname))
 	{
-		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.type);
+		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.tabId);
 		return {cancel:true}
 	}
 	else //Permitting others
@@ -294,10 +294,13 @@ function onResponseStartedListener(responseDetails)
  * \param host Host added to the black-list (blockedHosts).
  */
 function notifyBlockedHost(host) {
-	browser.notifications.create({
+	browser.notifications.create("nbs-" + host, {
 		"type": "basic",
 		"iconUrl": browser.extension.getURL("img/icon-48.png"),
 		"title": "Network boundary shield blocked suspicious host!",
-		"message": `Host ${host} send suspicious request and therefore was added to black-list and all other HTTP request by this host will be blocked.\n\nIf you want to allow web requests from ${host}, please, go to the JS Restrictor settings and add an exception.`
+		"message": `All subsequent HTTP requests from ${host} will be blocked.`
 	});
+	setTimeout(() => {
+		browser.notifications.clear("nbs-" + host);
+	}, 6000);
 }

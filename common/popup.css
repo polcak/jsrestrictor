@@ -85,6 +85,8 @@ h3 {
 	font-size: large;
 	text-align: center;
 	flex-grow: 1;
+	margin-right: 5px;
+	margin-left: 5px;
 }
 
 #level-select {
@@ -107,7 +109,9 @@ input#js-toggle {
 }
 
 label.js-toggle {
-	padding: 0.5ex;
+	max-height: 34px;
+	padding: 3.5px;
+	cursor: pointer;
 	border: 1px var(--separator-color) solid;
 	background-color: var(--button-background-color);
 	color: var(--button-text-color);
@@ -138,10 +142,14 @@ label.js-toggle:after {
 .off_message{
 	font-size: large;
 	display: none;
+	margin: 0px;
+	height: 34px;
+	line-height: 34px;
+	vertical-align: middle;
 }
 
 .off > .off_message {
-	display: block;
+	display: inline-block;
 }
 
 .off > .switch_wrapper {
@@ -179,12 +187,20 @@ label.js-toggle:after {
 	align-items: center;
 }
 
-
-
 .head {
 	font-weight: bold;
 }
 
 .hidden {
 	display: none;
+}
+
+#severity_value {
+	color: #e8e6e3;
+	cursor: pointer;
+}
+
+#severity_value:hover {
+	color: #e8e6e3;
+	filter: brightness(110%);
 }

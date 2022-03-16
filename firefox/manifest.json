@@ -82,9 +82,9 @@
     "webNavigation",
     "dns",
     "<all_urls>",
-    "notifications",
-    "browsingData"
+    "notifications"
   ],
+  "optional_permissions": ["browsingData"],
   "short_name": "JShelter",
   "version": "0.7.1",
   "browser_specific_settings": {

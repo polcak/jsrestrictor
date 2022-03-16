@@ -130,75 +130,64 @@
   }
 
   /*
-   * \brief Initializes the fake quaternion generator
+   * \brief The fake quaternion generator class
    * Note: Requires "orient" global var to be set.
   */
-  function initQuaternionGenerator() {
-    const DEVIATION_MIN = 0;
-    const DEVIATION_MAX = (Math.PI / 2) / 90 * 10; // 10°
+  class QuaternionGenerator {
+    constructor() {
+      this.DEVIATION_MIN = 0;
+      this.DEVIATION_MAX = (Math.PI / 2) / 90 * 10; // 10°
 
-    /*
-    var yawDeviation = sen_generateAround(orient.yaw, DEVIATION_TOLERANCE)
-    var pitchDeviation = sen_generateAround(orient.pitch, DEVIATION_TOLERANCE)
-    var rollDeviation = sen_generateAround(orient.roll, DEVIATION_TOLERANCE)
-    */
+      this.quaternion = null;
+      this.quaternion_rel = null;
+
+      this.yawDeviation = this.generateDeviation();
+      this.pitchDeviation = this.generateDeviation();
+      this.rollDeviation = this.generateDeviation();
+    }
 
     /*
      * \brief Generates the rotation deviation
     */
-    function generateDeviation() {
-      var devi = sen_prng() * (DEVIATION_MAX - DEVIATION_MIN) + DEVIATION_MIN;
+    generateDeviation() {
+      var devi = sen_prng() * (this.DEVIATION_MAX - this.DEVIATION_MIN) + this.DEVIATION_MIN;
       devi *= Math.round(sen_prng()) ? 1 : -1;
       return devi;
     }
 
     /*
-     * \brief The quaternion generator object
-    */
-    quatGen = {
-      quaternion: null,
-      quaternion_rel: null,
+     * \brief Updates the fake quaternions
+     *
+     * \param Current timestamp from the sensor object
+     */
+    update(t) {
+      // Calculate quaternion for absolute orientation
+      var rotMat = orient.rotMat; // Get the device rotation matrix
 
-      yawDeviation: generateDeviation(),
-      pitchDeviation: generateDeviation(),
-      rollDeviation: generateDeviation(),
+      var q = matrixToQuaternion(rotMat);
+      this.quaternion = [
+        fixedNumber(q.x, 3),
+        fixedNumber(q.y, 3),
+        fixedNumber(q.z, 3),
+        fixedNumber(q.w, 3)
+      ];
 
-      /*
-       * \brief Updates the fake quaternions
-       *
-       * \param Current timestamp from the sensor object
-      */
-      update: function(t) {
-        // Calculate quaternion for absolute orientation
-        var rotMat = orient.rotMat; // Get the device rotation matrix
+      // Calculate quaternion for relative orientation
+      var relYaw = (orient.yaw + this.yawDeviation) % TWOPI;
+      var relPitch = (orient.pitch + this.pitchDeviation) % TWOPI;
+      var relRoll = (orient.roll + this.rollDeviation) % TWOPI;
 
-        var q = matrixToQuaternion(rotMat);
-        this.quaternion = [
-          fixedNumber(q.x, 3),
-          fixedNumber(q.y, 3),
-          fixedNumber(q.z, 3),
-          fixedNumber(q.w, 3)
-        ];
+      var relMat = calculateRotationMatrix(relYaw, relPitch, relRoll);
 
-        // Calculate quaternion for relative orientation
-        var relYaw = (orient.yaw + this.yawDeviation) % TWOPI;
-        var relPitch = (orient.pitch + this.pitchDeviation) % TWOPI;
-        var relRoll = (orient.roll + this.rollDeviation) % TWOPI;
-
-        var relMat = calculateRotationMatrix(relYaw, relPitch, relRoll);
-
-        var qr = matrixToQuaternion(relMat);
-        this.quaternion_rel = [
-          fixedNumber(qr.x, 3),
-          fixedNumber(qr.y, 3),
-          fixedNumber(qr.z, 3),
-          fixedNumber(qr.w, 3)
-        ];
-      }
+      var qr = matrixToQuaternion(relMat);
+      this.quaternion_rel = [
+        fixedNumber(qr.x, 3),
+        fixedNumber(qr.y, 3),
+        fixedNumber(qr.z, 3),
+        fixedNumber(qr.w, 3)
+      ];
     }
-    return quatGen;
   }
-
 
   /*
    * \brief Updates the stored (both real and fake) sensor readings
@@ -234,7 +223,7 @@
     currentReading.fake_quaternion_rel = quaternionGenerator.quaternion_rel;
 
     if (debugMode) {
-      console.log(quaternionGenerator);
+      console.debug(quaternionGenerator);
     }
   }
 
@@ -243,11 +232,11 @@
    */
   var generators = `
     // Initialize the quaternion generator, if not initialized before
-    var quaternionGenerator = quaternionGenerator || initQuaternionGenerator();
+    var quaternionGenerator = quaternionGenerator || new QuaternionGenerator();
     `;
 
   var helping_functions = sensorapi_prng_functions + device_orientation_functions
-          + matrixToQuaternion + initQuaternionGenerator + updateReadings;
+          + matrixToQuaternion + QuaternionGenerator + updateReadings;
   var hc = init_data + orig_getters + helping_functions + generators;
 
   var wrappers = [

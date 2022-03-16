@@ -1,6 +1,5 @@
 {
     "$schema":"http://json-schema.org/draft-07/schema",
-    "$id":"http://example.com/example.json",
     "definitions":{
         "group":{
             "type":"object",
@@ -121,6 +120,24 @@
                 "weight"
             ],
             "additionalProperties":false
+        },
+        "severity_item":{
+            "type":"array",
+            "title":"Severity item",
+            "description":"Each severity item consists of weight number, severity string, and corresponding color.",
+            "items":[
+                {
+                    "num_value": "integer"
+                },
+                {
+                    "text_value": "string"
+                },
+                {
+                    "color": "string",
+                    "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$"
+                }
+            ],
+            "additionalItems": false
         }
     },
     "type":"object",
@@ -132,6 +149,14 @@
         },
         "description":{
             "type":"string"
+        },
+        "severity":{
+            "type":"array",
+            "title":"Severity array",
+            "description":"Contains an array of severity items that represent severity thresholds.",
+            "items":{
+                "$ref":"#/definitions/severity_item"
+            }
         },
         "criteria":{
             "$ref":"#/definitions/criteria"

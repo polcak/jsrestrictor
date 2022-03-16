@@ -75,7 +75,6 @@
   * Moreover, such a change should also be taken into account in wrappers
   * for other movement-related sensors (Gyroscope, etc.).
   *
-  *
   */
 
   /*
@@ -131,172 +130,168 @@
   }
 
   /*
-    * \brief Initializes the data generator for creating fake accelerometer values
+    * \brief The data generator for creating fake accelerometer values
   */
-  function initDataGenerator() {
-    const NEXT_CHANGE_MS_MIN = 1000;
-    const NEXT_CHANGE_MS_MAX = 10000;
+  class DataGenerator {
+    constructor() {
+      this.NEXT_CHANGE_MS_MIN = 1000;
+      this.NEXT_CHANGE_MS_MAX = 10000;
 
-    /* Reference gravity vector
-     * For a non-rotated device lying bottom-down on a flat surface,
-     * only axis "z" is afected by g.
-     */
-    var referenceGravityVector = [0, 0, 9.8];
+      /* Reference gravity vector
+       * For a non-rotated device lying bottom-down on a flat surface,
+       * only axis "z" is afected by g.
+       */
+      let referenceGravityVector = [0, 0, 9.8];
 
-    /*
-     * For a rotated device, the vector needs to be
-     * multiplied by the rotation matrix.
-     */
-    var deviceGravityVector = multVectRot(referenceGravityVector, orient.rotMat);
-
-    dataGen = {
-      gVector: deviceGravityVector,
+      /*
+       * For a rotated device, the reference gravity vector needs to be
+       * multiplied by the rotation matrix.
+       * Here we calculate and store the device gravity vector
+       */
+      this.gVector = multVectRot(referenceGravityVector, orient.rotMat);
 
       /*
        * Values for the linear acceleration are fluctuating
        */
-      x: {
+      this.x = {
         name: "x",
         min: 0.0,
         max: 0.11,
         decimalPlaces: 1,
         canBeNegative: true,
-        value: null,
-      },
-      y: {
+        value: null
+      };
+      this.y = {
         name: "y",
         min: 0.0,
         max: 0.11,
         decimalPlaces: 1,
         canBeNegative: true,
-        value: null,
-      },
-      z: {
+        value: null
+      };
+      this.z = {
         name: "z",
         min: 0.0,
         max: 0.11,
         decimalPlaces: 1,
         canBeNegative: true,
-        value: null,
-      },
-      nextChangeTimeX: null, // miliseconds
-      nextChangeTimeY: null,
-      nextChangeTimeZ: null,
+        value: null
+      };
+      this.nextChangeTimeX = null; // miliseconds
+      this.nextChangeTimeY = null;
+      this.nextChangeTimeZ = null;
+    }
 
-      /*
-        * \brief Updates the  x/y/z axes values based on the current timestamp
-        *
-        * \param Current timestamp from the sensor object
-      */
-      update: function(currentTimestamp) {
-      // Simulate the Gyroscope changes
-        if (this.shouldWeUpdateX(currentTimestamp)) {
-          shake(this.x);
-          this.setNextChangeX(currentTimestamp);
-        };
-        if (this.shouldWeUpdateY(currentTimestamp)) {
-          shake(this.y);
-          this.setNextChangeY(currentTimestamp);
-        };
-        if (this.shouldWeUpdateZ(currentTimestamp)) {
-          shake(this.z);
-          this.setNextChangeZ(currentTimestamp);
-        };
-        console.log(this);
-      },
+    /*
+      * \brief Updates the  x/y/z axes values based on the current timestamp
+      *
+      * \param Current timestamp from the sensor object
+    */
+    update(currentTimestamp) {
+    // Simulate the Gyroscope changes
+      if (this.shouldWeUpdateX(currentTimestamp)) {
+        shake(this.x);
+        this.setNextChangeX(currentTimestamp);
+      };
+      if (this.shouldWeUpdateY(currentTimestamp)) {
+        shake(this.y);
+        this.setNextChangeY(currentTimestamp);
+      };
+      if (this.shouldWeUpdateZ(currentTimestamp)) {
+        shake(this.z);
+        this.setNextChangeZ(currentTimestamp);
+      };
+    }
 
-      /*
-        * \brief Boolean function that decides if the value on the axis X
-        *        should be updated. Returns true if update is needed.
-        *
-        * \param Current timestamp from the sensor object
-      */
-      shouldWeUpdateX: function(currentTimestamp) {
-        if (currentTimestamp === null || this.nextChangeTimeX === null) {
-          return true;
-        }
-        if (currentTimestamp >= this.nextChangeTimeX) {
-          return true;
-        } else {
-          return false;
-        }
-      },
-
-      /*
-        * \brief Boolean function that decides if the value on the axis Y
-        *        should be updated. Returns true if update is needed.
-        *
-        * \param Current timestamp from the sensor object
-      */
-      shouldWeUpdateY: function(currentTimestamp) {
-        if (currentTimestamp === null || this.nextChangeTimeY === null) {
-          return true;
-        }
-        if (currentTimestamp >= this.nextChangeTimeY) {
-          return true;
-        } else {
-          return false;
-        }
-      },
-
-      /*
-        * \brief Boolean function that decides if the value on the axis Z
-        *        should be updated. Returns true if update is needed.
-        *
-        * \param Current timestamp from the sensor object
-      */
-      shouldWeUpdateZ: function(currentTimestamp) {
-        if (currentTimestamp === null || this.nextChangeTimeZ === null) {
-          return true;
-        }
-        if (currentTimestamp >= this.nextChangeTimeZ) {
-          return true;
-        } else {
-          return false;
-        }
-      },
-
-      /*
-        * \brief Sets the timestamp of the next update of value on the axis X.
-        *
-        * \param Current timestamp from the sensor object
-      */
-      setNextChangeX: function(currentTimestamp) {
-        let interval_ms = Math.floor(
-          sen_prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
-          + NEXT_CHANGE_MS_MIN
-        );
-        this.nextChangeTimeX = currentTimestamp + interval_ms;
-      },
-
-      /*
-        * \brief Sets the timestamp of the next update of value on the axis Y.
-        *
-        * \param Current timestamp from the sensor object
-      */
-      setNextChangeY: function(currentTimestamp) {
-        let interval_ms = Math.floor(
-          sen_prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
-          + NEXT_CHANGE_MS_MIN
-        );
-        this.nextChangeTimeY = currentTimestamp + interval_ms;
-      },
-
-      /*
-        * \brief Sets the timestamp of the next update of value on the axis Z.
-        *
-        * \param Current timestamp from the sensor object
-      */
-      setNextChangeZ: function(currentTimestamp) {
-        let interval_ms = Math.floor(
-          sen_prng() * (NEXT_CHANGE_MS_MAX - NEXT_CHANGE_MS_MIN + 1)
-          + NEXT_CHANGE_MS_MIN
-        );
-        this.nextChangeTimeZ = currentTimestamp + interval_ms;
+    /*
+      * \brief Boolean function that decides if the value on the axis X
+      *        should be updated. Returns true if update is needed.
+      *
+      * \param Current timestamp from the sensor object
+    */
+    shouldWeUpdateX(currentTimestamp) {
+      if (currentTimestamp === null || this.nextChangeTimeX === null) {
+        return true;
+      }
+      if (currentTimestamp >= this.nextChangeTimeX) {
+        return true;
+      } else {
+        return false;
       }
     }
 
-    return dataGen;
+    /*
+      * \brief Boolean function that decides if the value on the axis Y
+      *        should be updated. Returns true if update is needed.
+      *
+      * \param Current timestamp from the sensor object
+    */
+    shouldWeUpdateY(currentTimestamp) {
+      if (currentTimestamp === null || this.nextChangeTimeY === null) {
+        return true;
+      }
+      if (currentTimestamp >= this.nextChangeTimeY) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    /*
+      * \brief Boolean function that decides if the value on the axis Z
+      *        should be updated. Returns true if update is needed.
+      *
+      * \param Current timestamp from the sensor object
+    */
+    shouldWeUpdateZ(currentTimestamp) {
+      if (currentTimestamp === null || this.nextChangeTimeZ === null) {
+        return true;
+      }
+      if (currentTimestamp >= this.nextChangeTimeZ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    /*
+      * \brief Sets the timestamp of the next update of value on the axis X.
+      *
+      * \param Current timestamp from the sensor object
+    */
+    setNextChangeX(currentTimestamp) {
+      let interval_ms = Math.floor(
+        sen_prng() * (this.NEXT_CHANGE_MS_MAX - this.NEXT_CHANGE_MS_MIN + 1)
+        + this.NEXT_CHANGE_MS_MIN
+      );
+      this.nextChangeTimeX = currentTimestamp + interval_ms;
+    }
+
+    /*
+      * \brief Sets the timestamp of the next update of value on the axis Y.
+      *
+      * \param Current timestamp from the sensor object
+    */
+    setNextChangeY(currentTimestamp) {
+      let interval_ms = Math.floor(
+        sen_prng() * (this.NEXT_CHANGE_MS_MAX - this.NEXT_CHANGE_MS_MIN + 1)
+        + this.NEXT_CHANGE_MS_MIN
+      );
+      this.nextChangeTimeY = currentTimestamp + interval_ms;
+    }
+
+    /*
+      * \brief Sets the timestamp of the next update of value on the axis Z.
+      *
+      * \param Current timestamp from the sensor object
+    */
+    setNextChangeZ(currentTimestamp) {
+      let interval_ms = Math.floor(
+        sen_prng() * (this.NEXT_CHANGE_MS_MAX - this.NEXT_CHANGE_MS_MIN + 1)
+        + this.NEXT_CHANGE_MS_MIN
+      );
+      this.nextChangeTimeZ = currentTimestamp + interval_ms;
+    }
   }
 
   /*
@@ -342,7 +337,7 @@
     currentReading.fake_gVector = dataGenerator.gVector;
 
     if (debugMode) {
-      console.log(dataGenerator);
+      console.debug(dataGenerator);
     }
   }
 
@@ -351,11 +346,11 @@
   */
   var generators = `
     // Initialize the data generator, if not initialized before
-    var dataGenerator = dataGenerator || initDataGenerator();
+    var dataGenerator = dataGenerator || new DataGenerator();
     `;
 
   var helping_functions = sensorapi_prng_functions + device_orientation_functions
-      + initDataGenerator + shake + updateReadings;
+      + DataGenerator + shake + updateReadings;
   var hc = init_data + orig_getters + helping_functions + generators;
 
   var wrappers = [

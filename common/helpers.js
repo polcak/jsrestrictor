@@ -3,6 +3,7 @@
  *
  *  \author Copyright (C) 2020  Libor Polcak
  *  \author Copyright (C) 2021  Matus Svancar
+ * 	\author Copyright (C) 2022  Marek Salon
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -209,4 +210,24 @@ function create_short_text(text, LIMIT) {
 		});
 	}
 	return text;
+}
+
+/**
+ * Helper function that modifies settings after manual removal of optional permissions.
+ *
+ * \param permissions Array of removed permissions.
+ * \param settings Object of current module settings.
+ * \param definition Object of module settings definition.
+ */
+function correctSettingsForRemovedPermissions(permissions, settings, definition) {
+	for (let [name, value] of Object.entries(settings)) {
+		while (value >= 0) {
+			let option = definition[name].params[value];
+			if (!option.permissions || !option.permissions.filter(value => permissions.includes(value)).length) {
+				settings[name] = value;
+				break;
+			}
+			value -= 1;
+		}
+	}
 }
