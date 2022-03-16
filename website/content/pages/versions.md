@@ -2,6 +2,35 @@
 title: Release history
 ---
 
+## 0.8
+
+* Add FPD report page
+* Show fingerprinting likelihood in the popup and badge icon colour
+* GPS wrapper reimplemented to use farbling (simulate a stationary device for per domain and
+	sessions), previously each page load generated a new position
+* Reorganize canvas reading wrappers, all are in the same group
+* Security review and hardening of the wrappers
+ * Do not change values depending on activated tweaks
+ * Remove obvious reversibility of the canvas farbling
+ * Unify wrapping between H-C and WEBGL
+ * Unify the wrappers in Strict and Farbling wrapping of WebGL parameters (some were farbled but not disabled on Strict)
+ * Farbling of WebGL parameters spread more wildly to hide the correct
+   number (that might have been revealed after several visits)
+ * WebGL: Farble renderer and vendor the same way as unmasked versions
+ * Remove possible dependencies between multiple wrapping groups using
+   randomString()
+ * Strict: Return empty UNMASKED VENDOR and RENDERER - Previosuly, these values depended
+   on the domainHash, that meant that the unique value could be used to uniquely fingerprint the device.
+ * Harden WEBA farbling
+ * Scramble the output of PRNG with domainHash to prevent guessing the
+   future PRNs
+ * Try to improve speed as possible but the wrapping is likely slower
+   than 0.7.x
+* Github #125: Add option to disable NBS notifications, limit the number of notifications
+* Fix Pagure #18 Optional permissions for AFPD - it is not necessary to give browsingData
+* Allowlist options in NBS and FPD changed breaking backwards compatibility
+* When optionally activated, wrap BigInt typed arrays the same way as other typed arrays
+
 ## 0.7.1
 
 * Apply proper shielding for `navigator.plugins` in Firefox.
