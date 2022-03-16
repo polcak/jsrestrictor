@@ -92,7 +92,7 @@ var wrapping_groups = {
 			label: "Localy rendered images",
 			description: "Protect against canvas fingerprinting.",
 			description2: [
-				"Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() return modified image data to prevent fingerprinting",
+				"Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob(), WebGLRenderingContext.readPixels return modified image data to prevent fingerprinting",
 				"CanvasRenderingContext2D.isPointInStroke() and CanvasRenderingContext2D.isPointInPath() are modified to lie with probability"
 			],
 			params: [
@@ -103,7 +103,7 @@ var wrapping_groups = {
 				},
 				{
 					short: "Strict",
-					description: "Replace by white image",
+					description: "Replace by white image (WebGL canvas returns an empty array)",
 					config: [1],
 				},
 			],
@@ -114,7 +114,9 @@ var wrapping_groups = {
 				"HTMLCanvasElement.prototype.toDataURL",
 				"OffscreenCanvas.prototype.convertToBlob",
 				"CanvasRenderingContext2D.prototype.isPointInStroke",
-				"CanvasRenderingContext2D.prototype.isPointInPath"
+				"CanvasRenderingContext2D.prototype.isPointInPath",
+				"WebGLRenderingContext.prototype.readPixels",
+				"WebGL2RenderingContext.prototype.readPixels",
 			],
 		},
 		{
@@ -148,22 +150,21 @@ var wrapping_groups = {
 		},
 		{
 			name: "webgl",
-			label: "Localy rendered images and graphic card information",
-			description: "Protect against WEBGL fingerprinting, spoof details of your graphic card.",
+			label: "Graphic card information",
+			description: "Spoof details of your graphic card.",
 			description2: [
 				"Function WebGLRenderingContext.getParameter() returns modified/bottom values for certain parameters",
-				"WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() and .getExtension() return modified values",
-				"Function WebGLRenderingContext.readPixels() returns modified image data to prevent fingerprinting"
+				"WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() and .getExtension() return modified values"
 		],
 			params: [
 				{
 					short: "Little lies",
-					description: "Generate random numbers/strings and modify canvas using domain hash",
+					description: "Generate random numbers/strings using domain hash",
 					config: [0],
 				},
 				{
 					short: "Strict",
-					description: "Return bottom values (null, empty string), empty canvas",
+					description: "Return bottom values (null, empty string)",
 					config: [1],
 				},
 			],
@@ -199,8 +200,6 @@ var wrapping_groups = {
 				"WebGL2RenderingContext.prototype.getSupportedExtensions",
 				"WebGLRenderingContext.prototype.getExtension",
 				"WebGL2RenderingContext.prototype.getExtension",
-				"WebGLRenderingContext.prototype.readPixels",
-				"WebGL2RenderingContext.prototype.readPixels"
 			],
 		},
 		{
