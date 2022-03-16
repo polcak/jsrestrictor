@@ -70,12 +70,12 @@
 		// audio is farbled the same way but different audio is farbled differently
 		// See https://pagure.io/JShelter/webextension/issue/23
 		const MAXUINT32 = 4294967295;
-		let mash = new Mash();
+		let crc = new CRC16();
 		for (value of array) {
-			mash.addNumber((value * MAXUINT32) | 0);
+			crc.single(value * MAXUINT32);
 		}
 		console.debug("Timing audioFarble seed init", Date.now() - start_time);
-		var thisaudio_prng = alea(domainHash, "AudioFarbling", mash.finalize());
+		var thisaudio_prng = alea(domainHash, "AudioFarbling", crc.crc);
 		console.debug("Timing audioFarble prng init", Date.now() - start_time);
 
 		for (i in array) {
@@ -91,16 +91,16 @@
 		// PRNG function needs to depend on the original audio, so that the same
 		// audio is farbled the same way but different audio is farbled differently
 		// See https://pagure.io/JShelter/webextension/issue/23
-		let mash = new Mash();
+		let crc = new CRC16();
 		for (value of array) {
-			mash.addNumber(value);
+			crc.single(value);
 		}
 		console.debug("Timing audioFarbleInt seed init", Date.now() - start_time);
-		var thisaudio_prng = alea(domainHash, "AudioFarbling", mash.finalize());
+		var thisaudio_prng = alea(domainHash, "AudioFarbling", crc.crc);
 		console.debug("Timing audioFarbleInt prng init", Date.now() - start_time);
 
 		for (i in array) {
-			if (thisaudio_prng() > 0.5) { // Modify data with probability of 0.5
+			if (thisaudio_prng.get_bits(1)) { // Modify data with probability of 0.5
 				// Possible improvements:
 				// Copy a neighbor data (possibly with modifications
 				// Make bigger canges than xoring with 1

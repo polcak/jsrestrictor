@@ -57,9 +57,12 @@ CRC16.prototype = {
 		// Note that the code is optimised so that there are no checks on input data
 		// data should be an iterable one-byte-long of integers
 		for (let i = 0; i < data.length; i++) {
-			this.crc = (crc16_table[(this.crc ^ data[i]) & 0xff] ^ (this.crc >> 8)) & 0xffff;
+			this.single(data[i]);
 		}
 		return this.crc;
+	},
+	single: function(byte) {
+		this.crc = (crc16_table[(this.crc ^ byte) & 0xff] ^ (this.crc >> 8)) & 0xffff;
 	}
 };
 `;
