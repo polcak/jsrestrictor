@@ -121,8 +121,8 @@ var wrapping_groups = {
 		},
 		{
 			name: "audiobuffer",
-			label: "Locally generated audio and audio card information",
-			description: "Protect against audio fingerprinting, spoof details of your audio card.",
+			label: "Locally generated audio",
+			description: "Protect against audio fingerprinting.",
 			description2: [
 				"Functions AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() and AnalyserNode.getFloatFrequencyData() are modified to alter audio data based on domain key"
 			],
