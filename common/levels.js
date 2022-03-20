@@ -630,6 +630,20 @@ var level_0 = {
 	"level_description": "JavaScript APIs are not wrapped. Use this level if you trust the oprator of the visited page(s) or if you do not like JavaScript Shield but apply other protection mechanisms.",
 };
 
+var level_1 = {
+	"builtin": true,
+	"level_id": L1,
+	"level_text": "Turn fingerprinting protection off",
+	"level_description": "Apply security counter-measures that are likely not to break web pages but do not defend against fingerprinting. Disable APIs that are not commonly used. Use this level if Fingerprint Detector reports low likelihood of fingerprinting, you trust the visited service, and/or you think that the protection makes the page slow or broken and your temptation to use the service is so high that you do not want to be protected.",
+	"time_precision": 3,
+	"geolocation": 3,
+  "physical_environment": 1,
+	"gamepads": 1,
+	"vr": 1,
+	"analytics": 1,
+	"battery": 1,
+};
+
 var level_2 = {
 	"builtin": true,
 	"level_id": L2,
@@ -705,6 +719,7 @@ var wrapped_codes = {};
 function init_levels() {
 	levels = {
 		[level_0.level_id]: level_0,
+		[level_1.level_id]: level_1,
 		[level_2.level_id]: level_2,
 		[level_3.level_id]: level_3,
 		[level_experimental.level_id]: level_experimental
