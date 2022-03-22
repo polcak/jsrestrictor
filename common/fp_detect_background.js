@@ -873,6 +873,7 @@ var availableTabs = {};
 browser.tabs.query({}).then(function(results) {
     results.forEach(function(tab) {
         availableTabs[tab.id] = tab;
+		fpDb[tab.id] = {};
 		periodicEvaluation(tab.id, 500);
     });
 });
@@ -904,6 +905,7 @@ browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 	availableTabs[tabId] = tab;
 	if (changeInfo.status == "loading") {
 		refreshDb(tabId);
+		fpDb[tab.id] = {};
 		periodicEvaluation(tab.id, 500);
 	}
 });
