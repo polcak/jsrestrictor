@@ -2,6 +2,11 @@
 title: Release history
 ---
 
+## 0.8.1
+
+* Add "Turn fingerprinting protection off" level. As the AFPD shows the likelihood of fingerprinting, some users might be tempted to trade some performance gain for no protection against fingerprinting. See for example Github #179.
+* Fix displaying empty FPD report
+
 ## 0.8
 
 * Add FPD report page
