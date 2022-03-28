@@ -165,7 +165,7 @@ function createReport(data) {
                 element.classList.add("hidden");
             }
         }
-        event.target.innerText = event.target.innerText == "Show All" ? "Hide All" : "Show All";
+        event.target.innerText = event.target.innerText == "Show All" ? "Hide details" : "Show All";
     }
 
     // show description/help for the report
