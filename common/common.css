@@ -196,3 +196,20 @@ input:checked + .slider:before {
 	content:"ON";
 	color: var(--slider-text-color);
 }
+
+
+.flex {
+	display: flex;
+}
+
+.flex.align-items-center {
+	align-items: center;
+}
+
+.flex.justify-content-between {
+	justify-content: space-between;
+}
+
+.text-large {
+	font-size: large;
+}
