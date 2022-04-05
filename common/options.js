@@ -149,7 +149,7 @@ function show_existing_level(levelsEl, level) {
 		</button>
 		<span class="help_ovisible">${escape(create_short_text(levels[level].level_description, 50))}</span>
 		<span></span>
-		<p><label for="${escape(currentId)}">${escape(levels[level].level_description)}</label></p>
+		<p class="hidden_help_text"><label for="${escape(currentId)}">${escape(levels[level].level_description)}</label></p>
 		</li>`);
 	levelsEl.appendChild(fragment);
 	var lielem = document.getElementById(`li-${level}`); // Note that FF here requires unescaped ID
@@ -195,7 +195,7 @@ function show_existing_level(levelsEl, level) {
 		restore.addEventListener("click", restore_level.bind(restore, level, levels[level]));
 		restore.appendChild(document.createTextNode("Restore"));
 	}
-	prepareHiddenHelpText(lielem.getElementsByTagName('p'), lielem.getElementsByClassName('help_ovisible'));
+	prepareHiddenHelpText(lielem.getElementsByClassName('hidden_help_text'), lielem.getElementsByClassName('help_ovisible'));
 	var current = document.getElementById(currentId)
 	current.addEventListener("click", function() {
 		for (let child of levelsEl.children) {
