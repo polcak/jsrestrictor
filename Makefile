@@ -57,7 +57,7 @@ jshelter_%.zip: $(COMMON_FILES) get_csv submodules
 debug: DEBUG=1
 debug: all
 	
-doxygen:
+docs:
 	PROJECT_NAME="${PROJECT_NAME}" doxygen < doxyfile
 	
 clean:
