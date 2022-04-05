@@ -17,6 +17,7 @@
         "fp_code_builders.js",
         "code_builders.js",
         "fp_detect_background.js",
+        "levels_browser.js",
         "levels.js",
         "background.js",
         "level_cache.js",

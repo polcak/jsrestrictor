@@ -563,6 +563,8 @@ var wrapping_groups = {
 		},
 	],
 }
+var modify_wrapping_groups = modify_wrapping_groups || (() => null); // Give other scripts the possibility to modify the wrapping_groups objects
+modify_wrapping_groups();
 
 /**
  * Check if the given API is supported by the browser
@@ -711,6 +713,9 @@ var level_experimental = {
 	"battery": 1,
 	"windowname": 1,
 };
+
+var modify_builtin_levels = modify_builtin_levels || (() => null); // Give other scripts the possibility to modify builtin levels
+modify_builtin_levels();
 
 var levels = {};
 var default_level = {};
