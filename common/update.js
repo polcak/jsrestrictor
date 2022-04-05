@@ -370,6 +370,17 @@ function installUpdate() {
 			};
 			item.version = 6.2;
 		}
+		if (item.version < 6.3) {
+			if (level_2.windowname === undefined) { // Firefox
+				for (level in item["custom_levels"]) {
+					let l = item["custom_levels"][level];
+					if (!(l.arrays || l.shared_array)) {
+						delete l.windowname;
+					}
+				}
+			}
+			item.version = 6.3;
+		}
 		browser.storage.sync.set(item);
 	});
 }
