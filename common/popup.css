@@ -54,6 +54,7 @@ h3 {
 
 #logo {
 	width: 32px;
+	margin: 0 0.5em 0 0;
 	display: inline;
 }
 
@@ -77,16 +78,9 @@ h3 {
 	vertical-align: 50%;
 }
 
-#page-info {
-	display: flex;
-}
-
 #current-site {
 	font-size: large;
-	text-align: center;
-	flex-grow: 1;
-	margin-right: 5px;
-	margin-left: 5px;
+	margin: 0 0.5em;
 }
 
 #level-select {
@@ -163,7 +157,7 @@ label.js-toggle:after {
 	align-items: center;
 }
 
-.switch_wrapper > label, #page-info > label {
+.switch_wrapper > label {
 	font-size: large;
 	white-space: nowrap;
 }
@@ -203,4 +197,8 @@ label.js-toggle:after {
 #severity_value:hover {
 	color: #e8e6e3;
 	filter: brightness(110%);
+}
+
+#level_controls, #nbs_whitelist, #fpd_whitelist {
+	margin: 6px 0;
 }
