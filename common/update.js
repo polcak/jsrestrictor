@@ -379,6 +379,10 @@ function installUpdate() {
 					}
 				}
 			}
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				l.webworker = 2;
+			}
 			item.version = 6.3;
 		}
 		browser.storage.sync.set(item);
