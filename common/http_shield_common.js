@@ -88,6 +88,23 @@ var nbsNotifications = {};
 * Definition of settings supported by this module.
 */
 const NBS_DEF_SETTINGS = {
+	blocking: {
+		description: "Allow to block requests that are trying to access your local network.",
+		description2: ["NOTE: We recommend having requests blocking turned on in most cases. However, you can opt in to be only notified without any protection."],
+		label: "Blocking",
+		params: [
+			{
+				// 0
+				short: "Off",
+				description: "Requests blocking turned off."
+			},
+			{
+				// 1
+				short: "On",
+				description: "Requests blocking turned on."
+			}
+		]
+	},
 	notifications: {
 		description: "Turn on/off notifications about suspicious requests or hosts being blocked.",
 		description2: [],
@@ -102,23 +119,6 @@ const NBS_DEF_SETTINGS = {
 				// 1
 				short: "On",
 				description: "Blocking notifications turned on."
-			}
-		]
-	},
-	blocking: {
-		description: "Allow to block requests that are trying to access your local network.",
-		description2: ["NOTE: We recommend having requests blocking <strong>turned on</strong> in most cases. However, you can opt in to be only notified without any protection."],
-		label: "Blocking",
-		params: [
-			{
-				// 0
-				short: "Off",
-				description: "Requests blocking turned off."
-			},
-			{
-				// 1
-				short: "On",
-				description: "Requests blocking turned on."
 			}
 		]
 	}
