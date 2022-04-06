@@ -2,6 +2,14 @@
 title: Release history
 ---
 
+## 0.9
+
+* Firefox: deactivate window.name wrapper for Firefox; Firefox provides protection since 88 and
+	JShelter wrapper brakes pages
+* Enable webworker wrappers by default, see the paper https://arxiv.org/abs/2204.01392, §4.3
+* Tidy up popup UI and FPD report UI
+* Show wrapper groups descriptions in options.html
+
 ## 0.8.1
 
 * Add "Turn fingerprinting protection off" level. As the AFPD shows the likelihood of fingerprinting, some users might be tempted to trade some performance gain for no protection against fingerprinting. See for example Github #179.
