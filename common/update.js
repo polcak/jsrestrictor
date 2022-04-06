@@ -383,6 +383,9 @@ function installUpdate() {
 				let l = item["custom_levels"][level];
 				l.webworker = 2;
 			}
+			if (item.nbsSettings) {
+				item.nbsSettings.blocking = 1;
+			}
 			item.version = 6.3;
 		}
 		browser.storage.sync.set(item);

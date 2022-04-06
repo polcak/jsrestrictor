@@ -104,6 +104,23 @@ const NBS_DEF_SETTINGS = {
 				description: "Blocking notifications turned on."
 			}
 		]
+	},
+	blocking: {
+		description: "Allow to block requests that are trying to access your local network.",
+		description2: ["NOTE: We recommend having requests blocking <strong>turned on</strong> in most cases. However, you can opt in to be only notified without any protection."],
+		label: "Blocking",
+		params: [
+			{
+				// 0
+				short: "Off",
+				description: "Requests blocking turned off."
+			},
+			{
+				// 1
+				short: "On",
+				description: "Requests blocking turned on."
+			}
+		]
 	}
 };
 
@@ -585,17 +602,17 @@ async function createCumulativeNotification(tabId) {
 function showNbsNotification(tabId) {
 	nbsNotifications[tabId].last = nbsNotifications[tabId].total;
 	let host = wwwRemove(new URL(availableTabs[tabId].url).hostname);
-	let message = `Blocked ${nbsNotifications[tabId].total} attempts from ${host} to access local network.`;
+	let message = `${nbsSettings.blocking ? "Blocked" : "Detected"} ${nbsNotifications[tabId].total} attempts from ${host} to access local network.`;
 	let records = Object.keys(nbsNotifications[tabId].records);
 	if (records.length == 1) {
 		let [origin, target] = records[0].split(",");
 		let count = nbsNotifications[tabId].records[records[0]];
-		message = `Blocked ${count} request${count == 1 ? "" : "s"} from ${origin} to ${target}.`;
+		message = `${nbsSettings.blocking ? "Blocked" : "Detected"} ${count} request${count == 1 ? "" : "s"} from ${origin} to ${target}.`;
 	}
 	browser.notifications.create("nbs-" + tabId, {
 		"type": "basic",
 		"iconUrl": browser.runtime.getURL("img/icon-48.png"),
-		"title": "Network boundary shield blocked suspicious requests!",
+		"title": `Network boundary shield ${nbsSettings.blocking ? "blocked" : "detected"} suspicious requests!`,
 		"message": message
 	});
 	setTimeout(() => {
