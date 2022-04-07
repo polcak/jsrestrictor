@@ -239,7 +239,7 @@ title: Release history
 * Major code rewrite - make the code more modular, remove duplications
 * Add wrappings inspired by [JavaScript Zero: Real JavaScript and Zero S
 ide-Channel Attacks](https://misc0110.net/web/files/jszero.pdf)
-*  Network boundary shield prevents web pages to use the browser as a proxy between local network and the public Internet. See the [Force Point report](https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf) for an example of the attack. The protection encapsulates the WebRequest API, so it captures all outgoing requests.
+*  Network Boundary Shield prevents web pages to use the browser as a proxy between local network and the public Internet. See the [Force Point report](https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf) for an example of the attack. The protection encapsulates the WebRequest API, so it captures all outgoing requests.
 * Allow multiple custom levels
 * Do not modify DOM of displayed pages (the modifications were detectable by the page scripts and may
 	reveal that the user is running JShelter)

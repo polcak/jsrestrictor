@@ -301,7 +301,7 @@ function notifyBlockedHost(host) {
 	browser.notifications.create("nbs-" + host, {
 		"type": "basic",
 		"iconUrl": browser.extension.getURL("img/icon-48.png"),
-		"title": `Network boundary shield ${nbsSettings.blocking ? "blocked" : "detected"} suspicious host!`,
+		"title": `Network Boundary Shield ${nbsSettings.blocking ? "blocked" : "detected"} suspicious host!`,
 		"message": message
 	});
 	setTimeout(() => {

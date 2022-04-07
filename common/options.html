@@ -48,7 +48,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 <section id="configuration_area">
 	<div id="levels-config">
-		<h2 id="set-default-level">JavaScript shield</h2> 
+		<h2 id="set-default-level">JavaScript Shield</h2> 
 		<p class="jss_description">
 			JavaScript Shield modifies the behaviour of the JavaScript environment availble for the visited
 			webpage. JShelter provides fake information to confuse fingerprinters or make webpage triggered
@@ -89,14 +89,14 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
   	<div id="proxy-protection-config">
 		<div class="protection-title">
-			<label class="shield-onoff-label" for="nbs-switch"><h2>Network boundary shield</h2></label>
+			<label class="shield-onoff-label" for="nbs-switch"><h2>Network Boundary Shield</h2></label>
 			<label class="switch">
 				<input id="nbs-switch" type="checkbox" checked>
 				<span class="slider"></span>
 			</label>
 		</div>
 		<p class="nbs_description">
-			Network boundary shield prevents web pages to use the browser as a proxy between local network
+			Network Boundary Shield prevents web pages to use the browser as a proxy between local network
 			and the public Internet. See our <a
 			href="https://jshelter.org/localportscanning/">
 				blog post</a> and
@@ -106,17 +106,17 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			The protection encapsulates the WebRequest API, so it captures all outgoing requests.
 		</p>
 		<p class="nbs_description">
-			Generally, you want Network boundary shield protection active, however, some pages can be
+			Generally, you want Network Boundary Shield protection active, however, some pages can be
 			broken, because they require interaction between public Internet and local network, for example,
-			some Intranet information systems might be broken by the Network boundary shield. JShelter users
+			some Intranet information systems might be broken by the Network Boundary Shield. JShelter users
 			also reported increased number of false positives when using DNS-based filtering programs. If
 			you use one, make sure that DNS returns 0.0.0.0 for the blocked domains.
 		</p>
 		<p class="nbs_description">
-			You can disable the Network boundary shield by adding the domain (e.g. example.com) to the
+			You can disable the Network Boundary Shield by adding the domain (e.g. example.com) to the
 			list below. The domains and all their subdomains listed bellow are not blocked by the Network
-			boundary shield. To selectively deactivate the Network boundary shield, insert the domains to the list (excluding "www", but including all other domains eg. ".com").
-			We generally do <strong>not</strong> recommend disabling the Network boundary shield for domains
+			Boundary Shield. To selectively deactivate the Network Boundary Shield, insert the domains to the list (excluding "www", but including all other domains eg. ".com").
+			We generally do <strong>not</strong> recommend disabling the Network Boundary Shield for domains
 			from the public Internet.
 		</p>
 		<fieldset>
@@ -147,14 +147,14 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 	<div id="fingerprinting-protection-config">
 		<div class="protection-title">
-			<label class="shield-onoff-label" for="fpd-switch"><h2>Fingerprinting detector</h2></label>
+			<label class="shield-onoff-label" for="fpd-switch"><h2>Fingerprint Detector</h2></label>
 			<label class="switch">
 				<input id="fpd-switch" type="checkbox" checked>
 				<span class="slider"></span>
 			</label>
 		</div>
 		<p class="fpd_description">
-			Fingerprinting detector provides a mechanism that informs users about fingerprinting activity on visited web pages. The detector also prevents 
+			Fingerprint Detector provides a mechanism that informs users about fingerprinting activity on visited web pages. The detector also prevents 
 			web pages from extracting browser fingerprint, if a user chooses to do so. See our <a
 			href="https://jshelter.org/fpdetection/">
 				blog post</a> or
@@ -167,7 +167,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			It's possible to show details about the fingerprint by generating a fingerprint report. You can access it via popup window or by clicking directly on the notification.
 		</p>
 		<p class="fpd_description">		
-			The default behavior of Fingerprinting detector can be adjusted to your liking. You can choose "blocking" behavior, which works as a countermeasure against leaking your fingerprint
+			The default behavior of Fingerprint Detector can be adjusted to your liking. You can choose "blocking" behavior, which works as a countermeasure against leaking your fingerprint
 			to unwanted parties. In this case, every positive detection is followed by blocking all subsequent HTTP requests and cleaning browser storage. Take into account that <strong>this action
 			will probably result in a broken web page</strong> and we strongly recommend to use a whitelist for trusted domains. Switching off the detector for a domain in the popup window will add
 			the domain to the whitelist. This domain won't be evaluated or blocked in the future. You can manage all the whitelisted domains below.

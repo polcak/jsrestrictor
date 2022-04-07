@@ -23,7 +23,7 @@
 /**
  * \defgroup FPD Fingerprint Detector
  *
- * \brief Fingerprinting Detector (FPD) is a module that detects browser fingerprint extraction and prevents
+ * \brief Fingerprint Detector (FPD) is a module that detects browser fingerprint extraction and prevents
  * its sharing. To learn more about Browser Fingerprinting topic, see study "Browser Fingerprinting: A survey" available
  * here: https://arxiv.org/pdf/1905.01051.pdf
  *
@@ -43,7 +43,7 @@
 
  /** \file
  *
- * \brief This file is part of Fingerprinting Detector (FPD) and contains API groups evaluation logic. File also contains
+ * \brief This file is part of Fingerprint Detector (FPD) and contains API groups evaluation logic. File also contains
  * event listeners used for API logging, requests blocking and tabs management. 
  *
  * \ingroup FPD

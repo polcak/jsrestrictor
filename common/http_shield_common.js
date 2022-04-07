@@ -612,7 +612,7 @@ function showNbsNotification(tabId) {
 	browser.notifications.create("nbs-" + tabId, {
 		"type": "basic",
 		"iconUrl": browser.runtime.getURL("img/icon-48.png"),
-		"title": `Network boundary shield ${nbsSettings.blocking ? "blocked" : "detected"} suspicious requests!`,
+		"title": `Network Boundary Shield ${nbsSettings.blocking ? "blocked" : "detected"} suspicious requests!`,
 		"message": message
 	});
 	setTimeout(() => {

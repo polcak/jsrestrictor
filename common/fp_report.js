@@ -158,14 +158,14 @@ function createReport(data) {
     // show resources for every group in FPD report
     let showAll = (event) => {
         for (let element of document.querySelectorAll(".fpd-group > h4")) {      
-            if (event.target.innerText == "Show All") {
+            if (event.target.innerText == "Show details") {
                 element.classList.remove("hidden");
             }
             else {
                 element.classList.add("hidden");
             }
         }
-        event.target.innerText = event.target.innerText == "Show All" ? "Hide details" : "Show All";
+        event.target.innerText = event.target.innerText == "Show details" ? "Hide details" : "Show details";
     }
 
     // show description/help for the report
