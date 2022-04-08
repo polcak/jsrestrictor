@@ -22,6 +22,13 @@ If you have any questions or you have spotted a bug, please [let us know](https:
 
 If you would like to give us [feedback](https://pagure.io/JShelter/webextension/issues), we would really appreciate it.
 
+If you want to add a new wrapper, please, follow the [guide](https://jshelter.org/new-wrapper/). If
+you have an image/artwork that you want to push to the project, we suggest stripping exif data:
+
+```shell
+exiftool -all= -tagsfromfile @ -Orientation filename.png
+```
+
 ## License Information
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU
