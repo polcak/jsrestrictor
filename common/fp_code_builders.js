@@ -305,14 +305,3 @@ function fp_build_function_wrapper(wrap_item) {
 	};
 	return wrapper_object;
 }
-
-/**
- * The function that try to remove prototype substrings from resource path and change first char to lower case.
- * Used in code_builder to optionally wrap existing object after its prototype is wrapped.
- *
- * \param input Path part of full resource name (parent_object in terms of code_builder).
- */
-function fp_remove_proto(input) {
-	var replacedStr = input.replace(".prototype","").replace(".__proto__","");
-	return replacedStr.charAt(0).toLowerCase() + replacedStr.slice(1);
-}
