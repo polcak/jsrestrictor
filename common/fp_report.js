@@ -1,5 +1,6 @@
 /** \file
- * \brief JS code for fpd report
+ * \brief Functions that summarize fingerprints and generate FPD report
+ * \ingroup FPD
  *
  *  \author Copyright (C) 2022  Marek Salon
  *

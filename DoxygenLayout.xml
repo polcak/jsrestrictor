@@ -49,6 +49,7 @@
 			<tab type="user" url="md_tests_common_files_webbrowser_drivers_DOWNLOAD_WEB_DRIVERS_HERE.html" title="Get Selenium web drivers for integration and system tests"/>
 			<tab type="user" url="md_tests_integration_tests_README.html" title="How to run integration tests"/>
 			<tab type="user" url="md_tests_system_tests_README.html" title="How to run system tests"/>
+      <tab type="user" url="md_tests_fpd_tests_README.html" title="How to run FPD tests"/>
 		</tab>
     <tab type="files" visible="yes" title="">
       <tab type="filelist" visible="yes" title="" intro=""/>

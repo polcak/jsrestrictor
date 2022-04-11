@@ -1,5 +1,5 @@
 /** \file
- * \brief Functions that help to automate process of building wrapping code for FPD module
+ * \brief Fingerprint Detector (FPD) main logic, fingerprinting evaluation and other essentials
  *
  *  \author Copyright (C) 2021-2022  Marek Salon
  *
