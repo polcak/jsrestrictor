@@ -65,7 +65,7 @@ function createReport(data) {
     // add page URL and FavIcon to header section of the report
     if (tabObj) {
         let urlObj = new URL(tabObj.url);
-        let url = urlObj.hostname + (urlObj.pathname.length > 1 ? urlObj.pathname : "");
+        var url = urlObj.hostname + (urlObj.pathname.length > 1 ? urlObj.pathname : "");
         document.getElementById("report-url").innerHTML = url;
         let img = document.getElementById("pageFavicon");
         img.src = tabObj.favIconUrl;
@@ -183,8 +183,24 @@ function createReport(data) {
         }
         makeClickableTitles();
     }
-    
-    document.getElementById("showAll").addEventListener("click", showAll);
+
+    // create on-site JSON representation of FPD evaluation data and download it
+    function exportReport(filename) {
+        let element = document.createElement("a");
+        let obj = {
+            fpd_evaluation_statistics: latestEvals.evalStats,
+            fpd_access_logs: fpDb
+        }
+        element.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj)));
+        element.setAttribute("download", filename);
+        element.style.display = "none";
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+
+    document.getElementById("showBtn").addEventListener("click", showAll);
+    document.getElementById("exportBtn").addEventListener("click", exportReport.bind(null, `fpd_report_${url}.json`))
     document.getElementById("help").addEventListener("click", showDescription);
     document.getElementById("unhideAll").addEventListener("click", showNotAccessed);
 }

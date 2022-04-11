@@ -16,7 +16,12 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 	<header>
 		<div>
-			<h3 id="titletext">FingerPrint Detector Report<button id="help" class="help">?</button></h3>
+			<h3 id="titletext">
+				FingerPrint Detector Report
+				<button id="help" class="help">
+					?
+				</button>
+			</h3>
 			<p class="description hidden">
 				This report lists all JavaScript API endpoints that were accessed by the web page and are considered critical in terms of browser fingerprinting.
 				Fingerprint Detector (FPD) uses this data to decide whether the page is collecting a browser fingerprint.
@@ -25,6 +30,16 @@ SPDX-License-Identifier: GPL-3.0-or-later
 				FPD processes API calls in groups based on their semantic properties. This window shows the detected number of API calls on the visited page.
 				The default view shows only groups accessed at least once. This way the report can be empty if the page did not access any fingerprintable API. 
 				If you want to see all APIs monitored by FPD, click <span id="unhideAll">here</span>.
+			</p>
+			<p class="description hidden">
+				You can export full FPD Report that contains all the data collected and used by FPD to evaluate the page. This comprehensive report
+				shows the current weights assigned to the groups/endpoints (<i>fpd_evaluation_statistics</i>). It also lists all accessed API endpoints
+				with corresponding arguments (<i>fpd_access_logs</i>).
+			</p>
+			<p class="description hidden">
+				<button id="exportBtn">
+					Export full FPD Report as JSON
+				</button>
 			</p>
 			<div id="page-container">
 				<img id="pageFavicon" style="display: none">
@@ -35,7 +50,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	</header>
 
 	<div id="fpd-report">
-		<button id="showAll">Show details</button>
+		<button id="showBtn" class="sticky-button">Show details</button>
 		
 	</div>
 </body>

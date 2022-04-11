@@ -98,7 +98,7 @@ h4 {
 	color: var(--text-color);
 }
 
-#showAll {
+.sticky-button {
 	float: right;
 	position: sticky;
 	top: 10px;
