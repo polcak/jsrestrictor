@@ -18,7 +18,7 @@ reading [our paper](https://arxiv.org/abs/2204.01392) to get a better idea about
 
 ## Contributing
 
-If you have any questions or you have spotted a bug, please [let us know](https://pagure.io/JShelter/webextension/issues).
+If you have any questions or you have spotted a bug, please [let us know](https://pagure.io/JShelter/webextension/issues). If you found a security bug that you do not want to share publicly, please, send a report to [jshelter@gnu.org](mailto:jshelter@gnu.org).
 
 If you would like to give us [feedback](https://pagure.io/JShelter/webextension/issues), we would really appreciate it.
 
