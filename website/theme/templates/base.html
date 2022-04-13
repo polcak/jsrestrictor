@@ -109,7 +109,7 @@
               <ul>
                 <li><a href="{{ SITEURL }}/">Home</a></li>
                 <li {% if slug == 'blog' %} class="active" {% endif %}><a href="{{ SITEURL }}/blog/">Blog</a></li>
-                {% for pagename in ['install', 'permissions', 'levels', 'versions', 'credits', 'license'] %}
+                {% for pagename in ['install', 'permissions', 'versions', 'credits', 'license'] %}
                 {% set p = (pages|get_by_slug(pagename)) %}
                 {% if p %}
                 {% if pagename == slug %}
@@ -125,7 +125,9 @@
             <li class="menu-heading">
               <strong>Key protection</strong>
               <ul>
+                <li {% if slug == 'levels' %} class="active" {% endif %}><a href="{{ SITEURL }}/levels">JavaScript Shield</a></li>
                 <li {% if slug == 'nbs' %} class="active" {% endif %}><a href="{{ SITEURL }}/nbs">Network Boundary Shield</a></li>
+                <li {% if slug == 'fpd' %} class="active" {% endif %}><a href="{{ SITEURL }}/fpd">Fingerprint Detector</a></li>
                 {% for p in pages if p.category == "wrappers" %}
                 {% if p.url.strip('/') == slug %}
                 <li class="active">
