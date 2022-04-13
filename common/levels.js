@@ -629,7 +629,7 @@ var level_0 = {
 	"builtin": true,
 	"level_id": L0,
 	"level_text": "Turn JavaScript Shield off",
-	"level_description": "JavaScript APIs are not wrapped. Use this level if you trust the oprator of the visited page(s) or if you do not like JavaScript Shield but apply other protection mechanisms.",
+	"level_description": "JavaScript APIs are not wrapped. Use this level if you trust the oprator of the visited page(s) and you want ot give them access to full APIs supported by the browser or if you do not like JavaScript Shield but you want to apply other protection mechanisms.",
 };
 
 var level_1 = {
