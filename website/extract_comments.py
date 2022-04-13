@@ -31,9 +31,14 @@ titles = {
     "pt2": "Performance Timeline (L2)",
     "vr": "Virtual Reality 1.1",
     "xr": "Web XR",
-    "sensor-accelerometer": "Accelerometer",
+    "sensor-accel": "Accelerometer",
+    "sensor-gyro": "Gyroscope",
+    "sensor-light": "Ambient light sensor",
     "sensor-magnet": "Magnet",
-    "sensor": "Generic Sensor",
+    "sensor-orient": "Orientation sensor",
+    "sensor": "Generic sensor",
+    "eme": "Encrypted Media Extensions",
+    "media-capabilities": "Media capabilities",
 }
 
 
