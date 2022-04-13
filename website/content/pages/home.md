@@ -70,7 +70,7 @@ URL:
       </header>
       <div>
         <p>First, install the extension using the button above or checking the various <a href="/install/">installation options</a>.</p>
-        <p>Afterwards, read about <a href="/configure/">how to configure</a> JShelter, the <a href="/permissions/">required permissions</a> and the different protection levels.</p>
+        <p>Afterwards, read our <a href="/blog/">blog</a>, <a href="https://arxiv.org/abs/2204.01392">paper</a>, <a href="/faq/">FAQ</a>, the <a href="/permissions/">required permissions</a> and the different protection<a href="/levels/">levels</a>.</p>
       </div>
     </article>
     <article>
