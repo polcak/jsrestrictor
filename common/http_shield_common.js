@@ -170,36 +170,6 @@ browser.storage.sync.get(["requestShieldOn"]).then(function(result){
 });
 /// \endcond
 
-/**
- * The function for reading a locally stored csv file.
- *
- * \param _path String with a fully-qualified URL. E.g.: moz-extension://2c127fa4-62c7-7e4f-90e5-472b45eecfdc/beasts/frog.dat
- *
- * \returns promise for returning content of the file as a string.
- */
-let readFile = (_path) => {
-	return new Promise((resolve, reject) => {
-		//Fetching locally stored CSV file in same-origin mode
-		fetch(_path, {mode:'same-origin'})
-			.then(function(_res) {
-				//Return data as a blob
-				return _res.blob();
-			})
-			.then(function(_blob) {
-				var reader = new FileReader();
-				//Wait until the whole file is read
-				reader.addEventListener("loadend", function() {
-					resolve(this.result);
-				});
-				//Read blob data as text
-				reader.readAsText(_blob);
-			})
-			.catch(error => {
-				reject(error);
-			});
-	});
-};
-
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 // Obtain file path in user's file system and read CSV file with IPv4 local zones
 readFile(browser.runtime.getURL("ipv4.dat"))

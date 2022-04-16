@@ -118,15 +118,17 @@ var additional_wrappers = [
 	// parse input files into fp_levels for each level, generate wrapping code and initialize FPD module
 	let loadFpdConfig = async () => {
 		for (let file of fp_config_files) {
-			let response = await fetch(browser.runtime.getURL(`fp_config/${file}.json`));
-			let content = await response.json();
-
-			let file_splitted = file.split("-");
-			let file_levels = file_splitted[1].split("_").filter(x => x != 'lvl');
-			
-			fp_levels[file_splitted[0]] = fp_levels[file_splitted[0]] || {};
-			for (let level of file_levels) {
-				fp_levels[file_splitted[0]][level] = content;
+			try {
+				let config = JSON.parse(await readFile(browser.runtime.getURL(`fp_config/${file}.json`)));
+				let file_splitted = file.split("-");
+				let file_levels = file_splitted[1].split("_").filter(x => x != 'lvl');			
+				fp_levels[file_splitted[0]] = fp_levels[file_splitted[0]] || {};
+				for (let level of file_levels) {
+					fp_levels[file_splitted[0]][level] = config;
+				}
+			}
+			catch (e) {
+				console.error(e);
 			}
 		}
 
