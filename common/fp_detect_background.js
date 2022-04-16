@@ -106,6 +106,11 @@ var unsupportedWrappers = {};
 var exceptionWrappers = ["CSSStyleDeclaration.prototype.fontFamily"];
 
 /**
+ *  Contains information about tabs current state.
+ */
+var availableTabs = {};
+
+/**
 * Definition of settings supported by this module.
 */
 const FPD_DEF_SETTINGS = {
@@ -149,28 +154,6 @@ const FPD_DEF_SETTINGS = {
 	}
 };
 
-/// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
-// fill up fpGroups object with necessary data for evaluation
-for (let groupsLevel in fp_levels.groups) {
-	fpGroups[groupsLevel] = fpGroups[groupsLevel] || {};
-	processGroupsRecursive(fp_levels.groups[groupsLevel], groupsLevel);
-}
-
-{
-	// load configuration and settings from storage 
-	let loadConfiguration = (name) => {
-		browser.storage.sync.get([name]).then(function(result) {
-			if (result[name] != undefined) {
-				this[name] = result[name];
-			}
-		});
-	}
-
-	loadConfiguration("fpDetectionOn");
-	loadConfiguration("fpdWhitelist");
-	loadConfiguration("fpdSettings");
-}
-
 // unify default color of popup badge background between different browsers
 browser.browserAction.setBadgeBackgroundColor({color: "#6E7378"});
 
@@ -179,9 +162,214 @@ if (typeof browser.browserAction.setBadgeTextColor === "function") {
 	browser.browserAction.setBadgeTextColor({color: "#FFFFFF"});
 }
 
-// take care of unsupported resources for cross-browser behaviour uniformity
-balanceUnsupportedWrappers();
-/// \endcond
+function initFpd() {
+	// fill up fpGroups object with necessary data for evaluation
+	for (let groupsLevel in fp_levels.groups) {
+		fpGroups[groupsLevel] = fpGroups[groupsLevel] || {};
+		processGroupsRecursive(fp_levels.groups[groupsLevel], groupsLevel);
+	}
+
+	// load configuration and settings from storage 
+	let loadConfiguration = (name) => {
+		browser.storage.sync.get([name]).then(function(result) {
+			if (result[name] != undefined) {
+				this[name] = result[name];
+			}
+		});
+	}
+	loadConfiguration("fpDetectionOn");
+	loadConfiguration("fpdWhitelist");
+	loadConfiguration("fpdSettings");
+
+	// take care of unsupported resources for cross-browser behaviour uniformity
+	balanceUnsupportedWrappers();
+
+	/**
+	 * Event listener that listen for content script messages.
+	 * Messages contain wrappers logging data that are stored into fpDb object.
+	 * Also listen for popup messages to update FPD state and whitelist.
+	 *
+	 * \param callback Function that stores recieved data into fpDb.
+	 */
+	browser.runtime.onMessage.addListener(function (record, sender) {
+		if (record) {
+			switch (record.purpose) {
+				case "fp-detection":
+					// check objects existance => if do not exist, create new one
+					fpDb[sender.tab.id] = fpDb[sender.tab.id] || {};
+					fpDb[sender.tab.id][record.resource] = fpDb[sender.tab.id][record.resource] || {};
+					fpDb[sender.tab.id][record.resource][record.type] = fpDb[sender.tab.id][record.resource][record.type] || {};
+					
+					// object that contains access counters
+					const fpCounterObj = fpDb[sender.tab.id][record.resource][record.type];
+					const argsStr = record.args.join();
+					fpCounterObj["args"] = fpCounterObj["args"] || {};
+					
+					// increase counter for accessed arguments
+					fpCounterObj["args"][argsStr] = fpCounterObj["args"][argsStr] || 0;
+					fpCounterObj["args"][argsStr] += 1;
+					
+					// increase counter for total accesses
+					fpCounterObj["total"] = fpCounterObj["total"] || 0;
+					fpCounterObj["total"] += 1;
+					fpDb.update(record.resource, sender.tab.id, record.type, fpCounterObj["total"]);
+					break;
+				case "fpd-state-change":
+					browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
+						fpDetectionOn = result.fpDetectionOn;
+					});
+					break;
+				case "fpd-whitelist-check": {
+					// answer to popup, when asking whether is the site whitelisted
+					return Promise.resolve(isFpdWhitelisted(record.url));
+				}
+				case "add-fpd-whitelist":
+					// obtain current hostname and whitelist it
+					var currentHost = record.url;
+					fpdWhitelist[currentHost] = true;
+					browser.storage.sync.set({"fpdWhitelist": fpdWhitelist});
+					break;
+				case "remove-fpd-whitelist":
+					// obtain current hostname and remove it form whitelist
+					var currentHost = record.url;
+					delete fpdWhitelist[currentHost];
+					browser.storage.sync.set({"fpdWhitelist": fpdWhitelist});
+					break;
+				case "update-fpd-whitelist":
+					// update current fpdWhitelist from storage
+					browser.storage.sync.get(["fpdWhitelist"]).then(function(result) {
+						fpdWhitelist = result.fpdWhitelist;
+					});
+					break;
+				case "fpd-get-report-data": {
+					// get current FPD level for evaluated tab
+					if (record.tabId) {
+						var level = getCurrentLevelJSON(availableTabs[record.tabId].url)[0].level_id;
+						level = fp_levels.groups[level] ? level : "default";
+						return Promise.resolve({
+							tabObj: availableTabs[record.tabId],
+							groups: {root: fp_levels.groups[level].name, all: fpGroups[level]},
+							fpDb: fpDb[record.tabId],
+							latestEvals: latestEvals[record.tabId],
+							exceptionWrappers: exceptionWrappers
+						});
+					}
+				}
+				case "fpd-create-report":
+					// create FPD report for the tab
+					if (record.tabId) {
+						generateFpdReport(record.tabId);
+					}
+					break;
+				case "fpd-fetch-severity": {
+					// send severity value of the latest evaluation
+					let severity = [];
+					if (record.tabId && isFpdOn(record.tabId) && latestEvals[record.tabId]) {
+						severity = latestEvals[record.tabId].severity;
+					}
+					return Promise.resolve(severity);
+				}
+				case "fpd-get-settings": {
+					// send settings definition and current values
+					return Promise.resolve({
+						def: FPD_DEF_SETTINGS,
+						val: fpdSettings
+					});
+				}
+				case "fpd-set-settings":
+					// update current settings
+					fpdSettings[record.id] = record.value;
+					browser.storage.sync.set({"fpdSettings": fpdSettings});
+					break;
+				case "fpd-fetch-hits": {
+					let {tabId} = record;
+					// filter by tabId;
+					let hits = Object.create(null);
+					if (fpDb[tabId]) {
+						for ([resource, recordObj] of Object.entries(fpDb[tabId])) {
+							let total = 0;
+							for (let stat of Object.values(recordObj)) { // by type
+								total += stat.total;
+							}
+							let group_name = wrapping_groups.wrapper_map[resource];
+							if (group_name) {
+								get_or_create(hits, group_name, 0);
+								hits[group_name] += total;
+							}
+						}
+					}
+					return Promise.resolve(hits);
+				}
+			}
+		}
+	});
+
+	/**
+	 * Event listener that listen for click on notification when FPD detects fingerprinting.
+	 *
+	 * \param callback Function that open new window with FPD evaluation report.
+	 */
+	browser.notifications.onClicked.addListener((notificationId) => {
+		if (notificationId.startsWith("fpd")) {
+			var tabId = notificationId.split("-")[1];
+			generateFpdReport(tabId);
+		}
+	});
+
+	// get state of all existing tabs
+	browser.tabs.query({}).then(function(results) {
+		results.forEach(function(tab) {
+			availableTabs[tab.id] = tab;
+			fpDb[tab.id] = {};
+			periodicEvaluation(tab.id, 500);
+		});
+	});
+
+	/**
+	 * Event listener that listen for update of browser tabs.
+	 *
+	 * \param callback Function that updates availableTabs and refreshes fpDb.
+	 */
+	browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+		availableTabs[tabId] = tab;
+		if (changeInfo.status == "loading") {
+			refreshDb(tabId);
+			fpDb[tab.id] = {};
+			periodicEvaluation(tab.id, 500);
+		}
+	});
+
+	/**
+	 * Event listener that listen for removal of browser tabs.
+	 *
+	 * \param callback Function that updates availableTabs and refreshes fpDb.
+	 */
+	browser.tabs.onRemoved.addListener(function (tabId) {
+		refreshDb(tabId);
+		delete availableTabs[tabId];
+	});
+
+	/**
+	 * Event listener that listen for removal of optional permissions.
+	 *
+	 * \param callback Function that updates settings to values, which don't require removed permissions.
+	 */
+	browser.permissions.onRemoved.addListener((permissions) => {
+		correctSettingsForRemovedPermissions(permissions.permissions, fpdSettings, FPD_DEF_SETTINGS);
+		browser.storage.sync.set({"fpdSettings": fpdSettings});
+	});
+
+	/**
+	 * Event listener that listen for requests through webRequest API.
+	 *
+	 * \param cancelCallback Function that makes decision of blocking requests according to groups evaluation.
+	 */
+	browser.webRequest.onBeforeRequest.addListener(
+		cancelCallback,
+		{urls: ["<all_urls>"]},
+		["blocking"]
+	);
+}
 
 /**
  * The function transforming recursive groups definition into indexed fpGroups object.
@@ -650,129 +838,15 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 
 /* 
  * --------------------------------------------------
- * 				EVENT LISTENERS
+ * 				EVENT HANDLERS
  * --------------------------------------------------
  */
 
-/**
- * Event listener that listen for content script messages.
- * Messages contain wrappers logging data that are stored into fpDb object.
- * Also listen for popup messages to update FPD state and whitelist.
- *
- * \param callback Function that stores recieved data into fpDb.
+/* 
+ * --------------------------------------------------
+ * 				MISCELLANEOUS
+ * --------------------------------------------------
  */
-browser.runtime.onMessage.addListener(function (record, sender) {
-	if (record) {
-		switch (record.purpose) {
-			case "fp-detection":
-				// check objects existance => if do not exist, create new one
-				fpDb[sender.tab.id] = fpDb[sender.tab.id] || {};
-				fpDb[sender.tab.id][record.resource] = fpDb[sender.tab.id][record.resource] || {};
-				fpDb[sender.tab.id][record.resource][record.type] = fpDb[sender.tab.id][record.resource][record.type] || {};
-				
-				// object that contains access counters
-				const fpCounterObj = fpDb[sender.tab.id][record.resource][record.type];
-				const argsStr = record.args.join();
-				fpCounterObj["args"] = fpCounterObj["args"] || {};
-				
-				// increase counter for accessed arguments
-				fpCounterObj["args"][argsStr] = fpCounterObj["args"][argsStr] || 0;
-				fpCounterObj["args"][argsStr] += 1;
-				
-				// increase counter for total accesses
-				fpCounterObj["total"] = fpCounterObj["total"] || 0;
-				fpCounterObj["total"] += 1;
-				fpDb.update(record.resource, sender.tab.id, record.type, fpCounterObj["total"]);
-				break;
-			case "fpd-state-change":
-				browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
-					fpDetectionOn = result.fpDetectionOn;
-				});
-				break;
-			case "fpd-whitelist-check": {
-				// answer to popup, when asking whether is the site whitelisted
-				return Promise.resolve(isFpdWhitelisted(record.url));
-			}
-			case "add-fpd-whitelist":
-				// obtain current hostname and whitelist it
-				var currentHost = record.url;
-				fpdWhitelist[currentHost] = true;
-				browser.storage.sync.set({"fpdWhitelist": fpdWhitelist});
-				break;
-			case "remove-fpd-whitelist":
-				// obtain current hostname and remove it form whitelist
-				var currentHost = record.url;
-				delete fpdWhitelist[currentHost];
-				browser.storage.sync.set({"fpdWhitelist": fpdWhitelist});
-				break;
-			case "update-fpd-whitelist":
-				// update current fpdWhitelist from storage
-				browser.storage.sync.get(["fpdWhitelist"]).then(function(result) {
-					fpdWhitelist = result.fpdWhitelist;
-				});
-				break;
-			case "fpd-get-report-data": {
-				// get current FPD level for evaluated tab
-				if (record.tabId) {
-					var level = getCurrentLevelJSON(availableTabs[record.tabId].url)[0].level_id;
-					level = fp_levels.groups[level] ? level : "default";
-					return Promise.resolve({
-						tabObj: availableTabs[record.tabId],
-						groups: {root: fp_levels.groups[level].name, all: fpGroups[level]},
-						fpDb: fpDb[record.tabId],
-						latestEvals: latestEvals[record.tabId],
-						exceptionWrappers: exceptionWrappers
-					});
-				}
-			}
-			case "fpd-create-report":
-				// create FPD report for the tab
-				if (record.tabId) {
-					generateFpdReport(record.tabId);
-				}
-				break;
-			case "fpd-fetch-severity": {
-				// send severity value of the latest evaluation
-				let severity = [];
-				if (record.tabId && isFpdOn(record.tabId) && latestEvals[record.tabId]) {
-					severity = latestEvals[record.tabId].severity;
-				}
-				return Promise.resolve(severity);
-			}
-			case "fpd-get-settings": {
-				// send settings definition and current values
-				return Promise.resolve({
-					def: FPD_DEF_SETTINGS,
-					val: fpdSettings
-				});
-			}
-			case "fpd-set-settings":
-				// update current settings
-				fpdSettings[record.id] = record.value;
-				browser.storage.sync.set({"fpdSettings": fpdSettings});
-				break;
-			case "fpd-fetch-hits": {
-				let {tabId} = record;
-				// filter by tabId;
-				let hits = Object.create(null);
-				if (fpDb[tabId]) {
-					for ([resource, recordObj] of Object.entries(fpDb[tabId])) {
-						let total = 0;
-						for (let stat of Object.values(recordObj)) { // by type
-							total += stat.total;
-						}
-						let group_name = wrapping_groups.wrapper_map[resource];
-						if (group_name) {
-							get_or_create(hits, group_name, 0);
-							hits[group_name] += total;
-						}
-					}
-				}
-				return Promise.resolve(hits);
-			}
-		}
-	}
-});
 
 /**
  * Check if the hostname or any of it's domains is whitelisted.
@@ -798,7 +872,7 @@ function isFpdWhitelisted(hostname) {
  * 
  * \returns Boolean value TRUE if FPD is on, otherwise FALSE.
  */
- function isFpdOn(tabId) {
+function isFpdOn(tabId) {
 	if (!availableTabs[tabId]) {
 		return false;
 	}
@@ -814,7 +888,7 @@ function isFpdWhitelisted(hostname) {
  *
  * \param tabId Integer number representing ID of suspicious browser tab.
  */
- function notifyFingerprintBlocking(tabId) {
+function notifyFingerprintBlocking(tabId) {
 	let msg;
 	if (fpdSettings.behavior > 1) {
 		msg = "Blocking all subsequent requests.";
@@ -837,18 +911,6 @@ function isFpdWhitelisted(hostname) {
 }
 
 /**
- * Event listener that listen for click on notification when FPD detects fingerprinting.
- *
- * \param callback Function that open new window with FPD evaluation report.
- */
-browser.notifications.onClicked.addListener((notificationId) => {
-	if (notificationId.startsWith("fpd")) {
-		var tabId = notificationId.split("-")[1];
-		generateFpdReport(tabId);
-	}
-});
-
-/**
  * The function that generates a report about fingerprinting evaluation in a separate window.
  *
  * \param tabId Integer number representing ID of evaluated browser tab.
@@ -862,22 +924,6 @@ function generateFpdReport(tabId) {
 		width: 800
 	});
 }
-
-/**
- *  Contains information about tabs current state.
- */
-var availableTabs = {};
-
-/// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
-// get state of all existing tabs
-browser.tabs.query({}).then(function(results) {
-    results.forEach(function(tab) {
-        availableTabs[tab.id] = tab;
-		fpDb[tab.id] = {};
-		periodicEvaluation(tab.id, 500);
-    });
-});
-/// \endcond
 
 /**
  * Clear all stored logs for a tab.
@@ -895,51 +941,6 @@ function refreshDb(tabId) {
 		clearTimeout(availableTabs[tabId].timerId);
 	}
 }
-
-/**
- * Event listener that listen for update of browser tabs.
- *
- * \param callback Function that updates availableTabs and refreshes fpDb.
- */
-browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-	availableTabs[tabId] = tab;
-	if (changeInfo.status == "loading") {
-		refreshDb(tabId);
-		fpDb[tab.id] = {};
-		periodicEvaluation(tab.id, 500);
-	}
-});
-
-/**
- * Event listener that listen for removal of browser tabs.
- *
- * \param callback Function that updates availableTabs and refreshes fpDb.
- */
-browser.tabs.onRemoved.addListener(function (tabId) {
-	refreshDb(tabId);
-	delete availableTabs[tabId];
-});
-
-/**
- * Event listener that listen for removal of optional permissions.
- *
- * \param callback Function that updates settings to values, which don't require removed permissions.
- */
-browser.permissions.onRemoved.addListener((permissions) => {
-	correctSettingsForRemovedPermissions(permissions.permissions, fpdSettings, FPD_DEF_SETTINGS);
-	browser.storage.sync.set({"fpdSettings": fpdSettings});
-});
-
-/**
- * Event listener that listen for requests through webRequest API.
- *
- * \param cancelCallback Function that makes decision of blocking requests according to groups evaluation.
- */
-browser.webRequest.onBeforeRequest.addListener(
-	cancelCallback,
-	{urls: ["<all_urls>"]},
-	["blocking"]
-);
 
 /**
  * The function that makes decisions about requests blocking. If blocking enabled, also clear browsing data.

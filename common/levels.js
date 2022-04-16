@@ -751,7 +751,7 @@ function updateLevels(res) {
 	}
 	if (window.wrap_code !== undefined) {
 		for (l in levels) {
-			wrapped_codes[l] = wrap_code(levels[l]) || "";
+			wrapped_codes[l] = wrap_code(levels[l].wrappers) || "";
 		}
 	}
 	var new_default_level = res["__default__"];
@@ -836,7 +836,7 @@ function getCurrentLevelJSON(url) {
 			let l = domains[domain];
 			if (l.tweaks && !("wrapper_code" in l)) {
 			  l.wrappers = wrapping_groups.get_wrappers(l);
-				l.wrapped_code = wrap_code(l) || "";
+				l.wrapped_code = wrap_code(l.wrappers) || "";
 			}
 			return [l, l.tweaks ? l.wrapped_code : wrapped_codes[l.level_id]];
 		}

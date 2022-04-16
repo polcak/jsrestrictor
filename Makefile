@@ -40,8 +40,7 @@ jshelter_%.zip: $(COMMON_FILES) get_csv submodules
 	@cp -r common/ build/$*/
 	@cp -r $*/* build/$*/
 	@cp -r LICENSES build/$*/
-	@./generate_fpd.sh
-	@cp common/wrappingX* build/$*/
+	@./generate_fpd.sh build/$*/
 	@nscl/include.sh build/$*
 	@if [ $(DEBUG) -eq 0 ]; \
 	then \
@@ -67,7 +66,6 @@ clean:
 	rm -rf jshelter_chrome.zip
 	rm -rf common/ipv4.dat
 	rm -rf common/ipv6.dat
-	rm -rf common/wrappingX*
 	rm -rf ipv4.csv
 	rm -rf ipv6.csv
 	rm -rf doxygen/

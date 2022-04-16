@@ -25,16 +25,10 @@
 
 var wrappersPort;
 var pageConfiguration = null;
-function configureInjection({currentLevel, code, wrappers, domainHash, sessionHash, fpdOn}) {
+function configureInjection({currentLevel, code, wrappers, domainHash, sessionHash}) {
 	if (pageConfiguration) return; // one shot
-	pageConfiguration = {currentLevel, fpdOn};
+	pageConfiguration = {currentLevel};
 	if (!code) return true; // nothing to wrap, bail out!
-	if (!fpdOn) {
-		code = code.replace(/\/\/ FPD_S[\s\S]*?\/\/ FPD_E/, ''); // remove fpd wrappers from injected code
-		if (wrappers.length === 0) {
-			return true; // nothing to wrap and fpd is also off
-		}
-	}
 	if(browser.extension.inIncognitoContext){
 		// Redefine the domainHash for incognito context:
 		// Compute the SHA256 hash of the original hash so that the incognito hash is:
