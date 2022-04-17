@@ -64,12 +64,11 @@ function getContentConfiguration(url, frameId, tabId) {
 			let [{wrappers}, code] = level;
 			let {domainHash} = Hashes.getFor(url);
 			if (isFpdOn(tabId)) {
-				let fpdLevel = "default"; //TODO: make function to change between FPD levels
 				if (!code) {
-					code = fp_generate_wrapping_code(fpdLevel);
+					code = fp_generate_wrapping_code(fpdSettings.detection);
 				}
 				else {
-					code = fp_update_wrapping_code(code, wrappers, fpdLevel);
+					code = fp_update_wrapping_code(code, wrappers, fpdSettings.detection);
 				}
 			}
 			resolve({

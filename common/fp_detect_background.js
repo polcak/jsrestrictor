@@ -151,6 +151,31 @@ const FPD_DEF_SETTINGS = {
 				permissions: ["browsingData"]
 			}
 		]
+	},
+	detection: {
+		description: "Adjust heuristic thresholds which determine likelihood of fingerprinting.",
+		description2: [],
+		label: "Detection",
+		params: [
+			{
+				// 0
+				short: "Default",
+				description: "Recommended setting for most users.",
+				description2: [
+					"• Very low number of false positive detections (focus on excessive fingerprinting, very low number of unreasonably blocked sites)",
+					"• Acceptable amount of false negative detections (some fingerprinting websites may get around detection)",
+				]
+			},
+			{
+				// 1
+				short: "Strict",
+				description: "Optional setting for more cautious users.",
+				description2: [
+					"• Lower number of false negative detections (detects also websites with less excessive fingerprinting)",
+					"• Higher probability of false positive detections (in edge cases benign websites may be falsely blocked)",
+				]
+			}
+		]
 	}
 };
 
@@ -429,11 +454,8 @@ function evaluateGroups(tabId) {
 	latestEvals[tabId] = latestEvals[tabId] || {};
 	latestEvals[tabId].evalStats = [];
 
-	// get level for tab url to determine valid group criteria
-	var level = getCurrentLevelJSON(url)[0].level_id;
-
 	// check if the level exists within FPD configuration, if not use default FPD configuration
-	level = fp_levels.groups[level] ? level : "default";
+	level = fpdSettings.detection ? fpdSettings.detection : 0;
 
 	// getting root group name as a start point for recursive evaluation
 	var rootGroup = fp_levels.groups[level] ? fp_levels.groups[level].name : undefined;
@@ -739,8 +761,7 @@ function fpdCommonMessageListener(record, sender) {
 			case "fpd-get-report-data": {
 				// get current FPD level for evaluated tab
 				if (record.tabId) {
-					var level = getCurrentLevelJSON(availableTabs[record.tabId].url)[0].level_id;
-					level = fp_levels.groups[level] ? level : "default";
+					level = fpdSettings.detection ? fpdSettings.detection : 0;
 					return Promise.resolve({
 						tabObj: availableTabs[record.tabId],
 						groups: {root: fp_levels.groups[level].name, all: fpGroups[level]},

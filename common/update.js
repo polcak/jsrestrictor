@@ -386,6 +386,9 @@ function installUpdate() {
 			if (item.nbsSettings) {
 				item.nbsSettings.blocking = 1;
 			}
+			if (item.fpdSettings) {
+				item.fpdSettings.detection = 0;
+			}
 			item.version = 6.3;
 		}
 		browser.storage.sync.set(item);

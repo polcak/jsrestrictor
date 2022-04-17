@@ -201,14 +201,7 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 	}
 
 	let getCurrentLevel = (url) => {	
-		var currentLevel = "";
-		if (getCurrentLevelJSON(url)[0].is_default) {
-			currentLevel = browser.storage.sync.get("__default__");
-		}
-
-		if (getCurrentLevelJSON(url)[0].level_id) {
-			currentLevel = getCurrentLevelJSON(url)[0].level_id;
-		}
+		var currentLevel = fpdSettings.detection ? fpdSettings.detection : 0;
 
 		currentWrappers = {};
 
@@ -225,10 +218,6 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 			}
 
 			return [...new Set(acc)];
-		}
-		
-		if (!Object.keys(fp_levels.wrappers).includes(currentLevel)) {
-			currentLevel = "default";
 		}
 
 		for (let wrapper of fp_levels.wrappers[currentLevel]) {
