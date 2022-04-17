@@ -36,7 +36,7 @@
  * This means that processing of each HTTP request is paused before it is analyzed and allowed (if it seems benign) or blocked (if it is suspicious).
  *
  * The main goal of NBS is to prevent attacks like a public website requests a resource from the
- * local compiter (e.g. to determine open TCP ports and thus running applications) or
+ * local computer (e.g. to determine open TCP ports and thus running applications) or
  * internal network (e.g. the logo of the manufacturer of the local router); NBS will detect that
  * a web page hosted on the public Internet tries to connect to a local IP address. NBS blocks only
  * HTTP requests from a web page hosted on a public IP address to a private network resource. The
@@ -136,9 +136,9 @@ browser.storage.sync.get(["nbsSettings"]).then(function(result){
 });
 
 /// Hook up the listener for receiving messages
-browser.runtime.onMessage.addListener(commonMessageListener);
-browser.runtime.onMessage.addListener(messageListener);
-browser.runtime.onMessage.addListener(settingsListener);
+browser.runtime.onMessage.addListener(nbsCommonMessageListener);
+browser.runtime.onMessage.addListener(nbsMessageListener);
+browser.runtime.onMessage.addListener(nbsSettingsListener);
 
 // Listen for permissions removal to adapt settings accordingly
 browser.permissions.onRemoved.addListener((permissions) => {
@@ -598,7 +598,7 @@ function showNbsNotification(tabId) {
  * \param message Receives full message (destructured as {message, site}).
  * \param sender Sender of the message.
  */
- function messageListener({message, site}, sender)
+ function nbsMessageListener({message, site}, sender)
  {
 	 //Message came from popup,js, asking whether is this site whitelisted
 	 if (message === "is current site whitelisted?")
@@ -614,7 +614,7 @@ function showNbsNotification(tabId) {
  * 
  * \param message Receives full message.
  */
-function settingsListener(message)
+function nbsSettingsListener(message)
 {
 	if (message.purpose === "nbs-get-settings") {
 		// send settings definition and current values
@@ -637,7 +637,7 @@ function settingsListener(message)
  * \param message Receives full message.
  * \param sender Sender of the message.
  */
-function commonMessageListener(message, sender)
+function nbsCommonMessageListener(message, sender)
 {
 	//Message came from options.js, updated whitelist
 	if (message.message === "whitelist updated")

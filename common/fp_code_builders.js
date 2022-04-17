@@ -210,8 +210,6 @@ var additional_wrappers = [
  * \returns Modified injectable code that also contains FPD wrapping code.
  */
 function fp_update_wrapping_code(code, jss_wrappers, fpd_level) {
-	// mozno nemusi
-	//code = code.replace(/\/\/ FPD_S[\s\S]*?\/\/ FPD_E/, "// FPD_S\n\n// FPD_E");
 	let fpd_wrappers = Object.keys(fp_wrapped_codes[fpd_level])
 		.filter(key => !jss_wrappers.map(x => x[0]).includes(key))
 		.reduce((obj, key) => {

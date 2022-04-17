@@ -106,18 +106,17 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			The protection encapsulates the WebRequest API, so it captures all outgoing requests.
 		</p>
 		<p class="nbs_description">
-			Generally, you want Network Boundary Shield protection active, however, some pages can be
+			Generally, you want Network Boundary Shield to block all suspicious requests. However, some pages can be
 			broken, because they require interaction between public Internet and local network, for example,
 			some Intranet information systems might be broken by the Network Boundary Shield. JShelter users
 			also reported increased number of false positives when using DNS-based filtering programs. If
 			you use one, make sure that DNS returns 0.0.0.0 for the blocked domains.
 		</p>
 		<p class="nbs_description">
-			You can disable the Network Boundary Shield by adding the domain (e.g. example.com) to the
-			list below. The domains and all their subdomains listed bellow are not blocked by the Network
-			Boundary Shield. To selectively deactivate the Network Boundary Shield, insert the domains to the list (excluding "www", but including all other domains eg. ".com").
-			We generally do <strong>not</strong> recommend disabling the Network Boundary Shield for domains
-			from the public Internet.
+			Network Boundary Shield default behavior can be globally adjusted by the settings below. Network Boundary Shield can also be completely 
+			disabled on a per-domain basis using the whitelist. Domains can be whitelisted via <i>Network Boundary Shield switch</i> in the popup window 
+			or manually via <i>Manage whitelist</i> option. Keep in mind that whitelisting a domain will also whitelist its subdomains. To selectively 
+			deactivate the Network Boundary Shield, insert the domains to the whitelist (excluding "www", but including all other domains e.g. ".com").
 		</p>
 		<fieldset>
 			<div class="tweakgrid" id="nbs-settings">
