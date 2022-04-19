@@ -1,78 +1,33 @@
-Title: Protection levels
+Title: Protection Shields
 
-## Network Boundary Shield (NBS)
+## JavaScript Shield levels
 
-NBS is active independently on the levels defined below. If necessary, you can whitelist websites for which the NBS should be turned off. Generally, you want NBS to be active, however, some pages can be broken, because they require interaction between public Internet and local network, for example, some Intranet information systems might be broken by the NBS.
+JavaScript Shield modifies the behaviour of the JavaScript environment availble for the visited webpage. JShelter provides fake information to confuse fingerprinters or make webpage triggered attacks impossible or harder.
 
-## Levels controlling JS-object wrapping
+JavaScript Shield internally consists of wrappers, small pieces of code that modify the original behaviour of a JavaScript API (a function or a property) defined by standards. The behaviour of the most of the wrappers can be divided into several categories:
 
-### Level 0
-* *All functionality is disabled OFF*
+* Precision reduction: The original value is too precise and it is not necessary for most use cases. JavaScript Shield modifies the values so that typical and benign use cases are not affected.
 
-### Level 1
+* Provide fake information: Some wrappers provide fake information mostly to confuse fingerprinters. For example, canvas wrappers modifify the image so that the same instructions produce different result in each session and for each domain.
 
-* **Manipulate the time precision provided by Date, performance, events, gamepads, virtual reality, and Geolocation API --** *ON*
-    * Round time to: *hundredths of a second (1.230 -- Date, 1230 -- performance, Geolocation API)*
-* **Protect against canvas fingerprinting --** *OFF*
-* **List of microphones and cameras: --** *original*
-* **Spoof hardware information to the most popular HW --** *ON*
-    * JS navigator.deviceMemory: *4* (not applied if the browser does not support the property, e.g.
-			Firefox)
-    * JS navigator.hardwareConcurrency: *2*
-* **Filter XMLHttpRequest requests --** *OFF*
-* **Protect against ArrayBuffer exploitation --** *OFF*
-* **Protect against SharedArrayBuffer exploitation --** *OFF*
-* **Protect against WebWorker exploitation --** *OFF*
-* **Limit Geolocation API --** *Use accuracy of hundreds of meters*
-* **Gamepad API --** *List all attached gamepads*
-* **Original virtual reality API --** *List all attached VR sets*
-* **Mixed reality API --** *Enabled*
-* **navigator.sendBeacon --** *Do not send anything and return true*
-* **Disable Battery status API --** *ON*
-* **window.name --** *Clear with each page load*
+* Hide information: Some APIs provide information that is not generally needed and can be hidden from most of the pages. Depending on the API, JavaScript Shield might return an error, an empty value, or block the API completely.
 
-### Level 2
-* **Manipulate the time precision provided by Date, performance, events, gamepads, virtual reality, and Geolocation API --** *ON*
-    * Round time to: *tenths of a second (1.200 -- Date, 1200 -- performance, Geolocation API)*
-* **Protect against canvas fingerprinting: --** *ON*
-    * Reading from canvas returns white image.
-* **List of microphones and cameras: --** *EMPTY*
-* **Spoof hardware information to the most popular HW --** *ON*
-    * JS navigator.deviceMemory: *4* (not applied if the browser does not support the property)
-    * JS navigator.hardwareConcurrency: *2*
-* **Filter XMLHttpRequest requests --** *OFF*
-* **Protect against ArrayBuffer exploitation --** *OFF*
-* **Protect against SharedArrayBuffer exploitation --** *OFF*
-* **Protect against WebWorker exploitation --** *OFF*
-* **Limit Geolocation API --** *Use accuracy of kilometers*
-* **Gamepad API --** *Hide all attached gamepads*
-* **Original virtual reality API --** *Hide all attached VR sets*
-* **Mixed reality API --** *Disabled*
-* **navigator.sendBeacon --** *Do not send anything and return true*
-* **Disable Battery status API --** *ON*
-* **window.name --** *Clear with each page load*
+See our blog posts for more information on [browser fingerprinting counter-measures](/fingerprinting/) and [farbling](/farbling/).
 
-### Level 3
-* **Manipulate the time precision provided by Date, performance, events, gamepads, virtual reality, and Geolocation API --** *ON*
-    * Round time to: *full seconds (1.000 -- Date, 1000 -- performance)*
-		* *Randomize time*
-* **Protect against canvas fingerprinting: --** *ON*
-    * Reading from canvas returns white image.
-* **List of microphones and cameras: --** *EMPTY*
-* **Spoof hardware information to the most popular HW --** *ON*
-    * JS navigator.deviceMemory: *4* (not applied if the browser does not support the property)
-    * JS navigator.hardwareConcurrency: *2*
-* **Filter XMLHttpRequest requests: --** *confirm requests but do not block*
-* **Protect against ArrayBuffer exploitation --** *ON*
-    * *Use random mapping of array indexing to memory*
-* **Protect against SharedArrayBuffer exploitation --** *ON*
-    * *Block SharedArrayBuffer* -- SharedArrayBuffer provided by the browser is not available to page scripts at all.
-* **Protect against WebWorker exploitation --** *ON*
-    * *Remove real parallelism* -- Use Worker polyfill instead of the native Worker.
-* **Limit Geolocation API --** *Disabled*
-* **Gamepad API --** *Hide all attached gamepads*
-* **Original virtual reality API --** *Hide all attached VR sets*
-* **Mixed reality API --** *Disabled*
-* **navigator.sendBeacon --** *Do not send anything and return true*
-* **Disable Battery status API --** *ON*
-* **window.name --** *Clear with each page load*
+JShelter supports following levels:
+
+### Turn JavaScript Shield off
+
+Use for pages that you trust and you want ot give them access to full APIs supported by the browser.
+
+### Turn fingerprinting protection off
+
+Apply security counter-measures that are likely not to break web pages but do not defend against fingerprinting. Disable APIs that are not commonly used. Use this level if Fingerprint Detector reports low likelihood of fingerprinting, you trust the visited service, and/or you think that the protection makes the page slow or broken and your temptation to use the service is so high that you do not want to be protected.
+
+### Recommended
+
+Make the browser appear differently to distinct fingerprinters. Apply security counter-measures that are likely not to break web pages. Slightly modify the results of API calls in different way on different domains so that the cross-site fingerprint is not stable. The generated fingerprint values also differ with each browser restart. If you need a different fingerprint for the same website without restart, use incognito mode. Keep in mind that even if you log out from a site, clear your cookies, change your IP address, the modified APIs will provide a way to compute the same fingerprint. Restart your browser if you want to change your fingerprint. If in doubt, use this level.
+
+### Strict
+
+Enable all non-experimental protection. The wrapped APIs return fake values. Some APIs are blocked completely, others provide meaningful but rare values. Some return values are meaningless. This level will make you fingerprintable because the results of API calls are generally modified in the same way on all webistes and in each session. Use this level if you want to limit the information provided by your browser. If you are worried about fingerprinters, make sure the Fingerprint Detector is activated.
