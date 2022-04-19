@@ -528,6 +528,36 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "playback",
+			label: "Multimedia playback",
+			description: "Prevent websites from accessing and learning information on localy installed codecs and encoding/decoding capabilities and performance.",
+			description2: ["You can enable the protection for sites that do not process audio or video. Sites processing audio or video might be broken by the protection."],
+			params: [
+				{
+					short: "Little lies",
+					description: "Report a codec/encryption mechanism as unsupported with 12.5% probability",
+					config: [0],
+				},
+				{
+					short: "Strict",
+					description: "Report all codecs/encryption mechanisms as unsupported",
+					config: [1],
+				},
+				{
+					short: "Silence",
+					description: "Do not return any information at all",
+					config: [2],
+				},
+			],
+			wrappers: [
+				// EME
+				"Navigator.prototype.requestMediaKeySystemAccess",
+				// MEDIA-CAPABILITIES
+				"MediaCapabilities.prototype.encodingInfo",
+				"MediaCapabilities.prototype.decodingInfo",
+			],
+		},
+		{
 			name: "analytics",
 			label: "Unreliable transfers to server (beacons)",
 			description: "Prevent unreliable transfers to server (beacons).",
@@ -707,6 +737,7 @@ var level_3 = {
   "physical_environment": 1,
 	"gamepads": 1,
 	"vr": 1,
+	"playback": 2,
 	"analytics": 1,
 	"battery": 1,
 	"windowname": 1,
@@ -733,6 +764,7 @@ var level_experimental = {
   "physical_environment": 1,
 	"gamepads": 1,
 	"vr": 1,
+	"playback": 3,
 	"analytics": 1,
 	"battery": 1,
 	"windowname": 1,
