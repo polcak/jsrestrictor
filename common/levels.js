@@ -290,6 +290,24 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "net",
+			label: "Network conditions",
+			description: "Disable access to network information to limit fingerprinting and remove the possibility of observing patterns in accessed networks to learn if the user is at home, work, or travel.",
+			description2: [],
+			params: [
+				{
+					short: "Strict",
+					description: "Disable NetworkInformation API",
+					config: [0],
+				},
+			],
+			wrappers: [
+				// NET
+				"Navigator.prototype.connection",
+				"window.NetworkInformation",
+			],
+		},
+		{
 			name: "xhr",
 			label: "XMLHttpRequest requests (XHR)",
 			description: "Filter reliable XHR requests to server.",
@@ -638,6 +656,7 @@ var level_1 = {
 	"level_text": "Turn fingerprinting protection off",
 	"level_description": "Apply security counter-measures that are likely not to break web pages but do not defend against fingerprinting. Disable APIs that are not commonly used. Use this level if Fingerprint Detector reports low likelihood of fingerprinting, you trust the visited service, and/or you think that the protection makes the page slow or broken and your temptation to use the service is so high that you do not want to be protected.",
 	"time_precision": 3,
+	"net": 1,
 	"webworker": 2,
 	"geolocation": 3,
   "physical_environment": 1,
@@ -659,6 +678,7 @@ var level_2 = {
 	"plugins": 2,
 	"enumerateDevices": 2,
 	"hardware": 1,
+	"net": 1,
 	"webworker": 2,
 	"geolocation": 3,
   "physical_environment": 1,
@@ -681,6 +701,7 @@ var level_3 = {
 	"plugins": 3,
 	"enumerateDevices": 3,
 	"hardware": 3,
+	"net": 1,
 	"webworker": 2,
 	"geolocation": 6,
   "physical_environment": 1,
@@ -703,6 +724,7 @@ var level_experimental = {
 	"plugins": 3,
 	"enumerateDevices": 3,
 	"hardware": 3,
+	"net": 1,
 	"xhr": 1,
 	"arrays": 2,
 	"shared_array": 2,
