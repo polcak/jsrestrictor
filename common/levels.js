@@ -492,6 +492,24 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "coopschedule",
+			label: "Idle period task scheduling",
+			description: "The Cooperative Scheduling of Background Tasks API can schedule background tasks such that they do not introduce delays to other high priority tasks that share the same event loop.",
+			description2: ["The API leaks information about the other tasks running in the browser as it leaks information on currently scheduled tasks, vsync deadlines, user-interaction and so on."],
+			params: [
+				{
+					short: "Little lies",
+					description: "Modify the available information to confuse adversaries",
+					config: [],
+				},
+			],
+			wrappers: [
+				// COOP-SCHEDULING
+				"IdleDeadline.prototype.didTimeout",
+				"IdleDeadline.prototype.timeRemaining",
+			],
+		},
+		{
 			name: "gamepads",
 			label: "Gamepads",
 			description: "Prevent websites from accessing and learning information on local gamepads.",
@@ -709,6 +727,7 @@ var level_1 = {
 	"webworker": 2,
 	"geolocation": 3,
   "physical_environment": 1,
+	"coopschedule": 1,
 	"gamepads": 1,
 	"vr": 1,
 	"analytics": 1,
@@ -732,6 +751,7 @@ var level_2 = {
 	"webworker": 2,
 	"geolocation": 3,
   "physical_environment": 1,
+	"coopschedule": 1,
 	"gamepads": 1,
 	"vr": 1,
 	"analytics": 1,
@@ -756,6 +776,7 @@ var level_3 = {
 	"webworker": 2,
 	"geolocation": 6,
   "physical_environment": 1,
+	"coopschedule": 1,
 	"gamepads": 1,
 	"vr": 1,
 	"playback": 2,
@@ -784,6 +805,7 @@ var level_experimental = {
 	"webworker": 2,
 	"geolocation": 6,
   "physical_environment": 1,
+	"coopschedule": 1,
 	"gamepads": 1,
 	"vr": 1,
 	"playback": 3,
