@@ -609,6 +609,25 @@ var wrapping_groups = {
 				"window.name",
 			],
 		},
+		{
+			name: "nfc",
+			label: "Near Field Communication (NFC)",
+			description: "Near Field Communication (NFC) enables wireless communication between two devices at close proximity, usually less than a few centimeters.",
+			description2: ["NFC is an international standard (ISO/IEC 18092) defining an interface and protocol for simple wireless interconnection of closely coupled devices operating at 13.56 MHz."],
+			params: [
+				{
+					short: "Disabled",
+					description: "Disable the API",
+					config: [],
+				},
+			],
+			wrappers: [
+				// BATTERY
+				"window.NDEFMessage",
+				"window.NDEFReader",
+				"window.NDEFRecord",
+			],
+		},
 	],
 }
 var modify_wrapping_groups = modify_wrapping_groups || (() => null); // Give other scripts the possibility to modify the wrapping_groups objects
@@ -694,6 +713,7 @@ var level_1 = {
 	"vr": 1,
 	"analytics": 1,
 	"battery": 1,
+	"nfc": 1,
 };
 
 var level_2 = {
@@ -717,6 +737,7 @@ var level_2 = {
 	"analytics": 1,
 	"battery": 1,
 	"windowname": 1,
+	"nfc": 1,
 };
 
 var level_3 = {
@@ -741,6 +762,7 @@ var level_3 = {
 	"analytics": 1,
 	"battery": 1,
 	"windowname": 1,
+	"nfc": 1,
 };
 
 var level_experimental = {
@@ -768,6 +790,7 @@ var level_experimental = {
 	"analytics": 1,
 	"battery": 1,
 	"windowname": 1,
+	"nfc": 1,
 };
 
 var modify_builtin_levels = modify_builtin_levels || (() => null); // Give other scripts the possibility to modify builtin levels
