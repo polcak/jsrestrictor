@@ -6,7 +6,6 @@
  *  \author Copyright (C) 2022  Libor Polcak
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
- *  \license SPDX-License-Identifier: MPL-2.0
  */
 //
 //  This program is free software: you can redistribute it and/or modify
@@ -22,14 +21,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
-//  Alternatively, the contents of this file may be used under the terms
-//  of the Mozilla Public License, v. 2.0, as described below:
-//
-//  This Source Code Form is subject to the terms of the Mozilla Public
-//  License, v. 2.0. If a copy of the MPL was not distributed with this file,
-//  You can obtain one at http://mozilla.org/MPL/2.0/.
-//
-//  \copyright Copyright (c) 2020 The Brave Authors.
+
 
 /** \file
  * This file contains a wrapper for [NetworkInformation](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation#specifications).
