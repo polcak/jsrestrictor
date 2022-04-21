@@ -492,6 +492,36 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "useridle",
+			label: "User idle detection",
+			description: "The Idle Detection API can detect inactive users and locked screens.",
+			description2: ["The API can be misused to stalk the user and to improve fingerprinting."],
+			params: [
+				{
+					short: "Confuse",
+					description: "Always return active user with unlocked screen",
+					config: [0],
+				},
+				{
+					short: "Deny access",
+					description: "Do not show prompts and automatically decline",
+					config: [1],
+				},
+				{
+					short: "Remove",
+					description: "Remove the API",
+					config: [2],
+				},
+			],
+			wrappers: [
+				// COOP-SCHEDULING
+				"window.IdleDetector",
+				"IdleDetector.requestPermission",
+				"IdleDetector.prototype.screenState",
+				"IdleDetector.prototype.userState",
+			],
+		},
+		{
 			name: "coopschedule",
 			label: "Idle period task scheduling",
 			description: "The Cooperative Scheduling of Background Tasks API can schedule background tasks such that they do not introduce delays to other high priority tasks that share the same event loop.",
@@ -727,6 +757,7 @@ var level_1 = {
 	"webworker": 2,
 	"geolocation": 3,
   "physical_environment": 1,
+	"useridle": 1,
 	"coopschedule": 1,
 	"gamepads": 1,
 	"vr": 1,
@@ -751,6 +782,7 @@ var level_2 = {
 	"webworker": 2,
 	"geolocation": 3,
   "physical_environment": 1,
+	"useridle": 2,
 	"coopschedule": 1,
 	"gamepads": 1,
 	"vr": 1,
@@ -776,6 +808,7 @@ var level_3 = {
 	"webworker": 2,
 	"geolocation": 6,
   "physical_environment": 1,
+	"useridle": 3,
 	"coopschedule": 1,
 	"gamepads": 1,
 	"vr": 1,
@@ -805,6 +838,7 @@ var level_experimental = {
 	"webworker": 2,
 	"geolocation": 6,
   "physical_environment": 1,
+	"useridle": 3,
 	"coopschedule": 1,
 	"gamepads": 1,
 	"vr": 1,
