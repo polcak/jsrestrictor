@@ -279,7 +279,7 @@ Describe what the wrapper tries to accomplish and its approach:
  */
 ```
 
-## Write unit tests or integgration tests for the wrapper
+## Write unit tests or integration tests for the wrapper
 
 Follow instructions for [unit testing](md_tests_unit_tests_README.html) and
 [integration testing](md_tests_integration_tests_README.html) (see the `tests` directory in the
