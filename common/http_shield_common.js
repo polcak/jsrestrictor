@@ -89,7 +89,7 @@ var nbsNotifications = {};
 */
 const NBS_DEF_SETTINGS = {
 	blocking: {
-		description: "Allow to block requests that are trying to access your local network.",
+		description: "Block requests that are trying to access your local network.",
 		description2: ["NOTE: We recommend having requests blocking turned on in most cases. However, you can opt in to be only notified without any protection."],
 		label: "Blocking",
 		params: [
