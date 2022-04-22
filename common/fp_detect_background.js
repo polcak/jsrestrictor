@@ -802,7 +802,7 @@ function isFpdWhitelisted(hostname) {
 	if (!availableTabs[tabId]) {
 		return false;
 	}
-	let url = wwwRemove(new URL(availableTabs[tabId].url).hostname);
+	let url = getSiteForURL(availableTabs[tabId].url);
 	if (fpDetectionOn && !isFpdWhitelisted(url)) {
 		return true;
 	}
@@ -829,7 +829,7 @@ function isFpdWhitelisted(hostname) {
 		title: "Fingerprinting activity detected!",
 		message: `${msg}\n\n` +
 			`Page: ${availableTabs[tabId].title.slice(0, 30)}\n` +
-			`Host: ${wwwRemove(new URL(availableTabs[tabId].url).hostname)}`
+			`Host: ${getSiteForURL(availableTabs[tabId].url)}`
 	});
 	setTimeout(() => {
 		browser.notifications.clear("fpd-" + tabId);
