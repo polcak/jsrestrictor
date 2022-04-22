@@ -383,13 +383,16 @@ function installUpdate() {
 				let l = item["custom_levels"][level];
 				l.webworker = 2;
 			}
+			item.version = 6.3;
+		}
+		if (item.version < 6.4) {
 			if (item.nbsSettings) {
 				item.nbsSettings.blocking = 1;
 			}
 			if (item.fpdSettings) {
 				item.fpdSettings.detection = 0;
 			}
-			item.version = 6.3;
+			item.version = 6.4;
 		}
 		browser.storage.sync.set(item);
 	});

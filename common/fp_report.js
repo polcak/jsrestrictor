@@ -113,9 +113,22 @@ function createReport(data) {
     generateGroup(groups.root);
     report.innerHTML += html;
 
-    // hide groups with no relevant entries
+    // process generated document
     let groupElements = document.querySelectorAll(".fpd-group.access");
     for (let i = groupElements.length; i > 0; i--) {
+        // remove duplicit entries from groups
+        let duplicitArray = [];
+        let elements = groupElements[i-1].querySelectorAll(":scope > h4");
+        elements.forEach((d) => {
+            if (duplicitArray.indexOf(d.innerHTML) > -1) {
+                d.remove();
+            }
+            else {
+                duplicitArray.push(d.innerHTML);
+            }
+        });
+        
+        // hide groups with no relevant entries
         if (!document.querySelectorAll(`#${groupElements[i-1].id} > .access`).length) {
             groupElements[i-1].classList.replace("access", "no-access");
         }
