@@ -963,7 +963,7 @@ function saveDomainLevels() {
 }
 
 function getCurrentLevelJSON(url) {
-	var subDomains = extractSubDomains(wwwRemove(new URL(url).hostname));
+	var subDomains = extractSubDomains(getSiteForURL(url));
 	for (let domain of subDomains.reverse()) {
 		if (domain in domains) {
 			let l = domains[domain];

@@ -77,10 +77,15 @@ function generateId(len = 32) {
 }
 
 /**
- * Remove "www." at the beggining of the given hostname.
+ * Parses given URL and converts it to a string that can be used to obtain JShelter settings for the
+ * page. For example, removes "www." at the beggining of the given hostname.
  */
-function wwwRemove(hostname) {
-	return String(hostname).replace(/^www\./,'');
+function getSiteForURL(url) {
+	let u = new URL(url);
+	if (u.protocol === "file:") {
+		return u.protocol;
+	}
+	return String(u.hostname).replace(/^www\./,'');
 }
 
 /**
