@@ -21,11 +21,20 @@
 
 /** \file
  *
- * \brief This file is part of Fingerprinting Detector (FPD) and contains helper functions for automated wrappers creation. 
+ * \brief This file is part of Fingerprint Detector (FPD) and contains helper functions for automated wrappers creation. 
  * File also contains loading routine for FPD configuration files (groups-lvl_X.json, wrappers-lvl_X.json, etc...).
  *
  * \ingroup FPD
  */
+
+//DEF_FPD_FILES_S
+var fp_config_files = [];
+//DEF_FPD_FILES_E
+
+/**
+ * The object carrying code for builded FPD wrappers
+ */
+var fp_wrapped_codes = {};
 
 /**
  *  Object containing parsed input from JSON configuration files of FPD module.
@@ -105,102 +114,121 @@ var additional_wrappers = [
 ]
 
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
-// parse input files from fp_config_code into fp_levels for each level
-for (let key in fp_config_code) {
-	// split file name and determine all asociated levels
-	var key_splitted = key.split("-");
-	var key_levels = key_splitted[1].split("_").filter(x => x != 'lvl');
-
-	// divide input into groups/wrappers and asociated levels
-	fp_levels[key_splitted[0]] = fp_levels[key_splitted[0]] || {};
-	for (let level of key_levels) {
-		fp_levels[key_splitted[0]][level] = JSON.parse(fp_config_code[key]);
-	}
-}
-
-// merge duplicit entries of the same resource to be wrapped only once
 {
-	let mergeWrappers = (sameResources) => {
-		let mergeGroups = () => {
-			let accArray = [];
-			for (let resource of sameResources) {
-				accArray.push(...resource.groups);
+	// parse input files into fp_levels for each level, generate wrapping code and initialize FPD module
+	let loadFpdConfig = async () => {
+		for (let file of fp_config_files) {
+			try {
+				let config = JSON.parse(await readFile(browser.runtime.getURL(`fp_config/${file}.json`)));
+				let file_splitted = file.split("-");
+				let file_levels = file_splitted[1].split("_").filter(x => x != 'lvl');			
+				fp_levels[file_splitted[0]] = fp_levels[file_splitted[0]] || {};
+				for (let level of file_levels) {
+					fp_levels[file_splitted[0]][level] = config;
+				}
 			}
-			return accArray;
+			catch (e) {
+				console.error(e);
+			}
 		}
 
-		return {
-			resource: sameResources[0].resource,
-			type: sameResources[0].type,
-			groups: mergeGroups()
-		}
-	}
-	
-	for (let level in fp_levels.wrappers) {
-		let tmpWrappers = {};
-		for (let wrapper of fp_levels.wrappers[level]) {
-			if (!Object.keys(tmpWrappers).includes(wrapper.resource)) {
-				let sameResources = fp_levels.wrappers[level].filter(x => x.resource == wrapper.resource);
-				tmpWrappers[wrapper.resource] = mergeWrappers(sameResources);
+		// merge duplicit entries of the same resource to be wrapped only once
+		let mergeWrappers = (sameResources) => {
+			let mergeGroups = () => {
+				let accArray = [];
+				for (let resource of sameResources) {
+					accArray.push(...resource.groups);
+				}
+				return accArray;
+			}
+
+			return {
+				resource: sameResources[0].resource,
+				type: sameResources[0].type,
+				groups: mergeGroups()
 			}
 		}
-		fp_levels.wrappers[level] = Object.values(tmpWrappers);
+
+		for (let level in fp_levels.wrappers) {
+			let tmpWrappers = {};
+			for (let wrapper of fp_levels.wrappers[level]) {
+				if (!Object.keys(tmpWrappers).includes(wrapper.resource)) {
+					let sameResources = fp_levels.wrappers[level].filter(x => x.resource == wrapper.resource);
+					tmpWrappers[wrapper.resource] = mergeWrappers(sameResources);
+				}
+			}
+			fp_levels.wrappers[level] = Object.values(tmpWrappers);
+		}
+
+		for (let level in fp_levels.wrappers) {
+			// define wrapper for each FPD endpoint (using default JSS definition of wrappers)
+			let tmp_build_wrapping_code = {};
+			for (let wrap_item of fp_levels.wrappers[level]) {
+				if (wrap_item.type == "property") {
+					tmp_build_wrapping_code[wrap_item.resource] = fp_build_property_wrapper(wrap_item);
+				}
+				else if (wrap_item.type == "function") {
+					tmp_build_wrapping_code[wrap_item.resource] = fp_build_function_wrapper(wrap_item);
+				}
+			}
+				
+			// if there is an additional wrapper for resource, overwrite default definition with it
+			for (let additional_item of additional_wrappers) {
+				let { parent_object, parent_object_property } = additional_item;
+				let resource = `${parent_object}.${parent_object_property}`;			
+				if (resource in tmp_build_wrapping_code) {
+					tmp_build_wrapping_code[resource] = additional_item;
+				}
+			}
+
+			// transform each wrapper to wrapping code and index it in memory for quick access
+			fp_wrapped_codes[level] = {};
+			for (let build_item in tmp_build_wrapping_code) {
+				try {
+					fp_wrapped_codes[level][build_item] = build_code(tmp_build_wrapping_code[build_item]);
+				} catch (e) {
+					console.error(e);
+					fp_wrapped_codes[level][build_item] = "";
+				}
+			}
+		}
+
+		// initialize FPD module (background script and event listeners)
+		initFpd();
 	}
+	loadFpdConfig();
 }
-
 /// \endcond
 
 /**
- * The function returning amount of FPD wrappers defined for specific level.
+ * The function that appends FPD wrappers into injectable code, if JSS hasn't wrapped certain FPD endpoints already.
  *
- * \param level_id Id of currently wrapped level.
+ * \param code String containing injectable code generated by "generate_code" method.
+ * \param jss_wrappers Array of wrappers defined by JSS level object.
+ * \param fpd_level Identifier of the current FPD level/config.
+ * 
+ * \returns Modified injectable code that also contains FPD wrapping code.
  */
-function fp_wrappers_length(level_id) {
-	return fp_levels.wrappers[level_id] ? fp_levels.wrappers[level_id].length : fp_levels.wrappers["default"].length;
+function fp_update_wrapping_code(code, jss_wrappers, fpd_level) {
+	let fpd_wrappers = Object.keys(fp_wrapped_codes[fpd_level])
+		.filter(key => !jss_wrappers.map(x => x[0]).includes(key))
+		.reduce((obj, key) => {
+			obj[key] = fp_wrapped_codes[fpd_level][key];
+			return obj;
+		}, {});
+	let fpd_code = joinWrappingCode(Object.values(fpd_wrappers));
+	return code.replace("// FPD_S\n", `// FPD_S\n ${fpd_code}`);
 }
 
 /**
- * The function for initialization of building new wrappers that are not explicitly defined (in wrappingS files).
+ * The function that creates injectable code specifically for FPD wrappers in case that JSS hasn't wrapped anything.
  *
- * \param level Object of protection level containing array of explicitly wrapped resources.
+ * \param fpd_level Identifier of the current FPD level/config.
  * 
- * \returns Standard object for wrapping resources by code_builder (structurally same as build_wrapping_code).
+ * \returns Injectable code containing only FPD wrapping code.
  */
-function fp_wrappers_create(level) {
-	// return object initialization
-	var fpd_build_wrapping_code = {};
-	
-	// get id of wrapped level
-	var level_id = level.level_id;
-
-	// if level is not defined by FPD, use default FPD configuration
-    if (fp_levels.wrappers[level.level_id] == undefined) {
-		level_id = "default";
-	}
-
-	for (let wrap_item of fp_levels.wrappers[level_id]) {
-		// implicitly create wrapper object for every defined resource that is not explicitly defined
-		if (!(level.wrappers.map((x) => { return x[0] })).includes(wrap_item.resource)) {
-			if (wrap_item.type == "property") {
-				fpd_build_wrapping_code[wrap_item.resource] = fp_build_property_wrapper(wrap_item);
-			}
-			else if (wrap_item.type == "function") {
-				fpd_build_wrapping_code[wrap_item.resource] = fp_build_function_wrapper(wrap_item);
-			}
-		}
-	}
-
-	// if there is an additional wrapper for resource, overwrite default declaration with it
-	for (let additional_item of additional_wrappers) {
-		let { parent_object, parent_object_property } = additional_item;
-		let resource = `${parent_object}.${parent_object_property}`;
-		
-		if (resource in fpd_build_wrapping_code) {
-			fpd_build_wrapping_code[resource] = additional_item;
-		}
-	}
-
-    return fpd_build_wrapping_code;
+function fp_generate_wrapping_code(fpd_level) {
+	return generate_code("// FPD_S\n" + joinWrappingCode(Object.values(fp_wrapped_codes[fpd_level])) + "\n// FPD_E");
 }
 
 /**
@@ -304,15 +332,4 @@ function fp_build_function_wrapper(wrap_item) {
 		`,
 	};
 	return wrapper_object;
-}
-
-/**
- * The function that try to remove prototype substrings from resource path and change first char to lower case.
- * Used in code_builder to optionally wrap existing object after its prototype is wrapped.
- *
- * \param input Path part of full resource name (parent_object in terms of code_builder).
- */
-function fp_remove_proto(input) {
-	var replacedStr = input.replace(".prototype","").replace(".__proto__","");
-	return replacedStr.charAt(0).toLowerCase() + replacedStr.slice(1);
 }

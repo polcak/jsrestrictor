@@ -36,7 +36,7 @@
  * This means that processing of each HTTP request is paused before it is analyzed and allowed (if it seems benign) or blocked (if it is suspicious).
  *
  * The main goal of NBS is to prevent attacks like a public website requests a resource from the
- * local compiter (e.g. to determine open TCP ports and thus running applications) or
+ * local computer (e.g. to determine open TCP ports and thus running applications) or
  * internal network (e.g. the logo of the manufacturer of the local router); NBS will detect that
  * a web page hosted on the public Internet tries to connect to a local IP address. NBS blocks only
  * HTTP requests from a web page hosted on a public IP address to a private network resource. The
@@ -88,6 +88,23 @@ var nbsNotifications = {};
 * Definition of settings supported by this module.
 */
 const NBS_DEF_SETTINGS = {
+	blocking: {
+		description: "Block requests that are trying to access your local network.",
+		description2: ["NOTE: We recommend having requests blocking turned on in most cases. However, you can opt in to be only notified without any protection."],
+		label: "Blocking",
+		params: [
+			{
+				// 0
+				short: "Off",
+				description: "Requests blocking turned off."
+			},
+			{
+				// 1
+				short: "On",
+				description: "Requests blocking turned on."
+			}
+		]
+	},
 	notifications: {
 		description: "Turn on/off notifications about suspicious requests or hosts being blocked.",
 		description2: [],
@@ -119,9 +136,9 @@ browser.storage.sync.get(["nbsSettings"]).then(function(result){
 });
 
 /// Hook up the listener for receiving messages
-browser.runtime.onMessage.addListener(commonMessageListener);
-browser.runtime.onMessage.addListener(messageListener);
-browser.runtime.onMessage.addListener(settingsListener);
+browser.runtime.onMessage.addListener(nbsCommonMessageListener);
+browser.runtime.onMessage.addListener(nbsMessageListener);
+browser.runtime.onMessage.addListener(nbsSettingsListener);
 
 // Listen for permissions removal to adapt settings accordingly
 browser.permissions.onRemoved.addListener((permissions) => {
@@ -152,36 +169,6 @@ browser.storage.sync.get(["requestShieldOn"]).then(function(result){
 	}
 });
 /// \endcond
-
-/**
- * The function for reading a locally stored csv file.
- *
- * \param _path String with a fully-qualified URL. E.g.: moz-extension://2c127fa4-62c7-7e4f-90e5-472b45eecfdc/beasts/frog.dat
- *
- * \returns promise for returning content of the file as a string.
- */
-let readFile = (_path) => {
-	return new Promise((resolve, reject) => {
-		//Fetching locally stored CSV file in same-origin mode
-		fetch(_path, {mode:'same-origin'})
-			.then(function(_res) {
-				//Return data as a blob
-				return _res.blob();
-			})
-			.then(function(_blob) {
-				var reader = new FileReader();
-				//Wait until the whole file is read
-				reader.addEventListener("loadend", function() {
-					resolve(this.result);
-				});
-				//Read blob data as text
-				reader.readAsText(_blob);
-			})
-			.catch(error => {
-				reject(error);
-			});
-	});
-};
 
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 // Obtain file path in user's file system and read CSV file with IPv4 local zones
@@ -585,17 +572,17 @@ async function createCumulativeNotification(tabId) {
 function showNbsNotification(tabId) {
 	nbsNotifications[tabId].last = nbsNotifications[tabId].total;
 	let host = wwwRemove(new URL(availableTabs[tabId].url).hostname);
-	let message = `Blocked ${nbsNotifications[tabId].total} attempts from ${host} to access local network.`;
+	let message = `${nbsSettings.blocking ? "Blocked" : "Detected"} ${nbsNotifications[tabId].total} attempts from ${host} to access local network.`;
 	let records = Object.keys(nbsNotifications[tabId].records);
 	if (records.length == 1) {
 		let [origin, target] = records[0].split(",");
 		let count = nbsNotifications[tabId].records[records[0]];
-		message = `Blocked ${count} request${count == 1 ? "" : "s"} from ${origin} to ${target}.`;
+		message = `${nbsSettings.blocking ? "Blocked" : "Detected"} ${count} request${count == 1 ? "" : "s"} from ${origin} to ${target}.`;
 	}
 	browser.notifications.create("nbs-" + tabId, {
 		"type": "basic",
 		"iconUrl": browser.runtime.getURL("img/icon-48.png"),
-		"title": "Network boundary shield blocked suspicious requests!",
+		"title": `Network Boundary Shield ${nbsSettings.blocking ? "blocked" : "detected"} suspicious requests!`,
 		"message": message
 	});
 	setTimeout(() => {
@@ -611,7 +598,7 @@ function showNbsNotification(tabId) {
  * \param message Receives full message (destructured as {message, site}).
  * \param sender Sender of the message.
  */
- function messageListener({message, site}, sender)
+ function nbsMessageListener({message, site}, sender)
  {
 	 //Message came from popup,js, asking whether is this site whitelisted
 	 if (message === "is current site whitelisted?")
@@ -627,7 +614,7 @@ function showNbsNotification(tabId) {
  * 
  * \param message Receives full message.
  */
-function settingsListener(message)
+function nbsSettingsListener(message)
 {
 	if (message.purpose === "nbs-get-settings") {
 		// send settings definition and current values
@@ -650,7 +637,7 @@ function settingsListener(message)
  * \param message Receives full message.
  * \param sender Sender of the message.
  */
-function commonMessageListener(message, sender)
+function nbsCommonMessageListener(message, sender)
 {
 	//Message came from options.js, updated whitelist
 	if (message.message === "whitelist updated")

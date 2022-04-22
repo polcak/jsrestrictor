@@ -63,13 +63,19 @@ function getContentConfiguration(url, frameId, tabId) {
 			}
 			let [{wrappers}, code] = level;
 			let {domainHash} = Hashes.getFor(url);
-			let fpdOn = isFpdOn(tabId);
+			if (isFpdOn(tabId)) {
+				if (!code) {
+					code = fp_generate_wrapping_code(fpdSettings.detection);
+				}
+				else {
+					code = fp_update_wrapping_code(code, wrappers, fpdSettings.detection);
+				}
+			}
 			resolve({
 				currentLevel: level[0],
 				code,
 				wrappers,
-				domainHash,
-				fpdOn
+				domainHash
 			});
 		}
 		if (levels_initialised === true) {

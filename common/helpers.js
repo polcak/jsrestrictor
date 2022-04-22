@@ -231,3 +231,33 @@ function correctSettingsForRemovedPermissions(permissions, settings, definition)
 		}
 	}
 }
+
+/**
+ * The function for reading a locally stored file.
+ *
+ * \param _path String with a fully-qualified URL. E.g.: moz-extension://2c127fa4-62c7-7e4f-90e5-472b45eecfdc/beasts/frog.dat
+ *
+ * \returns promise for returning content of the file as a string.
+ */
+ let readFile = (_path) => {
+	return new Promise((resolve, reject) => {
+		//Fetching locally stored file in same-origin mode
+		fetch(_path, {mode:'same-origin'})
+			.then(function(_res) {
+				//Return data as a blob
+				return _res.blob();
+			})
+			.then(function(_blob) {
+				var reader = new FileReader();
+				//Wait until the whole file is read
+				reader.addEventListener("loadend", function() {
+					resolve(this.result);
+				});
+				//Read blob data as text
+				reader.readAsText(_blob);
+			})
+			.catch(error => {
+				reject(error);
+			});
+	});
+};

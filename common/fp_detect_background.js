@@ -1,5 +1,5 @@
 /** \file
- * \brief Functions that help to automate process of building wrapping code for FPD module
+ * \brief Fingerprint Detector (FPD) main logic, fingerprinting evaluation and other essentials
  *
  *  \author Copyright (C) 2021-2022  Marek Salon
  *
@@ -23,27 +23,27 @@
 /**
  * \defgroup FPD Fingerprint Detector
  *
- * \brief Fingerprinting Detector (FPD) is a module that detects browser fingerprint extraction and prevents
+ * \brief Fingerprint Detector (FPD) is a module that detects browser fingerprint extraction and prevents
  * its sharing. To learn more about Browser Fingerprinting topic, see study "Browser Fingerprinting: A survey" available
  * here: https://arxiv.org/pdf/1905.01051.pdf
  *
- * The FPD module uses wrapping technique to inject logic that allows log API calls and accesses for every visited web page
- * and its frames. Logged JS APIs can be specified in wrappers-lvl_X.json file, where X represents corresponding JShelter level.
+ * The FPD module uses wrapping technique to inject code that allows log API calls and accesses for every visited web page
+ * and its frames. Logged JS APIs can be specified in wrappers-lvl_X.json file, where X represents FPD config identifier.
  * 
- * Detector of fingeprinting activity is based on chosen heuristics that can be defined in form of API groups. Groups represents
- * a set of APIs that have similar but specific purpose. Access to group is triggered when a certain amount APIs is accessed. 
- * Hierarchy of groups creates a tree structure, where access to root group means fingerprinting activity. Groups can be configured in
- * groups-lvl_X.json file, where X represents corresponding JShelter level.
+ * Fingerprint Detector is based on heuristic system that can be defined in form of API groups. A group represents
+ * a set of APIs that may have something in common. Access to the group is triggered when a certain amount APIs is accessed. 
+ * Hierarchy of groups creates a tree-like structure, where access to the root group means fingerprinting activity. Groups can 
+ * be configured in groups-lvl_X.json file, where X represents FPD config identifier.
  *
  * The FPD evaluate API groups with every request made in scope of certain browser tab. When FPD detects fingerprinting activity, 
- * blocking of subsequent requests is issued. Local browsing data of fingerprinting origin are cleared to prevent caching extracted 
- * fingerprint in local browser storage.
+ * blocking of subsequent requests is issued (if allowed in settings). Local browsing data of fingerprinting origin are also cleared 
+ * to prevent caching extracted fingerprint in browser storage.
  * 
  */
 
  /** \file
  *
- * \brief This file is part of Fingerprinting Detector (FPD) and contains API groups evaluation logic. File also contains
+ * \brief This file is part of Fingerprint Detector (FPD) and contains API groups evaluation logic. File also contains
  * event listeners used for API logging, requests blocking and tabs management. 
  *
  * \ingroup FPD
@@ -106,6 +106,11 @@ var unsupportedWrappers = {};
 var exceptionWrappers = ["CSSStyleDeclaration.prototype.fontFamily"];
 
 /**
+ *  Contains information about tabs current state.
+ */
+var availableTabs = {};
+
+/**
 * Definition of settings supported by this module.
 */
 const FPD_DEF_SETTINGS = {
@@ -146,30 +151,33 @@ const FPD_DEF_SETTINGS = {
 				permissions: ["browsingData"]
 			}
 		]
+	},
+	detection: {
+		description: "Adjust heuristic thresholds which determine likelihood of fingerprinting.",
+		description2: [],
+		label: "Detection",
+		params: [
+			{
+				// 0
+				short: "Default",
+				description: "Recommended setting for most users.",
+				description2: [
+					"• Very low number of false positive detections (focus on excessive fingerprinting, very low number of unreasonably blocked sites)",
+					"• Acceptable amount of false negative detections (some fingerprinting websites may get around detection)",
+				]
+			},
+			{
+				// 1
+				short: "Strict",
+				description: "Optional setting for more cautious users.",
+				description2: [
+					"• Lower number of false negative detections (detects also websites with less excessive fingerprinting)",
+					"• Higher probability of false positive detections (in edge cases benign websites may be falsely blocked)",
+				]
+			}
+		]
 	}
 };
-
-/// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
-// fill up fpGroups object with necessary data for evaluation
-for (let groupsLevel in fp_levels.groups) {
-	fpGroups[groupsLevel] = fpGroups[groupsLevel] || {};
-	processGroupsRecursive(fp_levels.groups[groupsLevel], groupsLevel);
-}
-
-{
-	// load configuration and settings from storage 
-	let loadConfiguration = (name) => {
-		browser.storage.sync.get([name]).then(function(result) {
-			if (result[name] != undefined) {
-				this[name] = result[name];
-			}
-		});
-	}
-
-	loadConfiguration("fpDetectionOn");
-	loadConfiguration("fpdWhitelist");
-	loadConfiguration("fpdSettings");
-}
 
 // unify default color of popup badge background between different browsers
 browser.browserAction.setBadgeBackgroundColor({color: "#6E7378"});
@@ -179,38 +187,79 @@ if (typeof browser.browserAction.setBadgeTextColor === "function") {
 	browser.browserAction.setBadgeTextColor({color: "#FFFFFF"});
 }
 
-// take care of unsupported resources for cross-browser behaviour uniformity
-balanceUnsupportedWrappers();
-/// \endcond
-
 /**
- * The function transforming recursive groups definition into indexed fpGroups object.
- *
- * \param input Group object from loaded JSON format.
- * \param groupsLevel Level ID of groups to process.
+ * This function initializes FPD module, loads configuration from storage, and registers listeners needed for fingerprinting detection.
  */
-function processGroupsRecursive(input, groupsLevel) {
-	fpGroups[groupsLevel][input.name] = {};
-	fpGroups[groupsLevel][input.name]["description"] = input["description"] || "";
+function initFpd() {
+	// fill up fpGroups object with necessary data for evaluation
+	for (let groupsLevel in fp_levels.groups) {
+		fpGroups[groupsLevel] = fpGroups[groupsLevel] || {};
+		processGroupsRecursive(fp_levels.groups[groupsLevel], groupsLevel);
+	}
+
+	// load configuration and settings from storage 
+	let loadConfiguration = (name) => {
+		browser.storage.sync.get([name]).then(function(result) {
+			if (result[name] != undefined) {
+				this[name] = result[name];
+			}
+		});
+	}
+	loadConfiguration("fpDetectionOn");
+	loadConfiguration("fpdWhitelist");
+	loadConfiguration("fpdSettings");
+
+	// take care of unsupported resources for cross-browser behaviour uniformity
+	balanceUnsupportedWrappers();
+
+	// listen for messages intended for FPD module
+	browser.runtime.onMessage.addListener(fpdCommonMessageListener);
 	
-	// criteria missing => set implicit criteria
-	fpGroups[groupsLevel][input.name]["criteria"] = input["criteria"] || [{value:1, weight:1}];
-	fpGroups[groupsLevel][input.name]["items"] = {};
-
-	// retrieve associated resources (wrappers) for input group 
-	for (let resourceObj of fp_levels.wrappers[groupsLevel]) {
-		if (resourceObj.groups.filter((x) => (x.group == input.name)).length > 0) {
-			fpGroups[groupsLevel][input.name]["items"][resourceObj.resource] = resourceObj.type;
+	// listen for click on notification when FPD detects fingerprinting to create a report
+	browser.notifications.onClicked.addListener((notificationId) => {
+		if (notificationId.startsWith("fpd")) {
+			var tabId = notificationId.split("-")[1];
+			generateFpdReport(tabId);
 		}
-	}
-
-	// retrieve associated sub-groups for given input group and process them recursively
-	if (input["groups"]) {
-		for (let groupObj of input["groups"]) {
-			fpGroups[groupsLevel][input.name]["items"][groupObj.name] = "group";
-			processGroupsRecursive(groupObj, groupsLevel);
+	});
+	
+	// listen for update of browser tabs and start periodic FP evaluation
+	browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+		availableTabs[tabId] = tab;
+		if (changeInfo.status == "loading") {
+			refreshDb(tabId);
+			fpDb[tab.id] = {};
+			periodicEvaluation(tab.id, 500);
 		}
-	}
+	});
+
+	// listen for removal of browser tabs to clean fpDb object
+	browser.tabs.onRemoved.addListener(function (tabId) {
+		refreshDb(tabId);
+		delete availableTabs[tabId];
+	});
+
+	// listen for removal of optional permissions to adjust settings accordingly
+	browser.permissions.onRemoved.addListener((permissions) => {
+		correctSettingsForRemovedPermissions(permissions.permissions, fpdSettings, FPD_DEF_SETTINGS);
+		browser.storage.sync.set({"fpdSettings": fpdSettings});
+	});
+
+	// listen for requests through webRequest API and decide whether to block them
+	browser.webRequest.onBeforeRequest.addListener(
+		fpdRequestCancel,
+		{urls: ["<all_urls>"]},
+		["blocking"]
+	);
+
+	// get state of all existing tabs and start periodic FP evaluation
+	browser.tabs.query({}).then(function(results) {
+		results.forEach(function(tab) {
+			availableTabs[tab.id] = tab;
+			fpDb[tab.id] = {};
+			periodicEvaluation(tab.id, 500);
+		});
+	});
 }
 
 /* 
@@ -405,11 +454,8 @@ function evaluateGroups(tabId) {
 	latestEvals[tabId] = latestEvals[tabId] || {};
 	latestEvals[tabId].evalStats = [];
 
-	// get level for tab url to determine valid group criteria
-	var level = getCurrentLevelJSON(url)[0].level_id;
-
 	// check if the level exists within FPD configuration, if not use default FPD configuration
-	level = fp_levels.groups[level] ? level : "default";
+	level = fpdSettings.detection ? fpdSettings.detection : 0;
 
 	// getting root group name as a start point for recursive evaluation
 	var rootGroup = fp_levels.groups[level] ? fp_levels.groups[level].name : undefined;
@@ -650,18 +696,19 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 
 /* 
  * --------------------------------------------------
- * 				EVENT LISTENERS
+ * 				EVENT HANDLERS
  * --------------------------------------------------
  */
 
 /**
- * Event listener that listen for content script messages.
- * Messages contain wrappers logging data that are stored into fpDb object.
+ * Callback function that parses and handles messages recieved by FPD module.
+ * Messages may contain wrappers logging data that are stored into fpDb object.
  * Also listen for popup messages to update FPD state and whitelist.
  *
- * \param callback Function that stores recieved data into fpDb.
+ * \param message Receives full message.
+ * \param sender Sender of the message.
  */
-browser.runtime.onMessage.addListener(function (record, sender) {
+function fpdCommonMessageListener(record, sender) {
 	if (record) {
 		switch (record.purpose) {
 			case "fp-detection":
@@ -714,8 +761,7 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 			case "fpd-get-report-data": {
 				// get current FPD level for evaluated tab
 				if (record.tabId) {
-					var level = getCurrentLevelJSON(availableTabs[record.tabId].url)[0].level_id;
-					level = fp_levels.groups[level] ? level : "default";
+					level = fpdSettings.detection ? fpdSettings.detection : 0;
 					return Promise.resolve({
 						tabObj: availableTabs[record.tabId],
 						groups: {root: fp_levels.groups[level].name, all: fpGroups[level]},
@@ -772,7 +818,61 @@ browser.runtime.onMessage.addListener(function (record, sender) {
 			}
 		}
 	}
-});
+}
+
+/**
+ * The function that makes decisions about requests blocking. If blocking enabled, also clear browsing data.
+ *
+ * \param requestDetails Details about the request.
+ * 
+ * \returns Object containing key "cancel" with value true if request is blocked, otherwise with value false
+ */
+function fpdRequestCancel(requestDetails) {
+
+	// chrome fires onBeforeRequest event before tabs.onUpdated => refreshDb won't happen in time
+	// need to refreshDb when main_frame request occur, otherwise also user's requests will be blocked
+	if (requestDetails.type == "main_frame") {
+		refreshDb(requestDetails.tabId);
+	}
+
+	return evaluateFingerprinting(requestDetails.tabId)
+}
+
+/* 
+ * --------------------------------------------------
+ * 				MISCELLANEOUS
+ * --------------------------------------------------
+ */
+
+/**
+ * The function transforming recursive groups definition into indexed fpGroups object.
+ *
+ * \param input Group object from loaded JSON format.
+ * \param groupsLevel Level ID of groups to process.
+ */
+function processGroupsRecursive(input, groupsLevel) {
+	fpGroups[groupsLevel][input.name] = {};
+	fpGroups[groupsLevel][input.name]["description"] = input["description"] || "";
+	
+	// criteria missing => set implicit criteria
+	fpGroups[groupsLevel][input.name]["criteria"] = input["criteria"] || [{value:1, weight:1}];
+	fpGroups[groupsLevel][input.name]["items"] = {};
+
+	// retrieve associated resources (wrappers) for input group 
+	for (let resourceObj of fp_levels.wrappers[groupsLevel]) {
+		if (resourceObj.groups.filter((x) => (x.group == input.name)).length > 0) {
+			fpGroups[groupsLevel][input.name]["items"][resourceObj.resource] = resourceObj.type;
+		}
+	}
+
+	// retrieve associated sub-groups for given input group and process them recursively
+	if (input["groups"]) {
+		for (let groupObj of input["groups"]) {
+			fpGroups[groupsLevel][input.name]["items"][groupObj.name] = "group";
+			processGroupsRecursive(groupObj, groupsLevel);
+		}
+	}
+}
 
 /**
  * Check if the hostname or any of it's domains is whitelisted.
@@ -798,7 +898,7 @@ function isFpdWhitelisted(hostname) {
  * 
  * \returns Boolean value TRUE if FPD is on, otherwise FALSE.
  */
- function isFpdOn(tabId) {
+function isFpdOn(tabId) {
 	if (!availableTabs[tabId]) {
 		return false;
 	}
@@ -814,7 +914,7 @@ function isFpdWhitelisted(hostname) {
  *
  * \param tabId Integer number representing ID of suspicious browser tab.
  */
- function notifyFingerprintBlocking(tabId) {
+function notifyFingerprintBlocking(tabId) {
 	let msg;
 	if (fpdSettings.behavior > 1) {
 		msg = "Blocking all subsequent requests.";
@@ -837,18 +937,6 @@ function isFpdWhitelisted(hostname) {
 }
 
 /**
- * Event listener that listen for click on notification when FPD detects fingerprinting.
- *
- * \param callback Function that open new window with FPD evaluation report.
- */
-browser.notifications.onClicked.addListener((notificationId) => {
-	if (notificationId.startsWith("fpd")) {
-		var tabId = notificationId.split("-")[1];
-		generateFpdReport(tabId);
-	}
-});
-
-/**
  * The function that generates a report about fingerprinting evaluation in a separate window.
  *
  * \param tabId Integer number representing ID of evaluated browser tab.
@@ -862,22 +950,6 @@ function generateFpdReport(tabId) {
 		width: 800
 	});
 }
-
-/**
- *  Contains information about tabs current state.
- */
-var availableTabs = {};
-
-/// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
-// get state of all existing tabs
-browser.tabs.query({}).then(function(results) {
-    results.forEach(function(tab) {
-        availableTabs[tab.id] = tab;
-		fpDb[tab.id] = {};
-		periodicEvaluation(tab.id, 500);
-    });
-});
-/// \endcond
 
 /**
  * Clear all stored logs for a tab.
@@ -894,69 +966,6 @@ function refreshDb(tabId) {
 	if (availableTabs[tabId] && availableTabs[tabId].timerId) {
 		clearTimeout(availableTabs[tabId].timerId);
 	}
-}
-
-/**
- * Event listener that listen for update of browser tabs.
- *
- * \param callback Function that updates availableTabs and refreshes fpDb.
- */
-browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-	availableTabs[tabId] = tab;
-	if (changeInfo.status == "loading") {
-		refreshDb(tabId);
-		fpDb[tab.id] = {};
-		periodicEvaluation(tab.id, 500);
-	}
-});
-
-/**
- * Event listener that listen for removal of browser tabs.
- *
- * \param callback Function that updates availableTabs and refreshes fpDb.
- */
-browser.tabs.onRemoved.addListener(function (tabId) {
-	refreshDb(tabId);
-	delete availableTabs[tabId];
-});
-
-/**
- * Event listener that listen for removal of optional permissions.
- *
- * \param callback Function that updates settings to values, which don't require removed permissions.
- */
-browser.permissions.onRemoved.addListener((permissions) => {
-	correctSettingsForRemovedPermissions(permissions.permissions, fpdSettings, FPD_DEF_SETTINGS);
-	browser.storage.sync.set({"fpdSettings": fpdSettings});
-});
-
-/**
- * Event listener that listen for requests through webRequest API.
- *
- * \param cancelCallback Function that makes decision of blocking requests according to groups evaluation.
- */
-browser.webRequest.onBeforeRequest.addListener(
-	cancelCallback,
-	{urls: ["<all_urls>"]},
-	["blocking"]
-);
-
-/**
- * The function that makes decisions about requests blocking. If blocking enabled, also clear browsing data.
- *
- * \param requestDetails Details about the request.
- * 
- * \returns Object containing key "cancel" with value true if request is blocked, otherwise with value false
- */
-function cancelCallback(requestDetails) {
-
-	// chrome fires onBeforeRequest event before tabs.onUpdated => refreshDb won't happen in time
-	// need to refreshDb when main_frame request occur, otherwise also user's requests will be blocked
-	if (requestDetails.type == "main_frame") {
-		refreshDb(requestDetails.tabId);
-	}
-
-	return evaluateFingerprinting(requestDetails.tabId)
 }
 
 /**
