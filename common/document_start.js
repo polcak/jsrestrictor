@@ -89,4 +89,10 @@ if ("configuration" in window) {
         localStorage.clear();
         sessionStorage.clear();
     }
+	
+	// clear storages of all injected windows
+	browser.runtime.sendMessage({
+		purpose: "fpd-clear-storage",
+		url: window.location.href
+	});
 });

@@ -797,6 +797,10 @@ function fpdCommonMessageListener(record, sender) {
 				fpdSettings[record.id] = record.value;
 				browser.storage.sync.set({"fpdSettings": fpdSettings});
 				break;
+			case "fpd-clear-storage":
+				// clear browser storage for the origin
+				clearStorageFacilities(record.url);
+				break;
 			case "fpd-fetch-hits": {
 				let {tabId} = record;
 				// filter by tabId;
@@ -1010,9 +1014,6 @@ function evaluateFingerprinting(tabId) {
 		// if actualWeight of root group is higher than 0 => reactive phase and applying measures
 		if (evalResult.weight) {
 
-			// get url of tab asociated with this request
-			var tabUrl = availableTabs[tabId] ? availableTabs[tabId].url : undefined;
-
 			// create notification for user if behavior is "notification" or higher (only once for every tab load)
 			if (fpdSettings.behavior > 0 && !latestEvals[tabId].stopNotifyFlag) {
 				latestEvals[tabId].stopNotifyFlag = true;
@@ -1028,43 +1029,6 @@ function evaluateFingerprinting(tabId) {
 						cleanStorage: true
 					});
 				}
-			
-				// clear all browsing data for origin of tab url to prevent fingerprint caching
-				if (tabUrl && fpdSettings.behavior > 2) {
-					try {
-						// "origins" key only supported by Chromium browsers
-						browser.browsingData.remove({
-							"origins": [new URL(tabUrl).origin]
-						}, {
-							"appcache": true,
-							"cache": true,
-							"cacheStorage": true,
-							"cookies": true,
-							"fileSystems": true,
-							"indexedDB": true,
-							"localStorage": true,
-							"serviceWorkers": true,
-							"webSQL": true
-						});
-					}
-					catch (e) {
-						// need to use "hostnames" key for Firefox
-						if (e.message.includes("origins")) {
-							browser.browsingData.remove({
-								"hostnames": extractSubDomains(new URL(tabUrl).hostname).filter((x) => (x.includes(".")))
-							}, {
-								"cache": true,
-								"cookies": true,
-								"indexedDB": true,
-								"localStorage": true,
-								"serviceWorkers": true
-							});
-						}
-						else {
-							throw e;
-						}
-					}
-				}
 
 				return {
 					cancel: true
@@ -1076,4 +1040,48 @@ function evaluateFingerprinting(tabId) {
 	return {
 		cancel: false
 	};
+}
+
+/**
+ * The function that clears all supported browser storage mechanisms for a given origin. 
+ *
+ * \param url URL address of the origin.
+ */
+function clearStorageFacilities(url) {
+	// clear all browsing data for origin of tab url to prevent fingerprint caching
+	if (url && fpdSettings.behavior > 2) {
+		try {
+			// "origins" key only supported by Chromium browsers
+			browser.browsingData.remove({
+				"origins": [new URL(url).origin]
+			}, {
+				"appcache": true,
+				"cache": true,
+				"cacheStorage": true,
+				"cookies": true,
+				"fileSystems": true,
+				"indexedDB": true,
+				"localStorage": true,
+				"serviceWorkers": true,
+				"webSQL": true
+			});
+		}
+		catch (e) {
+			// need to use "hostnames" key for Firefox
+			if (e.message.includes("origins")) {
+				browser.browsingData.remove({
+					"hostnames": extractSubDomains(new URL(url).hostname).filter((x) => (x.includes(".")))
+				}, {
+					"cache": true,
+					"cookies": true,
+					"indexedDB": true,
+					"localStorage": true,
+					"serviceWorkers": true
+				});
+			}
+			else {
+				throw e;
+			}
+		}
+	}
 }
