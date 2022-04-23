@@ -52,7 +52,7 @@
 /**
  * FPD enable flag. Evaluate only when active.
  */
- var fpDetectionOn;
+var fpDetectionOn;
 
 /**
  * Associtive array of hosts, that are currently among trusted ones.
@@ -135,7 +135,8 @@ const FPD_DEF_SETTINGS = {
 				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
 				description2: [
 					"• Interrupt network traffic for the page to prevent possible fingerprint leakage.", 
-					"• Clear <strong>localStorage</strong> and <strong>sessionStorage</strong> of the page to remove possibly cached fingerprint.",
+					"• Try to clear browser storage of the page to remove possibly cached fingerprint. (<strong>No additional permissions required.</strong>)",
+					"• Clearing: <strong>localStorage, sessionStorage, JS cookies, IndexedDB, caches, window.name</strong>",
 					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
 				]
 			},
@@ -145,7 +146,8 @@ const FPD_DEF_SETTINGS = {
 				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
 				description2: [
 					"• Interrupt network traffic for the page to prevent possible fingerprint leakage.",
-					"• Clear <strong>all</strong> available storage mechanisms of the page where fingerprint may be cached. (Requires <strong>BrowsingData</strong> permission.)",
+					"• Reliably clear <strong>all</strong> available storage mechanisms of the page where fingerprint may be cached. (Requires <strong>BrowsingData</strong> permission.)",
+					"• Clearing: <strong>localStorage, sessionStorage, cookies, IndexedDB, caches, window.name, fileSystems, WebSQL, serviceWorkers</strong>",
 					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
 				],
 				permissions: ["browsingData"]
@@ -1026,7 +1028,8 @@ function evaluateFingerprinting(tabId) {
 				// clear local and session storage (using content script) for every frame in this tab (required?)
 				if (tabId >= 0) {
 					browser.tabs.sendMessage(tabId, {
-						cleanStorage: true
+						cleanStorage: true,
+						ignoreWorkaround: fpdSettings.behavior > 2
 					});
 				}
 
