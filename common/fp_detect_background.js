@@ -135,7 +135,7 @@ const FPD_DEF_SETTINGS = {
 				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
 				description2: [
 					"• Interrupt network traffic for the page to prevent possible fingerprint leakage.", 
-					"• Try to clear browser storage of the page to remove possibly cached fingerprint. (<strong>No additional permissions required.</strong>)",
+					"• Clear some browser storage of the page to remove possibly cached fingerprint. (<strong>No additional permissions required.</strong>)",
 					"• Clearing: <strong>localStorage, sessionStorage, JS cookies, IndexedDB, caches, window.name</strong>",
 					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
 				]
@@ -146,7 +146,7 @@ const FPD_DEF_SETTINGS = {
 				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
 				description2: [
 					"• Interrupt network traffic for the page to prevent possible fingerprint leakage.",
-					"• Reliably clear <strong>all</strong> available storage mechanisms of the page where fingerprint may be cached. (Requires <strong>BrowsingData</strong> permission.)",
+					"• Clear <strong>all</strong> available storage mechanisms of the page where fingerprint may be cached. (Requires <strong>BrowsingData</strong> permission.)",
 					"• Clearing: <strong>localStorage, sessionStorage, cookies, IndexedDB, caches, window.name, fileSystems, WebSQL, serviceWorkers</strong>",
 					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
 				],
@@ -200,16 +200,7 @@ function initFpd() {
 	}
 
 	// load configuration and settings from storage 
-	let loadConfiguration = (name) => {
-		browser.storage.sync.get([name]).then(function(result) {
-			if (result[name] != undefined) {
-				this[name] = result[name];
-			}
-		});
-	}
-	loadConfiguration("fpDetectionOn");
-	loadConfiguration("fpdWhitelist");
-	loadConfiguration("fpdSettings");
+	fpdLoadConfiguration();
 
 	// take care of unsupported resources for cross-browser behaviour uniformity
 	balanceUnsupportedWrappers();
@@ -799,6 +790,10 @@ function fpdCommonMessageListener(record, sender) {
 				fpdSettings[record.id] = record.value;
 				browser.storage.sync.set({"fpdSettings": fpdSettings});
 				break;
+			case "fpd-load-config":
+				// load current configuration
+				fpdLoadConfiguration();
+				break;
 			case "fpd-clear-storage":
 				// clear browser storage for the origin
 				clearStorageFacilities(record.url);
@@ -849,6 +844,17 @@ function fpdRequestCancel(requestDetails) {
  * 				MISCELLANEOUS
  * --------------------------------------------------
  */
+
+/**
+ * The function that loads module configuration from sync storage.
+ */
+function fpdLoadConfiguration() {
+	browser.storage.sync.get(["fpDetectionOn", "fpdWhitelist", "fpdSettings"]).then(function(result) {
+		fpDetectionOn = result.fpDetectionOn ? true : false;
+		fpdWhitelist = result.fpdWhitelist ? result.fpdWhitelist : {};
+		fpdSettings = result.fpdSettings ? result.fpdSettings : {};
+	});
+}
 
 /**
  * The function transforming recursive groups definition into indexed fpGroups object.
@@ -1025,7 +1031,7 @@ function evaluateFingerprinting(tabId) {
 			// block request and clear cache data only if "blocking" behavior is set
 			if (fpdSettings.behavior > 1) {
 				
-				// clear local and session storage (using content script) for every frame in this tab (required?)
+				// clear storages (using content script) for every frame in this tab
 				if (tabId >= 0) {
 					browser.tabs.sendMessage(tabId, {
 						cleanStorage: true,

@@ -394,7 +394,21 @@ function installUpdate() {
 			}
 			item.version = 6.4;
 		}
-		browser.storage.sync.set(item);
+		browser.storage.sync.set(item).then(() => {
+			// origin of update.js must be recognized (background script vs. options page)
+			if (typeof fpdLoadConfiguration === "function") {
+				fpdLoadConfiguration();
+			}
+			else {
+				browser.runtime.sendMessage({purpose: "fpd-load-config"});
+			}
+			if (typeof nbsLoadConfiguration === "function") {
+				nbsLoadConfiguration();
+			}
+			else {
+				browser.runtime.sendMessage({purpose: "nbs-load-config"})
+			}
+		});
 	});
 }
 browser.runtime.onInstalled.addListener(installUpdate);

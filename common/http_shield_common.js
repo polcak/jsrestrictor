@@ -124,18 +124,40 @@ const NBS_DEF_SETTINGS = {
 	}
 };
 
+/**
+ * The function that loads module configuration from sync storage.
+ */
+function nbsLoadConfiguration() {
+	browser.storage.sync.get(["requestShieldOn", "nbsWhitelist", "nbsSettings"]).then(function(result) {
+		//If found object is true or undefined, turn the requestShieldOn
+		if (result.requestShieldOn == undefined || result.requestShieldOn)
+		{
+			//Hook up the listeners
+			browser.webRequest.onBeforeSendHeaders.addListener(
+				beforeSendHeadersListener,
+				{urls: ["<all_urls>"]},
+				["blocking", "requestHeaders"]
+			);
+
+			if (typeof onResponseStartedListener === "function")
+			{
+				browser.webRequest.onResponseStarted.addListener(
+				onResponseStartedListener,
+				{urls: ["<all_urls>"]},
+				["responseHeaders"]
+				);
+			}
+		}
+
+		doNotBlockHosts = result.nbsWhitelist ? result.nbsWhitelist : {};
+		nbsSettings = result.nbsSettings ? result.nbsSettings : {};
+	});
+}
+
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
-browser.storage.sync.get(["nbsWhitelist"]).then(function(result){
-	if (result.nbsWhitelist != undefined)
-		doNotBlockHosts = result.nbsWhitelist;
-});
-
-browser.storage.sync.get(["nbsSettings"]).then(function(result){
-	if (result.nbsSettings != undefined)
-		nbsSettings = result.nbsSettings;
-});
-
 /// Hook up the listener for receiving messages
+nbsLoadConfiguration();
+
 browser.runtime.onMessage.addListener(nbsCommonMessageListener);
 browser.runtime.onMessage.addListener(nbsMessageListener);
 browser.runtime.onMessage.addListener(nbsSettingsListener);
@@ -146,31 +168,6 @@ browser.permissions.onRemoved.addListener((permissions) => {
 	browser.storage.sync.set({"nbsSettings": nbsSettings});
 });
 
-/// Check the storage for requestShieldOn object
-browser.storage.sync.get(["requestShieldOn"]).then(function(result){
-	//If found object is true or undefined, turn the requestShieldOn
-	if (result.requestShieldOn == undefined || result.requestShieldOn)
-	{
-		//Hook up the listeners
-		browser.webRequest.onBeforeSendHeaders.addListener(
-			beforeSendHeadersListener,
-			{urls: ["<all_urls>"]},
-			["blocking", "requestHeaders"]
-		);
-
-		if (typeof onResponseStartedListener === "function")
-		{
-			browser.webRequest.onResponseStarted.addListener(
-			onResponseStartedListener,
-			{urls: ["<all_urls>"]},
-			["responseHeaders"]
-			);
-		}
-	}
-});
-/// \endcond
-
-/// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 // Obtain file path in user's file system and read CSV file with IPv4 local zones
 readFile(browser.runtime.getURL("ipv4.dat"))
 	.then(_res => {
@@ -627,6 +624,10 @@ function nbsSettingsListener(message)
 		// update current settings
 		nbsSettings[message.id] = message.value;
 		browser.storage.sync.set({"nbsSettings": nbsSettings});
+	}
+	else if (message.purpose === "nbs-load-config") {
+		// load current configuration
+		nbsLoadConfiguration();
 	}
 }
 
