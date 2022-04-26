@@ -98,6 +98,7 @@ function define_page_context_function(wrapper) {
 	if (WrapHelper.XRAY) {
 		let innerF = replacementF;
 		replacementF = function(...args) {
+			let jshelter_debug_timestamp = xrayWindow.performance.now(); console.debug('JShelter performance ${originalF} start:', jshelter_debug_timestamp); // Intentionally one line
 
 			// prepare callbacks
 			args = args.map(a => typeof a === "function" ? WrapHelper.pageAPI(a) : a);
@@ -111,6 +112,7 @@ function define_page_context_function(wrapper) {
 					ret = WrapHelper.unX(ret);
 				} catch (e) {}
 			}
+			console.debug('JShelter performance ${originalF} duration:', xrayWindow.performance.now() - jshelter_debug_timestamp);
 			return ret;
 		}
 	}
