@@ -11,6 +11,7 @@ titles = {
     "ajax": "Ajax",
     "battery-cr": "Battery level",
     "be": "Beacon API",
+    "coop-scheduling": "Cooperative Scheduling",
     "dm": "Device memory",
     "dom": "DOM API",
     "ecma-array": "ECMAscript arrays",
