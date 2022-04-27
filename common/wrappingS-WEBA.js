@@ -49,6 +49,11 @@
  * is the same as the read one. Nevertheless, the aim of the wrappers is
  * to limit the finerprintability.
  *
+ * \bug Possibly inconsistant data between AudioBuffer and AnalyserNode wrappers.
+ *
+ * \bug Inconsistency between AudioBuffer.prototype.copyFromChannel and AudioBuffer.prototype.getChannelData.
+ * AudioBuffer.prototype.copyFromChannel should call AudioBuffer.prototype.getChannelData wrapper
+ * and then return result of the original call.
  */
 
 /*
