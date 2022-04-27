@@ -159,6 +159,9 @@
 					whiteNoiseFloat(floatArr);
 				}
 				modified.add(floatArr);
+				setTimeout(function() {
+						modified.delete(floatArr);
+					}, 300000); // Remove the information after 5 minutes, this might need tweaking
 				return floatArr;
 			`,
 		},
