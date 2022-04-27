@@ -413,39 +413,33 @@ function installUpdate() {
 }
 browser.runtime.onInstalled.addListener(installUpdate);
 
-function checkAndSaveConfig(conf) {
-	if (!("version" in conf && typeof(conf.version) === "number")) {
-		conf.version = 2.1;
+async function checkAndSaveConfig(conf) {
+	let checkSettingRange = (module, setting, range, defValue) => {
+		if (!(conf[module][setting] in range)) {
+			conf[module][setting] = defValue;
+		}
 	}
-	if (!("requestShieldOn" in conf) || typeof(conf.requestShieldOn) !== "boolean") {
-		conf.requestShieldOn = true;
+	let checkExistAndType = (name, type, defValue) => {
+		if (!(name in conf && typeof(conf[name]) === type)) {
+			conf[name] = defValue;
+		}
 	}
-	if (!("fpDetectionOn" in conf) || typeof(conf.fpDetectionOn) !== "boolean") {
-		conf.fpDetectionOn = false;
-	}
-	if (!("custom_levels" in conf) || typeof(conf.custom_levels) !== "object") {
-		conf.custom_levels = {};
-	}
+	checkExistAndType("version", "number", 2.1);
+	checkExistAndType("requestShieldOn", "boolean", true);
+	checkExistAndType("fpDetectionOn", "boolean", false);
+	checkExistAndType("custom_levels", "object", {});
 	if (!("__default__" in conf) || typeof(conf.__default__) !== "string" ||
 			(!(conf.__default__ in [0,1,2,3]) && !(conf.__default__ in conf.custom_levels))) {
 		conf.__default__ = "2";
 	}
-	if (!("domains" in conf) || typeof(conf.domains) !== "object") {
-		conf.domains = {};
-	}
-	if (!("nbsWhitelist" in conf) || typeof(conf.nbsWhitelist) !== "object") {
-		conf.nbsWhitelist = {};
-	}
-	if (!("nbsSettings" in conf) || typeof(conf.nbsSettings) !== "object") {
-		conf.nbsSettings = {};
-	}
-	if (!("fpdWhitelist" in conf) || typeof(conf.fpdWhitelist) !== "object") {
-		conf.fpdWhitelist = {};
-	}
-	if (!("fpdSettings" in conf) || typeof(conf.fpdSettings) !== "object") {
-		conf.fpdSettings = {};
-	}
-	browser.storage.sync.set(conf);
+	checkExistAndType("nbsWhitelist", "object", {});
+	checkExistAndType("nbsSettings", "object", {});
+	checkSettingRange("nbsSettings", "blocking", [0,1], 1);
+	checkSettingRange("nbsSettings", "notifications", [0,1], 1);
+	checkExistAndType("fpdWhitelist", "object", {});
+	checkExistAndType("fpdSettings", "object", {});
+	checkSettingRange("fpdSettings", "behavior", [0,1,2,3], 1);
+	checkSettingRange("fpdSettings", "detection", [0,1], 0);
+	await browser.storage.sync.set(conf);
 	installUpdate();
-	return "OK";
 }
