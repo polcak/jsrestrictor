@@ -221,13 +221,15 @@ function create_short_text(text, LIMIT) {
  */
 function correctSettingsForRemovedPermissions(permissions, settings, definition) {
 	for (let [name, value] of Object.entries(settings)) {
-		while (value >= 0) {
+		if (definition[name]) {
 			let option = definition[name].params[value];
-			if (!option.permissions || !option.permissions.filter(value => permissions.includes(value)).length) {
-				settings[name] = value;
-				break;
+			while (value >= 0) {
+				if (!option.permissions || !option.permissions.filter(value => permissions.includes(value)).length) {
+					settings[name] = value;
+					break;
+				}
+				value -= 1;
 			}
-			value -= 1;
 		}
 	}
 }

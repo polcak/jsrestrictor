@@ -66,6 +66,7 @@ clean:
 	rm -rf jshelter_chrome.zip
 	rm -rf common/ipv4.dat
 	rm -rf common/ipv6.dat
+	rm -rf common/wrappingX*
 	rm -rf ipv4.csv
 	rm -rf ipv6.csv
 	rm -rf doxygen/
