@@ -153,7 +153,7 @@
 					audioFarble(floatArr);
 				}
 				else if (behaviour == 1) {
-					whiteNoiseFloat(destination);
+					whiteNoiseFloat(floatArr);
 				}
 				return floatArr;
 			`,
