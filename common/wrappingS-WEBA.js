@@ -138,7 +138,7 @@
 					wrapped_name: "origGetChannelData",
 				}
 			],
-			helping_code: "var behaviour = args[0];" + audioFarbleBody + whiteNoiseFloat,
+			helping_code: "var behaviour = args[0]; var modified = new Set();" + audioFarbleBody + whiteNoiseFloat,
 			original_function: "parent.AudioBuffer.prototype.getChannelData",
 			wrapping_function_args: "channel",
 			/** \fn fake AudioBuffer.prototype.getChannelData
@@ -149,12 +149,16 @@
 			 */
 			wrapping_function_body: `
 				var floatArr = origGetChannelData.call(this, channel);
+				if (modified.has(floatArr)) {
+					return floatArr;
+				}
 				if (behaviour == 0) {
 					audioFarble(floatArr);
 				}
 				else if (behaviour == 1) {
 					whiteNoiseFloat(floatArr);
 				}
+				modified.add(floatArr);
 				return floatArr;
 			`,
 		},
