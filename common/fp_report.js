@@ -1,5 +1,6 @@
 /** \file
- * \brief JS code for fpd report
+ * \brief Functions that summarize fingerprints and generate FPD report
+ * \ingroup FPD
  *
  *  \author Copyright (C) 2022  Marek Salon
  *
@@ -64,7 +65,7 @@ function createReport(data) {
     // add page URL and FavIcon to header section of the report
     if (tabObj) {
         let urlObj = new URL(tabObj.url);
-        let url = urlObj.hostname + (urlObj.pathname.length > 1 ? urlObj.pathname : "");
+        var url = urlObj.hostname + (urlObj.pathname.length > 1 ? urlObj.pathname : "");
         document.getElementById("report-url").innerHTML = url;
         let img = document.getElementById("pageFavicon");
         img.src = tabObj.favIconUrl;
@@ -112,9 +113,22 @@ function createReport(data) {
     generateGroup(groups.root);
     report.innerHTML += html;
 
-    // hide groups with no relevant entries
+    // process generated document
     let groupElements = document.querySelectorAll(".fpd-group.access");
     for (let i = groupElements.length; i > 0; i--) {
+        // remove duplicit entries from groups
+        let duplicitArray = [];
+        let elements = groupElements[i-1].querySelectorAll(":scope > h4");
+        elements.forEach((d) => {
+            if (duplicitArray.indexOf(d.innerHTML) > -1) {
+                d.remove();
+            }
+            else {
+                duplicitArray.push(d.innerHTML);
+            }
+        });
+        
+        // hide groups with no relevant entries
         if (!document.querySelectorAll(`#${groupElements[i-1].id} > .access`).length) {
             groupElements[i-1].classList.replace("access", "no-access");
         }
@@ -158,14 +172,14 @@ function createReport(data) {
     // show resources for every group in FPD report
     let showAll = (event) => {
         for (let element of document.querySelectorAll(".fpd-group > h4")) {      
-            if (event.target.innerText == "Show All") {
+            if (event.target.innerText == "Show details") {
                 element.classList.remove("hidden");
             }
             else {
                 element.classList.add("hidden");
             }
         }
-        event.target.innerText = event.target.innerText == "Show All" ? "Hide details" : "Show All";
+        event.target.innerText = event.target.innerText == "Show details" ? "Hide details" : "Show details";
     }
 
     // show description/help for the report
@@ -182,8 +196,24 @@ function createReport(data) {
         }
         makeClickableTitles();
     }
-    
-    document.getElementById("showAll").addEventListener("click", showAll);
+
+    // create on-site JSON representation of FPD evaluation data and download it
+    function exportReport(filename) {
+        let element = document.createElement("a");
+        let obj = {
+            fpd_evaluation_statistics: latestEvals.evalStats,
+            fpd_access_logs: fpDb
+        }
+        element.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj)));
+        element.setAttribute("download", filename);
+        element.style.display = "none";
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+
+    document.getElementById("showBtn").addEventListener("click", showAll);
+    document.getElementById("exportBtn").addEventListener("click", exportReport.bind(null, `fpd_report_${url}.json`))
     document.getElementById("help").addEventListener("click", showDescription);
     document.getElementById("unhideAll").addEventListener("click", showNotAccessed);
 }

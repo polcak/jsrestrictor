@@ -40,8 +40,7 @@ jshelter_%.zip: $(COMMON_FILES) get_csv submodules
 	@cp -r common/ build/$*/
 	@cp -r $*/* build/$*/
 	@cp -r LICENSES build/$*/
-	@./generate_fpd.sh
-	@cp common/wrappingX* build/$*/
+	@./generate_fpd.sh build/$*/
 	@nscl/include.sh build/$*
 	@if [ $(DEBUG) -eq 0 ]; \
 	then \

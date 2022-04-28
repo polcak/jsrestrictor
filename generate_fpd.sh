@@ -22,15 +22,14 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-rm -rf common/wrappingX*
+sed -i "/.*\/\/DEF_FPD_FILES_S.*/,/.*\/\/DEF_FPD_FILES_E.*/{/.*\/\/DEF_FPD_FILES_S.*/!{/.*\/\/DEF_FPD_FILES_E.*/!d}}" $1/fp_code_builders.js
 
-for f in ./common/fp_config/*.json
+CONFIG_FILES=`find common/fp_config/* -maxdepth 0 -name "*.json"`
+ACC=""
+for FILE in $CONFIG_FILES
 do
-  CONFNAME=`basename $f .json`
-  cat $f > common/wrappingX-$CONFNAME.js
-
-  pushd common/
-   sed -i '1i (function() { var conf = `' wrappingX-$CONFNAME.js
-   echo '`;add_fp_config(conf, "'"$CONFNAME"'");})();' >> wrappingX-$CONFNAME.js
-  popd
+	ACC="${ACC}\"`basename ${FILE} .json`\""
+  ACC="${ACC}, "
 done
+
+sed -i "/.*\/\/DEF_FPD_FILES_S.*/a var fp_config_files = [${ACC::-2}]" $1/fp_code_builders.js

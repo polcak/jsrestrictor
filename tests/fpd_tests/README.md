@@ -1,6 +1,6 @@
 # Instruction how to run FPD tests
 
-Fingerprinting detection (FPD) tests for web browser extension JShelter verify that required JavaScript APIs
+Fingerprint Detector (FPD) tests for web browser extension JShelter verify that required JavaScript APIs
 are wrapped and all specified accesses to them are properly logged according to evaluating heuristics.
 
 # SET UP TEST ENVIRONMENT

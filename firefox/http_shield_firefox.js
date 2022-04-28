@@ -177,7 +177,7 @@ async function beforeSendHeadersListener(requestDetail)
 	if (!isSourcePrivate && isDestinationPrivate)
 	{
 		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.tabId);
-		return {cancel:true}
+		return {cancel: nbsSettings.blocking ? true : false}
 	}
 	else //Permitting others
 	{

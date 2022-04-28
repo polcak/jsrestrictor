@@ -226,13 +226,45 @@ function create_short_text(text, LIMIT) {
  */
 function correctSettingsForRemovedPermissions(permissions, settings, definition) {
 	for (let [name, value] of Object.entries(settings)) {
-		while (value >= 0) {
+		if (definition[name]) {
 			let option = definition[name].params[value];
-			if (!option.permissions || !option.permissions.filter(value => permissions.includes(value)).length) {
-				settings[name] = value;
-				break;
+			while (value >= 0) {
+				if (!option.permissions || !option.permissions.filter(value => permissions.includes(value)).length) {
+					settings[name] = value;
+					break;
+				}
+				value -= 1;
 			}
-			value -= 1;
 		}
 	}
 }
+
+/**
+ * The function for reading a locally stored file.
+ *
+ * \param _path String with a fully-qualified URL. E.g.: moz-extension://2c127fa4-62c7-7e4f-90e5-472b45eecfdc/beasts/frog.dat
+ *
+ * \returns promise for returning content of the file as a string.
+ */
+ let readFile = (_path) => {
+	return new Promise((resolve, reject) => {
+		//Fetching locally stored file in same-origin mode
+		fetch(_path, {mode:'same-origin'})
+			.then(function(_res) {
+				//Return data as a blob
+				return _res.blob();
+			})
+			.then(function(_blob) {
+				var reader = new FileReader();
+				//Wait until the whole file is read
+				reader.addEventListener("loadend", function() {
+					resolve(this.result);
+				});
+				//Read blob data as text
+				reader.readAsText(_blob);
+			})
+			.catch(error => {
+				reject(error);
+			});
+	});
+};

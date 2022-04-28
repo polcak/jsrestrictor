@@ -25,16 +25,10 @@
 
 var wrappersPort;
 var pageConfiguration = null;
-function configureInjection({currentLevel, code, wrappers, domainHash, sessionHash, fpdOn}) {
+function configureInjection({currentLevel, code, wrappers, domainHash, sessionHash}) {
 	if (pageConfiguration) return; // one shot
-	pageConfiguration = {currentLevel, fpdOn};
+	pageConfiguration = {currentLevel};
 	if (!code) return true; // nothing to wrap, bail out!
-	if (!fpdOn) {
-		code = code.replace(/\/\/ FPD_S[\s\S]*?\/\/ FPD_E/, ''); // remove fpd wrappers from injected code
-		if (wrappers.length === 0) {
-			return true; // nothing to wrap and fpd is also off
-		}
-	}
 	if(browser.extension.inIncognitoContext){
 		// Redefine the domainHash for incognito context:
 		// Compute the SHA256 hash of the original hash so that the incognito hash is:
@@ -88,11 +82,46 @@ if ("configuration" in window) {
 /**
  * Event listener that listens for background script messages.
  *
- * \param callback Function that clears localStorage and sessionStorage.
+ * \param callback Function that clears certain storage facilities.
  */
- browser.runtime.onMessage.addListener(function (message) {
-    if (message.cleanStorage) { 
-        localStorage.clear();
-        sessionStorage.clear();
-    }
+browser.runtime.onMessage.addListener(function (message) {
+	if (message.cleanStorage) { 
+		localStorage.clear();
+		sessionStorage.clear();
+		window.name = "";
+
+		if (!message.ignoreWorkaround) {
+			// clear indexedDB (only Chrome)
+			if (window.indexedDB && indexedDB.databases) {	
+				indexedDB.databases().then(dbs => {
+					dbs.forEach(db => indexedDB.deleteDatabase(db.name))
+				}).catch(err => console.error(err));
+			}
+		
+			// clear cacheStorage
+			if (window.caches) {
+				caches.keys().then((names) => {
+					for (let name of names) {
+						caches.delete(name);
+					}
+				}).catch(err => console.error(err));
+			}
+
+			// clear cookies (only JS)
+			// Source: https://stackoverflow.com/a/66698063/17661959
+			document.cookie.replace(
+				/(?<=^|;).+?(?=\=|;|$)/g, 
+				name => location.hostname
+				  .split(/\.(?=[^\.]+\.)/)
+				  .reduceRight((acc, val, i, arr) => i ? arr[i]='.'+val+acc : (arr[i]='', arr), '')
+				  .map(domain => document.cookie=`${name}=;${location.protocol == 'https:' ? 'Secure;' : ''}max-age=0;path=/;domain=${domain}`)
+			);
+		}
+
+		// clear storages of all injected windows (using BrowsingData)
+		browser.runtime.sendMessage({
+			purpose: "fpd-clear-storage",
+			url: window.location.href
+		});
+	}
 });
