@@ -170,7 +170,14 @@ function insert_domain_levels() {
 	// Insert all known levels to GUI
 	var allDomainsElement = document.getElementById("domain-level-list");
 	for (let domain in domains) {
-		show_domain_level(allDomainsElement, domain);
+		if (domain === escape(domain)) {
+			// Do not display invalid domains inserted before https://pagure.io/JShelter/webextension/issue/45 fix
+			// Note that an invalid domain can be inserted through advanced options
+			show_domain_level(allDomainsElement, domain);
+		}
+		else {
+			console.error("Invalid domain in configuration: " + domain);
+		}
 	}
 }
 
