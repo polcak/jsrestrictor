@@ -76,6 +76,7 @@
     "page": "options.html",
     "open_in_tab": true
   },
+  "content_security_policy": "default-src 'self'; img-src 'self' data:",
   "permissions": [
     "storage",
     "tabs",
