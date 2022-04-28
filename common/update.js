@@ -394,6 +394,28 @@ function installUpdate() {
 			}
 			item.version = 6.4;
 		}
+		if (item.version < 6.5) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.time_precision && l.analytics && l.geolocation) {
+					l.coopschedule = 1;
+					l.net = 1;
+					l.nfc = 1;
+					l.useridle = 1;
+					if (l.htmlcanvaselement || l.audiobuffer || l.enumerateDevices) {
+						l.useridle = 2;
+						if (l.htmlcanvaselement === 2 || l.audiobuffer === 2 || l.enumerateDevices === 3) {
+							l.useridle = 3;
+							l.playback = 2;
+						}
+					}
+				}
+			}
+			item.version = 6.5;
+		}
+
+
+
 		browser.storage.sync.set(item).then(() => {
 			// origin of update.js must be recognized (background script vs. options page)
 			if (typeof fpdLoadConfiguration === "function") {
