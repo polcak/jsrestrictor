@@ -189,6 +189,10 @@ document.getElementById("add_domain").addEventListener("click", function (e) {
 	e.preventDefault();
 	let domainEl = document.getElementById("domain-text");
 	let domain = domainEl.value;
+	if (escape(domain) !== domain) {
+		alert("Unsupported domain " + domain);
+		return;
+	}
 	let domainLevel = document.getElementById("domain-level");
 	if (domain in domains) {
 		let ok = confirm(`Settings for domain ${domain} already exists and will be overriden.`);
