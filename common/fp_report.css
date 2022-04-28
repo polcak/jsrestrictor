@@ -103,6 +103,7 @@ h4 {
 	position: sticky;
 	top: 10px;
 	cursor: pointer;
+	margin-left: 0.5em;
 }
 
 .description {

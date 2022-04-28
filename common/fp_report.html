@@ -36,11 +36,6 @@ SPDX-License-Identifier: GPL-3.0-or-later
 				shows the current weights assigned to the groups/endpoints (<i>fpd_evaluation_statistics</i>). It also lists all accessed API endpoints
 				with corresponding arguments (<i>fpd_access_logs</i>).
 			</p>
-			<p class="description hidden">
-				<button id="exportBtn">
-					Export full FPD Report as JSON
-				</button>
-			</p>
 			<div id="page-container">
 				<img id="pageFavicon" style="display: none">
 				<h5 id="report-url"></h5>
@@ -51,7 +46,9 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 	<div id="fpd-report">
 		<button id="showBtn" class="sticky-button">Show details</button>
-		
+		<button id="exportBtn" class="sticky-button">
+			Export full FPD Report as JSON
+		</button>
 	</div>
 </body>
 
