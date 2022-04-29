@@ -9,7 +9,7 @@ We think that JShelter is ready to be used for everyday browsing. We believe tha
 in the current state fulfills the goal of giving you the control over your browser and the
 APIs that are available for the web page.
 
-We believe that the Recommended level changes you fingerprint so that typical fingerprinting scripts
+We believe that the `Recommended` level changes you fingerprint so that typical fingerprinting scripts
 will fail to correlate your cross-origin activities and activities on the same origin during
 different browser sessions. See the answers below for possible caveats.
 
