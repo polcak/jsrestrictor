@@ -1,7 +1,7 @@
 Title: Frequently Asked Questions
 Slug: faq
 
-This page is currently under construction, please consult <a href="/blog/">blog</a>, our paper <a href="https://arxiv.org/abs/2204.01392">paper</a> and other links on this site to get more information.
+This page is currently under construction, please consult <a href="/blog/">blog</a>, our [paper](https://arxiv.org/abs/2204.01392) and other links on this site to get more information.
 
 #### What is the current JShelter status? Is it ready or is it still a work in progress?
 
@@ -70,8 +70,8 @@ FIXME JavaScript Shield
 If you are using Firefox:
 
 1. Open `about:config`, click to `Accept the Risk and Continue`,
-2. set `browser.link.open_newwindow` to `3`,
-3. set `browser.link.open_newwindow.restriction` to `0`.
+1. set `browser.link.open_newwindow` to `3`,
+1. set `browser.link.open_newwindow.restriction` to `0`.
 
 This will force all popup windows to open in a new tab, meaning the JShelter settings could be adjusted easily everywhere.
 
