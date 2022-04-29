@@ -14,11 +14,11 @@
         "update.js",
         "url.js",
         WRAPPING,
-        "fp_code_builders.js",
         "code_builders.js",
-        "fp_detect_background.js",
         "levels_browser.js",
         "levels.js",
+        "fp_code_builders.js",
+        "fp_detect_background.js",
         "background.js",
         "level_cache.js",
         "http_shield_firefox.js",
@@ -52,8 +52,6 @@
         "alea.js",
         "crc16.js",
         "helpers.js",
-        WRAPPING,
-        "code_builders.js",
         "document_start.js"],
       "run_at": "document_start"
     }
@@ -76,6 +74,7 @@
     "page": "options.html",
     "open_in_tab": true
   },
+  "content_security_policy": "default-src 'self'; img-src 'self' data:",
   "permissions": [
     "storage",
     "tabs",

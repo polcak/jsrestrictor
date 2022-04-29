@@ -290,6 +290,24 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "net",
+			label: "Network conditions",
+			description: "Disable access to network information to limit fingerprinting and remove the possibility of observing patterns in accessed networks to learn if the user is at home, work, or travel.",
+			description2: [],
+			params: [
+				{
+					short: "Strict",
+					description: "Disable NetworkInformation API",
+					config: [0],
+				},
+			],
+			wrappers: [
+				// NET
+				"Navigator.prototype.connection",
+				"window.NetworkInformation",
+			],
+		},
+		{
 			name: "xhr",
 			label: "XMLHttpRequest requests (XHR)",
 			description: "Filter reliable XHR requests to server.",
@@ -474,6 +492,54 @@ var wrapping_groups = {
 			],
 		},
 		{
+			name: "useridle",
+			label: "User idle detection",
+			description: "The Idle Detection API can detect inactive users and locked screens.",
+			description2: ["The API can be misused to stalk the user and to improve fingerprinting."],
+			params: [
+				{
+					short: "Confuse",
+					description: "Always return active user with unlocked screen",
+					config: [0],
+				},
+				{
+					short: "Deny access",
+					description: "Do not show prompts and automatically decline",
+					config: [1],
+				},
+				{
+					short: "Remove",
+					description: "Remove the API",
+					config: [2],
+				},
+			],
+			wrappers: [
+				// COOP-SCHEDULING
+				"window.IdleDetector",
+				"IdleDetector.requestPermission",
+				"IdleDetector.prototype.screenState",
+				"IdleDetector.prototype.userState",
+			],
+		},
+		{
+			name: "coopschedule",
+			label: "Idle period task scheduling",
+			description: "The Cooperative Scheduling of Background Tasks API can schedule background tasks such that they do not introduce delays to other high priority tasks that share the same event loop.",
+			description2: ["The API leaks information about the other tasks running in the browser as it leaks information on currently scheduled tasks, vsync deadlines, user-interaction and so on."],
+			params: [
+				{
+					short: "Little lies",
+					description: "Modify the available information to confuse adversaries",
+					config: [],
+				},
+			],
+			wrappers: [
+				// COOP-SCHEDULING
+				"IdleDeadline.prototype.didTimeout",
+				"IdleDeadline.prototype.timeRemaining",
+			],
+		},
+		{
 			name: "gamepads",
 			label: "Gamepads",
 			description: "Prevent websites from accessing and learning information on local gamepads.",
@@ -507,6 +573,38 @@ var wrapping_groups = {
 				"Navigator.prototype.activeVRDisplays",
 				// XR
 				"Navigator.prototype.xr",
+			],
+		},
+		{
+			name: "playback",
+			label: "Multimedia playback",
+			description: "Prevent websites from accessing and learning information on localy installed codecs and encoding/decoding capabilities and performance.",
+			description2: ["You can enable the protection for sites that do not process audio or video. Sites processing audio or video might be broken by the protection."],
+			params: [
+				{
+					short: "Little lies",
+					description: "Report a codec/encryption mechanism as unsupported with 12.5% probability",
+					config: [0],
+				},
+				{
+					short: "Strict",
+					description: "Report all codecs/encryption mechanisms as unsupported",
+					config: [1],
+				},
+				{
+					short: "Silence",
+					description: "Do not return any information at all",
+					config: [2],
+				},
+			],
+			wrappers: [
+				// EME
+				"Navigator.prototype.requestMediaKeySystemAccess",
+				// MEDIA-CAPABILITIES
+				"MediaCapabilities.prototype.encodingInfo",
+				"MediaCapabilities.prototype.decodingInfo",
+				// HTML5
+				"HTMLMediaElement.prototype.canPlayType",
 			],
 		},
 		{
@@ -559,6 +657,25 @@ var wrapping_groups = {
 			wrappers: [
 				// WINDOW-NAME
 				"window.name",
+			],
+		},
+		{
+			name: "nfc",
+			label: "Near Field Communication (NFC)",
+			description: "Near Field Communication (NFC) enables wireless communication between two devices at close proximity, usually less than a few centimeters.",
+			description2: ["NFC is an international standard (ISO/IEC 18092) defining an interface and protocol for simple wireless interconnection of closely coupled devices operating at 13.56 MHz."],
+			params: [
+				{
+					short: "Disabled",
+					description: "Disable the API",
+					config: [],
+				},
+			],
+			wrappers: [
+				// BATTERY
+				"window.NDEFMessage",
+				"window.NDEFReader",
+				"window.NDEFRecord",
 			],
 		},
 	],
@@ -629,7 +746,7 @@ var level_0 = {
 	"builtin": true,
 	"level_id": L0,
 	"level_text": "Turn JavaScript Shield off",
-	"level_description": "JavaScript APIs are not wrapped. Use this level if you trust the oprator of the visited page(s) and you want ot give them access to full APIs supported by the browser or if you do not like JavaScript Shield but you want to apply other protection mechanisms.",
+	"level_description": "JavaScript APIs are not wrapped. Use this level if you (1) trust the oprator of the visited page(s) and you want to give them access to full APIs supported by the browser, or (2) if you do not like JavaScript Shield but you want to apply other protection mechanisms.",
 };
 
 var level_1 = {
@@ -638,13 +755,17 @@ var level_1 = {
 	"level_text": "Turn fingerprinting protection off",
 	"level_description": "Apply security counter-measures that are likely not to break web pages but do not defend against fingerprinting. Disable APIs that are not commonly used. Use this level if Fingerprint Detector reports low likelihood of fingerprinting, you trust the visited service, and/or you think that the protection makes the page slow or broken and your temptation to use the service is so high that you do not want to be protected.",
 	"time_precision": 3,
+	"net": 1,
 	"webworker": 2,
 	"geolocation": 3,
   "physical_environment": 1,
+	"useridle": 1,
+	"coopschedule": 1,
 	"gamepads": 1,
 	"vr": 1,
 	"analytics": 1,
 	"battery": 1,
+	"nfc": 1,
 };
 
 var level_2 = {
@@ -659,14 +780,18 @@ var level_2 = {
 	"plugins": 2,
 	"enumerateDevices": 2,
 	"hardware": 1,
+	"net": 1,
 	"webworker": 2,
 	"geolocation": 3,
   "physical_environment": 1,
+	"useridle": 2,
+	"coopschedule": 1,
 	"gamepads": 1,
 	"vr": 1,
 	"analytics": 1,
 	"battery": 1,
 	"windowname": 1,
+	"nfc": 1,
 };
 
 var level_3 = {
@@ -681,14 +806,19 @@ var level_3 = {
 	"plugins": 3,
 	"enumerateDevices": 3,
 	"hardware": 3,
+	"net": 1,
 	"webworker": 2,
 	"geolocation": 6,
   "physical_environment": 1,
+	"useridle": 3,
+	"coopschedule": 1,
 	"gamepads": 1,
 	"vr": 1,
+	"playback": 2,
 	"analytics": 1,
 	"battery": 1,
 	"windowname": 1,
+	"nfc": 1,
 };
 
 var level_experimental = {
@@ -703,17 +833,22 @@ var level_experimental = {
 	"plugins": 3,
 	"enumerateDevices": 3,
 	"hardware": 3,
+	"net": 1,
 	"xhr": 1,
 	"arrays": 2,
 	"shared_array": 2,
 	"webworker": 2,
 	"geolocation": 6,
   "physical_environment": 1,
+	"useridle": 3,
+	"coopschedule": 1,
 	"gamepads": 1,
 	"vr": 1,
+	"playback": 3,
 	"analytics": 1,
 	"battery": 1,
 	"windowname": 1,
+	"nfc": 1,
 };
 
 var modify_builtin_levels = modify_builtin_levels || (() => null); // Give other scripts the possibility to modify builtin levels
@@ -751,7 +886,7 @@ function updateLevels(res) {
 	}
 	if (window.wrap_code !== undefined) {
 		for (l in levels) {
-			wrapped_codes[l] = wrap_code(levels[l]) || "";
+			wrapped_codes[l] = wrap_code(levels[l].wrappers) || "";
 		}
 	}
 	var new_default_level = res["__default__"];
@@ -830,13 +965,13 @@ function saveDomainLevels() {
 }
 
 function getCurrentLevelJSON(url) {
-	var subDomains = extractSubDomains(wwwRemove(new URL(url).hostname));
+	var subDomains = extractSubDomains(getSiteForURL(url));
 	for (let domain of subDomains.reverse()) {
 		if (domain in domains) {
 			let l = domains[domain];
 			if (l.tweaks && !("wrapper_code" in l)) {
 			  l.wrappers = wrapping_groups.get_wrappers(l);
-				l.wrapped_code = wrap_code(l) || "";
+				l.wrapped_code = wrap_code(l.wrappers) || "";
 			}
 			return [l, l.tweaks ? l.wrapped_code : wrapped_codes[l.level_id]];
 		}

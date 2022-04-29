@@ -49,6 +49,11 @@
  * is the same as the read one. Nevertheless, the aim of the wrappers is
  * to limit the finerprintability.
  *
+ * \bug Possibly inconsistant data between AudioBuffer and AnalyserNode wrappers.
+ *
+ * \bug Inconsistency between AudioBuffer.prototype.copyFromChannel and AudioBuffer.prototype.getChannelData.
+ * AudioBuffer.prototype.copyFromChannel should call AudioBuffer.prototype.getChannelData wrapper
+ * and then return result of the original call.
  */
 
 /*
@@ -138,7 +143,7 @@
 					wrapped_name: "origGetChannelData",
 				}
 			],
-			helping_code: "var behaviour = args[0];" + audioFarbleBody + whiteNoiseFloat,
+			helping_code: "var behaviour = args[0]; var modified = new Set();" + audioFarbleBody + whiteNoiseFloat,
 			original_function: "parent.AudioBuffer.prototype.getChannelData",
 			wrapping_function_args: "channel",
 			/** \fn fake AudioBuffer.prototype.getChannelData
@@ -149,12 +154,19 @@
 			 */
 			wrapping_function_body: `
 				var floatArr = origGetChannelData.call(this, channel);
+				if (modified.has(floatArr)) {
+					return floatArr;
+				}
 				if (behaviour == 0) {
 					audioFarble(floatArr);
 				}
 				else if (behaviour == 1) {
-					whiteNoiseFloat(destination);
+					whiteNoiseFloat(floatArr);
 				}
+				modified.add(floatArr);
+				setTimeout(function() {
+						modified.delete(floatArr);
+					}, 300000); // Remove the information after 5 minutes, this might need tweaking
 				return floatArr;
 			`,
 		},

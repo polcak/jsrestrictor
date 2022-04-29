@@ -98,6 +98,7 @@ function define_page_context_function(wrapper) {
 	if (WrapHelper.XRAY) {
 		let innerF = replacementF;
 		replacementF = function(...args) {
+			let jshelter_debug_timestamp = xrayWindow.performance.now(); console.debug('JShelter performance ${originalF} start:', jshelter_debug_timestamp); // Intentionally one line
 
 			// prepare callbacks
 			args = args.map(a => typeof a === "function" ? WrapHelper.pageAPI(a) : a);
@@ -111,6 +112,7 @@ function define_page_context_function(wrapper) {
 					ret = WrapHelper.unX(ret);
 				} catch (e) {}
 			}
+			console.debug('JShelter performance ${originalF} duration:', xrayWindow.performance.now() - jshelter_debug_timestamp);
 			return ret;
 		}
 	}
@@ -339,28 +341,15 @@ var build_code = function(wrapper, ...args) {
 };
 
 /**
- * Transform wrapping arrays into code.
- *
- * @param Object of protection level containing wrapping arrays.
+ * Transform wrapping arrays into injectable code.
  */
-function wrap_code(level) {
-	if (level.wrappers.length === 0 && fp_wrappers_length(level.id) === 0) {
+function wrap_code(wrappers) {
+	if (wrappers.length === 0) {
 		return; // Nothing to wrap
 	}
 
-	// get all implicit wrappers for FPD logging
-	var fpd_build_wrapping_code = fp_wrappers_create(level);
-
-	let joinCode = code => {
-		return code.join("\n").replace(/\bObject\.(create|definePropert)/g, "WrapHelper.$1")
-	}
-
-	let build = (wrapper, fpd) => {
+	let build = (wrapper) => {
 		try {
-			if (fpd) {
-				// create code for implicit wrappers (FPD)
-				return build_code(fpd_build_wrapping_code[wrapper]);
-			}
 			return build_code(build_wrapping_code[wrapper[0]], wrapper.slice(1));
 		} catch (e) {
 			console.error(e);
@@ -368,8 +357,23 @@ function wrap_code(level) {
 		}
 	};
 
+	let fpd_placeholder = "\n\n// FPD_S\n\n// FPD_E"
+	return generate_code(joinWrappingCode(wrappers.map(x => build(x))) + fpd_placeholder);
+}
+
+/**
+ * Join array of wrapping codes into single string.
+ */
+let joinWrappingCode = code => {
+	return code.join("\n").replace(/\bObject\.(create|definePropert)/g, "WrapHelper.$1");
+}
+
+/**
+ * Append wrapped codes to NSCL helpers and create injectable code.
+ */
+function generate_code(wrapped_code) {
 	let code = (w => {
-		
+
 		// cross-wrapper globals
 		let xrayWindow = window; // the "privileged" xray window wrapper in Firefox
 		{
@@ -650,12 +654,6 @@ function wrap_code(level) {
 			
 			try {
 				// WRAPPERS //
-				
-				// FPD_S
-				
-				// FPD //
-				
-				// FPD_E
 			} finally {
 				// cleanup environment if necessary
 			}
@@ -663,9 +661,7 @@ function wrap_code(level) {
 			// after injection code completed, allow messages (calls from wrappers won't be counted)
 			fp_enabled = true;
 		}
-	}).toString()
-		.replace('// WRAPPERS //', joinCode(level.wrappers.map(x => build(x, false))))
-		.replace('// FPD //', joinCode(Object.keys(fpd_build_wrapping_code).map(x => build(x, true))));
+	}).toString().replace('// WRAPPERS //', wrapped_code)
 
 	console.debug(code);
 	return `(${code})();`;

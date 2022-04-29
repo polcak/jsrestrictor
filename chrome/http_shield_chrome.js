@@ -108,14 +108,14 @@ function beforeSendHeadersListener(requestDetail) {
 	if (sourceUrl.hostname in blockedHosts)
 	{
 		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.tabId);
-		return {cancel:true};
+		return {cancel: nbsSettings.blocking ? true : false};
 	}
 	
 	//Blocking direction Public -> Private
 	if (isRequestFromPublicToPrivateNet(sourceUrl.hostname, targetUrl.hostname))
 	{
 		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.tabId);
-		return {cancel:true}
+		return {cancel: nbsSettings.blocking ? true : false}
 	}
 	else //Permitting others
 	{
@@ -294,11 +294,15 @@ function onResponseStartedListener(responseDetails)
  * \param host Host added to the black-list (blockedHosts).
  */
 function notifyBlockedHost(host) {
+	let message = `All subsequent HTTP requests from ${host} will be blocked.`;
+	if (nbsSettings.blocking == 0) {
+		message = `Enable requests blocking to block all requests from ${host} to local network.`;
+	}
 	browser.notifications.create("nbs-" + host, {
 		"type": "basic",
 		"iconUrl": browser.extension.getURL("img/icon-48.png"),
-		"title": "Network boundary shield blocked suspicious host!",
-		"message": `All subsequent HTTP requests from ${host} will be blocked.`
+		"title": `Network Boundary Shield ${nbsSettings.blocking ? "blocked" : "detected"} suspicious host!`,
+		"message": message
 	});
 	setTimeout(() => {
 		browser.notifications.clear("nbs-" + host);

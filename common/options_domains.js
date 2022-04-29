@@ -170,7 +170,14 @@ function insert_domain_levels() {
 	// Insert all known levels to GUI
 	var allDomainsElement = document.getElementById("domain-level-list");
 	for (let domain in domains) {
-		show_domain_level(allDomainsElement, domain);
+		if (domain === escape(domain)) {
+			// Do not display invalid domains inserted before https://pagure.io/JShelter/webextension/issue/45 fix
+			// Note that an invalid domain can be inserted through advanced options
+			show_domain_level(allDomainsElement, domain);
+		}
+		else {
+			console.error("Invalid domain in configuration: " + domain);
+		}
 	}
 }
 
@@ -189,6 +196,10 @@ document.getElementById("add_domain").addEventListener("click", function (e) {
 	e.preventDefault();
 	let domainEl = document.getElementById("domain-text");
 	let domain = domainEl.value;
+	if (escape(domain) !== domain) {
+		alert("Unsupported domain " + domain);
+		return;
+	}
 	let domainLevel = document.getElementById("domain-level");
 	if (domain in domains) {
 		let ok = confirm(`Settings for domain ${domain} already exists and will be overriden.`);

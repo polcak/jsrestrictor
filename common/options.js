@@ -297,13 +297,8 @@ async function load_module_settings(prefix) {
 
 		let targetElement = document.getElementById(prefix + "-settings");
 		for ([key, setting] of Object.entries(settings.def)) {
-			var fragment = document.createRange().createContextualFragment(`
-			<fieldset>
-				<div id="${prefix}-${key}-setting" class="tweakgrid"></div>
-			</fieldset>`);
 			tweaksBusiness.previousValues[key] = settings.val[key];
-			tweaksBusiness.add_tweak_row(fragment.firstElementChild.firstElementChild, {}, key, settings.val[key], setting.label, setting, true);
-			targetElement.appendChild(fragment);
+			tweaksBusiness.add_tweak_row(targetElement, {}, key, settings.val[key], setting.label, setting, true);
 		}
 	}
 }
