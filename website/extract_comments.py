@@ -24,6 +24,7 @@ titles = {
     "hrt": "HTML Performance",
     "html": "HTML window name",
     "html-ls": "HTML Workers",
+    "html5": "HTML multimedia",
     "idle": "Idle detection",
     "mcs": "Media devices",
     "media-capabilities": "Media capabilities",

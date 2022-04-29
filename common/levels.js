@@ -603,6 +603,8 @@ var wrapping_groups = {
 				// MEDIA-CAPABILITIES
 				"MediaCapabilities.prototype.encodingInfo",
 				"MediaCapabilities.prototype.decodingInfo",
+				// HTML5
+				"HTMLMediaElement.prototype.canPlayType",
 			],
 		},
 		{
