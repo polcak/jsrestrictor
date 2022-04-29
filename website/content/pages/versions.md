@@ -2,6 +2,28 @@
 title: Release history
 ---
 
+## 0.10
+
+* Add wrappers modifying calls detecting supported media types and installed codecs (Multimedia playback), github issue 66
+* Add wrappers modifying `HTMLMediaElement.prototype.canPlayType` (Multimedia playback)
+* Add wrappers disabling Network Information API inspired by Brave, github issue 66
+* Add wrappers disabling Web NFC API, github issue 66
+* Add wrappers for Cooperative Scheduling of Background Tasks API, github issue 66
+* Add wrappers for User idle detection, github issue 66
+* Add possibility to set NBS as passive (notify user but do not block), github issue 66
+* Fix Web Audio wrappers (Pagure issue #16)
+* FPD Report allows exporting data as JSON
+* Modified FPD wrappers independent on JSS
+* FPD can be configured as strict (more aggressive fingerprinting detection)
+* Better storages removal through content script in the absence of browserData permissions by FPD
+* Fix early loading of module configuration (FPD used to be disabled after first installation)
+* FPD initialization reworked
+* Add support for customizing settings for file:// scheme (Github issue #180)
+* Improve config checker in advanced options
+* Improved English, naming consistency, and some descriptions
+* Apply Content-Security-Policy to webextension pages
+* Fix some issues with invalid domains in advanced JavaScript Shield configuration (Pagure issue 45)
+
 ## 0.9
 
 * Firefox: deactivate window.name wrapper for Firefox; Firefox provides protection since 88 and
