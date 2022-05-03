@@ -91,30 +91,26 @@ function beforeSendHeadersListener(requestDetail) {
 	{
 		return {cancel:false};
 	}
-	var sourceUrl = new URL(requestDetail.initiator);
-	//Removing www. from hostname, so the hostnames are uniform
-	sourceUrl.hostname = wwwRemove(sourceUrl.hostname);
-	var targetUrl = new URL(requestDetail.url);
-	//Removing www. from hostname, so the hostnames are uniform
-	targetUrl.hostname = wwwRemove(targetUrl.hostname);
+	var sourceDomain = getSiteForURL(requestDetail.initiator);
+	var targetDomain = getSiteForURL(requestDetail.url);
 
 	//Host found among user's trusted hosts, allow it right away
-	if (isNbsWhitelisted(sourceUrl.hostname))
+	if (isNbsWhitelisted(sourceDomain))
 	{
 		return {cancel:false};
 	}
 
 	//Host found among blocked hosts, cancel HTTPS request right away
-	if (sourceUrl.hostname in blockedHosts)
+	if (sourceDomain in blockedHosts)
 	{
-		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.tabId);
+		notifyBlockedRequest(sourceDomain, targetDomain, requestDetail.tabId);
 		return {cancel: nbsSettings.blocking ? true : false};
 	}
 	
 	//Blocking direction Public -> Private
-	if (isRequestFromPublicToPrivateNet(sourceUrl.hostname, targetUrl.hostname))
+	if (isRequestFromPublicToPrivateNet(sourceDomain, targetDomain))
 	{
-		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.tabId);
+		notifyBlockedRequest(sourceDomain, targetDomain, requestDetail.tabId);
 		return {cancel: nbsSettings.blocking ? true : false}
 	}
 	else //Permitting others
@@ -255,33 +251,30 @@ function onResponseStartedListener(responseDetails)
 		return;
 	}
 	
-	var targetUrl = new URL(responseDetails.url);
-	//Removing www. from hostname, so the hostnames are uniform.
-	targetUrl.hostname = wwwRemove(targetUrl.hostname);
+	var targetDomain = getSiteForURL(responseDetails.url);
 	
 	//If target hostname is IPv4 or IPv6 do not create any DNS record in cache.
-	if (!isIPV4(targetUrl.hostname) && !isIPV6(targetUrl.hostname)) {
-		if (dnsCache[targetUrl.hostname] === undefined) {
+	if (!isIPV4(targetDomain) && !isIPV6(targetDomain)) {
+		if (dnsCache[targetDomain] === undefined) {
 			//DNS entry for this domain not created yet.
-			dnsCache[targetUrl.hostname] = [responseDetails.ip];
+			dnsCache[targetDomain] = [responseDetails.ip];
 		}
-		else if (dnsCache[targetUrl.hostname].indexOf(responseDetails.ip) === -1) {
+		else if (dnsCache[targetDomain].indexOf(responseDetails.ip) === -1) {
 			//DNS entry or entries already created for this domain.
 			//Push new IP address if it does not already exist.
-			dnsCache[targetUrl.hostname].push(responseDetails.ip);
+			dnsCache[targetDomain].push(responseDetails.ip);
 		}
 	}
 	
 	//Analyze request direction only when responseDetails.initiator is defined.
 	//When responseDetails.initiator is undefined, can not analyze request direction.
 	if(responseDetails.initiator !== undefined) {
-		var sourceUrl = new URL(responseDetails.initiator);
-		//Removing www. from hostname, so the hostnames are uniform
-		sourceUrl.hostname = wwwRemove(sourceUrl.hostname);
+		var sourceDomain = getSiteForURL(responseDetails.initiator);
+
 		// Suspected of attacking, other HTTP requests by this host will be blocked.
-		if(isRequestFromPublicToPrivateNet(sourceUrl.hostname, targetUrl.hostname)) {
-			notifyBlockedHost(sourceUrl.hostname);
-			blockedHosts[sourceUrl.hostname] = true;
+		if(isRequestFromPublicToPrivateNet(sourceDomain, targetDomain)) {
+			notifyBlockedHost(sourceDomain);
+			blockedHosts[sourceDomain] = true;
 		}
 	}
 }

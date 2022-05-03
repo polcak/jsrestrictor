@@ -51,14 +51,11 @@ async function beforeSendHeadersListener(requestDetail)
 	{
 		return {cancel:false};
 	}
-	var sourceUrl = new URL(requestDetail.originUrl);
-	var fullSourceDomain = sourceUrl.hostname;
-	//Removing www. from hostname, so the hostnames are uniform
-	sourceUrl.hostname = wwwRemove(sourceUrl.hostname);
-	var targetUrl = new URL(requestDetail.url);
-	var fullTargetDomain = targetUrl.hostname;
-	//Removing www. from hostname, so the hostnames are uniform
-	targetUrl.hostname = wwwRemove(targetUrl.hostname);
+	var sourceDomain = getSiteForURL(requestDetail.originUrl);
+	var fullSourceDomain = new URL(requestDetail.originUrl).hostname;
+
+	var targetDomain = getSiteForURL(requestDetail.url);
+	var fullTargetDomain = new URL(requestDetail.url).hostname;
 
 	var targetIP;
 	var sourceIP;
@@ -68,25 +65,25 @@ async function beforeSendHeadersListener(requestDetail)
 	var sourceResolution = "";
 
 	//Host found among user's trusted hosts, allow it right away
-	if (isNbsWhitelisted(sourceUrl.hostname))
+	if (isNbsWhitelisted(sourceDomain))
 	{
 		return {cancel:false};
 	}
 
 	//Checking type of SOURCE URL
-	if (isIPV4(sourceUrl.hostname)) //SOURCE is IPV4 adddr
+	if (isIPV4(sourceDomain)) //SOURCE is IPV4 adddr
 	{
 		//Checking privacy of IPv4
-		if (isIPV4Private(sourceUrl.hostname))
+		if (isIPV4Private(sourceDomain))
 		{
 			//Source is IPv4 private
 			isSourcePrivate = true;
 		}
 	}
-	else if(isIPV6(sourceUrl.hostname)) //SOURCE is IPV6
+	else if(isIPV6(sourceDomain)) //SOURCE is IPV6
 	{
 		//Checking privacy of IPv6
-		if (isIPV6Private(sourceUrl.hostname))
+		if (isIPV6Private(sourceDomain))
 		{
 			//Source is IPv6 private
 			isSourcePrivate = true;
@@ -123,19 +120,19 @@ async function beforeSendHeadersListener(requestDetail)
 		});
 	}
 
-	//Analyzing targetUrl
+	//Analyzing targetDomain
 	//Check IPv4/IPv6 and privacy
-	if (isIPV4(targetUrl.hostname))
+	if (isIPV4(targetDomain))
 	{
-		if (isIPV4Private(targetUrl.hostname))
+		if (isIPV4Private(targetDomain))
 		{
 			isDestinationPrivate = true;
 
 		}
 	}
-	else if(isIPV6(targetUrl.hostname))
+	else if(isIPV6(targetDomain))
 	{
-		if (isIPV6Private(targetUrl.hostname))
+		if (isIPV6Private(targetDomain))
 		{
 			isDestinationPrivate = true;
 		}
@@ -176,7 +173,7 @@ async function beforeSendHeadersListener(requestDetail)
 	//Blocking direction Public -> Private
 	if (!isSourcePrivate && isDestinationPrivate)
 	{
-		notifyBlockedRequest(sourceUrl.hostname, targetUrl.hostname, requestDetail.tabId);
+		notifyBlockedRequest(sourceDomain, targetDomain, requestDetail.tabId);
 		return {cancel: nbsSettings.blocking ? true : false}
 	}
 	else //Permitting others
