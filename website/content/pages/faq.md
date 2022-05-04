@@ -1,6 +1,15 @@
 Title: Frequently Asked Questions
 Slug: faq
 
+#### How can I get active and participate?
+
+Start using JShelter and tell your friends. You can fill an issue or pick up an
+issue and start working on JShelter. You can track the development in our
+[repository](https://pagure.io/JShelter/webextension). Please let us know
+before you start implementing, preferably directly in the issue. You can
+contact us by e-mail at jshelter@gnu.org. We have a [mailing
+list](https://lists.nongnu.org/archive/html/js-shield/).
+
 #### What is the current JShelter status? Is it ready, or is it still a work in progress?
 
 We think that JShelter is ready to be used for everyday browsing. We believe that JShelter
@@ -148,7 +157,7 @@ If you are using Firefox:
 
 This will force all popup windows to open in a new tab, meaning the JShelter settings could be adjusted easily everywhere.
 
-#### I am seeing too many notifications by JShelter. Why?
+#### Why am I seeing so many notifications from JShelter?
 
 Generally speaking, you should not see many notifications by JShelter. The default settings are
 tailored to give the user critical information about JShelter behaviour and its possible changes to
@@ -182,8 +191,8 @@ Origin](https://github.com/gorhill/uBlock#ublock-origin) in parallel with JShelt
 #### I already have a blocking extension installed. Do I need JShelter?
 
 Blocking extensions are typically based on a list of commonly known malicious URLs. Hence, someone
-needs to discover such a URL first. Some malicious URLs are never added to blocking lists. They might be 
-added to a small or specialized list only. JShelter protects you from some threats 
+needs to discover such a URL first. Some malicious URLs are never added to blocking lists. They might be
+added to a small or specialized list only. JShelter protects you from some threats
 not yet added to the lists.
 
 Some login pages fingerprint you during the login process. But you might not want to share your
@@ -348,13 +357,6 @@ Additionally [ff00::]
 * the [SyncMessage back-end cancels the webRequest](https://github.com/hackademix/nscl/blob/40e765f0d66a10b25a27a375bc62ea141a73734f/common/SyncMessage.js#L106).
 
 Some tools can see such a request, but it will never leave your browser.
-
-#### How can I get active and participate?
-
-You can track the development in our [repository](https://pagure.io/JShelter/webextension). You can
-fill an issue or pick up an issue and start working on JShelter. Please let us know before you start
-implementing, preferably directly in the issue. You can contact us by e-mail at
-jshelter@gnu.org. We have a [mailing list](https://lists.nongnu.org/archive/html/js-shield/)
 
 #### What is the proper way to cite JShelter in a paper?
 
