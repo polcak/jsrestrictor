@@ -72,7 +72,7 @@ var localIPV6DNSZones;
 /**
  * Associtive array of hosts, that are currently among trusted "do not blocked" hosts.
  */
-var doNotBlockHosts = new Object();
+var doNotBlockHosts = {};
 
 /**
  * Associtive array of settings supported by this module.

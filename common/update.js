@@ -363,7 +363,7 @@ function installUpdate() {
 				};
 			}
 			item.fpDetectionOn = true;
-			item.nbsWhitelist = item.whitelistedHosts;
+			item.nbsWhitelist = item.whitelistedHosts ? item.whitelistedHosts : {};
 			delete item.whitelistedHosts;
 			item.nbsSettings = {
 				notifications: 1
@@ -434,6 +434,10 @@ function installUpdate() {
 	});
 }
 browser.runtime.onInstalled.addListener(installUpdate);
+// fallback - populate storage with valid data (if onInstalled won't fire)
+browser.storage.sync.get(null).then((item) => {
+	checkAndSaveConfig(item);
+});
 
 async function checkAndSaveConfig(conf) {
 	let checkSettingRange = (module, setting, range, defValue) => {
