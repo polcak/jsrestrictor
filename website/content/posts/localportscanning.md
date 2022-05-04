@@ -38,7 +38,7 @@ does not even know that such information can leak. If the information
 stays with ThreatMetrix, then the benefits could appear to be greater than the disadvantages.
 However, adversaries could stole information from ThreatMetrix (see for example the [Ecquifax breach](https://en.wikipedia.org/wiki/2017_Equifax_data_breach)) or the company can start to [sell](https://www.vice.com/en/article/qjdkq7/avast-antivirus-sells-user-browsing-data-investigation) the [information](https://www.pcmag.com/news/the-cost-of-avasts-free-antivirus-companies-can-spy-on-your-clicks) or even [share with others](https://brave.com/rtb-evidence/).
 
-So is the scanning and data collecting legal? As we are based in the EU, we will dig into the EU perspective. You might want to
+So is the scanning and data collecting legal? As some of our developers and users are based in the EU, we will dig into the EU perspective. You might want to
 consult your local laws if you are outside the EU. Moreover, as we are not lawyers, you might want to
 consult one even in the EU.
 
