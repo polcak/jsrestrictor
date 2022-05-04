@@ -74,7 +74,7 @@
     "page": "options.html",
     "open_in_tab": true
   },
-  "content_security_policy": "default-src 'self'; img-src 'self' data:",
+  "content_security_policy": "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self';base-uri 'self';form-action 'self'",
   "permissions": [
     "storage",
     "tabs",
