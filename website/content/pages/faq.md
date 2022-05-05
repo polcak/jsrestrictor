@@ -19,7 +19,16 @@ We believe that the `Recommended` level changes your fingerprint so that typical
 different browser sessions. See the answers below for possible caveats.
 
 Test yourself on common fingerprinting testers that the `Strict` level considerably lowers the
-information about your computer.
+information about your computer:
+
+* [JShelter test page](https://polcak.github.io/jsrestrictor/test/test.html)
+* [Am I unique?](https://amiunique.org/)
+* [EFF Cover your tracks](https://coveryourtracks.eff.org/)
+* [Tor Browser project fingerprinting page](http://fpcentral.tbb.torproject.org/)
+* [Audio and font fingerprinting](https://audiofingerprint.openwpm.com/)
+* [Device info](https://www.deviceinfo.me/)
+* [Bromite](https://www.bromite.org/detect)
+* [Browser leaks](https://browserleaks.com/)
 
 At the same time, we are aware of several JShelter
 [bugs and issues](https://pagure.io/JShelter/webextension/issues/).
