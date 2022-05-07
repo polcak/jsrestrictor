@@ -7,8 +7,10 @@
         "nscl/common/log.js",
         "nscl/common/uuid.js",
         "nscl/common/SyncMessage.js",
+        "nscl/common/tld.js",
         "nscl/service/DocStartInjection.js",
         "nscl/service/TabCache.js",
+        "nscl/service/NavCache.js",
         "helpers.js",
         "session_hash.js",
         "update.js",
@@ -80,6 +82,7 @@
     "tabs",
     "webRequest",
     "webRequestBlocking",
+    "webNavigation",
     "<all_urls>",
     "notifications"
   ],

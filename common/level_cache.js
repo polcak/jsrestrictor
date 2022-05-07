@@ -39,7 +39,7 @@ function getContentConfiguration(url, frameId, tabId) {
 				 *
 				 * Suppose that there is an iframe from domain C nested in an iframe from
 				 * domain B that is iself nested in a visited domain A.
-				 * 
+				 *
 				 * +------------------------------------------------------------+
 				 * | visited domain a.example                                   |
 				 * |                                                            |
@@ -53,7 +53,7 @@ function getContentConfiguration(url, frameId, tabId) {
 				 * | |                                                        | |
 				 * | +--------------------------------------------------------+ |
 				 * +------------------------------------------------------------+
-				 * 
+				 *
 				 * Suppose that B has a user-defined specific level settings, and C does
 				 * not have a user-defined specific level settings. The iframe of domain B
 				 * gets the user-defined settings for domain B but the iframe from domain C
@@ -117,4 +117,27 @@ DocStartInjection.register(async ({url, frameId, tabId}) => {
 		if (typeof configureInjection === "function") configureInjection(configuration);
 		console.debug("DocStartInjection while doc", document.readyState);
 		`;
+});
+
+NavCache.onUrlChanged.addListener(({tabId, frameId, previousUrl, url}) => {
+	let toDomain = url => {
+		try {
+			let {hostname} = new URL(url);
+			return hostname && tld.getDomain(hostname) || "";
+		} catch (e) {
+			return "";
+		}
+	}
+	if (toDomain(previousUrl) === toDomain(url)) return;
+	(async () => {
+		let configuration = await getContentConfiguration(url, frameId, tabId);
+		if (configuration.currentLevel.windowname) {
+			browser.tabs.executeScript(tabId, {
+				code: `window.name = "";`,
+				frameId,
+				runAt: "document_start",
+				matchAboutBlank: true,
+			});
+		}
+	})();
 });

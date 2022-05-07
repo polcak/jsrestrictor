@@ -25,7 +25,7 @@
 /** \file
  * \ingroup wrappers
  *
- * `window.name` prvides a simple cross-origin tracking method of the same tab:
+ * `window.name` provides a simple cross-origin tracking method of the same tab:
  *
  * ```js
  * window.name = "8pdRoEaQCpsjtC8w07dOy7xwXjXrHDyxxmPWBUxQKrh7xfJ4SYFH8QClp6U9T+Ypa8IEa5AwFw3x"
@@ -49,7 +49,7 @@
 			parent_object: "window",
 			parent_object_property: "name",
 			wrapped_objects: [],
-			helping_code: "window.name = '';",
+			helping_code: "/* window.name = ''; */", // we actually do this  in level_cache.js on eTLD+1 domain changes
 		},
 	]
 	add_wrappers(wrappers);

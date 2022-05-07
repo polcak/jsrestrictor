@@ -4,11 +4,13 @@
       "scripts": [
         "nscl/lib/browser-polyfill.js",
         "nscl/service/TabCache.js",
+        "nscl/service/NavCache.js",
         "nscl/service/DocStartInjection.js",
         "nscl/lib/sha256.js",
         "nscl/common/log.js",
         "nscl/common/uuid.js",
         "nscl/common/SyncMessage.js",
+        "nscl/common/tld.js",
         "helpers.js",
         "session_hash.js",
         "update.js",

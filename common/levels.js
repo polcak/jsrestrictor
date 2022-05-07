@@ -645,8 +645,8 @@ var wrapping_groups = {
 		{
 			name: "windowname",
 			label: "Persistent identifier of the browser tab",
-			description: "Clear window.name value on the webpage loading.",
-			description2: ["This API might be occasionally used for benign purposes.", "This API provides a possibility to detect cross-site browsing in one tab and broser session."],
+			description: "Clear window.name value on eTLD+1 domain changes.",
+			description2: ["This API might be occasionally used for benign purposes.", "This API provides a possibility to detect cross-site browsing in one tab and browser session."],
 			params: [
 				{
 					short: "Strict",
