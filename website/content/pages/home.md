@@ -46,7 +46,7 @@ URL:
         to the user: malicious websites can uniquely identify you through
         fingerprinting and use other tactics for tracking your activity.
         JShelter aims to improve the privacy and security of your web
-        browsing.</p>
+        browsing. For more details, see JShelter <a href="/threatmodel/">threat model</a>.</p>
       </div>
     </article>
     <article>
