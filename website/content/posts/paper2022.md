@@ -40,7 +40,7 @@ In contrast, JShelter is a webextension that can be installed on major
 browsers and consequently does not require the user to change the browser and
 routines. We integrate several previous research projects like [Chrome
 Zero](https://github.com/IAIK/ChromeZero), [little-lies-based fingerprinting prevention](https://brave.com/privacy-updates/3-fingerprint-randomization/), and ideas of limiting APIs brought by [Web API
-Manager](https://github.com/pes10k/web-api-manager). JShelter comes with [a heuristic-based fingerprint detector]((/fpdetection/))
+Manager](https://github.com/pes10k/web-api-manager). JShelter comes with [a heuristic-based fingerprint detector](/fpdetection/)
 and prevents webpages from [misusing the browser as a proxy to access the local network
 and computer](/localportscanning/).
 We needed to solve issues with reliable environment modifications that stem
