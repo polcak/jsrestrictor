@@ -109,7 +109,7 @@
               <ul>
                 <li><a href="{{ SITEURL }}/">Home</a></li>
                 <li {% if slug == 'blog' %} class="active" {% endif %}><a href="{{ SITEURL }}/blog/">Blog</a></li>
-                {% for pagename in ['faq', 'install', 'permissions', 'versions', 'credits', 'license'] %}
+                {% for pagename in ['faq', 'threatmodel', 'install', 'permissions', 'versions', 'credits', 'license'] %}
                 {% set p = (pages|get_by_slug(pagename)) %}
                 {% if p %}
                 {% if pagename == slug %}
