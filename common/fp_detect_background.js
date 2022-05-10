@@ -245,6 +245,19 @@ function initFpd() {
 		["blocking"]
 	);
 
+	// listen for navigation events to initiate storage clearing of fingerprinting web pages
+	browser.webNavigation.onBeforeNavigate.addListener((details) => {
+		if (latestEvals[details.tabId] && latestEvals[details.tabId].stopNotifyFlag && fpdSettings.behavior > 1) {
+			// clear storages (using content script) for every frame in this tab
+			if (details.tabId >= 0) {
+				browser.tabs.sendMessage(details.tabId, {
+					cleanStorage: true,
+					ignoreWorkaround: fpdSettings.behavior > 2
+				});
+			}
+		}
+	});
+
 	// get state of all existing tabs and start periodic FP evaluation
 	browser.tabs.query({}).then(function(results) {
 		results.forEach(function(tab) {
