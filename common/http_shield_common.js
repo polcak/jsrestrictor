@@ -568,7 +568,7 @@ async function createCumulativeNotification(tabId) {
  */
 function showNbsNotification(tabId) {
 	nbsNotifications[tabId].last = nbsNotifications[tabId].total;
-	let host = getSiteForURL(availableTabs[tabId].url);
+	let host = getEffectiveDomain(availableTabs[tabId].url);
 	let message = `${nbsSettings.blocking ? "Blocked" : "Detected"} ${nbsNotifications[tabId].total} attempts from ${host} to access local network.`;
 	let records = Object.keys(nbsNotifications[tabId].records);
 	if (records.length == 1) {

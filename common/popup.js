@@ -330,7 +330,7 @@ async function getCurrentSite() {
 		let [tab] = await browser.tabs.query({currentWindow: true, active: true});
 		hits = await browser.runtime.sendMessage({purpose: 'fpd-fetch-hits', tabId: tab.id});
 		// Obtain and normalize hostname
-		return site = getSiteForURL(tab.url);
+		return site = getEffectiveDomain(tab.url);
 	} catch (e) {
 		if (e.toString() === "Error: Missing host permission for the tab") {
 			await async_sleep(200); // recursively call itself, this exception occurs in Firefox during an inactive tab activation (tab page was not reload after the browser start)

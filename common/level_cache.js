@@ -129,18 +129,7 @@ DocStartInjection.register(async ({url, frameId, tabId}) => {
  * scripts do not run again.
  */
 NavCache.onUrlChanged.addListener(({tabId, frameId, previousUrl, url}) => {
-	function toDomain(url) {
-		try {
-			let {hostname} = new URL(url);
-			if (hostname) {
-				return tld.getDomain(hostname);
-			}
-		} catch (e) {
-			// intentionally empty
-		}
-		return "";
-	}
-	if (toDomain(previousUrl) === toDomain(url)) return;
+	if (getSiteForURL(previousUrl) === getSiteForURL(url)) return;
 	(async () => {
 		let configuration = await getContentConfiguration(url, frameId, tabId);
 		if (configuration.currentLevel.windowname) {

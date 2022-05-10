@@ -914,7 +914,7 @@ function isFpdOn(tabId) {
 	if (!availableTabs[tabId]) {
 		return false;
 	}
-	let url = getSiteForURL(availableTabs[tabId].url);
+	let url = getEffectiveDomain(availableTabs[tabId].url);
 	if (fpDetectionOn && !isFpdWhitelisted(url)) {
 		return true;
 	}
@@ -941,7 +941,7 @@ function notifyFingerprintBlocking(tabId) {
 		title: "Fingerprinting activity detected!",
 		message: `${msg}\n\n` +
 			`Page: ${availableTabs[tabId].title.slice(0, 30)}\n` +
-			`Host: ${getSiteForURL(availableTabs[tabId].url)}`
+			`Host: ${getEffectiveDomain(availableTabs[tabId].url)}`
 	});
 	setTimeout(() => {
 		browser.notifications.clear("fpd-" + tabId);
