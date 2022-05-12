@@ -11,7 +11,7 @@ Like a firewall that controls network connections, JShelter controls the APIs pr
 
 ## How can I get started?
 
-JavaScript Restrictor (JSR) is a browser extension with support for multiple browsers: [Firefox](https://addons.mozilla.org/firefox/addon/javascript-restrictor/), [Google Chrome](https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb), and [Opera](https://addons.opera.com/extensions/details/javascript-restrictor/). The extension also works with Brave, Microsoft Edge, and most likely any Chromium-based browser. [Let us know](https://pagure.io/JShelter/webextension/issues) if you want to add the extension to additional stores.
+JShelter is a browser extension with support for multiple browsers: [Firefox](https://addons.mozilla.org/firefox/addon/javascript-restrictor/), [Google Chrome](https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb), and [Opera](https://addons.opera.com/extensions/details/javascript-restrictor/). The extension also works with Brave, Microsoft Edge, and most likely any Chromium-based browser. [Let us know](https://pagure.io/JShelter/webextension/issues) if you want to add the extension to additional stores.
 
 See our [website](https://JShelter.org/) for additional information and documentation. We recommend
 reading [our paper](https://arxiv.org/abs/2204.01392) to get a better idea about the project.
