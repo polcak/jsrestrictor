@@ -4,9 +4,23 @@ Upstream-Contact: Libor Polcak <polcak@fit.vutbr.cz>
 Source: https://pagure.io/JShelter/webextension
 
 # Files that we think are not copyrightable 
-Files: .gitignore .gitmodules tests/common_files/webbrowser_drivers/DOWNLOAD WEB DRIVERS HERE.md tests/unit_tests/package-lock.json tests/unit_tests/package.json
+Files: .gitignore .gitmodules tests/common_files/webbrowser_drivers/DOWNLOAD WEB DRIVERS HERE.md tests/unit_tests/package-lock.json tests/unit_tests/package.json .github/ISSUE_TEMPLATE/bug-report-broken-page.md common/fp_config/groups-lvl_0.json common/fp_config/groups-lvl_1.json common/fp_config/wrappers-lvl_0_1.json website/requirements.txt
 Copyright: Not copyrightable
 License: CC0-1.0
+
+# Common project files
+Files: README.md code_of_conduct.md
+Copyright: 2019-2022 Libor Polčák, Ricardo Lafuente, Ana Isabel Carvalho
+License: CC-BY-4.0
+
+Files: code_of_conduct.md
+Copyright: 2022 Adapted from the Contributor Covenant, version 2.1, available at https://www.contributor-covenant.org/version/2/1/code_of_conduct.html
+License: CC-BY-4.0
+
+# FPD schemas
+Files: common/fp_config/schema/groups-schema.json common/fp_config/schema/wrappers-schema.json
+Copyright: 2021-2022 Marek Saloň
+License: GPL-3.0-or-later
 
 # Testing
 Files: tests/integration_tests/README.md tests/system_tests/README.md tests/unit_tests/README.md
@@ -17,59 +31,64 @@ Files: tests/unit_tests/config/global-example.json tests/unit_tests/config/globa
 Copyright: 2020-2021 Martin Bednář
 License: GPL-3.0-or-later
 
+Files: tests/fpd_tests/README.md
+Copyright: 2021-2022 Marek Saloň
+License: GPL-3.0-or-later
+
 # Images used by the extension
-Files: *common/img/icon-* *common/img/settings-* common/img/trash*
-Copyright: 2019 Martin Timko 
-License: GPL-3.0-or-later
-
-# Other images and icons
-Files: logos_images/*.png logos_images/*.psd logos_images/*.jpg
-Copyright: 2019 Martin Timko 
-License: GPL-3.0-or-later
-
-# Web page layout
-Files: docs/_config.yml docs/_includes/* docs/_layouts/*
-Copyright: 2019-2020 Libor Polčák
-License: GPL-3.0-or-later
-
-# Web page content
-Files: docs/index.md docs/build.md docs/credits.md docs/permissions.md docs/blog.md docs/style.css docs/versions.md
-Copyright: 2019-2021 Libor Polčák
-License: GPL-3.0-or-later
-
-Files: docs/levels.md
-Copyright: 2019 Martin Timko
-Copyright: 2019-2021 Libor Polčák
-License: GPL-3.0-or-later
-
-Files: docs/new_wrapper.md
-Copyright: 2020-2021 Libor Polčák
+Files: common/img/icon-* common/img/logo.svg website/favicon.ico website/favicon.png
+Copyright: 2020-2021 Ana Isabel Carvalho, Ricardo Lafuente
 License: GPL-3.0-or-later
 
 # Blog articles
-Files: docs/blogarticles/support.md
+Files: website/content/posts/support.md
 Copyright: 2021 Libor Polčák
 License: GPL-3.0-or-later
 
-Files: docs/blogarticles/crawling.md
+Files: website/content/posts/crawling.md
 Copyright: 2021  Marek Schauer, Libor Polčák
 License: GPL-3.0-or-later
 
-Files: docs/blogarticles/crawling/*.png
+Files: website/content/images/crawling*.png
 Copyright: 2021 Marek Schauer
 License: GPL-3.0-or-later
 
-Files: docs/blogarticles/localportscanning.md
+Files: website/content/posts/localportscanning.md
 Copyright: 2021 Libor Polčák, Martin Bednář
 License: GPL-3.0-or-later
 
-Files: docs/blogarticles/localportscanning/*.png
+Files: website/content/posts/localportscanning/*.png
 Copyright: 2021 Martin Bednář
 License: GPL-3.0-or-later
 
-Files: docs/blogarticles/farbling.md
+Files: website/content/posts/farbling.md
 Copyright: 2021 Matúš Švancár, Libor Polčák
 License: GPL-3.0-or-later
+
+Files: website/content/posts/crawling_results.md
+Copyright: 2021-2022 Martin Bednář
+License: GPL-3.0-or-later
+
+Files: website/content/posts/cooperation.md
+Copyright: 2021-2022 Libor Polčák
+License: GPL-3.0-or-later
+
+Files: website/content/posts/fingerprinting.md website/content/posts/fpdetection.md
+Copyright: 2021-2022 Marek Saloň, Libor Polčák
+License: GPL-3.0-or-later
+
+Files: website/content/posts/jsrfinal.md
+Copyright: 2022 Libor Polčák
+License: GPL-3.0-or-later
+
+Files: website/content/images/device_artificial.svg website/content/images/device_moving.svg website/content/images/device_stationary.svg website/content/posts/sensorapi.md
+Copyright: 2022 Radek Hranický
+License: GPL-3.0-or-later
+
+# Web images that we think are not copyrightable
+Files: website/content/images/cooperation/*.png website/content/images/portscan-*.png website/content/images/faq/*.png website/content/images/fpdetection/notifications.png
+Copyright: Not copyrightable
+License: CC0-1.0
 
 # Web page tests
 Files: docs/test/demo_image.png
