@@ -69,10 +69,6 @@ function createReport(data) {
         document.getElementById("report-url").innerHTML = url;
         let img = document.getElementById("pageFavicon");
         img.src = tabObj.favIconUrl;
-        img.onload = function () {
-            // overwrite default behavior from CSS to show icon only when available
-            this.style = "";
-        };
     }
 
     var html = "";
