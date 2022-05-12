@@ -50,6 +50,11 @@ The best sources for JShelter information can be found on
 [our website](https://jshelter.org/) and our
 [paper](https://arxiv.org/abs/2204.01392).
 
+#### What is the threat model?
+
+We created a [dedicated page describing the threat model](/threatmodel/) of JShelter.
+You should read the page before you install the extension. Make sure that JShelter aligns with the threats you see on the web.
+
 #### How can I fix videos if they fail to play or retrieve data in time?
 
 JShelter reimplements more than 100 JavaScript APIs. However, there are many ways to obtain the
