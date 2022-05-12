@@ -66,10 +66,6 @@ of the device is defined by three values: `yaw`, `pitch`, and `roll`:
 * `Pitch` defines rotation around the `x` axis. Assume you want to have better visibility of the display. You may put something under the top (camera) part of the phone to lift it up a bit. This is where the pitch changes. For the phone, the surface is not horizontal anymore.
 * `Roll` defines rotation around the `y` axis. This is done by rotating the phone to the left and right. Assume you are holding the phone in your hand, looking at the display. If you decide to look at the buttons on the side instead, you rotate the phone, which applies the roll.
 
-See the illustration below (Source: [Apple Developer](https://developer.apple.com/documentation/coremotion/getting_processed_device-motion_data/understanding_reference_frames_and_device_attitude)):
-
-![Yaw, pitch, and roll axes]({attach}/images/phone-orient-small.png)
-
 As we observed, the yaw, pitch, and roll define the rotation of the phone on the Earth
 reference coordinate system:
 
