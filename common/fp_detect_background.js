@@ -121,16 +121,11 @@ const FPD_DEF_SETTINGS = {
 		params: [
 			{
 				// 0
-				short: "Color",
-				description: "Use extension icon badge color to signalize likelihood of ongoing fingerprinting."
+				short: "Passive",
+				description: "Use extension icon badge color to signalize likelihood of ongoing fingerprinting without any interaction."
 			},
 			{
 				// 1
-				short: "Notification",
-				description: "In addition to badge color, show a notification whenever there is a high likelihood of fingerprinting."
-			},
-			{
-				// 2
 				short: "Limited Blocking",
 				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
 				description2: [
@@ -141,7 +136,7 @@ const FPD_DEF_SETTINGS = {
 				]
 			},
 			{
-				// 3
+				// 2
 				short: "Full Blocking",
 				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
 				description2: [
@@ -151,6 +146,23 @@ const FPD_DEF_SETTINGS = {
 					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
 				],
 				permissions: ["browsingData"]
+			}
+		]
+	},
+	notifications: {
+		description: "Turn on/off notifications about fingerprinting detection and HTTP requests blocking.",
+		description2: ["NOTE: We recommend having notifications turned on for blocking behavior."],
+		label: "Notifications",
+		params: [
+			{
+				// 0
+				short: "Off",
+				description: "Detection/blocking notifications turned off."
+			},
+			{
+				// 1
+				short: "On",
+				description: "Detection/blocking notifications turned on."
 			}
 		]
 	},
@@ -247,12 +259,12 @@ function initFpd() {
 
 	// listen for navigation events to initiate storage clearing of fingerprinting web pages
 	browser.webNavigation.onBeforeNavigate.addListener((details) => {
-		if (latestEvals[details.tabId] && latestEvals[details.tabId].stopNotifyFlag && fpdSettings.behavior > 1) {
+		if (latestEvals[details.tabId] && latestEvals[details.tabId].stopNotifyFlag && fpdSettings.behavior > 0) {
 			// clear storages (using content script) for every frame in this tab
 			if (details.tabId >= 0) {
 				browser.tabs.sendMessage(details.tabId, {
 					cleanStorage: true,
-					ignoreWorkaround: fpdSettings.behavior > 2
+					ignoreWorkaround: fpdSettings.behavior > 1
 				});
 			}
 		}
@@ -941,10 +953,10 @@ function isFpdOn(tabId) {
  */
 function notifyFingerprintBlocking(tabId) {
 	let msg;
-	if (fpdSettings.behavior > 1) {
+	if (fpdSettings.behavior > 0) {
 		msg = "Blocking all subsequent requests.";
 	}
-	if (fpdSettings.behavior == 1) {
+	if (fpdSettings.behavior == 0) {
 		msg = "Click the notification for more details.";
 	}
 
@@ -1036,19 +1048,19 @@ function evaluateFingerprinting(tabId) {
 		if (evalResult.weight) {
 
 			// create notification for user if behavior is "notification" or higher (only once for every tab load)
-			if (fpdSettings.behavior > 0 && !latestEvals[tabId].stopNotifyFlag) {
+			if (fpdSettings.notifications == 1 && !latestEvals[tabId].stopNotifyFlag) {
 				latestEvals[tabId].stopNotifyFlag = true;
 				notifyFingerprintBlocking(tabId);
 			}
 
 			// block request and clear cache data only if "blocking" behavior is set
-			if (fpdSettings.behavior > 1) {
+			if (fpdSettings.behavior > 0) {
 				
 				// clear storages (using content script) for every frame in this tab
 				if (tabId >= 0) {
 					browser.tabs.sendMessage(tabId, {
 						cleanStorage: true,
-						ignoreWorkaround: fpdSettings.behavior > 2
+						ignoreWorkaround: fpdSettings.behavior > 1
 					});
 				}
 
@@ -1071,7 +1083,7 @@ function evaluateFingerprinting(tabId) {
  */
 function clearStorageFacilities(url) {
 	// clear all browsing data for origin of tab url to prevent fingerprint caching
-	if (url && fpdSettings.behavior > 2) {
+	if (url && fpdSettings.behavior > 1) {
 		try {
 			// "origins" key only supported by Chromium browsers
 			browser.browsingData.remove({

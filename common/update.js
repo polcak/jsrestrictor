@@ -413,6 +413,27 @@ function installUpdate() {
 			}
 			item.version = 6.5;
 		}
+		if (item.version < 6.6) {
+			if (item.fpdSettings) {
+				switch (item.fpdSettings.behavior) {
+					case 0:
+						item.fpdSettings.notifications = 0;
+						break;
+					case 1:
+						item.fpdSettings.behavior = 0;
+						item.fpdSettings.notifications = 1;
+						break;
+					case 2:
+						item.fpdSettings.behavior = 1;
+						item.fpdSettings.notifications = 1;
+						break;
+					case 3:
+						item.fpdSettings.behavior = 2;
+						item.fpdSettings.notifications = 1;
+				}
+			}
+			item.version = 6.6;
+		}
 
 
 
@@ -465,6 +486,7 @@ async function checkAndSaveConfig(conf) {
 	checkExistAndType("fpdWhitelist", "object", {});
 	checkExistAndType("fpdSettings", "object", {});
 	checkSettingRange("fpdSettings", "behavior", [0,1,2,3], 1);
+	checkSettingRange("fpdSettings", "notifications", [0,1], 1);
 	checkSettingRange("fpdSettings", "detection", [0,1], 0);
 	await browser.storage.sync.set(conf);
 	installUpdate();
