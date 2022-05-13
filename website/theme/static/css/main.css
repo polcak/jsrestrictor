@@ -638,6 +638,10 @@ p.download-buttons {
   margin-top: calc(var(--mg-medium) * -1);
 }
 
+.source-link {
+  margin-top: var(--mg-large);
+}
+
 /* Blog and article page
 */
 
