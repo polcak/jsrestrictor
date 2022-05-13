@@ -2,6 +2,20 @@
 title: Release history
 ---
 
+## 0.11
+
+* Reset `window.name` only on eTLD+1 changes
+* Farbling: Use eTLD+1 instead of origin to generate hash
+* FPD: Clear storage during navigation (prevent the page from storing the hash to a local storage
+	and loading the hash after page reload)
+* FPD configuration: Decouple notification and behaviour settings. Let a user to optionally disable notifications without strict effect on behaviour
+* Improve CSP of the extension pages, fix broken favIcons in FPD report
+* NBS: Block rquests to undefined IP address (0.0.0.0 or [::]) but do not show notifications
+* Fix extension initialization in permanent private mode
+* options: Add extental links to JShelter.org FAQ and threat model
+* Add favicons to options pages
+* Remove unused icons
+
 ## 0.10
 
 * Add wrappers modifying calls detecting supported media types and installed codecs (Multimedia playback), github issue 66
