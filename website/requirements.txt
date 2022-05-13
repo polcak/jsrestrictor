@@ -1,4 +1,4 @@
-pelican==4.6.0
-Markdown==3.3.4
-comment-parser==1.2.3
+pelican>=4.6.0
+Markdown>=3.3.4
+comment-parser>=1.2.3
 jinja2>=3.0
