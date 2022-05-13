@@ -4,11 +4,13 @@
       "scripts": [
         "nscl/lib/browser-polyfill.js",
         "nscl/service/TabCache.js",
+        "nscl/service/NavCache.js",
         "nscl/service/DocStartInjection.js",
         "nscl/lib/sha256.js",
         "nscl/common/log.js",
         "nscl/common/uuid.js",
         "nscl/common/SyncMessage.js",
+        "nscl/common/tld.js",
         "helpers.js",
         "session_hash.js",
         "update.js",
@@ -74,7 +76,7 @@
     "page": "options.html",
     "open_in_tab": true
   },
-  "content_security_policy": "default-src 'self'; img-src 'self' data:",
+  "content_security_policy": "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self';base-uri 'self';form-action 'self'",
   "permissions": [
     "storage",
     "tabs",

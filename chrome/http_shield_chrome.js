@@ -91,8 +91,8 @@ function beforeSendHeadersListener(requestDetail) {
 	{
 		return {cancel:false};
 	}
-	var sourceDomain = getSiteForURL(requestDetail.initiator);
-	var targetDomain = getSiteForURL(requestDetail.url);
+	var sourceDomain = getEffectiveDomain(requestDetail.initiator);
+	var targetDomain = getEffectiveDomain(requestDetail.url);
 
 	//Host found among user's trusted hosts, allow it right away
 	if (isNbsWhitelisted(sourceDomain))
@@ -251,7 +251,7 @@ function onResponseStartedListener(responseDetails)
 		return;
 	}
 	
-	var targetDomain = getSiteForURL(responseDetails.url);
+	var targetDomain = getEffectiveDomain(responseDetails.url);
 	
 	//If target hostname is IPv4 or IPv6 do not create any DNS record in cache.
 	if (!isIPV4(targetDomain) && !isIPV6(targetDomain)) {
@@ -269,7 +269,7 @@ function onResponseStartedListener(responseDetails)
 	//Analyze request direction only when responseDetails.initiator is defined.
 	//When responseDetails.initiator is undefined, can not analyze request direction.
 	if(responseDetails.initiator !== undefined) {
-		var sourceDomain = getSiteForURL(responseDetails.initiator);
+		var sourceDomain = getEffectiveDomain(responseDetails.initiator);
 
 		// Suspected of attacking, other HTTP requests by this host will be blocked.
 		if(isRequestFromPublicToPrivateNet(sourceDomain, targetDomain)) {

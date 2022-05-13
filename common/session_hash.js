@@ -31,14 +31,13 @@ var Hashes = {
   sessionHash : gen_random64().toString(),
   visitedDomains : {},
   getFor(url){
-    if (!url.origin) url = new URL(url);
-	  let {origin} = url;
-	  let domainHash = this.visitedDomains[origin];
+		let site = getSiteForURL(url);
+	  let domainHash = this.visitedDomains[site];
 	  if (!domainHash) {
 		  let hmac = sha256.hmac.create(this.sessionHash);
-		  hmac.update(url.origin);
+		  hmac.update(site);
 		  domainHash = hmac.hex();
-		  this.visitedDomains[origin] = domainHash;
+		  this.visitedDomains[site] = domainHash;
 	  }
     return {
       domainHash

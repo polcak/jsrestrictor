@@ -229,14 +229,6 @@ function isIPV6(url)
  */
 function isIPV4Private(ipAddr)
 {
-	/**
-	 * \seealso https://github.com/polcak/jsrestrictor/issues/125
-	 * and the tempral white listing of 0.0.0.0 until we provide
-	 * a checkbox for notifications.
-	 */
-	if (ipAddr === "0.0.0.0") {
-		return false;
-	}
 	//Split IP address on dots, obtain 4 numbers	
 	var substrIP = ipAddr.split('.');
 	//Convert IP address into array of 4 integers
@@ -280,14 +272,6 @@ function isIPV4Private(ipAddr)
  */
 function isIPV6Private(ipAddr)
 {
-	/**
-	 * \seealso https://github.com/polcak/jsrestrictor/issues/125
-	 * and the tempral white listing of 0.0.0.0 until we provide
-	 * a checkbox for notifications.
-	 */
-	if (ipAddr === "::") {
-		return false;
-	}
 	//Expand shorten IPv6 addresses to full length
 	ipAddr = expandIPV6(ipAddr);
 	//Split into array of fields
@@ -506,7 +490,7 @@ function isNbsWhitelisted(hostname)
  * \param tabId Tab ID of blocked request.
  */
 function notifyBlockedRequest(origin, target, tabId) {
-	if (nbsSettings.notifications) {
+	if (nbsSettings.notifications && (target !== "0.0.0.0" && target != "[::]")) {
 		nbsNotifications[tabId] = nbsNotifications[tabId] || {};
 		nbsNotifications[tabId].records = nbsNotifications[tabId].records || {};
 		nbsNotifications[tabId].records[`${origin},${target}`] = (nbsNotifications[tabId].records[`${origin},${target}`] || 0) + 1;
@@ -568,7 +552,7 @@ async function createCumulativeNotification(tabId) {
  */
 function showNbsNotification(tabId) {
 	nbsNotifications[tabId].last = nbsNotifications[tabId].total;
-	let host = getSiteForURL(availableTabs[tabId].url);
+	let host = getEffectiveDomain(availableTabs[tabId].url);
 	let message = `${nbsSettings.blocking ? "Blocked" : "Detected"} ${nbsNotifications[tabId].total} attempts from ${host} to access local network.`;
 	let records = Object.keys(nbsNotifications[tabId].records);
 	if (records.length == 1) {

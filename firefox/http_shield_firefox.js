@@ -51,10 +51,10 @@ async function beforeSendHeadersListener(requestDetail)
 	{
 		return {cancel:false};
 	}
-	var sourceDomain = getSiteForURL(requestDetail.originUrl);
+	var sourceDomain = getEffectiveDomain(requestDetail.originUrl);
 	var fullSourceDomain = new URL(requestDetail.originUrl).hostname;
 
-	var targetDomain = getSiteForURL(requestDetail.url);
+	var targetDomain = getEffectiveDomain(requestDetail.url);
 	var fullTargetDomain = new URL(requestDetail.url).hostname;
 
 	var targetIP;

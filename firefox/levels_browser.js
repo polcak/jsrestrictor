@@ -22,7 +22,7 @@
 var modify_wrapping_groups = function() {
 	wrapping_groups.groups.forEach(function (group) {
 		if (group.name === "windowname") {
-			group.description2.push("Firefox 88 and above already protects you. However, Firefox allows an origin to share information between separate pages, use the strict protection if you do not want an origin to use window.name to share information between pages of the same origin.")
+			group.description2.push("Firefox 88 and above already protects you.")
 		}
 	});
 };
