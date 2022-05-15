@@ -490,7 +490,7 @@ function isNbsWhitelisted(hostname)
  * \param tabId Tab ID of blocked request.
  */
 function notifyBlockedRequest(origin, target, tabId) {
-	if (nbsSettings.notifications && (target !== "0.0.0.0" && target != "[::]")) {
+	if (nbsSettings.notifications) {
 		nbsNotifications[tabId] = nbsNotifications[tabId] || {};
 		nbsNotifications[tabId].records = nbsNotifications[tabId].records || {};
 		nbsNotifications[tabId].records[`${origin},${target}`] = (nbsNotifications[tabId].records[`${origin},${target}`] || 0) + 1;
