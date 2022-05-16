@@ -63,6 +63,7 @@ async function beforeSendHeadersListener(requestDetail)
 	var isDestinationPrivate = false;
 	var destinationResolution = "";
 	var sourceResolution = "";
+	var blockNotifications = false;
 
 	//Host found among user's trusted hosts, allow it right away
 	if (isNbsWhitelisted(sourceDomain))
@@ -127,7 +128,9 @@ async function beforeSendHeadersListener(requestDetail)
 		if (isIPV4Private(targetDomain))
 		{
 			isDestinationPrivate = true;
-
+			if (targetDomain === "0.0.0.0") {
+				blockNotifications = true;
+			}
 		}
 	}
 	else if(isIPV6(targetDomain))
@@ -135,6 +138,9 @@ async function beforeSendHeadersListener(requestDetail)
 		if (isIPV6Private(targetDomain))
 		{
 			isDestinationPrivate = true;
+			if (ip === "[::]") {
+				blockNotifications = true;
+			}
 		}
 	}
 	else //Target is hostname
@@ -154,6 +160,9 @@ async function beforeSendHeadersListener(requestDetail)
 					{
 						//Destination is IPv4 private
 						isDestinationPrivate = true;
+						if (ip === "0.0.0.0") {
+							blockNotifications = true;
+						}
 					}
 				}
 				else if (isIPV6(ip))
@@ -162,6 +171,9 @@ async function beforeSendHeadersListener(requestDetail)
 					{
 						//Destination is IPv6 private
 						isDestinationPrivate = true;
+						if (ip === "[::]") {
+							blockNotifications = true;
+						}
 					}
 				}
 			}
@@ -173,7 +185,9 @@ async function beforeSendHeadersListener(requestDetail)
 	//Blocking direction Public -> Private
 	if (!isSourcePrivate && isDestinationPrivate)
 	{
-		notifyBlockedRequest(sourceDomain, targetDomain, requestDetail.tabId);
+		if (!blockNotifications) {
+			notifyBlockedRequest(sourceDomain, targetDomain, requestDetail.tabId);
+		}
 		return {cancel: nbsSettings.blocking ? true : false}
 	}
 	else //Permitting others
