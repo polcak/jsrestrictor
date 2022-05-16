@@ -9,10 +9,10 @@ title: Release history
 * FPD: Clear storage during navigation (prevent the page from storing the hash to a local storage
 	and loading the hash after page reload)
 * FPD configuration: Decouple notification and behaviour settings. Let a user to optionally disable notifications without strict effect on behaviour
-* Improve CSP of the extension pages, fix broken favIcons in FPD report
-* NBS: Block rquests to undefined IP address (0.0.0.0 or [::]) but do not show notifications
+* Improve CSP of the extension pages, fix broken favicons in FPD report
+* NBS: Block requests to undefined IP address (0.0.0.0 or [::]) but do not show notifications
 * Fix extension initialization in permanent private mode
-* options: Add extental links to JShelter.org FAQ and threat model
+* options: Add external links to JShelter.org FAQ and threat model
 * Add favicons to options pages
 * Remove unused icons
 
