@@ -2,6 +2,10 @@
 title: Release history
 ---
 
+## 0.11.1
+
+* NBS: do not show notifications for hostnames resolving to undefined IP addresses as described in FAQ (broken in 0.11 that does not show notifications only for undefined IP addresses, but shows notifications for hostnames resolving to undefined IP addresses)
+
 ## 0.11
 
 * Reset `window.name` only on eTLD+1 changes
