@@ -108,9 +108,12 @@ function beforeSendHeadersListener(requestDetail) {
 	}
 	
 	//Blocking direction Public -> Private
-	if (isRequestFromPublicToPrivateNet(sourceDomain, targetDomain))
+	var requestAnalysis = isRequestFromPublicToPrivateNet(sourceDomain, targetDomain);
+	if (requestAnalysis.crossboundary)
 	{
-		notifyBlockedRequest(sourceDomain, targetDomain, requestDetail.tabId);
+		if (!requestAnalysis.undefinedtargetip) {
+			notifyBlockedRequest(sourceDomain, targetDomain, requestDetail.tabId);
+		}
 		return {cancel: nbsSettings.blocking ? true : false}
 	}
 	else //Permitting others
@@ -128,14 +131,21 @@ function beforeSendHeadersListener(requestDetail) {
  * \param sourceHostname Hostname without "www" from HTTP request source URL.
  * \param targetHostname Hostname without "www" from HTTP request target URL.
  *
- * Returns TRUE when HTTP request is going from the public to the private network, FALSE otherwise.
+ * \return Returns an object with two properties:
+ *
+ *  * crossboundary: boolean (true when HTTP request is going from the public to the private network, false otherwise),
+ *  * undefinedtargetip: boolean (true if the IP address of the target is undefined, i.e. 0.0.0.0 or [::], false otherwise).
  */
 function isRequestFromPublicToPrivateNet(sourceHostname, targetHostname) {
 	var targetIP;
 	var sourceIP;
 	var isSourcePrivate = false;
 	var isDestinationPrivate = false;
-	
+	var result = {
+		crossboundary: false,
+		undefinedtargetip: false
+	}
+
 	//Checking type of SOURCE URL
 	if (isIPV4(sourceHostname)) //SOURCE is IPV4 adddr
 	{
@@ -190,7 +200,9 @@ function isRequestFromPublicToPrivateNet(sourceHostname, targetHostname) {
 		if (isIPV4Private(targetHostname))
 		{
 			isDestinationPrivate = true;
-
+			if (targetHostname === "0.0.0.0") {
+				result.undefinedtargetip = true;
+			}
 		}
 	}
 	else if(isIPV6(targetHostname))
@@ -198,6 +210,9 @@ function isRequestFromPublicToPrivateNet(sourceHostname, targetHostname) {
 		if (isIPV6Private(targetHostname))
 		{
 			isDestinationPrivate = true;
+			if (targetHostname === "::") {
+				result.undefinedtargetip = true;
+			}
 		}
 	}
 	else //Target is hostname
@@ -214,6 +229,9 @@ function isRequestFromPublicToPrivateNet(sourceHostname, targetHostname) {
 					{
 						//Destination is IPv4 private
 						isDestinationPrivate = true;
+						if (ip === "0.0.0.0") {
+							result.undefinedtargetip = true;
+						}
 					}
 				}
 				else if (isIPV6(ip))
@@ -222,14 +240,18 @@ function isRequestFromPublicToPrivateNet(sourceHostname, targetHostname) {
 					{
 						//Destination is IPv6 private
 						isDestinationPrivate = true;
+						if (ip === "::") {
+							result.undefinedtargetip = true;
+						}
 					}
 				}
 			}
 		}
 	}
-	
+
 	//Return if is direction Public -> Private	
-	return (!isSourcePrivate && isDestinationPrivate);
+	result.crossboundary = !isSourcePrivate && isDestinationPrivate;
+	return result;
 }
 
 /**
@@ -272,7 +294,8 @@ function onResponseStartedListener(responseDetails)
 		var sourceDomain = getEffectiveDomain(responseDetails.initiator);
 
 		// Suspected of attacking, other HTTP requests by this host will be blocked.
-		if(isRequestFromPublicToPrivateNet(sourceDomain, targetDomain)) {
+		var requestAnalysis = isRequestFromPublicToPrivateNet(sourceDomain, targetDomain);
+		if (requestAnalysis.crossboundary) {
 			notifyBlockedHost(sourceDomain);
 			blockedHosts[sourceDomain] = true;
 		}
