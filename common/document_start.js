@@ -67,6 +67,12 @@ function configureInjection({currentLevel, code, wrappers, domainHash, sessionHa
 	return false;
 }
 
+/**
+ * See https://pagure.io/JShelter/paper2022/c/a7e7e88edecfa19c3a52542b553bf1dc9b4388a9?branch=cnil,
+ * https://pagure.io/JShelter/webextension/issue/70 and
+ * https://pagure.io/JShelter/webextension/issue/46#comment-793783
+ * for more information on the early injection mechanism.
+ */
 if ("configuration" in window) {
 	console.debug("Early configuration found!", configuration);
 	configureInjection(configuration);
