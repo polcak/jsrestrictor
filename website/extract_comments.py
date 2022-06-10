@@ -42,7 +42,7 @@ titles = {
     "weba": "WebAudio",
     "webgl": "WebGL",
     "xr": "Web XR",
-    "nbs" : "Network Boundary Shield",
+    "nbs": "Network Boundary Shield",
     "pt2": "Performance Timeline (L2)",
 }
 
@@ -77,7 +77,6 @@ def comment_to_md(text):
 
 env = jinja2.Environment(
     loader=jinja2.FileSystemLoader([TEMPLATES_PATH]),
-    extensions=["jinja2.ext.with_"],
     trim_blocks=True,
     lstrip_blocks=True,
 )
