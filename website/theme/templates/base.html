@@ -128,15 +128,6 @@
                 <li {% if slug == 'levels' %} class="active" {% endif %}><a href="{{ SITEURL }}/levels">JavaScript Shield</a></li>
                 <li {% if slug == 'nbs' %} class="active" {% endif %}><a href="{{ SITEURL }}/nbs">Network Boundary Shield</a></li>
                 <li {% if slug == 'fpd' %} class="active" {% endif %}><a href="{{ SITEURL }}/fpd">Fingerprint Detector</a></li>
-                {% for p in pages if p.category == "wrappers" %}
-                {% if p.url.strip('/') == slug %}
-                <li class="active">
-                  {% else %}
-                <li>
-                  {% endif %}
-                  <a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a>
-                </li>
-                {% endfor %}
               </ul>
             </li>
             <li class="menu-heading">

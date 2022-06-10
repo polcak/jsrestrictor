@@ -14,6 +14,21 @@
     {{ page.content }}
   </div>
 
+  {% if page.slug == 'levels' %}
+  <ul>
+    <h2>Available wrappers</h2>
+    {% for p in pages if p.category == "wrappers" %}
+    {% if p.url.strip('/') == slug %}
+    <li class="active">
+      {% else %}
+    <li>
+      {% endif %}
+      <a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
   {# source link #}
   <div class="source-link">
   <p><a href="https://pagure.io/JShelter/webextension/blob/main/f/common/wrappingS-{{ page.slug|upper }}.js">See this wrapper's source code for more</a></p>
