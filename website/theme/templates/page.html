@@ -30,8 +30,10 @@
   {% endif %}
 
   {# source link #}
+  {% if page.category == "wrappers" %}
   <div class="source-link">
   <p><a href="https://pagure.io/JShelter/webextension/blob/main/f/common/wrappingS-{{ page.slug|upper }}.js">See this wrapper's source code for more</a></p>
   </div>
+  {% endif %}
 </article>
 {% endblock %}
