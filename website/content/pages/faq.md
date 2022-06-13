@@ -345,6 +345,26 @@ questions in this FAQ.
 1. Keep NBS active.
 1. If you want to detect and prevent fingerprinting attempts, use FPD.
 
+#### Does FPD collect a list of pages/origins that fingerprinted me?
+
+No, FPD does not store any information. Each page load starts a new detection that is not dependant
+on previous interactions between the browser and the site.
+
+#### When FPD detects that an origin tried to fingerprint me, does it mean that the extension will apply stronger protection like switching to the `Strict` JSS level or applying the blocking of HTTP requests initiated by the domain?
+
+No.
+
+First of all, the `Strict` JSS level does not mean a stronger protection. In fact, it makes your
+fingerprint stable. We do not recommend using `Strict` level as an anti-fingerprinting mechanism.
+
+Secondly, fingerprinting is quite common on login pages. If one page fingerprints you, it does
+not mean that all pages are going to fingerprint you.
+
+Thirdly, fingerprinting script may be loaded into the page irregularly and we want to prevent blocking the site when there is no fingerprinting detected.
+
+If you want to switch to a different level for the website, you can do so manually. We do not
+recommend such action.
+
 #### I saw several extensions that claim that it is not possible to modify the JavaScript environment reliably. Are you aware of the Firefox bug [1267027](https://bugzilla.mozilla.org/show_bug.cgi?id=1267027)
 
 Yes, we are aware of the issues concerning reliable script injections before page scripts can
