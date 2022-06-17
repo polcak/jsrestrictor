@@ -66,6 +66,12 @@
 							"objects": [
 								"extractSubDomains"
 							]
+						},
+						{
+							"from": "./helpers.js",
+							"objects": [
+								"getEffectiveDomain"
+							]
 						}
 					]
 				}
