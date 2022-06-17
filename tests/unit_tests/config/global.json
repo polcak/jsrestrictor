@@ -200,6 +200,12 @@
 							]
 						},
 						{
+							"from": "./fp_detect_background.js",
+							"objects": [
+								"fpDb"
+							]
+						},
+						{
 							"import": "sinon-chrome",
 							"as": "browser"
 						}
@@ -222,6 +228,29 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "fp_detect_background",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./helpers.js",
+							"objects": [
+								"Observable"
+							]
+						},
+						{
+							"import": "sinon-chrome",
+							"as": "browser"
+						}
+					]
+				}
+			],
+			"test_script_requirements": []
 		},
 		{
 			"name": "wrappingS-GEO",
