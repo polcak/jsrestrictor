@@ -223,10 +223,15 @@ Observable.prototype = {
  */
 function create_short_text(text, LIMIT) {
 	if (text.length > LIMIT) {
-		let remove_parentheses = / \([^)]*\)/;;
+		let remove_parentheses = / \([^)]*\)/;
 		text = text.replace(remove_parentheses, "");
 		let sentences = text.split(".");
-		sentences = sentences.map(s => s + ".");
+		sentences = sentences.map(function (s) {
+			if (s.length === 0) {
+				return s;
+			}
+			return s + ".";
+		});
 		let done = false;
 		text = sentences.reduce(function (acc, current) {
 			if (!done) {
