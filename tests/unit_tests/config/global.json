@@ -259,6 +259,17 @@
 			"test_script_requirements": []
 		},
 		{
+			"name": "alea",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [],
+			"test_script_requirements": [],
+			"inject_code_to_src": {
+				"begin": "domainHash = '0000000000000000';",
+				"end": "eval(alea);"
+			}
+		},
+		{
 			"name": "wrappingS-GEO",
 			"remove_custom_namespace": true,
 			"let_to_var": true,
@@ -270,6 +281,12 @@
 							"from": "./wrapping.js",
 							"objects": [
 								"add_wrappers"
+							]
+						},
+						{
+							"from": "./alea.js",
+							"objects": [
+								"alea"
 							]
 						}
 					]
@@ -293,6 +310,12 @@
 								"processOriginalGPSDataObject",
 								"wrappers"
 							]
+						},
+						{
+							"from": "./alea.js",
+							"objects": [
+								"alea"
+							]
 						}
 					]
 				}
@@ -313,7 +336,7 @@
 			],
 			"inject_code_to_src":
 			{
-				"begin": "function gen_random32() { return 0.2 * 4294967295; } function successCallback(arg) { return arg; } WrapHelper = { XRAY: false, shared: {}, forPage: function(param) {return param}, isForPage: obj => pageReady.has(obj), defineProperty: Object.defineProperty, defineProperties: Object.defineProperties, create: Object.create, OriginalProxy: Proxy, Proxy: Proxy };"
+				"begin": "function gen_random32() { return 0.2 * 4294967295; } function successCallback(arg) { return arg; } WrapHelper = { XRAY: false, shared: {}, forPage: function(param) {return param}, isForPage: obj => pageReady.has(obj), defineProperty: Object.defineProperty, defineProperties: Object.defineProperties, create: Object.create, a: 1, OriginalProxy: Proxy, Proxy: Proxy };"
 			}
 		},
 		{

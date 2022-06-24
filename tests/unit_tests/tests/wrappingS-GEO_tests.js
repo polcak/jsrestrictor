@@ -23,6 +23,8 @@
 
 /// <reference path="../../common/wrappingS-GEO.js">
 
+const domainHash = "0000000000000000";
+
 describe("GEO", function() {	
 	describe("processOriginalGPSDataObject_globals", function() {
 		it("should be defined.",function() {
