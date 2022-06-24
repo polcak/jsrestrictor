@@ -32,18 +32,6 @@ describe("Background", function() {
 		it("should be defined.",function() {
 			expect(updateBadge).toBeDefined();
 		});
-		it("should return nothing.",function() {
-			expect(updateBadge(levels[2])).toBe(undefined);
-		});
-		it("should not throw error when argument is valid level.",function() {
-			expect(function() {updateBadge(levels[2])}).not.toThrowError();
-		});
-		xit("should throw error when parameter is undefined.",function() {
-			expect(function() {updateBadge(undefined)}).toThrowError();
-		});
-		xit("should throw error when parameter is not given.",function() {
-			expect(function() {updateBadge()}).toThrowError();
-		});
 	});
 	describe("Function tabUpdate", function() {		
 		it("should be defined.",function() {
