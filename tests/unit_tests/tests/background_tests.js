@@ -38,7 +38,7 @@ describe("Background", function() {
 			expect(tabUpdate).toBeDefined();
 		});
 		it("should return default level.",function() {
-			expect(tabUpdate(5,{'url':'https://www.seznam.cz/'})).toBe(default_level);
+			expect(tabUpdate(5,{'url':'https://www.jshelter.org/'})).toBe(default_level);
 		});
 		it("should not throw error when argument changeInfo['url'] is undefined.",function() {
 			expect(function() {tabUpdate(5,{'url':undefined})}).not.toThrowError();
