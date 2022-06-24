@@ -6,6 +6,9 @@
 			"let_to_var": false,
 			"src_script_requirements": [
 			],
+			"inject_code_to_src": {
+				"begin": "var tld = {getDomain: (d) => 'TLD#' + d};"
+			},
 			"test_script_requirements": [
 				{
 					"type": "const",
@@ -14,7 +17,12 @@
 							"from": "./helpers.js",
 							"objects": [
 								"escape",
-								"gen_random32"
+								"byteToHex",
+								"gen_random32",
+								"gen_random64",
+								"getEffectiveDomain",
+								"getSiteForURL",
+								"create_short_text"
 							]
 						}
 					]
@@ -65,6 +73,12 @@
 							"from": "./url.js",
 							"objects": [
 								"extractSubDomains"
+							]
+						},
+						{
+							"from": "./helpers.js",
+							"objects": [
+								"getEffectiveDomain"
 							]
 						}
 					]
@@ -200,6 +214,12 @@
 							]
 						},
 						{
+							"from": "./fp_detect_background.js",
+							"objects": [
+								"fpDb"
+							]
+						},
+						{
 							"import": "sinon-chrome",
 							"as": "browser"
 						}
@@ -224,6 +244,40 @@
 			]
 		},
 		{
+			"name": "fp_detect_background",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./helpers.js",
+							"objects": [
+								"Observable"
+							]
+						},
+						{
+							"import": "sinon-chrome",
+							"as": "browser"
+						}
+					]
+				}
+			],
+			"test_script_requirements": []
+		},
+		{
+			"name": "alea",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [],
+			"test_script_requirements": [],
+			"inject_code_to_src": {
+				"begin": "domainHash = '0000000000000000';",
+				"end": "eval(alea);"
+			}
+		},
+		{
 			"name": "wrappingS-GEO",
 			"remove_custom_namespace": true,
 			"let_to_var": true,
@@ -235,6 +289,12 @@
 							"from": "./wrapping.js",
 							"objects": [
 								"add_wrappers"
+							]
+						},
+						{
+							"from": "./alea.js",
+							"objects": [
+								"alea"
 							]
 						}
 					]
@@ -258,6 +318,12 @@
 								"processOriginalGPSDataObject",
 								"wrappers"
 							]
+						},
+						{
+							"from": "./alea.js",
+							"objects": [
+								"alea"
+							]
 						}
 					]
 				}
@@ -278,7 +344,7 @@
 			],
 			"inject_code_to_src":
 			{
-				"begin": "function gen_random32() { return 0.2 * 4294967295; } function successCallback(arg) { return arg; } WrapHelper = { XRAY: false, shared: {}, forPage: function(param) {return param}, isForPage: obj => pageReady.has(obj), defineProperty: Object.defineProperty, defineProperties: Object.defineProperties, create: Object.create, OriginalProxy: Proxy, Proxy: Proxy };"
+				"begin": "function gen_random32() { return 0.2 * 4294967295; } function successCallback(arg) { return arg; } WrapHelper = { XRAY: false, shared: {}, forPage: function(param) {return param}, isForPage: obj => pageReady.has(obj), defineProperty: Object.defineProperty, defineProperties: Object.defineProperties, create: Object.create, a: 1, OriginalProxy: Proxy, Proxy: Proxy };"
 			}
 		},
 		{

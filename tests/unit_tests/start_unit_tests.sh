@@ -86,7 +86,7 @@ for k in $(jq '.scripts | keys | .[]' ./config/global.json); do
 	name=$(jq -r '.name' <<< "$script")
 	test_script_name="${name}_tests.js"
 	source_script_name="${name}.js"
-	# Add current test script name to list of all testing scripts that will be run.
+	# Add current test script name to list of all testing scripts that will run.
 	if [ $k -eq 0 ]
 	then
 		script_names+="\"${test_script_name}\""
