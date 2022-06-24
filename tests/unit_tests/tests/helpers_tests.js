@@ -24,6 +24,8 @@
 /// <reference path="../../common/helpers.js">
 
 describe("Helpers", function() {
+
+
 	describe("Function escape", function() {
 		it("should be defined.",function() {
 			expect(escape).toBeDefined();
@@ -63,10 +65,105 @@ describe("Helpers", function() {
 			expect(escape("&Te\"stova' 'v<eta>.")).toBe("&amp;Te&quot;stova&#039; &#039;v&lt;eta&gt;.");
 		});
 	});
+
+
+	describe("Function byteToHex", function() {
+		it("should be defined.",function() {
+			expect(byteToHex).toBeDefined();
+		});
+		it("should convert an integer represented as byte to string.",function() {
+			expect(byteToHex(0)).toBe("00");
+			expect(byteToHex(255)).toBe("ff");
+			expect(byteToHex(256)).toBe("00"); // Bit overflow
+		});
+	});
+
+
 	describe("Function gen_random32", function() {
 		it("should be defined.",function() {
 			expect(gen_random32).toBeDefined();
 		});
 		// Not able to test function gen_random32, because window.crypto is not defined in NodeJS.
 	});
+	describe("Function gen_random64", function() {
+		it("should be defined.",function() {
+			expect(gen_random64).toBeDefined();
+		});
+		// Not able to test function gen_random32, because window.crypto is not defined in NodeJS.
+	});
+
+
+	describe("Function getEffectiveDomain", function() {
+		it("should be defined.",function() {
+			expect(getEffectiveDomain).toBeDefined();
+		});
+		it("should remove www. from the beginning of the string.",function() {
+			expect(getEffectiveDomain("https://www.fit.vutbr.cz")).toBe("fit.vutbr.cz");
+			expect(getEffectiveDomain("http://www.fit.vutbr.cz")).toBe("fit.vutbr.cz");
+		});
+		it("should do nothing if there is not www. at the beginning of the string.",function() {
+			expect(getEffectiveDomain("https://merlin.fit.vutbr.cz")).toBe("merlin.fit.vutbr.cz");
+			expect(getEffectiveDomain("http://merlin.fit.vutbr.cz")).toBe("merlin.fit.vutbr.cz");
+			expect(getEffectiveDomain("https://example.co.uk")).toBe("example.co.uk");
+			expect(getEffectiveDomain("http://example.co.uk")).toBe("example.co.uk");
+			expect(getEffectiveDomain("http://192.168.1.1")).toBe("192.168.1.1");
+			expect(getEffectiveDomain("http://[2001:db8::]")).toBe("[2001:db8::]");
+		});
+		it("should support file: protocol.",function() {
+			expect(getEffectiveDomain("file:///test")).toBe("file:");
+		});
+		it("should receive a valid URL.",function() {
+			expect(() => getEffectiveDomain("merlin.fit.vutbr.cz")).toThrowError();
+		});
+	});
+
+
+	describe("Function getSiteForURL", function() {
+		it("should be defined.",function() {
+			expect(getSiteForURL).toBeDefined();
+		});
+		it("propagate to TLD module.",function() {
+			// See the config file for the tld mock function
+			// The results below are not the results that the function should return in a correctly
+			// built webextension
+			expect(getSiteForURL("https://www.fit.vutbr.cz")).toBe("TLD#www.fit.vutbr.cz");
+			expect(getSiteForURL("http://www.fit.vutbr.cz")).toBe("TLD#www.fit.vutbr.cz");
+			expect(getSiteForURL("https://merlin.fit.vutbr.cz")).toBe("TLD#merlin.fit.vutbr.cz");
+			expect(getSiteForURL("http://merlin.fit.vutbr.cz")).toBe("TLD#merlin.fit.vutbr.cz");
+			expect(getSiteForURL("https://polcak.github.io")).toBe("TLD#polcak.github.io");
+			expect(getSiteForURL("http://example.co.uk")).toBe("TLD#example.co.uk");
+		});
+		it("should support file: protocol.",function() {
+			expect(getSiteForURL("file:///test")).toBe("file:");
+		});
+		it("should receive a valid URL.",function() {
+			expect(getSiteForURL("merlin.fit.vutbr.cz")).toBe("");
+		});
+	});
+
+
+	describe("Function create_short_text", function() {
+		it("should be defined.",function() {
+			expect(create_short_text).toBeDefined();
+		});
+		it("should not modify short strings.",function() {
+			expect(create_short_text("", 10)).toBe("");
+			expect(create_short_text("", 0)).toBe("");
+			expect(create_short_text("1", 2)).toBe("1");
+			var js = "jShelter";
+			expect(create_short_text(js, js.length)).toBe(js);
+		});
+		it("should remove parentheses.",function() {
+			expect(create_short_text("Test (should remove).", 1)).toBe("Test.");
+			expect(create_short_text("Test (should remove). Test.", 12)).toBe("Test. Test.");
+		});
+		it("should respect sentences.",function() {
+			expect(create_short_text("ABC. ABC. ABC.", 1)).toBe("ABC.");
+			expect(create_short_text("ABC. ABC. ABC.", 5)).toBe("ABC.");
+			expect(create_short_text("ABC. ABC. ABC.", 8)).toBe("ABC.");
+			expect(create_short_text("ABC. ABC. ABC.", 9)).toBe("ABC. ABC.");
+		});
+	});
+
+
 });

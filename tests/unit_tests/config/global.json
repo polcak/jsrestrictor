@@ -6,6 +6,9 @@
 			"let_to_var": false,
 			"src_script_requirements": [
 			],
+			"inject_code_to_src": {
+				"begin": "var tld = {getDomain: (d) => 'TLD#' + d};"
+			},
 			"test_script_requirements": [
 				{
 					"type": "const",
@@ -14,7 +17,12 @@
 							"from": "./helpers.js",
 							"objects": [
 								"escape",
-								"gen_random32"
+								"byteToHex",
+								"gen_random32",
+								"gen_random64",
+								"getEffectiveDomain",
+								"getSiteForURL",
+								"create_short_text"
 							]
 						}
 					]
