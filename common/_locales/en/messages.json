@@ -1,0 +1,1074 @@
+{
+  "extensionName": {
+    "message": "JShelter",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Extension for increasing security and privacy level of the user.",
+    "description": "Description of the extension."
+  },
+  "globalSettings": {
+    "message": "Global settings",
+    "description": ""
+  },
+  "settingsForDomain": {
+    "message": "Settings for domain",
+    "description": ""
+  },
+  "refreshPage": {
+    "message": "Refresh page",
+    "description": ""
+  },
+  "javascriptShield": {
+    "message": "JavaScript Shield",
+    "description": ""
+  },
+  "modify": {
+    "message": "Modify",
+    "description": ""
+  },
+  "more": {
+    "message": "(more...)",
+    "description": ""
+  },
+  "youCanSetOfTheLevelsAsTheGlobalDefaultLevel": {
+    "message": "You can set of the levels as the global default level. Use this level for this page.",
+    "description": ""
+  },
+  "defaultLevel": {
+    "message": "Default level ",
+    "description": ""
+  },
+  "less": {
+    "message": "(less...)",
+    "description": ""
+  },
+  "detailTweaksOfJSShieldForThisSite": {
+    "message": "Detail tweaks of JS shield for this site",
+    "description": ""
+  },
+  "wrappers": {
+    "message": "Wrappers",
+    "description": ""
+  },
+  "numberOfCalls": {
+    "message": "Number of calls",
+    "description": ""
+  },
+  "networkBoundaryShield": {
+    "message": "Network Boundary Shield",
+    "description": ""
+  },
+  "fingerprintDetector": {
+    "message": "Fingerprint Detector",
+    "description": ""
+  },
+  "likelihoodThatThePageFingerprintedYou": {
+    "message": "⤷ Likelihood that the page fingerprinted you: ",
+    "description": ""
+  },
+  "jShelterOptions": {
+    "message": "JShelter options",
+    "description": ""
+  },
+  "mainSettings": {
+    "message": "Main settings",
+    "description": ""
+  },
+  "jSSShieldDetails": {
+    "message": "JS Shield details",
+    "description": ""
+  },
+  "advancedOptions": {
+    "message": "Advanced options",
+    "description": ""
+  },
+  "externalLinks": {
+    "message": "External links",
+    "description": ""
+  },
+  "threatModel": {
+    "message": "Threat model",
+    "description": ""
+  },
+  "fAQ": {
+    "message": "FAQ",
+    "description": ""
+  },
+  "testPage": {
+    "message": "Test page",
+    "description": ""
+  },
+  "permissions": {
+    "message": "Permissions",
+    "description": ""
+  },
+  "sourceCode": {
+    "message": "Source code",
+    "description": ""
+  },
+  "issueTracker": {
+    "message": "Issue tracker",
+    "description": ""
+  },
+  "credits": {
+    "message": "Credits",
+    "description": ""
+  },
+  "javascriptShieldDescription1": {
+    "message": "JavaScript Shield modifies the behaviour of the JavaScript environment available for the visited webpage. JShelter provides fake information to confuse fingerprinters or make webpage triggered attacks impossible or harder.",
+    "description": ""
+  },
+  "javascriptShieldDescription2": {
+    "message": "JavaScript Shield internally consists of wrappers, small pieces of code that modify the original behaviour of a JavaScript API (a function or a property) defined by standards. The behaviour of the most of the wrappers can be divided into several categories:",
+    "description": ""
+  },
+  "javascriptShieldDescription3": {
+    "message": "Precision reduction: The original value is too precise and it is not necessary for most use cases. JavaScript Shield modifies the values so that typical and benign use cases are not affected.",
+    "description": ""
+  },
+  "javascriptShieldDescription4": {
+    "message": "Provide fake information: Some wrappers provide fake information mostly to confuse fingerprinters. For example, canvas wrappers modify the image so that the same instructions produce different result in each session and for each domain.",
+    "description": ""
+  },
+  "javascriptShieldDescription5": {
+    "message": "Hide information: Some APIs provide information that is not generally needed and can be hidden from most of the pages. Depending on the API, JavaScript Shield might return an error, an empty value, or block the API completely.",
+    "description": ""
+  },
+  "jSSDescription1": {
+    "message": "See our blog post for more information on ",
+    "description": ""
+  },
+  "jSSDescription2": {
+    "message": "browser fingerprinting counter-measures",
+    "description": ""
+  },
+  "jSSDescription3": {
+    "message": " and ",
+    "description": ""
+  },
+  "jSSDescription4": {
+    "message": "farbling",
+    "description": ""
+  },
+  "addCustomLevel": {
+    "message": "Add custom level",
+    "description": ""
+  },
+  "nBSDescription1": {
+    "message": "Network Boundary Shield prevents web pages to use the browser as a proxy between local network and the public Internet. See our ",
+    "description": ""
+  },
+  "nBSDescription2": {
+    "message": "blog post",
+    "description": ""
+  },
+  "nBSDescription3": {
+    "message": " and ",
+    "description": ""
+  },
+  "nBSDescription4": {
+    "message": "Force Point report",
+    "description": ""
+  },
+  "nBSDescription5": {
+    "message": " for examples of attacks handled by the Network Boundary Shield. The protection encapsulates the WebRequest API, so it captures all outgoing requests.",
+    "description": ""
+  },
+  "nBSDescription6": {
+    "message": "Generally, you want Network Boundary Shield to block all suspicious requests. However, some pages can be broken, because they require interaction between public Internet and local network, for example, some Intranet information systems might be broken by the Network Boundary Shield. JShelter users also reported increased number of false positives when using DNS-based filtering programs. If you use one, make sure that DNS returns 0.0.0.0 for the blocked domains.",
+    "description": ""
+  },
+  "nBSDescription7": {
+    "message": "Network Boundary Shield default behavior can be globally adjusted by the settings below. Network Boundary Shield can also be completely disabled on a per-domain basis using the whitelist. Domains can be whitelisted via ",
+    "description": ""
+  },
+  "nBSDescription8": {
+    "message": "Network Boundary Shield switch",
+    "description": ""
+  },
+  "nBSDescription9": {
+    "message": " in the popup window or manually via ",
+    "description": ""
+  },
+  "nBSDescription10": {
+    "message": "Manage whitelist",
+    "description": ""
+  },
+  "nBSDescription11": {
+    "message": " option. Keep in mind that whitelisting a domain will also whitelist its subdomains. To selectively deactivate the Network Boundary Shield, insert the domains to the whitelist (excluding «www», but including all other domains e.g. «.com»).",
+    "description": ""
+  },
+  "manageWhitelist": {
+    "message": "Manage whitelist ⤵",
+    "description": ""
+  },
+  "nBSWhitelistAddButton1": {
+    "message": "Disable",
+    "description": ""
+  },
+  "nBSWhitelistAddButton2": {
+    "message": " for the domain",
+    "description": ""
+  },
+  "nBSWhitelistRemoveButton1": {
+    "message": "Enable",
+    "description": ""
+  },
+  "nBSWhitelistRemoveButton2": {
+    "message": " for the selected domains",
+    "description": ""
+  },
+  "nBSWhitelistRemoveButton3": {
+    "message": "Please note, that these domain names are checked with domain hierarchy, so whitelisting",
+    "description": ""
+  },
+  "nBSWhitelistRemoveButton4": {
+    "message": " does also whitelist ",
+    "description": ""
+  },
+  "fPDDescription1": {
+    "message": "Fingerprint Detector provides a mechanism that informs users about fingerprinting activity on visited web pages. The detector also prevents web pages from extracting browser fingerprint, if a user chooses to do so. See our ",
+    "description": ""
+  },
+  "fPDDescription2": {
+    "message": "blog post",
+    "description": ""
+  },
+  "fPDDescription3": {
+    "message": " or ",
+    "description": ""
+  },
+  "fPDDescription4": {
+    "message": "Browser Fingerprinting: A survey",
+    "description": ""
+  },
+  "fPDDescription5": {
+    "message": " for a closer description of browser fingerprinting.",
+    "description": ""
+  },
+  "fPDDescription6": {
+    "message": "By enabling the detector, you will be notified whenever it detects fingerprinting behavior on a visited web page. The detector measure severity of potential fingerprint with each page visit. Then, it assigns a likelihood of fingerprinting to the page according to our heuristic system. The likelihood is presented to you by badge color of JShelter icon and also in popup window. If a high likelihood of fingerprinting occurs, you will be notified by a separate notification. It's possible to show details about the fingerprint by generating a fingerprint report. You can access it via popup window or by clicking directly on the notification.",
+    "description": ""
+  },
+  "fPDDescription7": {
+    "message": "The default behavior of Fingerprint Detector can be adjusted to your liking. You can choose «blocking» behavior, which works as a countermeasure against leaking your fingerprint to unwanted parties. In this case, every positive detection is followed by blocking all subsequent HTTP requests and cleaning browser storage. Take into account that ",
+    "description": ""
+  },
+  "fPDDescription8": {
+    "message": "this action will probably result in a broken web page",
+    "description": ""
+  },
+  "fPDDescription9": {
+    "message": " and we strongly recommend to use a whitelist for trusted domains. Switching off the detector for a domain in the popup window will add the domain to the whitelist. This domain won't be evaluated or blocked in the future. You can manage all the whitelisted domains below.",
+    "description": ""
+  },
+  "turnJavaScriptShieldOff": {
+    "message": "Turn JavaScript Shield off",
+    "description": ""
+  },
+  "javaScriptAPIsAreNotWrapped": {
+    "message": "JavaScript APIs are not wrapped. Use this level if you (1) trust the operator of the visited page(s) and you want to give them access to full APIs supported by the browser, or (2) if you do not like JavaScript Shield but you want to apply other protection mechanisms.",
+    "description": ""
+  },
+  "turnFingerprintingProtectionOff": {
+    "message": "Turn fingerprinting protection off",
+    "description": ""
+  },
+  "applySecurityCountermeasures": {
+    "message": "Apply security counter-measures that are likely not to break web pages but do not defend against fingerprinting. Disable APIs that are not commonly used. Use this level if Fingerprint Detector reports low likelihood of fingerprinting, you trust the visited service, and/or you think that the protection makes the page slow or broken and your temptation to use the service is so high that you do not want to be protected.",
+    "description": ""
+  },
+  "recommended": {
+    "message": "Recommended",
+    "description": ""
+  },
+  "makeTheBrowserAppearDifferently": {
+    "message": "Make the browser appear differently to distinct fingerprinters. Apply security counter-measures that are likely not to break web pages. Slightly modify the results of API calls in different way on different domains so that the cross-site fingerprint is not stable. The generated fingerprint values also differ with each browser restart. If you need a different fingerprint for the same website without restart, use incognito mode. Keep in mind that even if you log out from a site, clear your cookies, change your IP address, the modified APIs will provide a way to compute the same fingerprint. Restart your browser if you want to change your fingerprint. If in doubt, use this level.",
+    "description": ""
+  },
+  "strict": {
+    "message": "Strict",
+    "description": ""
+  },
+  "enableAllNonexperimentalProtection": {
+    "message": "Enable all non-experimental protection. The wrapped APIs return fake values. Some APIs are blocked completely, others provide meaningful but rare values. Some return values are meaningless. This level will make you fingerprintable because the results of API calls are generally modified in the same way on all websites and in each session. Use this level if you want to limit the information provided by your browser. If you are worried about fingerprinters, make sure the Fingerprint Detector is activated.",
+    "description": ""
+  },
+  "experimental": {
+    "message": "Experimental",
+    "description": ""
+  },
+  "strictLevelProtections": {
+    "message": "Strict level protections with additional wrappers enabled (including APIs known to regularly break webpages and APIs that do not work perfectly). Use this level if you want to experiment with JShelter. Use Recommended or Strict level with active Fingerprint Detector for your regular activities.",
+    "description": ""
+  },
+  "timePrecision": {
+    "message": "Time precision",
+    "description": ""
+  },
+  "timePrecisionDescription": {
+    "message": "Prevent attacks and fingerprinting techniques relying on precise time measurement (or make them harder).",
+    "description": ""
+  },
+  "timePrecisionDescription2": {
+    "message": "Limit the precision of high resolution time stamps (Date, Performance, events, Gamepad API, Web VR API). Timestamps provided by the Geolocation API are wrapped as well if you enable Geolocation API wrapping",
+    "description": ""
+  },
+  "poor": {
+    "message": "Poor",
+    "description": ""
+  },
+  "poorDescription": {
+    "message": "Round time to hundredths of a second (1.230)",
+    "description": ""
+  },
+  "low": {
+    "message": "Low",
+    "description": ""
+  },
+  "lowDescription": {
+    "message": "Round time to tenths of a second (1.200)",
+    "description": ""
+  },
+  "high": {
+    "message": "High",
+    "description": ""
+  },
+  "highDescription": {
+    "message": "Randomize decimal digits with noise (1.451)",
+    "description": ""
+  },
+  "locallyRenderedImages": {
+    "message": "Locally rendered images",
+    "description": ""
+  },
+  "locallyRenderedImagesDescription": {
+    "message": "Protect against canvas fingerprinting.",
+    "description": ""
+  },
+  "locallyRenderedImagesDescription2": {
+    "message": "Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob(), WebGLRenderingContext.readPixels return modified image data to prevent fingerprinting",
+    "description": ""
+  },
+  "locallyRenderedImagesDescription22": {
+    "message": "CanvasRenderingContext2D.isPointInStroke() and CanvasRenderingContext2D.isPointInPath() are modified to lie with probability",
+    "description": ""
+  },
+  "littleLies": {
+    "message": "Little lies",
+    "description": ""
+  },
+  "littleLiesDescription": {
+    "message": "Alter image data based on domain hash",
+    "description": ""
+  },
+  "strictDescription": {
+    "message": "Replace by white image (WebGL canvas returns an empty array)",
+    "description": ""
+  },
+  "locallyGeneratedAudio": {
+    "message": "Locally generated audio",
+    "description": ""
+  },
+  "locallyGeneratedAudioDescription": {
+    "message": "Protect against audio fingerprinting.",
+    "description": ""
+  },
+  "locallyGeneratedAudioDescription2": {
+    "message": "Functions AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() and AnalyserNode.getFloatFrequencyData() are modified to alter audio data based on domain key",
+    "description": ""
+  },
+  "littleLiesDescription2": {
+    "message": "Add amplitude noise based on domain hash",
+    "description": ""
+  },
+  "strictDescription2": {
+    "message": "Replace by white noise based on domain hash",
+    "description": ""
+  },
+  "graphicCardInformation": {
+    "message": "Graphic card information",
+    "description": ""
+  },
+  "graphicCardInformationDescription": {
+    "message": "Spoof details of your graphic card.",
+    "description": ""
+  },
+  "graphicCardInformationDescription2": {
+    "message": "Function WebGLRenderingContext.getParameter() returns modified/bottom values for certain parameters",
+    "description": ""
+  },
+  "graphicCardInformationDescription3": {
+    "message": "WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() and .getExtension() return modified values",
+    "description": ""
+  },
+  "littleLiesDescription3": {
+    "message": "Generate random numbers/strings using domain hash",
+    "description": ""
+  },
+  "strictDescription3": {
+    "message": "Return bottom values (null, empty string)",
+    "description": ""
+  },
+  "installedBrowserPlugins": {
+    "message": "Installed browser plugins",
+    "description": ""
+  },
+  "installedBrowserPluginsDescription": {
+    "message": "Protect against plugin fingerprinting",
+    "description": ""
+  },
+  "littleLiesDescription4": {
+    "message": "Edit current and add two fake plugins",
+    "description": ""
+  },
+  "fake": {
+    "message": "Fake",
+    "description": ""
+  },
+  "fakeDescription": {
+    "message": "Return two fake plugins",
+    "description": ""
+  },
+  "empty": {
+    "message": "Empty",
+    "description": ""
+  },
+  "emptyDescription": {
+    "message": "Return empty",
+    "description": ""
+  },
+  "connectedCamerasAndMicrophones": {
+    "message": "Connected cameras and microphones",
+    "description": ""
+  },
+  "connectedCamerasAndMicrophonesDescription": {
+    "message": "Prevent fingerprinting based on the multimedia devices connected to the computer",
+    "description": ""
+  },
+  "connectedCamerasAndMicrophonesDescription2": {
+    "message": "Function MediaDevices.enumerateDevices() is modified to return empty or modified result",
+    "description": ""
+  },
+  "littleLiesDescription5": {
+    "message": "Randomize order",
+    "description": ""
+  },
+  "addFake": {
+    "message": "Add fake",
+    "description": ""
+  },
+  "addFakeDescription": {
+    "message": "Add 0-4 fake devices and randomize order",
+    "description": ""
+  },
+  "deviceMemoryAndCPU": {
+    "message": "Device memory and CPU",
+    "description": ""
+  },
+  "deviceMemoryAndCPUDescription": {
+    "message": "Spoof hardware information on the amount of RAM and CPU count.",
+    "description": ""
+  },
+  "deviceMemoryAndCPUDescription2": {
+    "message": "Getters navigator.deviceMemory and navigator.hardwareConcurrency return modified values",
+    "description": ""
+  },
+  "lowDescription2": {
+    "message": "Return random valid value between minimum and real value",
+    "description": ""
+  },
+  "medium": {
+    "message": "Medium",
+    "description": ""
+  },
+  "mediumDescription": {
+    "message": "Return random valid value between minimum and 8",
+    "description": ""
+  },
+  "highDescription2": {
+    "message": "Return 4 for navigator.deviceMemory and 2 for navigator.hardwareConcurrency",
+    "description": ""
+  },
+  "networkConditions": {
+    "message": "Network conditions",
+    "description": ""
+  },
+  "networkConditionsDescription": {
+    "message": "Disable access to network information to limit fingerprinting and remove the possibility of observing patterns in accessed networks to learn if the user is at home, work, or travel.",
+    "description": ""
+  },
+  "strictDescription4": {
+    "message": "Disable NetworkInformation API",
+    "description": ""
+  },
+  "xMLHttpRequestRequests": {
+    "message": "XMLHttpRequest requests (XHR)",
+    "description": ""
+  },
+  "xMLHttpRequestRequestsDescription": {
+    "message": "Filter reliable XHR requests to server.",
+    "description": ""
+  },
+  "xMLHttpRequestRequestsDescription2": {
+    "message": "Note that these requests are broadly employed for benign purposes and also note that Fetch, SSE, WebRTC, and WebSockets APIs are not blocked. All provide similar and some even better means of communication with server. For practical usage, we recommend activating Fingerprint Detector instead of XHR wrappers. JShelter keeps the wrapper as it is useful for some users mainly for experimental reasons.",
+    "description": ""
+  },
+  "ask": {
+    "message": "Ask",
+    "description": ""
+  },
+  "askDescription": {
+    "message": "Ask before executing an XHR request",
+    "description": ""
+  },
+  "block": {
+    "message": "Block",
+    "description": ""
+  },
+  "blockDescription": {
+    "message": "Block all XMLHttpRequests",
+    "description": ""
+  },
+  "ArrayBufferDescription": {
+    "message": "Protect against ArrayBuffer exploitation, for example, to prevent side channel attacks on memory layout (or make them harder).",
+    "description": ""
+  },
+  "shift": {
+    "message": "Shift",
+    "description": ""
+  },
+  "shiftDescription": {
+    "message": "Shift indexes to make memory page boundaries detection harder",
+    "description": ""
+  },
+  "randomize": {
+    "message": "Randomize",
+    "description": ""
+  },
+  "randomizeDescription": {
+    "message": "Use random mapping of array indexing to memory",
+    "description": ""
+  },
+  "SharedArrayBufferDescription": {
+    "message": "Protect against SharedArrayBuffer exploitation, for example, to prevent side channel attacks on memory layout (or make them harder).",
+    "description": ""
+  },
+  "mediumDescription2": {
+    "message": "Randomly slow messages to prevent high resolution timers",
+    "description": ""
+  },
+  "strictDescription5": {
+    "message": "Block SharedArrayBuffer",
+    "description": ""
+  },
+  "webWorkerDescription": {
+    "message": "Protect against WebWorker exploitation, for example, to provide high resolution timers",
+    "description": ""
+  },
+  "strictDescription6": {
+    "message": "Remove real parallelism, use WebWorker polyfill",
+    "description": ""
+  },
+  "physicalLocationGeolocation": {
+    "message": "Physical location (geolocation)",
+    "description": ""
+  },
+  "physicalLocationGeolocationDescription": {
+    "message": "Limit the information on real-world position provided by Geolocation API.",
+    "description": ""
+  },
+  "physicalLocationGeolocationDescription2": {
+    "message": "Use domain hash for the position spoofing so the position will be the same at one domain for the whole session.",
+    "description": ""
+  },
+  "timestampOnly": {
+    "message": "Timestamp-only",
+    "description": ""
+  },
+  "timestampOnlyDescription": {
+    "message": "Provide accurate data (use when you really need to provide exact location and you want to protect geolocation timestamps)",
+    "description": ""
+  },
+  "village": {
+    "message": "Village",
+    "description": ""
+  },
+  "villageDescription": {
+    "message": "Use accuracy of hundreds of meters",
+    "description": ""
+  },
+  "town": {
+    "message": "Town",
+    "description": ""
+  },
+  "townDescription": {
+    "message": "Use accuracy of kilometers",
+    "description": ""
+  },
+  "region": {
+    "message": "Region",
+    "description": ""
+  },
+  "regionDescription": {
+    "message": "Use accuracy of tens of kilometers",
+    "description": ""
+  },
+  "longDistance": {
+    "message": "Long distance",
+    "description": ""
+  },
+  "longDistanceDescription": {
+    "message": "Use accuracy of hundreds of kilometers",
+    "description": ""
+  },
+  "strictDescription7": {
+    "message": "Turn location services off",
+    "description": ""
+  },
+  "physicalEnvironmentSensors": {
+    "message": "Physical environment sensors",
+    "description": ""
+  },
+  "physicalEnvironmentSensorsDescription": {
+    "message": "Limit the information provided by physical environment sensors like Magnetometer or Accelerometer.",
+    "description": ""
+  },
+  "highDescription3": {
+    "message": "Emulate stationary device based on domain hash",
+    "description": ""
+  },
+  "userIdleDetection": {
+    "message": "User idle detection",
+    "description": ""
+  },
+  "userIdleDetectionDescription": {
+    "message": "The Idle Detection API can detect inactive users and locked screens.",
+    "description": ""
+  },
+  "userIdleDetectionDescription2": {
+    "message": "The API can be misused to stalk the user and to improve fingerprinting.",
+    "description": ""
+  },
+  "confuse": {
+    "message": "Confuse",
+    "description": ""
+  },
+  "confuseDescription": {
+    "message": "Always return active user with unlocked screen",
+    "description": ""
+  },
+  "denyAccess": {
+    "message": "Deny access",
+    "description": ""
+  },
+  "denyAccessDescription": {
+    "message": "Do not show prompts and automatically decline",
+    "description": ""
+  },
+  "remove": {
+    "message": "Remove",
+    "description": ""
+  },
+  "removeDescription": {
+    "message": "Remove the API",
+    "description": ""
+  },
+  "idlePeriodTaskScheduling": {
+    "message": "Idle period task scheduling",
+    "description": ""
+  },
+  "idlePeriodTaskSchedulingDescription": {
+    "message": "The Cooperative Scheduling of Background Tasks API can schedule background tasks such that they do not introduce delays to other high priority tasks that share the same event loop.",
+    "description": ""
+  },
+  "idlePeriodTaskSchedulingDescription2": {
+    "message": "The API leaks information about the other tasks running in the browser as it leaks information on currently scheduled tasks, vsync deadlines, user-interaction and so on.",
+    "description": ""
+  },
+  "littleLiesDescription6": {
+    "message": "Modify the available information to confuse adversaries",
+    "description": ""
+  },
+  "gamepads": {
+    "message": "Gamepads",
+    "description": ""
+  },
+  "gamepadsDescription": {
+    "message": "Prevent websites from accessing and learning information on local gamepads.",
+    "description": ""
+  },
+  "strictDescription8": {
+    "message": "Hide all gamepads",
+    "description": ""
+  },
+  "virtualAndAugmentedRealityDevices": {
+    "message": "Virtual and augmented reality devices",
+    "description": ""
+  },
+  "virtualAndAugmentedRealityDevicesDescription": {
+    "message": "Prevent websites from accessing and learning information on local virtual and augmented reality displays.",
+    "description": ""
+  },
+  "strictDescription9": {
+    "message": "Hide all devices",
+    "description": ""
+  },
+  "multimediaPlayback": {
+    "message": "Multimedia playback",
+    "description": ""
+  },
+  "multimediaPlaybackDescription": {
+    "message": "Prevent websites from accessing and learning information on localy installed codecs and encoding/decoding capabilities and performance.",
+    "description": ""
+  },
+  "multimediaPlaybackDescription2": {
+    "message": "You can enable the protection for sites that do not process audio or video. Sites processing audio or video might be broken by the protection.",
+    "description": ""
+  },
+  "littleLiesDescription7": {
+    "message": "Report a codec/encryption mechanism as unsupported with 12.5% probability",
+    "description": ""
+  },
+  "strictDescription10": {
+    "message": "Report all codecs/encryption mechanisms as unsupported",
+    "description": ""
+  },
+  "silence": {
+    "message": "Silence",
+    "description": ""
+  },
+  "silenceDescription": {
+    "message": "Do not return any information at all",
+    "description": ""
+  },
+  "unreliableTransfersToServerBeacons": {
+    "message": "Unreliable transfers to server (beacons)",
+    "description": ""
+  },
+  "unreliableTransfersToServerBeaconsDescription": {
+    "message": "Prevent unreliable transfers to server (beacons).",
+    "description": ""
+  },
+  "unreliableTransfersToServerBeaconsDescription2": {
+    "message": "Such transfers are typically misused for analytics but occassionally may be used by e-shops or other pages.",
+    "description": ""
+  },
+  "unreliableTransfersToServerBeaconsDescription3": {
+    "message": "Prevent sending information through Beacon API.",
+    "description": ""
+  },
+  "disabled": {
+    "message": "Disabled",
+    "description": ""
+  },
+  "disabledDescription": {
+    "message": "The wrapper performs no action",
+    "description": ""
+  },
+  "hardwareBattery": {
+    "message": "Hardware battery",
+    "description": ""
+  },
+  "hardwareBatteryDescription": {
+    "message": "Disable Battery Status API",
+    "description": ""
+  },
+  "disabledDescription2": {
+    "message": "Disable the API",
+    "description": ""
+  },
+  "persistentIdentifierOfTheBrowserTab": {
+    "message": "Persistent identifier of the browser tab",
+    "description": ""
+  },
+  "persistentIdentifierOfTheBrowserTabDescription": {
+    "message": "Clear window.name value on eTLD+1 domain changes.",
+    "description": ""
+  },
+  "persistentIdentifierOfTheBrowserTabDescription2": {
+    "message": "This API might be occasionally used for benign purposes.",
+    "description": ""
+  },
+  "persistentIdentifierOfTheBrowserTabDescription3": {
+    "message": "This API provides a possibility to detect cross-site browsing in one tab and browser session.",
+    "description": ""
+  },
+  "strictDescription11": {
+    "message": "Clear during page reload",
+    "description": ""
+  },
+  "nearFieldCommunicationNFC": {
+    "message": "Near Field Communication (NFC)",
+    "description": ""
+  },
+  "nearFieldCommunicationNFCDescription": {
+    "message": "Near Field Communication (NFC) enables wireless communication between two devices at close proximity, usually less than a few centimeters.",
+    "description": ""
+  },
+  "nearFieldCommunicationNFCDescription2": {
+    "message": "NFC is an international standard (ISO/IEC 18092) defining an interface and protocol for simple wireless interconnection of closely coupled devices operating at 13.56 MHz.",
+    "description": ""
+  },
+  "unprotected": {
+    "message": "Unprotected",
+    "description": ""
+  },
+  "yourBrowserDoesNotSupport": {
+    "message": "Your browser does not support:",
+    "description": ""
+  },
+  "noteThatForFingerprintabilityPrevention": {
+    "message": "Note that for fingerprintability prevention, JShelter does not wrap objects that are not defined.",
+    "description": ""
+  },
+  "name": {
+    "message": "Name:",
+    "description": ""
+  },
+  "description": {
+    "message": "Description:",
+    "description": ""
+  },
+  "saveCustomLevel": {
+    "message": "Save custom level",
+    "description": ""
+  },
+  "addNewLevel": {
+    "message": "Add new level",
+    "description": ""
+  },
+  "customLevel": {
+    "message": "Custom level ",
+    "description": ""
+  },
+  "alreadyExistsItWillBeOverridden": {
+    "message": " already exists. It will be overridden.",
+    "description": ""
+  },
+  "customLevelWereNotUpdated": {
+    "message": "Custom level were not updated, please try again later.",
+    "description": ""
+  },
+  "pleaseProvideAllRequiredFields": {
+    "message": "Please provide all required fields: ID, Name, and Decription",
+    "description": ""
+  },
+  "editLevel": {
+    "message": "Edit level ",
+    "description": ""
+  },
+  "edit": {
+    "message": "Edit",
+    "description": ""
+  },
+  "restore": {
+    "message": "Restore",
+    "description": ""
+  },
+  "blocking": {
+    "message": "Blocking",
+    "description": ""
+  },
+  "blockingDescription": {
+    "message": "Block requests that are trying to access your local network.",
+    "description": ""
+  },
+  "blockingDescription2": {
+    "message": "NOTE: We recommend having requests blocking turned on in most cases. However, you can opt in to be only notified without any protection.",
+    "description": ""
+  },
+  "off": {
+    "message": "Off",
+    "description": ""
+  },
+  "offDescription": {
+    "message": "Requests blocking turned off.",
+    "description": ""
+  },
+  "on": {
+    "message": "On",
+    "description": ""
+  },
+  "onDescription": {
+    "message": "Requests blocking turned on.",
+    "description": ""
+  },
+  "notifications": {
+    "message": "Notifications",
+    "description": ""
+  },
+  "notificationsDescription": {
+    "message": "Turn on/off notifications about suspicious requests or hosts being blocked.",
+    "description": ""
+  },
+  "offDescription2": {
+    "message": "Blocking notifications turned off.",
+    "description": ""
+  },
+  "onDescription2": {
+    "message": "Blocking notifications turned on.",
+    "description": ""
+  },
+  "behavior": {
+    "message": "Behavior",
+    "description": ""
+  },
+  "behaviorDescription": {
+    "message": "Specify preffered behavior of the module.",
+    "description": ""
+  },
+  "passive": {
+    "message": "Passive",
+    "description": ""
+  },
+  "passiveDescription": {
+    "message": "Use extension icon badge color to signalize likelihood of ongoing fingerprinting without any interaction.",
+    "description": ""
+  },
+  "limitedBlocking": {
+    "message": "Limited Blocking",
+    "description": ""
+  },
+  "limitedBlockingDescription": {
+    "message": "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
+    "description": ""
+  },
+  "limitedBlockingDescription2": {
+    "message": "• Interrupt network traffic for the page to prevent possible fingerprint leakage.",
+    "description": ""
+  },
+  "limitedBlockingDescription3": {
+    "message": "• Clear some browser storage of the page to remove possibly cached fingerprint. (No additional permissions required.)",
+    "description": ""
+  },
+  "limitedBlockingDescription4": {
+    "message": "• Clearing: localStorage, sessionStorage, JS cookies, IndexedDB, caches, window.name",
+    "description": ""
+  },
+  "limitedBlockingDescription5": {
+    "message": "NOTE: Blocking behavior may break some functionality on fingerprinting websites.",
+    "description": ""
+  },
+  "fullBlocking": {
+    "message": "Full Blocking",
+    "description": ""
+  },
+  "fullBlockingDescription": {
+    "message": "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
+    "description": ""
+  },
+  "fullBlockingDescription2": {
+    "message": "• Interrupt network traffic for the page to prevent possible fingerprint leakage.",
+    "description": ""
+  },
+  "fullBlockingDescription3": {
+    "message": "• Clear all available storage mechanisms of the page where fingerprint may be cached. (Requires BrowsingData permission.)",
+    "description": ""
+  },
+  "fullBlockingDescription4": {
+    "message": "• Clearing: localStorage, sessionStorage, cookies, IndexedDB, caches, window.name, fileSystems, WebSQL, serviceWorkers",
+    "description": ""
+  },
+  "fullBlockingDescription5": {
+    "message": "NOTE: Blocking behavior may break some functionality on fingerprinting websites.",
+    "description": ""
+  },
+  "notifications": {
+    "message": "Notifications",
+    "description": ""
+  },
+  "notificationsDescription": {
+    "message": "Turn on/off notifications about fingerprinting detection and HTTP requests blocking.",
+    "description": ""
+  },
+  "notificationsDescription2": {
+    "message": "NOTE: We recommend having notifications turned on for blocking behavior.",
+    "description": ""
+  },
+  "offDescription3": {
+    "message": "Detection/blocking notifications turned off.",
+    "description": ""
+  },
+  "onDescription3": {
+    "message": "Detection/blocking notifications turned on.",
+    "description": ""
+  },
+  "detection": {
+    "message": "Detection",
+    "description": ""
+  },
+  "detectionDescription": {
+    "message": "Adjust heuristic thresholds which determine likelihood of fingerprinting.",
+    "description": ""
+  },
+  "default": {
+    "message": "Default",
+    "description": ""
+  },
+  "defaultDescription": {
+    "message": "Recommended setting for most users.",
+    "description": ""
+  },
+  "defaultDescription2": {
+    "message": "• Very low number of false positive detections (focus on excessive fingerprinting, very low number of unreasonably blocked sites)",
+    "description": ""
+  },
+  "defaultDescription3": {
+    "message": "• Acceptable amount of false negative detections (some fingerprinting websites may get around detection)",
+    "description": ""
+  },
+  "strictDescription12": {
+    "message": "Optional setting for more cautious users.",
+    "description": ""
+  },
+  "strictDescription13": {
+    "message": "• Lower number of false negative detections (detects also websites with less excessive fingerprinting)",
+    "description": ""
+  },
+  "strictDescription14": {
+    "message": "• Higher probability of false positive detections (in edge cases benign websites may be falsely blocked)",
+    "description": ""
+  },
+  "javaScriptShieldPerWebsiteConfiguration": {
+    "message": "JavaScript Shield per-website configuration",
+    "description": ""
+  },
+  "setJavaScriptShieldForWebsite": {
+    "message": "Set JavaScript Shield for website:",
+    "description": ""
+  },
+  "addToList": {
+    "message": "Add to list",
+    "description": ""
+  },
+  "aListOfWebsiteWithRedefinedJavaScriptShield": {
+    "message": "A list of website with redefined JavaScript Shield:",
+    "description": ""
+  },
+  "saveAll": {
+    "message": "Save all",
+    "description": ""
+  },
+  "deleteAll": {
+    "message": "Delete all",
+    "description": ""
+  },
+  "doNotModifyThisConfiguration": {
+    "message": "BEWARE! Do not modify this configuration unless you know what you are doing.",
+    "description": ""
+  },
+  "extensionConfiguration": {
+    "message": "Extension configuration",
+    "description": ""
+  },
+  "loadCurrentlyStoredConfiguration": {
+    "message": "Load currently stored configuration",
+    "description": ""
+  },
+  "overwriteConfiguration": {
+    "message": "Overwrite configuration",
+    "description": ""
+  }
+}

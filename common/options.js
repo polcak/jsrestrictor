@@ -40,11 +40,11 @@ function prepare_level_config(action_descr, params) {
 	var unsupported_apis = wrapping_groups.groups.reduce((acc, group) =>
 		group.wrappers.reduce(find_unsupported_apis, acc), "");
 	if (unsupported_apis !== "") {
-		unsupported_apis = `<div class="unsupported_api"><p>Your browser does not support:</p>${unsupported_apis}</div>`;
+		unsupported_apis = `<div class="unsupported_api"><p data-localize="__MSG_yourBrowserDoesNotSupport__">Your browser does not support:</p>${unsupported_apis}</div>`;
 	}
 	var fragment = document.createRange().createContextualFragment(`
 <div>
-		<p>Note that for fingerprintability prevention, JShelter does not wrap objects that are not defined.</p>
+		<p data-localize="__MSG_noteThatForFingerprintabilityPrevention__">Note that for fingerprintability prevention, JShelter does not wrap objects that are not defined.</p>
 	${unsupported_apis}
 	<div>
 	  <h2>${action_descr}</h2>
@@ -53,18 +53,18 @@ function prepare_level_config(action_descr, params) {
 
 		<!-- Metadata -->
 		<div class="main-section">
-			<label for="level_text">Name:</label>
+			<label for="level_text" data-localize="__MSG_name__">Name:</label>
 			<input id="level_text" value="${escape(params.level_text)}"></input>
 			<input type="hidden" id="level_id" ${params.level_id != "" ? "disabled" : ""} value="${escape(params.level_id)}"></input>
 		</div>
 		<div class="main-section">
-			<label for="level_description">Description:</label>
+			<label for="level_description" data-localize="__MSG_description__">Description:</label>
 			<input id="level_description" value="${escape(params.level_description)}"></input>
 		</div>
 
 		<div id="tweaks"></div>
 		
-		<button id="save" class="jsr-button">Save custom level</button>
+		<button id="save" class="jsr-button" data-localize="__MSG_saveCustomLevel__">Save custom level</button>
 	</form>
 </div>`);
 	configuration_area_el.appendChild(fragment);
@@ -98,7 +98,7 @@ function prepare_level_config(action_descr, params) {
 				custom_levels = stored_levels.custom_levels;
 				let ok = false;
 				if (new_level.level_id in custom_levels) {
-					ok = window.confirm("Custom level " + new_level.level_id + " already exists. It will be overriden.");
+					ok = window.confirm(browser.i18n.getMessage("customLevel") + new_level.level_id + browser.i18n.getMessage("alreadyExistsItWillBeOverridden"));
 				}
 				else {
 					ok = true;
@@ -110,20 +110,20 @@ function prepare_level_config(action_descr, params) {
 						location = "";
 					}
 					catch (err) {
-						alert("Custom level were not updated, please try again later.");
+						alert(browser.i18n.getMessage("customLevelWereNotUpdated"));
 					}
 				}
 			}
 			browser.storage.sync.get("custom_levels").then(updateLevels.bind(null, new_level));
 		}
 		else {
-			alert("Please provide all required fields: ID, Name, and Decription");
+			alert(browser.i18n.getMessage("pleaseProvideAllRequiredFields"));
 		}
 	});
 }
 
 function edit_level(id) {
-	prepare_level_config("Edit level " + escape(id), levels[id]);
+	prepare_level_config(browser.i18n.getMessage("editLevel") + escape(id), levels[id]);
 }
 
 function restore_level(id, level_params) {
@@ -181,11 +181,11 @@ function show_existing_level(levelsEl, level) {
 		var edit = document.createElement("button");
 		existPref.appendChild(edit);
 		edit.addEventListener("click", edit_level.bind(edit, level));
-		edit.appendChild(document.createTextNode("Edit"));
+		edit.appendChild(document.createTextNode(browser.i18n.getMessage("edit")));
 		var remove = document.createElement("button");
 		existPref.appendChild(remove);
 		remove.addEventListener("click", remove_level.bind(remove, level));
-		remove.appendChild(document.createTextNode("Remove"));
+		remove.appendChild(document.createTextNode(browser.i18n.getMessage("remove")));
 		var removedPref = document.createElement("span");
 		removedPref.setAttribute("id", `li-removed-group-${escape(level)}`);
 		removedPref.classList.add("hidden");
@@ -193,7 +193,7 @@ function show_existing_level(levelsEl, level) {
 		var restore = document.createElement("button");
 		removedPref.appendChild(restore);
 		restore.addEventListener("click", restore_level.bind(restore, level, levels[level]));
-		restore.appendChild(document.createTextNode("Restore"));
+		restore.appendChild(document.createTextNode(browser.i18n.getMessage("restore")));
 	}
 	prepareHiddenHelpText(lielem.getElementsByClassName('hidden_help_text'), lielem.getElementsByClassName('help_ovisible'));
 	var current = document.getElementById(currentId)
@@ -258,7 +258,7 @@ document.getElementById("new_level").addEventListener("click", function() {
 		seq++;
 	}	while (levels[new_id] !== undefined)
 	new_level.level_id = new_id;
-	prepare_level_config("Add new level", new_level)
+	prepare_level_config(browser.i18n.getMessage("addNewLevel"), new_level)
 });
 
 document.getElementById("nbs-whitelist-show").addEventListener("click", () => show_whitelist("nbs"));
@@ -488,4 +488,15 @@ window.addEventListener("DOMContentLoaded", function() {
 	prepareHelpText("jss");
 	prepareHelpText("nbs");
 	prepareHelpText("fpd");
+});
+
+const textElements = document.querySelectorAll('[data-localize]');
+textElements.forEach((e) => {
+	const ref = e.dataset.localize;
+	if (ref) {
+		const translated= ref.replace(/__MSG_(\w+)__/g, (match, theGroup) => chrome.i18n.getMessage(theGroup));
+		if (translated) {
+			e.innerText = translated;
+		}
+	}
 });

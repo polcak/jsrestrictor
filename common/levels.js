@@ -50,23 +50,23 @@ var wrapping_groups = {
 	groups: [
 		{
 			name: "time_precision",
-			label: "Time precision",
-			description: "Prevent attacks and fingerprinting techniques relying on precise time measurement (or make them harder).",
-			description2: ["Limit the precision of high resolution time stamps (Date, Performance, events, Gamepad API, Web VR API). Timestamps provided by the Geolocation API are wrapped as well if you enable Geolocation API wrapping"],
+			label: browser.i18n.getMessage("timePrecision"),
+			description: browser.i18n.getMessage("timePrecision"),
+			description2: [browser.i18n.getMessage("timePrecisionDescription2")],
 			params: [
 				{
-					short: "Poor",
-					description: "Round time to hundredths of a second (1.230)",
+					short: browser.i18n.getMessage("poor"),
+					description: browser.i18n.getMessage("poorDescription"),
 					config: [2, false],
 				},
 				{
-					short: "Low",
-					description: "Round time to tenths of a second (1.200)",
+					short: browser.i18n.getMessage("low"),
+					description: browser.i18n.getMessage("lowDescription"),
 					config: [1, false],
 				},
 				{
-					short: "High",
-					description: "Randomize decimal digits with noise (1.451)",
+					short: browser.i18n.getMessage("high"),
+					description: browser.i18n.getMessage("highDescription"),
 					config: [0, true],
 				},
 			],
@@ -89,21 +89,21 @@ var wrapping_groups = {
 		},
 		{
 			name: "htmlcanvaselement",
-			label: "Localy rendered images",
-			description: "Protect against canvas fingerprinting.",
+			label: browser.i18n.getMessage("locallyRenderedImages"),
+			description: browser.i18n.getMessage("locallyRenderedImagesDescription"),
 			description2: [
-				"Functions canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob(), WebGLRenderingContext.readPixels return modified image data to prevent fingerprinting",
-				"CanvasRenderingContext2D.isPointInStroke() and CanvasRenderingContext2D.isPointInPath() are modified to lie with probability"
+				browser.i18n.getMessage("locallyRenderedImagesDescription2"),
+				browser.i18n.getMessage("locallyRenderedImagesDescription22")
 			],
 			params: [
 				{
-					short: "Little lies",
-					description: "Alter image data based on domain hash",
+					short: browser.i18n.getMessage("littleLies"),
+					description: browser.i18n.getMessage("littleLiesDescription"),
 					config: [0],
 				},
 				{
-					short: "Strict",
-					description: "Replace by white image (WebGL canvas returns an empty array)",
+					short: browser.i18n.getMessage("strict"),
+					description: browser.i18n.getMessage("strictDescription"),
 					config: [1],
 				},
 			],
@@ -121,20 +121,20 @@ var wrapping_groups = {
 		},
 		{
 			name: "audiobuffer",
-			label: "Locally generated audio",
-			description: "Protect against audio fingerprinting.",
+			label: browser.i18n.getMessage("locallyGeneratedAudio"),
+			description: browser.i18n.getMessage("locallyGeneratedAudioDescription"),
 			description2: [
-				"Functions AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() and AnalyserNode.getFloatFrequencyData() are modified to alter audio data based on domain key"
+				browser.i18n.getMessage("locallyGeneratedAudioDescription2"),
 			],
 			params: [
 				{
-					short: "Little lies",
-					description: "Add amplitude noise based on domain hash",
+					short: browser.i18n.getMessage("littleLies"),
+					description: browser.i18n.getMessage("littleLiesDescription2"),
 					config: [0],
 				},
 				{
-					short: "Strict",
-					description: "Replace by white noise based on domain hash",
+					short: browser.i18n.getMessage("strict"),
+					description: browser.i18n.getMessage("strictDescription2"),
 					config: [1],
 				},
 			],
@@ -150,21 +150,21 @@ var wrapping_groups = {
 		},
 		{
 			name: "webgl",
-			label: "Graphic card information",
-			description: "Spoof details of your graphic card.",
+			label: browser.i18n.getMessage("graphicCardInformation"),
+			description: browser.i18n.getMessage("graphicCardInformationDescription"),
 			description2: [
-				"Function WebGLRenderingContext.getParameter() returns modified/bottom values for certain parameters",
-				"WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() and .getExtension() return modified values"
+				browser.i18n.getMessage("graphicCardInformationDescription2"),
+				browser.i18n.getMessage("graphicCardInformationDescription3"),
 		],
 			params: [
 				{
-					short: "Little lies",
-					description: "Generate random numbers/strings using domain hash",
+					short: browser.i18n.getMessage("littleLies"),
+					description: browser.i18n.getMessage("littleLiesDescription3"),
 					config: [0],
 				},
 				{
-					short: "Strict",
-					description: "Return bottom values (null, empty string)",
+					short: browser.i18n.getMessage("strict"),
+					description: browser.i18n.getMessage("strictDescription3"),
 					config: [1],
 				},
 			],
@@ -204,23 +204,23 @@ var wrapping_groups = {
 		},
 		{
 			name: "plugins",
-			label: "Installed browser plugins",
-			description: "Protect against plugin fingerprinting",
+			label: browser.i18n.getMessage("installedBrowserPlugins"),
+			description: browser.i18n.getMessage("installedBrowserPluginsDescription"),
 			description2: [],
 			params: [
 				{
-					short: "Little lies",
-					description: "Edit current and add two fake plugins",
+					short: browser.i18n.getMessage("littleLies"),
+					description: browser.i18n.getMessage("littleLiesDescription4"),
 					config: [0],
 				},
 				{
-					short: "Fake",
-					description: "Return two fake plugins",
+					short: browser.i18n.getMessage("fake"),
+					description: browser.i18n.getMessage("fakeDescription"),
 					config: [1],
 				},
 				{
-					short: "Empty",
-					description: "Return empty",
+					short: browser.i18n.getMessage("empty"),
+					description: browser.i18n.getMessage("emptyDescription"),
 					config: [2],
 				},
 			],
@@ -231,25 +231,25 @@ var wrapping_groups = {
 		},
 		{
 			name: "enumerateDevices",
-			label: "Connected cameras and microphones",
-			description: "Prevent fingerprinting based on the multimedia devices connected to the computer",
+			label: browser.i18n.getMessage("connectedCamerasAndMicrophones"),
+			description: browser.i18n.getMessage("connectedCamerasAndMicrophonesDescription"),
 			description2: [
-				"Function MediaDevices.enumerateDevices() is modified to return empty or modified result"
+				browser.i18n.getMessage("connectedCamerasAndMicrophonesDescription2"),
 		],
 			params: [
 				{
-					short: "Little lies",
-					description: "Randomize order",
+					short: browser.i18n.getMessage("littleLies"),
+					description: browser.i18n.getMessage("littleLiesDescription5"),
 					config: [0],
 				},
 				{
-					short: "Add fake",
-					description: "Add 0-4 fake devices and randomize order",
+					short: browser.i18n.getMessage("addFake"),
+					description: browser.i18n.getMessage("addFakeDescription"),
 					config: [1],
 				},
 				{
-					short: "Empty",
-					description: "Return empty",
+					short: browser.i18n.getMessage("empty"),
+					description: browser.i18n.getMessage("emptyDescription"),
 					config: [2],
 				},
 			],
@@ -260,25 +260,25 @@ var wrapping_groups = {
 		},
 		{
 			name: "hardware",
-			label: "Device memory and CPU",
-			description: "Spoof hardware information on the amount of RAM and CPU count.",
+			label: browser.i18n.getMessage("deviceMemoryAndCPU"),
+			description: browser.i18n.getMessage("deviceMemoryAndCPUDescription"),
 			description2: [
-				"Getters navigator.deviceMemory and navigator.hardwareConcurrency return modified values",
+				browser.i18n.getMessage("deviceMemoryAndCPUDescription2"),
 			],
 			params: [
 				{
-					short: "Low",
-					description: "Return random valid value between minimum and real value",
+					short: browser.i18n.getMessage("low"),
+					description: browser.i18n.getMessage("lowDescription2"),
 					config: [0],
 				},
 				{
-					short: "Medium",
-					description: "Return random valid value between minimum and 8",
+					short: browser.i18n.getMessage("medium"),
+					description: browser.i18n.getMessage("mediumDescription"),
 					config: [1],
 				},
 				{
-					short: "High",
-					description: "Return 4 for navigator.deviceMemory and 2 for navigator.hardwareConcurrency",
+					short: browser.i18n.getMessage("high"),
+					description: browser.i18n.getMessage("highDescription2"),
 					config: [2],
 				},
 			],
@@ -291,13 +291,13 @@ var wrapping_groups = {
 		},
 		{
 			name: "net",
-			label: "Network conditions",
-			description: "Disable access to network information to limit fingerprinting and remove the possibility of observing patterns in accessed networks to learn if the user is at home, work, or travel.",
+			label: browser.i18n.getMessage("networkConditions"),
+			description: browser.i18n.getMessage("networkConditionsDescription"),
 			description2: [],
 			params: [
 				{
-					short: "Strict",
-					description: "Disable NetworkInformation API",
+					short: browser.i18n.getMessage("strict"),
+					description: browser.i18n.getMessage("strictDescription4"),
 					config: [0],
 				},
 			],
@@ -309,18 +309,18 @@ var wrapping_groups = {
 		},
 		{
 			name: "xhr",
-			label: "XMLHttpRequest requests (XHR)",
-			description: "Filter reliable XHR requests to server.",
-			description2: ["Note that these requests are broadly employed for benign purposes and also note that Fetch, SSE, WebRTC, and WebSockets APIs are not blocked. All provide similar and some even better means of communication with server. For practical usage, we recommend activating Fingerprint Detector instead of XHR wrappers. JShelter keeps the wrapper as it is useful for some users mainly for experimental reasons."],
+			label: browser.i18n.getMessage("xMLHttpRequestRequests"),
+			description: browser.i18n.getMessage("xMLHttpRequestRequestsDescription"),
+			description2: [browser.i18n.getMessage("xMLHttpRequestRequestsDescription2")],
 			params: [
 				{
-					short: "Ask",
-					description: "Ask before executing an XHR request",
+					short: browser.i18n.getMessage("ask"),
+					description: browser.i18n.getMessage("askDescription"),
 					config: [false, true],
 				},
 				{
-					short: "Block",
-					description: "Block all XMLHttpRequests",
+					short: browser.i18n.getMessage("block"),
+					description: browser.i18n.getMessage("blockDescription"),
 					config: [true, false],
 				},
 			],
@@ -333,17 +333,17 @@ var wrapping_groups = {
 		{
 			name: "arrays",
 			label: "ArrayBuffer",
-			description: "Protect against ArrayBuffer exploitation, for example, to prevent side channel attacks on memory layout (or make them harder).",
+			description: browser.i18n.getMessage("ArrayBufferDescription"),
 			description2: [],
 			params: [
 				{
-					short: "Shift",
-					description: "Shift indexes to make memory page boundaries detection harder",
+					short: browser.i18n.getMessage("shift"),
+					description: browser.i18n.getMessage("shiftDescription"),
 					config: [false],
 				},
 				{
-					short: "Randomize",
-					description: "Use random mapping of array indexing to memory",
+					short: browser.i18n.getMessage("randomize"),
+					description: browser.i18n.getMessage("randomizeDescription"),
 					config: [true],
 				},
 			],
@@ -365,17 +365,17 @@ var wrapping_groups = {
 		{
 			name: "shared_array",
 			label: "SharedArrayBuffer",
-			description: "Protect against SharedArrayBuffer exploitation, for example, to prevent side channel attacks on memory layout (or make them harder).",
+			description: browser.i18n.getMessage("SharedArrayBufferDescription"),
 			description2: [],
 			params: [
 				{
-					short: "Medium",
-					description: "Randomly slow messages to prevent high resolution timers",
+					short: browser.i18n.getMessage("medium"),
+					description: browser.i18n.getMessage("mediumDescription2"),
 					config: [false],
 				},
 				{
-					short: "Strict",
-					description: "Block SharedArrayBuffer",
+					short: browser.i18n.getMessage("strict"),
+					description: browser.i18n.getMessage("strictDescription5"),
 					config: [true],
 				},
 			],
@@ -387,17 +387,17 @@ var wrapping_groups = {
 		{
 			name: "webworker",
 			label: "WebWorker",
-			description: "Protect against WebWorker exploitation, for example, to provide high resolution timers",
+			description: browser.i18n.getMessage("webWorkerDescription"),
 			description2: [],
 			params: [
 				{
-					short: "Medium",
-					description: "Randomly slow messages to prevent high resolution timers",
+					short: browser.i18n.getMessage("medium"),
+					description: browser.i18n.getMessage("mediumDescription2"),
 					config: [false],
 				},
 				{
-					short: "Strict",
-					description: "Remove real parallelism, use WebWorker polyfill",
+					short: browser.i18n.getMessage("strict"),
+					description: browser.i18n.getMessage("strictDescription6"),
 					config: [true],
 				},
 			],
@@ -407,38 +407,38 @@ var wrapping_groups = {
 		},
 		{
 			name: "geolocation",
-			label: "Physical location (geolocation)",
-			description: "Limit the information on real-world position provided by Geolocation API.",
-			description2: ["Use domain hash for the position spoofing so the position will be the same at one domain for the whole session."],
+			label: browser.i18n.getMessage("physicalLocationGeolocation"),
+			description: browser.i18n.getMessage("physicalLocationGeolocationDescription"),
+			description2: [browser.i18n.getMessage("physicalLocationGeolocationDescription2")],
 			params: [
 				{
-					short: "Timestamp-only",
-					description: "Provide accurate data (use when you really need to provide exact location and you want to protect geolocation timestamps)",
+					short: browser.i18n.getMessage("timestampOnly"),
+					description: browser.i18n.getMessage("timestampOnlyDescription"),
 					config: [-1],
 				},
 				{
-					short: "Village",
-					description: "Use accuracy of hundreds of meters",
+					short: browser.i18n.getMessage("village"),
+					description: browser.i18n.getMessage("villageDescription"),
 					config: [2],
 				},
 				{
-					short: "Town",
-					description: "Use accuracy of kilometers",
+					short: browser.i18n.getMessage("town"),
+					description: browser.i18n.getMessage("townDescription"),
 					config: [3],
 				},
 				{
-					short: "Region",
-					description: "Use accuracy of tens of kilometers",
+					short: browser.i18n.getMessage("region"),
+					description: browser.i18n.getMessage("regionDescription"),
 					config: [4],
 				},
 				{
-					short: "Long distance",
-					description: "Use accuracy of hundreds of kilometers",
+					short: browser.i18n.getMessage("longDistance"),
+					description: browser.i18n.getMessage("longDistanceDescription"),
 					config: [5],
 				},
 				{
-					short: "Strict",
-					description: "Turn location services off",
+					short: browser.i18n.getMessage("strict"),
+					description: browser.i18n.getMessage("strictDescription7"),
 					config: [0],
 				},
 			],
@@ -456,13 +456,13 @@ var wrapping_groups = {
 		},
     {
 			name: "physical_environment",
-			label: "Physical environement sensors",
-			description: "Limit the information provided by physical environment sensors like Magnetometer or Accelerometer.",
+			label: browser.i18n.getMessage("physicalEnvironmentSensors"),
+			description: browser.i18n.getMessage("physicalEnvironmentSensorsDescription"),
 			description2: [],
 			params: [
 				{
-					short: "High",
-					description: "Emulate stationary device based on domain hash",
+					short: browser.i18n.getMessage("high"),
+					description: browser.i18n.getMessage("highDescription3"),
 					config: [true],
 				},
 			],
@@ -493,23 +493,23 @@ var wrapping_groups = {
 		},
 		{
 			name: "useridle",
-			label: "User idle detection",
-			description: "The Idle Detection API can detect inactive users and locked screens.",
-			description2: ["The API can be misused to stalk the user and to improve fingerprinting."],
+			label: browser.i18n.getMessage("userIdleDetection"),
+			description: browser.i18n.getMessage("userIdleDetectionDescription"),
+			description2: [browser.i18n.getMessage("userIdleDetectionDescription2")],
 			params: [
 				{
-					short: "Confuse",
-					description: "Always return active user with unlocked screen",
+					short: browser.i18n.getMessage("confuse"),
+					description: browser.i18n.getMessage("confuseDescription"),
 					config: [0],
 				},
 				{
-					short: "Deny access",
-					description: "Do not show prompts and automatically decline",
+					short: browser.i18n.getMessage("denyAccess"),
+					description: browser.i18n.getMessage("denyAccessDescription"),
 					config: [1],
 				},
 				{
-					short: "Remove",
-					description: "Remove the API",
+					short: browser.i18n.getMessage("remove"),
+					description: browser.i18n.getMessage("removeDescription"),
 					config: [2],
 				},
 			],
@@ -523,13 +523,13 @@ var wrapping_groups = {
 		},
 		{
 			name: "coopschedule",
-			label: "Idle period task scheduling",
-			description: "The Cooperative Scheduling of Background Tasks API can schedule background tasks such that they do not introduce delays to other high priority tasks that share the same event loop.",
-			description2: ["The API leaks information about the other tasks running in the browser as it leaks information on currently scheduled tasks, vsync deadlines, user-interaction and so on."],
+			label: browser.i18n.getMessage("idlePeriodTaskScheduling"),
+			description: browser.i18n.getMessage("idlePeriodTaskSchedulingDescription"),
+			description2: [browser.i18n.getMessage("idlePeriodTaskSchedulingDescription2")],
 			params: [
 				{
-					short: "Little lies",
-					description: "Modify the available information to confuse adversaries",
+					short: browser.i18n.getMessage("littleLies"),
+					description: browser.i18n.getMessage("littleLiesDescription6"),
 					config: [],
 				},
 			],
@@ -541,13 +541,13 @@ var wrapping_groups = {
 		},
 		{
 			name: "gamepads",
-			label: "Gamepads",
-			description: "Prevent websites from accessing and learning information on local gamepads.",
+			label: browser.i18n.getMessage("gamepads"),
+			description: browser.i18n.getMessage("gamepadsDescription"),
 			description2: [],
 			params: [
 				{
-					short: "Strict",
-					description: "Hide all gamepads",
+					short: browser.i18n.getMessage("strict"),
+					description: browser.i18n.getMessage("strictDescription8"),
 					config: [true],
 				},
 			],
@@ -558,13 +558,13 @@ var wrapping_groups = {
 		},
 		{
 			name: "vr",
-			label: "Virtual and augmented reality devices",
-			description: "Prevent websites from accessing and learning information on local virtual and augmented reality displays.",
+			label: browser.i18n.getMessage("virtualAndAugmentedRealityDevices"),
+			description: browser.i18n.getMessage("virtualAndAugmentedRealityDevicesDescription"),
 			description2: [],
 			params: [
 				{
-					short: "Strict",
-					description: "Hide all devices",
+					short: browser.i18n.getMessage("strict"),
+					description: browser.i18n.getMessage("strictDescription9"),
 					config: [],
 				},
 			],
@@ -577,23 +577,23 @@ var wrapping_groups = {
 		},
 		{
 			name: "playback",
-			label: "Multimedia playback",
-			description: "Prevent websites from accessing and learning information on localy installed codecs and encoding/decoding capabilities and performance.",
-			description2: ["You can enable the protection for sites that do not process audio or video. Sites processing audio or video might be broken by the protection."],
+			label: browser.i18n.getMessage("multimediaPlayback"),
+			description: browser.i18n.getMessage("multimediaPlaybackDescription"),
+			description2: [browser.i18n.getMessage("multimediaPlaybackDescription2")],
 			params: [
 				{
-					short: "Little lies",
-					description: "Report a codec/encryption mechanism as unsupported with 12.5% probability",
+					short: browser.i18n.getMessage("littleLies"),
+					description: browser.i18n.getMessage("littleLiesDescription7"),
 					config: [0],
 				},
 				{
-					short: "Strict",
-					description: "Report all codecs/encryption mechanisms as unsupported",
+					short: browser.i18n.getMessage("strict"),
+					description: browser.i18n.getMessage("strictDescription10"),
 					config: [1],
 				},
 				{
-					short: "Silence",
-					description: "Do not return any information at all",
+					short: browser.i18n.getMessage("silence"),
+					description: browser.i18n.getMessage("silenceDescription"),
 					config: [2],
 				},
 			],
@@ -609,13 +609,13 @@ var wrapping_groups = {
 		},
 		{
 			name: "analytics",
-			label: "Unreliable transfers to server (beacons)",
-			description: "Prevent unreliable transfers to server (beacons).",
-			description2: ["Such transfers are typically misused for analytics but occassionally may be used by e-shops or other pages.", "Prevent sending information through Beacon API."],
+			label: browser.i18n.getMessage("unreliableTransfersToServerBeacons"),
+			description: browser.i18n.getMessage("unreliableTransfersToServerBeaconsDescription"),
+			description2: [browser.i18n.getMessage("unreliableTransfersToServerBeaconsDescription2"), browser.i18n.getMessage("unreliableTransfersToServerBeaconsDescription3")],
 			params: [
 				{
-					short: "Disabled",
-					description: "The wrapper performs no action",
+					short: browser.i18n.getMessage("disabled"),
+					description: browser.i18n.getMessage("disabledDescription"),
 					config: [],
 				},
 			],
@@ -626,13 +626,13 @@ var wrapping_groups = {
 		},
 		{
 			name: "battery",
-			label: "Hardware battery",
-			description: "Disable Battery status API",
+			label: browser.i18n.getMessage("hardwareBattery"),
+			description: browser.i18n.getMessage("hardwareBatteryDescription"),
 			description2: [],
 			params: [
 				{
-					short: "Disabled",
-					description: "Disable the API",
+					short: browser.i18n.getMessage("disabled"),
+					description: browser.i18n.getMessage("disabledDescription2"),
 					config: [],
 				},
 			],
@@ -644,13 +644,13 @@ var wrapping_groups = {
 		},
 		{
 			name: "windowname",
-			label: "Persistent identifier of the browser tab",
-			description: "Clear window.name value on eTLD+1 domain changes.",
-			description2: ["This API might be occasionally used for benign purposes.", "This API provides a possibility to detect cross-site browsing in one tab and browser session."],
+			label: browser.i18n.getMessage("persistentIdentifierOfTheBrowserTab"),
+			description: browser.i18n.getMessage("persistentIdentifierOfTheBrowserTabDescription"),
+			description2: [browser.i18n.getMessage("persistentIdentifierOfTheBrowserTabDescription2"), browser.i18n.getMessage("persistentIdentifierOfTheBrowserTabDescription3")],
 			params: [
 				{
-					short: "Strict",
-					description: "Clear during page reload",
+					short: browser.i18n.getMessage("strict"),
+					description: browser.i18n.getMessage("strictDescription11"),
 					config: [],
 				},
 			],
@@ -661,13 +661,13 @@ var wrapping_groups = {
 		},
 		{
 			name: "nfc",
-			label: "Near Field Communication (NFC)",
-			description: "Near Field Communication (NFC) enables wireless communication between two devices at close proximity, usually less than a few centimeters.",
-			description2: ["NFC is an international standard (ISO/IEC 18092) defining an interface and protocol for simple wireless interconnection of closely coupled devices operating at 13.56 MHz."],
+			label: browser.i18n.getMessage("nearFieldCommunicationNFC"),
+			description: browser.i18n.getMessage("nearFieldCommunicationNFCDescription"),
+			description2: [browser.i18n.getMessage("nearFieldCommunicationNFCDescription2")],
 			params: [
 				{
-					short: "Disabled",
-					description: "Disable the API",
+					short: browser.i18n.getMessage("disabled"),
+					description: browser.i18n.getMessage("disabledDescription2"),
 					config: [],
 				},
 			],
@@ -745,15 +745,15 @@ const L_EXPERIMENTAL = "Experiment"; // Use a long ID so that it is not in confl
 var level_0 = {
 	"builtin": true,
 	"level_id": L0,
-	"level_text": "Turn JavaScript Shield off",
-	"level_description": "JavaScript APIs are not wrapped. Use this level if you (1) trust the oprator of the visited page(s) and you want to give them access to full APIs supported by the browser, or (2) if you do not like JavaScript Shield but you want to apply other protection mechanisms.",
+	"level_text": browser.i18n.getMessage("turnJavaScriptShieldOff"),
+	"level_description": browser.i18n.getMessage("javaScriptAPIsAreNotWrapped"),
 };
 
 var level_1 = {
 	"builtin": true,
 	"level_id": L1,
-	"level_text": "Turn fingerprinting protection off",
-	"level_description": "Apply security counter-measures that are likely not to break web pages but do not defend against fingerprinting. Disable APIs that are not commonly used. Use this level if Fingerprint Detector reports low likelihood of fingerprinting, you trust the visited service, and/or you think that the protection makes the page slow or broken and your temptation to use the service is so high that you do not want to be protected.",
+	"level_text": browser.i18n.getMessage("turnFingerprintingProtectionOff"),
+	"level_description": browser.i18n.getMessage("applySecurityCountermeasures"),
 	"time_precision": 3,
 	"net": 1,
 	"webworker": 2,
@@ -771,8 +771,8 @@ var level_1 = {
 var level_2 = {
 	"builtin": true,
 	"level_id": L2,
-	"level_text": "Recommended",
-	"level_description": "Make the browser appear differently to distinct fingerprinters. Apply security counter-measures that are likely not to break web pages. Slightly modify the results of API calls in different way on different domains so that the cross-site fingerprint is not stable. The generated fingerprint values also differ with each browser restart. If you need a different fingerprint for the same website without restart, use incognito mode. Keep in mind that even if you log out from a site, clear your cookies, change your IP address, the modified APIs will provide a way to compute the same fingerprint. Restart your browser if you want to change your fingerprint. If in doubt, use this level.",
+	"level_text": browser.i18n.getMessage("recommended"),
+	"level_description": browser.i18n.getMessage("makeTheBrowserAppearDifferently"),
 	"time_precision": 3,
 	"htmlcanvaselement": 1,
 	"audiobuffer": 1,
@@ -797,8 +797,8 @@ var level_2 = {
 var level_3 = {
 	"builtin": true,
 	"level_id": L3,
-	"level_text": "Strict",
-	"level_description": "Enable all non-experimental protection. The wrapped APIs return fake values. Some APIs are blocked completely, others provide meaningful but rare values. Some return values are meaningless. This level will make you fingerprintable because the results of API calls are generally modified in the same way on all webistes and in each session. Use this level if you want to limit the information provided by your browser. If you are worried about fingerprinters, make sure the Fingerprint Detector is activated.",
+	"level_text": browser.i18n.getMessage("strict"),
+	"level_description": browser.i18n.getMessage("enableAllNonexperimentalProtection"),
 	"time_precision": 3,
 	"htmlcanvaselement": 2,
 	"audiobuffer": 2,
@@ -824,8 +824,8 @@ var level_3 = {
 var level_experimental = {
 	"builtin": true,
 	"level_id": L_EXPERIMENTAL,
-	"level_text": "Experimental",
-	"level_description": "Strict level protections with additional wrappers enabled (including APIs known to regularly break webpages and APIs that do not work perfectly). Use this level if you want to experiment with JShelter. Use Recommended or Strict level with active Fingerprint Detector for your regular activities.",
+	"level_text": browser.i18n.getMessage("experimental"),
+	"level_description": browser.i18n.getMessage("strictLevelProtections"),
 	"time_precision": 3,
 	"htmlcanvaselement": 2,
 	"audiobuffer": 2,
@@ -970,7 +970,7 @@ function getCurrentLevelJSON(url) {
 		if (domain in domains) {
 			let l = domains[domain];
 			if (l.tweaks && !("wrapper_code" in l)) {
-			  l.wrappers = wrapping_groups.get_wrappers(l);
+				l.wrappers = wrapping_groups.get_wrappers(l);
 				l.wrapped_code = wrap_code(l.wrappers) || "";
 			}
 			return [l, l.tweaks ? l.wrapped_code : wrapped_codes[l.level_id]];

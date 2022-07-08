@@ -198,7 +198,7 @@ function add_level_buttons() {
 		return selectEl.appendChild(b);
 	}
 	// Add default level button
-	default_lev_button = addButton({level_id: "DEFAULT", level_description: "You can set of of the levels as the global default level. Use this level for this page.", level_text: `Default level (${default_level.level_text})`});
+	default_lev_button = addButton({level_id: "DEFAULT", level_description: browser.i18n.getMessage("youCanSetOfTheLevelsAsTheGlobalDefaultLevel"), level_text: browser.i18n.getMessage("defaultLevel") + `(${default_level.level_text})`});
 	default_lev_button.addEventListener("click", ev => {
 		delete domains[site];
 		modify_level(default_level, ev.target);
@@ -422,3 +422,13 @@ addEventListener("DOMContentLoaded", async () => {
 	load_on_off_switch("fpd");
 });
 
+const textElements = document.querySelectorAll('[data-localize]');
+textElements.forEach((e) => {
+	const ref = e.dataset.localize;
+	if (ref) {
+		const translated= ref.replace(/__MSG_(\w+)__/g, (match, theGroup) => chrome.i18n.getMessage(theGroup));
+		if (translated) {
+			e.innerText = translated;
+		}
+	}
+});

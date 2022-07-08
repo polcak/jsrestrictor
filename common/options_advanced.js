@@ -44,3 +44,14 @@ document.getElementById("levels-storage-save").addEventListener("click", functio
 	}
 	load_config_to_text();
 });
+
+const textElements = document.querySelectorAll('[data-localize]');
+textElements.forEach((e) => {
+	const ref = e.dataset.localize;
+	if (ref) {
+		const translated= ref.replace(/__MSG_(\w+)__/g, (match, theGroup) => chrome.i18n.getMessage(theGroup));
+		if (translated) {
+			e.innerText = translated;
+		}
+	}
+});

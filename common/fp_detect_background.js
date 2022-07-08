@@ -115,78 +115,78 @@ var availableTabs = {};
 */
 const FPD_DEF_SETTINGS = {
 	behavior: {
-		description: "Specify preffered behavior of the module.",
+		label: browser.i18n.getMessage("behavior"),
+		description: browser.i18n.getMessage("behaviorDescription"),
 		description2: [],
-		label: "Behavior",
 		params: [
 			{
 				// 0
-				short: "Passive",
-				description: "Use extension icon badge color to signalize likelihood of ongoing fingerprinting without any interaction."
+				short: browser.i18n.getMessage("passive"),
+				description: browser.i18n.getMessage("passiveDescription")
 			},
 			{
 				// 1
-				short: "Limited Blocking",
-				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
+				short: browser.i18n.getMessage("limitedBlocking"),
+				description: browser.i18n.getMessage("limitedBlockingDescription"),
 				description2: [
-					"• Interrupt network traffic for the page to prevent possible fingerprint leakage.", 
-					"• Clear some browser storage of the page to remove possibly cached fingerprint. (<strong>No additional permissions required.</strong>)",
-					"• Clearing: <strong>localStorage, sessionStorage, JS cookies, IndexedDB, caches, window.name</strong>",
-					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
+					browser.i18n.getMessage("limitedBlockingDescription2"), 
+					browser.i18n.getMessage("limitedBlockingDescription3"),
+					browser.i18n.getMessage("limitedBlockingDescription4"),
+					browser.i18n.getMessage("limitedBlockingDescription5")
 				]
 			},
 			{
 				// 2
-				short: "Full Blocking",
-				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
+				short: browser.i18n.getMessage("fullBlocking"),
+				description: browser.i18n.getMessage("fullBlockingDescription"),
 				description2: [
-					"• Interrupt network traffic for the page to prevent possible fingerprint leakage.",
-					"• Clear <strong>all</strong> available storage mechanisms of the page where fingerprint may be cached. (Requires <strong>BrowsingData</strong> permission.)",
-					"• Clearing: <strong>localStorage, sessionStorage, cookies, IndexedDB, caches, window.name, fileSystems, WebSQL, serviceWorkers</strong>",
-					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
+					browser.i18n.getMessage("fullBlockingDescription2"),
+					browser.i18n.getMessage("fullBlockingDescription3"),
+					browser.i18n.getMessage("fullBlockingDescription4"),
+					browser.i18n.getMessage("fullBlockingDescription5")
 				],
 				permissions: ["browsingData"]
 			}
 		]
 	},
 	notifications: {
-		description: "Turn on/off notifications about fingerprinting detection and HTTP requests blocking.",
-		description2: ["NOTE: We recommend having notifications turned on for blocking behavior."],
-		label: "Notifications",
+		label: browser.i18n.getMessage("notifications"),
+		description: browser.i18n.getMessage("notificationsDescription"),
+		description2: [browser.i18n.getMessage("notificationsDescription2")],
 		params: [
 			{
 				// 0
-				short: "Off",
-				description: "Detection/blocking notifications turned off."
+				short: browser.i18n.getMessage("off"),
+				description: browser.i18n.getMessage("offDescription3")
 			},
 			{
 				// 1
-				short: "On",
-				description: "Detection/blocking notifications turned on."
+				short: browser.i18n.getMessage("on"),
+				description: browser.i18n.getMessage("onDescription3")
 			}
 		]
 	},
 	detection: {
-		description: "Adjust heuristic thresholds which determine likelihood of fingerprinting.",
+		label: browser.i18n.getMessage("detection"),
+		description: browser.i18n.getMessage("detectionDescription"),
 		description2: [],
-		label: "Detection",
 		params: [
 			{
 				// 0
-				short: "Default",
-				description: "Recommended setting for most users.",
+				short: browser.i18n.getMessage("default"),
+				description: browser.i18n.getMessage("defaultDescription"),
 				description2: [
-					"• Very low number of false positive detections (focus on excessive fingerprinting, very low number of unreasonably blocked sites)",
-					"• Acceptable amount of false negative detections (some fingerprinting websites may get around detection)",
+					browser.i18n.getMessage("defaultDescription2"),
+					browser.i18n.getMessage("defaultDescription3"),
 				]
 			},
 			{
 				// 1
-				short: "Strict",
-				description: "Optional setting for more cautious users.",
+				short: browser.i18n.getMessage("strict"),
+				description: browser.i18n.getMessage("strictDescription12"),
 				description2: [
-					"• Lower number of false negative detections (detects also websites with less excessive fingerprinting)",
-					"• Higher probability of false positive detections (in edge cases benign websites may be falsely blocked)",
+					browser.i18n.getMessage("strictDescription13"),
+					browser.i18n.getMessage("strictDescription14")
 				]
 			}
 		]

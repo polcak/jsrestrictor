@@ -89,36 +89,36 @@ var nbsNotifications = {};
 */
 const NBS_DEF_SETTINGS = {
 	blocking: {
-		description: "Block requests that are trying to access your local network.",
-		description2: ["NOTE: We recommend having requests blocking turned on in most cases. However, you can opt in to be only notified without any protection."],
-		label: "Blocking",
+		label: browser.i18n.getMessage("blocking"),
+		description: browser.i18n.getMessage("blockingDescription"),
+		description2: [browser.i18n.getMessage("blockingDescription2")],
 		params: [
 			{
 				// 0
-				short: "Off",
-				description: "Requests blocking turned off."
+				short: browser.i18n.getMessage("off"),
+				description: browser.i18n.getMessage("offDescription")
 			},
 			{
 				// 1
-				short: "On",
-				description: "Requests blocking turned on."
+				short: browser.i18n.getMessage("on"),
+				description: browser.i18n.getMessage("onDescription")
 			}
 		]
 	},
 	notifications: {
-		description: "Turn on/off notifications about suspicious requests or hosts being blocked.",
+		label: browser.i18n.getMessage("notifications"),
+		description: browser.i18n.getMessage("notificationsDescription"),
 		description2: [],
-		label: "Notifications",
 		params: [
 			{
 				// 0
-				short: "Off",
-				description: "Blocking notifications turned off."
+				short: browser.i18n.getMessage("off"),
+				description: browser.i18n.getMessage("offDescription2")
 			},
 			{
 				// 1
-				short: "On",
-				description: "Blocking notifications turned on."
+				short: browser.i18n.getMessage("on"),
+				description: browser.i18n.getMessage("onDescription2")
 			}
 		]
 	}
