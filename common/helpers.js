@@ -146,19 +146,6 @@ function shuffleArray(array) {
 			[array[i], array[j]] = [array[j], array[i]];
 	}
 }
-/**
- * \brief makes number from substring of given string - should work as reinterpret_cast
- * \param str String
- * \param length Number specifying substring length
- */
-function strToUint(str, length){
-	var sub = str.substring(0,length);
-	var ret = "";
-	for (var i = sub.length-1; i >= 0; i--) {
-			ret += ((sub[i].charCodeAt(0)).toString(2).padStart(8, "0"));
-	}
-	return "0b"+ret;
-};
 
 /**
  * \brief Asynchronously sleep for given number of milliseconds
@@ -223,10 +210,15 @@ Observable.prototype = {
  */
 function create_short_text(text, LIMIT) {
 	if (text.length > LIMIT) {
-		let remove_parentheses = / \([^)]*\)/;;
+		let remove_parentheses = / \([^)]*\)/;
 		text = text.replace(remove_parentheses, "");
 		let sentences = text.split(".");
-		sentences = sentences.map(s => s + ".");
+		sentences = sentences.map(function (s) {
+			if (s.length === 0) {
+				return s;
+			}
+			return s + ".";
+		});
 		let done = false;
 		text = sentences.reduce(function (acc, current) {
 			if (!done) {

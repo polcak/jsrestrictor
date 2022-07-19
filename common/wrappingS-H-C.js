@@ -133,7 +133,7 @@
 				original_name: "CanvasRenderingContext2D.prototype.getImageData",
 				wrapped_name: "origGetImageData",
 			}],
-			helping_code: helping_code + strToUint + farbleCanvasDataBrave.toString() + `
+			helping_code: helping_code + farbleCanvasDataBrave.toString() + `
 				var farble = function(context, fake) {
 					if(approach === 1){
 						fake.fillStyle = "white";

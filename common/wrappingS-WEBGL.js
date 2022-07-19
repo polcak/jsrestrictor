@@ -1022,7 +1022,7 @@
 					wrapped_name: "origReadPixels",
 				}
 			],
-			helping_code: strToUint + farbleCanvasDataBrave.toString() + farblePixels,
+			helping_code: farbleCanvasDataBrave.toString() + farblePixels,
 			original_function: "parent.WebGLRenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGLRenderingContext.prototype.readPixels
@@ -1045,7 +1045,7 @@
 					wrapped_name: "origReadPixels",
 				}
 			],
-			helping_code: strToUint + farbleCanvasDataBrave.toString() + farblePixels,
+			helping_code: farbleCanvasDataBrave.toString() + farblePixels,
 			original_function: "parent.WebGL2RenderingContext.prototype.readPixels",
 			wrapping_function_args: "x, y, width, height, format, type, pixels, offset",
 			/** \fn fake WebGL2RenderingContext.prototype.readPixels

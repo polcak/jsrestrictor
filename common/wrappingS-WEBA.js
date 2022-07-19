@@ -132,7 +132,7 @@
 	 * (0) - replace by white noise (range <0,0.1>) based on domain key
 	 * (1) - multiply array by fudge factor based on domain key
 	 */
-	var audioFarbleBody = strToUint + audioFarble;
+	var audioFarbleBody = audioFarble;
 	var wrappers = [
 		{
 			parent_object: "AudioBuffer.prototype",
