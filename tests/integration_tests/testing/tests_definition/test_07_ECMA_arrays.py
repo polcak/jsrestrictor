@@ -38,11 +38,13 @@ def load_test_page(browser):
 #  Random values should be generated. No error in Javascript runtime should appear.
 # \bug Known bug: JShelter, Firefox, level 3: Uncaught TypeError: Crypto.getRandomValues: Argument 1 does not implement interface ArrayBufferView.
 # Bug is caused by passing a proxy object to the function, but the actual object is expected (not the proxy).
-@pytest.mark.xfail
 def test_crypto_getRandomValues(browser):
     ul = browser.driver.find_element(By.ID,"getRandomValues")
-    if len(ul.text) > 0:
-        items = ul.find_elements(By.TAG_NAME,"li")
-        assert len(items) > 0
+    nums = ul.text.split()
+    if len(nums) > 0:
+        assert nums[0] != nums[1] or nums[0] != nums[2] or  nums[0] != nums[3] # It is highly unlikely that all three numbers are the same
+        assert nums[1] != nums[0] or nums[1] != nums[2] or  nums[1] != nums[3] # It is highly unlikely that all three numbers are the same
+        assert nums[2] != nums[0] or nums[2] != nums[1] or  nums[2] != nums[3] # It is highly unlikely that all three numbers are the same
+        assert nums[3] != nums[0] or nums[3] != nums[1] or  nums[3] != nums[2] # It is highly unlikely that all three numbers are the same
     else:
         pytest.fail("No random value generated. Probable JavaScript error: Crypto.getRandomValues: Argument 1 does not implement interface ArrayBufferView.")
