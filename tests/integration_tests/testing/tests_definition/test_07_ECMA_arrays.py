@@ -36,7 +36,7 @@ def load_test_page(browser):
 
 ## Test crypto.getRandomValues.
 #  Random values should be generated. No error in Javascript runtime should appear.
-# \bug Known bug: JShelter, Firefox, level 3: Uncaught TypeError: Crypto.getRandomValues: Argument 1 does not implement interface ArrayBufferView.
+# \bug Known bug: JShelter, Firefox with activated array protections: Uncaught TypeError: Crypto.getRandomValues: Argument 1 does not implement interface ArrayBufferView.
 # Bug is caused by passing a proxy object to the function, but the actual object is expected (not the proxy).
 def test_crypto_getRandomValues(browser):
     ul = browser.driver.find_element(By.ID,"getRandomValues")
