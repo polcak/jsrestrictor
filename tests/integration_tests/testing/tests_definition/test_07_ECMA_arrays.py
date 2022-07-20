@@ -39,12 +39,27 @@ def load_test_page(browser):
 # \bug Known bug: JShelter, Firefox with activated array protections: Uncaught TypeError: Crypto.getRandomValues: Argument 1 does not implement interface ArrayBufferView.
 # Bug is caused by passing a proxy object to the function, but the actual object is expected (not the proxy).
 def test_crypto_getRandomValues(browser):
-    ul = browser.driver.find_element(By.ID,"getRandomValues")
-    nums = ul.text.split()
-    if len(nums) > 0:
-        assert nums[0] != nums[1] or nums[0] != nums[2] or  nums[0] != nums[3] # It is highly unlikely that all three numbers are the same
-        assert nums[1] != nums[0] or nums[1] != nums[2] or  nums[1] != nums[3] # It is highly unlikely that all three numbers are the same
-        assert nums[2] != nums[0] or nums[2] != nums[1] or  nums[2] != nums[3] # It is highly unlikely that all three numbers are the same
-        assert nums[3] != nums[0] or nums[3] != nums[1] or  nums[3] != nums[2] # It is highly unlikely that all three numbers are the same
-    else:
-        pytest.fail("No random value generated. Probable JavaScript error: Crypto.getRandomValues: Argument 1 does not implement interface ArrayBufferView.")
+    for array_type in ["Uint32Array", "Float32Array", "Float64Array", 'BigInt64Array', 'BigUint64Array']:
+        browser.driver.execute_script("""
+        document.getElementsByTagName("script")[0].innerText = '\
+            var array = new %s(4);\
+            window.crypto.getRandomValues(array);\
+            \
+            var ul = document.getElementById("getRandomValues");\
+            ul.replaceChildren();\
+            \
+            for (var i = 0; i < array.length; i++) {\
+                var li = document.createElement("li");\
+                li.appendChild(document.createTextNode(array[i]));\
+                ul.appendChild(li);\
+            }';\
+        """ % array_type)
+        ul = browser.driver.find_element(By.ID,"getRandomValues")
+        nums = ul.text.split()
+        if len(nums) > 0:
+            assert nums[0] != nums[1] or nums[0] != nums[2] or  nums[0] != nums[3] # It is highly unlikely that all three numbers are the same
+            assert nums[1] != nums[0] or nums[1] != nums[2] or  nums[1] != nums[3] # It is highly unlikely that all three numbers are the same
+            assert nums[2] != nums[0] or nums[2] != nums[1] or  nums[2] != nums[3] # It is highly unlikely that all three numbers are the same
+            assert nums[3] != nums[0] or nums[3] != nums[1] or  nums[3] != nums[2] # It is highly unlikely that all three numbers are the same
+        else:
+            pytest.fail("No random value generated (%s). Probable JavaScript error: Crypto.getRandomValues: Argument 1 does not implement interface ArrayBufferView." % array_type)
