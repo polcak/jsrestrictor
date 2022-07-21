@@ -3,6 +3,7 @@
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
+#  Copyright (C) 2022  Libor Polčák
 #  Copyright (C) 2022  Martin Bednar
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
@@ -33,15 +34,13 @@ from configuration import get_config
 def load_test_page(browser):
     browser.driver.get(get_config("testing_page"))
 
-
 ## Test crypto.getRandomValues.
 #  Random values should be generated. No error in Javascript runtime should appear.
 # \bug Known bug: JShelter, Firefox with activated array protections: Uncaught TypeError: Crypto.getRandomValues: Argument 1 does not implement interface ArrayBufferView.
 # Bug is caused by passing a proxy object to the function, but the actual object is expected (not the proxy).
 def test_crypto_getRandomValues(browser):
     for array_type in ["Uint32Array", "Float32Array", "Float64Array", 'BigInt64Array', 'BigUint64Array']:
-        browser.driver.execute_script("""
-        document.getElementsByTagName("script")[0].innerText = '\
+        browser.execute_script("""\
             var array = new %s(4);\
             window.crypto.getRandomValues(array);\
             \
@@ -52,7 +51,7 @@ def test_crypto_getRandomValues(browser):
                 var li = document.createElement("li");\
                 li.appendChild(document.createTextNode(array[i]));\
                 ul.appendChild(li);\
-            }';\
+            };\
         """ % array_type)
         ul = browser.driver.find_element(By.ID,"getRandomValues")
         nums = ul.text.split()

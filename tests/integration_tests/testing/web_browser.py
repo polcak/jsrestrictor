@@ -24,6 +24,7 @@
 from time import sleep
 
 from selenium import webdriver
+from selenium.common import exceptions
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.by import By
@@ -142,3 +143,18 @@ class Browser:
     def quit(self):
         self.driver.quit()
         del self
+
+    def execute_script(self, code):
+        """ Execute script in the page context.
+
+        Note that it seems that executing script directly does not access the wrapped functions but
+        directly to the browser internals.
+        """
+        try:
+            self.driver.execute_script(""" \
+                let s = document.createElement("script"); \
+                s.type = "text/javascript"; \
+                s.text = '%s'; \
+                document.head.appendChild(s);""" % code)
+        except exceptions.JavascriptException as e:
+            assert False
