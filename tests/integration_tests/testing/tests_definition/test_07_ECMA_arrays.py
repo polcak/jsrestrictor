@@ -25,6 +25,7 @@
 
 import pytest
 from selenium.webdriver.common.by import By
+import time
 
 from configuration import get_config
 
@@ -346,8 +347,49 @@ def test_worker_basic(browser):
     check(browser, "worker.onmessage", "null")
     check(browser, "worker.onerror", "null")
     check(browser, "worker.onmessageerror", "null")
-    check(browser, "typeof worker.addEventListener", 'function')
-    check(browser, "typeof worker.dispatchEvent", 'function')
-    check(browser, "typeof worker.postMessage", 'function')
-    check(browser, "typeof worker.removeEventListener", 'function')
-    check(browser, "typeof worker.terminate", 'function')
+    check(browser, "typeof worker.addEventListener", '"function"')
+    check(browser, "typeof worker.dispatchEvent", '"function"')
+    check(browser, "typeof worker.postMessage", '"function"')
+    check(browser, "typeof worker.removeEventListener", '"function"')
+    check(browser, "typeof worker.terminate", '"function"')
+
+@pytest.mark.xfail
+def test_worker_check_communication(browser):
+    """ There is a bug in both Firefox and Chrome implementation of Worker wrapper. """
+    browser.execute_script("""\
+        var multiply_result = 0;\
+        var worker = new Worker("data:text/javascript;base64," + btoa("\
+            onmessage = function(e) {\
+                const result = e.data[0] * e.data[1];\
+                postMessage(result);\
+            }\
+        "));\
+\
+        worker.onmessage = function(e) {\
+            multiply_result = e.data;\
+        };\
+        worker.postMessage([5,8]);\
+    """)
+    time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
+    check(browser, "multiply_result", 40)
+
+@pytest.mark.xfail
+def test_worker_error(browser):
+    browser.execute_script("""\
+        var worker_error = 0;\
+        var worker = new Worker("data:text/javascript;base64," + btoa("\
+            onmessage = function(e) {\
+                postMessage(variabledoesnotexist_and_it_is_intentional);\
+            }\
+        "));\
+\
+        worker.onmessage = function(e) {\
+            worker_error++;\
+        };\
+        worker.onerror = function() {\
+            worker_error--;\
+        };\
+        worker.postMessage([6,7]);\
+    """)
+    time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
+    check(browser, "worker_error", -1)
