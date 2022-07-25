@@ -1,7 +1,7 @@
 /** \file
  * \brief Wrappers for Workers
  *
- *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2019-2022  Libor Polcak
  *  \author Copyright (C) 2020  Peter Hornak
  *  \author Copyright (C) 2021  Matus Svancar
  *
@@ -220,6 +220,9 @@ ISBN 978-3-319-66398-2.
 	api.addEventListener = addEventListener;
 	api.removeEventListener = removeEventListener;
 	api.terminate = terminate;
+	api.onmessage = null;
+	api.onerror = null;
+	api.onmessageerror = null;
 
 	return api;
 	`;
