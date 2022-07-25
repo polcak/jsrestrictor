@@ -190,31 +190,42 @@ ISBN 978-3-319-66398-2.
 		}
 	}
 
-	var xhr = new XMLHttpRequest();
-
-	xhr.open('GET', path);
-	xhr.onreadystatechange = function () {
-		if (xhr.readyState === 4) {
-			if (xhr.status >= 200 && xhr.status < 400) {
-				script = xhr.responseText;
-				workerSelf = {
-					postMessage: workerPostMessage,
-					addEventListener: workerAddEventListener,
-					close: terminate
-				};
-				doEval(workerSelf, script);
-				var currentListeners = postMessageListeners;
-				postMessageListeners = [];
-				for (var i = 0; i < currentListeners.length; i++) {
-					runPostMessage(currentListeners[i].msg, currentListeners[i].transfer);
-				}
-			} else {
-				postError(new Error('cannot find script ' + path));
-			}
+	if (path.startsWith("data:")) {
+		var split = path.split(",")
+		var t = split[0];
+		var code = split[1];
+		if (t.endsWith("base64")) {
+			code = atob(code);
 		}
-	};
+		doEval(eval, workerSelf, code)
+	}
+	else {
+		var xhr = new XMLHttpRequest();
 
-	xhr.send();
+		xhr.open('GET', path);
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4) {
+				if (xhr.status >= 200 && xhr.status < 400) {
+					script = xhr.responseText;
+					workerSelf = {
+						postMessage: workerPostMessage,
+						addEventListener: workerAddEventListener,
+						close: terminate
+					};
+					doEval(eval, workerSelf, script);
+					var currentListeners = postMessageListeners;
+					postMessageListeners = [];
+					for (var i = 0; i < currentListeners.length; i++) {
+						runPostMessage(currentListeners[i].msg, currentListeners[i].transfer);
+					}
+				} else {
+					postError(new Error('cannot find script ' + path));
+				}
+			}
+		};
+
+		xhr.send();
+	}
 
 	api.postMessage = postMessage;
 	api.addEventListener = addEventListener;
