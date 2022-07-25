@@ -68,7 +68,7 @@ ISBN 978-3-319-66398-2.
 	var script;
 	var workerSelf;
 
-	var api = this;
+	var api = this; // Empty object, prototype chain: Worker.prototype (the wrapped one, not the original one) -> Object.prototype
 
 	// custom each loop is for IE8 support
 	function executeEach(arr, fun) {
