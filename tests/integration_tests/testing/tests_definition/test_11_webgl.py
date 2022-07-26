@@ -153,7 +153,7 @@ def test_other_parameters(browser, webgl_params, expected):
 # Test WebGLRenderingContext.getShaderPrecisionFormat
 def test_webgl_precisions(browser, expected):
     precisions = get_webgl_precisions(browser.driver,"webglCanvas")
-    if expected.webgl_precisions == 'SPOOF VALUE':
+    if expected.webgl_precisions == 'ZERO VALUE':
         assert precisions != browser.real.webgl_precisions
     else:
         assert precisions == browser.real.webgl_precisions
