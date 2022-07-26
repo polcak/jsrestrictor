@@ -1,7 +1,7 @@
 /** \file
  * \brief Wrappers for Workers
  *
- *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2019-2022  Libor Polcak
  *  \author Copyright (C) 2020  Peter Hornak
  *  \author Copyright (C) 2021  Matus Svancar
  *
@@ -68,7 +68,7 @@ ISBN 978-3-319-66398-2.
 	var script;
 	var workerSelf;
 
-	var api = this;
+	var api = this; // Empty object, prototype chain: Worker.prototype (the wrapped one, not the original one) -> Object.prototype
 
 	// custom each loop is for IE8 support
 	function executeEach(arr, fun) {
@@ -190,36 +190,50 @@ ISBN 978-3-319-66398-2.
 		}
 	}
 
-	var xhr = new XMLHttpRequest();
-
-	xhr.open('GET', path);
-	xhr.onreadystatechange = function () {
-		if (xhr.readyState === 4) {
-			if (xhr.status >= 200 && xhr.status < 400) {
-				script = xhr.responseText;
-				workerSelf = {
-					postMessage: workerPostMessage,
-					addEventListener: workerAddEventListener,
-					close: terminate
-				};
-				doEval(workerSelf, script);
-				var currentListeners = postMessageListeners;
-				postMessageListeners = [];
-				for (var i = 0; i < currentListeners.length; i++) {
-					runPostMessage(currentListeners[i].msg, currentListeners[i].transfer);
-				}
-			} else {
-				postError(new Error('cannot find script ' + path));
-			}
+	if (path.startsWith("data:")) {
+		var split = path.split(",")
+		var t = split[0];
+		var code = split[1];
+		if (t.endsWith("base64")) {
+			code = atob(code);
 		}
-	};
+		doEval(eval, workerSelf, code)
+	}
+	else {
+		var xhr = new XMLHttpRequest();
 
-	xhr.send();
+		xhr.open('GET', path);
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4) {
+				if (xhr.status >= 200 && xhr.status < 400) {
+					script = xhr.responseText;
+					workerSelf = {
+						postMessage: workerPostMessage,
+						addEventListener: workerAddEventListener,
+						close: terminate
+					};
+					doEval(eval, workerSelf, script);
+					var currentListeners = postMessageListeners;
+					postMessageListeners = [];
+					for (var i = 0; i < currentListeners.length; i++) {
+						runPostMessage(currentListeners[i].msg, currentListeners[i].transfer);
+					}
+				} else {
+					postError(new Error('cannot find script ' + path));
+				}
+			}
+		};
+
+		xhr.send();
+	}
 
 	api.postMessage = postMessage;
 	api.addEventListener = addEventListener;
 	api.removeEventListener = removeEventListener;
 	api.terminate = terminate;
+	api.onmessage = null;
+	api.onerror = null;
+	api.onmessageerror = null;
 
 	return api;
 	`;

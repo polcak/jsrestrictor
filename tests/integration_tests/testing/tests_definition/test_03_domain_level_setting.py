@@ -27,7 +27,7 @@ from selenium.webdriver.support.select import Select
 import random
 
 
-domains = ["messenger.com", "email.seznam.cz", "facebook.com", "www.fit.vutbr.cz"]
+domains = ["www.fsf.org", "gnu.org", "jshelter.org", "www.fit.vutbr.cz"]
 levels = ['0', '2', '3', 'Experiment']
 
 

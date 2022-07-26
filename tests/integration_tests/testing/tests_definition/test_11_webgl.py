@@ -48,92 +48,112 @@ def test_unmasked_renderer(browser, webgl_params, expected):
         assert webgl_params['unmaskedRenderer'] != browser.real.webgl_parameters['unmaskedRenderer']
 
 # Test WebGLRenderingContext.getParameter
-@pytest.mark.xfail
 def test_other_parameters(browser, webgl_params, expected):
     if expected.webgl_parameters == 'SPOOF VALUE':
+        spoof_sum = 0
         if browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_COMPONENTS'] != None:
-            assert webgl_params['MAX_VERTEX_UNIFORM_COMPONENTS'] in {browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_COMPONENTS'],browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_COMPONENTS']-1}
+            assert 0 <= webgl_params['MAX_VERTEX_UNIFORM_COMPONENTS'] <= browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_COMPONENTS']
+            spoof_sum += browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_COMPONENTS'] - webgl_params['MAX_VERTEX_UNIFORM_COMPONENTS']
         if browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_BLOCKS'] != None:
-            assert webgl_params['MAX_VERTEX_UNIFORM_BLOCKS'] in {browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_BLOCKS'],browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_BLOCKS']-1}
+            assert 0 <= webgl_params['MAX_VERTEX_UNIFORM_BLOCKS'] <= browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_BLOCKS']
+            spoof_sum += browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_BLOCKS'] - webgl_params['MAX_VERTEX_UNIFORM_BLOCKS']
         if browser.real.webgl_parameters['MAX_VERTEX_OUTPUT_COMPONENTS'] != None:
-            assert webgl_params['MAX_VERTEX_OUTPUT_COMPONENTS'] in {browser.real.webgl_parameters['MAX_VERTEX_OUTPUT_COMPONENTS'],browser.real.webgl_parameters['MAX_VERTEX_OUTPUT_COMPONENTS']-1}
+            assert 0 <= webgl_params['MAX_VERTEX_OUTPUT_COMPONENTS'] <= browser.real.webgl_parameters['MAX_VERTEX_OUTPUT_COMPONENTS']
+            spoof_sum += browser.real.webgl_parameters['MAX_VERTEX_OUTPUT_COMPONENTS'] - webgl_params['MAX_VERTEX_OUTPUT_COMPONENTS']
         if browser.real.webgl_parameters['MAX_VARYING_COMPONENTS'] != None:
-            assert webgl_params['MAX_VARYING_COMPONENTS'] in {browser.real.webgl_parameters['MAX_VARYING_COMPONENTS'],browser.real.webgl_parameters['MAX_VARYING_COMPONENTS']-1}
+            assert 0 <= webgl_params['MAX_VARYING_COMPONENTS'] <= browser.real.webgl_parameters['MAX_VARYING_COMPONENTS']
+            spoof_sum += browser.real.webgl_parameters['MAX_VARYING_COMPONENTS'] - webgl_params['MAX_VARYING_COMPONENTS']
         if browser.real.webgl_parameters['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS'] != None:
-            assert webgl_params['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS'] in {browser.real.webgl_parameters['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS'],browser.real.webgl_parameters['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS']-1}
+            assert 0 <= webgl_params['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS'] <= browser.real.webgl_parameters['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS']
+            spoof_sum += browser.real.webgl_parameters['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS'] - webgl_params['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS']
         if browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_COMPONENTS'] != None:
-            assert webgl_params['MAX_FRAGMENT_UNIFORM_COMPONENTS'] in {browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_COMPONENTS'],browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_COMPONENTS']-1}
+            assert 0 <= webgl_params['MAX_FRAGMENT_UNIFORM_COMPONENTS'] <= browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_COMPONENTS']
+            spoof_sum += browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_COMPONENTS'] - webgl_params['MAX_FRAGMENT_UNIFORM_COMPONENTS']
         if browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_BLOCKS'] != None:
-            assert webgl_params['MAX_FRAGMENT_UNIFORM_BLOCKS'] in {browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_BLOCKS'],browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_BLOCKS']-1}
+            assert 0 <= webgl_params['MAX_FRAGMENT_UNIFORM_BLOCKS'] <= browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_BLOCKS']
+            spoof_sum += browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_BLOCKS'] - webgl_params['MAX_FRAGMENT_UNIFORM_BLOCKS']
         if browser.real.webgl_parameters['MAX_FRAGMENT_INPUT_COMPONENTS'] != None:
-            assert webgl_params['MAX_FRAGMENT_INPUT_COMPONENTS'] in {browser.real.webgl_parameters['MAX_FRAGMENT_INPUT_COMPONENTS'],browser.real.webgl_parameters['MAX_FRAGMENT_INPUT_COMPONENTS']-1}
+            assert 0 <= webgl_params['MAX_FRAGMENT_INPUT_COMPONENTS'] <= browser.real.webgl_parameters['MAX_FRAGMENT_INPUT_COMPONENTS']
+            spoof_sum += browser.real.webgl_parameters['MAX_FRAGMENT_INPUT_COMPONENTS'] - webgl_params['MAX_FRAGMENT_INPUT_COMPONENTS']
         if browser.real.webgl_parameters['MAX_UNIFORM_BUFFER_BINDINGS'] != None:
-            assert webgl_params['MAX_UNIFORM_BUFFER_BINDINGS'] in {browser.real.webgl_parameters['MAX_UNIFORM_BUFFER_BINDINGS'],browser.real.webgl_parameters['MAX_UNIFORM_BUFFER_BINDINGS']-1}
+            assert 0 <= webgl_params['MAX_UNIFORM_BUFFER_BINDINGS'] <= browser.real.webgl_parameters['MAX_UNIFORM_BUFFER_BINDINGS']
+            spoof_sum += browser.real.webgl_parameters['MAX_UNIFORM_BUFFER_BINDINGS'] - webgl_params['MAX_UNIFORM_BUFFER_BINDINGS']
         if browser.real.webgl_parameters['MAX_COMBINED_UNIFORM_BLOCKS'] != None:
-            assert webgl_params['MAX_COMBINED_UNIFORM_BLOCKS'] in {browser.real.webgl_parameters['MAX_COMBINED_UNIFORM_BLOCKS'],browser.real.webgl_parameters['MAX_COMBINED_UNIFORM_BLOCKS']-1}
+            assert 0 <= webgl_params['MAX_COMBINED_UNIFORM_BLOCKS'] <= browser.real.webgl_parameters['MAX_COMBINED_UNIFORM_BLOCKS']
+            spoof_sum += browser.real.webgl_parameters['MAX_COMBINED_UNIFORM_BLOCKS'] - webgl_params['MAX_COMBINED_UNIFORM_BLOCKS']
         if browser.real.webgl_parameters['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS'] != None:
-            assert webgl_params['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS'] in {browser.real.webgl_parameters['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS'],browser.real.webgl_parameters['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS']-1}
+            assert 0 <= webgl_params['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS'] <= browser.real.webgl_parameters['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS']
+            spoof_sum += browser.real.webgl_parameters['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS'] - webgl_params['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS']
         if browser.real.webgl_parameters['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS'] != None:
-            assert webgl_params['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS'] in {browser.real.webgl_parameters['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS'],browser.real.webgl_parameters['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS']-1}
+            assert 0 <= webgl_params['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS'] <= browser.real.webgl_parameters['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS']
+            spoof_sum +=  browser.real.webgl_parameters['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS'] - webgl_params['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS']
         if browser.real.webgl_parameters['MAX_VERTEX_ATTRIBS'] != None:
-            assert webgl_params['MAX_VERTEX_ATTRIBS'] in {browser.real.webgl_parameters['MAX_VERTEX_ATTRIBS'],browser.real.webgl_parameters['MAX_VERTEX_ATTRIBS']-1}
+            assert 0 <= webgl_params['MAX_VERTEX_ATTRIBS'] <= browser.real.webgl_parameters['MAX_VERTEX_ATTRIBS']
+            spoof_sum += browser.real.webgl_parameters['MAX_VERTEX_ATTRIBS'] - webgl_params['MAX_VERTEX_ATTRIBS']
         if browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_VECTORS'] != None:
-            assert webgl_params['MAX_VERTEX_UNIFORM_VECTORS'] in {browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_VECTORS'],browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_VECTORS']-1}
+            assert 0 <= webgl_params['MAX_VERTEX_UNIFORM_VECTORS'] <= browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_VECTORS']
+            spoof_sum += browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_VECTORS'] - webgl_params['MAX_VERTEX_UNIFORM_VECTORS']
         if browser.real.webgl_parameters['MAX_VERTEX_TEXTURE_IMAGE_UNITS'] != None:
-            assert webgl_params['MAX_VERTEX_TEXTURE_IMAGE_UNITS'] in {browser.real.webgl_parameters['MAX_VERTEX_TEXTURE_IMAGE_UNITS'],browser.real.webgl_parameters['MAX_VERTEX_TEXTURE_IMAGE_UNITS']-1}
+            assert 0 <= webgl_params['MAX_VERTEX_TEXTURE_IMAGE_UNITS'] <= browser.real.webgl_parameters['MAX_VERTEX_TEXTURE_IMAGE_UNITS']
+            spoof_sum += browser.real.webgl_parameters['MAX_VERTEX_TEXTURE_IMAGE_UNITS'] - webgl_params['MAX_VERTEX_TEXTURE_IMAGE_UNITS']
         if browser.real.webgl_parameters['MAX_TEXTURE_SIZE'] != None:
-            assert webgl_params['MAX_TEXTURE_SIZE'] in {browser.real.webgl_parameters['MAX_TEXTURE_SIZE'],browser.real.webgl_parameters['MAX_TEXTURE_SIZE']-1}
+            assert 0 <= webgl_params['MAX_TEXTURE_SIZE'] <= browser.real.webgl_parameters['MAX_TEXTURE_SIZE']
+            spoof_sum += browser.real.webgl_parameters['MAX_TEXTURE_SIZE'] - webgl_params['MAX_TEXTURE_SIZE']
         if browser.real.webgl_parameters['MAX_CUBE_MAP_TEXTURE_SIZE'] != None:
-            assert webgl_params['MAX_CUBE_MAP_TEXTURE_SIZE'] in {browser.real.webgl_parameters['MAX_CUBE_MAP_TEXTURE_SIZE'],browser.real.webgl_parameters['MAX_CUBE_MAP_TEXTURE_SIZE']-1}
+            assert 0 <= webgl_params['MAX_CUBE_MAP_TEXTURE_SIZE'] <= browser.real.webgl_parameters['MAX_CUBE_MAP_TEXTURE_SIZE']
+            spoof_sum += browser.real.webgl_parameters['MAX_CUBE_MAP_TEXTURE_SIZE'] - webgl_params['MAX_CUBE_MAP_TEXTURE_SIZE']
         if browser.real.webgl_parameters['MAX_3D_TEXTURE_SIZE'] != None:
-            assert webgl_params['MAX_3D_TEXTURE_SIZE'] in {browser.real.webgl_parameters['MAX_3D_TEXTURE_SIZE'],browser.real.webgl_parameters['MAX_3D_TEXTURE_SIZE']-1}
+            assert 0 <= webgl_params['MAX_3D_TEXTURE_SIZE'] <= browser.real.webgl_parameters['MAX_3D_TEXTURE_SIZE']
+            spoof_sum += browser.real.webgl_parameters['MAX_3D_TEXTURE_SIZE'] - webgl_params['MAX_3D_TEXTURE_SIZE']
         if browser.real.webgl_parameters['MAX_ARRAY_TEXTURE_LAYERS'] != None:
-            assert webgl_params['MAX_ARRAY_TEXTURE_LAYERS'] in {browser.real.webgl_parameters['MAX_ARRAY_TEXTURE_LAYERS'],browser.real.webgl_parameters['MAX_ARRAY_TEXTURE_LAYERS']-1}
+            assert 0 <= webgl_params['MAX_ARRAY_TEXTURE_LAYERS'] <= browser.real.webgl_parameters['MAX_ARRAY_TEXTURE_LAYERS']
+            spoof_sum += browser.real.webgl_parameters['MAX_ARRAY_TEXTURE_LAYERS'] - webgl_params['MAX_ARRAY_TEXTURE_LAYERS']
+        assert spoof_sum > 0
     elif expected.webgl_parameters == 'ZERO VALUE':
-        assert ((webgl_params['MAX_VERTEX_UNIFORM_COMPONENTS'] == 0) and
-               (webgl_params['MAX_VERTEX_UNIFORM_BLOCKS'] == 0) and
-               (webgl_params['MAX_VERTEX_OUTPUT_COMPONENTS'] == 0) and
-               (webgl_params['MAX_VARYING_COMPONENTS'] == 0) and
-               (webgl_params['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS'] == 0) and
-               (webgl_params['MAX_FRAGMENT_UNIFORM_COMPONENTS'] == 0) and
-               (webgl_params['MAX_FRAGMENT_UNIFORM_BLOCKS'] == 0) and
-               (webgl_params['MAX_FRAGMENT_INPUT_COMPONENTS'] == 0) and
-               (webgl_params['MAX_UNIFORM_BUFFER_BINDINGS'] == 0) and
-               (webgl_params['MAX_COMBINED_UNIFORM_BLOCKS'] == 0) and
-               (webgl_params['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS'] == 0) and
-               (webgl_params['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS'] == 0) and
-               (webgl_params['MAX_VERTEX_ATTRIBS'] == browser.real.webgl_parameters['MAX_VERTEX_ATTRIBS']) and
-               (webgl_params['MAX_VERTEX_UNIFORM_VECTORS'] == browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_VECTORS']) and
-               (webgl_params['MAX_VERTEX_TEXTURE_IMAGE_UNITS'] == browser.real.webgl_parameters['MAX_VERTEX_TEXTURE_IMAGE_UNITS']) and
-               (webgl_params['MAX_TEXTURE_SIZE'] == browser.real.webgl_parameters['MAX_TEXTURE_SIZE']) and
-               (webgl_params['MAX_CUBE_MAP_TEXTURE_SIZE'] == browser.real.webgl_parameters['MAX_CUBE_MAP_TEXTURE_SIZE']) and
-               (webgl_params['MAX_3D_TEXTURE_SIZE'] == browser.real.webgl_parameters['MAX_3D_TEXTURE_SIZE']) and
-               (webgl_params['MAX_ARRAY_TEXTURE_LAYERS'] == browser.real.webgl_parameters['MAX_ARRAY_TEXTURE_LAYERS']))
+        assert (webgl_params['MAX_VERTEX_UNIFORM_COMPONENTS'] == 0)
+        assert (webgl_params['MAX_VERTEX_UNIFORM_BLOCKS'] == 0)
+        assert (webgl_params['MAX_VERTEX_OUTPUT_COMPONENTS'] == 0)
+        assert (webgl_params['MAX_VARYING_COMPONENTS'] == 0)
+        assert (webgl_params['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS'] == 0)
+        assert (webgl_params['MAX_FRAGMENT_UNIFORM_COMPONENTS'] == 0)
+        assert (webgl_params['MAX_FRAGMENT_UNIFORM_BLOCKS'] == 0)
+        assert (webgl_params['MAX_FRAGMENT_INPUT_COMPONENTS'] == 0)
+        assert (webgl_params['MAX_UNIFORM_BUFFER_BINDINGS'] == 0)
+        assert (webgl_params['MAX_COMBINED_UNIFORM_BLOCKS'] == 0)
+        assert (webgl_params['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS'] == 0)
+        assert (webgl_params['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS'] == 0)
+        assert (webgl_params['MAX_VERTEX_ATTRIBS'] == 0)
+        assert (webgl_params['MAX_VERTEX_UNIFORM_VECTORS'] == 0)
+        assert (webgl_params['MAX_VERTEX_TEXTURE_IMAGE_UNITS'] == 0)
+        assert (webgl_params['MAX_TEXTURE_SIZE'] == 0)
+        assert (webgl_params['MAX_CUBE_MAP_TEXTURE_SIZE'] == 0)
+        assert (webgl_params['MAX_3D_TEXTURE_SIZE'] == 0)
+        assert (webgl_params['MAX_ARRAY_TEXTURE_LAYERS'] == 0)
     else:
-        assert ((webgl_params['MAX_VERTEX_UNIFORM_COMPONENTS'] == browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_COMPONENTS']) and
-               (webgl_params['MAX_VERTEX_UNIFORM_BLOCKS'] == browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_BLOCKS']) and
-               (webgl_params['MAX_VERTEX_OUTPUT_COMPONENTS'] == browser.real.webgl_parameters['MAX_VERTEX_OUTPUT_COMPONENTS']) and
-               (webgl_params['MAX_VARYING_COMPONENTS'] == browser.real.webgl_parameters['MAX_VARYING_COMPONENTS']) and
-               (webgl_params['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS'] == browser.real.webgl_parameters['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS']) and
-               (webgl_params['MAX_FRAGMENT_UNIFORM_COMPONENTS'] == browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_COMPONENTS']) and
-               (webgl_params['MAX_FRAGMENT_UNIFORM_BLOCKS'] == browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_BLOCKS']) and
-               (webgl_params['MAX_FRAGMENT_INPUT_COMPONENTS'] == browser.real.webgl_parameters['MAX_FRAGMENT_INPUT_COMPONENTS']) and
-               (webgl_params['MAX_UNIFORM_BUFFER_BINDINGS'] == browser.real.webgl_parameters['MAX_UNIFORM_BUFFER_BINDINGS']) and
-               (webgl_params['MAX_COMBINED_UNIFORM_BLOCKS'] == browser.real.webgl_parameters['MAX_COMBINED_UNIFORM_BLOCKS']) and
-               (webgl_params['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS'] == browser.real.webgl_parameters['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS']) and
-               (webgl_params['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS'] == browser.real.webgl_parameters['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS']) and
-               (webgl_params['MAX_VERTEX_ATTRIBS'] == browser.real.webgl_parameters['MAX_VERTEX_ATTRIBS']) and
-               (webgl_params['MAX_VERTEX_UNIFORM_VECTORS'] == browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_VECTORS']) and
-               (webgl_params['MAX_VERTEX_TEXTURE_IMAGE_UNITS'] == browser.real.webgl_parameters['MAX_VERTEX_TEXTURE_IMAGE_UNITS']) and
-               (webgl_params['MAX_TEXTURE_SIZE'] == browser.real.webgl_parameters['MAX_TEXTURE_SIZE']) and
-               (webgl_params['MAX_CUBE_MAP_TEXTURE_SIZE'] == browser.real.webgl_parameters['MAX_CUBE_MAP_TEXTURE_SIZE']) and
-               (webgl_params['MAX_3D_TEXTURE_SIZE'] == browser.real.webgl_parameters['MAX_3D_TEXTURE_SIZE']) and
-               (webgl_params['MAX_ARRAY_TEXTURE_LAYERS'] == browser.real.webgl_parameters['MAX_ARRAY_TEXTURE_LAYERS']))
+        assert (webgl_params['MAX_VERTEX_UNIFORM_COMPONENTS'] == browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_COMPONENTS'])
+        assert (webgl_params['MAX_VERTEX_UNIFORM_BLOCKS'] == browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_BLOCKS'])
+        assert (webgl_params['MAX_VERTEX_OUTPUT_COMPONENTS'] == browser.real.webgl_parameters['MAX_VERTEX_OUTPUT_COMPONENTS'])
+        assert (webgl_params['MAX_VARYING_COMPONENTS'] == browser.real.webgl_parameters['MAX_VARYING_COMPONENTS'])
+        assert (webgl_params['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS'] == browser.real.webgl_parameters['MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS'])
+        assert (webgl_params['MAX_FRAGMENT_UNIFORM_COMPONENTS'] == browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_COMPONENTS'])
+        assert (webgl_params['MAX_FRAGMENT_UNIFORM_BLOCKS'] == browser.real.webgl_parameters['MAX_FRAGMENT_UNIFORM_BLOCKS'])
+        assert (webgl_params['MAX_FRAGMENT_INPUT_COMPONENTS'] == browser.real.webgl_parameters['MAX_FRAGMENT_INPUT_COMPONENTS'])
+        assert (webgl_params['MAX_UNIFORM_BUFFER_BINDINGS'] == browser.real.webgl_parameters['MAX_UNIFORM_BUFFER_BINDINGS'])
+        assert (webgl_params['MAX_COMBINED_UNIFORM_BLOCKS'] == browser.real.webgl_parameters['MAX_COMBINED_UNIFORM_BLOCKS'])
+        assert (webgl_params['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS'] == browser.real.webgl_parameters['MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS'])
+        assert (webgl_params['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS'] == browser.real.webgl_parameters['MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS'])
+        assert (webgl_params['MAX_VERTEX_ATTRIBS'] == browser.real.webgl_parameters['MAX_VERTEX_ATTRIBS'])
+        assert (webgl_params['MAX_VERTEX_UNIFORM_VECTORS'] == browser.real.webgl_parameters['MAX_VERTEX_UNIFORM_VECTORS'])
+        assert (webgl_params['MAX_VERTEX_TEXTURE_IMAGE_UNITS'] == browser.real.webgl_parameters['MAX_VERTEX_TEXTURE_IMAGE_UNITS'])
+        assert (webgl_params['MAX_TEXTURE_SIZE'] == browser.real.webgl_parameters['MAX_TEXTURE_SIZE'])
+        assert (webgl_params['MAX_CUBE_MAP_TEXTURE_SIZE'] == browser.real.webgl_parameters['MAX_CUBE_MAP_TEXTURE_SIZE'])
+        assert (webgl_params['MAX_3D_TEXTURE_SIZE'] == browser.real.webgl_parameters['MAX_3D_TEXTURE_SIZE'])
+        assert (webgl_params['MAX_ARRAY_TEXTURE_LAYERS'] == browser.real.webgl_parameters['MAX_ARRAY_TEXTURE_LAYERS'])
 
 # Test WebGLRenderingContext.getShaderPrecisionFormat
 def test_webgl_precisions(browser, expected):
     precisions = get_webgl_precisions(browser.driver,"webglCanvas")
-    if expected.webgl_precisions == 'SPOOF VALUE':
+    if expected.webgl_precisions == 'ZERO VALUE':
         assert precisions != browser.real.webgl_precisions
     else:
         assert precisions == browser.real.webgl_precisions

@@ -264,6 +264,7 @@ def get_webgl_precisions(driver, name):
                                             "}"
                                         "}"
                                         "return arr")
+    precisions = [[a["rangeMin"], a["rangeMax"], a["precision"]] if a != {} else {} for a in precisions] # Although the JS array is the same, it is extracted differently to python, normalize the differences
     return precisions
 
 ## returns object with attributes output by AudioContext.getChannelData, AudioContext.copyFromChannel, AnalyserNode.getFloatFrequencyData, AnalyserNode.getByteFrequencyData, AnalyserNode.getFloatTimeDomainData, AnalyserNode.getByteTimeDomainData which are saved in testing page
