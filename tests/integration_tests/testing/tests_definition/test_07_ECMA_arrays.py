@@ -354,7 +354,7 @@ def test_worker_basic(browser):
     check(browser, "typeof worker.terminate", '"function"')
 
 @pytest.mark.xfail
-def test_worker_check_communication(browser):
+def test_worker_check_communication_handler(browser):
     """ There is a bug in both Firefox and Chrome implementation of Worker wrapper. """
     browser.execute_script("""\
         var multiply_result = 0;\
@@ -393,3 +393,64 @@ def test_worker_error(browser):
     """)
     time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
     check(browser, "worker_error", -1)
+
+@pytest.mark.xfail
+def test_worker_check_communication_listener(browser):
+    """ There is a bug in both Firefox and Chrome implementation of Worker wrapper. """
+    browser.execute_script("""\
+        var multiply_result = 0;\
+        var worker = new Worker("data:text/javascript;base64," + btoa("\
+            onmessage = function(e) {\
+                const result = e.data[0] * e.data[1];\
+                postMessage(result);\
+            }\
+        "));\
+\
+        worker.addEventListener("message", function(e) {\
+            multiply_result = e.data;\
+        });\
+        worker.postMessage([4,5]);\
+    """)
+    time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
+    check(browser, "multiply_result", 20)
+
+def test_worker_terminate(browser):
+    browser.execute_script("""\
+        var multiply_result = 0;\
+        var worker = new Worker("data:text/javascript;base64," + btoa("\
+            onmessage = function(e) {\
+                const result = e.data[0] * e.data[1];\
+                postMessage(result);\
+            }\
+        "));\
+        worker.terminate();\
+\
+        worker.addEventListener("message", function(e) {\
+            multiply_result = e.data;\
+        });\
+        worker.postMessage([7,6]);\
+    """)
+    time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
+    check(browser, "multiply_result", 0)
+
+def test_worker_dispatchEvent(browser):
+    browser.execute_script("""\
+        var correct_order_check = 1;\
+        var test_event = new Event("test");\
+        var worker = new Worker("data:text/javascript;base64," + btoa(""));\
+\
+        worker.ontest = function() { /* Will not be called */ \
+            correct_order_check *= 2;\
+        };\
+        worker.addEventListener("test", function(e) {\
+            correct_order_check *= 3;\
+        });\
+        worker.addEventListener("test", function(e) {\
+            correct_order_check *= 5;\
+        });\
+        worker.addEventListener("test", function(e) {\
+            correct_order_check *= 7;\
+        });\
+        worker.dispatchEvent(test_event);\
+    """)
+    check(browser, "correct_order_check", 105) # dispatchEvent is synchronous
