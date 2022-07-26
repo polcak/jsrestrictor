@@ -157,4 +157,4 @@ class Browser:
                 s.text = '%s'; \
                 document.head.appendChild(s);""" % code)
         except exceptions.JavascriptException as e:
-            assert False
+            assert False, code
