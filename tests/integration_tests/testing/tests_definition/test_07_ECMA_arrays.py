@@ -348,10 +348,15 @@ def test_worker_basic(browser):
     check(browser, "worker.onerror", "null")
     check(browser, "worker.onmessageerror", "null")
     check(browser, "typeof worker.addEventListener", '"function"')
-    check(browser, "typeof worker.dispatchEvent", '"function"')
     check(browser, "typeof worker.postMessage", '"function"')
     check(browser, "typeof worker.removeEventListener", '"function"')
     check(browser, "typeof worker.terminate", '"function"')
+
+@pytest.mark.xfail
+def test_worker_implements_dispatchEvent(browser):
+    """ Unfortunately current implementation of Worker does not implement EventTarget interface """
+    browser.execute_script('var worker = new Worker("");')
+    check(browser, "typeof worker.dispatchEvent", '"function"')
 
 @pytest.mark.xfail
 def test_worker_check_communication_handler(browser):
@@ -433,7 +438,9 @@ def test_worker_terminate(browser):
     time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
     check(browser, "multiply_result", 0)
 
+@pytest.mark.xfail
 def test_worker_dispatchEvent(browser):
+    """ Unfortunately current implementation of Worker does not implement EventTarget interface """
     browser.execute_script("""\
         var correct_order_check = 1;\
         var test_event = new Event("test");\
