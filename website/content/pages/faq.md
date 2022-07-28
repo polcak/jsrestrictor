@@ -392,6 +392,24 @@ Additionally [ff00::]
 
 Some tools can see such a request, but it will never leave your browser.
 
+#### Does NBS work the same way in Firefox and Chromium-based browsers?
+
+No. Firefox allows webextensions to perform DNS resolution of the domain name that the browser is
+about to get information from. The resolution of the DNS name to an IP address is crucial for
+FPD. As Firefox allows to perform the resolution before any request leaves the browser, JShelter can
+prevent each attempt to cross the network boundary.
+
+Chromium-based browsers do not offer the DNS resoltion APIs. JShelter collect resolution results in
+a cache that is filled during the processing of each request (after the browser makes the request).
+That means that the first request for each domain name goes through. JShleter blocks all subsequent
+requests only.
+
+Keep in mind that an adversary can change the domain with each request. For example, the attacker
+can use a.attacker.com, b.a.attacker.com, c.b.a.attacker.com in sequence for its requests to go
+through. So it is easy for an attacker to bypass NBS. In practise, we know about attackers that do
+not change domain names (for example, see [our blog](/localportscanning/)). So we keep the NBS in
+Chromium-based browsers even though it is not perfect.
+
 #### What is the proper way to cite JShelter in a paper?
 
 For now, cite our [ArXiv paper](https://arxiv.org/abs/2204.01392), for example, by
