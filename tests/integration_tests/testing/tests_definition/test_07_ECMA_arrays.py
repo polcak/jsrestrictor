@@ -27,6 +27,8 @@ import pytest
 from selenium.webdriver.common.by import By
 import time
 
+from web_browser_type import BrowserType
+
 from configuration import get_config
 
 ## Setup method - it is run before time tests execution starts.
@@ -346,7 +348,8 @@ def test_worker_basic(browser):
     browser.execute_script('var worker = new Worker("");')
     check(browser, "worker.onmessage", "null")
     check(browser, "worker.onerror", "null")
-    check(browser, "worker.onmessageerror", "null")
+    if (browser.type == BrowserType.FIREFOX):
+        check(browser, "worker.onmessageerror", "null")
     check(browser, "typeof worker.addEventListener", '"function"')
     check(browser, "typeof worker.postMessage", '"function"')
     check(browser, "typeof worker.removeEventListener", '"function"')
