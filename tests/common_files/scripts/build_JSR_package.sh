@@ -42,7 +42,12 @@ mkdir -p ./tests/common_files/JShelter
 cp -f ./jshelter_firefox.zip ./tests/common_files/JShelter/firefox.xpi
 
 # Create crx package of JShelter for Google Chrome from source files.
-google-chrome --pack-extension=./build/chrome >/dev/null 2>&1
+if command -v google-chrome &> /dev/null
+then
+	google-chrome --pack-extension=./build/chrome >/dev/null 2>&1
+else
+	chromium --pack-extension=./build/chrome >/dev/null 2>&1
+fi
 
 # Remove unnecessary file created during crx package creating.
 rm -rf ./build/chrome.pem

@@ -43,17 +43,29 @@ from configuration import get_config
 #  We need element on page where geolocation data is shown after its loading.
 #  Function waits maximally 10 seconds for loading geolocation data.
 def get_position(driver):
+    position = {}
     driver.get(get_config("testing_page"))
     driver.find_element(By.XPATH, "//button[text()='Show GPS data']").click()
-    WebDriverWait(driver, 10).until(
-        ec.presence_of_element_located((By.ID, 'mapnavi'))
-    )
-    location = driver.find_element(By.ID, 'placeToWriteGPSDetails').text
-    location = location.replace(" ", "").split()
-    position = {}
-    for property in location:
-        property = property.split(':')
-        position[property[0].lower()] = property[1]
+    try:
+        WebDriverWait(driver, 10).until(
+            ec.presence_of_element_located((By.ID, 'mapnavi'))
+        )
+        location = driver.find_element(By.ID, 'placeToWriteGPSDetails').text
+        location = location.replace(" ", "").split()
+        for property in location:
+            property = property.split(':')
+            position[property[0].lower()] = property[1]
+    except:
+        # return empty position in case of error (like Chromium not supporting the API)
+        position['timestamp'] = 0
+        position['accuracy'] = 0
+        position['altitude'] = 0
+        position['altitudeaccurac'] = 0
+        position['heading'] = 0
+        position['latitude'] = 0
+        position['longitude'] = 0
+        position['speed'] = 0
+        position['invalid'] = True
     return position
 
 

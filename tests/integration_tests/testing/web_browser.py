@@ -99,6 +99,7 @@ class Browser:
                 ec.presence_of_element_located((By.ID, 'expandAll'))
             )
             self.driver.find_element(By.ID, 'expandAll').click()
+            sleep(1)
             for elem in self.driver.find_element(By.ID, 'extensions-value').text.splitlines():
                 if 'JShelter' in elem:
                     self._jsr_options_page = "chrome-extension://" + elem.split(':')[0][:-1] + "/options.html"

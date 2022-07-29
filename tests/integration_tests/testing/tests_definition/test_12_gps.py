@@ -27,6 +27,8 @@ from time import time
 from values_getters import get_position
 from math_operations import is_in_accuracy, calc_distance
 
+from web_browser_shared import get_shared_browser
+
 ## Setup method - it is run before gps tests execution starts.
 #
 #  This setup method initialize variable position that contains current data about position and
@@ -49,8 +51,14 @@ def position(browser):
         print("\nCan not read GPS data.")
     return position
 
+geolocation_available = pytest.mark.skipif("invalid" in
+        get_position(get_shared_browser().driver).keys(),
+        reason = "This browser does not allow getting location"
+        )
+
 
 ## Test accuracy of the latitude and longitude properties in meters.
+@geolocation_available
 def test_accuracy(browser, position, expected):
     if expected.geolocation.accuracy['value'] == 'REAL VALUE':
         if position['accuracy'] == "null":
@@ -78,6 +86,7 @@ def test_accuracy(browser, position, expected):
 
 
 ## Test position's altitude in meters, relative to sea level.
+@geolocation_available
 def test_altitude(browser, position, expected):
     if expected.geolocation.altitude['value'] == 'REAL VALUE':
         if position['altitude'] == "null":
@@ -97,6 +106,7 @@ def test_altitude(browser, position, expected):
 
 
 ## Test accuracy of the altitude property in meters.
+@geolocation_available
 def test_altitudeaccurac(browser, position, expected):
     if expected.geolocation.altitudeAccurac['value'] == 'REAL VALUE':
         if position['altitudeaccurac'] == "null":
@@ -122,6 +132,7 @@ def test_altitudeaccurac(browser, position, expected):
 # indicates how far off from heading true north the device is. 0 degrees represents true north,
 # and the direction is determined clockwise (east is 90 degrees and west is 270 degrees).
 # If speed is 0, heading is NaN. If the device is unable to provide heading information, this value is null
+@geolocation_available
 def test_heading(browser, position, expected):
     if expected.geolocation.heading['value'] == 'REAL VALUE':
         if position['heading'] == "null":
@@ -141,6 +152,7 @@ def test_heading(browser, position, expected):
 
 
 ## Test position's latitude in decimal degrees.
+@geolocation_available
 def test_latitude(browser, position, expected):
     if expected.geolocation.latitude['value'] == 'REAL VALUE':
         if position['latitude'] == "null":
@@ -162,6 +174,7 @@ def test_latitude(browser, position, expected):
 
 
 ## Test position's longitude in decimal degrees.
+@geolocation_available
 def test_longitude(browser, position, expected):
     if expected.geolocation.longitude['value'] == 'REAL VALUE':
         if position['longitude'] == "null":
@@ -183,6 +196,7 @@ def test_longitude(browser, position, expected):
 
 
 ## Test speed (velocity) of the device in meters per second. This value can be null.
+@geolocation_available
 def test_speed(browser, position, expected):
     if expected.geolocation.speed['value'] == 'REAL VALUE':
         if position['speed'] == "null":
@@ -202,6 +216,7 @@ def test_speed(browser, position, expected):
 
 
 ## Test timestamp.
+@geolocation_available
 def test_timestamp(position, expected):
     if expected.geolocation.timestamp['value'] == 'REAL VALUE':
         if expected.geolocation.timestamp['accuracy'] == 'EXACTLY':
