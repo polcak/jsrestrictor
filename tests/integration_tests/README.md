@@ -15,7 +15,7 @@ These programs and tools are required to be installed:
 * [Python 3.5+](https://www.python.org/downloads/)
 * [Python package `pytest`](https://pypi.org/project/pytest/)
 * [Python package `selenium`](https://pypi.org/project/selenium/)
-* [Google Chrome](https://www.google.com/chrome/) - Install really Google Chrome, Chromium is not supported.
+* [Google Chrome](https://www.google.com/chrome/) - Chromium also work.
 * [Mozilla Firefox ESR](https://www.mozilla.org/en-US/firefox/all/#product-desktop-esr) - Be careful, ESR (eventually Developer or Nightly edition) is required. Standard edition is not supported.
 
 No other versions of Google Chrome and especially Mozilla Firefox may be installed on the same machine.
