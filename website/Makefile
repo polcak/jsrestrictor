@@ -53,8 +53,9 @@ extract:
 	$(ACTIVATE); python extract_comments.py
 
 html: extract
-	mkdir -p output/
-	cp -r favicon.ico output/
+	mkdir -p output/ output/.well-known/
+	cp -r theme/favicon.ico output/
+	cp -r theme/security.txt output/.well-known/
 	$(ACTIVATE); python extract_comments.py
 	$(ACTIVATE); $(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
 	# fix translated indexes to address a Pelican bug
