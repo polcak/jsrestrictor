@@ -83,11 +83,20 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			See our blog post for more information on <a href="https://jshelter.org/fingerprinting/">browser
 			fingerprinting counter-measures</a> and <a href="https://jshelter.org/farbling/">farbling</a>.
 		</p>
-		<ul id="levels-list">
-		</ul>
-		<fieldset>
-			<button id="new_level" class="jsr-button">Add custom level</button>
-		</fieldset>
+		<div id="jss-shield-settings">
+			<div class="jss-shield-settings-item">
+				<ul id="levels-list">
+				</ul>
+				<fieldset>
+					<button id="new_level" class="jsr-button">Add custom level</button>
+				</fieldset>
+			</div>
+			<div id="current-level-tweaks-detail" class="jss-shield-settings-item">
+				<h3 id="current-level-tweaks-heading"></h3>
+				<div id="current-level-tweaks" class="tweakgrid">
+				</div>
+			</div>
+		</div>
 	</div>
 
   	<div id="proxy-protection-config">

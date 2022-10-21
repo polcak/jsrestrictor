@@ -147,34 +147,12 @@ function show_existing_level(levelsEl, level) {
 		<button class="level" id="${escape(currentId)}" title="${escape(levels[level].level_description)}">
 			${escape(levels[level].level_text)}
 		</button>
-		<span class="help_ovisible">${escape(create_short_text(levels[level].level_description, 50))}</span>
 		<span></span>
 		<p class="hidden_help_text"><label for="${escape(currentId)}">${escape(levels[level].level_description)}</label></p>
 		</li>`);
 	levelsEl.appendChild(fragment);
 	var lielem = document.getElementById(`li-${level}`); // Note that FF here requires unescaped ID
-	if (levels[level].builtin === true) {
-		var view = document.createElement("button");
-		view.id = `show-tweaks-${escape(level)}`;
-		view.classList.add("help");
-		view.appendChild(document.createTextNode("⤵"));
-		var tweaksEl = document.createElement("div");
-		tweaksEl.classList.add("tweakgrid");
-		tweaksEl.classList.add("hidden_descr");
-		tweaksEl.id = `tweaks-${escape(level)}`;
-		lielem.getElementsByTagName('button')[0].insertAdjacentElement("afterend", view);
-		lielem.appendChild(tweaksEl);
-		let tweaksBusiness = Object.create(tweaks_gui);
-		tweaksBusiness.get_current_tweaks = function() {
-			return getTweaksForLevel(level, {});
-		};
-		tweaksBusiness.create_tweaks_html(tweaksEl);
-		view.addEventListener("click", function(ev) {
-			tweaksEl.classList.toggle("hidden_descr");
-			ev.preventDefault();
-		});
-	}
-	else {
+	if (levels[level].builtin !== true) {
 		var existPref = document.createElement("span");
 		existPref.setAttribute("id", `li-exist-group-${escape(level)}`);
 		lielem.appendChild(existPref);
@@ -195,8 +173,8 @@ function show_existing_level(levelsEl, level) {
 		restore.addEventListener("click", restore_level.bind(restore, level, levels[level]));
 		restore.appendChild(document.createTextNode("Restore"));
 	}
-	prepareHiddenHelpText(lielem.getElementsByClassName('hidden_help_text'), lielem.getElementsByClassName('help_ovisible'));
-	var current = document.getElementById(currentId)
+	prepareHiddenHelpText(lielem.getElementsByClassName('hidden_help_text'), []);
+	var current = document.getElementById(escape(currentId))
 	current.addEventListener("click", function() {
 		for (let child of levelsEl.children) {
 			child.children[0].classList.remove("active");
@@ -204,6 +182,13 @@ function show_existing_level(levelsEl, level) {
 		this.classList.add("active");
 		setDefaultLevel(level);
 	});
+	current.addEventListener("mouseenter", function() {
+		if (level !== default_level.level_id) {
+			lev = levels[level];
+			update_level_details("Details of level " + lev.level_text + " (not applied by default)", lev);
+		}
+	});
+	current.addEventListener("mouseout", update_level_details_default);
 }
 
 function remove_level(id) {
@@ -222,6 +207,20 @@ function remove_level(id) {
 	browser.storage.sync.get("custom_levels").then(remove_level);
 }
 
+function update_level_details(heading, level) {
+	document.getElementById("current-level-tweaks-heading").textContent = heading;
+	var currentTweaksEl = document.getElementById("current-level-tweaks");
+	let tweaksBusiness = Object.create(tweaks_gui);
+	tweaksBusiness.get_current_tweaks = function() {
+		return getTweaksForLevel(level.level_id, {});
+	};
+	tweaksBusiness.create_tweaks_html(currentTweaksEl);
+}
+
+function update_level_details_default() {
+	update_level_details("Details of the default level " + default_level.level_text, default_level);
+}
+
 function insert_levels() {
 	// Insert all known levels to GUI
 	var allLevelsElement = document.getElementById("levels-list");
@@ -230,6 +229,7 @@ function insert_levels() {
 	}
 	// Select default level
 	document.getElementById("level-" + default_level.level_id).classList.add("active");
+	update_level_details_default();
 }
 
 window.addEventListener("load", async function() {
