@@ -476,7 +476,7 @@ async function checkAndSaveConfig(conf) {
 	checkExistAndType("fpDetectionOn", "boolean", false);
 	checkExistAndType("custom_levels", "object", {});
 	if (!("__default__" in conf) || typeof(conf.__default__) !== "string" ||
-			(!(conf.__default__ in [0,1,2,3]) && !(conf.__default__ in conf.custom_levels))) {
+			(!(conf.__default__ in levels))) {
 		conf.__default__ = "2";
 	}
 	checkExistAndType("nbsWhitelist", "object", {});
