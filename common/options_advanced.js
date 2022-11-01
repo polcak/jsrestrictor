@@ -44,3 +44,8 @@ document.getElementById("levels-storage-save").addEventListener("click", functio
 	}
 	load_config_to_text();
 });
+
+document.getElementById("levels-storage-reset").addEventListener("click", async function() {
+	checkAndSaveConfig({});
+	load_config_to_text();
+});
