@@ -35,10 +35,12 @@ from web_browser_type import BrowserType
 #  This module can be edited when definition of default levels will be changed.
 
 
-#  Ignore Plugins and mimeTypes tests - explanation:
-#  The apparent modification of the plugins is caused by the Selenium environment in which the testing takes place.
-#  This difference only appears in a browser controlled by Selenium.
+#  Note that we ignore Plugins and mimeTypes tests in Chrome:
+#  The Selenium environment modifies the navigator.plugins object inconsistently
+#  during the tests. We manually checked that
+#  this difference only appears in a browser controlled by Selenium.
 #  This issue is not caused by JShield, but by Selenium.
+#  So until there is a proper fix, we IGNORE the Plugins and mimeTypes tests in Chrome.
 
 
 ## Expected values for default level 0 of JShelter.
@@ -78,10 +80,10 @@ level0 = TestedValues(
     time={'value': 'REAL VALUE',
           'accuracy': 'EXACTLY'},
     plugins={'count': {BrowserType.FIREFOX: 0,
-                       BrowserType.CHROME: 'IGNORE'},
+                       BrowserType.CHROME: 'IGNORE'}, # See note above
              'value': {BrowserType.FIREFOX: 'EMPTY',
-                       BrowserType.CHROME: 'IGNORE'}},
-    mimeTypes='IGNORE',
+                       BrowserType.CHROME: 'IGNORE'}}, # See note above
+    mimeTypes='IGNORE', # See note above
     get_channel= 'REAL VALUE',
     copy_channel= 'REAL VALUE',
     byte_time_domain= 'REAL VALUE',
@@ -144,10 +146,10 @@ level1 = TestedValues(
     time={'value': 'REAL VALUE',
           'accuracy': 1},
     plugins={'count': {BrowserType.FIREFOX: 0,
-                       BrowserType.CHROME: 'IGNORE'},
+                       BrowserType.CHROME: 'IGNORE'}, # See note above
              'value': {BrowserType.FIREFOX: 'EMPTY',
-                       BrowserType.CHROME: 'IGNORE'}},
-    mimeTypes='IGNORE',
+                       BrowserType.CHROME: 'IGNORE'}}, # See note above
+    mimeTypes='IGNORE', # See note above
     get_channel= 'REAL VALUE',
     copy_channel= 'REAL VALUE',
     byte_time_domain= 'REAL VALUE',
@@ -210,10 +212,10 @@ level2 = TestedValues(
     time={'value': 'REAL VALUE',
           'accuracy': 1},
     plugins={'count': {BrowserType.FIREFOX: 0,
-                       BrowserType.CHROME: 'IGNORE'},
+                       BrowserType.CHROME: 'IGNORE'}, # See note above
              'value': {BrowserType.FIREFOX: 'EMPTY',
-                       BrowserType.CHROME: 'IGNORE'}},
-    mimeTypes='IGNORE',
+                       BrowserType.CHROME: 'IGNORE'}}, # See note above
+    mimeTypes='IGNORE', # See note above
     get_channel= 'SPOOF VALUE',
     copy_channel= 'SPOOF VALUE',
     byte_time_domain= 'SPOOF VALUE',
@@ -266,10 +268,10 @@ level3 = TestedValues(
     time={'value': 'REAL VALUE',
           'accuracy': 1.0},
     plugins={'count': {BrowserType.FIREFOX: 0,
-                       BrowserType.CHROME: 0},
+                       BrowserType.CHROME: 0}, # Modified by JShelter
              'value': {BrowserType.FIREFOX: 'EMPTY',
-                       BrowserType.CHROME: 'EMPTY'}},
-    mimeTypes='EMPTY',
+                       BrowserType.CHROME: 'EMPTY'}}, # Modified by JShelter
+    mimeTypes='EMPTY', # Modified by JShelter
     get_channel= 'SPOOF VALUE',
     copy_channel= 'SPOOF VALUE',
     byte_time_domain= 'SPOOF VALUE',

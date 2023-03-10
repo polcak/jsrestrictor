@@ -30,6 +30,8 @@ import time
 from web_browser_type import BrowserType
 
 from configuration import get_config
+from web_browser_shared import get_shared_browser
+from web_browser_type import BrowserType
 
 ## Setup method - it is run before time tests execution starts.
 #
@@ -344,6 +346,7 @@ def test_OneBufferMoreViews(browser):
     """)
     check(browser, "typedArray[0]", "dataView.getInt8(0)")
 
+@pytest.mark.xfail(get_shared_browser().type == BrowserType.CHROME, reason="See https://pagure.io/JShelter/webextension/issue/80")
 def test_worker_basic(browser):
     browser.execute_script('var worker = new Worker("");')
     check(browser, "worker.onmessage", "null")
@@ -355,13 +358,12 @@ def test_worker_basic(browser):
     check(browser, "typeof worker.removeEventListener", '"function"')
     check(browser, "typeof worker.terminate", '"function"')
 
-@pytest.mark.xfail
+@pytest.mark.xfail(reason="Unfortunately current implementation of Worker does not implement EventTarget interface")
 def test_worker_implements_dispatchEvent(browser):
-    """ Unfortunately current implementation of Worker does not implement EventTarget interface """
     browser.execute_script('var worker = new Worker("");')
     check(browser, "typeof worker.dispatchEvent", '"function"')
 
-@pytest.mark.xfail
+@pytest.mark.xfail(reason="See https://pagure.io/JShelter/webextension/issue/80")
 def test_worker_check_communication_handler(browser):
     """ There is a bug in both Firefox and Chrome implementation of Worker wrapper. """
     browser.execute_script("""\
@@ -381,7 +383,7 @@ def test_worker_check_communication_handler(browser):
     time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
     check(browser, "multiply_result", 40)
 
-@pytest.mark.xfail
+@pytest.mark.xfail(reason="See https://pagure.io/JShelter/webextension/issue/80")
 def test_worker_error(browser):
     browser.execute_script("""\
         var worker_error = 0;\
@@ -402,7 +404,7 @@ def test_worker_error(browser):
     time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
     check(browser, "worker_error", -1)
 
-@pytest.mark.xfail
+@pytest.mark.xfail(reason="See https://pagure.io/JShelter/webextension/issue/80")
 def test_worker_check_communication_listener(browser):
     """ There is a bug in both Firefox and Chrome implementation of Worker wrapper. """
     browser.execute_script("""\
@@ -441,7 +443,7 @@ def test_worker_terminate(browser):
     time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
     check(browser, "multiply_result", 0)
 
-@pytest.mark.xfail
+@pytest.mark.xfail(reason="See https://pagure.io/JShelter/webextension/issue/80")
 def test_worker_dispatchEvent(browser):
     """ Unfortunately current implementation of Worker does not implement EventTarget interface """
     browser.execute_script("""\
