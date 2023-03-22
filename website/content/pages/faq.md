@@ -18,8 +18,8 @@ in the current state fulfils the goal of giving you control over your browser an
 We believe that the `Recommended` level changes your fingerprint so that typical fingerprinting scripts will fail to correlate your cross-origin activities and activities on the same origin during
 different browser sessions. See the answers below for possible caveats.
 
-Test yourself on common fingerprinting testers that the `Strict` level considerably lowers the
-information about your computer:
+Test your browser on common fingerprinting testers. Then use the `Strict` level
+and test again to see that it considerably lowers the information about your computer.:
 
 * [JShelter test page](https://polcak.github.io/jsrestrictor/test/test.html)
 * [Am I unique?](https://amiunique.org/)
@@ -242,7 +242,7 @@ Moreover, a malicious code may be only a part of resources; the rest of the reso
 necessary for correct page functionality. We believe that web extensions like NoScript Security
 Suite and uMatrix origin are good but do not protect the user from accidentally allowing malicious
 code. The NoScript Suite main developer is a part of the JShelter team, and JShelter shares a lot of
-code with JShelter.
+code with NoScript.
 
 We suggest that you use other extensions like [Cookie
 AutoDelete](https://github.com/Cookie-AutoDelete/Cookie-AutoDelete),
@@ -250,7 +250,7 @@ AutoDelete](https://github.com/Cookie-AutoDelete/Cookie-AutoDelete),
 extensions perform an important step in making your browser leak as little data as possible, and all
 these protections are out-of-scope of JShelter.
 
-#### I am using Firefox Fingerprinting Protection (resistFingerprining). Should I continue? Should I turn Firefox Fingerprinting Protection on?
+#### I am using Firefox Fingerprinting Protection (resistFingerprinting). Should I continue? Should I turn Firefox Fingerprinting Protection on?
 
 Mozilla is working on integrating fingerprinting resisting techniques [from
 Torbrowser](https://bugzilla.mozilla.org/show_bug.cgi?id=1329996) to Firefox (Firefox Fingerprinting
@@ -316,7 +316,7 @@ linkable), or you want to create your own level.
 No. We currently do not have a consistent method that spoofs fonts reliably. If you are concerned
 about font enumeration, you can track the relevant JShelter [issue](https://pagure.io/JShelter/webextension/issue/60).
 
-If you are using Firefox and want your fonts hidden consistently, activate resistFingerprining (see
+If you are using Firefox and want your fonts hidden consistently, activate resistFingerprinting (see
 above).
 
 #### I have a unique fingerprint? Some properties wrapped by JShelter return random values.
