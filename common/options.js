@@ -117,7 +117,7 @@ function prepare_level_config(action_descr, params) {
 			browser.storage.sync.get("custom_levels").then(updateLevels.bind(null, new_level));
 		}
 		else {
-			alert("Please provide all required fields: ID, Name, and Decription");
+			alert("Please provide all required fields: ID, Name, and Description");
 		}
 	});
 	document.getElementById("cancel").addEventListener("click", function(e) {
