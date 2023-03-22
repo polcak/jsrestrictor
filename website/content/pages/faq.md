@@ -250,7 +250,7 @@ AutoDelete](https://github.com/Cookie-AutoDelete/Cookie-AutoDelete),
 extensions perform an important step in making your browser leak as little data as possible, and all
 these protections are out-of-scope of JShelter.
 
-#### I am using Firefox Fingerprinting Protection (resistFingerprining). Should I continue? Should I turn Firefox Fingerprinting Protection on?
+#### I am using Firefox Fingerprinting Protection (resistFingerprinting). Should I continue? Should I turn Firefox Fingerprinting Protection on?
 
 Mozilla is working on integrating fingerprinting resisting techniques [from
 Torbrowser](https://bugzilla.mozilla.org/show_bug.cgi?id=1329996) to Firefox (Firefox Fingerprinting
@@ -316,7 +316,7 @@ linkable), or you want to create your own level.
 No. We currently do not have a consistent method that spoofs fonts reliably. If you are concerned
 about font enumeration, you can track the relevant JShelter [issue](https://pagure.io/JShelter/webextension/issue/60).
 
-If you are using Firefox and want your fonts hidden consistently, activate resistFingerprining (see
+If you are using Firefox and want your fonts hidden consistently, activate resistFingerprinting (see
 above).
 
 #### I have a unique fingerprint? Some properties wrapped by JShelter return random values.
