@@ -40,11 +40,10 @@ function prepare_level_config(action_descr, params) {
 	var unsupported_apis = wrapping_groups.groups.reduce((acc, group) =>
 		group.wrappers.reduce(find_unsupported_apis, acc), "");
 	if (unsupported_apis !== "") {
-		unsupported_apis = `<div class="unsupported_api"><p>Your browser does not support:</p>${unsupported_apis}</div>`;
+		unsupported_apis = `<div class="unsupported_api">Note that for fingerprintability prevention, JShelter does not wrap objects that are not defined. Your browser does not support: ${unsupported_apis}</div>`;
 	}
 	var fragment = document.createRange().createContextualFragment(`
 <div>
-		<p>Note that for fingerprintability prevention, JShelter does not wrap objects that are not defined.</p>
 	${unsupported_apis}
 	<div>
 	  <h2>${action_descr}</h2>
