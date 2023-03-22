@@ -64,6 +64,7 @@ function prepare_level_config(action_descr, params) {
 
 		<div id="tweaks"></div>
 		
+		<button id="cancel" class="jsr-button">Cancel</button>
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
 </div>`);
@@ -119,6 +120,9 @@ function prepare_level_config(action_descr, params) {
 		else {
 			alert("Please provide all required fields: ID, Name, and Decription");
 		}
+	});
+	document.getElementById("cancel").addEventListener("click", function(e) {
+		document.location = "options.html";
 	});
 }
 
