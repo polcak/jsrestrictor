@@ -185,7 +185,7 @@ function show_existing_level(levelsEl, level) {
 	current.addEventListener("mouseenter", function() {
 		if (level !== default_level.level_id) {
 			lev = levels[level];
-			update_level_details("Details of level " + lev.level_text + " (not applied by default)", lev);
+			update_level_details(lev.level_text + " level (currently not applied by default), details:", lev);
 		}
 	});
 	current.addEventListener("mouseout", update_level_details_default);
@@ -218,7 +218,7 @@ function update_level_details(heading, level) {
 }
 
 function update_level_details_default() {
-	update_level_details("Details of the default level " + default_level.level_text, default_level);
+	update_level_details(default_level.level_text + " level (currently applied by default), details:", default_level);
 }
 
 function insert_levels() {
