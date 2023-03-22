@@ -246,3 +246,7 @@ fieldset {
 #current-level-tweaks-detail {
 	flex: 2;
 }
+
+form {
+	margin: 2em;
+}

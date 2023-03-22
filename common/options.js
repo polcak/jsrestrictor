@@ -44,7 +44,6 @@ function prepare_level_config(action_descr, params) {
 	}
 	var fragment = document.createRange().createContextualFragment(`
 <div>
-	${unsupported_apis}
 	<div>
 	  <h2>${action_descr}</h2>
 	</div>
@@ -66,6 +65,7 @@ function prepare_level_config(action_descr, params) {
 		<button id="cancel" class="jsr-button">Cancel</button>
 		<button id="save" class="jsr-button">Save custom level</button>
 	</form>
+	${unsupported_apis}
 </div>`);
 	configuration_area_el.appendChild(fragment);
 
