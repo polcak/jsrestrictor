@@ -18,8 +18,8 @@ in the current state fulfils the goal of giving you control over your browser an
 We believe that the `Recommended` level changes your fingerprint so that typical fingerprinting scripts will fail to correlate your cross-origin activities and activities on the same origin during
 different browser sessions. See the answers below for possible caveats.
 
-Test yourself on common fingerprinting testers that the `Strict` level considerably lowers the
-information about your computer:
+Test your browser on common fingerprinting testers. Then use the `Strict` level
+and test again to see that it considerably lowers the information about your computer.:
 
 * [JShelter test page](https://polcak.github.io/jsrestrictor/test/test.html)
 * [Am I unique?](https://amiunique.org/)
