@@ -126,7 +126,7 @@ function prepare_level_config(action_descr, params) {
 }
 
 function edit_level(id) {
-	prepare_level_config("Edit level " + escape(id), levels[id]);
+	prepare_level_config("Edit level " + escape(levels[id].level_text), levels[id]);
 }
 
 function restore_level(id, level_params) {
