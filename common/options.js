@@ -148,7 +148,7 @@ function show_existing_level(levelsEl, level) {
 			${escape(levels[level].level_text)}
 		</button>
 		<span></span>
-		<p class="hidden_help_text"><label for="${escape(currentId)}">${escape(levels[level].level_description)}</label></p>
+		<p class="hidden_help_text"><label class="level_button_descr" for="${escape(currentId)}">${escape(levels[level].level_description)}</label></p>
 		</li>`);
 	levelsEl.appendChild(fragment);
 	var lielem = document.getElementById(`li-${level}`); // Note that FF here requires unescaped ID

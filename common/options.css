@@ -204,6 +204,10 @@ section#sect-devel {
 button.level {
 	min-width: 80%;
 }
+label.level_button_descr {
+	display: inline-block;
+	width: 80%;
+}
 
 #levels-storage-text {
 	width: 100%;
