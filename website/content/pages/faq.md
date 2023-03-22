@@ -242,7 +242,7 @@ Moreover, a malicious code may be only a part of resources; the rest of the reso
 necessary for correct page functionality. We believe that web extensions like NoScript Security
 Suite and uMatrix origin are good but do not protect the user from accidentally allowing malicious
 code. The NoScript Suite main developer is a part of the JShelter team, and JShelter shares a lot of
-code with JShelter.
+code with NoScript.
 
 We suggest that you use other extensions like [Cookie
 AutoDelete](https://github.com/Cookie-AutoDelete/Cookie-AutoDelete),
