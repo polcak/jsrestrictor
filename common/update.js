@@ -432,6 +432,7 @@ async function checkAndSaveConfig(conf) {
 			(!(conf.__default__ in [0,1,2,3]) && !(conf.__default__ in conf.custom_levels))) {
 		conf.__default__ = "2";
 	}
+	checkExistAndType("domains", "object", {});
 	checkExistAndType("nbsWhitelist", "object", {});
 	checkExistAndType("nbsSettings", "object", {});
 	checkSettingRange("nbsSettings", "blocking", [0,1], 1);
