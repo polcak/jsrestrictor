@@ -434,6 +434,10 @@ async function installUpdate() {
 			}
 			item.version = 6.6;
 		}
+		if (item.version < 6.7) {
+			await browser.storage.sync.remove("whitelistedHosts"); // Renamed in 6.2 but not removed
+			item.version = 6.7;
+		}
 
 
 
