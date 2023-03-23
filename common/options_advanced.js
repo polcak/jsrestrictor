@@ -34,9 +34,9 @@ document.getElementById("levels-storage-load").addEventListener("click", functio
 	load_config_to_text();
 });
 
-document.getElementById("levels-storage-save").addEventListener("click", function() {
+document.getElementById("levels-storage-save").addEventListener("click", async function() {
 	try {
-		checkAndSaveConfig(JSON.parse(document.getElementById("levels-storage-text").value));
+		await checkAndSaveConfig(JSON.parse(document.getElementById("levels-storage-text").value));
 	}
 	catch (e) {
 		alert("The configuration is not valid.");
@@ -46,6 +46,6 @@ document.getElementById("levels-storage-save").addEventListener("click", functio
 });
 
 document.getElementById("levels-storage-reset").addEventListener("click", async function() {
-	checkAndSaveConfig({});
+	await checkAndSaveConfig({});
 	load_config_to_text();
 });
