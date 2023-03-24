@@ -21,7 +21,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-function installUpdate() {
+async function installUpdate() {
 	/**
 	 * 0.3+ storage
 	 *  {
@@ -44,7 +44,7 @@ function installUpdate() {
 	 *
 	 *
 	 */
-	browser.storage.sync.get(null).then(function (item) {
+		let item = await browser.storage.sync.get(null);
 		if (!item.hasOwnProperty("version") || (item.version < 2.1)) {
 			browser.storage.sync.clear();
 			console.log("All JavaScript Restrictor data cleared! Unfortunately, we do not migrate settings from versions bellow 0.3.");
@@ -434,25 +434,27 @@ function installUpdate() {
 			}
 			item.version = 6.6;
 		}
+		if (item.version < 6.7) {
+			await browser.storage.sync.remove("whitelistedHosts"); // Renamed in 6.2 but not removed
+			item.version = 6.7;
+		}
 
 
 
-		browser.storage.sync.set(item).then(() => {
-			// origin of update.js must be recognized (background script vs. options page)
-			if (typeof fpdLoadConfiguration === "function") {
-				fpdLoadConfiguration();
-			}
-			else {
-				browser.runtime.sendMessage({purpose: "fpd-load-config"});
-			}
-			if (typeof nbsLoadConfiguration === "function") {
-				nbsLoadConfiguration();
-			}
-			else {
-				browser.runtime.sendMessage({purpose: "nbs-load-config"})
-			}
-		});
-	});
+		await browser.storage.sync.set(item);
+		// origin of update.js must be recognized (background script vs. options page)
+		if (typeof fpdLoadConfiguration === "function") {
+			fpdLoadConfiguration();
+		}
+		else {
+			browser.runtime.sendMessage({purpose: "fpd-load-config"});
+		}
+		if (typeof nbsLoadConfiguration === "function") {
+			nbsLoadConfiguration();
+		}
+		else {
+			browser.runtime.sendMessage({purpose: "nbs-load-config"})
+		}
 }
 browser.runtime.onInstalled.addListener(installUpdate);
 // fallback - populate storage with valid data (if onInstalled won't fire)
@@ -479,6 +481,7 @@ async function checkAndSaveConfig(conf) {
 			(!(conf.__default__ in levels))) {
 		conf.__default__ = "2";
 	}
+	checkExistAndType("domains", "object", {});
 	checkExistAndType("nbsWhitelist", "object", {});
 	checkExistAndType("nbsSettings", "object", {});
 	checkSettingRange("nbsSettings", "blocking", [0,1], 1);
@@ -489,5 +492,5 @@ async function checkAndSaveConfig(conf) {
 	checkSettingRange("fpdSettings", "notifications", [0,1], 1);
 	checkSettingRange("fpdSettings", "detection", [0,1], 0);
 	await browser.storage.sync.set(conf);
-	installUpdate();
+	await installUpdate();
 }

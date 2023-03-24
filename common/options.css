@@ -131,7 +131,7 @@ section.content {
 #levels-list li, #domain-level-list li {
 	list-style-type: none;
 	margin: 0px;
-	padding: 0.5em;
+	padding-top: 0.5em;
 }
 
 .level {
@@ -201,6 +201,14 @@ section#sect-devel {
 	display: none;
 }
 
+button.level {
+	min-width: 80%;
+}
+label.level_button_descr {
+	display: inline-block;
+	width: 80%;
+}
+
 #levels-storage-text {
 	width: 100%;
 	height: 50ex;
@@ -214,7 +222,7 @@ fieldset {
 	display: none;
 }
 
-#levels-config #levels-list input[type=range] {
+#current-level-tweaks input[type=range] {
 	pointer-events:none; /* https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events */
 }
 
@@ -225,4 +233,20 @@ fieldset {
 
 .protection-title > .shield-onoff-label {
 	padding-right: 10px;
+}
+
+#jss-shield-settings {
+	display: flex;
+}
+
+.jss-shield-settings-item {
+	flex: 1;
+}
+
+#current-level-tweaks-detail {
+	flex: 2;
+}
+
+form {
+	margin: 2em;
 }
