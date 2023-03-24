@@ -2,6 +2,22 @@
 title: Release history
 ---
 
+## 0.11.2
+
+* bugfix: chack domains property in advanced options (introduced in 0.10)
+* bugfix: remove unused config.whitelistedHosts
+* bugfix: Fix several typos in the text in options
+* bugfix: Do not use hard-coded level in the advanced options validity checks of configuration
+* feature: Add option to reset configuration to advanced options
+* enhancement: Reimplement JSS configuration in option to improve understandability
+* enhancement: Fix race conditions in displaying stored configuration after changes through options
+* enhancement: Add undo to advanced options
+* enhancement: Warn users from tweaking their settings dur to higher risks of reidentification via browser fingerprinting
+* enhancement: Add button to cancel the addition of a new level, update the error texts
+* website: little improvements and clarifications
+
+Most of the changes were influenced by the Plain Text UX review
+
 ## 0.11.1
 
 * NBS: do not show notifications for hostnames resolving to undefined IP addresses as described in FAQ (broken in 0.11 that does not show notifications only for undefined IP addresses, but shows notifications for hostnames resolving to undefined IP addresses)
