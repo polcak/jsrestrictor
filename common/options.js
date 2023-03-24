@@ -47,6 +47,13 @@ function prepare_level_config(action_descr, params) {
 	<div>
 	  <h2>${action_descr}</h2>
 	</div>
+	<p class="alert">
+			We do not recommend creating own levels and
+			changing configuration if you are concerned about browser fingerprinting. Please read
+			<a href="https://jshelter.org/faq/">FAQ</a> and our <a
+				 href="https://arxiv.org/abs/2204.01392">paper</a>. By diverging from the configuration of
+			 other users, you make your re-identification easier.
+	</p>
 	<form>
 
 		<!-- Metadata -->
