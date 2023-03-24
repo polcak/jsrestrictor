@@ -145,6 +145,10 @@ section.content {
 	font-weight: bold;
 }
 
+.undo a, .alert a {
+	color: var(--attention-color);
+}
+
 .alert{
 	padding: 1em;
 }
