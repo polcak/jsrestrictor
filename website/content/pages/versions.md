@@ -2,6 +2,13 @@
 title: Release history
 ---
 
+## 0.11.3
+
+* bugfix: Remove race condition that reset default level to Recommended from custom levels. Unfortunatelly, affected users need to manualy restore the dafault level as JShelter cannot distinguish affected users automatically.
+* bugfix: Deactivate NBS in the presence of HTTP proxy in Firefox, see pagure issues #41 and #85 for more deatils.
+* enhancement: Fix empty spaces to improve the look of the option page
+
+
 ## 0.11.2
 
 * bugfix: chack domains property in advanced options (introduced in 0.10)
