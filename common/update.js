@@ -457,10 +457,10 @@ function installUpdate() {
 browser.runtime.onInstalled.addListener(installUpdate);
 // fallback - populate storage with valid data (if onInstalled won't fire)
 browser.storage.sync.get(null).then((item) => {
-	checkAndSaveConfig(item);
+	checkAndSaveConfig(item, false); // level might not be loaded by this time
 });
 
-async function checkAndSaveConfig(conf) {
+async function checkAndSaveConfig(conf, check_default = true) {
 	let checkSettingRange = (module, setting, range, defValue) => {
 		if (!(conf[module][setting] in range)) {
 			conf[module][setting] = defValue;
@@ -476,7 +476,7 @@ async function checkAndSaveConfig(conf) {
 	checkExistAndType("fpDetectionOn", "boolean", false);
 	checkExistAndType("custom_levels", "object", {});
 	if (!("__default__" in conf) || typeof(conf.__default__) !== "string" ||
-			(!(conf.__default__ in levels))) {
+			(!(conf.__default__ in levels) && check_default)) {
 		conf.__default__ = "2";
 	}
 	checkExistAndType("nbsWhitelist", "object", {});
