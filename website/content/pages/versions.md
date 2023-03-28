@@ -4,8 +4,8 @@ title: Release history
 
 ## 0.11.3
 
-* bugfix: Remove race condition that reset default level to Recommended from custom levels. Unfortunatelly, affected users need to manualy restore the dafault level as JShelter cannot distinguish affected users automatically.
-* bugfix: Deactivate NBS in the presence of HTTP proxy in Firefox, see pagure issues #41 and #85 for more deatils.
+* bugfix: Remove race condition that reset default level to Recommended from custom levels. Unfortunately, affected users need to manually restore the default level as JShelter cannot distinguish affected users automatically.
+* bugfix: Deactivate NBS in the presence of HTTP proxy in Firefox, see pagure issues #41 and #85 for more details.
 * enhancement: Fix empty spaces to improve the look of the option page
 
 
@@ -148,13 +148,13 @@ Most of the changes were influenced by the Plain Text UX review
 
 ## 0.6.4
 
-* Fix wrapping of `navigator.plugins` in Firefox. This regression appeared in 0.6 in the generated code resticted by `apply_if` condition.
+* Fix wrapping of `navigator.plugins` in Firefox. This regression appeared in 0.6 in the generated code restricted by `apply_if` condition.
 
 ## 0.6.3
 
 * Make sure that dynamically created iframes are not vulnerable to leaking unwrapped APIs (Update NSCL)
 * Fix FPD when run in a limited environment
-* Do not interfere with time explicitely given to Date object
+* Do not interfere with time explicitly given to Date object
 * Fix Network Boundary Shield name in the popup
 
 ## 0.6.2
@@ -199,7 +199,7 @@ Most of the changes were influenced by the Plain Text UX review
 	for Github issue #133).
 * Bugfix: Improve IPv6 handling in NBS
 * Bugfix (Chromium-based browsers): Fix per-domain level options/settings page (Github issue #147)
-* Do not display NBS notifactions when accessing 0.0.0.0 and :: (workaround
+* Do not display NBS notifications when accessing 0.0.0.0 and :: (workaround
 	for Github issue #125)
 * Improve NBS description in the option/settings page.
 * Display level names in the pop up to improve usability.
@@ -233,7 +233,7 @@ Most of the changes were influenced by the Plain Text UX review
  * We use NSCL to wrap APIs in iframes and workers
    * It is no longer possible to access unwrapped functions from iframes and workers (Pagure issue #2, Github issue #56)
 * Ignore trailing '.' in domain names when selecting appropriate custom level.
-* Do not freeze wrappers to prevent fingeprintability of the users of JShelter. We wrap the correct function
+* Do not freeze wrappers to prevent fingerprintability of the users of JShelter. We wrap the correct function
 	in the prototype chain instead.
 * navigator.getGamepads() wrapper added
 * navigator.activeVRDisplays() and navigator.xr wrappers added
