@@ -78,6 +78,10 @@ button:hover {
 	color: var(--button-text-hover-color);
 }
 
+#levels-list button {
+	margin: 0.5ex;
+}
+
 h1, h2, h3, h4, h5, h6 {
 	color: var(--title-color);
 }
