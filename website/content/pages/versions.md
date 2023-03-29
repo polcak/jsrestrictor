@@ -2,6 +2,11 @@
 title: Release history
 ---
 
+## 0.11.4
+
+* bugfix: allow tweaking all levels except L0 in the popup (pagure issue 89)
+* bugfix: clarify and fix the description of changes to NBS in 0.11.3 (pagure issue 41)
+
 ## 0.11.3
 
 * bugfix: Remove race condition that reset default level to Recommended from custom levels. Unfortunately, affected users need to manually restore the default level as JShelter cannot distinguish affected users automatically.
