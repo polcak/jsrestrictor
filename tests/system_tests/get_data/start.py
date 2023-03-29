@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -34,7 +34,7 @@ from web_browser_type import BrowserType
 from test_type import TestType
 
 
-## If JSR is active and set to level 3, close JS alerts if any is open.
+## If JShelter is active and set to level 3, close JS alerts if any is open.
 def confirm_alerts_if_open(my_driver, with_jsr, time):
     if with_jsr and Config.jsr_level == 3:
         i=0
@@ -48,7 +48,7 @@ def confirm_alerts_if_open(my_driver, with_jsr, time):
                 i += 1
 
 
-## If JSR is active and set to level 3, open page without XMLHttpRequest and clear logs from previous loaded page.
+## If JShelter is active and set to level 3, open page without XMLHttpRequest and clear logs from previous loaded page.
 def clear_console_logs(my_driver, with_jsr):
         if with_jsr and Config.jsr_level == 3:
             my_driver.get('https://polcak.github.io/jsrestrictor/test/test.html')

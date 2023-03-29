@@ -40,6 +40,7 @@ function installUpdate() {
 	 *      }
 	 *	  whitelistedHosts: {} // associative array of hosts that are removed from http protection control (hostname => boolean)
 	 *	  requestShieldOn: {} // Boolean, if it's TRUE or undefined, the http request protection is turned on,  if it's FALSE, the protection si turned off
+	 *	  fpDetectionOn: {} // Boolean, if it's TRUE, the fingerprint detection is turned on,  if it's FALSE or undefined, the protection si turned off
 	 *
 	 *
 	 */
@@ -175,18 +176,58 @@ function installUpdate() {
 			}
 			item.version = 2.9;
 		}
-		if (item.version < 2.10) {
+		if (item.version < 3) {
 			for (level in item["custom_levels"]) {
 				let l = item["custom_levels"][level];
 				if (l.gamepads) {
 					l.vr = true;
 				}
 			}
-			item.version = 2.10;
+			item.version = 3;
+		}
+		if (item.version < 4) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.hardware || l.battery || l.windowname) {
+					l.physical_environment = true;
+					l.physical_environment_emulateStationaryDevice = true;
+				}
+			}
+			item.version = 4;
+		}
+		if (item.version < 5) {
+			item.fpDetectionOn = false;
+			item.version = 5;
 		}
 		browser.storage.sync.set(item);
 	});
 }
 browser.runtime.onInstalled.addListener(installUpdate);
 
-
+function checkAndSaveConfig(conf) {
+	if (!("version" in conf && typeof(conf.version) === "number")) {
+		conf.version = 2.1;
+	}
+	if (!("requestShieldOn" in conf) || typeof(conf.requestShieldOn) !== "booloean") {
+		conf.requestShieldOn = true;
+	}
+	if (!("fpDetectionOn" in conf) || typeof(conf.fpDetectionOn) !== "booloean") {
+		conf.fpDetectionOn = false;
+	}
+	if (!("custom_levels" in conf) || typeof(conf.custom_levels) !== "object") {
+		conf.custom_levels = {};
+	}
+	if (!("__default__" in conf) || typeof(conf.__default__) !== "string" ||
+			(!(conf.__default__ in [0,1,2,3]) && !(conf.__default__ in conf.custom_levels))) {
+		conf.__default__ = "2";
+	}
+	if (!("domains" in conf) || typeof(conf.domains) !== "object") {
+		conf.domains = {};
+	}
+	if (!("whitelistedHosts" in conf) || typeof(conf.whitelistedHosts) !== "object") {
+		conf.whitelistedHosts = {};
+	}
+	browser.storage.sync.set(conf);
+	installUpdate();
+	return "OK";
+}

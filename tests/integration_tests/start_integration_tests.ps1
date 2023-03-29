@@ -53,7 +53,7 @@ else {
 	}
 }
 
-# Automatically set JSR project root directory path and path to Firefox ESR default profile in configuration.py.
+# Automatically set JShelter project root directory path and path to Firefox ESR default profile in configuration.py.
 (Get-Content .\testing\configuration.py).replace("<<JSR_project_root_directory_path>>", $JSRPath.ToString().replace('\', '/')).replace("<<Firefox_ESR_default_profile>>", $FFProfile.ToString().replace('\', '/')) | Set-Content .\testing\configuration.py -Encoding "UTF8"
 
 # Start testing if everything ok.

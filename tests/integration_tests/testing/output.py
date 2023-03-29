@@ -34,7 +34,7 @@ def print_testing_header(browser_type, jsr_level):
     print()
     print("--------------------------------------------------------------------------")
     print("--------------------------------------------------------------------------")
-    print("---------------  TESTING <" + browser_type.name + ", JSR level = " + str(jsr_level) + "> STARTED   --------------" + extra_dash)
+    print("---------------  TESTING <" + browser_type.name + ", JShelter level = " + str(jsr_level) + "> STARTED   --------------" + extra_dash)
     print()
 
 
@@ -43,7 +43,7 @@ def print_testing_footer(browser_type, jsr_level):
     if browser_type == BrowserType.CHROME:
         extra_dash = '-'
     print()
-    print("---------------  TESTING <" + browser_type.name + ", JSR level = " + str(jsr_level) + "> FINISHED  --------------" + extra_dash)
+    print("---------------  TESTING <" + browser_type.name + ", JShelter level = " + str(jsr_level) + "> FINISHED  --------------" + extra_dash)
     print("--------------------------------------------------------------------------")
     print("--------------------------------------------------------------------------")
     print()

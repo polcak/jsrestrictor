@@ -133,7 +133,7 @@ Selenium and Mozilla Firefox with the proxy-based intercepting Web API Manager.
 
 ![image]({attach}/images/crawling-architecture.png)
 
-### The impact on JSR
+### The impact on JShelter
 
 Once we have data from our crawling study, we will compare the data with [another recent study](https://github.com/uiowa-irl/FP-Inspector/blob/master/Data/potential_fingerprinting_APIs.md). As already mentioned, we want to develop a fingerprinting detection based on  counting the number of different
 APIs employed by a page, especially APIs that are not frequently used for benign purposes. When

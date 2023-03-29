@@ -1,6 +1,7 @@
 /*
  * SPDX-FileCopyrightText: 2021-2019 Libor Polčák
  * SPDX-FileCopyrightText: 2021-2019 Martin Timko
+ * SPDX-FileCopyrightText: 2022-2021 Marek Saloň 
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -127,12 +128,12 @@ section.content {
 
 #levels-list li, #domain-level-list li {
 	list-style-type: none;
-	margin: 7px;
-	padding: 7px;
+	margin: 0px;
+	padding: 0.5em;
 }
 .level {
-	margin: 7px;
-	padding: 7px;
+	margin: 0px;
+	padding: 0.5em;
 	font-weight: bold;
 	border: 2px solid grey;
 	border-radius: 5px;
@@ -150,22 +151,38 @@ section.content {
 	color:  black;
 }
 
-.undo{
+.undo, .alert{
 	background-color: red;
 	color: white;
+}
+
+.alert{
+	padding: 1em;
 }
 
 .hidden{
 	visibility: hidden;
 }
 
-#proxy-protection-config
+.hidden_descr{
+	display: none;
+}
+
+.help {
+	margin-left: 1em;
+	background-color: blue;
+	color: white;
+	border-radius: 10px;
+	font-weight: bold;
+}
+
+#proxy-protection-config, #fingerprinting-protection-config
 {
 	display:flex;
 	flex-direction: column;
 }
 
-#whitelist-select
+#nbs-whitelist-select, #fpd-whitelist-select
 {
 	width:40%;
 	max-width: 400px;
@@ -175,7 +192,7 @@ section.content {
 	margin-top: 3px;
 }
 
-#whitelist-input
+#nbs-whitelist-input, #fpd-whitelist-input
 {
 	width: 39.5%;
 	max-width: 394px;
@@ -270,4 +287,8 @@ section#sect-devel {
 #levels-storage-text {
 	width: 100%;
 	height: 50ex;
+}
+
+fieldset {
+	border: 0;
 }

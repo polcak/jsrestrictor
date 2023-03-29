@@ -21,19 +21,19 @@
 //
 
 /**
- * \defgroup FPD Fingerprinting Detection
+ * \defgroup FPD Fingerprinting Detector
  *
- * \brief Fingerprinting Detection (FPD) is a module that detects browser fingerprint extraction and prevents
+ * \brief Fingerprinting Detector (FPD) is a module that detects browser fingerprint extraction and prevents
  * its sharing. To learn more about Browser Fingerprinting topic, see study "Browser Fingerprinting: A survey" available
  * here: https://arxiv.org/pdf/1905.01051.pdf
  *
- * The FPD module uses JSR wrapping technique to inject logic that allows log API calls and accesses for every visited web page
- * and its frames. Logged JS APIs can be specified in wrappers-lvl_X.json file, where X represents corresponding JSR level.
+ * The FPD module uses wrapping technique to inject logic that allows log API calls and accesses for every visited web page
+ * and its frames. Logged JS APIs can be specified in wrappers-lvl_X.json file, where X represents corresponding JShelter level.
  * 
- * Detection of fingeprinting activity is based on chosen heuristics that can be defined in form of API groups. Groups represents
+ * Detector of fingeprinting activity is based on chosen heuristics that can be defined in form of API groups. Groups represents
  * a set of APIs that have similar but specific purpose. Access to group is triggered when a certain amount APIs is accessed. 
  * Hierarchy of groups creates a tree structure, where access to root group means fingerprinting activity. Groups can be configured in
- * groups-lvl_X.json file, where X represents corresponding JSR level.
+ * groups-lvl_X.json file, where X represents corresponding JShelter level.
  *
  * The FPD evaluate API groups with every request made in scope of certain browser tab. When FPD detects fingerprinting activity, 
  * blocking of subsequent requests is issued. Local browsing data of fingerprinting origin are cleared to prevent caching extracted 
@@ -43,7 +43,7 @@
 
  /** \file
  *
- * \brief This file is part of Fingerprinting Detection (FPD) and contains API groups evaluation logic. File also contains
+ * \brief This file is part of Fingerprinting Detector (FPD) and contains API groups evaluation logic. File also contains
  * event listeners used for API logging, requests blocking and tabs management. 
  *
  * \ingroup FPD
@@ -53,6 +53,11 @@
  * FPD enable flag. Evaluate only when active.
  */
  var fpDetectionEnabled;
+
+ /**
+ * Associtive array of hosts, that are currently among trusted ones.
+ */
+var fpdWhitelist = {};
 
 /**
  * API logs database of following structure:
@@ -89,6 +94,11 @@ var fpGroups = {};
  */
 var unsupportedWrappers = {};
 
+/**
+ *  Array containing names of unsupported wrappers that should be treated like supported ones during groups evaluation.
+ */
+var exceptionWrappers = ["CSSStyleDeclaration.prototype.fontFamily"];
+
 /// \cond (Exclude this section from the doxygen documentation. If this section is not excluded, it is documented as a separate function.)
 // fill up fpGroups object with necessary data for evaluation
 for (let groupsLevel in fp_levels.groups) {
@@ -97,8 +107,16 @@ for (let groupsLevel in fp_levels.groups) {
 }
 // load enabled flag from storage
 browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
-	fpDetectionEnabled = result.fpDetectionOn;
+	if (result.fpDetectionOn != undefined)
+		fpDetectionEnabled = result.fpDetectionOn;
 });
+
+// load fpd whitelist from storage
+browser.storage.sync.get(["fpdWhitelist"]).then(function(result) {
+	if (result.fpdWhitelist != undefined)
+		fpdWhitelist = result.fpdWhitelist;
+});
+
 // take care of unsupported resources for cross-browser behaviour uniformity
 balanceUnsupportedWrappers();
 /// \endcond
@@ -160,8 +178,8 @@ function balanceUnsupportedWrappers() {
 			// access nested object in browser's "window" object using path string
 			var resolvedPath = resourceSplitted["path"].split('.').reduce((o, p) => o ? o[p] : undefined, window);
 
-			// if resource or resource path is undefined -> resource unsupported (exception: makes sense only with disabled force wrapping)
-			if (!(resolvedPath && resourceSplitted["name"] in resolvedPath) && !wrapper.force_wrapping) {
+			// if resource or resource path is undefined -> resource unsupported && no exception for the resource
+			if (!(resolvedPath && resourceSplitted["name"] in resolvedPath) && !exceptionWrappers.includes(wrapper.resource)) {
 				// store wrapper object to "unsupportedWrappers" object
 				unsupportedWrappers[level].push(wrapper);
 
@@ -207,15 +225,17 @@ function correctGroupCriteria(rootGroup, effectedGroups, level) {
 				// rootGroup is now also effected and added to "effectedGroups" with deleted subgroup
 				effectedGroups[rootGroup.name] = effectedGroups[rootGroup.name] || [];
 				effectedGroups[rootGroup.name].push(rootGroup.groups[groupIdx].name);
-				
-				//delete subgroup from rootGroup
-				rootGroup.groups.splice(groupIdx, 1);
 			}
 
 			// rootGroup is effected because at least one of its child was effected too
 			if (Object.keys(effectedGroups).includes(rootGroup.groups[groupIdx].name)) {
 				effectedGroups[rootGroup.name] = effectedGroups[rootGroup.name] || [];		
 			}
+		}
+
+		// remove deleted subgroups from original group object
+		if (effectedGroups[rootGroup.name]) {
+			rootGroup.groups = rootGroup.groups.filter((x) => (!effectedGroups[rootGroup.name].includes(x.name)))
 		}
 	}
 
@@ -321,6 +341,9 @@ function evaluateGroups(tabId) {
 
 	// get level for tab url to determine valid group criteria
 	var level = getCurrentLevelJSON(url)[0].level_id;
+
+	// check if the level exists within FPD configuration, if not use default FPD configuration
+	level = fp_levels.groups[level] ? level : "default";
 
 	// getting root group name as a start point for recursive evaluation
 	var rootGroup = fp_levels.groups[level] ? fp_levels.groups[level].name : undefined;
@@ -557,34 +580,104 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 /**
  * Event listener that listen for content script messages.
  * Messages contain wrappers logging data that are stored into fpDb object.
- * Also listen for popup messages to update FPD enabled state.
+ * Also listen for popup messages to update FPD state and whitelist.
  *
  * \param callback Function that stores recieved data into fpDb.
  */
 browser.runtime.onMessage.addListener(function (record, sender) {
-	if (record && record.purpose == "fp-detection") {
-		// check objects existance => if do not exist, create new one
-		fpDb[record.resource] = fpDb[record.resource] || {};
-		fpDb[record.resource][sender.tab.id] = fpDb[record.resource][sender.tab.id] || {};
-		fpDb[record.resource][sender.tab.id][record.type] = fpDb[record.resource][sender.tab.id][record.type] || {};
-		
-		// object that contains access counters
-		const fpCounterObj = fpDb[record.resource][sender.tab.id][record.type];
-		const argsStr = record.args.join();
-		fpCounterObj["args"] = fpCounterObj["args"] || {};
-		
-		// increase counter for accessed arguments
-		fpCounterObj["args"][argsStr] = fpCounterObj["args"][argsStr] || 0;
-		fpCounterObj["args"][argsStr] += 1;
-		
-		// increase counter for total accesses
-		fpCounterObj["total"] = fpCounterObj["total"] || 0;
-		fpCounterObj["total"] += 1;
-	}
-	else if (record && record.purpose == "fpd-state-change") {
-		fpDetectionEnabled = record.enabled;
+	if (record) {
+		switch (record.purpose) {
+			case "fp-detection":
+				// check objects existance => if do not exist, create new one
+				fpDb[record.resource] = fpDb[record.resource] || {};
+				fpDb[record.resource][sender.tab.id] = fpDb[record.resource][sender.tab.id] || {};
+				fpDb[record.resource][sender.tab.id][record.type] = fpDb[record.resource][sender.tab.id][record.type] || {};
+				
+				// object that contains access counters
+				const fpCounterObj = fpDb[record.resource][sender.tab.id][record.type];
+				const argsStr = record.args.join();
+				fpCounterObj["args"] = fpCounterObj["args"] || {};
+				
+				// increase counter for accessed arguments
+				fpCounterObj["args"][argsStr] = fpCounterObj["args"][argsStr] || 0;
+				fpCounterObj["args"][argsStr] += 1;
+				
+				// increase counter for total accesses
+				fpCounterObj["total"] = fpCounterObj["total"] || 0;
+				fpCounterObj["total"] += 1;
+				break;
+			case "fpd-state-change":
+				browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
+					fpDetectionEnabled = result.fpDetectionOn;
+				});
+				break;
+			case "add-fpd-whitelist":
+				// obtain current hostname and whitelist it
+				var currentHost = record.url;
+				fpdWhitelist[currentHost] = true;
+				browser.storage.sync.set({"fpdWhitelist": fpdWhitelist});
+				break;
+			case "remove-fpd-whitelist":
+				// obtain current hostname and remove it form whitelist
+				var currentHost = record.url;
+				delete fpdWhitelist[currentHost];
+				browser.storage.sync.set({"fpdWhitelist": fpdWhitelist});
+				break;
+			case "update-fpd-whitelist":
+				// update current fpdWhitelist from storage
+				browser.storage.sync.get(["fpdWhitelist"]).then(function(result) {
+					fpdWhitelist = result.fpdWhitelist;
+				});
+				break;
+			case "fpd-fetch-hits": {
+				let {tabId} = record;
+				// filter by tabId;
+				let hits = Object.create(null);
+				for ([resource, tabRecords] of Object.entries(fpDb)) {
+					let total = 0;
+					if (tabRecords[tabId]) {
+						for (let stat of Object.values(tabRecords[tabId])) { // by type
+							total += stat.total;
+						}
+					}
+					hits[resource] = total;
+				}
+				return Promise.resolve(hits);
+			}
+		}
 	}
 });
+
+/**
+ *
+ * The listener sends message response which contains information if the current site is whitelisted or not.
+ * 
+ * \param record Receives full message.
+ * \param sender Sender of the message.
+ */
+browser.runtime.onMessage.addListener(function (record, sender) {
+	// message came from popup,js, asking whether is this site whitelisted
+	if (record.purpose == "fpd-whitelist-check") {
+		return Promise.resolve(isFpdWhitelisted(record.url));
+	}
+});
+
+/**
+ * Check if the hostname or any of it's domains is whitelisted.
+ *
+ * \param hostname Any hostname (subdomains allowed).
+ *
+ * \returns TRUE when domain (or subdomain) is whitelisted, FALSE otherwise.
+ */
+function isFpdWhitelisted(hostname) {
+	var domains = extractSubDomains(hostname);
+	for (var domain of domains) {
+		if (fpdWhitelist[domain] != undefined) {
+			return true;
+		}
+	}
+	return false;
+}
 
 /**
  * The function that creates notification and informs user about fingerprinting activity.
@@ -625,6 +718,9 @@ function refreshDb(tabId) {
 	for (let resource in fpDb) {
 		if (fpDb[resource].hasOwnProperty(tabId)) {
 			delete fpDb[resource][tabId];
+		}
+		if (Object.keys(fpDb[resource]).length == 0) {
+			delete fpDb[resource];
 		}
 	}
 	if (latestEvals[tabId]) {
@@ -680,8 +776,8 @@ function cancelCallback(requestDetails) {
 		refreshDb(requestDetails.tabId);
 	}
 
-	// if actualWeight of root group is higher than 0 => suspicious activity
-	if (fpDetectionEnabled && evaluateGroups(requestDetails.tabId)) {
+	// if FPD enabled for the site and actualWeight of root group is higher than 0 => suspicious activity
+	if (isFpdOn(requestDetails.tabId) && evaluateGroups(requestDetails.tabId)) {
 		// get url of tab asociated with this request
 		var tabUrl = availableTabs[requestDetails.tabId] ? availableTabs[requestDetails.tabId].url : undefined;
 
@@ -740,4 +836,23 @@ function cancelCallback(requestDetails) {
 	return {
 		cancel: false
 	};
+}
+
+/**
+ * The function that returns FPD setting for given url.
+ *
+ * \param tabId Tab identifier for which FPD setting is needed.
+ * 
+ * \returns Boolean value TRUE if FPD is on, otherwise FALSE.
+ */
+
+function isFpdOn(tabId) {
+	if (!availableTabs[tabId]) {
+		return false;
+	}
+	let url = wwwRemove(new URL(availableTabs[tabId].url).hostname);
+	if (fpDetectionEnabled && !isFpdWhitelisted(url)) {
+		return true;
+	}
+	return false;
 }

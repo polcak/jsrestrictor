@@ -1,4 +1,32 @@
-Title: Release history
+---
+title: Release history
+---
+
+## 0.6.3
+
+* Make sure that dynamically created iframes are not vulnerable to leaking unwrapped APIs (Update NSCL)
+* Fix FPD when run in a limited environment
+* Do not interfere with time explicitely given to Date object
+* Fix Network Boundary Shield name in the popup
+
+## 0.6.2
+
+* Fix required permissions for Chromium-based browsers - webNavigation is not needed
+
+## 0.6.1
+
+* Disable FPD by default, you are welcome to opt-in
+* Provide access to advanced options from the main options page
+* Fix update script to migrate to new configuration
+
+## 0.6
+
+* New protection: Fingerprint detector, see the blogpost for explanation.
+* Physical environment wrapper group added. It contains `Sensor`, `Magnetometer`, `Accelerometer`, `LinearAccelerationSensor`, `GravitySensor` wrappers. Some readings might be inconsistent. `Gyroscope` and `Orientation` sensors will be a part of a future release.
+* It is possible to import/export configuration (Github issue #159).
+* Improved accessibility of the pop up and option pages.
+* Bugfix: Fix double injection of some wrappers. For example, this solves regression in Geolocation
+	wrapper introduced in 0.5.
 
 ## 0.5.5
 
@@ -57,7 +85,7 @@ Title: Release history
  * We use NSCL to wrap APIs in iframes and workers
    * It is no longer possible to access unwrapped functions from iframes and workers (Pagure issue #2, Github issue #56)
 * Ignore trailing '.' in domain names when selecting appropriate custom level.
-* Do not freeze wrappers to prevent fingeprintability of the users of JSR. We wrap the correct function
+* Do not freeze wrappers to prevent fingeprintability of the users of JShelter. We wrap the correct function
 	in the prototype chain instead.
 * navigator.getGamepads() wrapper added
 * navigator.activeVRDisplays() and navigator.xr wrappers added
@@ -129,7 +157,7 @@ ide-Channel Attacks](https://misc0110.net/web/files/jszero.pdf)
 *  Network boundary shield prevents web pages to use the browser as a proxy between local network and the public Internet. See the [Force Point report](https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf) for an example of the attack. The protection encapsulates the WebRequest API, so it captures all outgoing requests.
 * Allow multiple custom levels
 * Do not modify DOM of displayed pages (the modifications were detectable by the page scripts and may
-	reveal that the user is running JSR)
+	reveal that the user is running JShelter)
 * Canvas fingerprinting: originally, only `toDataURL` was blocked. The extension now blocks `CanvasRenderingContext2D.prototype.getImageData` and `HTMLCanvasElement.prototype.toBlob`.
 * Block additionaly methods to get performance data.
 * Unfortunately, we do not migrate old settings as the levels were redesigned and several features

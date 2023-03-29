@@ -1,6 +1,6 @@
 # Instruction how to run FPD tests
 
-Fingerprinting detection (FPD) tests for web browser extension Javascript Restrictor verify that required JavaScript APIs
+Fingerprinting detection (FPD) tests for web browser extension JShelter verify that required JavaScript APIs
 are wrapped and all specified accesses to them are properly logged according to evaluating heuristics.
 
 # SET UP TEST ENVIRONMENT
@@ -9,7 +9,7 @@ are wrapped and all specified accesses to them are properly logged according to 
 
 These programs and tools are required to be installed:
 * [PHP](https://www.php.net/downloads/)
-* Browser supported by JSR:
+* Browser supported by JShelter:
     * [Google Chrome](https://www.google.com/chrome/)
     * [Mozilla Firefox](https://www.mozilla.org/en-US/firefox/new/)
 * [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (only for Windows)
@@ -22,12 +22,12 @@ These programs and tools are required to be installed:
         1. Open `about:debugging` in the URL bar.
         2. Click `This Firefox`.
         3. Click `Load Temporary Add-on`.
-		4. Import the `firefox_JSR.zip` archive.
+		4. Import the `jshelter_firefox.zip` archive.
 	* Chromium-based browsers:
 		1. Open `chrome://extensions`.
 		2. Enable developper mode.
 		3. Click `Load unpacked`.
-		4. Import the `chrome_JSR/` directory.
+		4. Import the `jshelter_chrome/` directory.
 3. Visit `localhost:8000` and choose test from menu.
 4. **IMPORTANT:** After testing, use *Ctrl+C* in Terminal/WSL to close testing server and revert extension files.
 
@@ -64,4 +64,4 @@ You can add custom test scripts to describe more complex scenarios with these si
     * Body of the test function wrap into try-catch construction (do not count access if exception occurs).
     * Call method `addWrapper(wrappers, *api_name_string*, *access_type_string*, *access_number_int*)` at the end of the function test body for every accessed API that should be wrapped and counted for testing.
 
-Example of custom test script is available [here](/tests/custom.js).
+Example of custom test script is available in *tests/fpd_tests/tests/custom.js*.

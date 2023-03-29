@@ -38,13 +38,14 @@ from configuration import get_config
 
 ## Browser object represents one browser in which tests run. E.g.: chrome, firefox
 #
-#  Class Browser contains method definition for creating browser, installing JSR to browser and changing JSR level.
+#  Class Browser contains method definition for creating browser, installing JShelter to browser and
+#  changing JShelter level.
 #  Browser object has information about itself - browser type, current jsr level, real tested values of browser etc.
 #  Methods are sometimes divided based on browser type - same operations are made differently in different browser.
 #  Created browser object offers uniform way how to work with every browser.
 class Browser:
 
-    ## manually create testing level for Brave like fingerprinting protection in JSR options
+    ## manually create testing level for Brave like fingerprinting protection in JShelter options
     def define_test_level(self):
         sleep(1)
         self.driver.get(self._jsr_options_page)
@@ -72,7 +73,7 @@ class Browser:
         select_gl.select_by_index(3)
         self.driver.find_element_by_id('save').click()
 
-    ## Find URL of JSR option page after JSR was installed to browser.
+    ## Find URL of JShelter option page after JShelter was installed to browser.
     def find_options_jsr_page_url(self):
         sleep(1)
         # KNOWN ISSUE: Tab in browser is sometimes not switched by this command.
@@ -121,14 +122,14 @@ class Browser:
             self.driver = webdriver.Chrome(executable_path=get_config("chrome_driver"), options=options)
             self.find_options_jsr_page_url()
 
-    ## Get current level of JSR in browser.
+    ## Get current level of JShelter in browser.
     @property
     def jsr_level(self):
         return self.__jsr_level
 
-    ## Set current level of JSR in browser.
+    ## Set current level of JShelter in browser.
     #
-    # To set JSR level is needed to go to JSR option page and select given default level.
+    # To set JShelter level is needed to go to JShelter option page and select given default level.
     @jsr_level.setter
     def jsr_level(self, level):
         self.driver.get(self._jsr_options_page)

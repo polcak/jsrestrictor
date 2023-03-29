@@ -1,7 +1,7 @@
 # Instruction how to run system tests
 
-System tests for web browser extension Javascript Restrictor (JSR) automatically checks how
-JSR affets tested websites.
+System tests for web browser extension JShelter automatically checks how
+JShelter affets tested websites.
 
 It is necessary to partially set up manually a test environment before the first test run!
 

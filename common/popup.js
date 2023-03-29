@@ -5,6 +5,7 @@
  *  \author Copyright (C) 2019  Libor Polcak
  *  \author Copyright (C) 2020  Pavel Pohner
  *  \author Copyright (C) 2021  Marek Salon
+ *  \author Copyright (C) 2022  Giorgio Maone
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -24,7 +25,9 @@
 //
 
 var site; // "https://www.example.com" from current tab will become "example.com"
-
+var pageConfiguration = {};
+var hits;
+var current_level;
 /**
  * Enable the refresh page option.
  */
@@ -49,7 +52,224 @@ function changeActiveLevel(activeEl) {
 	showRefreshPageOption();
 }
 
-async function init() {
+/**
+ * Control the state of the Refresh button
+ */
+function enableRefreshIfNeeded() {
+	let pageLevel = pageConfiguration.currentLevel;
+
+	let level4comp = ({level_id, tweaks}) => JSON.stringify({level_id, tweaks});
+
+	let needsRefresh = !pageLevel ||
+		level4comp(pageLevel) !== level4comp(current_level);
+
+	if (needsRefresh) {
+		showRefreshPageOption();
+	}
+}
+
+/**
+ * Save level settings for current page, show correct button
+ */
+function modify_level(level, levelButton) {
+	if (level) {
+		current_level = level;
+		saveDomainLevels();
+	  if (levelButton) {
+			changeActiveLevel(levelButton);
+		}
+		update_level_info();
+		update_tweaks();
+	}
+}
+
+/**
+ * Load levels and add level setting buttons
+ */
+function add_level_buttons() {
+	var selectEl = document.getElementById("level-select");
+	function addButton(level) {
+		let b = document.createElement("button");
+		b.id = `select-${level.level_id}`;
+		b.className = "level level_control";
+		b.textContent = level.level_id;
+	  b.title = level.level_text;
+		return selectEl.appendChild(b);
+	}
+	// Add default level button
+	addButton({level_id: "DEFAULT", level_text: `Default level (${default_level.level_id})`})
+	.addEventListener("click", ev => {
+		delete domains[site];
+		modify_level(default_level, ev.target);
+	});
+	// Load built-in and custom levels
+	for (let level_id in levels) {
+		let level = levels[level_id];
+		addButton(level).addEventListener("click", function (ev) {
+			domains[site] = {
+				level_id: level.level_id,
+			};
+			modify_level(level, ev.target);
+		});
+	}
+	let  currentEl = document.getElementById(`select-${current_level.is_default ? "DEFAULT" : current_level.level_id}`);
+	if (currentEl !== null) {
+		currentEl.classList.add("active");
+	}
+}
+
+
+function update_level_info() {
+	document.getElementById("level-text").textContent = current_level.level_text;
+	document.getElementById("level-description").textContent = ` - ${current_level.level_description}`;
+}
+
+function get_current_tweaks() {
+	function defaultTweaks() {
+		let tt = {}
+		let tlev_id = current_level.level_id;
+		for (let g of wrapping_groups.groups) {
+			tt[g.id] = tlev_id; // FIXME this code suppose that each group has the same number of levels as the extension itself, the level should hold this information
+		}
+		return tt;
+	}
+	return Object.assign(defaultTweaks(), current_level.tweaks || {});
+}
+
+function create_group_descriptors(option_map) {
+	let tweakEntries = Object.entries(get_current_tweaks()).map(([group_id, tlev_id]) => {
+			let group = option_map[group_id];
+			let label = group.label || group.name;
+			group.groupHits = 0;
+			for (let wrapper of group.wrappers) {
+				if (hits[wrapper]) {
+					group.groupHits += hits[wrapper];
+				}
+			}
+			return { group_id, tlev_id, label, group, toString() { return this.label } };
+		}
+	);
+	return tweakEntries;
+}
+
+function sort_group_descriptors(tweakEntries) {
+	return tweakEntries.sort(function (firstObj, secondObj) {
+		let firstGr = firstObj.group;
+		let secondGr = secondObj.group;
+		return secondGr.groupHits - firstGr.groupHits;
+	});
+}
+
+function add_tweak_row(tweaksContainer, option_map, group_id, tlev_id, label, group) {
+	let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
+	tweakRow.querySelector("label").textContent = label;
+	let groupHits = group.groupHits;
+	if (groupHits >= 999) {
+		groupHits = "1000 or more";
+	}
+	tweakRow.querySelector(".hits").textContent = groupHits;
+
+	let tlevUI = tweakRow.querySelector(".tlev");
+	let status = tweakRow.querySelector(".status");
+	let updateStatus = lid => {
+		let l = levels[lid];
+		if (l[group_id] === true) {
+			status.innerHTML = "<strong>ON</strong> ";
+			let optionsDes = document.createElement("em");
+			let prefix = `${group_id}_`;
+			let choices = [];
+			for (let optId of Object.keys(l).filter(k => k.startsWith(prefix))) {
+				let val = l[optId];
+				let opt = option_map[optId];
+				let des = opt.options && opt.options.length ? option_map[`${optId}_${val}`].description : val && opt.description || "";
+				if (des) choices.push(des);
+			}
+			if (choices.length) {
+				optionsDes.append(` - ${choices.join(" / ")}`);
+				status.appendChild(optionsDes);
+			}
+		} else {
+			status.innerHTML = "OFF";
+		}
+	}
+	updateStatus(tlev_id);
+  tweakRow.querySelector(".description").textContent = group.description;
+	let more = tweakRow.querySelector(".more");
+	let less = tweakRow.querySelector(".less");
+	let longDescription = group.description2;
+	if (!longDescription || longDescription.length === 0) {
+		less.remove();
+		more.remove();
+	} else {
+		more.onclick = function() {
+			let parent = document.createElement("div");
+			for (let line of longDescription) {
+				parent.appendChild(document.createElement("p")).textContent = line;
+			}
+			more.replaceWith(parent);
+			return false;
+	  }
+		less.onclick = function() {
+			this.previousElementSibling.replaceWith(more);
+			return false;
+		}
+	}
+
+	tlevUI.value = tlevUI.nextElementSibling.value = parseInt(tlev_id);
+	tlevUI.onchange = () => {
+		if (!current_level.tweaks) current_level.tweaks = {};
+		updateStatus(current_level.tweaks[group_id] = tlevUI.nextElementSibling.value = tlevUI.value);
+		domains[site] = current_level;
+		saveDomainLevels();
+		enableRefreshIfNeeded();
+	}
+	tweaksContainer.appendChild(tweakRow);
+}
+
+function create_tweaks_html(tweaksContainer) {
+	tweaksContainer.innerHTML = "";
+	tweaksContainer.appendChild(document.getElementById("tweak-head").content);
+	let {option_map} = wrapping_groups;
+	let tweakEntries = sort_group_descriptors(create_group_descriptors(option_map));
+
+	for (let { group_id, tlev_id, label, group} of tweakEntries) {
+		add_tweak_row(tweaksContainer, option_map, group_id, tlev_id, label, group);
+	}
+	document.body.classList.add("tweaking");
+}
+
+function update_tweaks() {
+	let tweaksContainer = document.getElementById("tweaks");
+	document.body.classList.remove("tweaking");
+	let tweakBtn = document.getElementById("btn-tweak");
+	tweakBtn.disabled = true;
+
+	if (current_level.tweaks && Object.keys(current_level.tweaks).length) {
+		create_tweaks_html(tweaksContainer);
+		tweakBtn.disabled = true;
+	}
+	else if (parseInt(current_level.level_id)) {
+		tweakBtn.disabled = false;
+		tweakBtn.onclick = function() {
+			create_tweaks_html(tweaksContainer);
+			tweakBtn.disabled = true;
+		};
+	}
+}
+
+/**
+ * Fill the content of the JS Shield settings
+ */
+function fill_jsshield(msg) {
+	current_level = msg;
+	enableRefreshIfNeeded();
+
+	add_level_buttons();
+	update_level_info();
+	update_tweaks();
+}
+
+async function init_jsshield() {
   // get the site of current tab
 	site = await getCurrentSite();
 	// abort per-site options if it can't be accessed
@@ -59,108 +279,29 @@ async function init() {
 
 	// fill the popup
 	var port_to_background = browser.runtime.connect({name:"port_from_popup"});
-	var current_level = { level_id: "?" };
-	port_to_background.onMessage.addListener(function(msg) {
-		current_level = msg;
-		var selectEl = document.getElementById("level-select");
-		function addButton(level) {
-			let b = document.createElement("button");
-			b.id = `select-${level.level_id}`;
-			b.className = "level level_control";
-			b.textContent = level.level_id;
-		  b.title = level.level_text;
-			return selectEl.appendChild(b);
-		}
-		addButton({level_id: "DEFAULT", level_text: `Default level (${default_level.level_id})`})
-		.addEventListener("click", ev => {
-			delete domains[site];
-		 	update(default_level, ev.target);
-		});
-		for (let level_id in levels) {
-			let level = levels[level_id];
-			addButton(level).addEventListener("click", ev => {
-				domains[site] = {
-					level_id: level.level_id,
-				};
-				update(level, ev.target);
-			});
-		}
-		let  currentEl = document.getElementById(`select-${current_level.is_default ? "DEFAULT" : current_level.level_id}`);
-		if (currentEl !== null) {
-			currentEl.classList.add("active");
-		}
+	current_level = { level_id: "?" };
 
-		update();
-
-		function update(level, element) {
-			if (level) {
-				current_level = level;
-				saveDomainLevels();
-			  if (element) changeActiveLevel(element);
-			}
-			document.getElementById("level-text").textContent = current_level.level_text;
-			document.getElementById("level-description").textContent = ` - ${current_level.level_description}`;
-			let tweaks = document.getElementById("tweaks");
-			document.body.classList.remove("tweaking");
-			let tweakBtn = document.getElementById("btn-tweak");
-			function initTweaks() {
-				tweaks.innerHTML = "";
-				tweaks.appendChild(document.getElementById("tweak-head").content);
-				for (let [group, tlev_id] of Object.entries(current_level.tweaks)) {
-					let tweakRow = document.getElementById("tweak-row").content.cloneNode(true);
-					tweakRow.querySelector("label").textContent = group;
-					let tlevUI = tweakRow.querySelector(".tlev");
-					tlevUI.value = tlevUI.nextElementSibling.value = parseInt(tlev_id);
-					tlevUI.onchange = () => {
-						current_level.tweaks[group] = tlevUI.nextElementSibling.value = tlevUI.value;
-						saveDomainLevels();
-					}
-					tweaks.appendChild(tweakRow);
-				}
-				tweakBtn.disabled = true;
-				document.body.classList.add("tweaking");
-			}
-			tweakBtn.disabled = true;
-			if (current_level.tweaks) {
-				initTweaks();
-			} else if (parseInt(current_level.level_id)) {
-				tweakBtn.disabled = false;
-				tweakBtn.onclick = function() {
-					let tt = {}, tlev_id = current_level.level_id;
-					for (let g of wrapping_groups.groups) {
-						tt[g.id] = tlev_id;
-					}
-					current_level.tweaks = tt;
-					initTweaks();
-				};
-			}
-		}
-	});
+	port_to_background.onMessage.addListener(fill_jsshield);
 }
 
 // Open options in a new tab when clicking on the icon
-document.getElementById('controls').addEventListener('click', function (e) {
-	browser.runtime.openOptionsPage();
-	window.close();
-});
+document.getElementById("global-settings").addEventListener('click', function(e) {
+	  browser.runtime.openOptionsPage();
+	  window.close();
+  });
 
-window.addEventListener("load", function() {
-	if (!site) return;
- 	load_fp_switch();
-	load_on_off_switch();
-});
-
-document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200)});
-document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_fp_detection, 200)});
-
-/// Load switch FPD state from storage
-function load_fp_switch()
-{
-	browser.storage.sync.get(["fpDetectionOn"]).then(function(result)
-	{
-		document.getElementById("fpd-switch").checked = result.fpDetectionOn
-	});
+for (let widget of document.querySelectorAll('.controls[type=checkbox]')) {
+	let key = `controls-${widget.id}-checked`;
+	widget.checked = localStorage.getItem(key) === 'true';
+	(widget.onclick = () => {
+		let {checked} = widget;
+		widget.parentElement.classList.toggle("toggled", checked);
+		localStorage.setItem(key, checked);
+	})();
 }
+
+document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_whitelist, 200, "nbs")});
+document.getElementsByClassName("slider")[1].addEventListener("click", () => {setTimeout(control_whitelist, 200, "fpd")});
 
 async function getCurrentSite() {
 	if (typeof site !== "undefined") return site;
@@ -168,22 +309,32 @@ async function getCurrentSite() {
 		// Check whether content scripts are allowed on the current tab:
 		// if an exception is thrown, showing per-site settings is pointless,
 		// because we couldn't operate here anyway
-		await browser.tabs.executeScript({code: ""});
+		[pageConfiguration = {}] = await browser.tabs.executeScript({code:
+			`typeof pageConfiguration === "object" && pageConfiguration || {};`});
 
 		let [tab] = await browser.tabs.query({currentWindow: true, active: true});
+		hits = await browser.runtime.sendMessage({purpose: 'fpd-fetch-hits', tabId: tab.id});
 		// Obtain and normalize hostname
 		return site = wwwRemove(new URL(tab.url).hostname);
 	} catch (e) {
+		if (e.toString() === "Error: Missing host permission for the tab") {
+			await async_sleep(200); // recursively call itself, this exception occurs in Firefox during an inactive tab activation (tab page was not reload after the browser start)
+			return await getCurrentSite();
+		}
 		return site = null;
 	}
 }
 
 /// Load switch state from storage for current site
-async function load_on_off_switch()
+async function load_on_off_switch(prefix)
 {
-	let {requestShieldOn} = await browser.storage.sync.get(["requestShieldOn"]);
-	let container = document.getElementById("http_shield_whitelist");
-	if (requestShieldOn === false)
+	var flagName;
+	if (prefix == "nbs") flagName = "requestShieldOn";
+	if (prefix == "fpd") flagName = "fpDetectionOn";
+
+	let result = await browser.storage.sync.get([flagName]);
+	let container = document.getElementById(prefix + "_whitelist");
+	if (result[flagName] === false)
 	{
 		container.classList.add("off");
 	}
@@ -191,32 +342,44 @@ async function load_on_off_switch()
 	{
 		container.classList.remove("off");
 		//Ask background whether is this site whitelisted or not
-		let response = await browser.runtime.sendMessage({message: "is current site whitelisted?", site});
-		document.getElementById("shield-switch").checked = response !== "current site is whitelisted";
+		if (prefix == "nbs")
+		{
+			let response = await browser.runtime.sendMessage({message: "is current site whitelisted?", site});
+			document.getElementById(prefix + "-switch").checked = response !== "current site is whitelisted";
+		}
+		if (prefix == "fpd")
+		{
+			let response = await browser.runtime.sendMessage({purpose: "fpd-whitelist-check", url: site});
+			document.getElementById(prefix + "-switch").checked = !response;
+		}
 	}
 }
 
 /// Event handler for On/off switch
-async function control_whitelist()
+async function control_whitelist(prefix)
 {
-	let message = `${document.getElementById("shield-switch").checked ? "remove" : "add"} site to whitelist`;
-	if (document.getElementById("switch-checkbox").checked) {
-		message = "remove site from whitelist";
+	let site = await getCurrentSite();
+	var message;
+	if (document.getElementById(prefix + "-switch").checked) {
+		if (prefix == "nbs") message = "remove site from whitelist";
+		if (prefix == "fpd") message = "remove-fpd-whitelist";
 	}
 	else {
-		message = "add site to whitelist";
+		if (prefix == "nbs") message = "add site to whitelist";
+		if (prefix == "fpd") message = "add-fpd-whitelist";
 	}
-	browser.runtime.sendMessage({message, site});
+
+	if (prefix == "nbs") browser.runtime.sendMessage({message, site});
+	if (prefix == "fpd") browser.runtime.sendMessage({purpose: message, url: site});
 	showRefreshPageOption();
 }
 
-/// Event handler for On/off switch
-function control_fp_detection()
-{
-	var checkbox = document.getElementById("fpd-switch");
-	browser.storage.sync.set({fpDetectionOn: checkbox.checked});
-	browser.runtime.sendMessage({purpose:"fpd-state-change", enabled: checkbox.checked});
-	showRefreshPageOption();
-}
+addEventListener("DOMContentLoaded", async () => {
+	await init_jsshield();
+	if (!site) {
+		return;
+	}
+	load_on_off_switch("nbs");
+	load_on_off_switch("fpd");
+});
 
-init();

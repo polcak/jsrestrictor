@@ -10,13 +10,17 @@ Title: Credits
 
 **Zbyněk Červinka** developed a [proof-of-concept version](https://github.com/cervinka-zbynek/masters-thesis) of this extension as a part of his [master's thesis](https://www.fit.vut.cz/study/thesis/21274/) (in Czech).
 
-**Martin Timko** developed first public versions upto [0.2.1](https://github.com/polcak/jsrestrictor/releases/tag/0.2.1) as a part of his [master's thesis](https://www.fit.vut.cz/study/thesis/21824/). He also ported the extension to Chrome and Opera.
+**Martin Timko** developed first public versions upto [0.2.1](https://pagure.io/JShelter/webextension/archive/0.2.1/webextension-0.2.1.zip) as a part of his [master's thesis](https://www.fit.vut.cz/study/thesis/21824/). He also ported the extension to Chrome and Opera.
 
 **Pavel Pohner** developed the Network Boundary Scanner as a part of his master's thesis.
 
 **Pater Horňák** ported functionality from [Chrome Zero](https://github.com/IAIK/ChromeZero) as a part of his bachelor thesis. He also provided several small fixes to the code base.
 
 **Matúš Švancár** ported Farbling anti-fingerprinting measures from the Brave browser as a part of his [master's thesis](https://www.fit.vut.cz/study/thesis/23310/).
+
+**Marek Saloň** created Fingerprint Detector as a part of his [master's thesis](https://www.fit.vut.cz/study/thesis-file/23645/23645.pdf) and later improved the detector.
+
+**Radek Hranický** created sensor API wrappers.
 
 We thank all other minor contributors of the project that are not listed in this section.
 

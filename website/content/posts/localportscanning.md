@@ -1,5 +1,5 @@
 ---
-title: How JavaScript Restrictor prevents other parties from sniffing on your local applications?
+title: How JShelter prevents other parties from sniffing on your local applications?
 date: 2021-06-15 09:00
 ---
 
@@ -7,7 +7,7 @@ We recently found a [blog post](https://blog.nem.ec/2020/05/24/ebay-port-scannin
 ThreatMetrix Inc. (a part of LexisNexis) scanning locally open ports for about 30,000 web
 sites, including eBay. The figure below shows that a browser tries to connect to ports commonly used for remote access to the computer (e.g., RDesktop, VNC, TeamViewer) and other applications.
 
-![A screenshot of the browser being used as a proxy to scan locally open ports](localportscanning/1_captured_traffic.png)
+![A screenshot of the browser being used as a proxy to scan locally open ports]({attach}/images/portscan-1_captured_traffic.png)
 
 The obvious question is, what is the reason for such behaviour? The simple answer is security. See
 additional links to [Security Boulevard](https://securityboulevard.com/2020/05/is-ebay-port-scanning-your-pc-probably/), [Avast](https://blog.avast.com/why-is-ebay-port-scanning-my-computer-avast), and [The register](https://www.theregister.com/2020/05/26/ebay_port_scans_your_pc/).
@@ -73,11 +73,11 @@ need to be applied in this case.
 
 ### Network Boundary Shield to the rescue
 
-JSR contains a Network Boundary Shield (NBS) that blocks outgoing browser requests based on the observed behaviour, i.e. a
+JShelter contains a Network Boundary Shield (NBS) that blocks outgoing browser requests based on the observed behaviour, i.e. a
 page hosted on public internet tries to access local URLs.
 NBS just works and cannot be fooled by changes in the URL path, DNS cloaking or other techniques.
 
-![JSR blocks the scan](localportscanning/2_request_blocked.png)
+![JShelter blocks the scan]({attach}/images/portscan-2_request_blocked.png)
 
 Firefox contains DNS API, so NBS works flawlessly. In Chromium-based browsers, the exact blocking
 behaviour depends on how quickly a scanning script can fire the requests and the precise

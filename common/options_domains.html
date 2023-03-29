@@ -5,7 +5,7 @@ SPDX-FileCopyrightText: 2021 2019 Martin Timko
 
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="options.css">
@@ -14,24 +14,26 @@ SPDX-License-Identifier: GPL-3.0-or-later
   <script src="levels.js" type="text/javascript"></script>
   <script src="helpers.js" type="text/javascript" defer></script>
   <script src="options_domains.js" type="text/javascript" defer></script>
+	<title>JShelter options - per domain protection</title>
 </head>
 <body>
 			<section class="logo">
-				<img src="img/icon-128.png" alt="JavaScript Restrictor">
+				<img src="img/icon-128.png" alt="JShelter logo">
 			</section>
 			<nav class="menu">
 				<ul>
-					<li><a href="options.html">Main JSR settings</a></li>
+					<li><a href="options.html">Main JShelter settings</a></li>
 					<li><a href="options_domains.html">Specific domain level configuration</a></li>
+					<li><a href="options_advanced.html">Advanced options</a></li>
 					<li>
 						<p>External links</p>
 						<ul>
 							<li><a href="https://polcak.github.io/jsrestrictor/test/test.html">Test page</a></li>
-							<li><a href="https://polcak.github.io/jsrestrictor/levels.html">Levels</a></li>
-							<li><a href="https://polcak.github.io/jsrestrictor/permissions.html">Permissions</a></li>
-							<li><a href="https://github.com/polcak/jsrestrictor/">Source code</a></li>
-							<li><a href="https://github.com/polcak/jsrestrictor/issues">Open issues</a></li>
-							<li><a href="https://polcak.github.io/jsrestrictor/credits.html">Credits</a></li>
+							<li><a href="https://JShelter.org/levels/">Levels</a></li>
+							<li><a href="https://JShelter.org/permissions/">Permissions</a></li>
+							<li><a href="https://pagure.io/JShelter/webextension/">Source code</a></li>
+							<li><a href="https://pagure.io/JShelter/webextension/issues">Open issues</a></li>
+							<li><a href="https://JShelter.org/credits/">Credits</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -40,7 +42,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 	<section class="content">
 
-    <h1>JavaScript Restrictor</h1>
+    <h1>JShelter</h1>
 
 <section id="configuration_area">
 
@@ -58,8 +60,8 @@ SPDX-License-Identifier: GPL-3.0-or-later
     </form>
     <ul id="domain-level-list">
     </ul>
-    <button id="save-all-domain-levels">Save all</h2>
-    <button id="delete-all-domain-levels">Delete all</h2>
+    <button id="save-all-domain-levels">Save all</button>
+    <button id="delete-all-domain-levels">Delete all</button>
   </div>
 </section>
 

@@ -1,5 +1,5 @@
 #
-#  JavaScript Restrictor is a browser extension which increases level
+#  JShelter is a browser extension which increases level
 #  of security, anonymity and privacy of the user while browsing the
 #  internet.
 #
@@ -29,27 +29,26 @@ from time import sleep
 def switch_NBS_setting(browser):
     browser.driver.get(browser._jsr_options_page.replace("/options.html", "/popup.html"))
     browser.driver.find_elements(By.CLASS_NAME, 'switch')[0].click()
+    sleep(1)
 
 
 def get_NBS_setting(browser):
     browser.driver.get(browser._jsr_options_page.replace("/options.html", "/popup.html"))
-    browser.driver.find_elements(By.CLASS_NAME, 'switch')[0]
-    return(browser.driver.execute_script("return window.getComputedStyle(document.querySelector('.switch .slider'),':before').getPropertyValue('content')"))
+    sleep(1)
+    return(browser.driver.execute_script("return window.getComputedStyle(document.querySelector('#shield-switch + .slider'),':before').getPropertyValue('content')"))
 
 
 ## Test turnning NBS off in popup.
 ## Sleep 0.5 second to changes take effect.
 def test_switching_NBS(browser):
-    NBS_setting_values = ['"YES"', '"NO"']
+    NBS_setting_values = ['"ON"', '"OFF"']
     
     original_setting = get_NBS_setting(browser)
     original_setting_index = NBS_setting_values.index(original_setting)
-    sleep(0.5)
     
     # Range is saing how many times should NBS be switched.
     for i in range(4):
         switch_NBS_setting(browser)
-        sleep(0.5)    
         assert get_NBS_setting(browser) == NBS_setting_values[(i + 1 + original_setting_index) % 2]
     
     # Return original value

@@ -1,5 +1,5 @@
 {
-  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár, Giorgio Maone, Marek Saloň",
+  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár, Giorgio Maone, Marek Saloň, Radek Hranický",
   "background": {
       "scripts": [
         "nscl/lib/browser-polyfill.js",
@@ -35,7 +35,7 @@
       "256": "img/icon-256.png",
       "512": "img/icon-512.png"
     },
-    "default_title": "JavaScript Restrictor",
+    "default_title": "JShelter",
     "default_popup": "popup.html"
   },
   "content_scripts": [
@@ -57,7 +57,7 @@
     }
   ],
   "description": "Extension for increasing security and privacy level of the user.",
-  "homepage_url": "https://polcak.github.io/jsrestrictor/",
+  "homepage_url": "https://JShelter.org",
   "icons": {
     "16": "img/icon-16.png",
     "32": "img/icon-32.png",
@@ -69,7 +69,7 @@
     "512": "img/icon-512.png"
   },
   "manifest_version": 2,
-  "name": "JavaScript Restrictor",
+  "name": "JShelter",
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true
@@ -85,8 +85,8 @@
     "notifications",
     "browsingData"
   ],
-  "short_name": "JSR",
-  "version": "0.5.5",
+  "short_name": "JShelter",
+  "version": "0.6.3",
   "browser_specific_settings": {
     "gecko": {
         "id": "jsr@javascriptrestrictor",
