@@ -21,7 +21,7 @@
 //
 
 var fragment = document.createRange().createContextualFragment(`
-		<p class="alert">Network Boundary Shield is not active if you are using HTTP proxy to prevent DNS leaks of your queries initiated from this computer.</p>
+		<p class="nbs_description">If you are using an HTTP proxy, NBS would protect the local network of the proxy instead of your network as the proxy perfroms the HTTP requests to the destinations. To prevent DNS leaks of your queries initiated from this computer, Network Boundary Shield does not resolve the DNS domains to detect possible cross network boundaries requests. However, Network Boundary Shield protects the local network of the proxy for directly embedded IP addresses. Hence, Network Boundary Shield protects the local network of the proxy from accessing local network only partially.</p>
 			 `);
-var nbs_fieldset = document.querySelector("#proxy-protection-config fieldset");
-nbs_fieldset.parentNode.insertBefore(fragment, nbs_fieldset);
+var last_nbs_description = document.querySelector("#proxy-protection-config .nbs_description:last-of-type");
+last_nbs_description.parentNode.insertBefore(fragment, last_nbs_description);
