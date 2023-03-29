@@ -31,7 +31,9 @@
  * and handle messages (on message event).
  *
  * NBS for Firefox uses the DNS web extension API to resolve domain names. As the domain names are
- * cached and needs to be resolved without NBS, the performance impact should be negligible.
+ * cached and needs to be resolved without NBS, the performance impact should be negligible. The DNS
+ * API is not used for proxied requests to prevent DNS leaks of resolutions that would be initiated
+ * by the DNS proxy. See https://pagure.io/JShelter/webextension/issue/41 for more details.
  */
 
 /**

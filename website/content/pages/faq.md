@@ -415,15 +415,20 @@ Chromium-based browsers even though it is not perfect.
 If you are using a proxy, the attacks that the NBS tries to prevent go to the local network of the
 proxy (but keep in mind that this might not be true for more complex configurations).
 
-NBS in Chromium-based browsers works the same way as it would work without the proxy. NBS likely
-protects the local network of the proxy in that case.
+NBS in Chromium-based browsers works the same way as it would work without the proxy. NBS
+protects the local network of the proxy in that case. Depending on the deployment and exact
+configuration, it may also protect your local network.
 
 NBS in Firefox employs the DNS API that initiates DNS requests. Contextual identities allow users
-to go through a proxy in some tabs and not in others. We decided to deactivate NBS for proxied
+to go through a proxy in some tabs and not in others. We decided not to perform DNS resolution in
+NBS for proxied
 requests. See <a href="https://pagure.io/JShelter/webextension/issue/41">issue 41</a> and <a
 href="https://pagure.io/JShelter/webextension/issue/85">issue 85</a> for more details. We might
-decide to reimplement NBS in Firefox similarly to the Chromium version in the future. If you have
-good arguments for changing the behaviour, please, share with us.
+decide to reimplement NBS in Firefox similarly to the Chromium version in the future.
+Another possible option we might consider in the future is adding a configuration option to
+allow users to opt-in to perform DNS resolution in NBS, which would be useful for users running
+an HTTP proxy in their local network.
+If you have good arguments for changing the behaviour, please, share with us.
 
 #### What is the proper way to cite JShelter in a paper?
 

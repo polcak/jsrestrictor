@@ -260,7 +260,7 @@ function update_tweaks() {
 		popup_tweaks.create_tweaks_html(tweaksContainer);
 		tweakBtn.disabled = true;
 	}
-	else if (parseInt(current_level.level_id)) {
+	else if (current_level.level_id !== "0") {
 		tweakBtn.disabled = false;
 		tweakBtn.onclick = function() {
 			popup_tweaks.create_tweaks_html(tweaksContainer);
