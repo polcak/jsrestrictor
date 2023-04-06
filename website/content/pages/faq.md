@@ -73,6 +73,20 @@ work. To do this, follow these steps:
 1. Click on the `Refresh page` button at the top.
 1. Watch the video.
 
+#### Can I see a JShelter icon next to my navigation bar? I want to interact with the extension easily and do not want to go through settings.
+
+JShelter has a toolbar icon that allows you to open the popup (see below). However, browsers tend
+to hide the icon. If you cannot see a JShelter icon to the right of the bar where you enter URLs.
+Try to:
+
+1. Click on the extension icon (typically looks like a puzzle tile).
+2. Pin Jshelter to the toolbar.
+
+The figure below shows how to accomplish this two steps in Firefox and a Chromium-based browser.
+
+![Pin JShelter to Firefox toolbar]({attach}/images/faq/firefox_pintoolbar.png)
+![Pin JShelter to a Chromium-based browser toolbar]({attach}/images/faq/chromium_pintoolbar.png)
+
 #### I visited a page and it is broken because of JShelter. What should I do?
 
 This happens from time to time. We want to eliminate such pages, but JShelter is not there yet (see
