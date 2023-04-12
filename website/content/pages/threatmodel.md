@@ -18,8 +18,8 @@ not performance heavy, we consider them in the threat model.
 
 We do not have resources to create a bullet-proof solution that eliminates all side-channels. For
 example, we expect that an adversary will be able to detect that something strange is happening in
-the browser like a canvas that should have been filled with an adversary controlled content that
-should create the same result on same machine is different. Or, the adversary might time the length
+the browser. For example, an adversary might fill a canvas with a content controlled by the
+adversary and detect modifications after reading back the content. Or, the adversary might time the length
 of each/some operation(s). We modify the time readings and the countermeasures take some time. Hence, we
 expect that an adversary will be able to detect that the user have modified JavaScript environment with a
 patch or an extension. Our goal is to create a bigger anonymity set into which the user

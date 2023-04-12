@@ -57,10 +57,12 @@ You should read the page before you install the extension. Make sure that JShelt
 
 #### How can I fix videos if they fail to play or retrieve data in time?
 
-JShelter reimplements more than 100 JavaScript APIs. However, there are many ways to obtain the
-same function that cannot be patched by a simple call. One such way is to misuse Web Workers. We are [working](https://pagure.io/JShelter/webextension/issue/43) on a proper fix. In the meantime, we patch Web Worker in the `Recommended` level. Nevertheless, the method makes the code using Web Workers for benign purposes.
+JShelter reimplements more than 100 JavaScript APIs. However, pages can use several ways to access the
+same API. Unfortunatelly, brosers do not allow to patch every possibility consistently through a simple call. Web Workers are one of the possibilities to access the APIs. Our ultimate goal is to patch APIs consistently. However, the current Web Worker patches do not work as intended.
+
+We are [working](https://pagure.io/JShelter/webextension/issue/43) on a proper fix. In the meantime, we patch Web Worker in the `Recommended` level. Nevertheless, the method brakes Web Workers in Firefox and they cannot be used for benign purposes.
 JShelter users reported that video streaming servers are often affected. If you believe the server
-operator that they and their partners do not misuse Web Workers to access original APIs,
+operator that they and/or their partners do not misuse Web Workers to access original APIs,
 change the `WebWorker` wrapper from `Strict` to `Medium`. Videos should
 work. To do this, follow these steps:
 
@@ -72,6 +74,24 @@ work. To do this, follow these steps:
    by the `Medium` value.
 1. Click on the `Refresh page` button at the top.
 1. Watch the video.
+
+#### I want to use a webiste that is using Web Workers but it is broken. How can I fix the site?
+
+See the previous question.
+
+#### Can I see a JShelter icon next to my navigation bar? I want to interact with the extension easily and do not want to go through settings.
+
+JShelter has a toolbar icon that allows you to open the popup (see below). However, browsers tend
+to hide the icon. If you cannot see a JShelter icon to the right of the bar where you enter URLs.
+Try to:
+
+1. Click on the extension icon (typically looks like a puzzle tile).
+2. Pin Jshelter to the toolbar.
+
+The figure below shows how to accomplish this two steps in Firefox and a Chromium-based browser.
+
+![Pin JShelter to Firefox toolbar]({attach}/images/faq/firefox_pintoolbar.png)
+![Pin JShelter to a Chromium-based browser toolbar]({attach}/images/faq/chromium_pintoolbar.png)
 
 #### I visited a page and it is broken because of JShelter. What should I do?
 
@@ -335,12 +355,26 @@ We are [considering](https://pagure.io/JShelter/webextension/issue/68) adding be
 
 We are also [considering](https://pagure.io/JShelter/webextension/issue/69) replacing the random strings of the Web GL API with real-world strings. However, we do not have such a database. We are also worried about creating inconsistencies if we apply invalid combinations of the real-world strings. As creating the real-world database would take a lot of time, and a dedicated fingerprinter might reveal the inconsistencies anyway, we do not actively work on the issue.
 
+#### Does JShelter completely prevent browser fingerprinting?
+
+No. See the [threat model](/threatmodel/). As explained there, JShelter applies reasonable
+precautions but:
+
+1. There is no clear boundary between a fingerprinting and a benign behaviour.
+1. A fingerprinter might deploy focused attacks. While we try to deploy undetectable and reasonable
+   counter-measures, expect that a focused and motivated attacker will be able to detect JShelter
+   users.
+1. We expect that users will run FPD and JSS in parallel. As both protect from fingerprinting
+   differently, they complement each other.
+
+Also read the answer below.
+
 #### What configuration should I pick.
 
 First see our [blog post](/fingerprinting/). Consult also other [blog posts](/blog/) and other
 questions in this FAQ.
 
-1. If you want to have the same fingerprint as many users, We suggest going for Tor Browser (do not install JShelter there).
+1. If you want to have the same fingerprint as many users, We suggest going for Tor Browser (do not install JShelter in Tor Browser).
 1. If you want to make cross-site fingerprinting linkage hard, go for the `Recommended` JShelter level. If you want better protection for the real data at the cost of having the same fingerprint on different sites, go for the `Strict` JShelter level.
 1. Keep NBS active.
 1. If you want to detect and prevent fingerprinting attempts, use FPD.
