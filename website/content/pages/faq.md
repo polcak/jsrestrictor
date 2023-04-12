@@ -57,10 +57,12 @@ You should read the page before you install the extension. Make sure that JShelt
 
 #### How can I fix videos if they fail to play or retrieve data in time?
 
-JShelter reimplements more than 100 JavaScript APIs. However, there are many ways to obtain the
-same function that cannot be patched by a simple call. One such way is to misuse Web Workers. We are [working](https://pagure.io/JShelter/webextension/issue/43) on a proper fix. In the meantime, we patch Web Worker in the `Recommended` level. Nevertheless, the method makes the code using Web Workers for benign purposes.
+JShelter reimplements more than 100 JavaScript APIs. However, pages can use several ways to access the
+same API. Unfortunatelly, brosers do not allow to patch every possibility consistently through a simple call. Web Workers are one of the possibilities to access the APIs. Our ultimate goal is to patch APIs consistently. However, the current Web Worker patches do not work as intended.
+
+We are [working](https://pagure.io/JShelter/webextension/issue/43) on a proper fix. In the meantime, we patch Web Worker in the `Recommended` level. Nevertheless, the method brakes Web Workers in Firefox and they cannot be used for benign purposes.
 JShelter users reported that video streaming servers are often affected. If you believe the server
-operator that they and their partners do not misuse Web Workers to access original APIs,
+operator that they and/or their partners do not misuse Web Workers to access original APIs,
 change the `WebWorker` wrapper from `Strict` to `Medium`. Videos should
 work. To do this, follow these steps:
 
