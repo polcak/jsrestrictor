@@ -374,7 +374,7 @@ Also read the answer below.
 First see our [blog post](/fingerprinting/). Consult also other [blog posts](/blog/) and other
 questions in this FAQ.
 
-1. If you want to have the same fingerprint as many users, We suggest going for Tor Browser (do not install JShelter there).
+1. If you want to have the same fingerprint as many users, We suggest going for Tor Browser (do not install JShelter in Tor Browser).
 1. If you want to make cross-site fingerprinting linkage hard, go for the `Recommended` JShelter level. If you want better protection for the real data at the cost of having the same fingerprint on different sites, go for the `Strict` JShelter level.
 1. Keep NBS active.
 1. If you want to detect and prevent fingerprinting attempts, use FPD.
