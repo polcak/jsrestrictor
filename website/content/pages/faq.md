@@ -355,6 +355,20 @@ We are [considering](https://pagure.io/JShelter/webextension/issue/68) adding be
 
 We are also [considering](https://pagure.io/JShelter/webextension/issue/69) replacing the random strings of the Web GL API with real-world strings. However, we do not have such a database. We are also worried about creating inconsistencies if we apply invalid combinations of the real-world strings. As creating the real-world database would take a lot of time, and a dedicated fingerprinter might reveal the inconsistencies anyway, we do not actively work on the issue.
 
+#### Does JShelter completely prevent browser fingerprinting?
+
+No. See the [threat model](/threatmodel/). As explained there, JShelter applies reasonable
+precautions but:
+
+1. There is no clear boundary between a fingerprinting and a benign behaviour.
+1. A fingerprinter might deploy focused attacks. While we try to deploy undetectable and reasonable
+   counter-measures, expect that a focused and motivated attacker will be able to detect JShelter
+   users.
+1. We expect that users will run FPD and JSS in parallel. As both protect from fingerprinting
+   differently, they complement each other.
+
+Also read the answer below.
+
 #### What configuration should I pick.
 
 First see our [blog post](/fingerprinting/). Consult also other [blog posts](/blog/) and other
