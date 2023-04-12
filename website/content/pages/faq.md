@@ -75,6 +75,10 @@ work. To do this, follow these steps:
 1. Click on the `Refresh page` button at the top.
 1. Watch the video.
 
+#### I want to use a webiste that is using Web Workers but it is broken. How can I fix the site?
+
+See the previous question.
+
 #### Can I see a JShelter icon next to my navigation bar? I want to interact with the extension easily and do not want to go through settings.
 
 JShelter has a toolbar icon that allows you to open the popup (see below). However, browsers tend
