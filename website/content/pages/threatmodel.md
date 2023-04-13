@@ -41,6 +41,15 @@ JShelter goal is to make targeted attacks harder but we do not believe that we a
 in a position to prevent them completely. For users concerned with targeted attacks, we suggest
 using Tor Browser or a similar privacy enhancing tool.
 
+It is well-known that some extensions modify the environment of the browser or the web page. For
+example, password managers add buttons to automatically fill-in passwords. Page tweakers add
+additional buttons to web pages to simplify common tasks or add information likely wanted by a user.
+JShelter expects such users and tries to help such users from being identifiable. For example, a
+dumb fingerpinter can combine all fingerprintable data to create a single number. Such fingerprinter
+would unitentionally create a unique fingerprint of the users with a unique set of extensions. With
+JShelter, such a dumb fingeprinter would not link different visits of the user. JShelter should
+confuse a more advanced fingerpriner if they identify a single or multiple users.
+
 We also want to provide an option that will limit the information that is readable from the computer
 even if such a behaviour generally results into better fingerprintability. For example, a user
 might want to disable canvas operations for pages that should not use canvas (from the user stand
