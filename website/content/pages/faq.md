@@ -306,6 +306,59 @@ should use Network Boundary Shield and Fingerprint Detector. While we keep close
 protection, we do not offer any protection specifically tailored for Brave. If you have one, please,
 let us know.
 
+#### I am using some other anti-fingerprinting extension. Should I continue? Should I combine such extensions.
+
+You should consider (at least) the following. But first, see our blog
+post on [fingerprinting](/fingerprinting/).
+
+JSS modifies your fingerprint while FPD detects or prevents (if allowed) fingerprinting. If you
+combine more approaches to modify the fingerprint, the results are not predictable.
+All extensions might modify the same or similar data or they might modify different APIs.
+If you use multiple approaches that focus on different APIs how to fingerprint your browser, you
+might be less fingerprintable. However, you might as well use a unique combination and be easily
+fingerprintable by a focused or advanced fingerprinter.
+
+Let us see an example. Suppose that you install other extension A that modifies the content of the
+canvas element. As JShelter modifies only data during reading from canvas, it will apply its
+countermeasures after the countermeasures of A. In `Strict` level, it will override all
+modifications by A. The white lies approach would slightly modify the modifications of A. That would
+likely be pointless or even counter productive.
+
+Now, consider other extension B that modifies the read data as well. Both extensions try to change the same APIs, which likely creates a race condition which defence mechanism wins. If it is indeed the race condition, you may be fingerprintable better as the one who uses both B and JShelter or less because the fingerprinter sees different fingerprints. Which one is correct depends on how smart and how focused the fingerprinter is.
+
+Jshelter tries to apply consistent modifications. However, if B modifies only a subset of APIs that
+JShelter modifies, an advanced fingerprinter can misuse that information to improve the fingerprint.
+
+If you use more approaches similar to FPD, they will likely not interact badly with each other.
+
+You can tweak JShelter to apply only some protections. For example, by creating your own JSS levels.
+You can also use the "Turn fingeprinting protection off" built-in level to keep the
+non-fingerprinting countermeasures. You can also turn JSS off and benefit from FPD and NBS.
+
+JShelter includes advanced techniques through [NSCL](https://noscript.net/commons-library) to inject
+API wrappers in time and reliably. Other extensions might not apply their protection reliably. See
+also the question on Firefox bug [1267027](https://bugzilla.mozilla.org/show_bug.cgi?id=1267027)
+below.
+
+Most other tools focus on [homogeneous fingerprints](/fingerprinting/). By running the `Recommended`
+JShelter JSS level, you will modify the fingerprint and create a very small group, likely consisting
+only of you. Some fingerprinters can be confused even in that case so you might be less identifiable
+by such dumb fingerprinters.
+
+Suppose a dumb fingerprinter that creates a single number by combining all fingerprintable data. As
+JShelter modifies the APIs differently in each session and on each domain, there is no point in
+installing other fingerprint-modifying extensions.
+
+Suppose a more clever fingerprinter that somehow analyses the fingerprintable data. It might detect
+that you use JShelter or a similar approach. However, it is possible that the analysis fails in case
+of unexpected behaviour of multiple extensions so that multiple extensions might help you in
+confusing the fingerprinter.
+
+An even more clever fingerprinter can focus on unique traits of your extensions (that modify the
+page, including page decorators or extensions that include buttons to the page like downloaders or
+password managers. As the JShelter's [threat model](/threatmodel/) does not protect from such
+fingerprinters, you will be better if you do not let JShelter to modify the fingerprint.
+
 #### Is browser fingerprinting a real threat?
 
 More than 100 advertisement companies reveal in the [adtech transparency a consent
