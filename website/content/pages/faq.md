@@ -55,6 +55,14 @@ The best sources for JShelter information can be found on
 We created a [dedicated page describing the threat model](/threatmodel/) of JShelter.
 You should read the page before you install the extension. Make sure that JShelter aligns with the threats you see on the web.
 
+#### What is the white lies approach to protect from fingerprinters?
+
+Please [see the blog post](/farbling/).
+
+#### What is the difference between white lies approach to protect from fingerprinters and farbling?
+
+None. Both refer to the same technique. See the previous question.
+
 #### How can I fix videos if they fail to play or retrieve data in time?
 
 JShelter reimplements more than 100 JavaScript APIs. However, pages can use several ways to access the
