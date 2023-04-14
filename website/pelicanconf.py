@@ -41,6 +41,8 @@ DEFAULT_LANG = "en"
 
 DEFAULT_PAGINATION = 15
 
+STATIC_LANG_SAVE_AS = "drafts/pages/{slug}-{lang}.html"
+
 # Uncomment following line if you want document-relative URLs when developing
 # RELATIVE_URLS = True
 

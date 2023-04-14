@@ -15,7 +15,7 @@ list](https://lists.nongnu.org/archive/html/js-shield/).
 We think that JShelter is ready to be used for everyday browsing. We believe that JShelter
 in the current state fulfils the goal of giving you control over your browser and the APIs available for the web page.
 
-We believe that the `Recommended` level changes your fingerprint so that typical fingerprinting scripts will fail to correlate your cross-origin activities and activities on the same origin during
+We believe that the `Recommended` level changes your fingerprint, so typical fingerprinting scripts will fail to correlate your cross-origin activities and activities on the same origin during
 different browser sessions. See the answers below for possible caveats.
 
 Test your browser on common fingerprinting testers. Then use the `Strict` level
@@ -38,10 +38,10 @@ JShelter is not perfect yet. JShelter is meant to be used with (ad)blockers like
 Origin](https://github.com/gorhill/uBlock#ublock-origin). Using a blocker will make your online
 activities considerably safer. At the same time, it will make JShelter break fewer sites.
 
-Right now, JShelter will need more interaction from your side than we would prefer. Some
-protection needs improvements. Some functionality is missing. When we achieve the state of fixing
+Right now, JShelter will need more interaction from you than we would prefer. Some
+protection needs improvements. Some functionality needs to be included. When we achieve the state of fixing
 the bugs and making JShelter easy to manage, we will release version 1.0. If you are not willing to
-tweak JShelter from time to time, consider returning once we release version 1.0. Otherwise, try
+tweak JShelter occasionally, consider returning once we release version 1.0. Otherwise, try
 other options; see the answers below.
 
 #### What is the best source of information about JShelter?
@@ -59,16 +59,16 @@ You should read the page before you install the extension. Make sure that JShelt
 
 Please [see the blog post](/farbling/).
 
-#### What is the difference between white lies approach to protect from fingerprinters and farbling?
+#### What is the difference between the white lies approach to protect from fingerprinters and farbling?
 
 None. Both refer to the same technique. See the previous question.
 
 #### How can I fix videos if they fail to play or retrieve data in time?
 
 JShelter reimplements more than 100 JavaScript APIs. However, pages can use several ways to access the
-same API. Unfortunatelly, brosers do not allow to patch every possibility consistently through a simple call. Web Workers are one of the possibilities to access the APIs. Our ultimate goal is to patch APIs consistently. However, the current Web Worker patches do not work as intended.
+same API. Unfortunately, browsers do not allow patching every possibility consistently through a simple call. Web Workers are one of the possibilities to access the APIs. Our ultimate goal is to patch APIs consistently. However, the current Web Worker patches do not work as intended.
 
-We are [working](https://pagure.io/JShelter/webextension/issue/43) on a proper fix. In the meantime, we patch Web Worker in the `Recommended` level. Nevertheless, the method brakes Web Workers in Firefox and they cannot be used for benign purposes.
+We are [working](https://pagure.io/JShelter/webextension/issue/43) on a proper fix. In the meantime, we patch Web Worker in the `Recommended` level. Nevertheless, the method brakes Web Workers in Firefox, and they cannot be used for benign purposes.
 JShelter users reported that video streaming servers are often affected. If you believe the server
 operator that they and/or their partners do not misuse Web Workers to access original APIs,
 change the `WebWorker` wrapper from `Strict` to `Medium`. Videos should
@@ -83,11 +83,11 @@ work. To do this, follow these steps:
 1. Click on the `Refresh page` button at the top.
 1. Watch the video.
 
-#### I want to use a webiste that is using Web Workers but it is broken. How can I fix the site?
+#### I want to use a website that uses Web Workers, but it is broken. How can I fix the site?
 
 See the previous question.
 
-#### Can I see a JShelter icon next to my navigation bar? I want to interact with the extension easily and do not want to go through settings.
+#### Can I see a JShelter icon next to my navigation bar? I want to interact with the extension easily and avoid going through settings.
 
 JShelter has a toolbar icon that allows you to open the popup (see below). However, browsers tend
 to hide the icon. If you cannot see a JShelter icon to the right of the bar where you enter URLs.
@@ -96,12 +96,12 @@ Try to:
 1. Click on the extension icon (typically looks like a puzzle tile).
 2. Pin Jshelter to the toolbar.
 
-The figure below shows how to accomplish this two steps in Firefox and a Chromium-based browser.
+The figure below shows how to accomplish these two steps in Firefox and a Chromium-based browser.
 
 ![Pin JShelter to Firefox toolbar]({attach}/images/faq/firefox_pintoolbar.png)
 ![Pin JShelter to a Chromium-based browser toolbar]({attach}/images/faq/chromium_pintoolbar.png)
 
-#### I visited a page and it is broken because of JShelter. What should I do?
+#### I visited a page, and it is broken because of JShelter. What should I do?
 
 This happens from time to time. We want to eliminate such pages, but JShelter is not there yet (see
 also above).
@@ -109,7 +109,7 @@ also above).
 Your page might be broken because [Network Boundary Shield](/nbs/) (NBS) or [fingerprint
 Detector](/fpd/) (FPD) detected a problem. You should have seen a notification in such cases unless
 you turned notifications off. We do not recommend turning notifications off (see below). Whenever NBS or FPD detect
-a possible problem on the site, it is up to you to decide if you believe the owner of the visited page or if you are tempted
+a possible problem on the site, it is up to you to decide if you believe the owner of the visited page or are tempted
 to view the content so much that you turn the protection off.
 
 ##### Fingerprint Detector (FPD)
@@ -120,7 +120,7 @@ If you see a notification like:
 
 In this case, FPD evaluated that the page tries to fingerprint you. FPD can be optionally configured
 to prevent uploading the fingerprint to the server. In that case, FPD blocks all further requests of
-the visited page and removes storages available to the page. Some web pages employ browser
+the visited page and removes the storages available to the page. Some web pages employ browser
 fingerprinting for security purposes. You might want to allow the page to fingerprint
 you in such a case. Open the popup by clicking on the JShelter logo badge icon and turn off the FPD for
 the visited site.
@@ -136,7 +136,7 @@ If you see a notification like:
 
 ![JShelter blocks the scan]({attach}/images/portscan-2_request_blocked.png)
 
-Then, it was NBS that blocked some requests. Rarely some pages can be broken because they require interaction between the public Internet and local network. For example, the Network Boundary Shield might break some intranet information systems. JShelter users also reported an increased number of false positives when using DNS-based filtering programs. If you use one, make sure that DNS returns 0.0.0.0 for the blocked domains.
+Then, it was NBS that blocked some requests. Rarely can some pages be broken because they require interaction between the public Internet and the local network. For example, the Network Boundary Shield might break some intranet information systems. JShelter users also reported an increased number of false positives when using DNS-based filtering programs. If you use one, make sure that DNS returns 0.0.0.0 for the blocked domains.
 
 ![Turn NBS off](/images/faq/nbs_off.png)
 
@@ -158,9 +158,9 @@ You can disable JSS for all pages on the visited domain by turning JSS off:
 
 Advanced users can change JSS level:
 
-1. Spooffing API calls results takes some resources. If you see that the page does not try to fingerprint you, you might want to disable all fingerprinting protection.
-2. Click on the `Modify` button next to the JavaScript Shield label.
-3. Select `Turn fingerprinting protection off level`. This will keep security related wrappers but
+1. Spoofing API calls results takes some resources. If you see that the page does not try to fingerprint you, you might want to disable all fingerprinting protection.
+2. Click the `Modify` button next to the JavaScript Shield label.
+3. Select `Turn fingerprinting protection off level`. This will keep security-related wrappers but
 	 all fingerprinting protection will be disabled.
 
 ![Turn JSS fingerprinting protection off](/images/faq/jss_low.png)
@@ -173,21 +173,21 @@ Sometimes you will want to tweak JSS a little bit. For example, you generally do
 want to use a map page to navigate. Occasionally, a JSS can modify an API in a way that breaks a page.
 In that case, you might want to tweak your protection level.
 
-1. Click on the `Modify` button next to the JavaScript Shield label.
-2. Click on the `Detail tweaks of JS Shield for this site` button.
+1. Click the `Modify` button next to the JavaScript Shield label.
+2. Click the `Detail tweaks of JS Shield for this site` button.
 
-![Go to teaking JSS mode](/images/faq/jss_tweak_start.png)
+![Go to tweaking JSS mode](/images/faq/jss_tweak_start.png)
 
 The JSS section will expand. The applied protection groups are sorted depending on the number of calls of
 each API group. Typically, you will want to tweak the settings of one of the groups with the most
 calls. See the highlighted column:
 
-![Go to teaking JSS mode](/images/faq/jss_tweak_sorting.png)
+![Tweaking JSS mode](/images/faq/jss_tweak_sorting.png)
 
 1. Before you tweak any wrapping group, see the description.
 2. Tweak the protection according to your need.
 
-![Go to teaking JSS mode](/images/faq/jss_tweaking.png)
+![Tweaking JSS mode](/images/faq/jss_tweaking.png)
 
 #### A site opened a popup window, I want to tweak settings for that window, but I do not see a badge JShelter icon there. How can I tweak JShelter settings?
 
@@ -199,21 +199,23 @@ If you are using Firefox:
 
 This will force all popup windows to open in a new tab, meaning the JShelter settings could be adjusted easily everywhere.
 
-#### Why am I seeing so many notifications from JShelter?
+#### Why do I see so many notifications from JShelter?
 
-Generally speaking, you should not see many notifications by JShelter. The default settings are
+Generally speaking, you should see only a few notifications by JShelter. The default settings are
 tailored to give the user critical information about JShelter behaviour and its possible changes to
-the page's ability to make network requests that often breaks the page behaviour.
+the page's ability to make network requests that often break the page's behaviour.
 
 We suggest installing a tracker blocker like uBlock Origin. The blocker will eliminate the most
 common security and privacy threats.
+
+Also, see the next question.
 
 ##### I am seeing too many NBS notifications
 
 NBS protects from attacks that occur very rarely. JShelter users often complain about too many
 notifications when they employ DNS-based blocking. DNS-blocking resolver resolves predefined domains
 to a fake IP address, usually `0.0.0.0` or `127.0.0.1` (IPv4) and `::` or `::1` (IPv6). If your
-DNS-blocking resolver returns `127.0.0.1` and `::1`, please, reconfigure the resolver to return `0.0.0.0` or `::`.
+DNS-blocking resolver returns `127.0.0.1` and `::1`. Please, reconfigure the resolver to return `0.0.0.0` or `::`.
 
 1. Depending on your OS, you will consume fewer resources. For example, Windows machines do not create any TCP stream when a website connects to `0.0.0.0` or `::`, but it creates a TCP stream to `127.0.0.1` and `::1`. Hence, a remote web page can access a web server if it is running on the local machine. Note that Linux hosts try to establish a connection to a localhost port on all these addresses.
 2. If your DNS-based filtering returns `0.0.0.0` or `::`, it will give JShelter a report on the
@@ -233,20 +235,20 @@ Origin](https://github.com/gorhill/uBlock#ublock-origin) in parallel with JShelt
 #### I already have a blocking extension installed. Do I need JShelter?
 
 Blocking extensions are typically based on a list of commonly known malicious URLs. Hence, someone
-needs to discover such a URL first. Some malicious URLs are never added to blocking lists. They might be
+needs to discover such a URL first. Some malicious URLs are never added to blocking lists because they were not discovered. Others might be
 added to a small or specialized list only. JShelter protects you from some threats
 not yet added to the lists.
 
-Some login pages fingerprint you during the login process. But you might not want to share your
-specific device configuration with such a page. JShelter can limit (`Strict` level) or fake
+Some login pages fingerprint you during the login process. But you might want to keep your
+specific device configuration private from such a page. JShelter can limit (`Strict` level) or fake
 (`Recommended` level) information commonly used for browser fingerprinting.
 
 #### Does JShelter modify identifiers in cookies, web storage or other tracking IDs?
 
-Not directly. Use other tools to block such trackers. Firefox built-in protection mechanisms and
+Not directly. Use other tools to block such trackers. Firefox's built-in protection mechanisms and
 tracker blockers are excellent tools that complement JShelter well.
 
-Nevertheless, some IDs might be derived based on the fingerprinting scripts. In that case, JShelter
+Nevertheless, some IDs might be derived based on fingerprinting scripts. In that case, JShelter
 will modify such ID, and depending on the implementation and your JShelter settings, your identity
 might change for each visited origin and each session.
 
@@ -257,7 +259,7 @@ as a must. It will make your browsing faster, make your pages clean and improve 
 Nevertheless, it is easy to evade blockers. The malicious web server needs to change the URL of the
 script. JShelter developers encountered several malicious scripts that evaded common lists. Hence,
 blocklist-based filtering is beneficial as a first-line defence. However, blockers are not enough
-as the niche cases evade the blockers.
+as niche cases evade the blockers.
 
 Web extensions like [NoScript Security Suite](https://noscript.net/) or
 [uMatrix](https://github.com/gorhill/uMatrix) allow users to block JavaScript or other content,
@@ -266,7 +268,7 @@ either completely or per domain. However, the user needs to evaluate which domai
 that an average page includes (at the time of writing this text) 22 external requests (21 requests for
 mobile devices). Many pages depend on JavaScript. Users must select what content to trust. A typical
 page contains resources from many external sources, so such a user requires excellent knowledge.
-Moreover, a malicious code may be only a part of resources; the rest of the resource can be
+Moreover, malicious code may be only a part of a resource; the rest of the resource can be
 necessary for correct page functionality. We believe that web extensions like NoScript Security
 Suite and uMatrix origin are good but do not protect the user from accidentally allowing malicious
 code. The NoScript Suite main developer is a part of the JShelter team, and JShelter shares a lot of
@@ -275,7 +277,7 @@ code with NoScript.
 We suggest that you use other extensions like [Cookie
 AutoDelete](https://github.com/Cookie-AutoDelete/Cookie-AutoDelete),
 [Decentraleyes](https://decentraleyes.org), [ClearURLs](https://docs.clearurls.xyz). All these
-extensions perform an important step in making your browser leak as little data as possible, and all
+extensions are important in making your browser leak as little data as possible, and all
 these protections are out-of-scope of JShelter.
 
 #### I am using Firefox Fingerprinting Protection (resistFingerprinting). Should I continue? Should I turn Firefox Fingerprinting Protection on?
@@ -301,30 +303,30 @@ provides options to modify behaviour per domain.
 #### Should I install JShelter if I am using Brave browser?
 
 Many JShelter protections come from Brave. While JShelter offers some additional protections, the
-key parts are shared with Brave. You should not use JavaScript Shield or tweak its levels. You
-should use Network Boundary Shield and Fingerprint Detector. While we keep close eyes on Brave
+key parts are shared with Brave. You should not use JavaScript Shield or you should tweak its levels to remove duplicates. You
+should use Network Boundary Shield and Fingerprint Detector. While we keep a close eye on Brave
 protection, we do not offer any protection specifically tailored for Brave. If you have one, please,
 let us know.
 
-#### I am using some other anti-fingerprinting extension. Should I continue? Should I combine such extensions.
+#### I am using some other anti-fingerprinting extension. Should I continue? Should I combine such extensions?
 
 You should consider (at least) the following. But first, see our blog
 post on [fingerprinting](/fingerprinting/).
 
 JSS modifies your fingerprint while FPD detects or prevents (if allowed) fingerprinting. If you
 combine more approaches to modify the fingerprint, the results are not predictable.
-All extensions might modify the same or similar data or they might modify different APIs.
-If you use multiple approaches that focus on different APIs how to fingerprint your browser, you
+All extensions might modify the same or similar data, or they might modify different APIs.
+If you use multiple approaches that focus on different APIs, you
 might be less fingerprintable. However, you might as well use a unique combination and be easily
 fingerprintable by a focused or advanced fingerprinter.
 
-Let us see an example. Suppose that you install other extension A that modifies the content of the
+Let us see an example. Suppose that you install an extension A that modifies the content of the
 canvas element. As JShelter modifies only data during reading from canvas, it will apply its
 countermeasures after the countermeasures of A. In `Strict` level, it will override all
 modifications by A. The white lies approach would slightly modify the modifications of A. That would
-likely be pointless or even counter productive.
+likely be pointless or even counterproductive.
 
-Now, consider other extension B that modifies the read data as well. Both extensions try to change the same APIs, which likely creates a race condition which defence mechanism wins. If it is indeed the race condition, you may be fingerprintable better as the one who uses both B and JShelter or less because the fingerprinter sees different fingerprints. Which one is correct depends on how smart and how focused the fingerprinter is.
+Now, consider another extension B that modifies the read data as well. Both extensions try to change the same APIs, which likely creates a race condition on which defence mechanism wins. If it is indeed the race condition, you may be fingerprintable better as the one who uses both B and JShelter or less because the fingerprinter sees different fingerprints. Which one is correct depends on how smart and focused the fingerprinter is.
 
 Jshelter tries to apply consistent modifications. However, if B modifies only a subset of APIs that
 JShelter modifies, an advanced fingerprinter can misuse that information to improve the fingerprint.
@@ -332,7 +334,7 @@ JShelter modifies, an advanced fingerprinter can misuse that information to impr
 If you use more approaches similar to FPD, they will likely not interact badly with each other.
 
 You can tweak JShelter to apply only some protections. For example, by creating your own JSS levels.
-You can also use the "Turn fingeprinting protection off" built-in level to keep the
+You can also use the "Turn fingerprinting protection off" built-in level to keep the
 non-fingerprinting countermeasures. You can also turn JSS off and benefit from FPD and NBS.
 
 JShelter includes advanced techniques through [NSCL](https://noscript.net/commons-library) to inject
@@ -342,22 +344,21 @@ below.
 
 Most other tools focus on [homogeneous fingerprints](/fingerprinting/). By running the `Recommended`
 JShelter JSS level, you will modify the fingerprint and create a very small group, likely consisting
-only of you. Some fingerprinters can be confused even in that case so you might be less identifiable
+only of you. Nevertheless, some fingerprinters can be confused even in that case so that you might be less identifiable
 by such dumb fingerprinters.
 
 Suppose a dumb fingerprinter that creates a single number by combining all fingerprintable data. As
-JShelter modifies the APIs differently in each session and on each domain, there is no point in
+JShelter modifies the APIs differently in each session and on each domain. There is no point in
 installing other fingerprint-modifying extensions.
 
 Suppose a more clever fingerprinter that somehow analyses the fingerprintable data. It might detect
 that you use JShelter or a similar approach. However, it is possible that the analysis fails in case
-of unexpected behaviour of multiple extensions so that multiple extensions might help you in
-confusing the fingerprinter.
+of unexpected behaviour of multiple extensions, so multiple extensions might help you confuse the fingerprinter.
 
 An even more clever fingerprinter can focus on unique traits of your extensions (that modify the
-page, including page decorators or extensions that include buttons to the page like downloaders or
+page, including page decorators or extensions that include buttons to the page, like downloaders or
 password managers. As the JShelter's [threat model](/threatmodel/) does not protect from such
-fingerprinters, you will be better if you do not let JShelter to modify the fingerprint.
+fingerprinters, you will be better if you do not let JShelter modify the fingerprint.
 
 #### Is browser fingerprinting a real threat?
 
@@ -372,7 +373,7 @@ an identifier to re-identify a device.
 
 See papers like [Browser Fingerprinting: A survey](https://arxiv.org/pdf/1905.01051.pdf), [Fingerprinting the Fingerprinters](https://uiowa-irl.github.io/FP-Inspector/) or [The Elephant in the Background](https://fpmon.github.io/fingerprinting-monitor/files/FPMON.pdf).
 
-#### My bank (or other trusted site) fingerprinted me during a login attempt. Should I worry?
+#### My bank (or another trusted site) fingerprinted me during a login attempt. Should I worry?
 
 Browser fingerprinting is a common part of multi-factor authentication. The provider tries to
 protect your account. So you should not worry, but you might be forced to deactivate FPD for that site.
@@ -382,7 +383,7 @@ protections.
 From the European perspective, [WP29 clarified](https://ec.europa.eu/justice/article-29/documentation/opinion-recommendation/files/2014/wp224_en.pdf) (use case 7.5) that user-centric security can be viewed as strictly necessary to provide
 a web service. So it seems likely that browser fingerprinting for security reasons does
 trigger the ePrivacy exception and user consent is not necessary.
-Depending on circumstances, a fingerprint can be personal data. GDPR might also apply.
+Depending on the circumstances, a fingerprint can be personal data. GDPR might also apply.
 GDPR lists security as a possible legitimate interest of a data controller, see
 recital 49. Nevertheless, if all fingerprinting is proportionate is an open question.
 
@@ -402,37 +403,37 @@ above).
 
 #### I have a unique fingerprint? Some properties wrapped by JShelter return random values.
 
-First see our [blog post](/fingerprinting/).
+First, see our [blog post](/fingerprinting/).
 
 JShelter indeed modifies some properties like WebGL strings (`renderer`, `vendor`) to random
 strings in the `Recommended` level. JShelter also does not modify random identifiers of microphones and
 cameras. All these properties contain random strings that uniquely identify your browser session.
 
-JShelter provides different lies on different domains so that cross-domain linking is not possible.
-But keep in mind that a single domain can link all your activities during a single browser session.
+JShelter provides different lies on different domains, so cross-domain linking is hard.
+But remember that a single domain can link all your activities during a browser session.
 If you do not want JShelter to generate the random strings, use `Strict` protection (but see other FAQ entries).
 
 We are [considering](https://pagure.io/JShelter/webextension/issue/68) adding better control for the white lies approach.
 
-We are also [considering](https://pagure.io/JShelter/webextension/issue/69) replacing the random strings of the Web GL API with real-world strings. However, we do not have such a database. We are also worried about creating inconsistencies if we apply invalid combinations of the real-world strings. As creating the real-world database would take a lot of time, and a dedicated fingerprinter might reveal the inconsistencies anyway, we do not actively work on the issue.
+We are also [considering](https://pagure.io/JShelter/webextension/issue/69) replacing the random strings of the Web GL API with real-world strings. However, we do not have such a database. We are also worried about creating inconsistencies if we apply invalid combinations of real-world strings. As creating the real-world database would take a lot of time, and a dedicated fingerprinter might reveal the inconsistencies anyway, we do not actively work on the issue.
 
 #### Does JShelter completely prevent browser fingerprinting?
 
 No. See the [threat model](/threatmodel/). As explained there, JShelter applies reasonable
 precautions but:
 
-1. There is no clear boundary between a fingerprinting and a benign behaviour.
+1. There is no clear boundary between fingerprinting and benign behaviour.
 1. A fingerprinter might deploy focused attacks. While we try to deploy undetectable and reasonable
-   counter-measures, expect that a focused and motivated attacker will be able to detect JShelter
+   countermeasures, expect that a focused and motivated attacker will be able to detect JShelter
    users.
 1. We expect that users will run FPD and JSS in parallel. As both protect from fingerprinting
    differently, they complement each other.
 
-Also read the answer below.
+Also, read the answer below.
 
-#### What configuration should I pick.
+#### What JShelter configuration should I pick?
 
-First see our [blog post](/fingerprinting/). Consult also other [blog posts](/blog/) and other
+First, see our [blog post](/fingerprinting/). Consult also other [blog posts](/blog/) and other
 questions in this FAQ.
 
 1. If you want to have the same fingerprint as many users, We suggest going for Tor Browser (do not install JShelter in Tor Browser).
@@ -449,13 +450,13 @@ on previous interactions between the browser and the site.
 
 No.
 
-First of all, the `Strict` JSS level does not mean a stronger protection. In fact, it makes your
+First of all, the `Strict` JSS level does not mean stronger protection from fingerprinting. In fact, it makes your
 fingerprint stable. We do not recommend using `Strict` level as an anti-fingerprinting mechanism.
 
 Secondly, fingerprinting is quite common on login pages. If one page fingerprints you, it does
 not mean that all pages are going to fingerprint you.
 
-Thirdly, fingerprinting script may be loaded into the page irregularly and we want to prevent blocking the site when there is no fingerprinting detected.
+Thirdly, the fingerprinting script may be loaded into the page irregularly. We want to prevent blocking the site when no fingerprinting is detected.
 
 If you want to switch to a different level for the website, you can do so manually. We do not
 recommend such action.
@@ -471,7 +472,7 @@ protected. NSCL provides a cross-browser layer that aims at modifying all ways t
 like iframes, pages protected by CSP and others. See our
 [paper](https://arxiv.org/pdf/1905.01051.pdf) for more details on the integration of NSCL to JShelter.
 
-#### Why does JShelter/NSCL initiate web request to ff00::?
+#### Why does JShelter/NSCL initiate web requests to ff00::?
 
 First, see the previous question.
 
@@ -494,20 +495,20 @@ about to get information from. The resolution of the DNS name to an IP address i
 FPD. As Firefox allows to perform the resolution before any request leaves the browser, JShelter can
 prevent each attempt to cross the network boundary.
 
-Chromium-based browsers do not offer the DNS resoltion APIs. JShelter collect resolution results in
+Chromium-based browsers do not offer the DNS resolution APIs. JShelter collects resolution results in
 a cache that is filled during the processing of each request (after the browser makes the request).
 That means that the first request for each domain name goes through. JShleter blocks all subsequent
 requests only.
 
 Keep in mind that an adversary can change the domain with each request. For example, the attacker
 can use a.attacker.com, b.a.attacker.com, c.b.a.attacker.com in sequence for its requests to go
-through. So it is easy for an attacker to bypass NBS. In practise, we know about attackers that do
+through. So it is easy for an attacker to bypass NBS. In practice, we know about attackers that do
 not change domain names (for example, see [our blog](/localportscanning/)). So we keep the NBS in
-Chromium-based browsers even though it is not perfect.
+Chromium-based browsers, even though it is not perfect.
 
-#### How does NBS interacts with proxies? Do my DNS requests leak through NBS?
+#### How does NBS interact with proxies? Do my DNS requests leak through NBS?
 
-If you are using a proxy, the attacks that the NBS tries to prevent go to the local network of the
+If you are using a proxy, the attacks, which the NBS tries to prevent, go through the proxy to the local network of the
 proxy (but keep in mind that this might not be true for more complex configurations).
 
 NBS in Chromium-based browsers works the same way as it would work without the proxy. NBS
@@ -519,11 +520,11 @@ to go through a proxy in some tabs and not in others. We decided not to perform 
 NBS for proxied
 requests. See <a href="https://pagure.io/JShelter/webextension/issue/41">issue 41</a> and <a
 href="https://pagure.io/JShelter/webextension/issue/85">issue 85</a> for more details. We might
-decide to reimplement NBS in Firefox similarly to the Chromium version in the future.
-Another possible option we might consider in the future is adding a configuration option to
+decide to reimplement NBS in Firefox similarly to the Chromium version in the future for proxied requests.
+Another possible option, we might consider in the future, is adding a configuration option to
 allow users to opt-in to perform DNS resolution in NBS, which would be useful for users running
 an HTTP proxy in their local network.
-If you have good arguments for changing the behaviour, please, share with us.
+If you have good arguments for changing the behaviour, please, share them with us.
 
 #### What is the proper way to cite JShelter in a paper?
 
