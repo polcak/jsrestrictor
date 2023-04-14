@@ -197,7 +197,7 @@ ISBN 978-3-319-66398-2.
 		if (t.endsWith("base64")) {
 			code = atob(code);
 		}
-		doEval(eval, workerSelf, code)
+		doEval(workerSelf, code)
 	}
 	else {
 		var xhr = new XMLHttpRequest();
@@ -212,7 +212,7 @@ ISBN 978-3-319-66398-2.
 						addEventListener: workerAddEventListener,
 						close: terminate
 					};
-					doEval(eval, workerSelf, script);
+					doEval(workerSelf, script);
 					var currentListeners = postMessageListeners;
 					postMessageListeners = [];
 					for (var i = 0; i < currentListeners.length; i++) {
