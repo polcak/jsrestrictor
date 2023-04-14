@@ -62,3 +62,7 @@ calls. For example, a fingerprinter can learn the operating system from HTTP hea
 `navigator.oscpu`, installed fonts, results of mathematical operations, and other techniques. We do
 not want to replace such techniques as we do not have the resources to create a consistent environment.
 
+Besides fingerprinting, JShelter also focuses on other threats appearing on the web. For example,
+JShelter prevents web pages from turning the browser into a proxy to the local
+[network](/localportscanning/). The user should be able to decouple anti-fingerprinting
+countermeasures and other countermeasures.
