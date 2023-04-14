@@ -40,13 +40,12 @@
  *
  * This wrapper operates with three levels of protection:
  *
- *	* (0) - return promise with suffled array
+ *	* (0) - return promise with shuffled array
  *	* (1) - return promise with shuffled array with additional 0-4 fake devices
  *	* (2) - return empty promise
  *
  * The shuffling approach is inspired by the algorithms created by [Brave Software](https://brave.com)
  * available [here](https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/modules/mediastream/media_devices.cc).
- *
  */
 /*
 
@@ -71,10 +70,12 @@
 	/**
 	 * \brief create and return MediaDeviceInfo object by overlaying a native one with fake properties
 	 *
-	 * \param browserEnum enum specifying browser 0 - Chrome 1 - Firefox
+	 * \param device Device is any native MediaInfoDevice object (https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo)
+	 * \param fd_prng Initialized PRNG to be deterministically used by the function
 	 */
 	function fakeDevice(device, fd_prng){
 		var kinds = ["videoinput", "audioinput", "audiooutput"];
+		// browserEnum specifies the browser: 0 - Chrome 1 - Firefox
 		let browserEnum = device.groupId.length == 44 ? 1 : 0;
 		var deviceId = browserEnum == 1 ? randomString(43, browserEnum, fd_prng)+ "=" : "";
 		let fakeData = {
