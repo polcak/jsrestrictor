@@ -55,7 +55,7 @@ ISBN 978-3-319-66398-2.
 	`;
 
 	var slowBody = `
-		let _data = new originalF(path);
+		let _data = new originalF(path, ...args);
 		let _old = _data.postMessage;
 		_data.postMessage = function(message) {
 			let delay = Math.floor(Math.random() * 10**9)
@@ -119,7 +119,7 @@ ISBN 978-3-319-66398-2.
 			helping_code: `
 				let strictWrappers = args[0];
 			`,
-			wrapping_function_args: `path`,
+			wrapping_function_args: `path, ...args`,
 			wrapping_function_body: `
 			if (strictWrappers) {
 				${strictWorkerWrapperBody}
