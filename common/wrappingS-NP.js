@@ -291,7 +291,7 @@
 				var buffer = [];
 				if(args[0]==0){
 					for(var i = 0;i<plugins.length;i++){
-						buffer.push(farblePlugin(plugins[i]), fp_prng);
+						buffer.push(farblePlugin(plugins[i], fp_prng));
 					}
 				}
 				if(args[0]==1){
