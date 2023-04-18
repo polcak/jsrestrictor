@@ -47,6 +47,19 @@
  * These approaches are inspired by the algorithms created by [Brave Software](https://brave.com)
  * available [here](https://github.com/brave/brave-core/blob/master/chromium_src/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc).
  *
+ * The purpose of the wrappers is solely to prevent fingerprinting. However,
+ * browsers modyfing the array stand out of the crowd, which makes them more
+ * fingerprintable. Consequently, JShelter does not modify an empty list. So
+ * no matter the configuration, an empty list is not populated by the wrappers.
+ *
+ *  If PDF inline viewing is supported, Firefox returns 5 plugins:
+ *    * "PDF Viewer"
+ *    * "Chrome PDF Viewer"
+ *    * "Chromium PDF Viewer"
+ *    * "Microsoft Edge PDF Viewer"
+ *    * "WebKit built-in PDF"
+ *
+ *  A list containing exactly these plugins is treated as the empty list and it is not modified.
  */
 
 /*
@@ -269,7 +282,7 @@
 		{
 			parent_object: "Navigator.prototype",
 			parent_object_property: "plugins",
-			apply_if: "navigator.plugins.length > 0",
+			apply_if: "applyWrapper",
 			wrapped_objects: [],
 			helping_code:
 				methods + farbles + fakes +`
@@ -299,6 +312,22 @@
 				}
 				else {
 					var fakeMimeTypeArray = fakeMimeTypeArrayF(fakePluginArray);
+				}
+				var applyWrapper = true; // Possibly overridden below
+				if (navigator.plugins.length === 0) {
+					applyWrapper = false;
+				}
+				if (navigator.plugins.length === 5) {
+					let plugins = Array.prototype.reduce.call(
+							navigator.plugins,
+							function (acc, o) {acc.push(o.name); return acc;}, []);
+					if (plugins.includes("PDF Viewer") &&
+							plugins.includes("Chrome PDF Viewer") &&
+							plugins.includes("Chromium PDF Viewer") &&
+							plugins.includes("Microsoft Edge PDF Viewer") &&
+							plugins.includes( "WebKit built-in PDF")) {
+						applyWrapper = false; // See https://developer.mozilla.org/en-US/docs/Web/API/Navigator/plugins
+					}
 				}
 			`,
 			post_wrapping_code: [

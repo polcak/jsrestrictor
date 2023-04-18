@@ -206,7 +206,7 @@ var wrapping_groups = {
 			name: "plugins",
 			label: "Installed browser plugins",
 			description: "Protect against plugin fingerprinting",
-			description2: [],
+			description2: ["The protection is not applied if your browser returns empty list or the five PDF plugin viewers specified by the living HTML standard."],
 			params: [
 				{
 					short: "Little lies",
