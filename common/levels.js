@@ -397,7 +397,7 @@ var wrapping_groups = {
 				},
 				{
 					short: "Strict",
-					description: "Remove real parallelism, use WebWorker polyfill",
+					description: "Make WebWorkers unoperable",
 					config: [true],
 				},
 			],
