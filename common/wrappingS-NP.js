@@ -286,33 +286,6 @@
 			wrapped_objects: [],
 			helping_code:
 				methods + farbles + fakes +`
-				var fp_prng = alea(domainHash, "S-NP");
-				var plugins = navigator.plugins;
-				var buffer = [];
-				if(args[0]==0){
-					for(var i = 0;i<plugins.length;i++){
-						buffer.push(farblePlugin(plugins[i], fp_prng));
-					}
-				}
-				if(args[0]==1){
-					for(var i = 0;i<plugins.length;i++){
-						buffer.push(plugins[i]);
-					}
-					shuffleArray(buffer);
-				}
-				if(args[0]==0 || args[0]==1){
-					var fakePlugin1 = fakePlugin(32, 16, 8);
-					var fakePlugin2 = fakePlugin(31, 15, 7);
-					buffer.push(fakePlugin1, fakePlugin2);
-					shuffleArray(buffer);
-				}
-				var fakePluginArray = fakePluginArrayF(buffer);
-				if(args[0]==1 || args[0]==2){
-					var fakeMimeTypeArray = fakeMimeTypeArrayF([]);
-				}
-				else {
-					var fakeMimeTypeArray = fakeMimeTypeArrayF(fakePluginArray);
-				}
 				var applyWrapper = true; // Possibly overridden below
 				if (navigator.plugins.length === 0) {
 					applyWrapper = false;
@@ -327,6 +300,35 @@
 							plugins.includes("Microsoft Edge PDF Viewer") &&
 							plugins.includes( "WebKit built-in PDF")) {
 						applyWrapper = false; // See https://developer.mozilla.org/en-US/docs/Web/API/Navigator/plugins
+					}
+				}
+				if (applyWrapper) {
+					var fp_prng = alea(domainHash, "S-NP");
+					var plugins = navigator.plugins;
+					var buffer = [];
+					if(args[0]==0){
+						for(var i = 0;i<plugins.length;i++){
+							buffer.push(farblePlugin(plugins[i], fp_prng));
+						}
+					}
+					if(args[0]==1){
+						for(var i = 0;i<plugins.length;i++){
+							buffer.push(plugins[i]);
+						}
+						shuffleArray(buffer);
+					}
+					if(args[0]==0 || args[0]==1){
+						var fakePlugin1 = fakePlugin(32, 16, 8);
+						var fakePlugin2 = fakePlugin(31, 15, 7);
+						buffer.push(fakePlugin1, fakePlugin2);
+						shuffleArray(buffer);
+					}
+					var fakePluginArray = fakePluginArrayF(buffer);
+					if(args[0]==1 || args[0]==2){
+						var fakeMimeTypeArray = fakeMimeTypeArrayF([]);
+					}
+					else {
+						var fakeMimeTypeArray = fakeMimeTypeArrayF(fakePluginArray);
 					}
 				}
 			`,
