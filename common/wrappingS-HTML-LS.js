@@ -118,15 +118,24 @@ ISBN 978-3-319-66398-2.
 			wrapped_objects: [],
 			helping_code: `
 				let strictWrappers = args[0];
+				let removeWorkers = args[1];
 			`,
 			wrapping_function_args: `path, ...args`,
 			wrapping_function_body: `
-			if (strictWrappers) {
+			if (!removeWorkers && strictWrappers) {
 				${strictWorkerWrapperBody}
 			} else {
 				${slowBody}
 			}
 			`,
+			post_wrapping_code: [
+				{
+					code_type: "delete_properties",
+					parent_object: "window",
+					apply_if: "removeWorkers",
+					delete_properties: ["Worker"],
+				}
+			],
 		}
 	]
 	add_wrappers(wrappers);

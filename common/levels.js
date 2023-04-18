@@ -392,13 +392,18 @@ var wrapping_groups = {
 			params: [
 				{
 					short: "Medium",
-					description: "Randomly slow messages to prevent high resolution timers",
-					config: [false],
+					description: "Randomly slow messages to prevent high resolution timers but keep WebWorker support",
+					config: [false, false],
 				},
 				{
 					short: "Strict",
 					description: "Make WebWorkers unoperable",
-					config: [true],
+					config: [true, false],
+				},
+				{
+					short: "Remove",
+					description: "Remove WebWorkers support from the browser, easily detactable by web pages",
+					config: [false, true],
 				},
 			],
 			wrappers: [
