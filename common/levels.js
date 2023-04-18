@@ -387,8 +387,8 @@ var wrapping_groups = {
 		{
 			name: "webworker",
 			label: "WebWorker",
-			description: "Protect against WebWorker exploitation, for example, to provide high resolution timers",
-			description2: [],
+			description: "Protect against WebWorker exploitation",
+			description2: ["Workers provide powerful APIs that, for example, allow to install an invisible proxy to the browser. Higher levels remove that possibility. Note that benign site use workers to provide offline work capabilities, search, caching during multimedia playbacks etc."],
 			params: [
 				{
 					short: "Medium",
