@@ -2,6 +2,24 @@
 title: Release history
 ---
 
+## 0.12
+
+* Cope with the changes of reported plugins and supported MIME types in the HTML standard and
+  browsers: The purpose of the wrappers is solely to prevent fingerprinting. As browsers return the
+  same 5 plugins, browsers modyfing the array stand out, which makes them more fingerprintable.
+  Hence, JShelter does not modify the empty list or the list of five standard plugins.
+
+Reconsider and rewrite Web Worker wrappers (pagure issue 80)
+* `Strict` WebWorker policy intentionally breakes Web Workers
+* New policy to `Remove` Web Workers used for `Turn fingerprinting protection off` and `Strict` level.
+* `Medium` WebWorker policy renamed to `Low` as it only tackles a single issue with Workers.
+
+See FAQ for more information on current Worker wrappers.
+
+Note that the `Low` policy does not work as intended in Firefox and will be fixed in future.
+However, it was broken in the same way before 0.12 and the other changes are worth distributing
+among our users.
+
 ## 0.11.4
 
 * bugfix: allow tweaking all levels except L0 in the popup (pagure issue 89)
