@@ -206,7 +206,7 @@ var wrapping_groups = {
 			name: "plugins",
 			label: "Installed browser plugins",
 			description: "Protect against plugin fingerprinting",
-			description2: [],
+			description2: ["The protection is not applied if your browser returns empty list or the five PDF plugin viewers specified by the living HTML standard."],
 			params: [
 				{
 					short: "Little lies",
@@ -387,18 +387,23 @@ var wrapping_groups = {
 		{
 			name: "webworker",
 			label: "WebWorker",
-			description: "Protect against WebWorker exploitation, for example, to provide high resolution timers",
-			description2: [],
+			description: "Protect against WebWorker exploitation",
+			description2: ["Workers provide powerful APIs that, for example, allow to install an invisible proxy to the browser. Higher levels remove that possibility. Note that benign site use workers to provide offline work capabilities, search, caching during multimedia playbacks etc."],
 			params: [
 				{
 					short: "Medium",
-					description: "Randomly slow messages to prevent high resolution timers",
-					config: [false],
+					description: "Randomly slow messages to prevent high resolution timers but keep WebWorker support",
+					config: [false, false],
 				},
 				{
 					short: "Strict",
-					description: "Remove real parallelism, use WebWorker polyfill",
-					config: [true],
+					description: "Make WebWorkers unoperable",
+					config: [true, false],
+				},
+				{
+					short: "Remove",
+					description: "Remove WebWorkers support from the browser, easily detactable by web pages",
+					config: [false, true],
 				},
 			],
 			wrappers: [
@@ -756,7 +761,7 @@ var level_1 = {
 	"level_description": "Apply security counter-measures that are likely not to break web pages but do not defend against fingerprinting. Disable APIs that are not commonly used. Use this level if Fingerprint Detector reports low likelihood of fingerprinting, you trust the visited service, and/or you think that the protection makes the page slow or broken and your temptation to use the service is so high that you do not want to be protected.",
 	"time_precision": 3,
 	"net": 1,
-	"webworker": 2,
+	"webworker": 3,
 	"geolocation": 3,
   "physical_environment": 1,
 	"useridle": 1,
@@ -807,7 +812,7 @@ var level_3 = {
 	"enumerateDevices": 3,
 	"hardware": 3,
 	"net": 1,
-	"webworker": 2,
+	"webworker": 3,
 	"geolocation": 6,
   "physical_environment": 1,
 	"useridle": 3,

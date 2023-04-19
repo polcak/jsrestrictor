@@ -66,20 +66,32 @@ None. Both refer to the same technique. See the previous question.
 #### How can I fix videos if they fail to play or retrieve data in time?
 
 JShelter reimplements more than 100 JavaScript APIs. However, pages can use several ways to access the
-same API. Unfortunately, browsers do not allow patching every possibility consistently through a simple call. Web Workers are one of the possibilities to access the APIs. Our ultimate goal is to patch APIs consistently. However, the current Web Worker patches do not work as intended.
+same API. Unfortunately, browsers do not allow patching every possibility consistently through a simple call. Web Workers are one of the possibilities to access the APIs. Our ultimate goal is to patch APIs consistently. However, patching Web Worker is tricky and so far, we did not find a way how to patch Workers seemlessly. Our ultimate goal was to replace Workers with synchronous code. However, so far we offer only policies that either disable Workers or make them unoperable.
 
-We are [working](https://pagure.io/JShelter/webextension/issue/43) on a proper fix. In the meantime, we patch Web Worker in the `Recommended` level. Nevertheless, the method brakes Web Workers in Firefox, and they cannot be used for benign purposes.
-JShelter users reported that video streaming servers are often affected. If you believe the server
-operator that they and/or their partners do not misuse Web Workers to access original APIs,
-change the `WebWorker` wrapper from `Strict` to `Medium`. Videos should
-work. To do this, follow these steps:
+We are [working](https://pagure.io/JShelter/webextension/issue/43) on [improvements](https://pagure.io/JShelter/webextension/issue/80). Currently, we patch Web Workers in the `Recommended` level (`Strict` policy). Nevertheless, the method breakes Web Workers, and they cannot be used for benign purposes. The page also cannot detect the breakage to limit fingerprintability of the browsers.
+
+JShelter users reported that video streaming servers are often affected. We encontered pages that
+detect the presence of Web Worker support in browsers and provide polyfills if they do not detect
+Web Worker support. The `Remove` WebWorker policy is ideal for such servers. The page can easily
+detect missing Web Worker support. If a page provides its own alternatives like polyfills, those do
+not have the powers of Web Workers so you can make the page work at a cost of increased
+fingerprintability. Use FPD to evaluate that threat.
+
+If you believe the server
+operator that they and/or their partners do not misuse Web Workers to access original APIs or if you
+do not mind,
+change the `WebWorker` policy from `Strict` to `Medium` (in Chrome) or disable it completely
+([in Firefox](https://pagure.io/JShelter/webextension/issue/80)). Videos and other functionality
+requiring Web Workers should
+work. To change the policy, follow these steps:
 
 1. Navigate to a page with a video you want to watch.
-1. Click on the JShelter icon.
+1. Click on the JShelter toolbar icon (typically next to your navigarion bar, if you cannot locate
+   the icon keep reading below).
 1. Click on the `Modify` button.
 1. Click on the `Detail tweaks of JS shield for this site` button.
 1. Click and drag the `WebWorker` slider to the left until `Strict` is replaced
-   by the `Medium` value.
+   by the `Medium` value (Chromium-based browser) or `Unprotected` (Firefox).
 1. Click on the `Refresh page` button at the top.
 1. Watch the video.
 
