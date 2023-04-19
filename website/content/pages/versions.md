@@ -10,6 +10,7 @@ title: Release history
   Hence, JShelter does not modify the empty list or the list of five standard plugins.
 
 Reconsider and rewrite Web Worker wrappers (pagure issue 80)
+
 * `Strict` WebWorker policy intentionally breakes Web Workers
 * New policy to `Remove` Web Workers used for `Turn fingerprinting protection off` and `Strict` level.
 * `Medium` WebWorker policy renamed to `Low` as it only tackles a single issue with Workers.
