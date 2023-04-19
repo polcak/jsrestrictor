@@ -2,6 +2,10 @@
 title: Release history
 ---
 
+## 0.12.1
+
+* bugfix: Return the correctly created Worker object from the `Strict` wrapper.
+
 ## 0.12
 
 * Cope with the changes of reported plugins and supported MIME types in the HTML standard and
