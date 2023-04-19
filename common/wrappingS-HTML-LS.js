@@ -51,7 +51,7 @@ ISBN 978-3-319-66398-2.
 (function() {
 	var strictWorkerWrapperBody = `
 		// We create a Worker to limit fingerprinting but we intentionally use a non-existing URL.
-		return originalF("https://[ff00::]/worker.js");
+		return new originalF("https://[ff00::]/worker.js");
 	`;
 
 	var slowBody = `
