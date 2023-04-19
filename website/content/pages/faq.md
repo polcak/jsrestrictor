@@ -101,7 +101,7 @@ See the previous question.
 
 #### What are Web Workers and what are the threats that I face?
 
-In essence, workers are threat for JShelter users for two reasons:
+In essence, Web Workers are threat for JShelter users for two reasons:
 
 1. They allow accessing some of the modified APIs. There is no simple call that JShelter can issue
    to apply the modifications to Web Workers. So if you do not apply WebWorker protection you risk
