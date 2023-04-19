@@ -391,8 +391,8 @@ var wrapping_groups = {
 			description2: ["Workers provide powerful APIs that, for example, allow to install an invisible proxy to the browser. Higher levels remove that possibility. Note that benign site use workers to provide offline work capabilities, search, caching during multimedia playbacks etc."],
 			params: [
 				{
-					short: "Medium",
-					description: "Randomly slow messages to prevent high resolution timers but keep WebWorker support",
+					short: "Low",
+					description: "Randomly slow messages to prevent high resolution timers but keep WebWorker support. Workers are not protected from accessing originall APIs. Use witch caution.",
 					config: [false, false],
 				},
 				{

@@ -80,7 +80,7 @@ fingerprintability. Use FPD to evaluate that threat.
 If you believe the server
 operator that they and/or their partners do not misuse Web Workers to access original APIs or if you
 do not mind,
-change the `WebWorker` policy from `Strict` to `Medium` (in Chrome) or disable it completely
+change the `WebWorker` policy from `Strict` to `Low` (in Chrome) or disable it completely
 ([in Firefox](https://pagure.io/JShelter/webextension/issue/80)). Videos and other functionality
 requiring Web Workers should
 work. To change the policy, follow these steps:
@@ -91,7 +91,7 @@ work. To change the policy, follow these steps:
 1. Click on the `Modify` button.
 1. Click on the `Detail tweaks of JS shield for this site` button.
 1. Click and drag the `WebWorker` slider to the left until `Strict` is replaced
-   by the `Medium` value (Chromium-based browser) or `Unprotected` (Firefox).
+   by the `Low` value (Chromium-based browser) or `Unprotected` (Firefox).
 1. Click on the `Refresh page` button at the top.
 1. Watch the video.
 
