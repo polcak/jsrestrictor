@@ -87,6 +87,19 @@ work. To do this, follow these steps:
 
 See the previous question.
 
+#### What are Web Workers and what are the threats that I face?
+
+In essence, workers are threat for JShelter users for two reasons:
+
+1. They allow accessing some of the modified APIs. There is no simple call that JShelter can issue
+   to apply the modifications to Web Workers. So if you do not apply WebWorker protection you risk
+   that other protections can be removed by Web Workers.
+2. They increase the capabilities of attackers. For example, malicious actors can install long-lived
+   proxies to the browser.
+
+For more details, see [Web Worker
+documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers), the [explanation of using Web Workers as Man-In-The-Middle proxy](https://betterprogramming.pub/man-in-the-middle-attacks-via-javascript-service-workers-52647ac929a2), papers like [Assessing the threat of web worker distributed attacks](https://www.researchgate.net/publication/313953354_Assessing_the_threat_of_web_worker_distributed_attacks), and other [works](http://www.diva-portal.se/smash/get/diva2:1218197/FULLTEXT01.pdf).
+
 #### Can I see a JShelter icon next to my navigation bar? I want to interact with the extension easily and avoid going through settings.
 
 JShelter has a toolbar icon that allows you to open the popup (see below). However, browsers tend
