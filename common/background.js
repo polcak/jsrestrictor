@@ -3,6 +3,7 @@
  *
  *  \author Copyright (C) 2019  Libor Polcak
  *  \author Copyright (C) 2019  Martin Timko
+ *  \author Copyright (C) 2023  Martin Zmitko
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -61,9 +62,15 @@ browser.tabs.onUpdated.addListener(tabUpdate);     // reload tab
  */
 async function connected(port) {
 	if (port.name === "port_from_popup") {
-		/// We always send back current level
-		let [tab] = await browser.tabs.query(queryInfo);
-		let current_level = tabUpdate(tab.id, tab.url);
+		let current_level = wrapping_groups.empty_level;
+		try {
+			// We always send back current level
+			let [tab] = await browser.tabs.query(queryInfo);
+			current_level = getCurrentLevelJSON(tab.url)[0];
+		} catch (e) {
+			// Stick to the empty_level and ignore the exception
+			console.debug("Could not get current level for popup", e);
+		}
 		port.postMessage(current_level);
 		port.onMessage.addListener(function(msg) {
 			port.postMessage(current_level);
