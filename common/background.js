@@ -51,6 +51,36 @@ function tabUpdate(tabid, changeInfo) {
 // on tab reload or tab change, update metadata
 browser.tabs.onUpdated.addListener(tabUpdate);     // reload tab
 
+// Modify CSP headers to allow WASM execution in page context
+function cspRequestProcessor(details) {
+	let modified = false;
+	let headers = details.responseHeaders;
+	for (let header of headers) {
+		let name = header.name.toLowerCase();
+		if (name !== "content-security-policy" &&
+			name !== "content-security-policy-report-only" &&
+			name !== "x-webkit-csp") {
+			continue;
+		}
+		let origCSP = header.value;
+		header.value = header.value.replace("script-src", "script-src 'wasm-unsafe-eval'");
+		if (origCSP !== header.value) {
+			modified = true;
+		}
+	}
+	return modified ? {responseHeaders: headers} : {};
+}
+// Attach listener only in chromium where the WASM module is instantiated directly in
+// page context, subject to the page's CSP. Code inserted as script tags isn't subject
+// to script-src origins, it is, however, subject to the 'unsafe' group of script evaluation rules.
+if (typeof browser_polyfill_used !== "undefined" && browser_polyfill_used) {
+	browser.webRequest.onHeadersReceived.addListener(cspRequestProcessor,
+		{urls: ["<all_urls>"],
+		types: ["main_frame", "sub_frame"]},
+		["blocking", "responseHeaders"]
+	);
+}
+
 // Communication channels
 
 /**

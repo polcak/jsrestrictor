@@ -4,6 +4,7 @@
  * \see https://webaudio.github.io/web-audio-api
  *
  *  \author Copyright (C) 2021  Matus Svancar
+ *  \author Copyright (C) 2023  Martin Zmitko
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  *  \license SPDX-License-Identifier: MPL-2.0
@@ -70,50 +71,93 @@
 	 *	* (1) - replace values by white noise based on domain key
 	 */
 	function audioFarble(array){
-		console.debug(); /* Intentionally one the same line */let start_time = Date.now();
-		// PRNG function needs to depend on the original audio, so that the same
-		// audio is farbled the same way but different audio is farbled differently
-		// See https://pagure.io/JShelter/webextension/issue/23
-		const MAXUINT32 = 4294967295;
-		const ARRAY_LEN = array.byteLength;
-		let crc = new CRC16();
-		for (let i = 0; i < ARRAY_LEN; i++) {
-			crc.single(array[i] * MAXUINT32);
+		if (wasm.ready && wasm.grow(array.byteLength)) {
+			farbleAudioWASM();
+		} else {
+			farbleAudioJS();
 		}
-		console.debug("Timing audioFarble seed init", Date.now() - start_time);
-		var thisaudio_prng = alea(domainHash, "AudioFarbling", crc.crc);
-		console.debug("Timing audioFarble prng init", Date.now() - start_time);
+		
+		function farbleAudioWASM() {
+			const len = array.byteLength;
+			wasm.set(array, 0, true);
+			const crc = wasm.crc16Float(len);
+			const mash = new Mash();
+			mash.addData(' ');
+			mash.addData(domainHash);
+			mash.addData("AudioFarbling");
+			mash.addData(crc);
+			wasm.farbleAudio(len, mash.n | 0);
+			array.set(wasm.get(array.length, 0, true));
+		}
 
-		for (let i = 0; i < ARRAY_LEN; i++) {
-			// Possible improvements:
-			// Copy neighbor data (possibly with modifications)
-			array[i] *= 0.99 + thisaudio_prng() / 100;
-		}
-		console.debug("Timing audioFarble farbled", Date.now() - start_time);
-	};
-	function audioFarbleInt(array) {
-		console.debug(); /* Intentionally one the same line */let start_time = Date.now();
-		// PRNG function needs to depend on the original audio, so that the same
-		// audio is farbled the same way but different audio is farbled differently
-		// See https://pagure.io/JShelter/webextension/issue/23
-		const ARRAY_LEN = array.length;
-		let crc = new CRC16();
-		for (let i = 0; i < ARRAY_LEN; i++) {
-			crc.single(array[i]);
-		}
-		console.debug("Timing audioFarbleInt seed init", Date.now() - start_time);
-		var thisaudio_prng = alea(domainHash, "AudioFarbling", crc.crc);
-		console.debug("Timing audioFarbleInt prng init", Date.now() - start_time);
+		function farbleAudioJS() {
+			console.debug(); /* Intentionally one the same line */let start_time = Date.now();
+			// PRNG function needs to depend on the original audio, so that the same
+			// audio is farbled the same way but different audio is farbled differently
+			// See https://pagure.io/JShelter/webextension/issue/23
+			const MAXUINT32 = 4294967295;
+			const ARRAY_LEN = array.byteLength;
+			let crc = new CRC16();
+			for (let i = 0; i < ARRAY_LEN; i++) {
+				crc.single(array[i] * MAXUINT32);
+			}
+			console.debug("Timing audioFarble seed init", Date.now() - start_time);
+			var thisaudio_prng = alea(domainHash, "AudioFarbling", crc.crc);
+			console.debug("Timing audioFarble prng init", Date.now() - start_time);
 
-		for (let i = 0; i < ARRAY_LEN; i++) {
-			if (thisaudio_prng.get_bits(1)) { // Modify data with probability of 0.5
+			for (let i = 0; i < ARRAY_LEN; i++) {
 				// Possible improvements:
 				// Copy neighbor data (possibly with modifications)
-				// Make bigger changes than xoring with 1
-				array[i] ^= 1;
+				array[i] *= 0.99 + thisaudio_prng() / 100;
 			}
+			console.debug("Timing audioFarble farbled", Date.now() - start_time);
 		}
-		console.debug("Timing audioFarbleInt farbled", Date.now() - start_time);
+	};
+
+	function audioFarbleInt(array) {
+		if (wasm.ready && wasm.grow(array.byteLength)) {
+			farbleAudioIntWASM();
+		} else {
+			farbleAudioIntJS();
+		}
+
+		function farbleAudioIntWASM() {
+			const len = array.byteLength;
+			wasm.set(array);
+			const crc = wasm.crc16(len);
+			const mash = new Mash();
+			mash.addData(' ');
+			mash.addData(domainHash);
+			mash.addData("AudioFarbling");
+			mash.addData(crc);
+			wasm.farbleBytes(len, mash.n | 0, false);
+			array.set(wasm.get(len));
+		}
+
+		function farbleAudioIntJS() {
+			console.debug(); /* Intentionally one the same line */let start_time = Date.now();
+			// PRNG function needs to depend on the original audio, so that the same
+			// audio is farbled the same way but different audio is farbled differently
+			// See https://pagure.io/JShelter/webextension/issue/23
+			const ARRAY_LEN = array.length;
+			let crc = new CRC16();
+			for (let i = 0; i < ARRAY_LEN; i++) {
+				crc.single(array[i]);
+			}
+			console.debug("Timing audioFarbleInt seed init", Date.now() - start_time);
+			var thisaudio_prng = alea(domainHash, "AudioFarbling", crc.crc);
+			console.debug("Timing audioFarbleInt prng init", Date.now() - start_time);
+
+			for (let i = 0; i < ARRAY_LEN; i++) {
+				if (thisaudio_prng.get_bits(1)) { // Modify data with probability of 0.5
+					// Possible improvements:
+					// Copy neighbor data (possibly with modifications)
+					// Make bigger changes than xoring with 1
+					array[i] ^= 1;
+				}
+			}
+			console.debug("Timing audioFarbleInt farbled", Date.now() - start_time);
+		}
 	}
 	function whiteNoiseInt(array) {
 		noise_prng = alea(Date.now(), prng());

@@ -7,6 +7,7 @@
  *
  *  \author Copyright (C) 2019  Libor Polcak
  *  \author Copyright (C) 2021  Matus Svancar
+ *  \author Copyright (C) 2023  Martin Zmitko
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  *  \license SPDX-License-Identifier: MPL-2.0
@@ -143,20 +144,41 @@
 					else if(approach === 0){
 						const width = context.canvas.width;
 						const height = context.canvas.height;
-						var imageData = origGetImageData.call(context, 0, 0, width, height);
-						const BYTES_PER_ROW = width * 4;
-						farbleCanvasDataBrave(function*() {
-							let data = imageData.data;
-							let offset = 0;
-							while (offset < data.length) {
-								yield imageData.data.subarray(offset, offset + BYTES_PER_ROW);
-								offset += BYTES_PER_ROW;
-							}
-						}, width);
+						const imageData = origGetImageData.call(context, 0, 0, width, height);
+						const len = imageData.data.length;
+						if (wasm.ready && wasm.grow(len)) {
+							farblePixelsWASM();
+						} else {
+							farblePixelsJS();
+						}
 						// Do not modify the original canvas, always modify the fake canvas.
 						// Always farble the whole image so that the farbled data do not depend
 						// on the page-specified extraction data rectangle.
 						fake.putImageData(imageData, 0, 0);
+						
+						function farblePixelsWASM() {
+							wasm.set(imageData.data);
+							const crc = wasm.crc16(len);
+							const mash = new Mash();
+							mash.addData(' ');
+							mash.addData(domainHash);
+							mash.addData("CanvasFarbling");
+							mash.addData(crc);
+							wasm.farbleBytes(len, mash.n | 0, true);
+							imageData.data.set(wasm.get(len));
+						}
+						
+						function farblePixelsJS() {
+							const BYTES_PER_ROW = width * 4;
+							farbleCanvasDataBrave(function*() {
+								let data = imageData.data;
+								let offset = 0;
+								while (offset < len) {
+									yield data.subarray(offset, offset + BYTES_PER_ROW);
+									offset += BYTES_PER_ROW;
+								}
+							}, width);
+						}
 					}
 				};`,
 			wrapping_code_function_name: "wrapping",

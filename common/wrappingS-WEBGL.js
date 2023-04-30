@@ -5,6 +5,7 @@
  * \see https://www.khronos.org/registry/webgl/specs/latest/2.0/
  *
  *  \author Copyright (C) 2021  Matus Svancar
+ *  \author Copyright (C) 2023  Martin Zmitko
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  *  \license SPDX-License-Identifier: MPL-2.0
@@ -588,55 +589,85 @@
 		}
 		else if(args[0]===0) {
 			// Read and modify pixels of the whole canvas to produce the same results no matter the view
-			let pixels = new Uint8Array(gl.drawingBufferWidth * gl.drawingBufferHeight * 4);
-			origReadPixels.call(gl, 0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-			const BYTES_PER_ROW = gl.drawingBufferWidth * 4;
-			farbleCanvasDataBrave(function* () {
-				// We need to flip the canvas
-				let offset = pixels.length - BYTES_PER_ROW;
-				while (offset >= 0) {
-					yield pixels.subarray(offset, offset + BYTES_PER_ROW);
-					offset -= BYTES_PER_ROW;
-				}
-			}, gl.drawingBufferWidth);
-			// And modify data according to the original parameters
+			const GL_WIDTH = gl.drawingBufferWidth;
+			const GL_HEIGHT = gl.drawingBufferHeight;
+			const BYTES_PER_ROW = GL_WIDTH * 4;
+			const BYTES_CANVAS = BYTES_PER_ROW * GL_HEIGHT;
 			const DESIRED_WIDTH = width * 4;
-			const XXMAX = x + width;
-			function insertEmpty(pos) {
-				outpixels[pos  ] = 0;
-				outpixels[pos+1] = 0;
-				outpixels[pos+2] = 0;
-				outpixels[pos+3] = 255;
+			const BYTES_OUT = DESIRED_WIDTH * height;
+			const pixels = new Uint8Array(BYTES_CANVAS);
+			origReadPixels.call(gl, 0, 0, GL_WIDTH, GL_HEIGHT, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+			if (wasm.ready && wasm.grow(BYTES_CANVAS + BYTES_OUT + DESIRED_WIDTH)) {
+				farblePixelsWASM();
+			} else {
+				farblePixelsJS();
 			}
-			for (let i = 0; i < height; i++) {
-				// Go through the number of desired rows
-				let xx = x;
-				let yy = y + i;
-				if (yy < 0 || yy >= gl.drawingBufferHeight) {
-					for (let j = 0; j < DESIRED_WIDTH; j += 4) {
-						insertEmpty(i*DESIRED_WIDTH+j);
-					}
+
+			function farblePixelsWASM() {
+				// We need to flip the canvas
+				for (let i = 0; i < BYTES_CANVAS; i += BYTES_PER_ROW) {
+					wasm.set(pixels.subarray(i, i + BYTES_PER_ROW), BYTES_CANVAS - i - BYTES_PER_ROW);
 				}
-				else {
-					let j = i*DESIRED_WIDTH;
-					while (xx < 0 && xx < XXMAX) {
-						insertEmpty(j);
-						j += 4;
-						xx++;
+				const crc = wasm.crc16(BYTES_CANVAS);
+				const mash = new Mash();
+				mash.addData(' ');
+				mash.addData(domainHash);
+				mash.addData("CanvasFarbling");
+				mash.addData(crc);
+				wasm.farbleBytes(BYTES_CANVAS, mash.n | 0, true);
+				// Modify data according to original selection and flip the canvas back
+				wasm.adjustWebGL(x, y, width, height, GL_WIDTH, GL_HEIGHT);
+				// Save farbled pixels, limit size by size of outpixels
+				outpixels.set(wasm.get(Math.min(outpixels.length, BYTES_OUT), BYTES_CANVAS));
+			}
+
+			function farblePixelsJS() {
+				farbleCanvasDataBrave(function* () {
+					// We need to flip the canvas
+					let offset = BYTES_CANVAS - BYTES_PER_ROW;
+					while (offset >= 0) {
+						yield pixels.subarray(offset, offset + BYTES_PER_ROW);
+						offset -= BYTES_PER_ROW;
 					}
-					while (xx < XXMAX && xx < gl.drawingBufferWidth) {
-						let offset_orig = (yy * gl.drawingBufferWidth + xx) * 4;
-						outpixels[j  ] = pixels[offset_orig];
-						outpixels[j+1] = pixels[offset_orig+1];
-						outpixels[j+2] = pixels[offset_orig+2];
-						outpixels[j+3] = pixels[offset_orig+3];
-						j += 4;
-						xx++;
+				}, GL_WIDTH);
+				// And modify data according to the original parameters
+				const XXMAX = x + width;
+				function insertEmpty(pos) {
+					outpixels[pos  ] = 0;
+					outpixels[pos+1] = 0;
+					outpixels[pos+2] = 0;
+					outpixels[pos+3] = 255;
+				}
+				for (let i = 0; i < height; i++) {
+					// Go through the number of desired rows
+					let xx = x;
+					let yy = y + i;
+					if (yy < 0 || yy >= GL_HEIGHT) {
+						for (let j = 0; j < DESIRED_WIDTH; j += 4) {
+							insertEmpty(i*DESIRED_WIDTH+j);
+						}
 					}
-					while (xx < XXMAX) {
-						insertEmpty(j);
-						j += 4;
-						xx++;
+					else {
+						let j = i*DESIRED_WIDTH;
+						while (xx < 0 && xx < XXMAX) {
+							insertEmpty(j);
+							j += 4;
+							xx++;
+						}
+						while (xx < XXMAX && xx < GL_WIDTH) {
+							let offset_orig = (yy * GL_WIDTH + xx) * 4;
+							outpixels[j  ] = pixels[offset_orig];
+							outpixels[j+1] = pixels[offset_orig+1];
+							outpixels[j+2] = pixels[offset_orig+2];
+							outpixels[j+3] = pixels[offset_orig+3];
+							j += 4;
+							xx++;
+						}
+						while (xx < XXMAX) {
+							insertEmpty(j);
+							j += 4;
+							xx++;
+						}
 					}
 				}
 			}
