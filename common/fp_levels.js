@@ -91,6 +91,8 @@ var fp_levels = {};
 				w.type === "property" ? 1 : 0,
 				// Array specifying property types to wrap (getter, setter or both)
 				Array.from(new Set(w.groups.map(x => x.property != undefined ? x.property : "get"))),
+				// Specify if arguments should be sent for evaulation
+				w.groups.some(group => "arguments" in group) ? 1 : 0,
 			]);
 		}
 

@@ -39,7 +39,8 @@ function configureInjection({currentLevel, fpdWrappers, domainHash}) {
 		hash.update(JSON.stringify(domainHash));
 		domainHash = hash.hex();
 	}
-
+	// Append argument reporting setting to JSS wrapper definitions
+	fp_append_reporting_to_jss_wrappers(fpdWrappers);
 	// Generate wrapping code
 	var code = wrap_code(currentLevel.wrappers);
 	// Generate FPD wrapping code

@@ -46,16 +46,12 @@ function enclose_wrapping2(code, name, params, call_with_window) {
  */
 function create_counter_call(wrapper, type) {
 	let {parent_object, parent_object_property} = wrapper;
-	let updateCount = `${parent_object}.${parent_object_property}`;
-	
-	if ("update_count" in wrapper) {
-		if (typeof wrapper.update_count === "string") updateCount = wrapper.update_count;
-	}
-	
-	return updateCount ? `if (fp_enabled && fp_${type}_count < 1000) {
-		updateCount(${JSON.stringify(updateCount)}, "${type}", args.map(x => JSON.stringify(x)));
+	let resource = `${parent_object}.${parent_object_property}`;
+	let args = wrapper.report_args ? "args.map(x => JSON.stringify(x))" : "[]"
+	return `if (fp_enabled && fp_${type}_count < 1000) {
+		updateCount(${JSON.stringify(resource)}, "${type}", ${args});
 		fp_${type}_count += 1;
-	}` : "";
+	}`;
 }
 
 /**
