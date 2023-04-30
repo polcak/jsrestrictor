@@ -684,6 +684,31 @@ var wrapping_groups = {
 				"window.NDEFRecord",
 			],
 		},
+		{
+			name: "wasm",
+			label: "Optimized farbling",
+			description: "Optimize farbling (the process of generating little lies in localy generated images and audio) by using WebAssembly.",
+			description2: ["This injects a small WebAssembly module into every page. This is a safe option to tweak when concerned about fingerprinting as it has no effect on farbling results and won't change the resulting fingerprint of the browser.",
+							"Note: This option will only take effect when the level of 'Localy rendered images' or 'Localy generated audio' is set to 'Little lies'."],
+			params: [
+				{
+					short: "Disabled",
+					description: "Disable optimized farbling",
+					config: [0],
+				},
+				{
+					short: "Passive",
+					description: "Enable optimized farbling but fall back to the default slower implementation if the WebAssembly module cannot be injected",
+					config: [1],
+				},
+				{
+					short: "Active",
+					description: "Enable optimized farbling and modify CSP headers to allow WebAssembly execution. Because the initialization of injected WebAssembly modules is subject to the page's Content Security Policy on Chromium based browsers, this optimization will insert the 'wasm-unsafe-eval' CSP directive to allow WebAssembly execution where it wouldn't be otherwise. This might, however, interfere with other installed extensions that rely on modifying the CSP header.",
+					config: [2],
+				},
+			],
+			wrappers: [], // Special case with no wrappers, this group is for modifying htmlcanvaselement, webgl and audiobuffer farbling behaviour
+		},
 	],
 }
 var modify_wrapping_groups = modify_wrapping_groups || (() => null); // Give other scripts the possibility to modify the wrapping_groups objects
@@ -727,7 +752,7 @@ function are_all_api_unsupported(wrappers) {
 /// Automatically populate infered metadata in wrapping_groups.
 wrapping_groups.groups.forEach(function (group) {
 	group.id = group.name;
-	if (!are_all_api_unsupported(group.wrappers)) {
+	if (!are_all_api_unsupported(group.wrappers) || group.wrappers.length === 0) {
 		wrapping_groups.group_names.push(group.name);
 		wrapping_groups.empty_level[group.id] = 0;
 	}
@@ -798,6 +823,7 @@ var level_2 = {
 	"battery": 1,
 	"windowname": 1,
 	"nfc": 1,
+	"wasm": 1,
 };
 
 var level_3 = {

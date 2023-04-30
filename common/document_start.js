@@ -51,8 +51,10 @@ function configureInjection({currentLevel, fpdWrappers, domainHash}) {
 			code = fp_update_wrapping_code(code, currentLevel.wrappers, fpdWrappers);
 		}
 	}
-	// Insert farbling WASM module into wrapped code
-	code = insert_wasm_code(code);
+	// Insert farbling WASM module into wrapped code if enabled, only when farbling is actually used 
+	if (currentLevel.wasm && (currentLevel.audiobuffer === 1 || currentLevel.htmlcanvaselement === 1)) {
+		code = insert_wasm_code(code);
+	}
 
 	var aleaCode = `(() => {
 	var domainHash =  ${JSON.stringify(domainHash)};

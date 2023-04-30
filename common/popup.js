@@ -49,6 +49,12 @@ popup_tweaks.assign_custom_params = function(group) {
 	group.groupHits = hits[group.name] || 0;
 };
 popup_tweaks.customize_tweak_row = function (tweakRow, group) {
+	// Don't show hits for WASM optimization group tweak
+	if (group.name === "wasm") {
+		tweakRow.querySelector(".hits").textContent = "-";
+		return;
+	}
+
 	let groupHits = group.groupHits;
 	if (groupHits >= 999) {
 		groupHits = "1000 or more";
@@ -421,4 +427,3 @@ addEventListener("DOMContentLoaded", async () => {
 	load_on_off_switch("nbs");
 	load_on_off_switch("fpd");
 });
-

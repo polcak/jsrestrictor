@@ -24,6 +24,20 @@ var modify_wrapping_groups = function() {
 		if (group.name === "windowname") {
 			group.description2.push("Firefox 88 and above already protects you.")
 		}
+		else if (group.name === "wasm") {
+			group.params = [
+				{
+					short: "Disabled",
+					description: "Disable optimized farbling",
+					config: [0],
+				},
+				{
+					short: "Enabled",
+					description: "Enable optimized farbling",
+					config: [1],
+				},
+			];
+		}
 	});
 };
 var modify_builtin_levels = function() {
