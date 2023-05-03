@@ -1,0 +1,17 @@
+{
+  "name": "performance_tests",
+  "version": "1.0.0",
+  "description": "Benchmarks page loading performance using Lighthouse",
+  "scripts": {
+    "test": "node scripts/benchmark.js"
+  },
+  "author": "Martin Zmitko <xzmitk01@stud.fit.vutbr.cz>",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "cli-progress": "^3.12.0",
+    "lighthouse": "^10.1.1",
+    "mathjs": "^11.8.0",
+    "yargs": "^17.7.2"
+  },
+  "type": "module"
+}
