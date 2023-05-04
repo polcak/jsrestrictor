@@ -598,7 +598,12 @@
 			const pixels = new Uint8Array(BYTES_CANVAS);
 			origReadPixels.call(gl, 0, 0, GL_WIDTH, GL_HEIGHT, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
 			if (wasm.ready && wasm.grow(BYTES_CANVAS + BYTES_OUT + DESIRED_WIDTH)) {
-				farblePixelsWASM();
+				try {
+					farblePixelsWASM();
+				} catch (e) {
+					console.error("WebAssembly optimized farbling failed, falling back to JavaScript implementation", e);
+					farblePixelsJS();
+				}
 			} else {
 				farblePixelsJS();
 			}

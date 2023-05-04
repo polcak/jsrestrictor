@@ -147,7 +147,12 @@
 						const imageData = origGetImageData.call(context, 0, 0, width, height);
 						const len = imageData.data.length;
 						if (wasm.ready && wasm.grow(len)) {
-							farblePixelsWASM();
+							try {
+								farblePixelsWASM();
+							} catch (e) {
+								console.error("WebAssembly optimized farbling failed, falling back to JavaScript implementation", e);
+								farblePixelsJS();
+							}
 						} else {
 							farblePixelsJS();
 						}

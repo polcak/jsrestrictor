@@ -72,7 +72,12 @@
 	 */
 	function audioFarble(array){
 		if (wasm.ready && wasm.grow(array.byteLength)) {
-			farbleAudioWASM();
+			try {
+				farbleAudioWASM();
+			} catch (e) {
+				console.error("WebAssembly optimized farbling failed, falling back to JavaScript implementation", e);
+				farbleAudioJS();
+			}
 		} else {
 			farbleAudioJS();
 		}
@@ -116,7 +121,12 @@
 
 	function audioFarbleInt(array) {
 		if (wasm.ready && wasm.grow(array.byteLength)) {
-			farbleAudioIntWASM();
+			try {
+				farbleAudioIntWASM();
+			} catch (e) {
+				console.error("WebAssembly optimized farbling failed, falling back to JavaScript implementation", e);
+				farbleAudioIntJS();
+			}
 		} else {
 			farbleAudioIntJS();
 		}
