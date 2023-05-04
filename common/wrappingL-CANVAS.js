@@ -50,11 +50,11 @@ function farbleCanvasDataBrave(rowIterator, width) {
 	console.debug("Timing farbleCanvasDataBrave CRC computed", Date.now() - start_time);
 	var thiscanvas_prng = alea(domainHash, "CanvasFarbling", crc.crc);
 	console.debug("Timing farbleCanvasDataBrave PRNG init", Date.now() - start_time);
-	var data_count = BigInt(BigInt(width) * 4n);
+	var data_count = width * 4;
 
 	for (row of rowIterator()) {
-		for (let i = 0n; i < data_count; i++) {
-			if ((i % 4n) === 3n) {
+		for (let i = 0; i < data_count; i++) {
+			if ((i % 4) === 3) {
 				// Do not modify alpha
 				continue;
 			}
