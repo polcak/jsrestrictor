@@ -86,7 +86,7 @@ requiring Web Workers should
 work. To change the policy, follow these steps:
 
 1. Navigate to a page with a video you want to watch.
-1. Click on the JShelter toolbar icon (typically next to your navigarion bar, if you cannot locate
+1. Click on the JShelter badge icon (typically in the toolbar next to your navigarion bar, if you cannot locate
    the icon keep reading below).
 1. Click on the `Modify` button.
 1. Click on the `Detail tweaks of JS shield for this site` button.
@@ -112,9 +112,9 @@ In essence, Web Workers are threat for JShelter users for two reasons:
 For more details, see [Web Worker
 documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers), the [explanation of using Web Workers as Man-In-The-Middle proxy](https://betterprogramming.pub/man-in-the-middle-attacks-via-javascript-service-workers-52647ac929a2), papers like [Assessing the threat of web worker distributed attacks](https://www.researchgate.net/publication/313953354_Assessing_the_threat_of_web_worker_distributed_attacks), and other [works](http://www.diva-portal.se/smash/get/diva2:1218197/FULLTEXT01.pdf).
 
-#### Can I see a JShelter icon next to my navigation bar? I want to interact with the extension easily and avoid going through settings.
+#### Can I see a JShelter (badge) icon next to my navigation bar? I want to interact with the extension easily and avoid going through settings.
 
-JShelter has a toolbar icon that allows you to open the popup (see below). However, browsers tend
+JShelter has a badge icon in the toolbar that allows you to open the popup (see below). However, browsers tend
 to hide the icon. If you cannot see a JShelter icon to the right of the bar where you enter URLs.
 Try to:
 
