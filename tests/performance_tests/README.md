@@ -34,3 +34,9 @@ If you want to automatically build an extension before benchmarking, you can pre
 !name:path. In this case, the path must lead to a directory with a Makefile where "make" will be executed.
 The build output is expected to be in build/chrome by default and can be set.
 ```
+The following example will build and benchmark JShelter in this repository with the name optimized,
+an already built extension in a directory named jshelter in this directory with the name slow and
+a benchmark with no extension with the name none. The results will be saved in benchmark.json.
+```
+npm run test -- !optimized:this slow:jshelter none --out-file benchmark.json
+```
