@@ -59,17 +59,17 @@ function init(alea_seed: u64): void {
 }
 
 // Functions for crc calculation depend on pre-calculated table supplied during initialization
-export function crc16(size: u32): u16 {
+export function crc16(size: usize): u16 {
 	let crc: u16 = 0;
-	for (let i: u32 = 0; i < size; i++) {
+	for (let i: usize = 0; i < size; i++) {
 		crc = load<u16>(((crc ^ load<u8>(i, data_offset)) & 0xff) * 2, crc_offset) ^ (crc >> 8);
 	}
 	return crc;
 }
 
-export function crc16Float(size: u32): u16 {
+export function crc16Float(size: usize): u16 {
 	let crc: u16 = 0;
-	for (let i: u32 = 0; i < size; i += 4) {
+	for (let i: usize = 0; i < size; i += 4) {
 		crc = load<u16>(((crc ^ (load<f32>(i, data_offset) as f64 * 4294967295) as i64) & 0xff) as usize * 2, crc_offset) ^ (crc >> 8);
 	}
 	return crc;
@@ -77,9 +77,9 @@ export function crc16Float(size: u32): u16 {
 
 // Farble bytes in-place in memory, data is expected to begin at data_offset
 // If is_canvas is true, alpha channel (every 4th byte) is not modified
-export function farbleBytes(size: u32, alea_seed: u32, is_canvas: bool): void {
+export function farbleBytes(size: usize, alea_seed: u32, is_canvas: bool): void {
 	init(alea_seed);
-	for (let i: u32 = 0; i < size; i++) {
+	for (let i: usize = 0; i < size; i++) {
 		if (is_canvas && i % 4 === 3) {
 			continue; // Do not modify alpha
 		}
@@ -96,9 +96,9 @@ export function farbleBytes(size: u32, alea_seed: u32, is_canvas: bool): void {
 
 // Farble 32bit floats in-place in memory, data is expected to begin at data_offset
 // size is specified in bytes
-export function farbleAudio(size: u32, alea_seed: u32): void {
+export function farbleFloats(size: usize, alea_seed: u32): void {
 	init(alea_seed);
-	for (let i: u32 = 0; i < size; i += 4) {
+	for (let i: usize = 0; i < size; i += 4) {
 		next();
 		store<f32>(i, f32(load<f32>(i, data_offset) as f64 * (0.99 + (stored_random as f64 / 429496729600))), data_offset);
 	}

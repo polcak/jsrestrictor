@@ -71,7 +71,8 @@
 	 *	* (1) - replace values by white noise based on domain key
 	 */
 	function audioFarble(array){
-		if (wasm.ready && wasm.grow(array.byteLength)) {
+		const ARRAY_LEN = array.byteLength;
+		if (wasm.ready && wasm.grow(ARRAY_LEN)) {
 			try {
 				farbleAudioWASM();
 			} catch (e) {
@@ -83,15 +84,14 @@
 		}
 		
 		function farbleAudioWASM() {
-			const len = array.byteLength;
 			wasm.set(array, 0, true);
-			const crc = wasm.crc16Float(len);
+			const crc = wasm.crc16Float(ARRAY_LEN);
 			const mash = new Mash();
 			mash.addData(' ');
 			mash.addData(domainHash);
 			mash.addData("AudioFarbling");
 			mash.addData(crc);
-			wasm.farbleAudio(len, mash.n | 0);
+			wasm.farbleFloats(ARRAY_LEN, mash.n | 0);
 			array.set(wasm.get(array.length, 0, true));
 		}
 
@@ -101,7 +101,6 @@
 			// audio is farbled the same way but different audio is farbled differently
 			// See https://pagure.io/JShelter/webextension/issue/23
 			const MAXUINT32 = 4294967295;
-			const ARRAY_LEN = array.byteLength;
 			let crc = new CRC16();
 			for (let i = 0; i < ARRAY_LEN; i++) {
 				crc.single(array[i] * MAXUINT32);
@@ -120,7 +119,8 @@
 	};
 
 	function audioFarbleInt(array) {
-		if (wasm.ready && wasm.grow(array.byteLength)) {
+		const ARRAY_LEN = array.byteLength;
+		if (wasm.ready && wasm.grow(ARRAY_LEN)) {
 			try {
 				farbleAudioIntWASM();
 			} catch (e) {
@@ -132,16 +132,15 @@
 		}
 
 		function farbleAudioIntWASM() {
-			const len = array.byteLength;
 			wasm.set(array);
-			const crc = wasm.crc16(len);
+			const crc = wasm.crc16(ARRAY_LEN);
 			const mash = new Mash();
 			mash.addData(' ');
 			mash.addData(domainHash);
 			mash.addData("AudioFarbling");
 			mash.addData(crc);
-			wasm.farbleBytes(len, mash.n | 0, false);
-			array.set(wasm.get(len));
+			wasm.farbleBytes(ARRAY_LEN, mash.n | 0, false);
+			array.set(wasm.get(ARRAY_LEN));
 		}
 
 		function farbleAudioIntJS() {
@@ -149,7 +148,6 @@
 			// PRNG function needs to depend on the original audio, so that the same
 			// audio is farbled the same way but different audio is farbled differently
 			// See https://pagure.io/JShelter/webextension/issue/23
-			const ARRAY_LEN = array.length;
 			let crc = new CRC16();
 			for (let i = 0; i < ARRAY_LEN; i++) {
 				crc.single(array[i]);
