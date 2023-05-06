@@ -53,6 +53,24 @@ browser.tabs.onUpdated.addListener(tabUpdate);     // reload tab
 
 // Modify CSP headers to allow WASM execution in page context
 function cspRequestProcessor(details) {
+	// Because this handler fires before configuration for the page is created,
+	// we need to search for the configuration for that domain now.
+	let subDomains = extractSubDomains(getEffectiveDomain(details.url));
+	let found = false;
+	for (let domain of subDomains.reverse()) {
+		if (domain in domains) {
+			found = true;
+			if (domains[domain].wasm !== 2) {
+				return {};
+			}
+			break;
+		}
+	}
+	// If no configuration is found, use the default level.
+	if (!found && default_level.wasm !== 2) {
+		return {};
+	}
+
 	let modified = false;
 	let headers = details.responseHeaders;
 	for (let header of headers) {
