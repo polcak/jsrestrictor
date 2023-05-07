@@ -20,6 +20,7 @@
 //
 
 import * as fs from 'fs';
+import { parse } from 'csv-parse/sync';
 import { median } from 'mathjs';
 import lighthouse from 'lighthouse';
 import chromeLauncher from 'chrome-launcher';
@@ -30,6 +31,7 @@ import path from 'path';
 
 let runCount = config.runCount;
 let outFile = null;
+let urls = config.urls;
 
 function conditionalLog(condition, ...args) {
     if (condition) {
@@ -65,7 +67,7 @@ function buildExtension(dir) {
 
 function parseArgs() {
     const argv = yargs(process.argv.slice(2))
-        .usage('Usage: npm run test -- [options] [!][name]:extension1 extension2 ...')
+        .usage('Usage: npm run test -- [options] [!][name:]extension1 extension2 ...')
         .options({
             'runs': {
                 description: 'Runs of each benchmark',
@@ -91,6 +93,14 @@ function parseArgs() {
                 type: 'boolean',
                 default: config.stdout,
             },
+            'csv': {
+                description: 'Input CSV file with URLs with format "num, url"',
+                type: 'string',
+            },
+            'url-count': {
+                description: 'Number of URLs to benchmark',
+                type: 'number',
+            },
         })
         .implies('out-file', 'new')
         .demandCommand(1)
@@ -106,9 +116,19 @@ function parseArgs() {
         }
         runCount = argv.runs;
     }
+
     if (argv.outFile) {
         outFile = argv.outFile;
     }
+
+    if (argv.csv) {
+        const cfg = argv.urlCount ? {to: argv.urlCount} : {};
+        urls = parse(fs.readFileSync(argv.csv), cfg).map(url => url[1]);
+    }
+
+    //if (argv.numUrls) {
+    //    urls = urls.slice(0, argv.urlCount);
+   // }
 
     const chromeInstances = {};
     for (let arg of argv._) {
@@ -204,14 +224,14 @@ async function runBenchmarks(chromeInstances, argv) {
     }
 
     let onUrl = 0;
-    const urlCount = config.urls.length;
+    const urlCount = urls.length;
     const extensionCount = Object.keys(chromeInstances).length;
-    const totalRuns = extensionCount * config.urls.length * runCount;
-    console.error(`Running page load benchmarks for ${extensionCount} webextensions on ${config.urls.length}` +
+    const totalRuns = extensionCount * urlCount * runCount;
+    console.error(`Running page load benchmarks for ${extensionCount} webextensions on ${urlCount}` +
                   ` URLs, ${runCount} runs each for a total of ${totalRuns} benchmarks to do.`);
     
     conditionalLog(argv.stdout, '{');
-    for (const url of config.urls) {
+    for (const url of urls) {
         console.error(`[${++onUrl}/${urlCount}] Benchmarking ${url}`);
         if (url in results && !argv.new) {
             console.error(`Skipping ${url}, already in ${outFile}`);

@@ -8,6 +8,7 @@
   "author": "Martin Zmitko <xzmitk01@stud.fit.vutbr.cz>",
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "csv-parse": "^5.3.10",
     "lighthouse": "^10.1.1",
     "mathjs": "^11.8.0",
     "yargs": "^17.7.2"
