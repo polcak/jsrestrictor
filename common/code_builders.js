@@ -371,10 +371,10 @@ function insert_wasm_code(code) {
 		// | CRC table       | Xoring table | Reserved | Data
 		// | 256 * u16       | 8 * u32      |          | 
 		// +-----------------+--------------+----------+---------------------------------------- - -
-		// 0                 512            542        1024
+		// 0                 512            544        1024
 		const crc_offset = 0;
 		const xoring_offset = 512;
-		const reserved_offset = 542;
+		const reserved_offset = 544;
 		const data_offset = 1024;
 
 		WebAssembly.instantiateStreaming(fetch("/* WASM_URL */"), {env: {memory: wasm_memory}}).then(result => {

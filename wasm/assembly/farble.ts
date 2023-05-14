@@ -24,10 +24,10 @@
 // | CRC table       | Xoring table | Reserved | Data
 // | 256 * u16       | 8 * u32      |          | 
 // +-----------------+--------------+----------+---------------------------------------- - -
-// 0                 512            542        1024
+// 0                 512            544        1024
 const crc_offset: usize = 0;
 const xoring_offset: usize = 512;
-const reserved_offset: usize = 542;
+const reserved_offset: usize = 544;
 const data_offset: usize = 1024;
 
 var seed: u64;
