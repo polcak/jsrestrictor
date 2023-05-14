@@ -51,6 +51,7 @@ function tabUpdate(tabid, changeInfo) {
 // on tab reload or tab change, update metadata
 browser.tabs.onUpdated.addListener(tabUpdate);     // reload tab
 
+const scriptSrcRegex = /script-src\s/;
 // Modify CSP headers to allow WASM execution in page context
 function cspRequestProcessor(details) {
 	// Because this handler fires before configuration for the page is created,
@@ -81,7 +82,7 @@ function cspRequestProcessor(details) {
 			continue;
 		}
 		let origCSP = header.value;
-		header.value = header.value.replace("script-src", "script-src 'wasm-unsafe-eval'");
+		header.value = header.value.replace(scriptSrcRegex, "script-src 'wasm-unsafe-eval' ");
 		if (origCSP !== header.value) {
 			modified = true;
 		}
