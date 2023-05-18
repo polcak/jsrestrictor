@@ -73,4 +73,43 @@ describe("Code builders", function() {
 			expect(build_code(my_very_simple_wrapper)).toEqual(jasmine.any(String));
 		});
 	});
+
+	describe("Function insert_wasm_code", function() {
+		it("should be defined.",function() {
+			expect(insert_wasm_code).toBeDefined();
+		});
+		it("shouldn't change code without WASM_CODE placeholder.",function() {
+			expect(insert_wasm_code("")).toEqual("");
+			expect(insert_wasm_code("test")).toEqual("test");
+		});
+		it("should return valid code.",function() {
+			var wasm = {ready: false};
+			expect(wasm_code = insert_wasm_code("// WASM_CODE //")).not.toEqual("// WASM_CODE //");
+			eval(wasm_code.replace('console.debug("WASM farbling module initialized");', ''));
+		});
+
+	});
+});
+
+describe("WebAssembly farbling module", function() {
+	var wasm = {ready: false};
+	beforeAll(function initWASM(done) {
+		let code = insert_wasm_code("// WASM_CODE //");
+		code = code.replace('console.debug("WASM farbling module initialized");', 'done();');
+		eval(code);
+	});
+
+	it("should initialize properly.",function() {
+		expect(wasm.ready).toBe(true);
+	});
+	it("should contain exported functions.",function() {
+		expect(wasm.farbleBytes).toEqual(jasmine.any(Function));
+		expect(wasm.farbleFloats).toEqual(jasmine.any(Function));
+		expect(wasm.crc16).toEqual(jasmine.any(Function));
+		expect(wasm.crc16Float).toEqual(jasmine.any(Function));
+		expect(wasm.adjustWebGL).toEqual(jasmine.any(Function));
+		expect(wasm.get).toEqual(jasmine.any(Function));
+		expect(wasm.set).toEqual(jasmine.any(Function));
+		expect(wasm.grow).toEqual(jasmine.any(Function));
+	});
 });

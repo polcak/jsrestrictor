@@ -144,8 +144,30 @@
 							"objects": [
 								"build_wrapping_code"
 							]
+						},
+						{
+							"import": "sinon-chrome",
+							"as": "sinon_browser"
+						},
+						{
+							"import": "fs",
+							"as": "fs"
+						},
+						{
+							"files": [
+								"../../wasm/build/release.wasm"
+							]
 						}
 					]
+				}
+			],
+			"inject_code_to_src": {
+				"begin": "var browser = JSON.parse(JSON.stringify(sinon_browser)); browser.runtime.getURL = function(){return 'tmp/release.wasm';}; fetch = fs.readFileSync; WebAssembly.instantiateStreaming = WebAssembly.instantiate;"
+			},
+			"replace_in_src": [
+				{
+					"origin": "Object.freeze(wasm);",
+					"new": ""
 				}
 			],
 			"test_script_requirements": [
@@ -162,7 +184,8 @@
 								"generate_object_properties",
 								"generate_delete_properties",
 								"build_code",
-								"wrap_code"
+								"wrap_code",
+								"insert_wasm_code"
 							]
 						},
 						{
@@ -170,6 +193,12 @@
 							"objects": [
 								"levels",
 								"wrapping_groups"
+							]
+						},
+						{
+							"from": "./crc16.js",
+							"objects": [
+								"crc16_table"
 							]
 						}
 					]
@@ -275,6 +304,34 @@
 			"inject_code_to_src": {
 				"begin": "domainHash = '0000000000000000';",
 				"end": "eval(alea);"
+			}
+		},
+		{
+			"name": "crc16",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./crc16.js",
+							"objects": [
+								"CRC16"
+							]
+						},
+						{
+							"from": "./code_builders.js",
+							"objects": [
+								"insert_wasm_code"
+							]
+						}
+					]
+				}
+			],
+			"inject_code_to_src": {
+				"end": "eval(crc16);"
 			}
 		},
 		{
@@ -475,6 +532,222 @@
 						}
 					]
 				}
+			]
+		},
+		{
+			"name": "wrappingL-CANVAS",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./alea.js",
+							"objects": [
+								"alea"
+							]
+						},
+						{
+							"from": "./crc16.js",
+							"objects": [
+								"CRC16"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "wrappingS-WEBGL",
+			"remove_custom_namespace": true,
+			"let_to_var": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrapping.js",
+							"objects": [
+								"add_wrappers"
+							]
+						},
+						{
+							"from": "./helpers.js",
+							"objects": [
+								"randomString"
+							]
+						},
+						{
+							"from": "./wrappingL-CANVAS.js",
+							"objects": [
+								"farbleCanvasDataBrave"
+							]
+						}
+					]
+				}
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./code_builders.js",
+							"objects": [
+								"insert_wasm_code"
+							]
+						},
+						{
+							"from": "./wrappingS-WEBGL.js",
+							"objects": [
+								"farblePixels"
+							]
+						},
+						{
+							"from": "./crc16.js",
+							"objects": [
+								"crc16_table"
+							]
+						},
+						{
+							"from": "./alea.js",
+							"objects": [
+								"Mash"
+							]
+						},
+						{
+							"from": "./wrappingL-CANVAS.js",
+							"objects": [
+								"farbleCanvasDataBrave"
+							]
+						}
+					]
+				}
+			],
+			"extra_exports": [
+				"farblePixels"
+			]
+		},
+		{
+			"name": "wrappingS-WEBA",
+			"remove_custom_namespace": true,
+			"let_to_var": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrapping.js",
+							"objects": [
+								"add_wrappers"
+							]
+						}
+					]
+				}
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./code_builders.js",
+							"objects": [
+								"insert_wasm_code"
+							]
+						},
+						{
+							"from": "./wrappingS-WEBA.js",
+							"objects": [
+								"audioFarble",
+								"audioFarbleInt"
+							]
+						},
+						{
+							"from": "./crc16.js",
+							"objects": [
+								"crc16_table",
+								"CRC16"
+							]
+						},
+						{
+							"from": "./alea.js",
+							"objects": [
+								"alea",
+								"Mash"
+							]
+						}
+					]
+				}
+			],
+			"extra_exports": [
+				"audioFarble",
+				"audioFarbleInt"
+			]
+		},
+		{
+			"name": "wrappingS-H-C",
+			"remove_custom_namespace": true,
+			"let_to_var": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrapping.js",
+							"objects": [
+								"add_wrappers"
+							]
+						},
+						{
+							"from": "./wrappingL-CANVAS.js",
+							"objects": [
+								"farbleCanvasDataBrave"
+							]
+						}
+					]
+				}
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./code_builders.js",
+							"objects": [
+								"insert_wasm_code"
+							]
+						},
+						{
+							"from": "./wrappingS-H-C.js",
+							"objects": [
+								"wrappers"
+							]
+						},
+						{
+							"from": "./crc16.js",
+							"objects": [
+								"crc16_table",
+								"CRC16"
+							]
+						},
+						{
+							"from": "./alea.js",
+							"objects": [
+								"Mash",
+								"alea"
+							]
+						},
+						{
+							"from": "./wrappingL-CANVAS.js",
+							"objects": [
+								"farbleCanvasDataBrave"
+							]
+						}
+					]
+				}
+			],
+			"extra_exports": [
+				"wrappers"
 			]
 		}
 	]
