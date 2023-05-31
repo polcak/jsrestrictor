@@ -31,6 +31,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.select import Select
+from selenium.common.exceptions import NoSuchElementException
 
 from web_browser_type import BrowserType
 import values_real
@@ -100,7 +101,11 @@ class Browser:
             )
             self.driver.find_element(By.ID, 'expandAll').click()
             sleep(1)
-            for elem in self.driver.find_element(By.ID, 'extensions-value').text.splitlines():
+            try:
+                extensions = self.driver.find_element(By.ID, 'div-extensions-value')
+            except NoSuchElementException:
+                extensions = self.driver.find_element(By.ID, 'extensions-value')
+            for elem in extensions.text.splitlines():
                 if 'JShelter' in elem:
                     self._jsr_options_page = "chrome-extension://" + elem.split(':')[0][:-1] + "/options.html"
 
