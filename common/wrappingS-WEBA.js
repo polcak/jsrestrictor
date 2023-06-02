@@ -85,8 +85,7 @@
 
 		for (i in array) {
 			// Possible improvements:
-			// Copy a neighbor data (possibly with modifications
-			// Make bigger canges than xoring with 1
+			// Copy neighbor data (possibly with modifications)
 			array[i] *= 0.99 + thisaudio_prng() / 100;
 		}
 		console.debug("Timing audioFarble farbled", Date.now() - start_time);
@@ -107,8 +106,8 @@
 		for (i in array) {
 			if (thisaudio_prng.get_bits(1)) { // Modify data with probability of 0.5
 				// Possible improvements:
-				// Copy a neighbor data (possibly with modifications
-				// Make bigger canges than xoring with 1
+				// Copy neighbor data (possibly with modifications)
+				// Make bigger changes than xoring with 1
 				array[i] ^= 1;
 			}
 		}
