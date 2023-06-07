@@ -142,7 +142,7 @@
 					wrapped_name: "origGetChannelData",
 				}
 			],
-			helping_code: "var behaviour = args[0]; var modified = new Set();" + audioFarbleBody + whiteNoiseFloat,
+			helping_code: "var behaviour = args[0]; WrapHelper.shared['WEBA_gcd_pool'] = new Set(); WrapHelper.shared['WEBA_origGetChannelData'] = origGetChannelData;" + audioFarbleBody + whiteNoiseFloat,
 			original_function: "parent.AudioBuffer.prototype.getChannelData",
 			wrapping_function_args: "channel",
 			/** \fn fake AudioBuffer.prototype.getChannelData
@@ -153,7 +153,7 @@
 			 */
 			wrapping_function_body: `
 				var floatArr = origGetChannelData.call(this, channel);
-				if (modified.has(floatArr)) {
+				if (WrapHelper.shared['WEBA_gcd_pool'].has(floatArr)) {
 					return floatArr;
 				}
 				if (behaviour == 0) {
@@ -162,9 +162,9 @@
 				else if (behaviour == 1) {
 					whiteNoiseFloat(floatArr);
 				}
-				modified.add(floatArr);
+				WrapHelper.shared['WEBA_gcd_pool'].add(floatArr);
 				setTimeout(function() {
-						modified.delete(floatArr);
+						WrapHelper.shared['WEBA_gcd_pool'].delete(floatArr);
 					}, 300000); // Remove the information after 5 minutes, this might need tweaking
 				return floatArr;
 			`,
@@ -178,7 +178,7 @@
 					wrapped_name: "origCopyFromChannel",
 				}
 			],
-			helping_code: "var behaviour = args[0];" +  audioFarbleBody + whiteNoiseFloat,
+			helping_code: "var behaviour = args[0]; WrapHelper.shared['WEBA_gcd_pool'] = new Set();" +  audioFarbleBody + whiteNoiseFloat,
 			original_function: "parent.AudioBuffer.prototype.copyFromChannel",
 			wrapping_function_args: "destination, channel, start",
 			/** \fn fake AudioBuffer.prototype.copyFromChannel
@@ -188,12 +188,18 @@
 			 * audioFarble with destination array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
-				if (behaviour == 0) {
-					origCopyFromChannel.call(this, destination, channel, start);
-					audioFarble(destination);
-				}
-				else if (behaviour == 1) {
+				if (behaviour == 1) {
 					whiteNoiseFloat(destination);
+				}
+				else if (behaviour == 0) {
+					var floatArr = WrapHelper.shared['WEBA_origGetChannelData'].call(this, channel);
+					origCopyFromChannel.call(this, destination, channel, start);
+					if (WrapHelper.shared['WEBA_gcd_pool'].has(floatArr)) {
+						// Already farbled, no additional farbling
+					}
+					else {
+						audioFarble(destination);
+					}
 				}
 			`,
 		},
