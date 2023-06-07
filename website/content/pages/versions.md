@@ -2,6 +2,13 @@
 title: Release history
 ---
 
+## 0.12.2
+
+* Reimplement AudioBuffer.prototype.copyFromChannel to prevent multiple farbling of the same data
+* bugfix (Chromium-based): Fix popup to always load current level
+* Optimize performance of Canvas and Audio wrappers
+* NSCL updated: JShelter benefits from the mechanism to prevent inconsistencies / breakages when the extension gets updated and therefore the old wrappers are invalidated by Firefox which nukes their sandbox and new ones are installed on extension's automatic restart
+
 ## 0.12.1
 
 * bugfix: Return the correctly created Worker object from the `Strict` wrapper.
