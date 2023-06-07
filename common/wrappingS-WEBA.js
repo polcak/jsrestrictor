@@ -75,15 +75,16 @@
 		// audio is farbled the same way but different audio is farbled differently
 		// See https://pagure.io/JShelter/webextension/issue/23
 		const MAXUINT32 = 4294967295;
+		const ARRAY_LEN = array.byteLength;
 		let crc = new CRC16();
-		for (value of array) {
-			crc.single(value * MAXUINT32);
+		for (let i = 0; i < ARRAY_LEN; i++) {
+			crc.single(array[i] * MAXUINT32);
 		}
 		console.debug("Timing audioFarble seed init", Date.now() - start_time);
 		var thisaudio_prng = alea(domainHash, "AudioFarbling", crc.crc);
 		console.debug("Timing audioFarble prng init", Date.now() - start_time);
 
-		for (i in array) {
+		for (let i = 0; i < ARRAY_LEN; i++) {
 			// Possible improvements:
 			// Copy neighbor data (possibly with modifications)
 			array[i] *= 0.99 + thisaudio_prng() / 100;
@@ -95,15 +96,16 @@
 		// PRNG function needs to depend on the original audio, so that the same
 		// audio is farbled the same way but different audio is farbled differently
 		// See https://pagure.io/JShelter/webextension/issue/23
+		const ARRAY_LEN = array.length;
 		let crc = new CRC16();
-		for (value of array) {
-			crc.single(value);
+		for (let i = 0; i < ARRAY_LEN; i++) {
+			crc.single(array[i]);
 		}
 		console.debug("Timing audioFarbleInt seed init", Date.now() - start_time);
 		var thisaudio_prng = alea(domainHash, "AudioFarbling", crc.crc);
 		console.debug("Timing audioFarbleInt prng init", Date.now() - start_time);
 
-		for (i in array) {
+		for (let i = 0; i < ARRAY_LEN; i++) {
 			if (thisaudio_prng.get_bits(1)) { // Modify data with probability of 0.5
 				// Possible improvements:
 				// Copy neighbor data (possibly with modifications)
@@ -115,13 +117,15 @@
 	}
 	function whiteNoiseInt(array) {
 		noise_prng = alea(Date.now(), prng());
-		for (i in array) {
+		const ARRAY_LEN = array.length;
+		for (let i = 0; i < ARRAY_LEN; i++) {
 			array[i] = (noise_prng() * 256) | 0;
 		}
 	}
 	function whiteNoiseFloat(array) {
+		const ARRAY_LEN = array.length;
 		noise_prng = alea(Date.now(), prng());
-		for (i in array) {
+		for (let i = 0; i < ARRAY_LEN; i++) {
 			array[i] = (noise_prng() * 2) -1;
 		}
 	}
