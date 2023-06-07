@@ -39,5 +39,5 @@ DIR=jshelter-$1
 
 git clone https://pagure.io/JShelter/webextension.git --branch $1 --depth 1 --recurse-submodules --shallow-submodules "$DIR"
 rm -rf $DIR/.git* $DIR/*/.git*
-zip jshelter-$1.zip $DIR
+zip -r jshelter-$1.zip $DIR
 tar czf jshelter-$1.tar.gz $DIR
