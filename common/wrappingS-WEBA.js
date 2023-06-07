@@ -75,18 +75,18 @@
 		// audio is farbled the same way but different audio is farbled differently
 		// See https://pagure.io/JShelter/webextension/issue/23
 		const MAXUINT32 = 4294967295;
+		const ARRAY_LEN = array.byteLength;
 		let crc = new CRC16();
-		for (value of array) {
-			crc.single(value * MAXUINT32);
+		for (let i = 0; i < ARRAY_LEN; i++) {
+			crc.single(array[i] * MAXUINT32);
 		}
 		console.debug("Timing audioFarble seed init", Date.now() - start_time);
 		var thisaudio_prng = alea(domainHash, "AudioFarbling", crc.crc);
 		console.debug("Timing audioFarble prng init", Date.now() - start_time);
 
-		for (i in array) {
+		for (let i = 0; i < ARRAY_LEN; i++) {
 			// Possible improvements:
-			// Copy a neighbor data (possibly with modifications
-			// Make bigger canges than xoring with 1
+			// Copy neighbor data (possibly with modifications)
 			array[i] *= 0.99 + thisaudio_prng() / 100;
 		}
 		console.debug("Timing audioFarble farbled", Date.now() - start_time);
@@ -96,19 +96,20 @@
 		// PRNG function needs to depend on the original audio, so that the same
 		// audio is farbled the same way but different audio is farbled differently
 		// See https://pagure.io/JShelter/webextension/issue/23
+		const ARRAY_LEN = array.length;
 		let crc = new CRC16();
-		for (value of array) {
-			crc.single(value);
+		for (let i = 0; i < ARRAY_LEN; i++) {
+			crc.single(array[i]);
 		}
 		console.debug("Timing audioFarbleInt seed init", Date.now() - start_time);
 		var thisaudio_prng = alea(domainHash, "AudioFarbling", crc.crc);
 		console.debug("Timing audioFarbleInt prng init", Date.now() - start_time);
 
-		for (i in array) {
+		for (let i = 0; i < ARRAY_LEN; i++) {
 			if (thisaudio_prng.get_bits(1)) { // Modify data with probability of 0.5
 				// Possible improvements:
-				// Copy a neighbor data (possibly with modifications
-				// Make bigger canges than xoring with 1
+				// Copy neighbor data (possibly with modifications)
+				// Make bigger changes than xoring with 1
 				array[i] ^= 1;
 			}
 		}
@@ -116,13 +117,15 @@
 	}
 	function whiteNoiseInt(array) {
 		noise_prng = alea(Date.now(), prng());
-		for (i in array) {
+		const ARRAY_LEN = array.length;
+		for (let i = 0; i < ARRAY_LEN; i++) {
 			array[i] = (noise_prng() * 256) | 0;
 		}
 	}
 	function whiteNoiseFloat(array) {
+		const ARRAY_LEN = array.length;
 		noise_prng = alea(Date.now(), prng());
-		for (i in array) {
+		for (let i = 0; i < ARRAY_LEN; i++) {
 			array[i] = (noise_prng() * 2) -1;
 		}
 	}
@@ -143,7 +146,7 @@
 					wrapped_name: "origGetChannelData",
 				}
 			],
-			helping_code: "var behaviour = args[0]; var modified = new Set();" + audioFarbleBody + whiteNoiseFloat,
+			helping_code: "var behaviour = args[0]; WrapHelper.shared['WEBA_gcd_pool'] = new Set(); WrapHelper.shared['WEBA_origGetChannelData'] = origGetChannelData;" + audioFarbleBody + whiteNoiseFloat,
 			original_function: "parent.AudioBuffer.prototype.getChannelData",
 			wrapping_function_args: "channel",
 			/** \fn fake AudioBuffer.prototype.getChannelData
@@ -154,7 +157,7 @@
 			 */
 			wrapping_function_body: `
 				var floatArr = origGetChannelData.call(this, channel);
-				if (modified.has(floatArr)) {
+				if (WrapHelper.shared['WEBA_gcd_pool'].has(floatArr)) {
 					return floatArr;
 				}
 				if (behaviour == 0) {
@@ -163,9 +166,9 @@
 				else if (behaviour == 1) {
 					whiteNoiseFloat(floatArr);
 				}
-				modified.add(floatArr);
+				WrapHelper.shared['WEBA_gcd_pool'].add(floatArr);
 				setTimeout(function() {
-						modified.delete(floatArr);
+						WrapHelper.shared['WEBA_gcd_pool'].delete(floatArr);
 					}, 300000); // Remove the information after 5 minutes, this might need tweaking
 				return floatArr;
 			`,
@@ -179,7 +182,7 @@
 					wrapped_name: "origCopyFromChannel",
 				}
 			],
-			helping_code: "var behaviour = args[0];" +  audioFarbleBody + whiteNoiseFloat,
+			helping_code: "var behaviour = args[0]; WrapHelper.shared['WEBA_gcd_pool'] = new Set();" +  audioFarbleBody + whiteNoiseFloat,
 			original_function: "parent.AudioBuffer.prototype.copyFromChannel",
 			wrapping_function_args: "destination, channel, start",
 			/** \fn fake AudioBuffer.prototype.copyFromChannel
@@ -189,12 +192,18 @@
 			 * audioFarble with destination array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
-				if (behaviour == 0) {
-					origCopyFromChannel.call(this, destination, channel, start);
-					audioFarble(destination);
-				}
-				else if (behaviour == 1) {
+				if (behaviour == 1) {
 					whiteNoiseFloat(destination);
+				}
+				else if (behaviour == 0) {
+					var floatArr = WrapHelper.shared['WEBA_origGetChannelData'].call(this, channel);
+					origCopyFromChannel.call(this, destination, channel, start);
+					if (WrapHelper.shared['WEBA_gcd_pool'].has(floatArr)) {
+						// Already farbled, no additional farbling
+					}
+					else {
+						audioFarble(destination);
+					}
 				}
 			`,
 		},

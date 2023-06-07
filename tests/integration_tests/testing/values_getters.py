@@ -264,6 +264,20 @@ def get_webgl_pixels(driver, name):
     else:
         return image
 
+def transformTextToFloatList(text):
+    if not text:
+        return []
+    elif "," == text[-1]:
+        text = text[:-1]
+    return [float(s) for s in text.split(",")]
+
+def transformTextToIntList(text):
+    if not text:
+        return []
+    elif "," == text[-1]:
+        text = text[:-1]
+    return [int(s) for s in text.split(",")]
+
 ## returns array of precisions outputed by WebGLRenderingContext.getShaderPrecisionFormat
 def get_webgl_precisions(driver, name):
     driver.get(get_config("testing_page"))
@@ -284,12 +298,16 @@ def get_audio(driver):
     driver.get(get_config("testing_page"))
     driver.find_element(By.XPATH, "//button[text()='Test audio']").click()
     sleep(3)
-    audio = {'get_channel': driver.execute_script("return document.getElementById('channel_data_result').innerHTML;"),
-             'copy_channel': driver.execute_script("return document.getElementById('copy_result').innerHTML;"),
-             'byte_time_domain': driver.execute_script("return document.getElementById('byte_time_result').innerHTML;"),
-             'float_time_domain': driver.execute_script("return document.getElementById('float_time_result').innerHTML;"),
-             'byte_frequency': driver.execute_script("return document.getElementById('byte_frequency_result').innerHTML;"),
-             'float_frequency': driver.execute_script("return document.getElementById('float_frequency_result').innerHTML;")}
+    audio = {
+                'get_channel': transformTextToFloatList(driver.execute_script("return document.getElementById('channel_data_result').innerHTML;")),
+                'get_channel2': transformTextToFloatList(driver.execute_script("return document.getElementById('channel_data_result2').innerHTML;")),
+                'copy_channel': transformTextToFloatList(driver.execute_script("return document.getElementById('copy_result').innerHTML;")),
+                'copy_channel2': transformTextToFloatList(driver.execute_script("return document.getElementById('copy_result2').innerHTML;")),
+                'byte_time_domain': transformTextToIntList(driver.execute_script("return document.getElementById('byte_time_result').innerHTML;")),
+                'float_time_domain': transformTextToFloatList(driver.execute_script("return document.getElementById('float_time_result').innerHTML;")),
+                'byte_frequency': transformTextToIntList(driver.execute_script("return document.getElementById('byte_frequency_result').innerHTML;")),
+                'float_frequency': transformTextToFloatList(driver.execute_script("return document.getElementById('float_frequency_result').innerHTML;"))
+            }
     return audio
 
 ## Get methods.toString().
