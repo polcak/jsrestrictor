@@ -145,8 +145,24 @@ def test_float_frequency(browser, audio_data, expected):
     if audio_data:
         if expected.audio.float_frequency == 'SPOOF VALUE':
             assert audio_data['float_frequency'] != browser.real.audio.float_frequency
-            assertNotEqualNumbersInTexts(audio_data['float_frequency'], browser.real.audio.float_frequency, transformTextToFloatList)
+            assertNotEqualNumbersInTexts(audio_data['float_frequency'], browser.real.audio.float_frequency)
         else:
             assert audio_data['float_frequency'] == browser.real.audio.float_frequency
     else:
         assert False
+
+## Test little lies farbling
+def test_little_lies(browser, audio_data, expected):
+    if get_shared_browser().jsr_level != 2:
+        pytest.skip("Apply the test to the little lies level only")
+    def assertNumberesSimilar(spoofed, orig, epsilon):
+        assert len(spoofed) == len(orig)
+        for x, y in zip(spoofed, orig):
+            assert abs(x - y) <= epsilon
+    assertNumberesSimilar(audio_data['get_channel'], browser.real.audio.get_channel, 0.01)
+    assertNumberesSimilar(audio_data['copy_channel'], browser.real.audio.copy_channel, 0.01)
+    # See issue 114 for more details why the following lines are commented out
+    #assertNumberesSimilar(audio_data['byte_time_domain'], browser.real.audio.byte_time_domain, 1)
+    #assertNumberesSimilar(audio_data['float_time_domain'], browser.real.audio.float_time_domain, 0.01)
+    #assertNumberesSimilar(audio_data['byte_frequency'], browser.real.audio.byte_frequency, 1)
+    #assertNumberesSimilar(audio_data['float_frequency'], browser.real.audio.float_frequency, 0.01)
