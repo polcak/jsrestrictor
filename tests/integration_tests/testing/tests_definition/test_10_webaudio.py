@@ -41,27 +41,11 @@ def audio_data(browser):
         print("\nCan not read audio data.")
     return audio
 
-def transformTextToFloatList(text):
-    if not text:
-        return []
-    elif "," == text[-1]:
-        text = text[:-1]
-    return [float(s) for s in text.split(",")]
-
-def transformTextToIntList(text):
-    if not text:
-        return []
-    elif "," == text[-1]:
-        text = text[:-1]
-    return [int(s) for s in text.split(",")]
-
-def assertNotEqualNumbersInTexts(spoofed_text, orig_text, transform_fn, max_similarity = 0.05):
+def assertNotEqualNumbersInTexts(spoofed, orig, max_similarity = 0.05):
     """
     max_similarity: As data are changed probabilistically, we can tolerate some data that are the
     same.
     """
-    spoofed = transform_fn(spoofed_text)
-    orig = transform_fn(orig_text)
     assert len(spoofed) == len(orig)
     not_changed = 0
     for x, y in zip(spoofed, orig):
@@ -74,7 +58,7 @@ def test_channel_data(browser, audio_data, expected):
     if audio_data:
         if expected.audio.get_channel == 'SPOOF VALUE':
             assert audio_data['get_channel'] != browser.real.audio.get_channel
-            assertNotEqualNumbersInTexts(audio_data['get_channel'], browser.real.audio.get_channel, transformTextToFloatList)
+            assertNotEqualNumbersInTexts(audio_data['get_channel'], browser.real.audio.get_channel)
         else:
             assert audio_data['get_channel'] == browser.real.audio.get_channel
     else:
@@ -89,7 +73,7 @@ def test_copy_channel(browser, audio_data, expected):
     if audio_data:
         if expected.audio.copy_channel == 'SPOOF VALUE':
             assert audio_data['copy_channel'] != browser.real.audio.copy_channel
-            assertNotEqualNumbersInTexts(audio_data['copy_channel'], browser.real.audio.copy_channel, transformTextToFloatList)
+            assertNotEqualNumbersInTexts(audio_data['copy_channel'], browser.real.audio.copy_channel)
         else:
             assert audio_data['copy_channel'] == browser.real.audio.copy_channel
     else:
@@ -122,7 +106,6 @@ def test_byte_time_domain(browser, audio_data, expected):
             assert audio_data['byte_time_domain'] != browser.real.audio.byte_time_domain
             assertNotEqualNumbersInTexts(audio_data['byte_time_domain'],
                                          browser.real.audio.byte_time_domain,
-                                         transformTextToIntList,
                                          0.7) # The code modifies the value with 0.5 probability
         else:
             assert audio_data['byte_time_domain'] == browser.real.audio.byte_time_domain
@@ -138,7 +121,7 @@ def test_float_time_domain(browser, audio_data, expected):
     if audio_data:
         if expected.audio.float_time_domain == 'SPOOF VALUE':
             assert audio_data['float_time_domain'] != browser.real.audio.float_time_domain
-            assertNotEqualNumbersInTexts(audio_data['float_time_domain'], browser.real.audio.float_time_domain, transformTextToFloatList)
+            assertNotEqualNumbersInTexts(audio_data['float_time_domain'], browser.real.audio.float_time_domain)
         else:
             assert audio_data['float_time_domain'] == browser.real.audio.float_time_domain
     else:
@@ -150,7 +133,7 @@ def test_byte_frequency(browser, audio_data, expected):
         if expected.audio.byte_frequency == 'SPOOF VALUE':
             assert audio_data['byte_frequency'] != browser.real.audio.byte_frequency
             assertNotEqualNumbersInTexts(audio_data['byte_frequency'],
-                                         browser.real.audio.byte_frequency, transformTextToIntList,
+                                         browser.real.audio.byte_frequency,
                                          0.7) # The code modifies the value with 0.5 probability
         else:
             assert audio_data['byte_frequency'] == browser.real.audio.byte_frequency
