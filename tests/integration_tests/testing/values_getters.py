@@ -285,7 +285,9 @@ def get_audio(driver):
     driver.find_element(By.XPATH, "//button[text()='Test audio']").click()
     sleep(3)
     audio = {'get_channel': driver.execute_script("return document.getElementById('channel_data_result').innerHTML;"),
+             'get_channel2': driver.execute_script("return document.getElementById('channel_data_result2').innerHTML;"),
              'copy_channel': driver.execute_script("return document.getElementById('copy_result').innerHTML;"),
+             'copy_channel2': driver.execute_script("return document.getElementById('copy_result2').innerHTML;"),
              'byte_time_domain': driver.execute_script("return document.getElementById('byte_time_result').innerHTML;"),
              'float_time_domain': driver.execute_script("return document.getElementById('float_time_result').innerHTML;"),
              'byte_frequency': driver.execute_script("return document.getElementById('byte_frequency_result').innerHTML;"),

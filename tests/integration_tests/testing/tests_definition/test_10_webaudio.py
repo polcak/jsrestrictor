@@ -80,6 +80,10 @@ def test_channel_data(browser, audio_data, expected):
     else:
         assert False
 
+## Test that repeated calls of getChannelData (interleaved with copyFromChannel) return the same data
+def test_multiple_get_channel_data(browser, audio_data, expected):
+    assert audio_data['get_channel'] == audio_data['get_channel2']
+
 ## Test AudioContext.copyFromChannel
 def test_copy_channel(browser, audio_data, expected):
     if audio_data:
@@ -90,6 +94,22 @@ def test_copy_channel(browser, audio_data, expected):
             assert audio_data['copy_channel'] == browser.real.audio.copy_channel
     else:
         assert False
+
+## Test that repeated calls of copyFromChannel (interleaved with getChannelData) return the same data
+def test_multiple_copy_channel(browser, audio_data, expected):
+    if get_shared_browser().jsr_level == 3 or get_shared_browser().jsr_level == "Experiment":
+        # Note that it is not possible to use xfail as decorator as those are evaluated during
+        # module import and the module is not reimported for different levels
+        pytest.xfail("JShelter creates different white noise during each copyFromChannel() call. As we do not care about fingerprintability in this level, we do not care that the noise is different")
+    assert audio_data['copy_channel'] == audio_data['copy_channel2']
+
+## Test that getChannelData and copyFromChannel return the same data
+def test_get_channel_equal_copy_channel(browser, audio_data, expected):
+    if get_shared_browser().jsr_level == 3 or get_shared_browser().jsr_level == "Experiment":
+        # Note that it is not possible to use xfail as decorator as those are evaluated during
+        # module import and the module is not reimported for different levels
+        pytest.xfail("JShelter creates different white noise during each copyFromChannel() call. As we do not care about fingerprintability in this level, we do not care that the noise is different")
+    assert audio_data['copy_channel'] == audio_data['get_channel']
 
 ## Test AnalyserNode.getByteTimeDomainData
 def test_byte_time_domain(browser, audio_data, expected):
