@@ -6,6 +6,7 @@
  *  \author Copyright (C) 2021  Matus Svancar
  *	\author Copyright (C) 2022  Marek Salon
  *  \author Copyright (C) 2022  Martin Bednar
+ *  \author Copyright (C) 2023  Martin Zmitko
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -862,7 +863,6 @@ modify_builtin_levels();
 var levels = {};
 var default_level = {};
 var domains = {};
-var wrapped_codes = {};
 function init_levels() {
 	levels = {
 		[level_0.level_id]: level_0,
@@ -874,11 +874,11 @@ function init_levels() {
 	default_level = Object.create(levels[L2]);
 	default_level.level_text = "Default";
 	domains = {};
-	wrapped_codes = {};
 }
 init_levels();
 
-let levels_initialised = false;
+let levels_initialised = false; // Initialized in updateLevels()
+let fp_levels_initialised = false; // Initialized in fp_levels.js/loadFpdConfig()
 let levels_updated_callbacks = [];
 function updateLevels(res) {
 	init_levels();
@@ -888,11 +888,6 @@ function updateLevels(res) {
 	}
 	for (let key in levels) {
 		levels[key].wrappers = wrapping_groups.get_wrappers(levels[key]);
-	}
-	if (window.wrap_code !== undefined) {
-		for (l in levels) {
-			wrapped_codes[l] = wrap_code(levels[l].wrappers) || "";
-		}
 	}
 	var new_default_level = res["__default__"];
 	if (new_default_level === undefined || new_default_level === null || !(new_default_level in levels)) {
@@ -925,10 +920,13 @@ function updateLevels(res) {
 		}
 		domains[d] = level;
 	}
-	var orig_levels_updated_callbacks = levels_updated_callbacks;
-	levels_updated_callbacks = [];
-	orig_levels_updated_callbacks.forEach((it) => it());
+
 	levels_initialised = true;
+	if (fp_levels_initialised) { // Wait for both levels_initialised and fp_levels_initialised
+		var orig_levels_updated_callbacks = levels_updated_callbacks;
+		levels_updated_callbacks = [];
+		orig_levels_updated_callbacks.forEach((it) => it());
+	}
 }
 browser.storage.sync.get(null).then(updateLevels);
 
@@ -974,14 +972,13 @@ function getCurrentLevelJSON(url) {
 	for (let domain of subDomains.reverse()) {
 		if (domain in domains) {
 			let l = domains[domain];
-			if (l.tweaks && !("wrapper_code" in l)) {
-			  l.wrappers = wrapping_groups.get_wrappers(l);
-				l.wrapped_code = wrap_code(l.wrappers) || "";
+			if (l.tweaks) {
+				l.wrappers = wrapping_groups.get_wrappers(l);
 			}
-			return [l, l.tweaks ? l.wrapped_code : wrapped_codes[l.level_id]];
+			return l;
 		}
 	}
-	return [default_level, wrapped_codes[default_level.level_id]];
+	return default_level;
 }
 
 function getTweaksForLevel(level_id, tweaks_obj) {

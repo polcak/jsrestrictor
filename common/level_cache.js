@@ -4,6 +4,7 @@
  * \author Copyright (C) 2020  Libor Polcak
  * \author Copyright (C) 2021  Giorgio Maone
  * \author Copyright (C) 2022  Marek Salon
+ * \author Copyright (C) 2023  Martin Zmitko
  *
  * \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -27,13 +28,11 @@
  * @param {url} string
  * @param isPrivate bool specifying incognito mode
  */
-
-
 function getContentConfiguration(url, frameId, tabId) {
 	return new Promise(resolve => {
 		function resolve_promise() {
 			let level = getCurrentLevelJSON(url);
-			if (level[0].is_default && frameId !== 0) {
+			if (level.is_default && frameId !== 0) {
 				/**
 				 * \bug iframes nested within an iframe with user-specific level do not get this level
 				 *
@@ -59,26 +58,16 @@ function getContentConfiguration(url, frameId, tabId) {
 				 * gets the user-defined settings for domain B but the iframe from domain C
 				 * is set with the level of domain A.
 				 */
-				level =  getCurrentLevelJSON(TabCache.get(tabId).url);
+				level = getCurrentLevelJSON(TabCache.get(tabId).url);
 			}
-			let [{wrappers}, code] = level;
 			let {domainHash} = Hashes.getFor(url);
-			if (isFpdOn(tabId)) {
-				if (!code) {
-					code = fp_generate_wrapping_code(fpdSettings.detection);
-				}
-				else {
-					code = fp_update_wrapping_code(code, wrappers, fpdSettings.detection);
-				}
-			}
 			resolve({
-				currentLevel: level[0],
-				code,
-				wrappers,
+				currentLevel: level,
+				fpdWrappers: isFpdOn(tabId) ? fp_levels.page_wrappers[fpdSettings.detection] : [],
 				domainHash
 			});
 		}
-		if (levels_initialised === true) {
+		if (levels_initialised && fp_levels_initialised) {
 			resolve_promise();
 		}
 		else {

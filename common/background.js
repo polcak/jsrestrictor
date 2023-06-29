@@ -44,7 +44,7 @@ function tabUpdate(tabid, changeInfo) {
 	if (url === undefined) {
 		return wrapping_groups.empty_level;
 	}
-	let current_level = getCurrentLevelJSON(url)[0];
+	let current_level = getCurrentLevelJSON(url);
 	tab_urls[tabid] = url;
 	return current_level;
 }
@@ -66,7 +66,7 @@ async function connected(port) {
 		try {
 			// We always send back current level
 			let [tab] = await browser.tabs.query(queryInfo);
-			current_level = getCurrentLevelJSON(tab.url)[0];
+			current_level = getCurrentLevelJSON(tab.url);
 		} catch (e) {
 			// Stick to the empty_level and ignore the exception
 			console.debug("Could not get current level for popup", e);
