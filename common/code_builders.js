@@ -321,11 +321,13 @@ var build_code = function(wrapper, ...args) {
 			Object.setPrototypeOf(${target}, ${source});
 		}`;
 	}
-	code += `
-		if (${wrapper.freeze}) {
-			Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});
-		}
-	`;
+	if (wrapper.freeze !== undefined) {
+		code += `
+			if (${wrapper.freeze}) {
+				Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});
+			}
+		`;
+	}
 
 	return enclose_wrapping(code, ...args);
 };
