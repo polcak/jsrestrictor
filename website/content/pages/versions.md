@@ -2,6 +2,15 @@
 title: Release history
 ---
 
+## 0.13
+
+Improve performance of the code injection. See the bachelor thesis of Martin Zmitko (https://www.vut.cz/en/students/final-thesis/detail/147218) for more details.
+
+* The code is no longer generated in the background due to the latency of passing huge messages from
+  background to content scripts.
+* Optimize injection code size (remove duplicate code).
+* Do not generate xray wrapper when in Chromium-based browsers.
+
 ## 0.12.2
 
 * Reimplement AudioBuffer.prototype.copyFromChannel to prevent multiple farbling of the same data
