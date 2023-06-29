@@ -5,6 +5,7 @@
  *  \author Copyright (C) 2021  Matus Svancar
  *  \author Copyright (C) 2021  Giorgio Maone
  *  \author Copyright (C) 2021  Marek Salon
+ *  \author Copyright (C) 2023  Martin Zmitko
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -25,10 +26,9 @@
 
 var wrappersPort;
 var pageConfiguration = null;
-function configureInjection({currentLevel, code, wrappers, domainHash, sessionHash}) {
+function configureInjection({currentLevel, fpdWrappers, domainHash}) {
 	if (pageConfiguration) return; // one shot
 	pageConfiguration = {currentLevel};
-	if (!code) return true; // nothing to wrap, bail out!
 	if(browser.extension.inIncognitoContext){
 		// Redefine the domainHash for incognito context:
 		// Compute the SHA256 hash of the original hash so that the incognito hash is:
@@ -38,6 +38,18 @@ function configureInjection({currentLevel, code, wrappers, domainHash, sessionHa
 		var hash = sha256.create();
 		hash.update(JSON.stringify(domainHash));
 		domainHash = hash.hex();
+	}
+
+	// Generate wrapping code
+	var code = wrap_code(currentLevel.wrappers);
+	// Generate FPD wrapping code
+	if (fpdWrappers) {
+		if (!code) {
+			code = fp_generate_wrapping_code(fpdWrappers);
+		}
+		else {
+			code = fp_update_wrapping_code(code, currentLevel.wrappers, fpdWrappers);
+		}
 	}
 	var aleaCode = `(() => {
 	var domainHash =  ${JSON.stringify(domainHash)};

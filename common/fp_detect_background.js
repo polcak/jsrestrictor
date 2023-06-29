@@ -1119,3 +1119,19 @@ function clearStorageFacilities(url) {
 		}
 	}
 }
+
+/**
+ * The function splitting resource string into path and name.
+ * For example: "window.navigator.userAgent" => path: "window.navigator", name: "userAgent"
+ *
+ * \param wrappers text String representing full name of resource.
+ * 
+ * \returns Object consisting of two properties (path, name) for given resource.
+ */
+function split_resource(text) {
+	var index = text.lastIndexOf('.');
+	return {
+		path: text.slice(0, index),
+		name: text.slice(index + 1)
+	}
+}

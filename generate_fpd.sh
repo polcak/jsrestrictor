@@ -22,7 +22,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-sed -i "/.*\/\/DEF_FPD_FILES_S.*/,/.*\/\/DEF_FPD_FILES_E.*/{/.*\/\/DEF_FPD_FILES_S.*/!{/.*\/\/DEF_FPD_FILES_E.*/!d}}" $1/fp_code_builders.js
+sed -i "/.*\/\/DEF_FPD_FILES_S.*/,/.*\/\/DEF_FPD_FILES_E.*/{/.*\/\/DEF_FPD_FILES_S.*/!{/.*\/\/DEF_FPD_FILES_E.*/!d}}" $1/fp_levels.js
 
 CONFIG_FILES=`find common/fp_config/* -maxdepth 0 -name "*.json"`
 ACC=""
@@ -32,4 +32,4 @@ do
   ACC="${ACC}, "
 done
 
-sed -i "/.*\/\/DEF_FPD_FILES_S.*/a var fp_config_files = [${ACC::-2}]" $1/fp_code_builders.js
+sed -i "/.*\/\/DEF_FPD_FILES_S.*/a var fp_config_files = [${ACC::-2}]" $1/fp_levels.js

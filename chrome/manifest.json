@@ -1,5 +1,5 @@
 {
-  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár, Giorgio Maone, Marek Saloň, Radek Hranický",
+  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár, Giorgio Maone, Marek Saloň, Radek Hranický, Martin Zmitko",
   "background": {
       "scripts": [
         "nscl/lib/browser-polyfill.js",
@@ -15,10 +15,8 @@
         "session_hash.js",
         "update.js",
         "url.js",
-        WRAPPING,
-        "code_builders.js",
         "levels.js",
-        "fp_code_builders.js",
+        "fp_levels.js",
         "fp_detect_background.js",
         "background.js",
         "level_cache.js",
@@ -56,6 +54,9 @@
         "alea.js",
         "crc16.js",
         "helpers.js",
+        WRAPPING,
+        "code_builders.js",
+        "fp_code_builders.js",
         "document_start.js"
       ],
       "run_at": "document_start"

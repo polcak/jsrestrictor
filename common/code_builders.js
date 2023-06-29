@@ -4,6 +4,7 @@
  *  \author Copyright (C) 2019  Libor Polcak
  *  \author Copyright (C) 2021  Giorgio Maone
  *  \author Copyright (C) 2022  Marek Salon
+ *  \author Copyright (C) 2023  Martin Zmitko
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -92,32 +93,37 @@ function define_page_context_function(wrapper) {
 	else {
 		code += `${wrapper.wrapping_function_body}`
 	}
-	
 	code += `
 	};
-	if (WrapHelper.XRAY) {
-		let innerF = replacementF;
-		replacementF = function(...args) {
-			let jshelter_debug_timestamp = xrayWindow.performance.now(); console.debug('JShelter performance ${originalF} start:', jshelter_debug_timestamp); // Intentionally one line
+	`;
 
-			// prepare callbacks
-			args = args.map(a => typeof a === "function" ? WrapHelper.pageAPI(a) : a);
+	if (typeof browser_polyfill_used === "undefined") {
+		code += `
+			let innerF = replacementF;
+			replacementF = function(...args) {
+				let jshelter_debug_timestamp = xrayWindow.performance.now(); console.debug('JShelter performance ${originalF} start:', jshelter_debug_timestamp); // Intentionally one line
 
-			let ret = WrapHelper.forPage(innerF.call(this, ...args));
-			if (ret) {
-				if (ret instanceof xrayWindow.Promise || ret instanceof WrapHelper.unX(xrayWindow).Promise) {
-					ret = Promise.resolve(ret);
+				// prepare callbacks
+				args = args.map(a => typeof a === "function" ? WrapHelper.pageAPI(a) : a);
+
+				let ret = WrapHelper.forPage(innerF.call(this, ...args));
+				if (ret) {
+					if (ret instanceof xrayWindow.Promise || ret instanceof WrapHelper.unX(xrayWindow).Promise) {
+						ret = Promise.resolve(ret);
+					}
+					try {
+						ret = WrapHelper.unX(ret);
+					} catch (e) {}
 				}
-				try {
-					ret = WrapHelper.unX(ret);
-				} catch (e) {}
-			}
-			console.debug('JShelter performance ${originalF} duration:', xrayWindow.performance.now() - jshelter_debug_timestamp);
-			return ret;
-		}
+				console.debug('JShelter performance ${originalF} duration:', xrayWindow.performance.now() - jshelter_debug_timestamp);
+				return ret;
+			};
+		`;
 	}
-	exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
-	${wrapper.post_replacement_code || ''}`
+	code += `
+		exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
+		${wrapper.post_replacement_code || ''}
+	`;
 	
 	return enclose_wrapping2(code, wrapper.wrapping_code_function_name, wrapper.wrapping_code_function_params, wrapper.wrapping_code_function_call_window);
 }
@@ -148,23 +154,7 @@ function generate_object_properties(code_spec_obj, fpd_only) {
 	}
 	code += `
 	{
-		let obj = ${code_spec_obj.parent_object};
-		let prop = "${code_spec_obj.parent_object_property}";
-		let descriptor = Object.getOwnPropertyDescriptor(obj, prop);
-		if (!descriptor) {
-			// let's traverse the prototype chain in search of this property
-			for (let proto = Object.getPrototypeOf(obj); proto; proto = Object.getPrototypeOf(obj)) {
-				if (descriptor = Object.getOwnPropertyDescriptor(proto, prop)) {
-					obj = WrapHelper.unX(obj);
-					break;
-				}
-			}
-			if (!descriptor) descriptor = {
-				// Originally not a descriptor, fallback
-				enumerable: true,
-				configurable: true,
-			};
-		}
+		let descriptor = WrapHelper.getDescriptor(${code_spec_obj.parent_object}, "${code_spec_obj.parent_object_property}");
 	`
 	for (let wrap_spec of code_spec_obj.wrapped_properties) {
 		// variable name used for distinguishing between different original properties of the same wrapper
@@ -331,11 +321,13 @@ var build_code = function(wrapper, ...args) {
 			Object.setPrototypeOf(${target}, ${source});
 		}`;
 	}
-	code += `
-		if (${wrapper.freeze}) {
-			Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});
-		}
-	`;
+	if (wrapper.freeze !== undefined) {
+		code += `
+			if (${wrapper.freeze}) {
+				Object.freeze(${wrapper.parent_object}.${wrapper.parent_object_property});
+			}
+		`;
+	}
 
 	return enclose_wrapping(code, ...args);
 };
@@ -622,6 +614,24 @@ function generate_code(wrapped_code) {
 						obj = forPage(Object.create(proto));
 					}
 					return descriptors ? this.defineProperties(obj, descriptors) && obj : obj;
+				},
+				getDescriptor(obj, prop) {
+					let descriptor = Object.getOwnPropertyDescriptor(obj, prop);
+					if (!descriptor) {
+						// let's traverse the prototype chain in search of this property
+						for (let proto = Object.getPrototypeOf(obj); proto; proto = Object.getPrototypeOf(obj)) {
+							if (descriptor = Object.getOwnPropertyDescriptor(proto, prop)) {
+								obj = unX(obj);
+								break;
+							}
+						}
+						if (!descriptor) descriptor = {
+							// Originally not a descriptor, fallback
+							enumerable: true,
+							configurable: true,
+						};
+					}
+					return descriptor;
 				},
 
 				// WrapHelper.overlay(obj, data)

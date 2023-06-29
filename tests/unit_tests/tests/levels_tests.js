@@ -50,41 +50,22 @@ describe("Levels", function() {
 		});
 		it("should return default level when subdomains from given URL is not saved in domains in browser storage.",function() {
 			// See config/global.json for the list of configured domains propagated to file under test
-			expect(getCurrentLevelJSON("https://www.jshelter.org/")[0]).toBe(default_level);
-			expect(getCurrentLevelJSON("https://www.fit.vut.cz/research/groups/.cs")[0]).toBe(default_level);
+			expect(getCurrentLevelJSON("https://www.jshelter.org/")).toBe(default_level);
+			expect(getCurrentLevelJSON("https://www.fit.vut.cz/research/groups/.cs")).toBe(default_level);
 		});
 		it("should return set level (from browser storage) for saved domains.",function() {
 			// See config/global.json for the list of configured domains propagated to file under test
-			expect(getCurrentLevelJSON("https://stackoverflow.com/questions/1925976/declaring-functions-in-javascript")[0]).toBe(level_3);
-			expect(getCurrentLevelJSON("http://www.example.net/?amount=brass&bird=basketball")[0]).toBe(level_3);
-			expect(getCurrentLevelJSON("https://www.vas-hosting.cz/blog-vyhody-dedikovaneho-serveru-vds-oproti-vps")[0]).toBe(level_2);
-			expect(getCurrentLevelJSON("https://www.csob.cz/portal/lide")[0]).toBe(level_0);
+			expect(getCurrentLevelJSON("https://stackoverflow.com/questions/1925976/declaring-functions-in-javascript")).toBe(level_3);
+			expect(getCurrentLevelJSON("http://www.example.net/?amount=brass&bird=basketball")).toBe(level_3);
+			expect(getCurrentLevelJSON("https://www.vas-hosting.cz/blog-vyhody-dedikovaneho-serveru-vds-oproti-vps")).toBe(level_2);
+			expect(getCurrentLevelJSON("https://www.csob.cz/portal/lide")).toBe(level_0);
 		});
 		it("should return set level (from browser storage) for saved domains with subdomains.",function() {
 			// See config/global.json for the list of configured domains propagated to file under test
-			expect(getCurrentLevelJSON("https://polcak.github.io/jsrestrictor/test/test.html")[0]).toBe(level_2);
-			expect(getCurrentLevelJSON("https://swatblog.rtgp.xyz/")[0]).toBe(level_1);
-			expect(getCurrentLevelJSON("https://mail.google.com/mail/u/0/#inbox")[0]).toBe(level_0);
-			expect(getCurrentLevelJSON("https://thenetworg.crm4.dynamics.com/main.aspx#759240725")[0]).toBe(level_1);
-		});
-		it("should return default level wrappers when subdomains from given URL is not saved in domains in browser storage.",function() {
-			// See config/global.json for the list of configured domains propagated to file under test
-			expect(getCurrentLevelJSON("https://www.jshelter.org/")[1]).toBe(wrapped_codes[default_level.level_id]);
-			expect(getCurrentLevelJSON("https://www.fit.vut.cz/research/groups/.cs")[1]).toBe(wrapped_codes[default_level.level_id]);
-		});
-		it("should return set level wrappers (from browser storage) for saved domains.",function() {
-			// See config/global.json for the list of configured domains propagated to file under test
-			expect(getCurrentLevelJSON("https://stackoverflow.com/questions/1925976/declaring-functions-in-javascript")[1]).toBe(wrapped_codes[level_3.level_id]);
-			expect(getCurrentLevelJSON("http://www.example.net/?amount=brass&bird=basketball")[1]).toBe(wrapped_codes[level_3.level_id]);
-			expect(getCurrentLevelJSON("https://www.vas-hosting.cz/blog-vyhody-dedikovaneho-serveru-vds-oproti-vps")[1]).toBe(wrapped_codes[level_2.level_id]);
-			expect(getCurrentLevelJSON("https://www.csob.cz/portal/lide")[1]).toBe(wrapped_codes[level_0.level_id]);
-		});
-		it("should return set level wrappers (from browser storage) for saved domains with subdomains.",function() {
-			// See config/global.json for the list of configured domains propagated to file under test
-			expect(getCurrentLevelJSON("https://polcak.github.io/jsrestrictor/test/test.html")[1]).toBe(wrapped_codes[level_2.level_id]);
-			expect(getCurrentLevelJSON("https://swatblog.rtgp.xyz/")[1]).toBe(wrapped_codes[level_1.level_id]);
-			expect(getCurrentLevelJSON("https://mail.google.com/mail/u/0/#inbox")[1]).toBe(wrapped_codes[level_0.level_id]);
-			expect(getCurrentLevelJSON("https://thenetworg.crm4.dynamics.com/main.aspx#759240725")[1]).toBe(wrapped_codes[level_1.level_id]);
+			expect(getCurrentLevelJSON("https://polcak.github.io/jsrestrictor/test/test.html")).toBe(level_2);
+			expect(getCurrentLevelJSON("https://swatblog.rtgp.xyz/")).toBe(level_1);
+			expect(getCurrentLevelJSON("https://mail.google.com/mail/u/0/#inbox")).toBe(level_0);
+			expect(getCurrentLevelJSON("https://thenetworg.crm4.dynamics.com/main.aspx#759240725")).toBe(level_1);
 		});
 	});
 	describe("Object level_0", function() {
