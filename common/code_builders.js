@@ -4,6 +4,7 @@
  *  \author Copyright (C) 2019  Libor Polcak
  *  \author Copyright (C) 2021  Giorgio Maone
  *  \author Copyright (C) 2022  Marek Salon
+ *  \author Copyright (C) 2023  Martin Zmitko
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -92,32 +93,37 @@ function define_page_context_function(wrapper) {
 	else {
 		code += `${wrapper.wrapping_function_body}`
 	}
-	
 	code += `
 	};
-	if (WrapHelper.XRAY) {
-		let innerF = replacementF;
-		replacementF = function(...args) {
-			let jshelter_debug_timestamp = xrayWindow.performance.now(); console.debug('JShelter performance ${originalF} start:', jshelter_debug_timestamp); // Intentionally one line
+	`;
 
-			// prepare callbacks
-			args = args.map(a => typeof a === "function" ? WrapHelper.pageAPI(a) : a);
+	if (typeof browser_polyfill_used === "undefined") {
+		code += `
+			let innerF = replacementF;
+			replacementF = function(...args) {
+				let jshelter_debug_timestamp = xrayWindow.performance.now(); console.debug('JShelter performance ${originalF} start:', jshelter_debug_timestamp); // Intentionally one line
 
-			let ret = WrapHelper.forPage(innerF.call(this, ...args));
-			if (ret) {
-				if (ret instanceof xrayWindow.Promise || ret instanceof WrapHelper.unX(xrayWindow).Promise) {
-					ret = Promise.resolve(ret);
+				// prepare callbacks
+				args = args.map(a => typeof a === "function" ? WrapHelper.pageAPI(a) : a);
+
+				let ret = WrapHelper.forPage(innerF.call(this, ...args));
+				if (ret) {
+					if (ret instanceof xrayWindow.Promise || ret instanceof WrapHelper.unX(xrayWindow).Promise) {
+						ret = Promise.resolve(ret);
+					}
+					try {
+						ret = WrapHelper.unX(ret);
+					} catch (e) {}
 				}
-				try {
-					ret = WrapHelper.unX(ret);
-				} catch (e) {}
-			}
-			console.debug('JShelter performance ${originalF} duration:', xrayWindow.performance.now() - jshelter_debug_timestamp);
-			return ret;
-		}
+				console.debug('JShelter performance ${originalF} duration:', xrayWindow.performance.now() - jshelter_debug_timestamp);
+				return ret;
+			};
+		`;
 	}
-	exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
-	${wrapper.post_replacement_code || ''}`
+	code += `
+		exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
+		${wrapper.post_replacement_code || ''}
+	`;
 	
 	return enclose_wrapping2(code, wrapper.wrapping_code_function_name, wrapper.wrapping_code_function_params, wrapper.wrapping_code_function_call_window);
 }
