@@ -154,23 +154,7 @@ function generate_object_properties(code_spec_obj, fpd_only) {
 	}
 	code += `
 	{
-		let obj = ${code_spec_obj.parent_object};
-		let prop = "${code_spec_obj.parent_object_property}";
-		let descriptor = Object.getOwnPropertyDescriptor(obj, prop);
-		if (!descriptor) {
-			// let's traverse the prototype chain in search of this property
-			for (let proto = Object.getPrototypeOf(obj); proto; proto = Object.getPrototypeOf(obj)) {
-				if (descriptor = Object.getOwnPropertyDescriptor(proto, prop)) {
-					obj = WrapHelper.unX(obj);
-					break;
-				}
-			}
-			if (!descriptor) descriptor = {
-				// Originally not a descriptor, fallback
-				enumerable: true,
-				configurable: true,
-			};
-		}
+		let descriptor = WrapHelper.getDescriptor(${code_spec_obj.parent_object}, "${code_spec_obj.parent_object_property}");
 	`
 	for (let wrap_spec of code_spec_obj.wrapped_properties) {
 		// variable name used for distinguishing between different original properties of the same wrapper
@@ -628,6 +612,24 @@ function generate_code(wrapped_code) {
 						obj = forPage(Object.create(proto));
 					}
 					return descriptors ? this.defineProperties(obj, descriptors) && obj : obj;
+				},
+				getDescriptor(obj, prop) {
+					let descriptor = Object.getOwnPropertyDescriptor(obj, prop);
+					if (!descriptor) {
+						// let's traverse the prototype chain in search of this property
+						for (let proto = Object.getPrototypeOf(obj); proto; proto = Object.getPrototypeOf(obj)) {
+							if (descriptor = Object.getOwnPropertyDescriptor(proto, prop)) {
+								obj = unX(obj);
+								break;
+							}
+						}
+						if (!descriptor) descriptor = {
+							// Originally not a descriptor, fallback
+							enumerable: true,
+							configurable: true,
+						};
+					}
+					return descriptor;
 				},
 
 				// WrapHelper.overlay(obj, data)
