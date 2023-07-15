@@ -471,6 +471,15 @@ async function installUpdate() {
 			}
 			item.version = 6.8;
 		}
+		if (item.version < 7) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.audiobuffer === 1 || l.htmlcanvaselement === 1) {
+					l.wasm = 1;
+				}
+			}
+			item.version = 7;
+		}
 
 
 
