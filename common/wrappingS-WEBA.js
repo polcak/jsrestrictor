@@ -71,8 +71,7 @@
 	 *	* (1) - replace values by white noise based on domain key
 	 */
 	function audioFarble(array){
-		const ARRAY_LEN = array.byteLength;
-		if (wasm.ready && wasm.grow(ARRAY_LEN)) {
+		if (wasm.ready && wasm.grow(array.byteLength)) {
 			try {
 				farbleAudioWASM();
 			} catch (e) {
@@ -84,14 +83,15 @@
 		}
 		
 		function farbleAudioWASM() {
+			const ARRAY_BYTE_LEN = array.byteLength;
 			wasm.set(array, 0, true);
-			const crc = wasm.crc16Float(ARRAY_LEN);
+			const crc = wasm.crc16Float(ARRAY_BYTE_LEN);
 			const mash = new Mash();
 			mash.addData(' ');
 			mash.addData(domainHash);
 			mash.addData("AudioFarbling");
 			mash.addData(crc);
-			wasm.farbleFloats(ARRAY_LEN, mash.n | 0);
+			wasm.farbleFloats(ARRAY_BYTE_LEN, mash.n | 0);
 			array.set(wasm.get(array.length, 0, true));
 		}
 
@@ -100,6 +100,7 @@
 			// PRNG function needs to depend on the original audio, so that the same
 			// audio is farbled the same way but different audio is farbled differently
 			// See https://pagure.io/JShelter/webextension/issue/23
+			const ARRAY_LEN = array.length;
 			const MAXUINT32 = 4294967295;
 			let crc = new CRC16();
 			for (let i = 0; i < ARRAY_LEN; i++) {
