@@ -6,6 +6,7 @@
 #
 #  Copyright (C) 2022 Martin Bednar
 #  Copyright (C) 2023 Martin Zmitko
+#  Copyright (C) 2023 Libor Polčák
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -82,6 +83,11 @@ function get_requirements {
 }
 
 echo Preparation for testing STARTED.
+
+# Make the extension. This is needed to prepare WASM so that the produced code can be tested.
+pushd ../..
+	make
+popd
 
 # Create directory ./tmp if not exists. Temporary working directory for one tests running.
 # Will be deleted when unit tests will be finished.
