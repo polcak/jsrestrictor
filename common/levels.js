@@ -621,7 +621,7 @@ var wrapping_groups = {
 			params: [
 				{
 					short: "Disabled",
-					description: "The wrapper performs no action",
+					description: "Prevent data transfers through this API.",
 					config: [],
 				},
 			],
