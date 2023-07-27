@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "JShelter",
+    "description": "Name of the extension. Please, do not translate unless properly justified."
+  },
+  "extensionDescription": {
+    "message": "Extension for increasing security and privacy level of the user.",
+    "description": "Description of the extension."
+  }
+}

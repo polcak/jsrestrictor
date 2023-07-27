@@ -62,7 +62,8 @@
       "run_at": "document_start"
     }
   ],
-  "description": "Extension for increasing security and privacy level of the user.",
+  "default_locale": "en",
+  "description": "__MSG_extensionDescription__",
   "homepage_url": "https://JShelter.org",
   "icons": {
     "16": "img/icon-16.png",
@@ -76,7 +77,7 @@
   },
   "web_accessible_resources": ["farble.wasm"],
   "manifest_version": 2,
-  "name": "JShelter",
+  "name": "__MSG_extensionName__",
   "options_page": "options.html",
   "content_security_policy": "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self';base-uri 'self';form-action 'self'",
   "permissions": [

@@ -59,7 +59,8 @@
       "run_at": "document_start"
     }
   ],
-  "description": "Extension for increasing security and privacy level of the user.",
+  "default_locale": "en",
+  "description": "__MSG_extensionDescription__",
   "homepage_url": "https://JShelter.org",
   "icons": {
     "16": "img/icon-16.png",
@@ -72,7 +73,7 @@
     "512": "img/icon-512.png"
   },
   "manifest_version": 2,
-  "name": "JShelter",
+  "name": "__MSG_extensionName__",
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true
