@@ -4,7 +4,7 @@ title: Release history
 
 ## 0.13
 
-Improve performance of the code injection. See the bachelor thesis of Martin Zmitko (https://www.vut.cz/en/students/final-thesis/detail/147218) for more details.
+Improve performance of the code injection. See the [bachelor thesis of Martin Zmitko](https://www.vut.cz/en/students/final-thesis/detail/147218) for more details.
 
 * The code is no longer generated in the background due to the latency of passing huge messages from
   background to content scripts.
@@ -55,7 +55,7 @@ among our users.
 
 ## 0.11.2
 
-* bugfix: chack domains property in advanced options (introduced in 0.10)
+* bugfix: check domains property in advanced options (introduced in 0.10)
 * bugfix: remove unused config.whitelistedHosts
 * bugfix: Fix several typos in the text in options
 * bugfix: Do not use hard-coded level in the advanced options validity checks of configuration
@@ -63,7 +63,7 @@ among our users.
 * enhancement: Reimplement JSS configuration in option to improve understandability
 * enhancement: Fix race conditions in displaying stored configuration after changes through options
 * enhancement: Add undo to advanced options
-* enhancement: Warn users from tweaking their settings dur to higher risks of reidentification via browser fingerprinting
+* enhancement: Warn users from tweaking their settings due to higher risks of reidentification via browser fingerprinting
 * enhancement: Add button to cancel the addition of a new level, update the error texts
 * website: little improvements and clarifications
 
