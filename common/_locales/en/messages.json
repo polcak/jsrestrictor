@@ -1,10 +1,1535 @@
 {
-  "extensionName": {
-    "message": "JShelter",
-    "description": "Name of the extension. Please, do not translate unless properly justified."
+	"extensionName": {
+		"message": "JShelter",
+		"description": "Name of the extension. Please, do not translate unless properly justified."
+	},
+	"extensionDescription": {
+		"message": "Extension for increasing security and privacy level of the user.",
+		"description": "Description of the extension."
+	},
+	"javascriptShield": {
+		"message": "JavaScript Shield",
+		"description": "The name of the JavaScript Shield displayed at multiple places"
+	},
+	"networkBoundaryShield": {
+		"message": "Network Boundary Shield",
+		"description": "The name of the Network Boundary Shield displayed at multiple places"
+	},
+	"NBSgloballyOff": {
+		"message": "Network Boundary Shield is globally disabled",
+		"description": "Informs the user that NBS is globally disabled, displayed e.g. in popup"
+	},
+	"fingerprintDetector": {
+		"message": "Fingerprint Detector",
+		"description": "The name of the Fingerprint Detector displayed at multiple places"
+	},
+	"FPDgloballyOff": {
+		"message": "Fingerprint Detector is globally disabled",
+		"description": "Informs the user that FPD is globally disabled, displayed e.g. in popup"
+	},
+	"globalSettings": {
+		"message": "Global settings",
+		"description": "The button in the popup that opens options page"
+	},
+	"settingsForDomain": {
+		"message": "Settings for domain",
+		"description": "The text in the popup that introduces the context of the information in the popup"
+	},
+
+	"refreshPage": {
+		"message": "Refresh page",
+		"description": "The button in the popup that refreshes the currently displayed page"
+	},
+	"modifyJSSPopup": {
+		"message": "Modify",
+		"description": "The button in the popup that tweaks JSS"
+	},
+	"descriptionMore": {
+		"message": "(more...)",
+		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get more information about the level."
+	},
+	"descriptionLess": {
+		"message": "(less...)",
+		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get less information about the level."
+	},
+	"nameDescriptionSeparator": {
+		"message": " — ",
+		"description": "Used for example in the popup to separate the current JSS level from its description."
+	},
+	"detailTweaksOfJSShieldForThisSite": {
+		"message": "Detail tweaks of JS shield for this site",
+		"description": "Button in the popup that allows to tweak JSS."
+	},
+	"wrappers": {
+		"message": "Groups of APIs",
+		"description": "Column headding in the popup detailed JSS shield"
+	},
+	"levelOfDefense": {
+		"message": "Level of defense",
+		"description": "Column headding in the popup detailed JSS shield"
+	},
+	"numberOfCalls": {
+		"message": "Number of calls",
+		"description": "Column headding in the popup detailed JSS shield"
+	},
+	"FingerprintQualityLabel": {
+		"message": "⤷ The number of APIs misused for fingerprinting called by the page: ",
+		"description": "This text is displayed in the popup as additional information from FPD"
+	},
+	"popupDefaultLevelHelpText": {
+		"message": "Set the global default level as the JavaScript Shield level for this page.",
+		"description": "This text is displayed in the popup as a tooltip for the Default level button"
+	},
+	"defaultLevelSelection": {
+		"message": "Default level ($levelName$)",
+		"description": "This text is displayed as the default level in the popup",
+		"placeholders": {
+			"levelName": {
+				"content": "$1",
+				"example": "Translated name of the default level used by the user"
+			}
+		}
+	},
+	"ShieldOffSlider": {
+		"message": "OFF",
+		"description": "Displayed in sliders that control activation of shields in popup and options, keep the text short to prevent overflow"
+	},
+	"ShieldOnSlider": {
+		"message": "ON",
+		"description": "Displayed in sliders that control activation of shields in popup and options, keep the text short to prevent overflow"
+	},
+
+	"jssgroupUnprotected": {
+		"message": "Unprotected",
+		"description": "Displayed during JSS level tweaking in case the API group is completely disabled"
+	},
+	"jssgroupPoor": {
+		"message": "Poor",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"jssgroupLow": {
+		"message": "Low",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"jssgroupMedium": {
+		"message": "Medium",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"jssgroupHigh": {
+		"message": "High",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"jssgroupLittleLies": {
+		"message": "Little lies",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"jssgroupStrict": {
+		"message": "Strict",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"jssgroupConfuse": {
+		"message": "Confuse",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"jssgroupFake": {
+		"message": "Fake",
+		"description": "Displayed during JSS level tweaking for InstalledBrowserPlugins and possibly more (in the future)"
+	},
+	"jssgroupAddFake": {
+		"message": "Add fake",
+		"description": "Displayed during JSS level tweaking for Connected cameras and microphones and possibly more (in the future)"
+	},
+	"jssgroupAsk": {
+		"message": "Ask",
+		"description": "Displayed during JSS level tweaking for XHR and possibly more (in the future)"
+	},
+	"jssgroupBlock": {
+		"message": "Block",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"jssgroupRemove": {
+		"message": "Remove",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+
+	"jssgroupTimePrecision": {
+		"message": "Time precision"
+	},
+	"jssgroupTimePrecisionDescription": {
+		"message": "Prevent attacks and fingerprinting techniques relying on precise time measurement (or make them harder).",
+		"description": "Displayed at various places"
+	},
+	"jssgroupTimePrecisionDescription2": {
+		"message": "Limit the precision of high-resolution time stamps $apis$. Timestamps provided by the Geolocation API are wrapped as well if you enable \"$jssgroupPhysicalLocationGeolocation$\" protection",
+		"description": "Displayed at various places",
+		"placeholders": {
+			"apis": {
+				"content": "(Date, Performance, events, Gamepad API, and Web VR API)",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			},
+			"jssgroupPhysicalLocationGeolocation": {
+				"content": "$1",
+				"description": "Translated version of the jssgroupPhysicalLocationGeolocation string"
+			}
+		}
+	},
+	"jssgroupTimePoorDescription": {
+		"message": "Round time to hundredths of a second (1.230)",
+		"description": "Explains the protection to the user"
+	},
+	"jssgroupTimeLowDescription": {
+		"message": "Round time to tenths of a second (1.200)",
+		"description": "Explains the protection to the user"
+	},
+	"jssgroupTimeHighDescription": {
+		"message": "Randomize decimal digits with noise (1.451)",
+		"description": "Explains the protection to the user"
+	},
+
+	"jssgroupLocallyRenderedImages": {
+		"message": "Locally rendered images",
+		"description": "htmlcanvaselement group"
+	},
+	"jssgroupLocallyRenderedImagesDescription": {
+		"message": "Protect against canvas fingerprinting or leaking information on the rendering capabilities of the graphic card.",
+		"description": "Displayed at various places, try to keep canvas in English or make sure that the user can understand that the protection is about the Canvas API"
+	},
+	"jssgroupLocallyRenderedImagesDescription2": {
+		"message": "Functions $apis$ return modified image data.",
+		"description": "Displayed at various places",
+		"placeholders": {
+			"apis": {
+				"content": "canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob(), and WebGLRenderingContext.readPixels",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupLocallyRenderedImagesDescription3": {
+		"message": "$apis$ are modified to lie with probability.",
+		"description": "Displayed after jssgroupLocallyRenderedImagesDescription2",
+		"placeholders": {
+			"apis": {
+				"content": "CanvasRenderingContext2D.isPointInStroke() and CanvasRenderingContext2D.isPointInPath()",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupLocallyRenderedImagesLittleLiesDescription": {
+		"message": "Apply small modifications to read image data so that the images look the same, but the precise values differ based on the visited domain and across sessions. The goal is to prevent Canvas fingerprinting or at least make it harder.",
+		"description": "Consider keeping reference to Canvas fingerprinting in English"
+	},
+	"jssgroupLocallyRenderedImagesStrictDescription": {
+		"message": "Read white images (from WebGL canvas read an empty array). This option does not protect from Canvas fingerprinting.",
+		"description": "Consider keeping reference to Canvas fingerprinting in English"
+	},
+
+	"jssgroupLocallyGeneratedAudio": {
+		"message": "Locally generated audio",
+		"description": "audiobuffer group"
+	},
+	"jssgroupLocallyGeneratedAudioDescription": {
+		"message": "Protect against leaking information on the rendering capabilities of the audio card that can be used, for example, in audio fingerprinting.",
+		"description": "Try to keep reference to audio fingerprinting"
+	},
+	"jssgroupLocallyGeneratedAudioDescription2": {
+		"message": "Functions $apis$ return modified to audio data.",
+		"placeholders": {
+			"apis": {
+				"content": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData(), and AnalyserNode.getFloatFrequencyData()",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupLocallyGeneratedAudioLittleLiesDescription": {
+		"message": "Add small amplitude noise so that the sound is similar to the original to a human. The precise values differ based on the visited domain and across sessions. The goal is to prevent Audio fingerprinting or at least make it harder.",
+		"description": "Consider keeping reference to Audio fingerprinting in English"
+	},
+	"jssgroupLocallyGeneratedAudioStrictDescription": {
+		"message": "Sound data are replaced by white noise that differs based on the visited domain and across sessions. The goal is to limit leaks on audio hardware and at the same time make Audio fingerprinting harder.",
+		"description": "Consider keeping reference to Audio fingerprinting in English"
+	},
+
+	"jssgroupGraphicCardInformation": {
+		"message": "Graphic card information",
+		"description": "webgl group"
+	},
+	"jssgroupGraphicCardInformationDescription": {
+		"message": "Spoof details of your graphic card usable, for example, to make fingerprinting harder."
+	},
+	"jssgroupGraphicCardInformationDescription2": {
+		"message": "Function $api$ returns modified or bottom values for certain parameters.",
+		"placeholders": {
+			"api": {
+				"content": "WebGLRenderingContext.getParameter()",
+				"description": "Keep the names of the API"
+			}
+		}
+	},
+	"jssgroupGraphicCardInformationDescription3": {
+		"message": "$apis$ return modified values.",
+		"placeholders": {
+			"apis": {
+				"content": "WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions(), and .getExtension()",
+				"description": "Keep the names of the API but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupGraphicCardInformationLittleLiesDescription": {
+		"message": "Generate reasonable numbers or random strings that differ on the visited domain and across sessions. The goal is to limit leaks on graphic cards and at the same time make fingerprinting harder."
+	},
+	"jssgroupGraphicCardInformationStrictDescription": {
+		"message": "Return bottom values (null, empty strings). Note that this option does not prevent fingerprinting."
+	},
+
+	"jssgroupInstalledBrowserPlugins": {
+		"message": "Installed browser plugins",
+		"description": "plugins group"
+	},
+	"jssgroupInstalledBrowserPluginsDescription": {
+		"message": "Protect against plugin fingerprinting."
+	},
+	"jssgroupInstalledBrowserPluginsDescription2": {
+		"message": "The protection is not applied if your browser returns an empty list or the five PDF plugin viewers specified by the living HTML standard. Hence the protection is not applied in modern browsers.",
+		"description": "The protection is not applied in modern browsers"
+	},
+	"jssgroupInstalledBrowserPluginsLittleLiesDescription": {
+		"message": "Edit current plugins and add two fake plugins.",
+		"description": ""
+	},
+	"jssgroupInstalledBrowserPluginsFakeDescription": {
+		"message": "Return two fake plugins.",
+		"description": ""
+	},
+	"jssgroupInstalledBrowserPluginsStrictDescription": {
+		"message": "Hide all plugins.",
+		"description": ""
+	},
+
+	"jssgroupConnectedCamerasAndMicrophones": {
+		"message": "Connected cameras and microphones"
+	},
+	"jssgroupConnectedCamerasAndMicrophonesDescription": {
+		"message": "Prevent fingerprinting based on the multimedia devices connected to the computer."
+	},
+	"jssgroupConnectedCamerasAndMicrophonesDescription2": {
+		"message": "Function $api$ is modified to return empty or modified result.",
+		"placeholders": {
+			"api": {
+				"content": "MediaDevices.enumerateDevices()",
+				"description": "Keep the names of the API"
+			}
+		}
+	},
+	"jssgroupConnectedCamerasAndMicrophonesLittleLiesDescription": {
+		"message": "Randomize the order of the devices. The existing devices are not linkable on different domains and across sessions."
+	},
+	"jssgroupConnectedCamerasAndMicrophonesAddFakeDescription": {
+		"message": "Add 0-4 fake devices and randomize the order. The existing devices are not linkable on different domains and across sessions.",
+		"description": ""
+	},
+	"jssgroupConnectedCamerasAndMicrophonesStrictDescription": {
+		"message": "Return an empty list of devices.",
+		"description": ""
+	},
+
+	"jssgroupHardware": {
+		"message": "Device memory and CPU",
+		"description": "hardware group"
+	},
+	"jssgroupHardwareDescription": {
+		"message": "Spoof hardware information on the amount of RAM and CPU count."
+	},
+	"jssgroupHardwareDescription2": {
+		"message": "Getters $apis$ return modified values",
+		"placeholders": {
+			"apis": {
+				"content": "navigator.deviceMemory and navigator.hardwareConcurrency",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupHardwareLowDescription": {
+		"message": "Return random valid value between the minimum and the real value. The returned value differs based on the visited domains and across sessions."
+	},
+	"jssgroupHardwareMediumDescription": {
+		"message": "Return random valid value between minimum and 8. The returned value differs based on the visited domains and across sessions."
+	},
+	"jssgroupHardwareHighDescription": {
+		"message": "Return 4 for navigator.deviceMemory and 2 for navigator.hardwareConcurrency.",
+		"description": "Keep the names of the APIs in English"
+	},
+
+	"jssgroupNetworkConditions": {
+		"message": "Network conditions",
+		"description": "net group"
+	},
+	"jssgroupNetworkConditionsDescription": {
+		"message": "Disable access to network information to limit fingerprinting and remove the possibility of observing patterns in accessed networks to learn if the user is at home, work, or travel.",
+		"description": ""
+	},
+	"jssgroupNetworkConditionsRemoveDescription": {
+		"message": "Disable NetworkInformation API",
+		"description": "Keep the name of the API in English"
+	},
+
+	"jssgroupXMLHttpRequestRequests": {
+		"message": "XMLHttpRequest (XHR) data transfers",
+		"description": "Keep the name of the API in English"
+	},
+	"jssgroupXMLHttpRequestRequestsDescription": {
+		"message": "Filter reliable XHR requests to the server."
+	},
+	"jssgroupXMLHttpRequestRequestsDescription2": {
+		"message": "Note that XHR requests are broadly employed for benign purposes and that $apis$ are not blocked. All provide similar and some even better means of communication with servers. We recommend activating the Fingerprint Detector instead of XHR wrappers for practical usage. JShelter keeps the wrapper as it is useful for some users mainly for experimental reasons.",
+		"placeholders": {
+			"apis": {
+				"content": "Fetch, SSE, WebRTC, and WebSockets APIs",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupXMLHttpRequestRequestsAskDescription": {
+		"message": "Ask before executing an XHR request",
+		"description": "Keep the name of the API in English"
+	},
+	"jssgroupXMLHttpRequestRequestsBlockDescription": {
+		"message": "Block all XHR requests",
+		"description": "Keep the name of the API in English"
+	},
+
+	"jssgroupArrays": {
+		"message": "ArrayBuffer API",
+		"description": "arrays group"
+	},
+	"jssgroupArraysDescription": {
+		"message": "Protect against ArrayBuffer exploitation, for example, to prevent side-channel attacks on memory layout (or make them harder).",
+		"description": ""
+	},
+	"jssgroupArraysShift": {
+		"message": "Shift"
+	},
+	"jssgroupArraysShiftDescription": {
+		"message": "Shift indexes to make memory page boundaries detection harder."
+	},
+	"jssgroupArraysRandomize": {
+		"message": "Randomize"
+	},
+	"jssgroupArraysRandomizeDescription": {
+		"message": "Use random mapping of array indexing to memory. This option is more effective but slower compared to shifting."
+	},
+
+	"jssgroupSharedArraysBuffer": {
+		"message": "SharedArrayBuffer API",
+		"description": "shared_array group"
+	},
+	"jssgroupSharedArraysBufferDescription": {
+		"message": "Protect against SharedArrayBuffer exploitation, for example, to prevent side-channel attacks on memory layout (or make them harder).",
+		"description": ""
+	},
+	"jssgroupSharedArraysBufferMediumDescription": {
+		"message": "Randomly slow messages to prevent high-resolution timers",
+		"description": ""
+	},
+	"jssgroupSharedArraysBufferStrictDescription": {
+		"message": "Block SharedArrayBuffer",
+		"description": ""
+	},
+
+	"jssgroupWebWorker": {
+		"message": "WebWorker API",
+		"description": "webworker group, keep the name of the API in English"
+	},
+	"jssgroupWebWorkerDescription": {
+		"message": "Protect against WebWorker exploitation",
+		"description": "Keep the name of the API in English"
+	},
+	"jssgroupWebWorkerDescription2": {
+		"message": "Workers provide powerful APIs that, for example, allow installing an invisible proxy to the browser. Higher levels remove that possibility. Note that benign sites use workers to provide offline work capabilities, search, caching during multimedia playbacks, etc.",
+		"description": "Try to keep the reference to the Worker in English"
+	},
+	"jssgroupWebWorkerLowDescription": {
+		"message": "Randomly slow messages to prevent high-resolution timers but keep WebWorker support. This option does not prevent Workers from accessing original APIs. Use with caution.",
+		"description": "Try to keep the reference to the Worker in English"
+	},
+	"jssgroupWebWorkerStrictDescription": {
+		"message": "Make WebWorkers inoperable. Use this to prevent sites from learning that the browser does not support WebWorkers. However, this prevents sites to deploy workarounds for missing WebWorker support that some sites provide.",
+		"description": "Try to keep the reference to the Worker in English"
+	},
+	"jssgroupWebWorkerRemoveDescription": {
+		"message": "Remove WebWorkers support from the browser. This is easily detectable by web pages and improves the fingerprintability of the browser but at the same time gives the page the possibility to deploy code that compensates for the missing WebWorker support.",
+		"description": "Try to keep the reference to the Worker in English"
+	},
+
+	"jssgroupPhysicalLocationGeolocation": {
+		"message": "Physical location (geolocation)"
+	},
+	"jssgroupPhysicalLocationGeolocationDescription": {
+		"message": "Limit the information on real-world position provided by Geolocation API.",
+		"description": "Displayed at various places, keep the name of the API in the English"
+	},
+	"jssgroupPhysicalLocationGeolocationDescription2": {
+		"message": "Use domain hash for the position spoofing so the position will be the same at one domain for the whole session.",
+		"description": "Displayed at various places"
+	},
+	"jssgroupGeolocationTimestampOnly": {
+		"message": "Timestamp-only",
+		"description": "Displayed during level tweaks"
+	},
+	"jssgroupGeolocationTimestampOnlyDescription": {
+		"message": "Provide accurate data (use when you really need to provide the exact location and you want to protect geolocation timestamps via \"$jssgroupTimePrecision$\" protection)",
+		"description": "Explains the protection to the user",
+		"placeholders": {
+			"jssgroupTimePrecision": {
+				"content": "$1",
+				"example": "Translated string of the jssgroupTimePrecision"
+			}
+		}
+	},
+	"jssgroupGeolocationVillage": {
+		"message": "Village",
+		"description": "Displayed during level tweaks"
+	},
+	"jssgroupGeolocationVillageDescription": {
+		"message": "Use accuracy of hundreds of meters.",
+		"description": "Explains the protection to the user"
+	},
+	"jssgroupGeolocationTown": {
+		"message": "Town",
+		"description": "Displayed during level tweaks"
+	},
+	"jssgroupGeolocationTownDescription": {
+		"message": "Use accuracy of kilometers.",
+		"description": "Explains the protection to the user"
+	},
+	"jssgroupGeolocationRegion": {
+		"message": "Region",
+		"description": "Displayed during level tweaks"
+	},
+	"jssgroupGeolocationRegionDescription": {
+		"message": "Use accuracy of tens of kilometers.",
+		"description": "Explains the protection to the user"
+	},
+	"jssgroupGeolocationLongDistance": {
+		"message": "Long distance",
+		"description": "Displayed during level tweaks"
+	},
+	"jssgroupGeolocationLongDistanceDescription": {
+		"message": "Use accuracy of hundreds of kilometers.",
+		"description": "Explains the protection to the user"
+	},
+	"jssgroupGeolocationRemoveDescription": {
+		"message": "Completely remove geolocation services.",
+		"description": "Explains the protection to the user"
+	},
+
+	"jssgroupPhysicalEnvironmentSensors": {
+		"message": "Physical environment sensors",
+		"description": "physical_environment group"
+	},
+	"jssgroupPhysicalEnvironmentSensorsDescription": {
+		"message": "Limit the information provided by physical environment sensors like Magnetometer or Accelerometer.",
+		"description": "Consider replacing Magnetometer and Accelerometer with localized version of the sensor"
+	},
+	"jssgroupPhysicalEnvironmentSensorsDescription2": {
+		"message": "Such information can be misused for multiple purposes, including environment fingerprinting, user location tracking, detection of nearby devices, estimation of the user action performed with the device, and many others. However, the readings can be useful for applications like navigation, gaming, and others. For example, some applications can use the orientation of the device to control the actions inside the application."
+	},
+	"jssgroupPhysicalEnvironmentSensorsHighDescription": {
+		"message": "Emulate stationary device that provides different sensor readings on different domains and across sessions."
+	},
+
+	"jssgroupUserIdleDetection": {
+		"message": "User idle detection",
+		"description": "useridle group"
+	},
+	"jssgroupUserIdleDetectionDescription": {
+		"message": "The Idle Detection API can detect inactive users and locked screens.",
+		"description": "Try to keep the name of the API in English"
+	},
+	"jssgroupUserIdleDetectionDescription2": {
+		"message": "The intention of the API is to provide web applications the information of user inactivity, for example, not to show notifications while the user is inactive. However, the information can be misused to track the activity of the user and for correlating changes in the state across domains."
+	},
+	"jssgroupUserIdleConfuseDescription": {
+		"message": "Always return active user with an unlocked screen."
+	},
+	"jssgroupUserIdleBlockDescription": {
+		"message": "Do not show prompts and automatically decline."
+	},
+	"jssgroupUserIdleRemoveDescription": {
+		"message": "Remove the API."
+	},
+
+	"jssgroupCoopschedule": {
+		"message": "Idle period task scheduling",
+		"description": "coopschedule group"
+	},
+	"jssgroupCoopscheduleDescription": {
+		"message": "The Cooperative Scheduling or Background Tasks API can schedule background tasks such that they do not introduce delays to other high-priority tasks that share the same event loop.",
+		"description": "Try to keep the names of the APIs in English"
+	},
+	"jssgroupCoopscheduleDescription2": {
+		"message": "The API leaks information about the other tasks running in the browser as it leaks information on currently scheduled tasks, vsync deadlines, user-interaction and so on."
+	},
+	"jssgroupCoopscheduleConfuseDescription": {
+		"message": "Modify the available information to confuse adversaries."
+	},
+
+	"jssgroupGamepads": {
+		"message": "Gamepads",
+		"description": "gamepads group"
+	},
+	"jssgroupGamepadsDescription": {
+		"message": "Prevent websites from accessing and learning information on local gamepads."
+	},
+	"jssgroupGamepadsDescription2": {
+		"message": "The information can be misused for browser fingerprinting. At the same time, the user needs access to gamepads only on specialized websites."
+	},
+	"jssgroupGamepadsStrictDescription": {
+		"message": "Hide all gamepads."
+	},
+
+	"jssgroupVirtualAndAugmentedRealityDevices": {
+		"message": "Virtual and augmented reality devices",
+		"description": "vr group (also includes XR API)"
+	},
+	"jssgroupVirtualAndAugmentedRealityDevicesDescription": {
+		"message": "Prevent websites from accessing and learning information on local virtual and augmented reality displays."
+	},
+	"jssgroupVirtualAndAugmentedRealityDevicesDescription2": {
+		"message": "The information can be misused for browser fingerprinting. At the same time, the user needs access to virtual and augmented reality devices only on specialized websites."
+	},
+	"jssgroupVirtualAndAugmentedRealityDevicesStrictDescription": {
+		"message": "Hide all devices."
+	},
+
+	"jssgroupMultimediaPlayback": {
+		"message": "Multimedia playback",
+		"description": "playback group"
+	},
+	"jssgroupMultimediaPlaybackDescription": {
+		"message": "Prevent websites from accessing and learning information on locally installed codecs and encoding/decoding capabilities and performance."
+	},
+	"jssgroupMultimediaPlaybackDescription2": {
+		"message": "The information provided by the API can be misused for browser fingerprinting. You should enable the protection for sites that do not process audio or video. The protection can break sites processing audio or video."
+	},
+	"jssgroupMultimediaPlaybackLittleLiesDescription": {
+		"message": "Report a codec/encryption mechanism as unsupported with 12.5% probability."
+	},
+	"jssgroupMultimediaPlaybackStrictDescription": {
+		"message": "Report all codecs/encryption mechanisms as unsupported."
+	},
+	"jssgroupMultimediaPlaybackBlockDescription": {
+		"message": "Do not return any information at all."
+	},
+
+	"jssgroupUnreliableTransfersToServerBeacons": {
+		"message": "Unreliable transfers to server (beacons)",
+		"description": "analytics group"
+	},
+	"jssgroupUnreliableTransfersToServerBeaconsDescription": {
+		"message": "Prevent unreliable transfers to server (beacons)."
+	},
+	"jssgroupUnreliableTransfersToServerBeaconsDescription2": {
+		"message": "Such transfers are typically misused for analytics but occasionally may be used by online retailers or other pages."
+	},
+	"jssgroupUnreliableTransfersToServerBeaconsDescription3": {
+		"message": "Prevent sending information through Beacon API.",
+		"description": "Keep the name of the API"
+	},
+	"jssgroupUnreliableTransfersToServerBeaconsBlockDescription": {
+		"message": "Block data transfers through this API. Performs no action."
+	},
+
+	"jssgroupHardwareBattery": {
+		"message": "Battery Status API",
+		"description": "battery group"
+	},
+	"jssgroupHardwareBatteryDescription": {
+		"message": "Removes Battery Status API support that is being misused for fingerprinting.",
+		"description": "Try to keep the reference to the English name of the API"
+	},
+	"jssgroupHardwareBatteryRemoveDescription": {
+		"message": "Remove the API"
+	},
+
+	"jssgroupPersistentIdentifierOfTheBrowserTab": {
+		"message": "Persistent identifier of the browser tab",
+		"description": "windowname group"
+	},
+	"jssgroupPersistentIdentifierOfTheBrowserTabDescription": {
+		"message": "Unlike the other parts of the environment, window.name property is not reset during page load. Consequently, a page might store a unique identifier of the tab to the property or other benign data.",
+		"description": "Try to keep reference to window.name."
+	},
+	"jssgroupPersistentIdentifierOfTheBrowserTabDescription2": {
+		"message": "This API allows cross-site identification in one tab and browser session."
+	},
+	"jssgroupPersistentIdentifierOfTheBrowserTabStrictDescription": {
+		"message": "Clear window.name values when moving do a different service (eTLD+1 domain change) during page reload. This does not interfere with most benign purposes while preventing the cross-site re-identification attack.",
+		"description": "Try to keep reference to window.name and eTLD+1"
+	},
+	"jssgroupPersistentIdentifierOfTheBrowserTabFirefox88": {
+		"message": "$BROWSER$ and above already protects you.",
+		"placeholders": {
+			"browser": {
+				"content": "Firefox 88"
+			}
+		}
+	},
+
+	"jssgroupNFC": {
+		"message": "Near Field Communication (NFC)",
+		"description": "nfc group"
+	},
+	"jssgroupNFCDescription": {
+		"message": "Near Field Communication (NFC) enables wireless communication between two devices at close proximity, usually less than a few centimeters. NFC is an international standard (ISO/IEC 18092) defining an interface and protocol for simple wireless interconnection of closely coupled devices operating at 13.56 MHz."
+	},
+	"jssgroupNFCDescription2": {
+		"message": "The API can be misused to learn information about other devices in the proximity.",
+		"description": "Keep the technical references"
+	},
+	"jssgroupNFCRemoveDescription": {
+		"message": "Remove the API"
+	},
+
+	"jssgroupWASM": {
+		"message": "WebAssembly speed-up",
+		"description": "webassembly group"
+	},
+	"jssgroupWASMDescription": {
+		"message": "Speed up the little-lies modifications of locally generated images and audio by WebAssembly.",
+		"description": "Keep reference to WebAssembly"
+	},
+	"jssgroupWASMDescription2": {
+		"message": "This option takes effect when the level of \"$canvas$\" or \"$audio$\" is set to \"$littlelies$\" only.",
+		"placeholders": {
+			"canvas": {
+				"content": "$1",
+				"example": "Translation of jssgroupLocallyRenderedImages"
+			},
+			"audio": {
+				"content": "$2",
+				"example": "Translation of jssgroupLocallyGeneratedAudio"
+			},
+			"littlelies": {
+				"content": "$3",
+				"example": "Translation of jssgroupLittleLies"
+			}
+		}
+	},
+	"jssgroupWASMDescription3": {
+		"message": "The WebAssembly code generates the same modifications as the not accelerated version, so it is a safe option to activate when concerned about fingerprinting."
+	},
+	"jssgroupWASMDisabled": {
+		"message": "Disabled"
+	},
+	"jssgroupWASMDisabledDescription": {
+		"message": "Disable WebAssembly from creating little lies."
+	},
+	"jssgroupWASMPassive": {
+		"message": "Passive"
+	},
+	"jssgroupWASMPassiveDescription": {
+		"message": "Enable WebAssembly to create little lies but fall back to the default slower implementation if the WebAssembly module cannot be injected."
+	},
+	"jssgroupWASMActive": {
+		"message": "Active"
+	},
+	"jssgroupWASMActiveDescription": {
+		"message": "Loosen the 'wasm-unsafe-eval' Content Security Policy (CSP) directive to allow WebAssembly execution where the CSP of the visited page would otherwise prevent it."
+	},
+	"jssgroupWASMActiveDescription2": {
+		"message": "The initialization of WebAssembly modules is subject to the CSP of the visited page in Chromium-based browsers."
+	},
+	"jssgroupWASMActiveDescription3": {
+		"message": "The benefit of this option is that the modifications run faster on all pages."
+	},
+	"jssgroupWASMActiveDescription4": {
+		"message": "However, by enabling this option, you increase the risk of being a victim of a vulnerability that would have been otherwise prevented by the CSP, such as cross-site scripting vulnerabilities. Moreover, this option might interfere with other installed extensions that modify the CSP header."
+	},
+	"jssgroupWASMEnabled": {
+		"message": "Enabled"
+	},
+	"jssgroupWASMEnabledDescription": {
+		"message": "Create little lies in WebAssembly."
+	},
+
+	"JShelterOptions": {
+		"message": "JShelter main settings",
+		"description": "Title of the main options page"
+	},
+	"mainSettings": {
+		"message": "Main settings",
+		"description": "Displayed in options in the navigation bar"
+	},
+	"JShelterOptionsJSSFineTune": {
+		"message": "Javascript Shield details: per domain protections",
+		"description": "Title of the JS Shield details options page"
+	},
+	"jSSShieldDetails": {
+		"message": "JS Shield details",
+		"description": "Displayed in options in the navigation bar, try to keep JS shield abbreviated to keep the text short"
+	},
+	"JShelterOptionsAdvanced": {
+		"message": "JShelter expert options",
+		"description": "Title of the expert options page"
+	},
+	"advancedOptions": {
+		"message": "Expert options",
+		"description": "Displayed in options in the navigation bar"
+	},
+	"externalLinks": {
+		"message": "External links",
+		"description": "Displayed in options in the navigation bar"
+	},
+	"ExternalLinksSeparator": {
+		"message": " »",
+		"description": "Displayed in options in the navigation bar, for example after external links"
+	},
+	"threatModel": {
+		"message": "Threat model",
+		"description": "Displayed in options in the navigation bar"
+	},
+	"fAQ": {
+		"message": "FAQ",
+		"description": "Displayed in options in the navigation bar"
+	},
+	"testPage": {
+		"message": "Test page",
+		"description": "Displayed in options in the navigation bar"
+	},
+	"permissions": {
+		"message": "Permissions",
+		"description": "Displayed in options in the navigation bar"
+	},
+	"sourceCode": {
+		"message": "Source code",
+		"description": "Displayed in options in the navigation bar"
+	},
+	"issueTracker": {
+		"message": "Issue tracker",
+		"description": "Displayed in options in the navigation bar"
+	},
+	"credits": {
+		"message": "Credits",
+		"description": "Displayed in options in the navigation bar"
+	},
+
+	"ExampleDomainsText": {
+		"message": "example.com or en.example.com",
+		"description": "Displayed in text inputs that expect a domain"
+	},
+	"ButtonSignExpandOneCharacterDown": {
+		"message": "⤵",
+		"description": "A button caption that can be used generically by JShelter, it should contain a single character that intuitively tells the user that by clicking the button, more information will be shown"
+	},
+	"ButtonSave": {
+		"message": "Save",
+		"description": "A button caption that can be used generically by JShelter"
+	},
+	"ButtonRestore": {
+		"message": "Restore",
+		"description": "A button caption that can be used generically by JShelter"
+	},
+	"ButtonRestoreLevel": {
+		"message": "Restore level $LEVELNAME$",
+		"description": "A button caption that can be used generically by JShelter",
+		"placeholders": {
+			"levelName": {
+				"content": "$1",
+				"example": "Level name of the level to be restored, for example, Default"
+			}
+		}
+	},
+	"ButtonEdit": {
+		"message": "Edit",
+		"description": "A button caption that can be used generically by JShelter"
+	},
+	"ButtonSaveCustomLevel": {
+		"message": "Save custom level",
+		"description": "A button caption that can be used generically by JShelter"
+	},
+	"ButtonAddNewLevel": {
+		"message": "Add new level",
+		"description": "A button caption that can be used generically by JShelter"
+	},
+	"ButtonCancel": {
+		"message": "Cancel",
+		"description": "A button caption that can be used generically by JShelter"
+	},
+	"ButtonRemove": {
+		"message": "Remove",
+		"description": "A button caption that can be used generically by JShelter"
+	},
+	"addToList": {
+		"message": "Add to list",
+		"description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
+	},
+	"saveAll": {
+		"message": "Save all",
+		"description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
+	},
+	"deleteAll": {
+		"message": "Delete all",
+		"description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
+	},
+	"ManageWhitelist": {
+		"message": "Manage exception list ⤵",
+		"description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list would appear below (the arrow at the end)."
+	},
+	"HideWhitelist": {
+		"message": "Hide exception list ⤵",
+		"description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list is located below (the arrow at the end)."
+	},
+	"ButtonDisableForDomain": {
+		"message": "<strong>$DISABLE$</strong> $FORTHEDOMAIN$",
+		"description": "A button caption that can be used generically by JShelter, e.g. in the options; if necessary, edit the structure of the message but make sure to emhasize the disablement. Translate the placeholders.",
+		"placeholders": {
+			"disable": {
+				"content": "Disable",
+				"description": "Please translate"
+			},
+			"forTheDomain": {
+				"content": "for the domain",
+				"description": "Please translate"
+			}
+		}
+	},
+	"ButtonEnableForSelectedDomains": {
+		"message": "<strong>$ENABLE$</strong> $FORTHEDOMAIN$",
+		"description": "A button caption that can be used generically by JShelter, e.g. in the options; if necessary, edit the structure of the message but make sure to emhasize the enablement. Translate the placeholders.",
+		"placeholders": {
+			"enable": {
+				"content": "Enable",
+				"description": "Please translate"
+			},
+			"forTheDomain": {
+				"content": "for the selected domains",
+				"description": "Please translate"
+			}
+		}
+	},
+	"ManageWhitelistDescription": {
+		"message": "Please note that these domain names are checked within the domain hierarchy, so giving the exception to <strong>example.com</strong> does also allow <strong>news.example.com</strong> to bypass the shield.",
+		"description": "Information text that can be used generically by JShelter, e.g. in options to explain the exception list of NBS and FPD."
+	},
+
+	"javascriptShieldDescription": {
+		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><ul><li>$REDUCTION$</li><li>$FAKE$</li><li>$HIDE$</li></ul><p>$BLOGS$</p>",
+		"description": "This is the description of JSS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs.",
+		"placeholders": {
+			"paragraph1": {
+				"content": "JavaScript Shield modifies the behavior of the JavaScript environment available for the visited webpage. JShelter provides fake information to confuse fingerprinters or make webpage triggered attacks impossible or harder.",
+				"description": "Paragraph 1, please translate this text."
+			},
+			"paragraph2": {
+				"content": "JavaScript Shield internally consists of wrappers, small pieces of code that modify the original behavior of a JavaScript API (a function or a property) defined by standards. The behavior of most of the wrappers can be divided into several categories:",
+				"description": "Paragraph 2, please translate this text."
+			},
+			"reduction": {
+				"content": "Precision reduction: The original value is too precise for most use cases. JavaScript Shield modifies the values so that typical and benign use cases are not affected.",
+				"description": "UL item 1, please translate this text."
+			},
+			"fake": {
+				"content": "Provide fake information: Some wrappers provide fake information mostly to confuse fingerprinters. Some wrappers provide plausible readings that are not based on the original value. Other wrappers modify the readings with small deviations that are typically not detectable for a human but significant for a fingerprinter. JShelter applies such deviations differently in each session and for each domain so that an observer operating several domains cannot use the information to link the browser. For example, canvas wrappers modify the image so that the same instructions produce different results on different domains and in different sessions.",
+				"description": "UL item 2, please translate this text."
+			},
+			"hide": {
+				"content": "Hide information: Some APIs provide information that is not generally needed and can be hidden from most pages. Depending on the API, JavaScript Shield might return an error, an empty value, or block the API completely.",
+				"description": "UL item 3, please translate this text."
+			},
+			"blogs": {
+				"content": "See our blog posts for more information on <a href='https://jshelter.org/fingerprinting/'>browser fingerprinting counter-measures</a> and <a href='https://jshelter.org/farbling/'>little lies</a>.",
+				"description": "Last paragraph, please translate this text, keep the URLs to the English version unless a translation exists on the web."
+			}
+		}
+	},
+	"JavascriptShieldLevelsMainLevelOptionHeading": {
+		"message": "Create custom levels and set the default level",
+		"description": "A heading in the options above the configuration of the default JSS level and the possibility to list existing levels and create own levels."
+	},
+	"addCustomLevel": {
+		"message": "Add custom level",
+		"description": "A button caption, the button creates a custom JSS level."
+	},
+
+	"JSSL0Name": {
+		"message": "Turn JavaScript Shield off",
+		"description": "The name of JSS L0 that is used at various places in the UI"
+	},
+	"JSSL0Description": {
+		"message": "JavaScript APIs are not wrapped. Use this level if you (1) trust the operator of the visited page(s) and you want to give them access to full APIs supported by the browser as well as the adversaries that might have injected code to the trusted pages, or (2) if you do not like JavaScript Shield but you want to apply other protection mechanisms.",
+		"description": "The description of JSS L0 that is used at various places in the UI"
+	},
+	"JSSL1Name": {
+		"message": "Turn fingerprinting protection off",
+		"description": "The name of JSS L1 that is used at various places in the UI"
+	},
+	"JSSL1Description": {
+		"message": "Apply security counter-measures that are likely not to break web pages but do not defend against fingerprinting. Disable APIs that are not commonly used. Use this level if Fingerprint Detector reports that the page called a low number of APIs misused for fingerprinting, you trust the visited service, and/or you think that the protection makes the page slow or broken and your temptation to use the service is so high that you do not want to be protected.",
+		"description": "The description of JSS L1 that is used at various places in the UI, see also FingerprintQualityLabel label for the origin of 'the page called a low number of APIs misused for fingerprinting'"
+	},
+	"JSSL2Name": {
+		"message": "Recommended",
+		"description": "The name of JSS L2 that is used at various places in the UI"
+	},
+	"JSSL2Description": {
+		"message": "Make the browser appear differently on distinct visited domains. Apply security counter-measures that are likely not to break web pages. Slightly modify the results of API calls differently on different domains so that the cross-site fingerprint is not stable. The values misused to generate fingerprints also differ with each browser restart. Try incognito mode if you need a different fingerprint for the same website without restart. Remember that even if you log out from a site, clear your cookies, and change your IP address, the modified APIs will provide a way to compute the same fingerprint. Restart your browser if you want to change your fingerprint. If in doubt, use this level.",
+		"description": "The description of JSS L1 that is used at various places in the UI"
+	},
+	"JSSL3Name": {
+		"message": "Strict",
+		"description": "The name of JSS L3 that is used at various places in the UI"
+	},
+	"JSSL3Description": {
+		"message": "Enable all non-experimental protection. The wrapped APIs return fake values. Some APIs are blocked completely, while others provide meaningful but rare values. Some return meaningless values. This level will make you fingerprintable because the results of API calls are generally modified in the same way on all websites and in each session. Use this level if you want to limit the information provided by your browser. If you are worried about fingerprinters, make sure the Fingerprint Detector is activated.",
+		"description": "The description of JSS L2 that is used at various places in the UI"
+	},
+	"JSSLexperimentalName": {
+		"message": "Experimental",
+		"description": "The name of JSS experimental level that is used at various places in the UI"
+	},
+	"JSSLexperimentalDescription": {
+		"message": "Strict level protections with additional wrappers enabled (including APIs known to regularly break webpages and APIs that do not work perfectly). Use this level if you want to experiment with JShelter. Use Recommended or Strict level with active Fingerprint Detector for your regular activities.",
+		"description": "The description of JSS experimental level that is used at various places in the UI"
+	},
+
+	"omittedAPIsHeading": {
+		"message": "Note that for fingerprintability prevention, JShelter does not wrap objects that are not defined. Your browser does not support:",
+		"description": "This message is displayed while giving the possibility to create a new level or edit existing levels in options"
+	},
+	"newLevelsNotRecommended": {
+		"message": "We do not recommend creating your own levels and changing configuration if you are concerned about browser fingerprinting. Please read <a href=\"$FAQURL$\">FAQ</a> and our <a href=\"$PAPERURL$\">paper</a>. By diverging from the configuration of other users, you make your re-identification easier.",
+		"placeholders": {
+			"faqurl": {
+				"content": "https://jshelter.org/faq/"
+			},
+			"paperurl": {
+				"content": "https://arxiv.org/abs/2204.01392"
+			}
+		},
+		"description": "This message is displayed while creating a new level in options. Make sure that you keep correct HTML markup"
+	},
+
+	"formlabelName": {
+		"message": "Name:",
+		"description": "Used in forms whenever a name should be enered (atm new level name)"
+	},
+	"formlabelDescription": {
+		"message": "Description:",
+		"description": "Used in forms whenever a description should be enered (atm new level description)"
+	},
+
+	"customLevelAlreadyExistsItWillBeOverridden": {
+		"message": "Custom level $CUSTOMNAME$ already exists. It will be overridden.",
+		"description": "Alert message shown during level editing, translate the message but not the placeholder",
+		"placeholders": {
+			"customName": {
+				"content": "$1",
+				"example": "User provided value, any text",
+				"description": "The level name that is about to be overwritten, do not translate"
+			}
+		}
+	},
+	"customLevelWereNotUpdated": {
+		"message": "Custom levels were not updated. Please try again later.",
+		"description": "The configuration with the chaged or new level was not saved because of unknown reason."
+	},
+	"NewLevelMissingNameOrDescription": {
+		"message": "Both Name and Description of the level are mandatory. Please provide both.",
+		"description": "User did not supply all mandatory fields for a JSS level"
+	},
+	"JSSeditLevelHeading": {
+		"message": "Edit level $LEVELNAME$",
+		"description": "Heading shown during JSS tweaking (edit level form)",
+		"placeholders": {
+			"levelName": {
+				"content": "$1",
+				"example": "User provided value, any text",
+				"description": "The level name that is about to be overwritten, do not translate"
+			}
+		}
+	},
+	"JSSaddLevelHeading": {
+		"message": "Add new level",
+		"description": "Form heading during creation of a new level. You likely want to use the same or very similar value as ButtonAddNewLevel translation string."
+	},
+
+	"javaScriptShieldPerWebsiteConfiguration": {
+		"message": "JavaScript Shield per-website configuration",
+		"description": "Displayed in JSS advanced options page"
+	},
+	"setJavaScriptShieldForWebsite": {
+		"message": "Set JavaScript Shield for website:",
+		"description": "Displayed in JSS advanced options page"
+	},
+	"aListOfWebsiteWithRedefinedJavaScriptShield": {
+		"message": "A list of websites with redefined JavaScript Shield:",
+		"description": "Displayed in JSS advanced options page"
+	},
+	"JSSAdvancedConfirmOverwrite": {
+		"message": "Settings for domain $DOMAIN$ already exist and will be overridden.",
+		"description": "Displayed in JSS advanced options page",
+		"placeholders": {
+			"domain": {
+				"content": "$1",
+				"example": "The domain whose settings are about to be overwritten, like example.com"
+			}
+		}
+	},
+	"LevelAndDescription": {
+		"message": "$LEVELNAME$: $LEVELSHORTDESCRIPTION$",
+		"description": "Displayed in options pages in select elements to give the user an idea what level to apply by listing both its name and a short description",
+		"placeholders": {
+			"levelName": {
+				"content": "$1",
+				"example": "Name of the level"
+			},
+			"levelShortDescription": {
+				"content": "$2",
+				"example": "Short description of the level"
+			}
+		}
+	},
+
+	"doNotModifyThisConfiguration": {
+		"message": "BEWARE! Do not modify this configuration unless you know what you are doing.",
+		"description": "Displayed in expert settings"
+	},
+	"JShelterFullConfiguration": {
+		"message": "Full JShelter configuration in the text",
+		"description": "Displayed in expert settings, label for the full extension configuration in textarea"
+	},
+	"ExpertLoadCurrentlyStoredConfiguration": {
+		"message": "Load currently stored configuration",
+		"description": "Displayed in expert settings, button that loads current configuration to the textarea"
+	},
+	"ExpertOverwriteConfiguration": {
+		"message": "Overwrite configuration (stores the displayed configuration permanently)",
+		"description": "Displayed in expert settings, button that stores the current configuration permanently"
+	},
+	"ExpertResetConfiguration": {
+		"message": "Reset the configuration (remove all custom changes)",
+		"description": "Displayed in expert settings, button that reset to the configuration that we ship (factory reset)"
+	},
+	"ExpertUndoConfiguration": {
+		"message": "Undo (discard last configuration override)",
+		"description": "Displayed in expert settings, button that restores the configuration to the previous (back button)"
+	},
+
+	"protectionConfigurationOptionActivatedOn": {
+		"message": "On",
+		"description": "Displayed during NBS and FPD configuration when the option is activated (on)"
+	},
+	"protectionConfigurationOptionActivatedOff": {
+		"message": "Off",
+		"description": "Displayed during NBS and FPD configuration when the option is deactivated (off)"
+	},
+	"shieldNotifications": {
+		"message": "Notifications",
+		"description": "Displayed as a text label during NBS and FPD configuration when the user can activate or deactivate notifications"
+	},
+
+	"NBSDescription": {
+		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
+		"description": "This is the description of NBS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs.",
+		"placeholders": {
+			"paragraph1": {
+				"content": "Network Boundary Shield prevents visited web pages from using the browser as a proxy between the public Internet and local network. See our <a href='https://jshelter.org/localportscanning/'>blog post</a> and <a href='https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf'>Force Point report</a> for examples of attacks handled by the Network Boundary Shield. The protection encapsulates the WebRequest API, so it captures all outgoing requests.",
+				"description": "Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
+			},
+			"paragraph2": {
+				"content": "Generally, you want Network Boundary Shield to block all suspicious requests. However, some pages can be broken because they require interaction between the public Internet and the local network. For example, the Network Boundary Shield might break some Intranet information systems. JShelter users also reported increased false positives when using DNS-based filtering programs. If you use one, make sure that DNS returns 0.0.0.0 for the blocked domains.",
+				"description": "Paragraph 2, please translate this text."
+			},
+			"paragraph3": {
+				"content": "Network Boundary Shield default behavior can be globally adjusted by the settings below. Network Boundary Shield can also be completely disabled per domain by the exception list. Domains can be allowed to make cross-network requests via <i>Network Boundary Shield switch</i> in the popup window or manually via the <i>Manage exception list</i> option. Remember that adding a domain to the exception list also allows its subdomains to make cross-network requests. To selectively deactivate Network Boundary Shield, insert the domains to the exception list (excluding \"www,\" but including all other domains, e.g., \".com\").",
+				"description": "Paragraph 3, please translate this text, note that <i>Manage exception list</i> refers to the ManageWhitelist string."
+			}
+		}
+	},
+	"NBSHttpProxyDNSAPINote": {
+		"message": "If you are using an HTTP proxy, NBS would protect the local network of the proxy instead of your network as the proxy performs the HTTP requests to the destinations. To prevent DNS leaks of your queries initiated from this computer, Network Boundary Shield does not resolve the DNS domains to detect possible cross-network boundary requests. However, the Network Boundary Shield protects the local network of the proxy for directly embedded IP addresses. Hence, Network Boundary Shield protects the local network of the proxy only partially.",
+		"description": "This note is appended to NBS description in Firefox, see https://pagure.io/JShelter/webextension/issue/41 for the context of the issue"
+	},
+
+	"nbsBlocking": {
+		"message": "Blocking",
+		"description": "Displayed during NBS configuration, label for a configuration option"
+	},
+	"nbsBlockingDescription": {
+		"message": "Block requests that are trying to access your local network.",
+		"description": "Displayed during NBS configuration, basic explanation of the configuration option"
+	},
+	"nbsBlockingDescription2": {
+		"message": "NOTE: We recommend having request blocking turned on in most cases.",
+		"description": "Displayed during NBS configuration, further explanation of the configuration option"
+	},
+	"nbsBlockingOffDescription": {
+		"message": "Requests blocking turned off.",
+		"description": "Displayed during NBS configuration, further explanation of the selected configuration level"
+	},
+	"nbsBlockingOnDescription": {
+		"message": "Requests blocking turned on.",
+		"description": "Displayed during NBS configuration, further explanation of the selected configuration level"
+	},
+	"NBSNotificationsDescription": {
+		"message": "Turn on/off notifications about suspicious requests or requests being blocked.",
+		"description": "Displayed in NBS options, globaly disables or enables notifications"
+	},
+	"NBSNotificationsDescription2": {
+		"message": "In case you enable the notifications: if the blocking is on, you will be notified about blocked requests; if the blocking is off, you will be notified about suspicious requests without any attempt to prevent them.",
+		"description": "Displayed in NBS options, globaly disables or enables notifications"
+	},
+	"NBSNotificationsOffDescription": {
+		"message": "Blocking notifications turned off.",
+		"description": "Displayed in NBS options, notifications about blocked requests are globally disabled"
+	},
+	"NBSNotificationsOnDescription": {
+		"message": "Blocking notifications turned on.",
+		"description": "Displayed in NBS options, notifications about blocked requests are globally enabled"
+	},
+	"NBSBlockedTitle": {
+		"message": "Network Boundary Shield blocked suspicious requests!",
+		"description": "Title of the notifications that is displayed when NBS actually blocks requests"
+	},
+	"NBSDetectedTitle": {
+		"message": "Network Boundary Shield detected suspicious requests!",
+		"description": "Title of the notifications that is displayed when NBS detects a suspicious requests but does not block them because blocking is disabled"
+	},
+	"NBSBlockedMessageMultipleTargets": {
+		"message": "Count of blocked requests\nby $ORIGIN$\nthat attempted to access local\nnetwork: $COUNT$.",
+		"description": "The message shown when the page contacted multiple targets in the local network. Produce short lines.",
+		"placeholders": {
+			"origin": {
+				"content": "$1",
+				"description": "Domain name or IP address, do not translate",
+				"example": "domainname.example.com"
+			},
+			"count": {
+				"content": "$2",
+				"description": "A positive number, do not translate",
+				"example": "5"
+			}
+		}
+	},
+	"NBSDetectedMessageMultipleTargets": {
+		"message": "Count of detected requests\nby $ORIGIN$\nthat accessed local\nnetwork: $COUNT$.",
+		"description": "The message shown when the page contacted multiple targets in the local network. Produce short lines.",
+		"placeholders": {
+			"origin": {
+				"content": "$1",
+				"description": "Domain name or IP address, do not translate",
+				"example": "domainname.example.com"
+			},
+			"count": {
+				"content": "$2",
+				"description": "A positive number, do not translate",
+				"example": "5"
+			}
+		}
+	},
+	"NBSBlockedMessageWithTarget": {
+		"message": "Blocked requests: $COUNT$\nfrom $ORIGIN$\nto $TARGET$.",
+		"description": "The message shown when the page contacted single target in the local network. Produce short lines.",
+		"placeholders": {
+			"origin": {
+				"content": "$1",
+				"description": "Domain name or IP address, do not translate",
+				"example": "domainname.example.com"
+			},
+			"target": {
+				"content": "$2",
+				"description": "IP address (maybe domain), do not translate",
+				"example": "10.0.0.1"
+			},
+			"count": {
+				"content": "$3",
+				"description": "A positive number, do not translate",
+				"example": "5"
+			}
+		}
+	},
+	"NBSDetectedMessageWithTarget": {
+		"message": "Detected requests: $COUNT$\nfrom $ORIGIN$\nto $TARGET$.",
+		"description": "The message shown when the page contacted single target in the local network. Produce short lines.",
+		"placeholders": {
+			"origin": {
+				"content": "$1",
+				"description": "Domain name or IP address, do not translate",
+				"example": "domainname.example.com"
+			},
+			"target": {
+				"content": "$2",
+				"description": "IP address (maybe domain), do not translate",
+				"example": "10.0.0.1"
+			},
+			"count": {
+				"content": "$3",
+				"description": "A positive number, do not translate",
+				"example": "5"
+			}
+		}
+	},
+	"NBSBlockedHostTitle": {
+		"message": "Network Boundary Shield blocked a host!",
+		"description": "Title of the notifications that is displayed when NBS blocks future requests by a host in Chromium-based browsers"
+	},
+	"NBSDetectedHostTitle": {
+		"message": "Network Boundary Shield detected a suspicious host!",
+		"description": "Title of the notifications that is displayed when NBS detects suspicious requests by a host in Chromium-based browsers but does not block them because blocking is disabled"
+	},
+	"NBSBlockedHost": {
+		"message": "All future HTTP requests from $HOST$ will be blocked.",
+		"description": "The message shown in Chromium-based browsers when NBS starts blocking a host.",
+		"placeholders": {
+			"host": {
+				"content": "$1",
+				"description": "Domain name or IP address, do not translate",
+				"example": "domainname.example.com"
+			}
+		}
+	},
+	"NBSDetectedHost": {
+		"message": "To block HTTP requests from $HOST$ enable blocking.",
+		"description": "The message shown in Chromium-based browsers when NBS detects a suspicious host.",
+		"placeholders": {
+			"host": {
+				"content": "$1",
+				"description": "Domain name or IP address, do not translate",
+				"example": "domainname.example.com"
+			}
+		}
+	},
+
+	"FPDDescription": {
+		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
+		"description": "This is the description of FPD shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs.",
+		"placeholders": {
+			"paragraph1": {
+				"content": "Fingerprint Detector provides a mechanism that informs users about fingerprinting activity on visited web pages. The detector can also prevent web pages from extracting browser fingerprints if a user chooses to do so. See <a href='https://jshelter.org/fpdetection/'>our blog post</a> or <a href='https://arxiv.org/pdf/1905.01051.pdf'>Browser Fingerprinting: A survey</a> for a closer description of browser fingerprinting.",
+				"description": "Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
+			},
+			"paragraph2": {
+				"content": "By enabling the detector, you will be notified whenever it detects that the visited page has called a high number of APIs misused for fingerprinting. The detector counts and evaluates the called APIs for each page visit according to our heuristics. The number of called APIs misused for fingerprinting is presented to you by the badge color of the JShelter icon and in the popup window. You can receive a notification if the page calls a high number of fingerprinting APIs. You can see details about the fingerprinting activity by generating a fingerprint report. You can access it via a popup window or by clicking directly on the notification.",
+				"description": "Paragraph 2, please translate this text."
+			},
+			"paragraph3": {
+				"content": "The default behavior of Fingerprint Detector can be adjusted to your liking. You can choose \"blocking\" behavior, which is a counter-measure against leaking your fingerprint. In this case, the Fingerprint Detector blocks all HTTP requests and cleans browser storages when it computes that the page calls a high number of fingerprinting APIs. Since <strong>this action generally breaks web pages</strong>, we recommend creating an exception list for trusted domains. Switching off the detector for a domain in the popup window will add the domain to the exception list. This domain will not be evaluated or blocked in the future. You can manage all the exceptions below.",
+				"description": "Paragraph 3, please translate this text."
+			}
+		}
+	},
+
+	"fpdBehavior": {
+		"message": "Behavior",
+		"description": "A label shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdBehaviorDescription": {
+		"message": "Specify the preferred behavior of the module.",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdBehaviorPassive": {
+		"message": "Passive",
+		"description": "A label shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdBehaviorPassiveDescription": {
+		"message": "Use extension icon badge color to signalize the number of the APIs called by the visited page that can be misused for fingerprinting.",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdBehaviorLimitedBlocking": {
+		"message": "Limited Blocking",
+		"description": "A label shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdBehaviorBlockingDescription": {
+		"message": "Allow the extension to react whenever a page calls a high number of called APIs misusable for fingerprinting.",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdBehaviorBlockingDescription2": {
+		"message": "• Interrupt network traffic for the page to prevent possible fingerprint leakage.",
+		"description": "Additional information to fpdBehaviorBlockingDescription"
+	},
+	"fpdBehaviorLimitedBlockingDescription3": {
+		"message": "• Clear <strong>some</strong> browser storage of the page to remove possibly cached fingerprint. (No additional permissions required.)",
+		"description": "Additional information to fpdBehaviorLimitedBlockingDescription"
+	},
+	"fpdBehaviorLimitedBlockingDescription4": {
+		"message": "• Clearing: <strong>localStorage, sessionStorage, JS cookies, IndexedDB, caches, window.name</strong>",
+		"description": "Additional information to fpdBehaviorLimitedBlockingDescription"
+	},
+	"fpdBehaviorBlockingDescriptionWarning": {
+		"message": "NOTE: Blocking behavior may break some functionality on fingerprinting websites.",
+		"description": "Additional information to fpdBehaviorLimitedBlockingDescription"
+	},
+	"fpdBehaviorFullBlocking": {
+		"message": "Full Blocking",
+		"description": "A label shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdBehaviorFullBlockingDescription3": {
+		"message": "• Clear <strong>all</strong> available storage mechanisms of the page where fingerprint may be cached. (Requires BrowsingData permission.)",
+		"description": "Additional information to fpdBehaviorBlockingDescription"
+	},
+	"fpdBehaviorFullBlockingDescription4": {
+		"message": "• Clearing: <strong>localStorage, sessionStorage, cookies, IndexedDB, caches, window.name, fileSystems, WebSQL, serviceWorkers</strong>",
+		"description": "Additional information to fpdBehaviorBlockingDescription"
+	},
+	"fpdNotificationsDescription": {
+		"message": "Turn on/off notifications about fingerprinting detection and HTTP requests blocking.",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdNotificationsDescription2": {
+		"message": "NOTE: We recommend having notifications turned on for blocking behavior.",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdNotificationsOffDescription": {
+		"message": "Detection/blocking notifications turned off.",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdNotificationsOnDescription": {
+		"message": "Detection/blocking notifications turned on.",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdDetection": {
+		"message": "Detection",
+		"description": "A label shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdDetectionDescription": {
+		"message": "Adjust heuristic thresholds which determine the severity of the number of called APIs misusable for fingerprinting.",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdDetectionDefault": {
+		"message": "Default",
+		"description": "Option shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdDetectionDefaultDescription": {
+		"message": "Recommended setting for most users.",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdDetectionDefaultDescription2": {
+		"message": "• Very low number of false positive detections (focus on clear fingerprinting cases, very low number of unreasonably blocked sites)",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdDetectionDefaultDescription3": {
+		"message": "• Acceptable amount of false negative detections (some fingerprinting websites may get around detection)",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+  "fpdStrict": {
+    "message": "Strict",
+		"description": "Option shown in options during configuaration of the parameters of FPD"
   },
-  "extensionDescription": {
-    "message": "Extension for increasing security and privacy level of the user.",
-    "description": "Description of the extension."
-  }
+	"fpdStrictDescription": {
+		"message": "Optional setting for more cautious users.",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdStrictDescription2": {
+		"message": "• Lower number of false negative detections (also detects websites with less excessive fingerprinting)",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"fpdStrictDescription3": {
+		"message": "• Higher probability of false positive detections (in edge cases benign websites may be falsely blocked)",
+		"description": "Text shown in options during configuaration of the parameters of FPD"
+	},
+	"FPDSeverityNone": {
+		"message": "None",
+		"description": "The level of the number of detected APIs misusable for fingerprinting"
+	},
+	"FPDSeverityLow": {
+		"message": "Low",
+		"description": "The level of the number of detected APIs misusable for fingerprinting"
+	},
+	"FPDSeverityModerate": {
+		"message": "Moderate",
+		"description": "The level of the number of detected APIs misusable for fingerprinting"
+	},
+	"FPDSeverityHigh": {
+		"message": "High",
+		"description": "The level of the number of detected APIs misusable for fingerprinting"
+	},
+	"FPDSeverityVeryHigh": {
+		"message": "Very High",
+		"description": "The level of the number of detected APIs misusable for fingerprinting"
+	},
+	"fpdBlockingSubsequent": {
+		"message": "Blocking all subsequent requests.",
+		"description": "Shown in a notification when FPD starts blocking HTTP requests"
+	},
+	"fpdClickNotificationDetails": {
+		"message": "Click the notification for more details.",
+		"description": "Shown in a notification when FPD detects a suspicious activity but is not configured to block"
+	},
+	"fpdNotificationMessage": {
+		"message": "$MESSAGE$\n\nPage: $PAGETITLE$\nHost: $DOMAIN$",
+		"description": "Constructs the full message for the notification when FPD detects suspicious activity",
+		"placeholders": {
+			"message": {
+				"content": "$1",
+				"example": "Blocking all subsequent requests.",
+				"description": "Translated fpdBlockingSubsequent or fpdClickNotificationDetails"
+			},
+			"pagetitle": {
+				"content": "$2",
+				"example": "JShelter test page",
+				"description": "The content of the title element of the fingerprinting page (in case it is long, only the start of the string)"
+			},
+			"domain": {
+				"content": "$3",
+				"example": "example.com",
+				"description": "The domain of the visited page or IP address (taken from the URL bar)"
+			}
+		}
+	},
+	"fpdNotificationTitle": {
+		"message": "Fingerprinting activity detected!",
+		"description": "Title of a notification"
+	},
+	"FPDReportTitle": {
+		"message": "Fingerprint Detector Report",
+		"description": "Title of a fingeprint report"
+	},
+	"FPDReportDescriptionPara1": {
+		"message": "This report lists all JavaScript API endpoints accessed by the web page and considered relevant for browser fingerprinting. Fingerprint Detector (FPD) uses this data to decide whether the page may be collecting a browser fingerprint.",
+		"description": "Explanation text in the report, it can be shown by clicking on the help icon"
+	},
+	"FPDReportDescriptionPara2": {
+		"message": "FPD processes API calls in groups based on their semantic properties. This window shows the detected number of API calls on the visited page. The default view shows only groups accessed at least once. This way, the report can be empty if the page does not access any fingerprintable API. If you want to see all APIs monitored by FPD, click $STARTTAG$ here $ENDTAG$",
+		"description": "Explanation text in the report, it can be shown by clicking on the help icon",
+		"placeholders": {
+			"starttag": {
+				"content": "<span id='unhideAll'>",
+				"description": "Please keep the tag as is, do not translate"
+			},
+			"endtag": {
+				"content": "</span>",
+				"description": "Please keep the tag as is, do not translate"
+			}
+		}
+	},
+	"FPDReportDescriptionPara3": {
+		"message": "You can export the full FPD Report that contains all the data collected and used by FPD to evaluate the page. This comprehensive report shows the weights assigned to the groups/endpoints ($NOTE1$). It also lists all accessed API endpoints with corresponding arguments ($NOTE2$).",
+		"description": "Explanation text in the report, it can be shown by clicking on the help icon",
+		"placeholders": {
+			"note1": {
+				"content": "<i>fpd_evaluation_statistics</i>",
+				"description": "Please keep as is, do not translate"
+			},
+			"note2": {
+				"content": "<i>fpd_access_logs</i>",
+				"description": "Please keep as is, do not translate"
+			}
+		}
+	},
+	"FPDReportShowDetails": {
+		"message": "Show details",
+		"description": "Button caption"
+	},
+	"FPDReportHideDetails": {
+		"message": "Hide details",
+		"description": "Button caption"
+	},
+	"FPDReportExportJSON": {
+		"message": "Export full FPD Report as JSON",
+		"description": "Button caption"
+	},
+	"FPDReportMissingData": {
+		"message": "ERROR: Missing data, cannot create a report! Try to reload the page and reopen the report.",
+		"description": "Text shown if the windows cannot communicate with the internals of the extension"
+	}
 }

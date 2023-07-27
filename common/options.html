@@ -19,8 +19,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
   <script src="helpers.js" type="text/javascript" defer></script>
   <script src="tweaks_gui.js" type="text/javascript" defer></script>
   <script src="options.js" type="text/javascript" defer></script>
-  <script src="options_nbs.js" type="text/javascript" defer></script>
-	<title>JShelter options</title>
+	<script src="i18n_translate_dom.js" type="text/javascript" defer></script>
+	<script src="options_nbs.js" type="text/javascript" defer></script> <!-- This file appends text to
+	the div translated by i18n_translate_dom.js, keep this script after i18n_translate_dom.js -->
+	<title data-localize="JShelterOptions">JShelter options</title>
 </head>
 <body>
 			<section class="logo">
@@ -28,19 +30,19 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			</section>
 			<nav class="menu">
 				<ul>
-					<li><a href="options.html">Main settings</a></li>
-					<li><a href="options_domains.html">JS Shield details</a></li>
-					<li><a href="options_advanced.html">Advanced options</a></li>
+					<li><a href="options.html" data-localize="MainSettings">Main settings</a></li>
+					<li><a href="options_domains.html" data-localize="JSSShieldDetails">JS Shield details</a></li>
+					<li><a href="options_advanced.html" data-localize="AdvancedOptions">Advanced options</a></li>
 					<li>
-						<p>External links</p>
+						<p data-localize="ExternalLinks">External links</p>
 						<ul>
-							<li><a href="https://JShelter.org/threatmodel/">Threat model</a></li>
-							<li><a href="https://JShelter.org/faq/">FAQ</a></li>
-							<li><a href="https://polcak.github.io/jsrestrictor/test/test.html">Test page</a></li>
-							<li><a href="https://JShelter.org/permissions/">Permissions</a></li>
-							<li><a href="https://pagure.io/JShelter/webextension/">Source code</a></li>
-							<li><a href="https://pagure.io/JShelter/webextension/issues">Issue tracker</a></li>
-							<li><a href="https://JShelter.org/credits/">Credits</a></li>
+							<li><a href="https://JShelter.org/threatmodel/" data-localize="ThreatModel">Threat model</a></li>
+							<li><a href="https://JShelter.org/faq/" data-localize="FAQ">FAQ</a></li>
+							<li><a href="https://polcak.github.io/jsrestrictor/test/test.html" data-localize="TestPage">Test page</a></li>
+							<li><a href="https://JShelter.org/permissions/" data-localize="Permissions">Permissions</a></li>
+							<li><a href="https://pagure.io/JShelter/webextension/" data-localize="SourceCode">Source code</a></li>
+							<li><a href="https://pagure.io/JShelter/webextension/issues" data-localize="IssueTracker">Issue tracker</a></li>
+							<li><a href="https://JShelter.org/credits/" data-localize="Credits">Credits</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -53,40 +55,11 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 <section id="configuration_area">
 	<div id="levels-config">
-		<h2 id="set-default-level">JavaScript Shield</h2> 
-		<p class="jss_description">
-			JavaScript Shield modifies the behaviour of the JavaScript environment available for the visited
-			webpage. JShelter provides fake information to confuse fingerprinters or make webpage triggered
-			attacks impossible or harder.
-		</p>
-		<p class="jss_description">
-			JavaScript Shield internally consists of wrappers, small pieces of code that modify the
-			original behaviour of a JavaScript API (a function or a property) defined by standards. The
-			behaviour of the most of the wrappers can be divided into several categories:
-		</p>
-		<ul class="jss_description">
-			<li><p>
-				Precision reduction: The original value is too precise and it is not necessary for most use
-				cases. JavaScript Shield modifies the values so that typical and benign use cases are not
-				affected.
-			</p></li>
-			<li><p>
-				Provide fake information: Some wrappers provide fake information mostly to confuse
-				fingerprinters. For example, canvas wrappers modify the image so that the same instructions
-				produce different result in each session and for each domain.
-			</p></li>
-			<li><p>
-				Hide information: Some APIs provide information that is not generally needed and can be hidden
-				from most of the pages. Depending on the API, JavaScript Shield might return an error, an empty
-				value, or block the API completely.
-			</p></li>
-		</ul>
-		<p class="jss_description">
-			See our blog post for more information on <a href="https://jshelter.org/fingerprinting/">browser
-			fingerprinting counter-measures</a> and <a href="https://jshelter.org/farbling/">farbling</a>.
-		</p>
-		<h3>Create custom levels and set the default level</h3>
-		<p class="alert">We do not recommend creating own levels and
+		<h2 id="set-default-level" data-localize="JavascriptShield">JavaScript Shield</h2>
+		<div class="jss_description" data-localize="JavascriptShieldDescription" htmltranslation></div>
+
+		<h3 data-localize="JavascriptShieldLevelsMainLevelOptionHeading">Create custom levels and set the default level</h3>
+		<p class="alert" data-localize="newLevelsNotRecommended" htmltranslation>We do not recommend creating own levels and
 			changing configuration if you are concerned about browser fingerprinting. Please read
 			<a href="https://jshelter.org/faq/">FAQ</a> and our <a
 				 href="https://arxiv.org/abs/2204.01392">paper</a>. By diverging from the configuration of
@@ -96,7 +69,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 				<ul id="levels-list">
 				</ul>
 				<fieldset>
-					<button id="new_level" class="jsr-button">Add custom level</button>
+					<button id="new_level" class="jsr-button" data-localize="AddCustomLevel">Add custom level</button>
 				</fieldset>
 			</div>
 			<div id="current-level-tweaks-detail" class="jss-shield-settings-item">
@@ -107,57 +80,35 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		</div>
 	</div>
 
-  	<div id="proxy-protection-config">
+		<div id="proxy-protection-config">
 		<div class="protection-title">
-			<label class="shield-onoff-label" for="nbs-switch"><h2>Network Boundary Shield</h2></label>
+			<h2 class="shield-onoff-label" for="nbs-switch" data-localize="NetworkBoundaryShield">Network Boundary Shield</h2>
 			<label class="switch">
 				<input id="nbs-switch" type="checkbox" checked>
 				<span class="slider"></span>
 			</label>
 		</div>
-		<p class="nbs_description">
-			Network Boundary Shield prevents web pages to use the browser as a proxy between local network
-			and the public Internet. See our <a
-			href="https://jshelter.org/localportscanning/">
-				blog post</a> and
-			<a
-				href="https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf">Force
-				Point report</a> for examples of attacks handled by the Network Boundary Shield.
-			The protection encapsulates the WebRequest API, so it captures all outgoing requests.
-		</p>
-		<p class="nbs_description">
-			Generally, you want Network Boundary Shield to block all suspicious requests. However, some pages can be
-			broken, because they require interaction between public Internet and local network, for example,
-			some Intranet information systems might be broken by the Network Boundary Shield. JShelter users
-			also reported increased number of false positives when using DNS-based filtering programs. If
-			you use one, make sure that DNS returns 0.0.0.0 for the blocked domains.
-		</p>
-		<p class="nbs_description">
-			Network Boundary Shield default behavior can be globally adjusted by the settings below. Network Boundary Shield can also be completely 
-			disabled on a per-domain basis using the whitelist. Domains can be whitelisted via <i>Network Boundary Shield switch</i> in the popup window 
-			or manually via <i>Manage whitelist</i> option. Keep in mind that whitelisting a domain will also whitelist its subdomains. To selectively 
-			deactivate the Network Boundary Shield, insert the domains to the whitelist (excluding "www", but including all other domains e.g. ".com").
-		</p>
+		<div class="nbs_description" data-localize="NBSDescription" htmltranslation></div>
 		<fieldset>
 			<div class="tweakgrid" id="nbs-settings">
 
 			</div>
 		</fieldset>
 		<fieldset>
-			<button id="nbs-whitelist-show" class="jsr-button">Manage whitelist ⤵</button>
-			<button id="nbs-whitelist-hide" class="jsr-button hidden">Hide whitelist ⤵</button>
+			<button id="nbs-whitelist-show" class="jsr-button" data-localize="ManageWhitelist">Manage whitelist ⤵</button>
+			<button id="nbs-whitelist-hide" class="jsr-button hidden" data-localize="HideWhitelist">Hide whitelist ⤵</button>
 		</fieldset>
 		<fieldset id="nbs-whitelist-container" class="hidden">
 			<div>
 				<input id="nbs-whitelist-input" type="text" name="nbs-whitelist-hostname" placeholder="example.com">
-				<button id="nbs-whitelist-add-button" class="jsr-button"><strong>Disable</strong> for the domain</button>
+				<button id="nbs-whitelist-add-button" class="jsr-button" data-localize="ButtonDisableForDomain" htmltranslation>Disable for the domain</button>
 			</div>
 			<select id="nbs-whitelist-select" name="sometext" size="10" multiple>
 
 			</select>
 			<div>
-				<button id="nbs-whitelist-remove-button" class="jsr-button"><strong>Enable</strong> for the selected domains</button>
-				<p>
+				<button id="nbs-whitelist-remove-button" class="jsr-button" data-localize="ButtonEnableForSelectedDomains" htmltranslation>Enable for the selected domains</button>
+				<p data-localize="ManageWhitelistDescription" htmltranslation>
 					Please note, that these domain names are checked with domain hierarchy, so whitelisting
 					<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
 				</p>
@@ -167,51 +118,33 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 	<div id="fingerprinting-protection-config">
 		<div class="protection-title">
-			<label class="shield-onoff-label" for="fpd-switch"><h2>Fingerprint Detector</h2></label>
+			<h2 class="shield-onoff-label" for="fpd-switch" data-localize="FingerprintDetector">Fingerprint Detector</h2>
 			<label class="switch">
 				<input id="fpd-switch" type="checkbox" checked>
 				<span class="slider"></span>
 			</label>
 		</div>
-		<p class="fpd_description">
-			Fingerprint Detector provides a mechanism that informs users about fingerprinting activity on visited web pages. The detector also prevents 
-			web pages from extracting browser fingerprint, if a user chooses to do so. See our <a
-			href="https://jshelter.org/fpdetection/">
-				blog post</a> or
-			<a
-				href="https://arxiv.org/pdf/1905.01051.pdf">Browser Fingerprinting: A survey</a> for a closer description of browser fingerprinting.
-		<p class="fpd_description">
-			By enabling the detector, you will be notified whenever it detects fingerprinting behavior on a visited web page. The detector measure severity of
-			potential fingerprint with each page visit. Then, it assigns a likelihood of fingerprinting to the page according to our heuristic system. The likelihood is 
-			presented to you by badge color of JShelter icon and also in popup window. If a high likelihood of fingerprinting occurs, you will be notified by a separate notification. 
-			It's possible to show details about the fingerprint by generating a fingerprint report. You can access it via popup window or by clicking directly on the notification.
-		</p>
-		<p class="fpd_description">		
-			The default behavior of Fingerprint Detector can be adjusted to your liking. You can choose "blocking" behavior, which works as a countermeasure against leaking your fingerprint
-			to unwanted parties. In this case, every positive detection is followed by blocking all subsequent HTTP requests and cleaning browser storage. Take into account that <strong>this action
-			will probably result in a broken web page</strong> and we strongly recommend to use a whitelist for trusted domains. Switching off the detector for a domain in the popup window will add
-			the domain to the whitelist. This domain won't be evaluated or blocked in the future. You can manage all the whitelisted domains below.
-		</p>
+		<div class="fpd_description" data-localize="FPDDescription" htmltranslation></div>
 		<fieldset>
 			<div class="tweakgrid" id="fpd-settings">
 
 			</div>
 		</fieldset>
 		<fieldset>
-			<button id="fpd-whitelist-show" class="jsr-button">Manage whitelist ⤵</button>
-			<button id="fpd-whitelist-hide" class="jsr-button hidden">Hide whitelist ⤵</button>
+			<button id="fpd-whitelist-show" class="jsr-button" data-localize="ManageWhitelist">Manage whitelist ⤵</button>
+			<button id="fpd-whitelist-hide" class="jsr-button hidden" data-localize="HideWhitelist">Hide whitelist ⤵</button>
 		</fieldset>
 		<fieldset id="fpd-whitelist-container" class="hidden">
 			<div>
 				<input id="fpd-whitelist-input" type="text" name="fpd-whitelist-hostname" placeholder="example.com">
-				<button id="fpd-whitelist-add-button" class="jsr-button"><strong>Disable</strong> for the domain</button>
+				<button id="fpd-whitelist-add-button" class="jsr-button" data-localize="ButtonDisableForDomain" htmltranslation>Disable for the domain</button>
 			</div>
 			<select id="fpd-whitelist-select" name="sometext" size="10" multiple>
 		
 			</select>
 			<div>
-				<button id="fpd-whitelist-remove-button" class="jsr-button"><strong>Enable</strong> for the selected domains</button>
-				<p>
+				<button id="fpd-whitelist-remove-button" class="jsr-button" data-localize="ButtonEnableForSelectedDomains" htmltranslation>Enable for the selected domains</button>
+				<p data-localize="ManageWhitelistDescription" htmltranslation>
 					Please note, that these domain names are checked with domain hierarchy, so whitelisting
 					<strong>example.com</strong> does also whitelist <strong>news.example.com</strong>.
 				</p>

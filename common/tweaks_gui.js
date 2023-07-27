@@ -78,7 +78,7 @@ let tweaks_gui = {
 						showStatus(group.params[desired_tweak - 1]);
 					}
 					else {
-						showStatus({short:"Unprotected", description:"Unprotected"});
+						showStatus({short:browser.i18n.getMessage("jssgroupUnprotected"), description:browser.i18n.getMessage("jssgroupUnprotected")});
 					}
 				}
 				if (changed) {

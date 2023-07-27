@@ -89,36 +89,36 @@ var nbsNotifications = {};
 */
 const NBS_DEF_SETTINGS = {
 	blocking: {
-		description: "Block requests that are trying to access your local network.",
-		description2: ["NOTE: We recommend having requests blocking turned on in most cases. However, you can opt in to be only notified without any protection."],
-		label: "Blocking",
+		label: browser.i18n.getMessage("nbsBlocking"),
+		description: browser.i18n.getMessage("nbsBlockingDescription"),
+		description2: [browser.i18n.getMessage("nbsBlockingDescription2")],
 		params: [
 			{
 				// 0
-				short: "Off",
-				description: "Requests blocking turned off."
+				short: browser.i18n.getMessage("protectionConfigurationOptionActivatedOff"),
+				description: browser.i18n.getMessage("nbsBlockingOffDescription")
 			},
 			{
 				// 1
-				short: "On",
-				description: "Requests blocking turned on."
+				short: browser.i18n.getMessage("protectionConfigurationOptionActivatedOn"),
+				description: browser.i18n.getMessage("nbsBlockingOnDescription")
 			}
 		]
 	},
 	notifications: {
-		description: "Turn on/off notifications about suspicious requests or hosts being blocked.",
-		description2: [],
-		label: "Notifications",
+		label: browser.i18n.getMessage("shieldNotifications"),
+		description: browser.i18n.getMessage("NBSNotificationsDescription"),
+		description2: [browser.i18n.getMessage("NBSNotificationsDescription2")],
 		params: [
 			{
 				// 0
-				short: "Off",
-				description: "Blocking notifications turned off."
+				short: browser.i18n.getMessage("protectionConfigurationOptionActivatedOff"),
+				description: browser.i18n.getMessage("NBSNotificationsOffDescription")
 			},
 			{
 				// 1
-				short: "On",
-				description: "Blocking notifications turned on."
+				short: browser.i18n.getMessage("protectionConfigurationOptionActivatedOn"),
+				description: browser.i18n.getMessage("NBSNotificationsOnDescription")
 			}
 		]
 	}
@@ -552,18 +552,25 @@ async function createCumulativeNotification(tabId) {
  */
 function showNbsNotification(tabId) {
 	nbsNotifications[tabId].last = nbsNotifications[tabId].total;
-	let host = getEffectiveDomain(availableTabs[tabId].url);
-	let message = `${nbsSettings.blocking ? "Blocked" : "Detected"} ${nbsNotifications[tabId].total} attempts from ${host} to access local network.`;
+	let message;
 	let records = Object.keys(nbsNotifications[tabId].records);
 	if (records.length == 1) {
+		// The page contacted just one target, display both host and target
 		let [origin, target] = records[0].split(",");
 		let count = nbsNotifications[tabId].records[records[0]];
-		message = `${nbsSettings.blocking ? "Blocked" : "Detected"} ${count} request${count == 1 ? "" : "s"} from ${origin} to ${target}.`;
+		let params = [origin, target, count];
+		message = nbsSettings.blocking ? browser.i18n.getMessage("NBSBlockedMessageWithTarget", params) : browser.i18n.getMessage("NBSDetectedMessageWithTarget", params);
+	}
+	else {
+		// The page contacted multiple targets, display just the host
+		let host = getEffectiveDomain(availableTabs[tabId].url);
+		let params = [host, nbsNotifications[tabId].total];
+		message = nbsSettings.blocking ? browser.i18n.getMessage("NBSBlockedMessageMultipleTargets", params) : browser.i18n.getMessage("NBSDetectedMessageMultipleTargets", params);
 	}
 	browser.notifications.create("nbs-" + tabId, {
 		"type": "basic",
 		"iconUrl": browser.runtime.getURL("img/icon-48.png"),
-		"title": `Network Boundary Shield ${nbsSettings.blocking ? "blocked" : "detected"} suspicious requests!`,
+		"title": nbsSettings.blocking ? browser.i18n.getMessage("NBSBlockedTitle") : browser.i18n.getMessage("NBSDetectedTitle"),
 		"message": message
 	});
 	setTimeout(() => {

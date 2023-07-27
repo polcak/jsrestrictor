@@ -115,78 +115,78 @@ var availableTabs = {};
 */
 const FPD_DEF_SETTINGS = {
 	behavior: {
-		description: "Specify preffered behavior of the module.",
+		label: browser.i18n.getMessage("fpdBehavior"),
+		description: browser.i18n.getMessage("fpdBehaviorDescription"),
 		description2: [],
-		label: "Behavior",
 		params: [
 			{
 				// 0
-				short: "Passive",
-				description: "Use extension icon badge color to signalize likelihood of ongoing fingerprinting without any interaction."
+				short: browser.i18n.getMessage("fpdBehaviorPassive"),
+				description: browser.i18n.getMessage("fpdBehaviorPassiveDescription")
 			},
 			{
 				// 1
-				short: "Limited Blocking",
-				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
+				short: browser.i18n.getMessage("fpdBehaviorLimitedBlocking"),
+				description: browser.i18n.getMessage("fpdBehaviorBlockingDescription"),
 				description2: [
-					"• Interrupt network traffic for the page to prevent possible fingerprint leakage.", 
-					"• Clear some browser storage of the page to remove possibly cached fingerprint. (<strong>No additional permissions required.</strong>)",
-					"• Clearing: <strong>localStorage, sessionStorage, JS cookies, IndexedDB, caches, window.name</strong>",
-					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
+					browser.i18n.getMessage("fpdBehaviorBlockingDescription2"),
+					browser.i18n.getMessage("fpdBehaviorLimitedBlockingDescription3"),
+					browser.i18n.getMessage("fpdBehaviorLimitedBlockingDescription4"),
+					browser.i18n.getMessage("fpdBehaviorBlockingDescriptionWarning")
 				]
 			},
 			{
 				// 2
-				short: "Full Blocking",
-				description: "Allow the extension to react whenever there is a high likelihood of fingerprinting.",
+				short: browser.i18n.getMessage("fpdBehaviorFullBlocking"),
+				description: browser.i18n.getMessage("fpdBehaviorBlockingDescription"),
 				description2: [
-					"• Interrupt network traffic for the page to prevent possible fingerprint leakage.",
-					"• Clear <strong>all</strong> available storage mechanisms of the page where fingerprint may be cached. (Requires <strong>BrowsingData</strong> permission.)",
-					"• Clearing: <strong>localStorage, sessionStorage, cookies, IndexedDB, caches, window.name, fileSystems, WebSQL, serviceWorkers</strong>",
-					"NOTE: Blocking behavior may break some functionality on fingerprinting websites."
+					browser.i18n.getMessage("fpdBehaviorBlockingDescription2"),
+					browser.i18n.getMessage("fpdBehaviorFullBlockingDescription3"),
+					browser.i18n.getMessage("fpdBehaviorFullBlockingDescription4"),
+					browser.i18n.getMessage("fpdBehaviorBlockingDescriptionWarning")
 				],
 				permissions: ["browsingData"]
 			}
 		]
 	},
 	notifications: {
-		description: "Turn on/off notifications about fingerprinting detection and HTTP requests blocking.",
-		description2: ["NOTE: We recommend having notifications turned on for blocking behavior."],
-		label: "Notifications",
+		label: browser.i18n.getMessage("shieldNotifications"),
+		description: browser.i18n.getMessage("fpdNotificationsDescription"),
+		description2: [browser.i18n.getMessage("fpdNotificationsDescription2")],
 		params: [
 			{
 				// 0
-				short: "Off",
-				description: "Detection/blocking notifications turned off."
+				short: browser.i18n.getMessage("protectionConfigurationOptionActivatedOff"),
+				description: browser.i18n.getMessage("fpdNotificationsOffDescription")
 			},
 			{
 				// 1
-				short: "On",
-				description: "Detection/blocking notifications turned on."
+				short: browser.i18n.getMessage("protectionConfigurationOptionActivatedOn"),
+				description: browser.i18n.getMessage("fpdNotificationsOnDescription")
 			}
 		]
 	},
 	detection: {
-		description: "Adjust heuristic thresholds which determine likelihood of fingerprinting.",
+		label: browser.i18n.getMessage("fpdDetection"),
+		description: browser.i18n.getMessage("fpdDetectionDescription"),
 		description2: [],
-		label: "Detection",
 		params: [
 			{
 				// 0
-				short: "Default",
-				description: "Recommended setting for most users.",
+				short: browser.i18n.getMessage("fpdDetectionDefault"),
+				description: browser.i18n.getMessage("fpdDetectionDefaultDescription"),
 				description2: [
-					"• Very low number of false positive detections (focus on excessive fingerprinting, very low number of unreasonably blocked sites)",
-					"• Acceptable amount of false negative detections (some fingerprinting websites may get around detection)",
+					browser.i18n.getMessage("fpdDetectionDefaultDescription2"),
+					browser.i18n.getMessage("fpdDetectionDefaultDescription3"),
 				]
 			},
 			{
 				// 1
-				short: "Strict",
-				description: "Optional setting for more cautious users.",
+				short: browser.i18n.getMessage("fpdStrict"),
+				description: browser.i18n.getMessage("fpdStrictDescription"),
 				description2: [
-					"• Lower number of false negative detections (detects also websites with less excessive fingerprinting)",
-					"• Higher probability of false positive detections (in edge cases benign websites may be falsely blocked)",
+					browser.i18n.getMessage("fpdStrictDescription2"),
+					browser.i18n.getMessage("fpdStrictDescription3")
 				]
 			}
 		]
@@ -209,6 +209,11 @@ function initFpd() {
 	for (let groupsLevel in fp_levels.groups) {
 		fpGroups[groupsLevel] = fpGroups[groupsLevel] || {};
 		processGroupsRecursive(fp_levels.groups[groupsLevel], groupsLevel);
+
+		// Translate severity names
+		for (record of fp_levels.groups[groupsLevel].severity) {
+			record[1] = browser.i18n.getMessage(record[1]);
+		}
 	}
 
 	// load configuration and settings from storage 
@@ -954,19 +959,22 @@ function isFpdOn(tabId) {
 function notifyFingerprintBlocking(tabId) {
 	let msg;
 	if (fpdSettings.behavior > 0) {
-		msg = "Blocking all subsequent requests.";
+		msg = browser.i18n.getMessage("fpdBlockingSubsequent");
 	}
 	if (fpdSettings.behavior == 0) {
-		msg = "Click the notification for more details.";
+		msg = browser.i18n.getMessage("fpdClickNotificationDetails");
 	}
 
 	browser.notifications.create("fpd-" + tabId, {
 		type: "basic",
 		iconUrl: browser.runtime.getURL("img/icon-48.png"),
-		title: "Fingerprinting activity detected!",
-		message: `${msg}\n\n` +
-			`Page: ${availableTabs[tabId].title.slice(0, 30)}\n` +
-			`Host: ${getEffectiveDomain(availableTabs[tabId].url)}`
+		title: browser.i18n.getMessage("fpdNotificationTitle"),
+		message: browser.i18n.getMessage("fpdNotificationMessage",
+			[
+				msg,
+				availableTabs[tabId].title.slice(0, 30),
+				getEffectiveDomain(availableTabs[tabId].url)
+			])
 	});
 	setTimeout(() => {
 		browser.notifications.clear("fpd-" + tabId);

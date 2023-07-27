@@ -58,7 +58,7 @@ function show_restore_domain_level(levelLiEl, domain) {
 				${escape(domain)}
 			</span>
 			<span>JavaScript shield disabled</span>
-			<button id="enable-jss-${escape(domain)}">Restore level ${escape(level.level_id)}</button>`);
+			<button id="enable-jss-${escape(domain)}">${browser.i18n.getMessage("ButtonRestoreLevel", escape(level.level_id))}</button>`);
 	levelLiEl.appendChild(fragment);
 	document.getElementById(`enable-jss-${escape(domain)}`).addEventListener("click", function(e) {
 		e.preventDefault();
@@ -99,13 +99,13 @@ function show_domain_level_custom_level(levelLiEl, domain) {
 			</span>
 			<select id="dl-change-${escape(domain)}"></select>
 			<span id="tweaks-text-${escape(domain)}">tweaked</span>
-			<button id="show-tweaks-${escape(domain)}" class="help">⤵</button>
+			<button id="show-tweaks-${escape(domain)}" class="help">${browser.i18n.getMessage("ButtonSignExpandOneCharacterDown")}</button>
 			<span id="li-exist-group-${escape(domain)}">
-				<button id="overwrite-dl-${escape(domain)}">Save</button>
-				<button id="delete-dl-${escape(domain)}">Remove</button>
+				<button id="overwrite-dl-${escape(domain)}">${browser.i18n.getMessage("ButtonSave")}</button>
+				<button id="delete-dl-${escape(domain)}">${browser.i18n.getMessage("ButtonRemove")}</button>
 			</span>
 			<span id="li-removed-group-${escape(domain)}" class="hidden">
-				<button id="restore-dl-${escape(domain)}">Restore</button>
+				<button id="restore-dl-${escape(domain)}">${browser.i18n.getMessage("ButtonRestore")}</button>
 			</span>
 			<div class="tweakgrid" id="tweaks-${escape(domain)}"></div>`);
 	levelLiEl.appendChild(fragment);
@@ -202,7 +202,7 @@ document.getElementById("add_domain").addEventListener("click", function (e) {
 	}
 	let domainLevel = document.getElementById("domain-level");
 	if (domain in domains) {
-		let ok = confirm(`Settings for domain ${domain} already exists and will be overriden.`);
+		let ok = confirm(browser.i18n.getMessage("JSSAdvancedConfirmOverwrite", domain));
 		if (!ok) {
 			return;
 		}
@@ -221,7 +221,7 @@ function update_domain_level(dlel, set_value) {
 	dlel.textContent = "";
 	for (let levelid in levels) {
 		let descr = levels[levelid].level_description;
-		dlel.appendChild(document.createRange().createContextualFragment(`<option value="${escape(levelid)}">${escape(levels[levelid].level_text)}: ${escape(create_short_text(descr, 50))}</option>`));
+		dlel.appendChild(document.createRange().createContextualFragment(`<option value="${escape(levelid)}">${browser.i18n.getMessage("LevelAndDescription", [escape(levels[levelid].level_text), escape(create_short_text(descr, 50))])}</option>`));
 	};
 	dlel.value = finalValue;
 }
@@ -240,4 +240,8 @@ document.getElementById("delete-all-domain-levels").addEventListener("click", fu
 	domains = {};
 	saveDomainLevels();
 	Array.from(document.getElementsByClassName("custom_domain_level")).forEach((el) => el.remove());
+});
+
+window.addEventListener("DOMContentLoaded", function() {
+	document.getElementById("domain-text").attributes.placeholder.nodeValue = browser.i18n.getMessage("ExampleDomainsText")
 });
