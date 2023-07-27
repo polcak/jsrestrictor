@@ -28,12 +28,12 @@ var modify_wrapping_groups = function() {
 			group.params = [
 				{
 					short: "Disabled",
-					description: "Disable optimized farbling",
+					description: "Disable WebAssembly farbling",
 					config: [0],
 				},
 				{
 					short: "Enabled",
-					description: "Enable optimized farbling",
+					description: "Enable WebAssembly farbling",
 					config: [1],
 				},
 			];

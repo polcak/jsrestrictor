@@ -686,24 +686,31 @@ var wrapping_groups = {
 		},
 		{
 			name: "wasm",
-			label: "Optimized farbling",
-			description: "Optimize farbling (the process of generating little lies in localy generated images and audio) by using WebAssembly.",
-			description2: ["This injects a small WebAssembly module into every page. This is a safe option to tweak when concerned about fingerprinting as it has no effect on farbling results and won't change the resulting fingerprint of the browser.",
-							"Note: This option will only take effect when the level of 'Localy rendered images' or 'Localy generated audio' is set to 'Little lies'."],
+			label: "Speed up farbling",
+			description: "Speed up the little-lies modifications of localy generated images and audio by WebAssembly.",
+			description2: [
+				"This option takes effect when the level of 'Localy rendered images' or 'Localy generated audio' is set to 'Little lies' only.",
+				"The WebAssembly code generates the same modifications as the not accelerated version; so it is a safe option to activate when concerned about fingerprinting.",
+			],
 			params: [
 				{
 					short: "Disabled",
-					description: "Disable optimized farbling",
+					description: "Disable WebAssembly farbling",
 					config: [0],
 				},
 				{
 					short: "Passive",
-					description: "Enable optimized farbling but fall back to the default slower implementation if the WebAssembly module cannot be injected",
+					description: "Enable WebAssembly farbling but fall back to the default slower implementation if the WebAssembly module cannot be injected",
 					config: [1],
 				},
 				{
 					short: "Active",
-					description: "Enable optimized farbling and modify CSP headers to allow WebAssembly execution. Because the initialization of injected WebAssembly modules is subject to the page's Content Security Policy on Chromium based browsers, this optimization will insert the 'wasm-unsafe-eval' CSP directive to allow WebAssembly execution where it wouldn't be otherwise. This might, however, interfere with other installed extensions that rely on modifying the CSP header.",
+					description: "Loosen the 'wasm-unsafe-eval' CSP directive to allow WebAssembly execution where it would be otherwise prevented by the CSP of the visited page.",
+					description2: [
+						"The initialization of WebAssembly modules is subject to the Content Security Policy (CSP) of the visited page in Chromium-based browsers.",
+						"The benefit of this option is that the modifications run faster on all pages.",
+						"However, by enabling this option, you increase the risk of being a victim of a vulnerability that would have been otherwise prevented by the CSP, such as cross-site scripting vulnerabilities. Moreover, this option might interfere with other installed extensions that modify the CSP header.",
+					],
 					config: [2],
 				},
 			],
