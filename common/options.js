@@ -271,6 +271,7 @@ document.getElementById("new_level").addEventListener("click", function() {
 });
 
 document.getElementById("nbs-whitelist-show").addEventListener("click", () => show_whitelist("nbs"));
+document.getElementById("nbs-whitelist-hide").addEventListener("click", () => hide_whitelist("nbs"));
 document.getElementById("nbs-whitelist-add-button").addEventListener("click", () => add_to_whitelist("nbs"));
 document.getElementById("nbs-whitelist-input").addEventListener('keydown', (e) => {if (e.key === 'Enter') add_to_whitelist("nbs")});
 document.getElementById("nbs-whitelist-remove-button").addEventListener("click", () => remove_from_whitelist("nbs"));
@@ -278,6 +279,7 @@ document.getElementById("nbs-whitelist-select").addEventListener('keydown', (e) 
 document.getElementsByClassName("slider")[0].addEventListener("click", () => {setTimeout(control_slider, 200, "nbs")});
 
 document.getElementById("fpd-whitelist-show").addEventListener("click", () => show_whitelist("fpd"));
+document.getElementById("fpd-whitelist-hide").addEventListener("click", () => hide_whitelist("fpd"));
 document.getElementById("fpd-whitelist-add-button").addEventListener("click", () => add_to_whitelist("fpd"));
 document.getElementById("fpd-whitelist-input").addEventListener('keydown', (e) => {if (e.key === 'Enter') add_to_whitelist("fpd")});
 document.getElementById("fpd-whitelist-remove-button").addEventListener("click", () => remove_from_whitelist("fpd"));
@@ -316,6 +318,15 @@ function show_whitelist(prefix) {
 	loadWhitelist(prefix);
 	var whitelist = document.getElementById(prefix + "-whitelist-container");
 	whitelist.classList.toggle("hidden");
+	document.getElementById(prefix + "-whitelist-show").classList.add("hidden");
+	document.getElementById(prefix + "-whitelist-hide").classList.remove("hidden");
+}
+
+function hide_whitelist(prefix) {
+	var whitelist = document.getElementById(prefix + "-whitelist-container");
+	whitelist.classList.toggle("hidden");
+	document.getElementById(prefix + "-whitelist-show").classList.remove("hidden");
+	document.getElementById(prefix + "-whitelist-hide").classList.add("hidden");
 }
 
 function add_to_whitelist(prefix)
