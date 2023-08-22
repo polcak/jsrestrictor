@@ -417,9 +417,7 @@ function loadWhitelist(prefix)
 	var listbox = document.getElementById(prefix + "-whitelist-select");
 	listbox.options.length = 0;
 	
-	var whitelistName;
-	if (prefix == "nbs") whitelistName = "nbsWhitelist";
-	if (prefix == "fpd") whitelistName = "fpdWhitelist";
+	var whitelistName = prefix + "Whitelist";
 	
 	//Get the whitelist
 	browser.storage.sync.get([whitelistName]).then(function(result)
