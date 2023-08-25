@@ -207,6 +207,7 @@ section#sect-devel {
 
 button.level {
 	min-width: 80%;
+	max-width: 80%;
 }
 label.level_button_descr {
 	display: inline-block;
