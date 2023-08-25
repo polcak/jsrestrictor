@@ -260,7 +260,7 @@ var wrapping_groups = {
 			],
 		},
 		{
-			name: "",
+			name: "hardware",
 			label: browser.i18n.getMessage("jssgroupHardware"),
 			description: browser.i18n.getMessage("jssgroupHardwareDescription"),
 			description2: [
