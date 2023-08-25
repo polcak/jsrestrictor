@@ -1,0 +1,1024 @@
+{
+  "extensionName": {
+    "message": "JShelter",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Расширение для повышения безопасности и приватности пользователя.",
+    "description": "Description of the extension."
+  },
+  "javascriptShield": {
+    "message": "Щит JavaScript",
+    "description": ""
+  },
+  "networkBoundaryShield": {
+    "message": "Щит границ сети",
+    "description": ""
+  },
+  "fingerprintDetector": {
+    "message": "Детектор фингерпринтинга",
+    "description": ""
+  },
+  "globalSettings": {
+    "message": "Глобальные настройки",
+    "description": ""
+  },
+  "settingsForDomain": {
+    "message": "Настройки для домена",
+    "description": ""
+  },
+  "refreshPage": {
+    "message": "Обновить страницу",
+    "description": ""
+  },
+  "modifyJSSPopup": {
+    "message": "Изменить",
+    "description": ""
+  },
+  "popupDefaultLevelHelpText": {
+    "message": "Вы можете задать уровень по умолчанию. Использовать данный уровень для этой страницы.",
+    "description": ""
+  },
+  "defaultLevelSelection": {
+    "message": "Уровень по умолчанию ($levelName$)",
+    "description": "This text is displayed as the default level in the popup",
+		"placeholders": {
+			"levelName": {
+				"content": "$1",
+				"example": "Translated name of the default level used by the user"
+			}
+		}
+  },
+
+  "jssgroupUnprotected": {
+    "message": "Не защищено",
+    "description": ""
+  },
+  "jssgroupStrict": {
+    "message": "Строгий",
+    "description": "Displayed during JSS level tweaking for several API groups"
+  },
+  "jssgroupTimePrecision": {
+    "message": "Точность времени",
+    "description": ""
+  },
+  "jssgroupTimePrecisionDescription": {
+    "message": "Противодействовать атакам и техникам фингерпринтинга, полагающимся на измерение точного времени (или усложнять их).",
+    "description": ""
+  },
+  "jssgroupTimePrecisionDescription2": {
+    "message": "Ограничивать точность временных меток высокого разрешения (Date, Performance, events, Gamepad API, Web VR API). Для временных меток, выдаваемых Geolocation API, используются обертки, если они включены для данного API",
+    "description": ""
+  },
+  "jssgroupPoor": {
+    "message": "Плохой",
+    "description": ""
+  },
+  "jssgroupTimePoorDescription": {
+    "message": "Округлять время до сотых секунды (1.230)",
+    "description": ""
+  },
+  "jssgroupLow": {
+    "message": "Низкий",
+    "description": ""
+  },
+  "jssgroupTimeLowDescription": {
+    "message": "Округлять время до десятых секунды (1.200)",
+    "description": ""
+  },
+  "jssgroupHigh": {
+    "message": "Высокий",
+    "description": ""
+  },
+  "jssgroupTimeHighDescription": {
+    "message": "Выдавать случайные десятичные числа с шумом (1.451)",
+    "description": ""
+  },
+
+  "jssgroupLocallyRenderedImages": {
+    "message": "Локально отрендеренные изображения",
+    "description": ""
+  },
+  "jssgroupLocallyRenderedImagesDescription": {
+    "message": "Защита от фингерпринтинга с помощью Canvas.",
+    "description": ""
+  },
+  "jssgroupCanvasLocallyRenderedImagesDescription2": {
+    "message": "Функции $apis$ возвращают измененные данные изображения для противодействия фингерпринтингу",
+    "description": "",
+		"placeholders": {
+			"apis": {
+				"content": "canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob(), WebGLRenderingContext.readPixels",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+  },
+  "jssgroupCanvasLocallyRenderedImagesDescription3": {
+    "message": "$apis$ изменены, чтобы по возможности выдавать неверные результаты",
+    "description": "",
+		"placeholders": {
+			"apis": {
+				"content": "CanvasRenderingContext2D.isPointInStroke() и CanvasRenderingContext2D.isPointInPath()",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+  },
+  "jssgroupLittleLies": {
+    "message": "Малая ложь",
+    "description": ""
+  },
+  "jssgroupLocallyRenderedImagesLittleLiesDescription": {
+    "message": "Изменять данные изображения, основанного на хэше домена",
+    "description": ""
+  },
+  "jssgroupLocallyRenderedImagesStrictDescription": {
+    "message": "Заменить на белое изображение (WebGL Canvas возвращает пустой массив)",
+    "description": ""
+  },
+
+  "jssgroupLocallyGeneratedAudio": {
+    "message": "Локально сгенерированное аудио",
+    "description": ""
+  },
+  "jssgroupLocallyGeneratedAudioDescription": {
+    "message": "Защищать от фингерпринтинга по аудио.",
+    "description": ""
+  },
+  "jssgroupLocallyGeneratedAudioDescription2": {
+    "message": "Функции AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() и AnalyserNode.getFloatFrequencyData() модифицированы, чтобы изменять данные аудио, основанные на ключе домена",
+    "description": ""
+  },
+  "jssgroupLocallyGeneratedAudioLittleLiesDescription": {
+    "message": "Добавить шум амплитуды, основанный на хэше домена",
+    "description": ""
+  },
+  "jssgroupLocallyGeneratedAudioStrictDescription": {
+    "message": "Заменить белым шумом, основанным на хэше домена",
+    "description": ""
+  },
+
+  "jssgroupGraphicCardInformation": {
+    "message": "Информация о графической карте",
+    "description": ""
+  },
+  "jssgroupGraphicCardInformationDescription": {
+    "message": "Подменять подробности о вашей графической карте.",
+    "description": ""
+  },
+  "jssgroupGraphicCardInformationDescription2": {
+    "message": "Функция WebGLRenderingContext.getParameter() возвращает измененные/нижние значения определенных параметров",
+    "description": ""
+  },
+  "jssgroupGraphicCardInformationDescription3": {
+    "message": "Функции WebGLRenderingContext .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() и .getExtension() возвращают измененные значения",
+    "description": ""
+  },
+  "jssgroupGraphicCardInformationLittleLiesDescription": {
+    "message": "Генерировать случайные числа/строки с помощью хэша домена",
+    "description": ""
+  },
+  "jssgroupGraphicCardInformationStrictDescription": {
+    "message": "Возвращать нижние значения (нулевое, пустую строку)",
+    "description": ""
+  },
+
+  "jssgroupInstalledBrowserPlugins": {
+    "message": "Установленные браузерные расширения",
+    "description": ""
+  },
+  "jssgroupInstalledBrowserPluginsDescription": {
+    "message": "Защищать от фингерпринтинга по расширениям",
+    "description": ""
+  },
+  "jssgroupLittleLiesDescription": {
+    "message": "Изменять текущие и добавлять два ложных расширения",
+    "description": ""
+  },
+  "jssgroupFake": {
+    "message": "Ложь",
+    "description": ""
+  },
+  "jssgroupInstalledBrowserPluginsFakeDescription": {
+    "message": "Возвращать два ложных расширения",
+    "description": ""
+  },
+  "jssgroupEmpty": {
+    "message": "Пусто",
+    "description": ""
+  },
+  "jssgroupInstalledBrowserPluginsStrictDescription": {
+    "message": "Возвращать пустоту",
+    "description": ""
+  },
+
+  "jssgroupConnectedCamerasAndMicrophones": {
+    "message": "Подключенные камеры и микрофоны",
+    "description": ""
+  },
+  "jssgroupConnectedCamerasAndMicrophonesDescription": {
+    "message": "Предотвращать фингерпринтинг по мультимедийным устройствам, подключенным к компьютеру",
+    "description": ""
+  },
+  "jssgroupConnectedCamerasAndMicrophonesDescription2": {
+    "message": "Функция MediaDevices.enumerateDevices() изменена и выдает пустой или измененный результат",
+    "description": ""
+  },
+  "jssgroupConnectedCamerasAndMicrophonesLittleLiesDescription": {
+    "message": "Делать порядок случайным",
+    "description": ""
+  },
+  "jssgroupAddFake": {
+    "message": "Добавлять ложные",
+    "description": ""
+  },
+  "jssgroupConnectedCamerasAndMicrophonesAddFakeDescription": {
+    "message": "Добавлять 0-4 ложных устройства и делать порядок случайным",
+    "description": ""
+  },
+
+  "jssgroupHardware": {
+    "message": "Память устройства и процессор",
+    "description": ""
+  },
+  "jssgroupHardwareDescription": {
+    "message": "Подменять аппаратную информацию об объеме ОЗУ и тактовой частоте процессора.",
+    "description": ""
+  },
+  "jssgroupHardwareDescription2": {
+    "message": "Геттеры navigator.deviceMemory и navigator.hardwareConcurrency выдают измененные значения",
+    "description": ""
+  },
+  "jssgroupHardwareLowDescription": {
+    "message": "Выдавать случайное действительное значение между минимумом и реальным значением",
+    "description": ""
+  },
+  "jssgroupMedium": {
+    "message": "Средний",
+    "description": ""
+  },
+  "jssgroupHardwareMediumDescription": {
+    "message": "Выдавать случайное действительное значение между минимумом и 8",
+    "description": ""
+  },
+  "jssgroupHardwareHighDescription": {
+    "message": "Выдавать 4 для navigator.deviceMemory и 2 для navigator.hardwareConcurrency",
+    "description": ""
+  },
+
+  "jssgroupNetworkConditions": {
+    "message": "Сетевые условия",
+    "description": ""
+  },
+  "jssgroupNetworkConditionsDescription": {
+    "message": "Отключить доступ к информации о сети, чтобы ограничить фингерпринтинг и убрать возможность вычленения паттернов в доступных сетях для понимания, дома ли пользователь, на работе или в путешествии.",
+    "description": ""
+  },
+  "jssgroupNetworkConditionsRemoveDescription": {
+    "message": "Отключить NetworkInformation API",
+    "description": ""
+  },
+
+  "jssgroupXMLHttpRequestRequests": {
+    "message": "Запросы XMLHttpRequest (XHR)",
+    "description": ""
+  },
+  "jssgroupXMLHttpRequestRequestsDescription": {
+    "message": "Фильтровать достоверные запросы XHR к серверу.",
+    "description": ""
+  },
+  "jssgroupXMLHttpRequestRequestsDescription2": {
+    "message": "Имейте в виду, что данные запросы часто выполняются в добросовестных целях, а Fetch, SSE, WebRTC и WebSockets API не блокируются. Все они имеют схожие цели в коммуникации с сервером. Для практического использования мы рекомендуем включить детектор фингерпринтинга вместо оберток XHR. JShelter предоставляет обертку, поскольку она полезна некоторым пользователям, в основном в экспериментальных целях.",
+    "description": ""
+  },
+  "jssgroupAsk": {
+    "message": "Спрашивать",
+    "description": ""
+  },
+  "jssgroupXMLHttpRequestRequestsAskDescription": {
+    "message": "Спрашивать перед выполнением запроса XHR",
+    "description": ""
+  },
+  "jssgroupBlock": {
+    "message": "Блокировать",
+    "description": ""
+  },
+  "jssgroupXMLHttpRequestRequestsBlockDescription": {
+    "message": "Блокировать все запросы XHR",
+    "description": ""
+  },
+
+  "jssgroupArraysDescription": {
+    "message": "Защищать от эксплуатации ArrayBuffer, например, для предотвращения атак по сторонним каналам на участки памяти (или их усложнения).",
+    "description": ""
+  },
+  "jssgroupArraysShift": {
+    "message": "Сдвигать",
+    "description": ""
+  },
+  "jssgroupArraysShiftDescription": {
+    "message": "Сдвигать индексы, чтобы усложнять обнаружение границ страницы памяти",
+    "description": ""
+  },
+  "jssgroupArraysRandomize": {
+    "message": "Делать случайным",
+    "description": ""
+  },
+  "jssgroupArraysRandomizeDescription": {
+    "message": "Использовать случайное размещение индексации массивов в памяти",
+    "description": ""
+  },
+
+  "jssgroupSharedArrayBufferDescription": {
+    "message": "Защищать от эксплуатации SharedArrayBuffer, например, для предотвращения атак по сторонним каналам на участки памяти (или их усложнения).",
+    "description": ""
+  },
+  "jssgroupSharedArrayBufferMediumDescription": {
+    "message": "Замедлять сообщения случайным образом для предотвращения работы таймеров высокой точности",
+    "description": ""
+  },
+  "jssgroupSharedArrayBufferStrictDescription": {
+    "message": "Блокировать SharedArrayBuffer",
+    "description": ""
+  },
+
+  "webWorkerDescription": {
+    "message": "Защищать от эксплуатации WebWorker, например, для предотвращения работы таймеров высокой точности",
+    "description": ""
+  },
+
+  "jssgroupPhysicalLocationGeolocation": {
+    "message": "Физическое местоположение (геолокация)",
+    "description": ""
+  },
+  "jssgroupPhysicalLocationGeolocationDescription": {
+    "message": "Ограничивать информацию о местоположении в реальном мире, предоставляемую Geolocation API.",
+    "description": "Displayed at various places, keep the name of the API in the English"
+  },
+  "jssgroupPhysicalLocationGeolocationDescription2": {
+    "message": "Использовать хэш домена для подмены местоположения, чтобы оно не изменялось для одного домена в течение всей сессии.",
+    "description": ""
+  },
+  "jssgroupGeolocationTimestampOnly": {
+    "message": "Только по временным меткам",
+    "description": ""
+  },
+  "jssgroupGeolocationTimestampOnlyDescription": {
+    "message": "Предоставлять точные данные (используйте в тех случаях, когда вам по-настоящему нужно предоставить точное местоположение и вы хотите защитить временные метки геолокации)",
+    "description": ""
+  },
+  "jssgroupGeolocationVillage": {
+    "message": "Деревня",
+    "description": ""
+  },
+  "jssgroupGeolocationVillageDescription": {
+    "message": "Использовать точность до сотен метров",
+    "description": ""
+  },
+  "jssgroupGeolocationTown": {
+    "message": "Город",
+    "description": ""
+  },
+  "jssgroupGeolocationTownDescription": {
+    "message": "Использовать точность до километров",
+    "description": ""
+  },
+  "jssgroupGeolocationRegion": {
+    "message": "Регион",
+    "description": ""
+  },
+  "jssgroupGeolocationRegionDescription": {
+    "message": "Использовать точность до десятков километров",
+    "description": ""
+  },
+  "jssgroupGeolocationLongDistance": {
+    "message": "Большое расстояние",
+    "description": ""
+  },
+  "jssgroupGeolocationLongDistanceDescription": {
+    "message": "Использовать точность до сотен километров",
+    "description": ""
+  },
+  "jssgroupGeolocationRemoveDescription": {
+    "message": "Выключить сервисы местоположения",
+    "description": ""
+  },
+
+  "jssgroupPhysicalEnvironmentSensors": {
+    "message": "Физические датчики окружения",
+    "description": ""
+  },
+  "jssgroupPhysicalEnvironmentSensorsDescription": {
+    "message": "Ограничивать информацию, предоставляемую физическими датчиками окружения, такими как магнитометр и акселерометр.",
+    "description": ""
+  },
+  "jssgroupPhysicalEnvironmentHighDescription": {
+    "message": "Эмулировать стационарное устройство с помощью хэша домена",
+    "description": ""
+  },
+
+  "jssgroupUserIdleDetection": {
+    "message": "Обнаружение бездействия пользователя",
+    "description": ""
+  },
+  "jssgroupUserIdleDetectionDescription": {
+    "message": "API Idle Detection может обнаружить неактивность пользователя и заблокированный экран.",
+    "description": ""
+  },
+  "jssgroupUserIdleDetectionDescription2": {
+    "message": "Данный API может быть применен при слежке за пользователем и для улучшения фингерпринтинга.",
+    "description": ""
+  },
+  "jssgroupConfuse": {
+    "message": "Запутать",
+    "description": ""
+  },
+  "jssgroupUserIdleDetectionConfuseDescription": {
+    "message": "Всегда выдавать активного пользователя с разблокированным экраном",
+    "description": ""
+  },
+  "jssgroupUserIdleDetectionBlockDescription": {
+    "message": "Не показывать всплывающие окна и автоматически отклонять",
+    "description": ""
+  },
+  "jssgroupRemove": {
+    "message": "Удалить",
+    "description": ""
+  },
+  "jssgroupUserIdleDetectionRemoveDescription": {
+    "message": "Удалить API",
+    "description": ""
+  },
+
+  "jssgroupCoopschedule": {
+    "message": "Планирование задач периода бездействия",
+    "description": ""
+  },
+  "jssgroupCoopscheduleDescription": {
+    "message": "API Cooperative Scheduling of Background Tasks может планировать фоновые задачи таким образом, чтобы при выполнении других высокоприоритетных задач, разделяющих тот же событийный цикл, не возникали задержки.",
+    "description": ""
+  },
+  "jssgroupCoopscheduleDescription2": {
+    "message": "Данный API вызывает утечки информации о других задачах, выполняемых браузером, как и о текущих запланированных задачах, окончании вертикальной синхронизации, взаимодействии пользователя и других.",
+    "description": ""
+  },
+  "jssgroupCoopscheduleConfuseDescription": {
+    "message": "Изменять доступную информацию, чтобы запутывать противников",
+    "description": ""
+  },
+
+  "jssgroupGamepads": {
+    "message": "Геймпады",
+    "description": ""
+  },
+  "jssgroupGamepadsDescription": {
+    "message": "Не давать веб-сайтам получать и изучать информацию о локальных геймпадах.",
+    "description": ""
+  },
+  "jssgroupGamepadsStrictDescription": {
+    "message": "Скрыть все геймпады",
+    "description": ""
+  },
+
+  "jssgroupVirtualAndAugmentedRealityDevices": {
+    "message": "Устройства виртуальной и дополненной реальности",
+    "description": ""
+  },
+  "jssgroupVirtualAndAugmentedRealityDevicesDescription": {
+    "message": "Не давать веб-сайтам получать и изучать информацию о локальных устройствах виртуальной и дополненной реальности.",
+    "description": ""
+  },
+  "jssgroupVirtualAndAugmentedRealityDevicesStrictDescription": {
+    "message": "Скрыть все устройства",
+    "description": ""
+  },
+
+  "jssgroupMultimediaPlayback": {
+    "message": "Воспроизведение мультимедиа",
+    "description": ""
+  },
+  "jssgroupMultimediaPlaybackDescription": {
+    "message": "Не давать веб-сайтам получать и изучать информацию о локально установленных кодеках, возможностях кодирования/декодирования и производительности.",
+    "description": ""
+  },
+  "jssgroupMultimediaPlaybackDescription2": {
+    "message": "Вы можете включить защиту для сайтов, не обрабатывающих аудио или видео. Сайты, не обрабатывающие аудио или видео, могут не работать из-за защиты.",
+    "description": ""
+  },
+  "jssgroupMultimediaPlaybackLittleLiesDescription": {
+    "message": "Выдавать, что кодек/механизм шифрования не поддерживается, с вероятностью 12.5%",
+    "description": ""
+  },
+  "jssgroupMultimediaPlaybackStrictDescription": {
+    "message": "Выдавать, что все кодеки/механизмы шифрования не поддерживаются",
+    "description": ""
+  },
+  "jssgroupMultimediaPlaybackBlockDescription": {
+    "message": "Не выдавать никакую информацию вообще",
+    "description": ""
+  },
+
+  "jssgroupUnreliableTransfersToServerBeacons": {
+    "message": "Недостоверные запросы к серверу (маяки)",
+    "description": ""
+  },
+  "jssgroupUnreliableTransfersToServerBeaconsDescription": {
+    "message": "Предотвращать недостоверные запросы к серверу (маяки).",
+    "description": ""
+  },
+  "jssgroupUnreliableTransfersToServerBeaconsDescription2": {
+    "message": "Данные запросы чаще всего применяются для аналитики, но иногда их могут использовать интернет-магазины или другие страницы.",
+    "description": ""
+  },
+  "jssgroupUnreliableTransfersToServerBeaconsDescription3": {
+    "message": "Предотвращать отправку информации с помощью API Beacon.",
+    "description": ""
+  },
+  "jssgroupDisabled": {
+    "message": "Отключено",
+    "description": ""
+  },
+  "jssgroupUnreliableTransfersToServerBeaconsBlockDescription": {
+    "message": "Обертка не выполняет никаких действий",
+    "description": ""
+  },
+
+  "jssgroupHardwareBattery": {
+    "message": "Аппаратная батарея",
+    "description": ""
+  },
+  "jssgroupHardwareBatteryDescription": {
+    "message": "Отключить API Battery Status",
+    "description": ""
+  },
+  "jssgroupHardwareBatteryRemoveDescription": {
+    "message": "Отключить API",
+    "description": ""
+  },
+
+  "jssgroupPersistentIdentifierOfTheBrowserTab": {
+    "message": "Постоянный идентификатор вкладки браузера",
+    "description": ""
+  },
+
+  "jssgroupNFC": {
+    "message": "Near Field Communication (NFC)",
+    "description": ""
+  },
+  "jssgroupNFCDescription": {
+    "message": "Near Field Communication (NFC) включает беспроводную связь между двумя устройствами на близком расстоянии, обычно до нескольких сантиметров.",
+    "description": ""
+  },
+  "jssgroupNFCDescription2": {
+    "message": "NFC — это международный стандарт (ISO/IEC 18092), определяющий интерфейс и протокол для простого беспроводного взаимодействия устройств на близком расстоянии, работающего на 13.56 МГц.",
+    "description": ""
+  },
+
+
+  "omittedAPIsHeading": {
+    "message": "Имейте в виду, что для предотвращения фингерпринтинга JShelter не использует обертки для объектов, которые не определены. Ваш браузер не поддерживает:",
+    "description": ""
+  },
+
+  "descriptionMore": {
+    "message": "(больше...)",
+    "description": ""
+  },
+  "descriptionLess": {
+    "message": "(меньше...)",
+    "description": ""
+  },
+  "detailTweaksOfJSShieldForThisSite": {
+    "message": "Подробные настройки щита JS для этого сайта",
+    "description": ""
+  },
+  "wrappers": {
+    "message": "Обертки",
+    "description": ""
+  },
+  "numberOfCalls": {
+    "message": "Число вызовов",
+    "description": ""
+  },
+  "FingerprintQualityLabel": {
+    "message": "⤷ Вероятность снятия фингерпринта: ",
+    "description": ""
+  },
+  "JShelterOptions": {
+    "message": "Настройки JShelter",
+    "description": ""
+  },
+  "mainSettings": {
+    "message": "Основные настройки",
+    "description": ""
+  },
+  "jSSShieldDetails": {
+    "message": "Детали щита JS",
+    "description": ""
+  },
+  "advancedOptions": {
+    "message": "Дополнительные настройки",
+    "description": ""
+  },
+  "externalLinks": {
+    "message": "Внешние ссылки",
+    "description": ""
+  },
+  "threatModel": {
+    "message": "Модель угроз",
+    "description": ""
+  },
+  "fAQ": {
+    "message": "FAQ",
+    "description": ""
+  },
+  "testPage": {
+    "message": "Тестовая страница",
+    "description": ""
+  },
+  "permissions": {
+    "message": "Разрешения",
+    "description": ""
+  },
+  "sourceCode": {
+    "message": "Исходный код",
+    "description": ""
+  },
+  "issueTracker": {
+    "message": "Баг-трекер",
+    "description": ""
+  },
+  "credits": {
+    "message": "Авторы",
+    "description": ""
+  },
+  "javascriptShieldDescription": {
+		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><ul><li>$REDUCTION$</li><li>$FAKE$</li><li>$HIDE$</li></ul><p>$BLOGS$</p>",
+		"description": "This is the description of JSS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs but please keed all paragraphs in the jss_description class.",
+		"placeholders": {
+			"paragraph1": {
+				"content": "Щит JavaScript Shield изменяет поведение окружения JavaScript, доступного для посещенных веб-страниц. JShelter подменяет информацию, чтобы ввести в заблуждение фингерпринтеры или сделать атаки с помощью веб-страниц невозможными или более сложными.",
+				"description": "Paragraph 1, please translate this text."
+			},
+			"paragraph2": {
+				"content": "Внутри щит JavaScript состоит из оберток - небольших фрагментов кода, изменяющих оригинальное поведение JavaScript API (функцию или свойство), определенное стандартами. Поведение большинства оберток можно разделить на несколько категорий:",
+				"description": "Paragraph 2, please translate this text."
+			},
+			"reduction": {
+				"content": "Снижение точности: Оригинальное значение является слишком точным и не обязательно для использования в большинстве случаев. Щит JavaScript Shield изменяет значения таким образом, что обычные и добросовестные случаи использования не затрагиваются."
+			},
+			"fake": {
+				"content": "Подмена информации: Некоторые обертки подменяют информацию в основном для введения в заблуждение фингерпринтеров. Например, обертки Canvas изменяют изображение таким образом, что одни и те же инструкции выдают разный результат в каждой сессии и для каждого домена.",
+				"description": "UL item 2, please translate this text."
+			},
+			"hide": {
+				"content": "Скрытие информации: Некоторые API выдают необязательную информацию, которую можно скрыть на большинстве страниц. В зависимости от API щит JavaScript может вернуть ошибку, пустое значение, или полностью заблокировать API.",
+				"description": "UL item 3, please translate this text."
+			},
+			"blogs": {
+				"content": "Для получения более подробной информации читайте пост в нашем блоге по <a href='https://jshelter.org/fingerprinting/'>мерам противодействия фингерпринтингу браузера</a> фарблингу <a href='https://jshelter.org/farbling/'>Добавить пользовательский уровень</a>.",
+				"description": "Last paragraph, please translate this text, keep the URLs to the English version unless a translation exists on the web."
+			}
+		}
+  },
+	"NBSDescription": {
+		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
+		"description": "This is the description of NBS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs.",
+		"placeholders": {
+			"paragraph1": {
+				"content": "Щит границ сети не дает веб-страницам использовать браузер как прокси между локальной сетью и Интернетом. Читайте <a href='https://jshelter.org/localportscanning/'>пост в нашем блоге</a> и <a href='https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf'>отчет Force Point</a>, чтобы увидеть примеры атак, которым противостоит щит границ сети. Защита инкапсулирует WebRequest API и перехватывает все исходящие запросы.",
+				"description": "Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
+			},
+			"paragraph2": {
+				"content": "Обычно вы хотите заблокировать все подозрительные запросы с помощью щита границ сети. Однако некоторые страницы могут не работать корректно, поскольку требуют взаимодействия между Интернетом и локальной сетью (например, некоторые информационные системы интранета могут быть заблокированы щитом границ сети). Пользователи JShelter также сообщили об увеличении частоты ложных срабатываний при использовании программ фильтрации по DNS. Если вы используете подобную, убедитесь, что DNS возвращает 0.0.0.0 для заблокированных доменов.",
+				"description": "Paragraph 2, please translate this text."
+			},
+			"paragraph3": {
+				"content": "Глобальное поведение щита границ сети по умолчанию можно настроить ниже. Щит границ сети также можно полностью отключить для конкретных доменов, используя белый список. Добавить домены в белый список можно с помощью <i>переключателя щита границ сети</i> во всплывающем окне или вручную с помощью настройки <i>управления белым списком</i>. Имейте в виду, что добавление домена в белый список также сделает это с его поддоменами. Для выборочного отключения щита границ сети добавьте домены в белый список (исключая «www», но включая все другие домены, например «.com»)."
+			}
+		}
+	},
+  "manageWhitelist": {
+    "message": "Управление белым списком ⤵",
+    "description": ""
+  },
+  "ButtonDisableForDomain": {
+    "message": "<strong>Отключить</strong> для домена",
+    "description": ""
+  },
+  "ButtonEnableForSelectedDomains": {
+    "message": "<strong>Включить</strong> для выбранных доменов",
+    "description": ""
+  },
+  "ManageWhitelistDescription": {
+    "message": "Важно: доменные имена проверяются в соответствии с их иерархией, поэтому добавление в белый список <strong>example.com</strong> также добавляет в него <strong>news.example.com</strong>.",
+    "description": ""
+  },
+	"FPDDescription": {
+		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
+		"description": "This is the description of FPD shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs.",
+		"placeholders": {
+			"paragraph1": {
+				"content": "Детектор фингерпринтинга предоставляет механизм информарования пользователя об активности фингерпринтинга на посещаемых веб-страницах. Детектор также не дает веб-страницам извлекать фингерпринт браузера по выбору пользователя. Читайте наш <a href='https://jshelter.org/fpdetection/'>пост в блоге</a> или <a href='https://arxiv.org/pdf/1905.01051.pdf'>Фингерпринтинг браузера: исследование</a> для получения более подробной информации о фингерпринтинге браузера.",
+				"description": "Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
+			},
+			"paragraph2": {
+				"content": "При включенном детекторе вы будете получать уведомления об обнаруженном поведении фингерпринтинга на посещаемых веб-страницах. Детектор измеряет серьезность потенциального фингерпринтинга при каждом посещении страницы. Затем он присваивает вероятность фингерпринтинга на странице с помощью нашей эвристической системы. Вероятность представлена цветом значка на ярлыке JShelter и во всплывающем окне. При высокой вероятности фингерпринтинга появится отдельное уведомление. Есть возможность показать подробности, сгенерировав отчет о фингерпринтинге. Вы можете получить к нему доступ во всплывающем окне или нажать прямо на уведомление."
+			},
+			"paragraph3": {
+				"content": "Поведение детектора фингерпринтинга по умолчанию можно настроить в соответствии с предпочтениями. Вы можете выбрать «блокирующее» поведение в качестве меры противодействия утечкам фингерпринта нежелательным сторонам. В данном случае после каждого положительного срабатывания блокируются все последующие HTTP-запросы и очищается хранилище браузера. Имейте в виду, что <strong>в результате данного действия веб-страница может работать некорректно,</strong> и мы настоятельно рекомендуем использовать белый список для доверенных доменов. Выключение детектора для домена во всплывающем окне добавит домен в белый список. В дальнейшем этот домен не будет обрабатываться или блокироваться. Ниже вы можете управлять всеми доменами в белом списке.",
+				"description": "Paragraph 3, please translate this text."
+			}
+		}
+	},
+
+  "JSSL0Name": {
+    "message": "Выключить щит JavaScript",
+    "description": ""
+  },
+  "JSSL0Description": {
+    "message": "Не включены обертки для API JavaScript. Используйте этот уровень, если вы (1) доверяете оператору посещаемого сайта/-ов  и хотите дать им доступ ко всем поддерживаемым браузером API или (2) если вам не нравится щит JavaScript Shield, но вы хотите применить другие механизмы защиты.",
+    "description": ""
+  },
+  "JSSL1Name": {
+    "message": "Выключить защиту от фингерпринтинга",
+    "description": ""
+  },
+  "JSSL1Description": {
+    "message": "Применять меры противодействия, которые редко могут привести к поломке веб-страниц, но не защищают от фингерпринтинга. Отключить малоиспользуемые API. Используйте этот уровень, если детектор фингерпринтинга сообщает о низкой вероятности фингерпринтинга, вы доверяете посещаемому сервису и/или полагаете, что защита замедляет страницу или ломает ее, и ваше желание пользоваться сервисом гораздо выше желания быть защищенным.",
+    "description": ""
+  },
+  "JSSL2Name": {
+    "message": "Рекомендуемый",
+    "description": ""
+  },
+  "JSSL2Description": {
+    "message": "Изменять представление браузера для противодействия фингерпринтингу. Применять меры противодействия, которые редко могут привести к поломке веб-страниц. Слегка изменять результаты вызовов of API по-разному для разных доменов, что делает межсайтовый фингерпринтинг нестабильным. Генерируемые значения фингерпринта при перезапуске браузера также отличаются. Если вам нужен меняющийся фингерпринт для одного и того же веб-сайта без перезапуска, используйте режим инкогнито. Имейте в виду, что даже если вы разлогинитесь с сайта, очистите файлы cookie и измените IP-адрес, модифицированные API все равно дадут способ вычислить такой же фингерпринт. Если вы хотите изменить фингерпринт, перезапускайте браузер. Если сомневаетесь, используйте этот уровень.",
+    "description": ""
+  },
+  "JSSL3Name": {
+    "message": "Строгий",
+    "description": ""
+  },
+  "JSSL3Description": {
+    "message": "Включить все неэкспериментальные меры защиты. API с включенными обертками выдают ложные значения. Некоторые API заблокированы полностью, другие выдают осмысленные, но редкие значения. Некоторые выдаваемые значения бессмысленны. Данный уровень может сделать вас уязвимым для фингерпринтинга, поскольку результаты вызовов API в основном изменяются одинаковым образом для всех веб-сайтов и в каждой сессии. Используйте этот уровень, если хотите ограничить объем информации, передаваемой браузером. Если вас волнует фингерпринтинг, убедитесь, что детектор фингерпринтинга включен.",
+    "description": ""
+  },
+  "JSSLexperimentalName": {
+    "message": "Экспериментальный",
+    "description": ""
+  },
+  "JSSLexperimentalDescription": {
+    "message": "Строгий уровень защиты с включенными дополнительными обертками (включая те API, которые часто ломают страницы и работают неидеально). Используйте этот уровень, если хотите поэкспериментировать с JShelter. Для обычной работы используйте рекомендуемый или строгий уровни с включенным детектором фингерпринтинга.",
+    "description": ""
+  },
+  "formlabelName": {
+    "message": "Название:",
+    "description": ""
+  },
+  "formlabelDescription": {
+    "message": "Описание:",
+    "description": ""
+  },
+  "ButtonSaveCustomLevel": {
+    "message": "Сохранить пользовательский уровень",
+    "description": ""
+  },
+  "ButtonAddNewLevel": {
+    "message": "Добавить новый уровень",
+    "description": ""
+  },
+	"JSSaddLevelHeading": {
+		"message": "Добавить новый уровень",
+		"description": "Form heading during creation of a new level. You likely want to use the same or very similar value as ButtonAddNewLevel translation string."
+	},
+	"customLevelAlreadyExistsItWillBeOverridden": {
+		"message": "Пользовательский уровень $CUSTOMNAME$ уже существует. Он будет перезаписан.",
+		"description": "",
+		"placeholders": {
+			"customName": {
+				"content": "$1",
+				"example": "User provided value, any text",
+				"description": "The level name that is about to be overwritten"
+			}
+		}
+	},
+  "customLevelWereNotUpdated": {
+    "message": "Пользовательский уровень не был обновлен, пожалуйста, попробуйте позже.",
+    "description": ""
+  },
+  "NewLevelMissingNameOrDescription": {
+    "message": "Пожалуйста, заполните все требуемые поля: ID, название и описание",
+    "description": ""
+  },
+	"JSSeditLevelHeading": {
+		"message": "Изменить уровень $LEVELNAME$",
+		"description": "Heading shown during JSS tweaking (edit level form)",
+		"placeholders": {
+			"levelName": {
+				"content": "$1",
+				"example": "User provided value, any text",
+				"description": "The level name that is about to be overwritten, do not translate"
+			}
+		}
+	},
+  "ButtonEdit": {
+    "message": "Изменить",
+    "description": ""
+  },
+  "ButtonRestore": {
+    "message": "Восстановить",
+    "description": ""
+  },
+  "nbsBlocking": {
+    "message": "Блокировка",
+    "description": ""
+  },
+  "nbsBlockingDescription": {
+    "message": "Блокировать запросы, пытающиеся достичь вашей локальной сети.",
+    "description": ""
+  },
+  "nbsBlockingDescription2": {
+    "message": "ВАЖНО: В большинстве случаев мы рекомендуем включать блокировку запросов. Однако вы можете выбрать только уведомление без какой-либо защиты.",
+    "description": ""
+  },
+  "protectionConfigurationOptionActivatedOff": {
+    "message": "Выкл",
+    "description": ""
+  },
+  "nbsBlockingOffDescription": {
+    "message": "Блокировка запросов выключена.",
+    "description": ""
+  },
+  "protectionConfigurationOptionActivatedOn": {
+    "message": "Вкл",
+    "description": ""
+  },
+  "nbsBlockingOnDescription": {
+    "message": "Блокировка запросов включена.",
+    "description": ""
+  },
+  "shieldNotifications": {
+    "message": "Уведомления",
+    "description": ""
+  },
+  "NBSNotificationsDescription": {
+    "message": "Включать/выключать уведомления о подозрительных запросах или заблокированных серверах.",
+    "description": ""
+  },
+  "NBSNotificationsOffDescription": {
+    "message": "Блокировка уведомлений выключена.",
+    "description": ""
+  },
+  "NBSNotificationsOnDescription": {
+    "message": "Блокировка уведомлений включена.",
+    "description": ""
+  },
+  "fpdBehavior": {
+    "message": "Поведение",
+    "description": ""
+  },
+  "fpdBehaviorDescription": {
+    "message": "Указать предпочитаемое поведение модуля.",
+    "description": ""
+  },
+  "fpdBehaviorPassive": {
+    "message": "Пассивное",
+    "description": ""
+  },
+  "fpdBehaviorPassiveDescription": {
+    "message": "Использовать цвет значка ярлыка расширения для отображения вероятности текущего фингерпринтинга без какого-либо взаимодействия.",
+    "description": ""
+  },
+  "fpdBehaviorLimitedBlocking": {
+    "message": "Ограниченная блокировка",
+    "description": ""
+  },
+  "fpdBehaviorBlockingDescription": {
+    "message": "Разрешать расширению реагировать при высокой вероятности фингерпринтинга.",
+    "description": ""
+  },
+  "fpdBehaviorBlockingDescription2": {
+    "message": "• Прерывать сетевой трафик для страницы для предотвращения возможной утечки фингерпринта.",
+    "description": ""
+  },
+  "fpdBehaviorLimitedBlockingDescription3": {
+    "message": "• Частично очищать хранилище браузера на странице, чтобы удалить возможно кэшированный фингерпринт. (Дополнительных разрешений не требуется.)",
+    "description": ""
+  },
+  "fpdBehaviorLimitedBlockingDescription4": {
+    "message": "• Очищает: localStorage, sessionStorage, JS cookies, IndexedDB, caches, window.name",
+    "description": ""
+  },
+  "fpdBehaviorBlockingDescriptionWarning": {
+    "message": "ВАЖНО: Блокирующее поведение может нарушить некоторую функциональность на веб-сайтах с фингерпринтингом.",
+    "description": ""
+  },
+  "fpdBehaviorFullBlocking": {
+    "message": "Полная блокировка",
+    "description": ""
+  },
+  "fpdBehaviorFullBlockingDescription3": {
+    "message": "• Очищать все доступные механизмы хранилища на странице, где фингерпринт может быть кэширован. (Требуется разрешение BrowsingData.)",
+    "description": ""
+  },
+  "fpdBehaviorFullBlockingDescription4": {
+    "message": "• Очищает: localStorage, sessionStorage, cookies, IndexedDB, caches, window.name, fileSystems, WebSQL, serviceWorkers",
+    "description": ""
+  },
+  "fpdNotificationsDescription": {
+    "message": "Включать/Выключать уведомления об обнаружении фингерпринтинга и блокировании запросов по HTTP.",
+    "description": ""
+  },
+  "fpdNotificationsDescription2": {
+    "message": "ВАЖНО: мы рекомендуем включить уведомления для блокирующего поведения.",
+    "description": ""
+  },
+  "fpdNotificationsOffDescription": {
+    "message": "Уведомления об обнаружении/блокировке выключены.",
+    "description": ""
+  },
+  "fpdNotificationsOnDescription": {
+    "message": "Уведомления об обнаружении/блокировке включены.",
+    "description": ""
+  },
+  "fpdDetection": {
+    "message": "Обнаружение",
+    "description": ""
+  },
+  "fpdDetectionDescription": {
+    "message": "Настроить эвристические пороги, определяющие вероятность фингерпринтинга.",
+    "description": ""
+  },
+  "fpdDetectionDefault": {
+    "message": "По умолчанию",
+    "description": ""
+  },
+  "fpdDetectionDefaultDescription": {
+    "message": "Рекомендованная настройка для большинства пользователей.",
+    "description": ""
+  },
+  "fpdDetectionDefaultDescription2": {
+    "message": "• Очень низкое число ложноположительных обнаружений (фокус на избыточном фингерпринтинге, очень низкое число необоснованно заблокированных сайтов)",
+    "description": ""
+  },
+  "fpdDetectionDefaultDescription3": {
+    "message": "• Приемлемый объем ложноотрицательных обнаружений (некоторые сайты с фингерпринтингом могут обойти обнаружение)",
+    "description": ""
+  },
+  "fpdStrict": {
+    "message": "Строгий",
+    "description": "Displayed during JSS level tweaking for several API groups"
+  },
+  "fpdStrictDescription": {
+    "message": "Настройка по выбору для более осторожных пользователей.",
+    "description": ""
+  },
+  "fpdStrictDescription2": {
+    "message": "• Низкое число ложноотрицательных обнаружений (также обнаруживает сайты с менее избыточным фингерпринтингом)",
+    "description": ""
+  },
+  "fpdStrictDescription3": {
+    "message": "• Более высокая вероятность ложноположительных обнаружений (в крайних случаях могут быть ложно заблокированы добросовестные веб-сайты)",
+    "description": ""
+  },
+  "javaScriptShieldPerWebsiteConfiguration": {
+    "message": "Настройки щита JavaScript для веб-сайтов",
+    "description": ""
+  },
+  "setJavaScriptShieldForWebsite": {
+    "message": "Установить щит JavaScript Shield для веб-сайта:",
+    "description": ""
+  },
+  "addToList": {
+    "message": "Добавить в список",
+    "description": ""
+  },
+  "aListOfWebsiteWithRedefinedJavaScriptShield": {
+    "message": "Список веб-сайтов с установленным щитом JavaScript:",
+    "description": ""
+  },
+  "saveAll": {
+    "message": "Сохранить все",
+    "description": ""
+  },
+  "deleteAll": {
+    "message": "Удалить все",
+    "description": ""
+  },
+  "doNotModifyThisConfiguration": {
+    "message": "ОСТОРОЖНО! Не изменяйте эти настройки, если не знаете, что делать.",
+    "description": ""
+  },
+  "JShelterFullConfiguration": {
+    "message": "Настройки расширения",
+    "description": ""
+  },
+  "ExpertLoadCurrentlyStoredConfiguration": {
+    "message": "Загрузить текущие сохраненные настройки",
+    "description": ""
+  },
+  "ExpertOverwriteConfiguration": {
+    "message": "Перезаписать настройки",
+    "description": ""
+  }
+}
