@@ -10,8 +10,11 @@ Title: Building from scratch
 	* Note that running `make` removes all `console.debug` calls. If you want to keep such calls, run
 		`make debug`.
 5. Import the extension to the browser.
-	* Firefox: [https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/)
-		* Use the file `jshelter_firefox.zip` created by `make`.
+	* [Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension#installing)
+		1. Open `about:debugging`.
+		2. Click the *This Firefox* option
+		3. Click the *Load Temporary Add-on* button
+		4. Select the file `jshelter_firefox.zip` created by `make`.
 	* Chromium-based browsers:
 		1. Open `chrome://extensions`.
 		2. Enable developper mode.
