@@ -86,7 +86,8 @@
 		"placeholders": {
 			"levelName": {
 				"content": "$1",
-				"example": "Translated name of the default level used by the user"
+				"description": "Translated name of the default level used by the user",
+				"example": "Recommended, see the keys JSSL*Name like JSSL2Name"
 			}
 		}
 	},
