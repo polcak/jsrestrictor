@@ -563,7 +563,7 @@
 		"description": "coopschedule group"
 	},
 	"jssgroupCoopscheduleDescription": {
-		"message": "The Cooperative Scheduling or Background Tasks API can schedule background tasks such that they do not introduce delays to other high-priority tasks that share the same event loop.",
+		"message": "The Cooperative Scheduling of Background Tasks API can schedule background tasks such that they do not introduce delays to other high-priority tasks that share the same event loop.",
 		"description": "Try to keep the names of the APIs in English"
 	},
 	"jssgroupCoopscheduleDescription2": {
@@ -1141,7 +1141,7 @@
 				"description": "Paragraph 2, please translate this text."
 			},
 			"paragraph3": {
-				"content": "Network Boundary Shield default behavior can be globally adjusted by the settings below. Network Boundary Shield can also be completely disabled per domain by the exception list. Domains can be allowed to make cross-network requests via <i>Network Boundary Shield switch</i> in the popup window or manually via the <i>Manage exception list</i> option. Remember that adding a domain to the exception list also allows its subdomains to make cross-network requests. To selectively deactivate Network Boundary Shield, insert the domains to the exception list (excluding \"www,\" but including all other domains, e.g., \".com\").",
+				"content": "Network Boundary Shield default behavior can be globally adjusted by the settings below. Network Boundary Shield can also be completely disabled per domain by the exception list. Domains can be allowed to make cross-network requests via <i>Network Boundary Shield switch</i> in the popup window or manually via the <i>Manage exception list</i> option. Remember that adding a domain to the exception list also allows its subdomains to make cross-network requests. To selectively deactivate Network Boundary Shield, insert the domains to the exception list (excluding \"www.\" but including all other domains, e.g. \".com\").",
 				"description": "Paragraph 3, please translate this text, note that <i>Manage exception list</i> refers to the ManageWhitelist string."
 			}
 		}
@@ -1305,7 +1305,7 @@
 		"description": "This is the description of FPD shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs.",
 		"placeholders": {
 			"paragraph1": {
-				"content": "Fingerprint Detector provides a mechanism that informs users about fingerprinting activity on visited web pages. The detector can also prevent web pages from extracting browser fingerprints if a user chooses to do so. See <a href='https://jshelter.org/fpdetection/'>our blog post</a> or <a href='https://arxiv.org/pdf/1905.01051.pdf'>Browser Fingerprinting: A survey</a> for a closer description of browser fingerprinting.",
+				"content": "Fingerprint Detector provides a mechanism that informs users about fingerprinting activity on visited web pages. The detector can also prevent web pages from extracting browser fingerprints if a user chooses to do so. See our <a href='https://jshelter.org/fpdetection/'>blog post</a> or <a href='https://arxiv.org/pdf/1905.01051.pdf'>Browser Fingerprinting: A survey</a> for a closer description of browser fingerprinting.",
 				"description": "Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
 			},
 			"paragraph2": {
@@ -1340,7 +1340,7 @@
 		"description": "A label shown in options during configuaration of the parameters of FPD"
 	},
 	"fpdBehaviorBlockingDescription": {
-		"message": "Allow the extension to react whenever a page calls a high number of called APIs misusable for fingerprinting.",
+		"message": "Allow the extension to react whenever a page calls a high number of APIs misusable for fingerprinting.",
 		"description": "Text shown in options during configuaration of the parameters of FPD"
 	},
 	"fpdBehaviorBlockingDescription2": {
