@@ -3,14 +3,14 @@ title: What should a JShelter developer know about internationalization?
 date: 2023-08-31 15:00
 ---
 
-We are working on the internationalization of JShelter. While the webextension API already contains [APIs](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/i18n) for internationalization, not everything works great. This post is written for webextension developers as well as JShelter developers working with strings presented to our users. Please see our [other post](/i18n/) if you are looking for ways to translate JShelter.
+We are working to improve the internationalization of JShelter. While the webextension API already contains [APIs](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/i18n) for internationalization, not everything works great. This post is written for webextension developers as well as JShelter developers working with strings presented to our users. Please see our [other post](/i18n/), if you are looking for ways to translate JShelter.
 
-### Translating manifest, css files, and js files
+### Translating manifest, CSS files, and JS files
 
-Let us start with the simple and nicely working stuff. Adding your translated strings to the
+Let us start with the simple and easy items. Adding your translated strings to the
 [manifest](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization#internationalizing_manifest.json)
 and
-[css](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization#locale-dependent_css)
+[CSS](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization#locale-dependent_css)
 files is really simple and straightforward. For example, if you want to provide a translatable
 description of your extension, you would change your `manifest.json` to contain a line like:
 
@@ -22,7 +22,7 @@ description of your extension, you would change your `manifest.json` to contain 
 }
 ```
 
-And you add the description as `extensionDescription` to your `messages.json`:
+You add the description as `extensionDescription` to your `messages.json`:
 
 ```json
 	"extensionDescription": {
@@ -31,9 +31,9 @@ And you add the description as `extensionDescription` to your `messages.json`:
 	},
 ```
 
-Similarly, you can localize css files like:
+Similarly, you can localize CSS files like:
 
-```css
+```CSS
 input:checked + .slider:before {
     ...
     content:"__MSG_ShieldOnSlider__";
@@ -46,13 +46,13 @@ Afterwards, you define `ShieldOnSlider`, and you are done.
 Translations in JavaScript files work a little bit differently, but it is easy to adapt your
 JavaScript files. You just use the `browser.i18n.getMessage` [API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/i18n/getMessage). You provide the key in the `messages.json`. This time, you can add parameters that can be utilized inside the `messages.json` file. For example, you can pass a string that should appear inside the translated string:
 
-```js
+```JS
 browser.i18n.getMessage("defaultLevelSelection", default_level.level_text)
 ```
 
 and the `message.json` can contain something like:
 
-```json
+```JSON
 	"defaultLevelSelection": {
 		"message": "Default level ($levelName$)",
 		"description": "This text is displayed as the default level in the popup",
@@ -69,8 +69,8 @@ and the `message.json` can contain something like:
 If you like the placeholders, for example, because you read in the best practices that placeholder
 substitutions help specify parts that you [do not want
 translated](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization#hardcoded_substitution).
-If you want to add parameters to your manifest or css files, you are out of luck. Luckily, JShelter
-does not need parameters in manifest and css files, and such a need is rare.
+If you want to add parameters to your manifest or CSS files, you are out of luck. Luckily, JShelter
+does not need parameters in manifest and CSS files, and such a need is rare.
 
 ### Translating HTML files
 
@@ -81,7 +81,7 @@ In essence, others add some markup to the HTML file and later process that marku
 example, in JShelter we add `data-localize` attribute to each element that we want to translate. The attribute
 holds the key in the `message.json`. For example, JShelter defines:
 
-```html
+```HTML
 <label for="nbs-switch" data-localize="networkBoundaryShield">Network Boundary Shield</label>
 ```
 
@@ -93,7 +93,7 @@ simple. It finds elements with the correct attributes and forwards the strings t
 
 Still, one needs to take care of special sections in the pages, like [templates](https://pagure.io/JShelter/webextension/blob/bff8ce9c69ca28c1952898125983429c1f7f8a32/f/common/i18n_translate_dom.js#_43).
 
-Anyway, the lack of standard way to cope with HTML translations means that if you go to different
+Anyway, the lack of a standard way to cope with HTML translations means that if you go to different
 webextension, they will likely have a similar script but the details would be different. That is not optimal.
 
 ### Language priorities
@@ -120,7 +120,7 @@ Although there is the `Intl.PluralRules()` [API](https://developer.mozilla.org/e
 We considered creating several keys for the plural forms. For example, suppose that JShelter needs
 to translate a string with `message.json` key `pluralExample`. We would create a code like:
 
-```js
+```JS
 let pluralCategory = (new Intl.PluralRules()).select(count);
 let message = browser.i18n.getMessage("pluralExample" + pluralCategory, count);
 ```
@@ -156,7 +156,7 @@ Consider the buttons for adding and removing exceptions for Network Boundary Shi
 
 We decided to use placeholders to describe to translators how to handle the translation:
 
-```json
+```JSON
 	"ButtonEnableForSelectedDomains": {
 		"message": "<strong>$ENABLE$</strong> $FORTHEDOMAIN$",
 		"description": "A button caption that can be used generically by JShelter, e.g. in the options; if necessary, edit the structure of the message but make sure to emphasize the enablement. Translate the placeholders.",
@@ -178,7 +178,7 @@ the translator decides that an appropriate translation to Czech is "Vybrané dom
 &lt;strong&gt;povol&lt;/strong&gt;". The word "enable" is translated as "povol". The translator can generate
 text like:
 
-```json
+```JSON
 	"ButtonEnableForSelectedDomains": {
 		"message": "$SELCTEDDOMAIN$ <strong>$ENABLE$</strong> ",
 		"placeholders": {
@@ -196,7 +196,7 @@ All perfect until we decided to use [Weblate](https://hosted.weblate.org/project
 
 In this case, we could simply change the definition to something like:
 
-```json
+```JSON
 	"ButtonEnableForSelectedDomains": {
 		"message": "<strong>Enable</strong> for the selected domains",
 		"description": "A button caption that can be used generically by JShelter, e.g. in the options; if necessary, edit the structure of the message but make sure to emphasize the enablement."
@@ -211,4 +211,4 @@ complicate the life of translators too much.
 
 ### Additional reading
 
-If you are JShelter developer, please read [localization best practices for developers](https://mozilla-l10n.github.io/documentation/localization/dev_best_practices.html), [MDN guide on webextension internationalization](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization), and the [i18n API documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/i18n).
+If you are a JShelter developer or are interesting in helping JShelter's internationalization development, please read [localization best practices for developers](https://mozilla-l10n.github.io/documentation/localization/dev_best_practices.html), [MDN guide on webextension internationalization](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization), and the [i18n API documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/i18n).
