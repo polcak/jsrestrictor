@@ -14,7 +14,7 @@ and
 files is really simple and straightforward. For example, if you want to provide a translatable
 description of your extension, you would change your `manifest.json` to contain a line like:
 
-```json
+```JSON
 {
     ...
     "description": "__MSG_extensionDescription__",
@@ -24,7 +24,7 @@ description of your extension, you would change your `manifest.json` to contain 
 
 You add the description as `extensionDescription` to your `messages.json`:
 
-```json
+```JSON
 	"extensionDescription": {
 		"message": "Extension for increasing security and privacy level of the user.",
 		"description": "Description of the extension."
