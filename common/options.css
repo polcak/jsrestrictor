@@ -118,6 +118,10 @@ section.content {
 	text-align: justify;
 }
 
+section.content section#configuration_area #tweaks div.more, section.content div.tweakgrid div.more {
+	text-align: left;
+}
+
 .main-section {
 	padding: 0.5em;
 }
