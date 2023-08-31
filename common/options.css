@@ -93,7 +93,7 @@ nav.menu ul ul {
 }
 
 nav.menu ul p:after {
-	content: "  »";
+	content: "__MSG_ExternalLinksSeparator__";
 }
 
 nav.menu ul a:visited, nav.menu ul a, nav.menu ul p {
@@ -211,6 +211,7 @@ section#sect-devel {
 
 button.level {
 	min-width: 80%;
+	max-width: 80%;
 }
 label.level_button_descr {
 	display: inline-block;

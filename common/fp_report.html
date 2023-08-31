@@ -10,28 +10,27 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	<link rel="stylesheet" type="text/css" href="common.css">
 	<link rel="stylesheet" type="text/css" href="fp_report.css">
 	<script src="/nscl/lib/browser-polyfill.js" type="text/javascript"></script>
-	<script src="fp_report.js" type="text/javascript"></script>
+	<script src="i18n_translate_dom.js" type="text/javascript" defer></script>
+	<script src="fp_report.js" type="text/javascript" defer></script>
+	<title data-localize="FPDReportTitle">JShelter FPD report</title>
 </head>
 <body>
 
 	<header>
 		<div>
-			<h3 id="titletext">
+			<h3 id="titletext" data-localize="FPDReportTitle">
 				FingerPrint Detector Report
-				<button id="help" class="help">
-					?
-				</button>
 			</h3>
-			<p class="description hidden">
+			<p class="description hidden" data-localize="FPDReportDescriptionPara1">
 				This report lists all JavaScript API endpoints that were accessed by the web page and are considered critical in terms of browser fingerprinting.
 				Fingerprint Detector (FPD) uses this data to decide whether the page is collecting a browser fingerprint.
 			</p>
-			<p class="description hidden">
+			<p class="description hidden" data-localize="FPDReportDescriptionPara2" htmltranslation>
 				FPD processes API calls in groups based on their semantic properties. This window shows the detected number of API calls on the visited page.
 				The default view shows only groups accessed at least once. This way the report can be empty if the page did not access any fingerprintable API. 
 				If you want to see all APIs monitored by FPD, click <span id="unhideAll">here</span>.
 			</p>
-			<p class="description hidden">
+			<p class="description hidden" data-localize="FPDReportDescriptionPara3" htmltranslation>
 				You can export full FPD Report that contains all the data collected and used by FPD to evaluate the page. This comprehensive report
 				shows the current weights assigned to the groups/endpoints (<i>fpd_evaluation_statistics</i>). It also lists all accessed API endpoints
 				with corresponding arguments (<i>fpd_access_logs</i>).
@@ -45,8 +44,9 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	</header>
 
 	<div id="fpd-report">
-		<button id="showBtn" class="sticky-button">Show details</button>
-		<button id="exportBtn" class="sticky-button">
+		<button id="showBtn" class="sticky-button" data-localize="FPDReportShowDetails">Show details</button>
+		<button id="hideBtn" class="sticky-button hidden" data-localize="FPDReportHideDetails">Hide details</button>
+		<button id="exportBtn" class="sticky-button" data-localize="FPDReportExportJSON">
 			Export full FPD Report as JSON
 		</button>
 	</div>

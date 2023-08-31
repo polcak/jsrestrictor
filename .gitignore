@@ -24,5 +24,7 @@ tests/fpd_tests/wrappers*
 tests/fpd_tests/tests/resources.js
 tests/performance_tests/node_modules
 
+wasm/node_modules
+
 website/output
 website/content/wrappers/*

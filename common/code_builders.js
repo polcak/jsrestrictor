@@ -46,16 +46,12 @@ function enclose_wrapping2(code, name, params, call_with_window) {
  */
 function create_counter_call(wrapper, type) {
 	let {parent_object, parent_object_property} = wrapper;
-	let updateCount = `${parent_object}.${parent_object_property}`;
-	
-	if ("update_count" in wrapper) {
-		if (typeof wrapper.update_count === "string") updateCount = wrapper.update_count;
-	}
-	
-	return updateCount ? `if (fp_enabled && fp_${type}_count < 1000) {
-		updateCount(${JSON.stringify(updateCount)}, "${type}", args.map(x => JSON.stringify(x)));
+	let resource = `${parent_object}.${parent_object_property}`;
+	let args = wrapper.report_args ? "args.map(x => JSON.stringify(x))" : "[]"
+	return `if (fp_enabled && fp_${type}_count < 1000) {
+		updateCount(${JSON.stringify(resource)}, "${type}", ${args});
 		fp_${type}_count += 1;
-	}` : "";
+	}`;
 }
 
 /**
@@ -361,6 +357,83 @@ let joinWrappingCode = code => {
 }
 
 /**
+ * Insert WebAssembly initialization code into wrapped injection code.
+ */
+function insert_wasm_code(code) {
+	let wasm_code = (() => {
+		const wasm_memory = new WebAssembly.Memory({initial: 1});
+		// Memory layout:
+		// +-----------------+--------------+----------+---------------------------------------- - -
+		// | CRC table       | Xoring table | Reserved | Data
+		// | 256 * u16       | 8 * u32      |          | 
+		// +-----------------+--------------+----------+---------------------------------------- - -
+		// 0                 512            544        1024
+		const crc_offset = 0;
+		const xoring_offset = 512;
+		const reserved_offset = 544;
+		const data_offset = 1024;
+
+		WebAssembly.instantiateStreaming(fetch("/* WASM_URL */"), {env: {memory: wasm_memory}}).then(result => {
+			new Uint16Array(wasm_memory.buffer, crc_offset, crc16_table.length).set(crc16_table);
+			const xoring = new Uint32Array(wasm_memory.buffer, xoring_offset, 8);
+			for (let i = 0; i < 64; i += 8) {
+				xoring[i / 8] = parseInt(domainHash.slice(i, i + 8), 16) >>> 0;
+			}
+
+			wasm = {
+				// Getter and setter for data in WASM memory. Because we need access from page context,
+				// we can't just get a memory view and use it directly. The view needs to be exported to be
+				// usable in the page context on Firefox.
+				// This means that views returned by wasm.get() aren't actually views of the WASM memory,
+				// but rather copies of the data and modifying them won't affect the underlying memory.
+				// We can't export the wasm memory directly either, it is bound to the WASM instance and
+				// it's not possible to export the instance as well.
+				// For constructing views of the correct type, we can't use constructors passed from page context,
+				// a content script constructor must be used. For now, we use just 2 types, so passing a bool 
+				// to differentiate is enough.
+				get(length, offset = 0, float = false) {
+					if (float) {
+						return WrapHelper.forPage(new Float32Array(wasm_memory.buffer, data_offset + offset, length));
+					} else {
+						return WrapHelper.forPage(new Uint8Array(wasm_memory.buffer, data_offset + offset, length));
+					}
+				},
+				set(data, offset = 0, float = false) {
+					if (float) {
+						new Float32Array(wasm_memory.buffer, data_offset + offset, data.length).set(data);
+					} else {
+						new Uint8Array(wasm_memory.buffer, data_offset + offset, data.length).set(data);
+					}
+				},
+				// Grow the WASM memory if needed.
+				grow(needed_bytes) {
+					const memory_size = wasm_memory.buffer.byteLength;
+					needed_bytes += data_offset;
+					if (memory_size < needed_bytes) {
+						try {
+							wasm_memory.grow(Math.ceil((needed_bytes - memory_size) / 65536));
+						} catch (e) {
+							console.debug("Failed to grow WASM memory, falling back to JS implementation", e);
+							return false;
+						}
+					}
+					return true;
+				},
+				// Make WASM exported functions available to wrappers.
+				...result.instance.exports,
+				ready: true
+			}
+			Object.freeze(wasm);
+			console.debug("WASM farbling module initialized");
+		}).catch(e => {
+			console.debug("Failed to instantiate WASM farbling module, falling back to JS implementation", e);
+		});
+	}).toString().replace("/* WASM_URL */", browser.runtime.getURL("farble.wasm"));
+
+	return code.replace("// WASM_CODE //", `(${wasm_code})()`);
+}
+
+/**
  * Append wrapped codes to NSCL helpers and create injectable code.
  */
 function generate_code(wrapped_code) {
@@ -653,6 +726,12 @@ function generate_code(wrapped_code) {
 			};
 			Object.freeze(WrapHelper);
 		}
+
+		// The object available to wrappers later containing farbling WASM optmitimized functions if enabled
+		let wasm = Object.freeze({ready: false});
+
+		// Farbling WebAssembly module initialization placeholder
+		// WASM_CODE //
 
 		with(unwrappedWindow) {
 			let window = unwrappedWindow;

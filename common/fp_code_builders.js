@@ -203,6 +203,7 @@ function fp_build_property_wrapper(wrap_item) {
 					parent_object_property: resource_splitted["name"],
 					wrapped_objects: [],
 					wrapped_properties: [],
+					report_args: wrap_item[3],
 				}
 			],
 		};
@@ -257,6 +258,32 @@ function fp_build_function_wrapper(wrap_item) {
 		wrapping_function_body: `
 			return originalF_${resource_splitted["name"]}.call(this, ...args);
 		`,
+		report_args: wrap_item[3],
 	};
 	return wrapper_object;
+}
+
+/**
+ * The function that adds argument reporting settings to every JSS wrapper definition where specified by FPD configuration.
+ * This is for removing unnecessary reporting of arguments in cases where the arguments may be large
+ * (such as arrays for image/audio data), which results in their slow synchronous serialization.
+ * 
+ * \param fpd_wrappers Array of wrappers defined by FPD configuration.
+ */
+function fp_append_reporting_to_jss_wrappers(fpd_wrappers) {
+	const resources_with_reporting = new Set(fpd_wrappers.map(w => w[3] ? w[0] : undefined));
+	resources_with_reporting.delete(undefined);
+	function append_reporting(wrapper) {
+		let {parent_object, parent_object_property} = wrapper;
+		let resource = `${parent_object}.${parent_object_property}`;
+		wrapper.report_args = resources_with_reporting.has(resource);
+	}
+
+	for (let wrapper of Object.values(build_wrapping_code)) {
+		append_reporting(wrapper);
+		if (wrapper.post_wrapping_code) {
+			// Objects wrapped in post wrapping code might be tracked as well
+			Object.values(wrapper.post_wrapping_code).forEach(append_reporting);
+		}
+	}
 }

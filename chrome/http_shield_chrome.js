@@ -310,14 +310,11 @@ function onResponseStartedListener(responseDetails)
  * \param host Host added to the black-list (blockedHosts).
  */
 function notifyBlockedHost(host) {
-	let message = `All subsequent HTTP requests from ${host} will be blocked.`;
-	if (nbsSettings.blocking == 0) {
-		message = `Enable requests blocking to block all requests from ${host} to local network.`;
-	}
+	let message = nbsSettings.blocking ? browser.i18n.getMessage("NBSBlockedHost", host) : browser.i18n.getMessage("NBSDetectedHost", host);
 	browser.notifications.create("nbs-" + host, {
 		"type": "basic",
 		"iconUrl": browser.extension.getURL("img/icon-48.png"),
-		"title": `Network Boundary Shield ${nbsSettings.blocking ? "blocked" : "detected"} suspicious host!`,
+		"title": nbsSettings.blocking ? browser.i18n.getMessage("NBSBlockedHostTitle") : browser.i18n.getMessage("NBSDetectedHostTitle"),
 		"message": message
 	});
 	setTimeout(() => {

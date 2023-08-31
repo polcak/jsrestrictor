@@ -5,6 +5,8 @@
 #  internet.
 #
 #  Copyright (C) 2022 Martin Bednar
+#  Copyright (C) 2023 Martin Zmitko
+#  Copyright (C) 2023 Libor Polčák
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -36,7 +38,10 @@ function get_requirements {
 		
 		# Get requirement import.
 		import=$(jq -r '.import' <<< "$requirements")
-		
+
+		# Get required files.
+		files=$(jq -r '.files' <<< "$requirements")
+
 		if [[ $from != "null" ]]
 		then
 			all_script_requirements+="${type} { "
@@ -63,11 +68,26 @@ function get_requirements {
 			requirement_as=$(jq -r '.as' <<< "$requirements")
 			
 			all_script_requirements+="${type} ${requirement_as} = require('${import}');"
+		elif [[ $files != "null" ]]
+		then
+			# Iterate over required file names.
+			for n in $(jq '.files | keys | .[]' <<< "$requirements"); do
+				# Get current requirement name.
+				requirement_file=$(jq -r ".files[$n]" <<< "$requirements")
+				
+				# Add current requirement name.
+				additional_file_requirements+="${requirement_file} "
+			done
 		fi
 	done
 }
 
 echo Preparation for testing STARTED.
+
+# Make the extension. This is needed to prepare WASM so that the produced code can be tested.
+pushd ../..
+	make
+popd
 
 # Create directory ./tmp if not exists. Temporary working directory for one tests running.
 # Will be deleted when unit tests will be finished.
@@ -76,6 +96,9 @@ mkdir -p ./tmp
 # String of all scripts names. Will be filled during iterating over scripts in global configuration.
 # Will be used for ./config/jasmine.conf
 script_names=""
+
+# Variable for collecting all additional file requirements to be copied.
+additional_file_requirements=""
 
 # Iterate over all scripts in global configuration (./config/global.json).
 for k in $(jq '.scripts | keys | .[]' ./config/global.json); do
@@ -94,28 +117,36 @@ for k in $(jq '.scripts | keys | .[]' ./config/global.json); do
 		script_names+=", \"${test_script_name}\""
 	fi
 	
-	
+
 	########################   SET TESTS SCRIPT REQUIREMENTS   ########################
-	
-	# Create temporary working version of the current testing script. Working version will be modified.
-	cp ./tests/$test_script_name ./tmp/$test_script_name
-	
-	# Variable for collecting all test script requirements.
-	all_script_requirements=""
-	
-	# Iterate over test script requirements.
-	for l in $(jq '.test_script_requirements | keys | .[]' <<< "$script"); do
-		# Get current script.
-		requirements_type=$(jq -r ".test_script_requirements[$l]" <<< "$script")
+	if [ -f "./tests/$test_script_name" ]
+	then
+		# Create temporary working version of the current testing script. Working version will be modified.
+		cp ./tests/$test_script_name ./tmp/$test_script_name
 		
-		get_requirements
-	done
-	
-	sed -i "1s~^~$all_script_requirements~" ./tmp/$test_script_name
-	
+		# Variable for collecting all test script requirements.
+		all_script_requirements=""
+		
+		# Iterate over test script requirements.
+		for l in $(jq '.test_script_requirements | keys | .[]' <<< "$script"); do
+			# Get current script.
+			requirements_type=$(jq -r ".test_script_requirements[$l]" <<< "$script")
+			
+			get_requirements
+		done
+		
+		sed -i "1s~^~$all_script_requirements~" ./tmp/$test_script_name
+	else
+		echo "Testing script ${test_script_name} does not exist. Skipping."
+	fi
 	
 	########################   MODIFY SOURCE SCRIPT   ########################
-	
+	if [ ! -f "../../common/$source_script_name" ]
+	then
+		echo "Source script ${source_script_name} does not exist. Skipping."
+		continue
+	fi
+
 	cp ../../common/$source_script_name ./tmp/$source_script_name
 	
 	# Modify source script - remove custom namespace if necessary.
@@ -233,6 +264,12 @@ done
 cp ./config/jasmine.json ./tmp/jasmine.json
 # Add all testing scripts from global configuration to Jasmine confiduration.
 sed -i "s/<<SPEC_FILES>>/$script_names/" ./tmp/jasmine.json
+
+# Copy all additional file requirements to temporary working directory.
+if [[ $additional_file_requirements != "" ]] ;
+then
+	cp $additional_file_requirements ./tmp
+fi
 
 echo Preparation for testing FINISHED.
 echo Testing STARTED.

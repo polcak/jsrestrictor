@@ -439,34 +439,46 @@ async function installUpdate() {
 			item.version = 6.7;
 		}
 		if (item.version < 6.8) {
-			if (l.webworker === 2) {
-				let score = 0;
-				for (group of ["time_precision", "net", "geolocation", "physical_environment", "useridle", "coopschedule", "gamepads", "vr", "analytics", "nfc"]) {
-					if (l[group] !== undefined) {
-						score++;
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.webworker === 2) {
+					let score = 0;
+					for (group of ["time_precision", "net", "geolocation", "physical_environment", "useridle", "coopschedule", "gamepads", "vr", "analytics", "nfc"]) {
+						if (l[group] !== undefined) {
+							score++;
+						}
 					}
-				}
-				for (group of ["htmlcanvaselement", "audiobuffer", "webgl", "hardware"]) {
-					if (l[group] === 1) {
-						score--;
+					for (group of ["htmlcanvaselement", "audiobuffer", "webgl", "hardware"]) {
+						if (l[group] === 1) {
+							score--;
+						}
+						else if (l[group] > 1) {
+							score++;
+						}
 					}
-					else if (l[group] > 1) {
-						score++;
+					for (group of ["enumerateDevices", "plugins"]) {
+						if (l[group] === 1 || l[group] === 2) {
+							score--;
+						}
+						else if (l[group] > 2) {
+							score++;
+						}
 					}
-				}
-				for (group of ["enumerateDevices", "plugins"]) {
-					if (l[group] === 1 || l[group] === 2) {
-						score--;
+					if (score > 8) { // L0: 0, L1: 10, L2: 4, L3: 16
+						l.webworker = 3;
 					}
-					else if (l[group] > 2) {
-						score++;
-					}
-				}
-				if (score > 8) { // L0: 0, L1: 10, L2: 4, L3: 16
-					l.webworker = 3;
 				}
 			}
 			item.version = 6.8;
+		}
+		if (item.version < 7) {
+			for (level in item["custom_levels"]) {
+				let l = item["custom_levels"][level];
+				if (l.audiobuffer === 1 || l.htmlcanvaselement === 1) {
+					l.wasm = 1;
+				}
+			}
+			item.version = 7;
 		}
 
 

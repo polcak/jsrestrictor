@@ -1,0 +1,17 @@
+{
+  "name": "wasm_farble",
+  "version": "1.0.0",
+  "description": "AssemblyScript fast farbling implementation",
+  "scripts": {
+    "debug": "asc assembly/farble.ts --target debug",
+    "release": "asc assembly/farble.ts --target release",
+    "build": "npm run debug && npm run release",
+    "clean": "rm -rf build/debug* build/release*"
+  },
+  "author": "Martin Zmitko <xzmitk01@stud.fit.vutbr.cz>",
+  "license": "GNU General Public License 3 or later",
+  "devDependencies": {
+    "assemblyscript": "^0.27.1"
+  },
+  "type": "module"
+}

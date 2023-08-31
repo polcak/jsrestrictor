@@ -17,6 +17,11 @@
 						{
 							"import": "file or library",
 							"as": "name for whole imported file or library"
+						},
+						{
+							"files": [
+								"array of names of required non script files"
+							]
 						}
 					]
 				}
@@ -34,6 +39,11 @@
 						{
 							"import": "file or library",
 							"as": "name for whole imported file or library"
+						},
+						{
+							"files": [
+								"array of names of required non script files"
+							]
 						}
 					]
 				}

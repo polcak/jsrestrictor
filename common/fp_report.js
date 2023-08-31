@@ -44,7 +44,7 @@ function createReport(data) {
     var {tabObj, groups, latestEvals, fpDb, exceptionWrappers} = data;
 	var report = document.getElementById("fpd-report");
     if (!tabObj || !groups || !groups.root || !groups.all || !fpDb || !latestEvals) {
-        report.innerHTML = "ERROR: Missing data, cannot create report! Try to reload the page and reopen the report."
+        report.innerHTML = browser.i18n.getMessage("FPDReportMissingData");
         return;
     }
 
@@ -168,14 +168,19 @@ function createReport(data) {
     // show resources for every group in FPD report
     let showAll = (event) => {
         for (let element of document.querySelectorAll(".fpd-group > h4")) {      
-            if (event.target.innerText == "Show details") {
-                element.classList.remove("hidden");
-            }
-            else {
-                element.classList.add("hidden");
-            }
+            element.classList.remove("hidden");
         }
-        event.target.innerText = event.target.innerText == "Show details" ? "Hide details" : "Show details";
+        showBtn.classList.add("hidden");
+        hideBtn.classList.remove("hidden");
+    }
+
+    // hide resources for every group in FPD report
+    let hideDetails = (event) => {
+        for (let element of document.querySelectorAll(".fpd-group > h4")) {
+            element.classList.add("hidden");
+        }
+        showBtn.classList.remove("hidden");
+        hideBtn.classList.add("hidden");
     }
 
     // show description/help for the report
@@ -209,7 +214,9 @@ function createReport(data) {
     }
 
     document.getElementById("showBtn").addEventListener("click", showAll);
+    document.getElementById("hideBtn").addEventListener("click", hideDetails);
     document.getElementById("exportBtn").addEventListener("click", exportReport.bind(null, `fpd_report_${url}.json`))
+    document.getElementById("titletext").innerHTML += '<button id="help" class="help">?</button>';
     document.getElementById("help").addEventListener("click", showDescription);
     document.getElementById("unhideAll").addEventListener("click", showNotAccessed);
 }

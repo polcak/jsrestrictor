@@ -182,7 +182,7 @@ a:hover, a:active {
 	-webkit-transition: .4s;
 	transition: .4s;
 	color: var(--off-color);
-	content:"OFF";
+	content:"__MSG_ShieldOffSlider__";
 }
 
 input:checked + .slider {
@@ -197,7 +197,7 @@ input:checked + .slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
-	content:"ON";
+	content:"__MSG_ShieldOnSlider__";
 	color: var(--slider-text-color);
 }
 

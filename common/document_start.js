@@ -39,7 +39,8 @@ function configureInjection({currentLevel, fpdWrappers, domainHash}) {
 		hash.update(JSON.stringify(domainHash));
 		domainHash = hash.hex();
 	}
-
+	// Append argument reporting setting to JSS wrapper definitions
+	fp_append_reporting_to_jss_wrappers(fpdWrappers);
 	// Generate wrapping code
 	var code = wrap_code(currentLevel.wrappers);
 	// Generate FPD wrapping code
@@ -51,6 +52,11 @@ function configureInjection({currentLevel, fpdWrappers, domainHash}) {
 			code = fp_update_wrapping_code(code, currentLevel.wrappers, fpdWrappers);
 		}
 	}
+	// Insert farbling WASM module into wrapped code if enabled, only when farbling is actually used 
+	if (currentLevel.wasm && (currentLevel.audiobuffer === 1 || currentLevel.htmlcanvaselement === 1)) {
+		code = insert_wasm_code(code);
+	}
+
 	var aleaCode = `(() => {
 	var domainHash =  ${JSON.stringify(domainHash)};
 	${crc16}

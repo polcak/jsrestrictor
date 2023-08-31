@@ -29,6 +29,9 @@ you have an image/artwork that you want to push to the project, we suggest strip
 exiftool -all= -tagsfromfile @ -Orientation filename.png
 ```
 
+If you want to translate JShelter to a new language or improve an existing translation, go to
+[Weblate](https://hosted.weblate.org/projects/jshelter/webextension/).
+
 ## License Information
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU

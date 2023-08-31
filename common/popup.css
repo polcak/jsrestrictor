@@ -202,3 +202,7 @@ label.js-toggle:after {
 #level_controls, #nbs_whitelist, #fpd_whitelist {
 	margin: 6px 0;
 }
+
+label[for=severity_value], #severity_value {
+	display: inline !important;
+}

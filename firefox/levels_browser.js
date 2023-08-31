@@ -22,7 +22,21 @@
 var modify_wrapping_groups = function() {
 	wrapping_groups.groups.forEach(function (group) {
 		if (group.name === "windowname") {
-			group.description2.push("Firefox 88 and above already protects you.")
+			group.description2.push(browser.i18n.getMessage("jssgroupPersistentIdentifierOfTheBrowserTabFirefox88"))
+		}
+		else if (group.name === "wasm") {
+			group.params = [
+				{
+					short: browser.i18n.getMessage("jssgroupWASMDisabled"),
+					description: browser.i18n.getMessage("jssgroupWASMDisabledDescription"),
+					config: [0],
+				},
+				{
+					short: browser.i18n.getMessage("jssgroupWASMEnabled"),
+					description: browser.i18n.getMessage("jssgroupWASMEnabledDescription"),
+					config: [1],
+				},
+			];
 		}
 	});
 };

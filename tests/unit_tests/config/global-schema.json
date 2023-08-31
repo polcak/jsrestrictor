@@ -63,6 +63,22 @@
 														"import",
 														"as"
 													]
+												},
+												{
+													"type": "object",
+													"properties": {
+														"files": {
+															"type": "array",
+															"items": [
+																{
+																	"type": "string"
+																}
+															]
+														}
+													},
+													"required": [
+														"files"
+													]
 												}
 											]
 										}
@@ -119,6 +135,22 @@
 													"required": [
 														"import",
 														"as"
+													]
+												},
+												{
+													"type": "object",
+													"properties": {
+														"files": {
+															"type": "array",
+															"items": [
+																{
+																	"type": "string"
+																}
+															]
+														}
+													},
+													"required": [
+														"files"
 													]
 												}
 											]

@@ -49,6 +49,12 @@ popup_tweaks.assign_custom_params = function(group) {
 	group.groupHits = hits[group.name] || 0;
 };
 popup_tweaks.customize_tweak_row = function (tweakRow, group) {
+	// Don't show hits for WASM optimization group tweak
+	if (group.name === "wasm") {
+		tweakRow.querySelector(".hits").textContent = "-";
+		return;
+	}
+
 	let groupHits = group.groupHits;
 	if (groupHits >= 999) {
 		groupHits = "1000 or more";
@@ -198,7 +204,7 @@ function add_level_buttons() {
 		return selectEl.appendChild(b);
 	}
 	// Add default level button
-	default_lev_button = addButton({level_id: "DEFAULT", level_description: "You can set of of the levels as the global default level. Use this level for this page.", level_text: `Default level (${default_level.level_text})`});
+	default_lev_button = addButton({level_id: "DEFAULT", level_description: browser.i18n.getMessage("popupDefaultLevelHelpText"), level_text: browser.i18n.getMessage("defaultLevelSelection", default_level.level_text)});
 	default_lev_button.addEventListener("click", ev => {
 		delete domains[site];
 		modify_level(default_level, ev.target);
@@ -421,4 +427,3 @@ addEventListener("DOMContentLoaded", async () => {
 	load_on_off_switch("nbs");
 	load_on_off_switch("fpd");
 });
-

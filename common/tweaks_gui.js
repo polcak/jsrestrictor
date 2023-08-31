@@ -78,7 +78,7 @@ let tweaks_gui = {
 						showStatus(group.params[desired_tweak - 1]);
 					}
 					else {
-						showStatus({short:"Unprotected", description:"Unprotected"});
+						showStatus({short:browser.i18n.getMessage("jssgroupUnprotected"), description:browser.i18n.getMessage("jssgroupUnprotected")});
 					}
 				}
 				if (changed) {
@@ -106,7 +106,7 @@ let tweaks_gui = {
 			let tweakEntries = this.sort_group_descriptors(this.create_group_descriptors(group_map));
 
 			for (let { group_id, tlev_id, label, group} of tweakEntries) {
-				this.add_tweak_row(tweaksContainer, group_map, group_id, tlev_id, label, group);
+				this.add_tweak_row(tweaksContainer, group_map, group_id, tlev_id, label, group, group_id === "wasm");
 			}
 			document.body.classList.add("tweaking");
 		},

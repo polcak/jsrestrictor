@@ -19,6 +19,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	<script src="helpers.js" type="text/javascript" defer></script>
 	<script src="tweaks_gui.js" type="text/javascript" defer></script>
 	<script src="popup.js" type="text/javascript" defer></script>
+	<script src="i18n_translate_dom.js" type="text/javascript" defer></script>
 </head>
 <body>
 
@@ -27,21 +28,21 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<div><img class="logo" id="logo" src="../img/icon-128.png" alt="JShelter logo" /></div>
 			<div><h3 id="titletext">JShelter</h3></div>
 		</div>
-		<button id="global-settings" title="Open global settings">Global settings</button>
+		<button id="global-settings" title="Open global settings" data-localize="globalSettings">Global settings</button>
 	</header>
 
 	<content id="site-settings">
 		<div class="flex align-items-center justify-content-between">
-			<label class="text-large">Settings for domain</label>
+			<label class="text-large" data-localize="settingsForDomain">Settings for domain</label>
 			<h3 id="current-site"></h3>
-			<button id="refresh-page" disabled>Refresh page</button>
+			<button id="refresh-page" data-localize="refreshPage" disabled>Refresh page</button>
 		</div>
 
 		<section id="level_controls">
 			<div class="section-header toggle">
-				<label for="jss-switch">JavaScript Shield</label>
+				<label for="jss-switch" data-localize="javascriptShield">JavaScript Shield</label>
 				<input type="checkbox" id="js-toggle" name="js-toggle" title="Edit JavaScript Shield settings" />
-				<label for="js-toggle" id="js-toggle-btn" class="js-toggle">Modify</label>
+				<label for="js-toggle" id="js-toggle-btn" class="js-toggle" data-localize="modifyJSSPopup">Modify</label>
 				<label class="switch">
 					<input id="jss-switch" type="checkbox" checked>
 					<label for="jss-switch" class="slider"></label>
@@ -53,18 +54,20 @@ SPDX-License-Identifier: GPL-3.0-or-later
 					</div>
 					<p id="current-level">
 					<strong id="level-text"></strong><span id="level-description"></span>
-					<a class="more hidden_descr" href="#">(more...)</a>
-					<a class="less hidden_descr" href="#">(less...)</a>
+					<a class="more hidden_descr" href="#" data-localize="descriptionMore">(more...)</a>
+					<a class="less hidden_descr" href="#" data-localize="descriptionLess">(less...)</a>
 					</p>
 				</div>
-				<div class="buttons"><button id="btn-tweak">Detail tweaks of JS shield for this site</button></div>
+				<div class="buttons"><button id="btn-tweak" data-localize="detailTweaksOfJSShieldForThisSite">Detail tweaks of JS shield for this site</button></div>
 				<div id="tweaks"></div>
 			</div>
 		</section>
 
 
 		<template id="tweak-head">
-			<span class="head">Wrappers</span><span></span><span></span><span class="head">Number of calls</span>
+			<span class="head" data-localize="wrappers">Group of APIs</span>
+			<span class="head" data-localize="levelOfDefense">Level of defense</span></span><span></span>
+			<span class="head" data-localize="numberOfCalls">Number of calls</span>
 		</template>
 		<template id="tweak-row">
 			<label>Wrapper group name</label>
@@ -74,19 +77,19 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<button class="help">⤵</button>
 			<div class="hits"></div>
 			<div class="explainer hidden_descr">
-				<div class="status"></div>
+				<span class="description"></span>
 				<p>
-					<span class="description"></span>
 					<div class="more"></div>
 				</p>
+				<div class="status"></div>
 			</div>
 		</template>
 
 
 			<section id="nbs_whitelist">
-				<p class="off_message">Network Boundary Shield is globally off.</p>
+				<p class="off_message" data-localize="NBSgloballyOff">Network Boundary Shield is globally off.</p>
 				<div class="switch_wrapper">
-						<label for="nbs-switch">Network Boundary Shield</label>
+						<label for="nbs-switch" data-localize="networkBoundaryShield">Network Boundary Shield</label>
 						<label class="switch">
 							<input id="nbs-switch" type="checkbox" checked>
 							<label for="nbs-switch" class="slider"></label>
@@ -96,9 +99,9 @@ SPDX-License-Identifier: GPL-3.0-or-later
 	   </section>
 
 		 <section id="fpd_whitelist">
-				<p class="off_message">Fingerprint Detector is globally off.</p>
+				<p class="off_message" data-localize="FPDgloballyOff">Fingerprint Detector is globally off.</p>
 				<div class="switch_wrapper">
-					<label for="fpd-switch">Fingerprint Detector</label>
+					<label for="fpd-switch" data-localize="fingerprintDetector">Fingerprint Detector</label>
 					<label class="switch">
 						<input id="fpd-switch" type="checkbox" checked>
 						<label for="fpd-switch" class="slider"></label>
@@ -106,7 +109,11 @@ SPDX-License-Identifier: GPL-3.0-or-later
 				</div>
 			</section>
 
-			<span id="severity_container" class="hidden">⤷ Likelihood that the page fingerprinted you: <button id="severity_value"></button></span>
+			<div id="severity_container" class="hidden">
+				<label for="severity_value" data-localize="FingerprintQualityLabel">⤷
+					Likelihood that the page fingerprinted you: </label>
+					<button id="severity_value"></button>
+			</div>
 
 	</content>
 </body>

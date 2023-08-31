@@ -51,29 +51,29 @@ class Browser:
     def define_test_level(self):
         sleep(1)
         self.driver.get(self._jsr_options_page)
-        self.driver.find_element_by_id('new_level').click()
+        self.driver.find_element("id", 'new_level').click()
         sleep(1)
-        self.driver.find_element_by_id('level_text').send_keys("4")
-        self.driver.find_element_by_id('level_id').send_keys("4")
-        self.driver.find_element_by_id('level_description').send_keys("Brave like protection")
-        self.driver.find_element_by_id('time_precision').click()
-        select_tpm = Select(self.driver.find_element_by_id("time_precision_precision"))
+        self.driver.find_element("id", 'level_text').send_keys("4")
+        self.driver.find_element("id", 'level_id').send_keys("4")
+        self.driver.find_element("id", 'level_description').send_keys("Brave like protection")
+        self.driver.find_element("id", 'time_precision').click()
+        select_tpm = Select(self.driver.find_element("id", "time_precision_precision"))
         select_tpm.select_by_index(1)
-        self.driver.find_element_by_id('htmlcanvaselement').click()
-        self.driver.find_element_by_id('audiobuffer').click()
-        self.driver.find_element_by_id('webgl').click()
-        self.driver.find_element_by_id('plugins').click()
-        self.driver.find_element_by_id('enumerateDevices').click()
-        select_em = Select(self.driver.find_element_by_id("enumerateDevices_method"))
+        self.driver.find_element("id", 'htmlcanvaselement').click()
+        self.driver.find_element("id", 'audiobuffer').click()
+        self.driver.find_element("id", 'webgl').click()
+        self.driver.find_element("id", 'plugins').click()
+        self.driver.find_element("id", 'enumerateDevices').click()
+        select_em = Select(self.driver.find_element("id", "enumerateDevices_method"))
         select_em.select_by_index(1)
-        self.driver.find_element_by_id('hardware').click()
-        select_hw = Select(self.driver.find_element_by_id("hardware_method"))
+        self.driver.find_element("id", 'hardware').click()
+        select_hw = Select(self.driver.find_element("id", "hardware_method"))
         select_hw.select_by_index(1)
-        self.driver.find_element_by_id('webworker').click()
-        self.driver.find_element_by_id('geolocation').click()
-        select_gl = Select(self.driver.find_element_by_id("geolocation_locationObfuscationType"))
+        self.driver.find_element("id", 'webworker').click()
+        self.driver.find_element("id", 'geolocation').click()
+        select_gl = Select(self.driver.find_element("id", "geolocation_locationObfuscationType"))
         select_gl.select_by_index(3)
-        self.driver.find_element_by_id('save').click()
+        self.driver.find_element("id", 'save').click()
 
     ## Find URL of JShelter option page after JShelter was installed to browser.
     def find_options_jsr_page_url(self):
@@ -85,11 +85,11 @@ class Browser:
         sleep(1)
         if self.type == BrowserType.FIREFOX:
             self.driver.get('about:memory')
-            self.driver.find_element_by_id('measureButton').click()
+            self.driver.find_element("id", 'measureButton').click()
             WebDriverWait(self.driver, 10).until(
                 ec.presence_of_element_located((By.ID, 'end0'))
             )
-            for elem in self.driver.find_elements_by_css_selector(
+            for elem in self.driver.find_elements("css_selector", 
                     'div#mainDiv div.outputContainer div.sections div.section:first-child > pre.entries > span.kids > '
                     'span.mrName'):
                 if 'id=jsr@javascriptrestrictor' in elem.text:
@@ -141,7 +141,7 @@ class Browser:
     @jsr_level.setter
     def jsr_level(self, level):
         self.driver.get(self._jsr_options_page)
-        self.driver.find_element_by_id('level-' + str(level)).click()
+        self.driver.find_element("id", 'level-' + str(level)).click()
         self.__jsr_level = level
         self.driver.get(get_config("testing_page"))
 
