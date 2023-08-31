@@ -2,6 +2,20 @@
 title: Release history
 ---
 
+## 0.14
+
+* Added support for internationalization, Czech translation added, see [blog post](/blog/i18n/) for
+  instrctions for translators
+* All texts revisited, clarified, and fixed grammar and typos
+* Improved performance of Canvas and Audio little-lies wrappers by executing in WebAssembly, there
+  will be a separate blog post with additional explanations. See the [bachelor thesis of Martin Zmitko](https://www.vut.cz/en/students/final-thesis/detail/147218) for more details.
+* Improved performance of FPD. See the [bachelor thesis of Martin Zmitko](https://www.vut.cz/en/students/final-thesis/detail/147218) for more details.
+* Expand description of the wrappers applied when the user interacts with the tweak GUI (suggested by the Plain Text UX review)
+* Make level names in main options section stable width
+* NSCL updated:
+ * Prevent dead object access on using backward/forward cache of the browser
+ * Fixed property/function mismatch
+
 ## 0.13
 
 Improve performance of the code injection. See the [bachelor thesis of Martin Zmitko](https://www.vut.cz/en/students/final-thesis/detail/147218) for more details.
