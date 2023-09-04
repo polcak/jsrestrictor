@@ -4,7 +4,7 @@ title: Release history
 
 ## 0.14
 
-* Added support for internationalization, Czech translation added, see [blog post](/blog/i18n/) for
+* Added support for internationalization, Czech translation added, see [blog post](/i18n/) for
   instrctions for translators
 * All texts revisited, clarified, and fixed grammar and typos
 * Improved performance of Canvas and Audio little-lies wrappers by executing in WebAssembly, there
