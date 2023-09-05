@@ -139,6 +139,15 @@
                 <li {% if pagename == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a></li>
                 {% endif %}
                 {% endfor %}
+                <li {% if 'i18n_developers' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/i18n_developers/">I18n</a></li>
+                <li><a href="https://pagure.io/JShelter/webextension">View source code</a></li>
+              </ul>
+            </li>
+            <li class="menu-heading">
+              <strong>Notes for translators</strong>
+              <ul>
+                <li {% if 'i18n' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/i18n/">Instructions</a></li>
+                <li><a href="https://hosted.weblate.org/projects/jshelter/">Translate at Weblate</a></li>
               </ul>
             </li>
           </ul>
