@@ -161,7 +161,7 @@
 		"description": "Displayed at various places"
 	},
 	"jssgroupTimePrecisionDescription2": {
-		"message": "Limit the precision of high-resolution time stamps $apis$. Timestamps provided by the Geolocation API are wrapped as well if you enable \"$jssgroupPhysicalLocationGeolocation$\" protection",
+		"message": "Limit the precision of high-resolution time stamps $apis$. Timestamps provided by the Geolocation API are wrapped as well if you enable \"$jssgroupPhysicalLocationGeolocation$\" protection.",
 		"description": "Displayed at various places",
 		"placeholders": {
 			"apis": {
@@ -341,7 +341,7 @@
 		"message": "Spoof hardware information on the amount of RAM and CPU count."
 	},
 	"jssgroupHardwareDescription2": {
-		"message": "Getters $apis$ return modified values",
+		"message": "Getters $apis$ return modified values.",
 		"placeholders": {
 			"apis": {
 				"content": "navigator.deviceMemory and navigator.hardwareConcurrency",

@@ -1271,11 +1271,11 @@
 		}
 	},
 	"NBSBlockedHostTitle": {
-		"message": "Štít pro ochranu hranice sítě zablokoval podezřelé požadavky!",
+		"message": "Štít pro ochranu hranice sítě zablokoval podezřelý stroj!",
 		"description": "Title of the notifications that is displayed when NBS blocks future requests by a host in Chromium-based browsers"
 	},
 	"NBSDetectedHostTitle": {
-		"message": "Štít pro ochranu hranice sítě detekoval podezřelé požadavky!",
+		"message": "Štít pro ochranu hranice sítě detekoval podezřelý stroj!",
 		"description": "Title of the notifications that is displayed when NBS detects suspicious requests by a host in Chromium-based browsers but does not block them because blocking is disabled"
 	},
 	"NBSBlockedHost": {
