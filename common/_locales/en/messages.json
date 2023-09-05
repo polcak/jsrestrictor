@@ -233,7 +233,7 @@
 		"description": "Try to keep reference to audio fingerprinting"
 	},
 	"jssgroupLocallyGeneratedAudioDescription2": {
-		"message": "Functions $apis$ return modified to audio data.",
+		"message": "Functions $apis$ return modified data.",
 		"placeholders": {
 			"apis": {
 				"content": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData(), and AnalyserNode.getFloatFrequencyData()",
