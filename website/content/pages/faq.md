@@ -551,8 +551,31 @@ allow users to opt-in to perform DNS resolution in NBS, which would be useful fo
 an HTTP proxy in their local network.
 If you have good arguments for changing the behaviour, please, share them with us.
 
+#### Can I translate the extension to a new language?
+
+Yes. Please see [instructions](/i18n/), go to [Weblate](https://hosted.weblate.org/projects/jshelter/) or translate the extension in the JSON files. If you want to start to translate a new language, we suggest that you let us know, for example, you can open
+an issue in the [issue tracker](https://pagure.io/JShelter/webextension/issues) or send us [e-mail](mailto:jshelter@gnu.org). If you are in doubt how to translate a string or do not understand its meaning, let us know in an [issue](https://pagure.io/JShelter/webextension/issues) or send us [e-mail](mailto:jshelter@gnu.org).
+
 #### What is the proper way to cite JShelter in a paper?
 
-For now, cite our [ArXiv paper](https://arxiv.org/abs/2204.01392), for example, by
-exporting the citation on ArXiv. We are working on other publications. We will update this answer
+Please cite *POLČÁK Libor, SALOŇ Marek, MAONE Giorgio, HRANICKÝ Radek and McMAHON Michael. JShelter: Give Me My Browser Back. In: Proceedings of the 20th International Conference on Security and Cryptography. Rome: SciTePress - Science and Technology Publications, 2023, pp. 287-294. ISBN 978-989-758-666-8.*
+
+<pre>
+@INPROCEEDINGS{JShelter,
+   author = "Libor Pol\v{c}\'{a}k and Marek Salo\v{n} and Giorgio Maone and Radek Hranick\'{y} and Michael McMahon",
+   title = "JShelter: Give Me My Browser Back",
+   pages = "287--294",
+   booktitle = "Proceedings of the 20th International Conference on Security and Cryptography",
+   year = 2023,
+   location = "Rome, IT",
+   publisher = "SciTePress - Science and Technology Publications",
+   ISBN = "978-989-758-666-8",
+   doi = "10.5220/0011965600003555",
+   language = "english",
+   url = "https://www.fit.vut.cz/research/publication/12716"
+}
+</pre>
+
+That paper has an extended version at [ArXiv paper](https://arxiv.org/abs/2204.01392).
+Please cite the published version if possible. We are working on other publications. We will update this answer
 in the future.
