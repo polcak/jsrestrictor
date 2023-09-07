@@ -1141,7 +1141,7 @@
 				"description": "Paragraph 2, please translate this text."
 			},
 			"paragraph3": {
-				"content": "Network Boundary Shield default behavior can be globally adjusted by the settings below. Network Boundary Shield can also be completely disabled per domain by the exception list. Domains can be allowed to make cross-network requests via <i>Network Boundary Shield switch</i> in the popup window or manually via the <i>Manage exception list</i> option. Remember that adding a domain to the exception list also allows its subdomains to make cross-network requests. To selectively deactivate Network Boundary Shield, insert the domains to the exception list (excluding \"www.\" but including all other domains, e.g. \".com\").",
+				"content": "Network Boundary Shield default behavior can be globally adjusted by the settings below. Network Boundary Shield can also be completely disabled per domain by the exception list. Domains can be allowed to make cross-network requests via <i>Network Boundary Shield switch</i> in the popup window or manually via the <i>Manage exception list</i> option. Remember that adding a domain to the exception list also allows its subdomains to make cross-network requests. To selectively deactivate Network Boundary Shield, insert the domains to the exception list (excluding \"www.\", but including all other domains, e.g. \".com\").",
 				"description": "Paragraph 3, please translate this text, note that <i>Manage exception list</i> refers to the ManageWhitelist string."
 			}
 		}
