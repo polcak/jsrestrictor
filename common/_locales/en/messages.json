@@ -564,7 +564,7 @@
 		"description": "coopschedule group"
 	},
 	"jssgroupCoopscheduleDescription": {
-		"message": "The Cooperative Scheduling or Background Tasks API can schedule background tasks such that they do not introduce delays to other high-priority tasks that share the same event loop.",
+		"message": "The Cooperative Scheduling of Background Tasks API can schedule background tasks such that they do not introduce delays to other high-priority tasks that share the same event loop.",
 		"description": "Try to keep the names of the APIs in English"
 	},
 	"jssgroupCoopscheduleDescription2": {
@@ -1341,7 +1341,7 @@
 		"description": "A label shown in options during configuaration of the parameters of FPD"
 	},
 	"fpdBehaviorBlockingDescription": {
-		"message": "Allow the extension to react whenever a page calls a high number of called APIs misusable for fingerprinting.",
+		"message": "Allow the extension to react whenever a page calls a high number of APIs misusable for fingerprinting.",
 		"description": "Text shown in options during configuaration of the parameters of FPD"
 	},
 	"fpdBehaviorBlockingDescription2": {
