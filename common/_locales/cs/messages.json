@@ -558,13 +558,12 @@
 	"jssgroupUserIdleRemoveDescription": {
 		"message": "Odstraní API."
 	},
-
 	"jssgroupCoopschedule": {
 		"message": "Plánovač úloh",
 		"description": "coopschedule group"
 	},
 	"jssgroupCoopscheduleDescription": {
-		"message": "API nazývané Cooperative Scheduling nebo také Background Tasks API může naplánovat výpočetně náročné úlohy na dobu, kdy nebudou způsobovat prodlevy detekovatelné uživatelem nebo v jiných úlohách sdílejících stejnou smyčku událostí.",
+		"message": "API Cooperative Scheduling patřící mezi API Background Tasks může naplánovat výpočetně náročné úlohy na dobu, kdy nebudou způsobovat prodlevy detekovatelné uživatelem nebo v jiných úlohách sdílejících stejnou smyčku událostí.",
 		"description": "Try to keep the names of the APIs in English"
 	},
 	"jssgroupCoopscheduleDescription2": {
@@ -1128,13 +1127,12 @@
 		"message": "Notifikace",
 		"description": "Displayed as a text label during NBS and FPD configuration when the user can activate or deactivate notifications"
 	},
-
 	"NBSDescription": {
 		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
 		"description": "This is the description of NBS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs.",
 		"placeholders": {
 			"paragraph1": {
-				"content": "Štít pro ochranu hranice sítě znemožňuje navštíveným stránkám zneužít prohlížeč jako mezičlánek mezi veřejným Internetem a lokální sítí. Podívejte se na náš <a href='https://jshelter.org/localportscanning/'>příspěvek na blogu</a> a <a href='https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf'>zprávu společnosti Force Point</a> pro příklady útoků, kterým  Štít pro ochranu hranice sítě brání. Štít pro ochranu hranice sítě využívá WebRequest API, takže zachycuje všechny odchozí požadavky.",
+				"content": "Štít pro ochranu hranice sítě znemožňuje navštíveným stránkám zneužít prohlížeč jako mezičlánek mezi veřejným Internetem a lokální sítí. Podívejte se na <a href='https://jshelter.org/localportscanning/'>náš příspěvek na blogu</a> a <a href='https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf'>zprávu společnosti Force Point</a> pro příklady útoků, kterým Štít pro ochranu hranice sítě brání. Štít pro ochranu hranice sítě využívá WebRequest API, takže zachycuje všechny odchozí požadavky.",
 				"description": "Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
 			},
 			"paragraph2": {
@@ -1341,7 +1339,7 @@
 		"description": "A label shown in options during configuaration of the parameters of FPD"
 	},
 	"fpdBehaviorBlockingDescription": {
-		"message": "Detektor reaguje na velké množství API zneužitelných pro tvorbu otisku prohlížeče volaných stránkou.",
+		"message": "Detektor reaguje na stránky volající velké množství API zneužitelných pro tvorbu otisku prohlížeče.",
 		"description": "Text shown in options during configuaration of the parameters of FPD"
 	},
 	"fpdBehaviorBlockingDescription2": {

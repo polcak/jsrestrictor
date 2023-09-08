@@ -1128,13 +1128,12 @@
 		"message": "Notifications",
 		"description": "Displayed as a text label during NBS and FPD configuration when the user can activate or deactivate notifications"
 	},
-
 	"NBSDescription": {
 		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
 		"description": "This is the description of NBS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs.",
 		"placeholders": {
 			"paragraph1": {
-				"content": "Network Boundary Shield prevents visited web pages from using the browser as a proxy between the public Internet and local network. See our <a href='https://jshelter.org/localportscanning/'>blog post</a> and <a href='https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf'>Force Point report</a> for examples of attacks handled by the Network Boundary Shield. The protection encapsulates the WebRequest API, so it captures all outgoing requests.",
+				"content": "Network Boundary Shield prevents visited web pages from using the browser as a proxy between the public Internet and local network. See <a href='https://jshelter.org/localportscanning/'>our blog post</a> and <a href='https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf'>Force Point report</a> for examples of attacks handled by the Network Boundary Shield. The protection encapsulates the WebRequest API, so it captures all outgoing requests.",
 				"description": "Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
 			},
 			"paragraph2": {
@@ -1142,7 +1141,7 @@
 				"description": "Paragraph 2, please translate this text."
 			},
 			"paragraph3": {
-				"content": "Network Boundary Shield default behavior can be globally adjusted by the settings below. Network Boundary Shield can also be completely disabled per domain by the exception list. Domains can be allowed to make cross-network requests via <i>Network Boundary Shield switch</i> in the popup window or manually via the <i>Manage exception list</i> option. Remember that adding a domain to the exception list also allows its subdomains to make cross-network requests. To selectively deactivate Network Boundary Shield, insert the domains to the exception list (excluding \"www,\" but including all other domains, e.g., \".com\").",
+				"content": "Network Boundary Shield default behavior can be globally adjusted by the settings below. Network Boundary Shield can also be completely disabled per domain by the exception list. Domains can be allowed to make cross-network requests via <i>Network Boundary Shield switch</i> in the popup window or manually via the <i>Manage exception list</i> option. Remember that adding a domain to the exception list also allows its subdomains to make cross-network requests. To selectively deactivate Network Boundary Shield, insert the domains to the exception list (excluding \"www\" but including all other domains, e.g., \".com\").",
 				"description": "Paragraph 3, please translate this text, note that <i>Manage exception list</i> refers to the ManageWhitelist string."
 			}
 		}
