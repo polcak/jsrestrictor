@@ -205,9 +205,10 @@ In this case, we could simply change the definition to something like:
 
 However, we have other complex cases where dividing the message into placeholders makes sense. For
 example, we suggest different rules for translating a part of the message, like API names.
-Currently, we do not see any acceptable solution to this problem. We keep using placeholders even if
-they are not correctly supported by Weblate but we might decide for a different solution if that
-complicate the life of translators too much.
+Hence, we created [scripts](https://pagure.io/JShelter/webextension/blob/main/f/tools/i18n) to help to synchronize the strings between the repository and Weblate so all strings can be translated in Weblate.
+A developer needs to manualy run the synchromization scripts. The expected order is to first
+propagate changes from Grammarly to main (or other branch) and after that propagate the changes from
+that branch in the repository to Weblate.
 
 ### Additional reading
 
