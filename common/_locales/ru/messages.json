@@ -802,7 +802,7 @@
 		}
 	},
 	"ButtonEdit": {
-		"message": "Изменить",
+		"message": "Редактировать",
 		"description": "A button caption that can be used generically by JShelter"
 	},
 	"ButtonSaveCustomLevel": {
@@ -1086,7 +1086,7 @@
 		"description": "This is the description of NBS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs.",
 		"placeholders": {
 			"paragraph1": {
-				"content": "Щит границ сети не дает веб-страницам использовать браузер как прокси между локальной сетью и Интернетом. Читайте наш <a href='https://jshelter.org/localportscanning/'>пост в блоге</a> и <a href='https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf'>отчет Force Point</a>, чтобы увидеть примеры атак, которым противостоит щит границ сети. Защита инкапсулирует WebRequest API и перехватывает все исходящие запросы.",
+				"content": "Network Boundary Shield не позволяет посещенным веб-страницам использовать браузер в качестве прокси-сервера между общедоступным Интернетом и локальной сетью. См. <a href='https://jshelter.org/localportscanning/'>наш блог</a> и <a href='https://www.forcepoint.com/sites/default/files/resources/files. /report-attacking-internal-network-en_0.pdf'>Отчет Force Point</a> с примерами атак, отраженных Network Boundary Shield. Защита инкапсулирует API веб-запросов, поэтому он фиксирует все исходящие запросы.",
 				"description": "Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
 			},
 			"paragraph2": {
@@ -1094,7 +1094,7 @@
 				"description": "Paragraph 2, please translate this text."
 			},
 			"paragraph3": {
-				"content": "Глобальное поведение щита границ сети по умолчанию можно настроить ниже. Щит границ сети также можно полностью отключить для конкретных доменов с помощью списка исключений. Доменам можно разрешить выполнение межсетевых запросов с помощью <i>переключателя щита границ сети</i> во всплывающем окне или вручную с помощью настройки <i>Управление списком исключений</i>. Имейте в виду, что добавление домена в белый список также разрешит его поддоменам выполнять межсетевые запросы. Для выборочного отключения щита границ сети добавьте домены в список исключений (исключая \"www.\", но включая все остальные, например \".com\").",
+				"content": "Поведение Network Boundary Shield по умолчанию можно глобально настроить с помощью настроек ниже. Network Boundary Shield также можно полностью отключить для каждого домена с помощью списка исключений. Доменам можно разрешить отправлять межсетевые запросы с помощью <i>переключателя Network Boundary Shield</i> во всплывающем окне или вручную с помощью параметра <i>Управление списком исключений</i>. Помните, что добавление домена в список исключений также позволяет его субдоменам выполнять межсетевые запросы. Чтобы выборочно отключить Network Boundary Shield, добавьте домены в список исключений (за исключением «www», но включая все остальные домены, например «.com»).",
 				"description": "Paragraph 3, please translate this text, note that <i>Manage exception list</i> refers to the ManageWhitelist string."
 			}
 		}
