@@ -50,7 +50,7 @@
         "nscl/common/uuid.js",
         "nscl/common/SyncMessage.js",
         "nscl/content/patchWindow.js",
-        "nscl/lib/sha256.js",
+        "lib/sha256.js",
         "alea.js",
         "crc16.js",
         "helpers.js",
