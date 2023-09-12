@@ -47,6 +47,8 @@ class __Config:
     firefox_jsr_extension = "<<JSR_project_root_directory_path>>/tests/common_files/JShelter/firefox.xpi"
     # Full path to Firefox ESR (default) profile.
     firefox_profile = "<<Firefox_ESR_default_profile>>"
+    # Firefox executable to start Firefox, redefine for example if you have a specific version for testing
+    firefox_binary_location = "firefox"
     # Full path to Chrome driver.
     chrome_driver = "<<JSR_project_root_directory_path>>/tests/common_files/webbrowser_drivers/chromedriver.exe"
     # Full path to JShelter package for Chrome (crx package).

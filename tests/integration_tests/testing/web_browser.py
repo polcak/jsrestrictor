@@ -115,7 +115,12 @@ class Browser:
         self.__jsr_level = 2
         self._jsr_options_page = ""
         if type == BrowserType.FIREFOX:
-            self.driver = webdriver.Firefox(firefox_profile=webdriver.FirefoxProfile(get_config("firefox_profile")),
+            from selenium.webdriver.firefox.options import Options as FirefoxOptions
+            options = FirefoxOptions()
+            firefox_binary_location = get_config("firefox_binary_location")
+            if firefox_binary_location:
+                options.binary_location = firefox_binary_location
+            self.driver = webdriver.Firefox(options=options, firefox_profile=webdriver.FirefoxProfile(get_config("firefox_profile")),
                                             executable_path=get_config("firefox_driver"))
             self.real = values_real.init(self.driver)
             self.driver.install_addon(get_config("firefox_jsr_extension"), temporary=True)
