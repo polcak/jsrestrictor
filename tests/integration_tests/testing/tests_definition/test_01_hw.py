@@ -46,6 +46,10 @@ def IOdevices(browser):
 
 ## Test device memory.
 def test_device_memory(browser, device, expected):
+	if browser.real.device.deviceMemory == None and device['deviceMemory'] == None:
+		return # This browser does not support deviceMemory so JShelter should not spoof that value
+	elif browser.real.device.deviceMemory == None:
+		assert device['deviceMemory'] == None
 	if expected.device.deviceMemory[browser.type] == 'SPOOF VALUE':
 		assert device['deviceMemory'] in expected.device.deviceMemory['valid_values']
 		assert device['deviceMemory'] <= browser.real.device.deviceMemory
