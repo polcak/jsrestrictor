@@ -89,8 +89,8 @@ class Browser:
             WebDriverWait(self.driver, 10).until(
                 ec.presence_of_element_located((By.ID, 'end0'))
             )
-            for elem in self.driver.find_elements("css_selector", 
-                    'div#mainDiv div.outputContainer div.sections div.section:first-child > pre.entries > span.kids > '
+            for elem in self.driver.find_elements(By.CSS_SELECTOR,
+                    'div#mainDiv div.outputContainer div.sections div.section:first-child > pre.entries   span.kids   '
                     'span.mrName'):
                 if 'id=jsr@javascriptrestrictor' in elem.text:
                     self._jsr_options_page = elem.text.split(',')[2].split('=')[1][:-1] + "options.html"
