@@ -2,6 +2,11 @@
 title: Release history
 ---
 
+## 0.15
+
+* Update NSCL to uses built-in and faster function to compute sha256.
+* Russian translation added.
+
 ## 0.14
 
 * Added support for internationalization, Czech translation added, see [blog post](/i18n/) for
