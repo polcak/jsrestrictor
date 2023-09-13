@@ -1,10 +1,10 @@
-# Instructions on how to run integration tests
+Title: Instructions on how to run integration tests
 
 JShelter's integration tests automatically verify that JShelter wraps the supported JavaScript APIs and does not affect other attributes. You need to set up your test environment before the first test run!
 
-# SET UP TEST ENVIRONMENT
+### SET UP TEST ENVIRONMENT
 
-## Install required programs and tools
+#### Install required programs and tools
 
 The integration tests depend on the following packages:
 * [Python 3.5+](https://www.python.org/downloads/)
@@ -16,7 +16,7 @@ The integration tests depend on the following packages:
 
 A [web browser driver](#webdrivers) selects the installed version of the web browser. One option is to install only a single version of each browser. The web browser's profiles must not have JShelter installed. The testing script installs JShelter by itself. We suggest that you use a separate profile for testing.
 
-### How to install Mozilla Firefox on Linux
+##### How to install Mozilla Firefox on Linux
 
 We recommend downloading Firefox binaries from the [ESR](https://www.mozilla.org/en-US/firefox/all/#product-desktop-esr), [Developer](https://www.mozilla.org/en-US/firefox/developer/), or [Nightly](https://www.mozilla.org/en-US/firefox/channel/desktop/#nightly) channels to a local directories. Set `firefox_binary_location` in the test configuration accordingly.
 
@@ -28,7 +28,7 @@ sudo apt-get update
 sudo apt-get install firefox-esr
 ```
 
-## Setup web browsers
+#### Setup web browsers
 
 Open Mozilla Firefox ESR and change preference `xpinstall.signatures.required` to `false` in the Firefox Configuration Editor (`about:config` page).
 You can follow [official Mozilla support](https://support.mozilla.org/en-US/kb/add-on-signing-in-firefox#w_what-are-my-options-if-i-want-to-use-an-unsigned-add-on-advanced-users).
@@ -37,7 +37,7 @@ Open [testing page](https://polcak.github.io/jsrestrictor/test/test.html) and cl
 
 The default configuration of Google Chrome is sufficient for integration tests, so the Chrome settings do not need to be changed.
 
-## Download web browser drivers
+#### Download web browser drivers
 <a name="webdrivers"></a>
 
 Selenium needs web browser drivers to control the browser. If the Selenium drivers are not in your package repository or you do not want to use drivers from your repository, download the web browser drivers for your web browsers - Google Chrome and Mozilla Firefox - and your platform - Windows and Linux.
@@ -50,13 +50,13 @@ Download the GeckoDriver from [download page](https://github.com/mozilla/geckodr
 Select the version corresponding to the version of your Mozilla Firefox web browser (typically the newest version).
 Download the correct GeckoDriver to folder `../common_files/webbrowser_drivers` with the name `geckodriver.exe` (for Windows) or `geckodriver` (for Linux). If you download an incompatible version, you will see an error during starting tests.
 
-## Integration tests' configuration
+#### Integration tests' configuration
 
 You can change selected browsers, their profiles, and tested JShelter levels by modifying the file `./testing/configuration.py`.
 
-# RUN TESTS
+### RUN TESTS
 
-## on Windows OS
+#### on Windows OS
 
 1. Install Windows Subsystem for Linux (WSL): https://docs.microsoft.com/en-us/windows/wsl/install-win10.
 
@@ -76,7 +76,7 @@ If the script does not find the needed files in the default locations, it prompt
 When script execution starts for the first time, OS Windows may ask you to allow Firewall Exception for this script (for Python). Click *Allow*.
 
 
-## on Linux OS
+#### on Linux OS
 
 Open Terminal in folder *integration_tests* and run command: `./start_integration_tests.sh`
 

@@ -1,6 +1,6 @@
-# Run unit tests
+Title: Instructions on how to run unit tests
 
-## on Linux
+#### on Linux
 
 1. Install NodeJS ([https://nodejs.org]()).
 2. Install `jq` and another necessary tools (e.g. `sed`).
@@ -8,21 +8,21 @@
 4. Run `npm install`.
 5. Run `npm test`.
 
-## on Windows
+#### on Windows
 
 1. Install Windows Subsystem for Linux (WSL): https://docs.microsoft.com/en-us/windows/wsl/install-win10.
 2. Convert EOL in the script *./start_unit_tests.sh* from Windows (CR LF) to Unix (LF) - you can use the tool `dos2unix` in WSL to convert CR LF to LF.
 3. Follow the instructions for Linux. Install NodeJS and run the following commands in WSL.
 
-# Developer documentation
+### Developer documentation
 
-## The framework
+#### The framework
 
 The test cases are based on top of Jasmine framework. `start_unit_tests.sh` preprocesses the files
 using shell commands. Use `bash` if in doubt. Patches for other shells might be accepted but will
 probably not be supported by the core team.
 
-## Structure
+#### Structure
 
 The test cases are stored in the `tests` directory. The file names typically mirror the tested files
 in the `common` webextension directory with the suffix `_tests.js`. Each file and its requirements
@@ -118,7 +118,7 @@ Note that the preprocessor (`start_unit_tests.sh`) modifies the files under test
 test cases according to the instuctions in `global.json`. The files are temporarily stored in the
 `tmp` directory.
 
-## Add new unit tests if a test set already exists
+#### Add new unit tests if a test set already exists
 
 If a test set already exists for the target modul (e.g. a test set *background_tests.js* for the *background.js* file),
 you can add your own tests to the test script (e.g. to the *background_tests.js* file).
@@ -127,7 +127,7 @@ You may need to update the requirements in the global configuration (*./config/g
 Open the global configuration file for editing and find the configuration of the target script (according to the `name` property).
 Add the necessary requirements to the `src_script_requirements` and `test_script_requirements` sections.
 
-## Add new unit tests if a test set does not already exists
+#### Add new unit tests if a test set does not already exists
 
 If a test set does not already exists for the target modul (e.g. a test set *background_tests.js* for the *background.js* file),
 create new file (e.g. *background_tests.js* file) in the *./tests* directory.

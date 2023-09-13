@@ -140,6 +140,8 @@
                 {% endif %}
                 {% endfor %}
                 <li {% if 'i18n_developers' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/i18n_developers/">I18n</a></li>
+                <li {% if 'unit_tests' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/unit_tests/">Unit tests</a></li>
+                <li {% if 'integration_tests' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/integration_tests/">Integration tests</a></li>
                 <li><a href="https://pagure.io/JShelter/webextension">View source code</a></li>
               </ul>
             </li>
