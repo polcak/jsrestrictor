@@ -136,7 +136,7 @@ level1 = TestedValues(
     speed={'value': 'REAL VALUE',
            'accuracy': 100},
     timestamp={'value': 'REAL VALUE',
-               'accuracy': 0.01},
+               'accuracy': 0.001},
     device_memory={BrowserType.FIREFOX: None,
                    BrowserType.CHROME: 'SPOOF VALUE',
                    'valid_values': {0.25,0.5,1,2,4,8,16,32,64,128,256,512,1024}},
