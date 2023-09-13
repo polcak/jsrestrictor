@@ -102,6 +102,7 @@ level0 = TestedValues(
     webgl_precisions = 'REAL VALUE',
     webgl_pixels = 'REAL VALUE',
     webgl_dataURL = 'REAL VALUE',
+    worker = 'REAL VALUE',
     methods_toString='REAL VALUE'
 )
 
@@ -168,6 +169,7 @@ level1 = TestedValues(
     webgl_precisions = 'REAL VALUE',
     webgl_pixels = 'REAL VALUE',
     webgl_dataURL = 'REAL VALUE',
+    worker = 'REMOVED',
     methods_toString='REAL VALUE'
 )
 
@@ -234,6 +236,7 @@ level2 = TestedValues(
     webgl_precisions = 'REAL VALUE',
     webgl_pixels = 'SPOOF VALUE',
     webgl_dataURL = 'SPOOF VALUE',
+    worker = 'DISABLED',
     methods_toString='REAL VALUE'
 )
 
@@ -290,5 +293,6 @@ level3 = TestedValues(
     webgl_precisions = 'ZERO VALUE',
     webgl_pixels = 'SPOOF VALUE',
     webgl_dataURL = 'SPOOF VALUE',
+    worker = 'REMOVED',
     methods_toString='REAL VALUE'
 )
