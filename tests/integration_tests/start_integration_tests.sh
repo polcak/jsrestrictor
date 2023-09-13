@@ -77,6 +77,9 @@ FFProfilesItemsNumber=$(ls -dq ${FFProfiles}/*default-esr* | wc -l)
 set -euo pipefail
 if [ $FFProfilesItemsNumber == 1 ]; then
 	FFProfile=$(ls -dq ${FFProfiles}/*default-esr*)
+elif [ `grep "<<Firefox_ESR_default_profile>>" ./testing/configuration.py | wc -l` -eq 0 ]; then
+	# Profile already set
+	FFProfile="config"
 else
 	read -p 'Enter path into Firefox ESR default profile directory. It is typically /home/<username>/.mozilla/firefox/<profilename>.default-esr: ' FFProfile
 	ls -dq ${FFProfile}

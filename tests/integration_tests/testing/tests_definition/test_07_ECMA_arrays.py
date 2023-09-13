@@ -347,7 +347,10 @@ def test_OneBufferMoreViews(browser):
     check(browser, "typedArray[0]", "dataView.getInt8(0)")
 
 @pytest.mark.xfail(get_shared_browser().type == BrowserType.CHROME, reason="See https://pagure.io/JShelter/webextension/issue/80")
-def test_worker_basic(browser):
+def test_worker_basic(browser, expected):
+    if expected.worker == "REMOVED":
+        check(browser, "Worker", "undefined")
+        return
     browser.execute_script('var worker = new Worker("");')
     check(browser, "worker.onmessage", "null")
     check(browser, "worker.onerror", "null")

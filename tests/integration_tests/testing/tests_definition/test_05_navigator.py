@@ -107,8 +107,19 @@ def test_oscpu(browser, navigator, expected):
     else:
         assert navigator['oscpu'] == expected.navigator.oscpu
 
+# See https://developer.mozilla.org/en-US/docs/Web/API/Navigator/plugins
+LIVING_STANDARD_PLUGINS = [
+            {'description': 'Portable Document Format', 'filename': 'internal-pdf-viewer', 'name': 'PDF Viewer'},
+            {'description': 'Portable Document Format', 'filename': 'internal-pdf-viewer', 'name': 'Chrome PDF Viewer'},
+            {'description': 'Portable Document Format', 'filename': 'internal-pdf-viewer', 'name': 'Chromium PDF Viewer'},
+            {'description': 'Portable Document Format', 'filename': 'internal-pdf-viewer', 'name': 'Microsoft Edge PDF Viewer'},
+            {'description': 'Portable Document Format', 'filename': 'internal-pdf-viewer', 'name': 'WebKit built-in PDF'},
+        ]
+
 ## Test plugins count
 def test_plugins_count(browser, navigator, expected):
+    if navigator['plugins'] == LIVING_STANDARD_PLUGINS and browser.real.navigator.plugins == LIVING_STANDARD_PLUGINS:
+        return # JShelter should not modify the plugins that are the same in all conformant browsers
     if expected.navigator.plugins['count'][browser.type] == 'IGNORE':
         return
     elif expected.navigator.plugins['count'][browser.type] == 'REAL VALUE':
@@ -120,6 +131,8 @@ def test_plugins_count(browser, navigator, expected):
 
 ## Test plugins array value
 def test_plugins(browser, navigator, expected):
+    if navigator['plugins'] == LIVING_STANDARD_PLUGINS and browser.real.navigator.plugins == LIVING_STANDARD_PLUGINS:
+        return # JShelter should not modify the plugins that are the same in all conformant browsers
     if expected.navigator.plugins['count'][browser.type] == 'IGNORE':
         return
     elif expected.navigator.plugins['value'][browser.type] == 'REAL VALUE':
@@ -129,8 +142,18 @@ def test_plugins(browser, navigator, expected):
     else:
         assert navigator['plugins'] != browser.real.navigator.plugins
 
+# See https://developer.mozilla.org/en-US/docs/Web/API/Navigator/mimeTypes
+LIVING_STANDARD_MIME_TYPES = [
+            {'description': 'Portable Document Format', 'enabledPlugin': 'PDF Viewer', 'suffixes':
+             'pdf', 'type': 'application/pdf'},
+            {'description': 'Portable Document Format', 'enabledPlugin': 'PDF Viewer', 'suffixes':
+             'pdf', 'type': 'text/pdf'},
+        ]
+
 ## Test mimeTypes
 def test_mime_types(browser, navigator, expected):
+    if navigator['mimeTypes'] == LIVING_STANDARD_MIME_TYPES and browser.real.navigator.mimeTypes == LIVING_STANDARD_MIME_TYPES:
+        return # JShelter should not modify the plugins that are the same in all conformant browsers
     if expected.navigator.mimeTypes == 'IGNORE':
         return
     elif expected.navigator.mimeTypes == 'EMPTY':

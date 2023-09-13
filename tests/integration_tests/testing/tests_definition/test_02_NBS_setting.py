@@ -46,8 +46,7 @@ def test_switching_NBS(browser):
     if browser.type == BrowserType.CHROME:
         # Not able to test NBS switch in Google Chrome.
         # Can not show popup.html in Chrome. Popup.html is not accesible and testable.
-        assert True
-        return()
+        return
     NBS_setting_values = ['"ON"', '"OFF"']
     
     original_setting = get_NBS_setting(browser)

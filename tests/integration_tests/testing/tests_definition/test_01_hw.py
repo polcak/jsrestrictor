@@ -25,6 +25,7 @@ import pytest
 
 from values_getters import get_device, get_IOdevices
 
+from configuration import get_config
 
 ## Setup method - it is run before hw tests execution starts.
 #
@@ -41,11 +42,22 @@ def device(browser):
 #  this variable is provided to device tests and values in IOdevices variable are compared with expected values.
 @pytest.fixture(scope='module', autouse=True)
 def IOdevices(browser):
+    # 2023-09-13: loading of the testing_page added due to Firefox reporting ReferenceError: can't
+    # access lexical declaration 'unX' before initialization patchWindow.js line 60 >
+    # Function:199:7.
+    # The error is not reproducible in browser without selenium. The error is not there during
+    # browser.jsr_level setter. The error only appears during the test initialization in start.py
+    # during pytest.main. The error goes away after page reload.
+	browser.driver.get(get_config("testing_page"))
 	return get_IOdevices(browser.driver)
 
 
 ## Test device memory.
 def test_device_memory(browser, device, expected):
+	if browser.real.device.deviceMemory == None and device['deviceMemory'] == None:
+		return # This browser does not support deviceMemory so JShelter should not spoof that value
+	elif browser.real.device.deviceMemory == None:
+		assert device['deviceMemory'] == None
 	if expected.device.deviceMemory[browser.type] == 'SPOOF VALUE':
 		assert device['deviceMemory'] in expected.device.deviceMemory['valid_values']
 		assert device['deviceMemory'] <= browser.real.device.deviceMemory

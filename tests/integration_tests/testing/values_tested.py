@@ -150,6 +150,9 @@ class TestedValues:
                  webgl_precisions,
                  webgl_pixels,
                  webgl_dataURL,
+
+                 worker,
+
                  methods_toString
                  ):
         self.navigator = Navigator(
@@ -202,4 +205,5 @@ class TestedValues:
         self.webgl_precisions = webgl_precisions
         self.webgl_pixels = webgl_pixels
         self.webgl_dataURL = webgl_dataURL
+        self.worker = worker
         self.methods_toString = methods_toString

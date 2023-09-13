@@ -57,14 +57,14 @@ def get_position(driver):
             position[property[0].lower()] = property[1]
     except:
         # return empty position in case of error (like Chromium not supporting the API)
-        position['timestamp'] = 0
-        position['accuracy'] = 0
-        position['altitude'] = 0
-        position['altitudeaccurac'] = 0
-        position['heading'] = 0
-        position['latitude'] = 0
-        position['longitude'] = 0
-        position['speed'] = 0
+        position['timestamp'] = "null"
+        position['accuracy'] = "null"
+        position['altitude'] = "null"
+        position['altitudeaccurac'] = "null"
+        position['heading'] = "null"
+        position['latitude'] = "null"
+        position['longitude'] = "null"
+        position['speed'] = "null"
         position['invalid'] = True
     return position
 

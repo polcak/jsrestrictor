@@ -28,3 +28,4 @@ wasm/node_modules
 
 website/output
 website/content/wrappers/*
+website/content/pages/*_tests.md

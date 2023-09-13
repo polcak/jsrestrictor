@@ -53,6 +53,8 @@ extract:
 	$(ACTIVATE); python extract_comments.py
 
 html: extract
+	cp ../tests/integration_tests/README.md content/pages/integration_tests.md
+	cp ../tests/unit_tests/README.md content/pages/unit_tests.md
 	mkdir -p output/ output/.well-known/
 	cp -r theme/favicon.ico output/
 	cp -r theme/security.txt output/.well-known/
