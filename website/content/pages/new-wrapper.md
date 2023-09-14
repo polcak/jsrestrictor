@@ -239,7 +239,7 @@ Of course the wrappers need to be compiled to JavaScript before inserting the co
 
 See `levels.js` and its list `wrapping_groups.groups`. Once you add your wrapper to an existing group or create a new group, the wrapper becomes available in the built-in levels containing the group and in the GUI for custom levels.
 
-## Describe the wrapper for Doygen documentation
+## Describe the wrapper for Doxygen documentation
 
 Describe what the wrapper tries to accomplish and its approach:
 
