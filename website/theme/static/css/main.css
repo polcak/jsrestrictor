@@ -912,4 +912,8 @@ p.download-buttons {
     border-top: 1px solid var(--light-text-color);
   }
 
+	img {
+		background-color: white;
+	}
+
  }
