@@ -31,13 +31,13 @@ tools](#interactions-between-jshelter-and-other-similar-tools) for possible cave
 Test your browser on common fingerprinting testers. Then, use the `Strict` level
 and test again to see that it considerably lowers the information about your computer:
 
-* [JShelter test page](https://polcak.github.io/jsrestrictor/test/test.html)
-* [Am I unique?](https://amiunique.org/)
 * [EFF Cover your tracks](https://coveryourtracks.eff.org/)
+* [Am I unique?](https://amiunique.org/)
 * [Audio and font fingerprinting](https://audiofingerprint.openwpm.com/)
 * [Device info](https://www.deviceinfo.me/)
 * [Bromite](https://www.bromite.org/detect)
 * [Browser leaks](https://browserleaks.com/)
+* [JShelter test page](https://polcak.github.io/jsrestrictor/test/test.html)
 
 At the same time, we are aware of several JShelter
 [bugs and issues](https://pagure.io/JShelter/webextension/issues/).
