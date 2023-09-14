@@ -555,7 +555,7 @@ an issue in the [issue tracker](https://pagure.io/JShelter/webextension/issues) 
 
 Please cite *POLČÁK Libor, SALOŇ Marek, MAONE Giorgio, HRANICKÝ Radek and McMAHON Michael. JShelter: Give Me My Browser Back. In: Proceedings of the 20th International Conference on Security and Cryptography. Rome: SciTePress - Science and Technology Publications, 2023, pp. 287-294. ISBN 978-989-758-666-8.*
 
-<pre>
+```
 @INPROCEEDINGS{JShelter,
    author = "Libor Pol\v{c}\'{a}k and Marek Salo\v{n} and Giorgio Maone and Radek Hranick\'{y} and Michael McMahon",
    title = "JShelter: Give Me My Browser Back",
@@ -569,7 +569,7 @@ Please cite *POLČÁK Libor, SALOŇ Marek, MAONE Giorgio, HRANICKÝ Radek and Mc
    language = "english",
    url = "https://www.fit.vut.cz/research/publication/12716"
 }
-</pre>
+```
 
 That paper has an extended version at [ArXiv paper](https://arxiv.org/abs/2204.01392).
 Please cite the published version if possible. We are working on other publications. We will update this answer
