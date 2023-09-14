@@ -32,7 +32,7 @@ maintained extension. However, we do not have sufficient tests for the functiona
 
 ### 4. Evaluation and porting of code from Brave
 
-Brave browser currently implements anti-fingerprinting techniques that aim at providing white lies
+Brave browser currently implements anti-fingerprinting techniques that aim at providing little lies
 about the browser environment. We want to evaluate the messures and select techniques that are
 suitable for JShelter.
 

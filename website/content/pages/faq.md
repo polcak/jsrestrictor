@@ -239,13 +239,13 @@ DNS-blocking resolver returns `127.0.0.1` and `::1`. Please reconfigure the reso
 
 ### Browser fingerprinting
 
-#### What is the white lies approach to protect from fingerprinters?
+#### What is the little lies approach to protect from fingerprinters?
 
 Please see [the blog post](/farbling/).
 
-#### What is the difference between the white lies approach to protect from fingerprinters and farbling?
+#### What is the difference between the little lies and white lies approach to protect from fingerprinters and farbling?
 
-None. Both refer to the same technique [that is explained in another question](#what-is-the-white-lies-approach-to-protect-from-fingerprinters).
+None. All refer to the same technique [that is explained in another question](#what-is-the-little-lies-approach-to-protect-from-fingerprinters).
 
 #### What JShelter configuration should I pick?
 
@@ -269,7 +269,7 @@ JShelter provides different lies on different domains, so cross-domain linking i
 But remember that a single domain can link all your activities during a browser session.
 If you do not want JShelter to generate the random strings, use `Strict` protection (but see [other FAQ entries](#browser-fingerprinting)).
 
-We are [considering](https://pagure.io/JShelter/webextension/issue/68) adding better control for the white lies approach.
+We are [considering](https://pagure.io/JShelter/webextension/issue/68) adding better control for the little lies approach.
 
 We are also [considering](https://pagure.io/JShelter/webextension/issue/69) replacing the random strings of the Web GL API with real-world strings. However, we do not have such a database. We are also worried about creating inconsistencies if we apply invalid combinations of real-world strings. As creating the real-world database would take a lot of time, and a dedicated fingerprinter might reveal the inconsistencies anyway, we do not actively work on the issue.
 
@@ -466,7 +466,7 @@ fingerprintable by a focused or advanced fingerprinter.
 Let us see an example. Suppose that you install an extension A that modifies the content of the
 canvas element. As JShelter modifies only data during reading from canvas, it will apply its
 countermeasures after the countermeasures of A. In `Strict` level, it will override all
-modifications by A. The white lies approach would slightly modify the modifications of A. That would
+modifications by A. The little lies approach would slightly modify the modifications of A. That would
 likely be pointless or even counterproductive.
 
 Now, consider another extension B that modifies the read data as well. Both extensions try to change the same APIs, which likely creates a race condition on which defense mechanism wins. If it is indeed the race condition, you may be fingerprintable better as the one who uses both B and JShelter or less because the fingerprinter sees different fingerprints. Which one is correct depends on how smart and focused the fingerprinter is.
