@@ -1,5 +1,7 @@
 Title: Credits
 
+[TOC]
+
 ### Developers
 
 **[Libor Polčák](https://www.fit.vutbr.cz/~polcak)** was behind an idea to implement a webextension that works as a firewall for JavaScript APIs. He is the current main maintainer. He received support for this project through the <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> project of NGI0 PET Fund, a fund established by NLnet with financial support from the European Commission's Next Generation Internet programme, under the aegis of DG Communications Networks, Content and Technology under grant agreement No 825310. He supervised/supervises diploma theses that improve the web extension.
@@ -47,3 +49,4 @@ We borrowed code from other free software projects:
 * [Typed array polyfill](https://github.com/inexorabletash/polyfill/blob/master/typedarray.js),
 	Copyright (c) 2010, Linden Research, Inc., Copyright (c) 2014, Joshua Bell
 * [PRNG Alea](https://github.com/nquinlan/better-random-numbers-for-javascript-mirror) by (C) 2010 Johannes Baagøe
+* [JS-sha256](https://github.com/emn178/js-sha256) by (C) Chen, Yi-Cyuan

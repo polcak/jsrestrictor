@@ -123,7 +123,7 @@ Advanced users can change JSS level:
 
 1. Spoofing API call results takes some resources. If you see that the page does not try to fingerprint you, you might want to disable all fingerprinting protection.
 2. Click the `Modify` button next to the JavaScript Shield label.
-3. Select `Turn fingerprinting protection off level`. This will keep security-related wrappers, but all fingerprinting protection will be disabled.
+3. Select `Turn fingerprinting protection off level`. This will keep security-related [wrappers](#what-is-a-wrapper), but all fingerprinting protection will be disabled.
 
 ![Turn JSS fingerprinting protection off](/images/faq/jss_low.png)
 
@@ -361,6 +361,28 @@ In essence, Web Workers are a threat to JShelter users for two reasons:
 For more details, see [Web Worker
 documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers), the [explanation of using Web Workers as Man-In-The-Middle proxy](https://betterprogramming.pub/man-in-the-middle-attacks-via-javascript-service-workers-52647ac929a2), papers like [Assessing the threat of web worker distributed attacks](https://www.researchgate.net/publication/313953354_Assessing_the_threat_of_web_worker_distributed_attacks), and other [works](http://www.diva-portal.se/smash/get/diva2:1218197/FULLTEXT01.pdf).
 
+#### What is Network Boundary Shield (NBS)?
+
+Your browser can be instructed by the creators of the visited page (or malicious actors that
+successfully inserted their code into the visited page) to act as an intermediary device that
+creates connections to other devices in the network. NBS detects and prevents such attacks, see its
+[dedicated page](/nbs/) and our [blog post](/localportscanning/) for more information.
+
+#### My device has a lot of sensors. Are these accessible by web pages? Does JShelter help me?
+
+Depending on your browser and your settings, web pages can read sensors leading to various attacks
+that include revealing hidden information, and fingerprinting. JShelter [deals with
+sensors](/sensorapi/).
+
+#### Does JShelter help me against attacks exploiting hardware faults?
+
+Yes, JShelter modifies all timestamps, which limits the precision of time measurements. JShelter
+rounds the timestamps and adds random number of milliseconds to the rounded value, preserving the
+monotony of the timestamps. The modifications also remove the possibility of [detecting clock
+skew](https://www.jucs.org/jucs_21_9/clock_skew_based_computer/jucs_21_09_1210_1233_polcak.pdf)
+of your device quickly. See [our paper](#what-is-the-proper-way-to-cite-jshelter-in-a-paper) for
+more details.
+
 #### Does JShelter protect my IP address?
 
 No, and it never will. You need to find a VPN, Tor, or a similar technique to hide your IP address.
@@ -480,7 +502,7 @@ You can also use the "Turn fingerprinting protection off" built-in level to keep
 non-fingerprinting countermeasures. You can also turn JSS off and benefit from FPD and NBS.
 
 JShelter includes advanced techniques through [NSCL](https://noscript.net/commons-library) to inject
-API wrappers in time and reliably. Other extensions might not apply their protection reliably. See
+API [wrappers](#what-is-a-wrapper) in time and reliably. Other extensions might not apply their protection reliably. See
 also [the question](#i-saw-several-extensions-that-claim-that-it-is-not-possible-to-modify-the-javascript-environment-reliably-are-you-aware-of-the-firefox-bug-1267027) on [Firefox bug 1267027](https://bugzilla.mozilla.org/show_bug.cgi?id=1267027).
 
 Most other tools focus on [homogeneous fingerprints](/fingerprinting/). By running the `Recommended`
@@ -568,7 +590,64 @@ through. So it is easy for an attacker to bypass NBS. In practice, we know about
 not change domain names (for example, see [our blog](/localportscanning/)). So we keep the NBS in
 Chromium-based browsers, even though it is not perfect.
 
+#### Do you support Firefox for Android?
+
+We tested JShelter in Firefox for Android in the past and it worked as expected. We do not test
+JShelter in Firefox for Android regularly but a volunteer that tracks the status of JShelter in
+Firefox for Android is welcomed.
+
+##### I cannot see JShelter listed in the addons supported by Firefox for Android.
+
+For whatever reason, Mozilla decided to only present [a small number of curated extensions](https://support.mozilla.org/en-US/kb/find-and-install-add-ons-firefox-android) in their mobile application by default. There are some great extensions there like uBlock Origin, NoScript, and DarkReader, but JShelter was not one of them.
+
+You should be able to workaround the limitations by creating a [collection with JShelter](https://www.androidpolice.com/install-add-on-extension-mozilla-firefox-android/).
+
+A change in the policy of the default extensions listed by Addons Mozilla.org is out of our control.
+
 ### Other questions
+
+#### What is a wrapper?
+
+Wrapper is typically a small block of code that JShelter attach to some of the APIs offered by the
+browser. These code typically reads the original value to modify that before returning to the
+caller. Page scripts cannot side-step the wrappers to get direct access to the original API.
+Nevertheless, see the [question on reliable JavaScript environment modifications](#i-saw-several-extensions-that-claim-that-it-is-not-possible-to-modify-the-javascript-environment-reliably-are-you-aware-of-the-firefox-bug-1267027).
+
+#### What is WebAssembly speed-up?
+
+In 2023, we improved the speed of some code inside JShelter. Some of the
+[wrappers](#what-is-a-wrapper) were reimplemented in WebAssembly with the focus on providing the
+same results as the original JavaScript-only wrappers.
+
+Unless hit by Chrome-bug that
+prevents injecting WebAssembly wrappers to some pages, WebAssembly wrappers are enabled by default.
+We suggest that you keep WebAssembly wrappers activated. However, you can turn off WebAssembly
+speed-up and return to JavaScript-only wrappers.
+
+#### I am a web developer, can JShelter help me?
+
+Possibly yes.
+
+First of all, you can use [FPD and its reports](/fpd/) to learn the APIs that your page calls. Of
+course, FPD focuses on APIs that are often misused during browser fingerprinting, so that you learn
+only some APIs.
+
+You can create JSS levels that remove some functionality like geolocation, workers, or access to
+sensor API to test that your page handles such browsers.
+
+#### I am a data protection officer or I work for a data protection agency. Can JShelter help me?
+
+Yes. Change JShelter configuration to passive mode:
+
+1. *Turn JavaScript Shield off*,
+2. disable blocking behaviour of [NBS](/nbs/) but keep the notifications,
+3. set [FPD](/fpd/) to passive, keep the notifications on, and depending on your use case, set the
+   detection mode to *default* or *strict*.
+
+Compare the information provided by NBS and FPD in notifications and [FPD report](/fpd/) to the
+information in the privacy policy of the tested website.
+
+[Let us know](mailto:jshelter@gnu.org) about any question or experience.
 
 #### What is the proper way to cite JShelter in a paper?
 

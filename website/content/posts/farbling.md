@@ -9,6 +9,10 @@ Another issue that hinders fingerprinting protection is the ever-changing variet
 
 Due to fingerprinting scripts being [more prevalent](https://www.cs.princeton.edu/~arvindn/publications/OpenWPM_1_million_site_tracking_measurement.pdf), various web browsers - for example, Tor, Brave, and Firefox - started implementing fingerprinting protection to protect users and their privacy.
 
+This post contains:
+
+[TOC]
+
 ## Brave fingerprinting protection
 
 Why is Brave's Farbling special? Until recently, [Tor browser](https://2019.www.torproject.org/projects/torbrowser/design/#fingerprinting-linkability) had the most robust defence against fingerprinting. It (1) implemented modifications in various APIs, (2) blocks some other APIs, (3) runs in a window of predefined size, etc. to ensure all users have the same fingerprint. This approach is very effective at producing uniform fingerprint for all users, which makes it difficult for fingerprinters to differentiate between browsers. Still, such fingerprint is also brittle -- minor changes like resizing the window could cause the browser to have a unique fingerprint. Hence, users need to follow inconvenient steps to keep their fingerprint uniform.

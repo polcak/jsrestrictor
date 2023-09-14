@@ -2,6 +2,8 @@ Title: How to write a new wrapper
 
 The primary focus of jShelter is to provide security and privacy oriented wrappers of JavaScript APIs. As some of the code is very similar for each wrapper, we use a unified approach to describe wrappers. The approach is described below. This approach also helps to automatically modify `toString` conversions of the wrapped APIs, i.e. a correctly written wrapper creates a modified function but `wrapper.toString()` returns the original string.
 
+[TOC]
+
 ## File structure
 
 * `wrapping.js` provides main facilities for interacting with specific wrappers:
@@ -237,7 +239,7 @@ Of course the wrappers need to be compiled to JavaScript before inserting the co
 
 See `levels.js` and its list `wrapping_groups.groups`. Once you add your wrapper to an existing group or create a new group, the wrapper becomes available in the built-in levels containing the group and in the GUI for custom levels.
 
-## Describe the wrapper for Doygen documentation
+## Describe the wrapper for Doxygen documentation
 
 Describe what the wrapper tries to accomplish and its approach:
 
@@ -281,6 +283,5 @@ Describe what the wrapper tries to accomplish and its approach:
 
 ## Write unit tests or integration tests for the wrapper
 
-Follow instructions for [unit testing](https://pagure.io/JShelter/webextension/blob/main/f/tests/unit_tests/README.md) and
-[integration testing](https://pagure.io/JShelter/webextension/blob/main/f/tests/integration_tests/README.md) (see the `tests` directory in the
-repository).
+Follow instructions for [unit testing](/unit_tests/) and
+[integration testing](/integration_tests/).
