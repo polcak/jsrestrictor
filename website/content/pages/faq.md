@@ -34,7 +34,6 @@ and test again to see that it considerably lowers the information about your com
 * [JShelter test page](https://polcak.github.io/jsrestrictor/test/test.html)
 * [Am I unique?](https://amiunique.org/)
 * [EFF Cover your tracks](https://coveryourtracks.eff.org/)
-* [Tor Browser project fingerprinting page](http://fpcentral.tbb.torproject.org/)
 * [Audio and font fingerprinting](https://audiofingerprint.openwpm.com/)
 * [Device info](https://www.deviceinfo.me/)
 * [Bromite](https://www.bromite.org/detect)
