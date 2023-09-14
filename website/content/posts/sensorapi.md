@@ -5,6 +5,10 @@ date: 2022-05-06 15:34
 
 Today devices contain [various sensors](https://www.researchgate.net/publication/224170986_A_survey_of_mobile_phone_sensing_IEEE_Commun_Mag) for reading information about the device's position, state, and environment. Such equipment is typical for mobile devices like cellphones, tablets, or laptops that often include sensors for obtaining geolocation or device orientation data. Another example is a smartwatch that could monitor the heartbeat rate of the wearer, or a car with a tire pressure sensor, etc. While the benefits of having sensors are undisputed, allowing websites to access their readings represents a considerable danger.
 
+This post contains:
+
+[TOC]
+
 ### Generic Sensor API
 
 JavaScript's [Generic sensor API](https://www.w3.org/TR/generic-sensor/) provides a unified way for accessing these sensors and reading data. The physical (hardware) sensor instances are called **device sensors**, while **platform sensors** represent interfaces over which the user agent can interact with the device sensors and read data. JavaScript represents sensors by a class hierarchy. The base class `Sensor` cannot be used directly but provides essential properties, event handlers, and methods for its subclasses. These represent concrete sensors like Accelerometer, Magnetometer, or Gyroscope.

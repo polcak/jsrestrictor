@@ -1,5 +1,7 @@
 Title: Credits
 
+[TOC]
+
 ### Developers
 
 **[Libor Polčák](https://www.fit.vutbr.cz/~polcak)** was behind an idea to implement a webextension that works as a firewall for JavaScript APIs. He is the current main maintainer. He received support for this project through the <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> project of NGI0 PET Fund, a fund established by NLnet with financial support from the European Commission's Next Generation Internet programme, under the aegis of DG Communications Networks, Content and Technology under grant agreement No 825310. He supervised/supervises diploma theses that improve the web extension.

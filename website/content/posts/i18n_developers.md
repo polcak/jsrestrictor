@@ -5,6 +5,8 @@ date: 2023-08-31 15:00
 
 We are working to improve the internationalization of JShelter. While the webextension API already contains [APIs](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/i18n) for internationalization, not everything works great. This post is written for webextension developers as well as JShelter developers working with strings presented to our users. Please see our [other post](/i18n/) if you are looking for ways to translate JShelter.
 
+[TOC]
+
 ### Translating manifest, CSS files, and JS files
 
 Let us start with the simple and easy items. Adding your translated strings to the
