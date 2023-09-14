@@ -568,6 +568,20 @@ through. So it is easy for an attacker to bypass NBS. In practice, we know about
 not change domain names (for example, see [our blog](/localportscanning/)). So we keep the NBS in
 Chromium-based browsers, even though it is not perfect.
 
+#### Do you support Firefox for Android?
+
+We tested JShelter in Firefox for Android in the past and it worked as expected. We do not test
+JShelter in Firefox for Android regularly but a volunteer that tracks the status of JShelter in
+Firefox for Android is welcomed.
+
+##### I cannot see JShelter listed in the addons supported by Firefox for Android.
+
+For whatever reason, Mozilla decided to only present [a small number of curated extensions](https://support.mozilla.org/en-US/kb/find-and-install-add-ons-firefox-android) in their mobile application by default. There are some great extensions there like uBlock Origin, NoScript, and DarkReader, but JShelter was not one of them.
+
+You should be able to workaround the limitations by creating a [collection with JShelter](https://www.androidpolice.com/install-add-on-extension-mozilla-firefox-android/).
+
+A change in the policy of the default extensions listed by Addons Mozilla.org is out of our control.
+
 ### Other questions
 
 #### What is the proper way to cite JShelter in a paper?
