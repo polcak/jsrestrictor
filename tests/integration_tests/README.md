@@ -7,6 +7,7 @@ JShelter's integration tests automatically verify that JShelter wraps the suppor
 #### Install required programs and tools
 
 The integration tests depend on the following packages:
+
 * [Python 3.5+](https://www.python.org/downloads/)
 * [Python package `pytest`](https://pypi.org/project/pytest/)
 * [Python package `selenium`](https://pypi.org/project/selenium/)
@@ -37,8 +38,7 @@ Open [testing page](https://polcak.github.io/jsrestrictor/test/test.html) and cl
 
 The default configuration of Google Chrome is sufficient for integration tests, so the Chrome settings do not need to be changed.
 
-#### Download web browser drivers
-<a name="webdrivers"></a>
+#### <a name="webdrivers">Download web browser drivers</a>
 
 Selenium needs web browser drivers to control the browser. If the Selenium drivers are not in your package repository or you do not want to use drivers from your repository, download the web browser drivers for your web browsers - Google Chrome and Mozilla Firefox - and your platform - Windows and Linux.
 

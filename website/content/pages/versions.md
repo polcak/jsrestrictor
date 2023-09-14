@@ -285,7 +285,7 @@ Most of the changes were influenced by the Plain Text UX review
 
 * Add fingerprinting defenses based on Farbling developed by the Brave browser (improved or added
 	wrappers for Canvas, Audio, Web	GL, device memory, hardware concurrency, enumerateDevices). Most
-	wrappers support provisioning of white lies that differ between origins and sessions (the
+	wrappers support provisioning of little lies that differ between origins and sessions (the
 	fingeprint is different across origins and across sessions).
  * We claimed to generate white image fake Canvas value but instead generated fully transparent black image. We now generate the white image as it is more common in other anti-canvas fingerprinting tools (level 3).
  * toDataUrl() no longer destructs the original canvas.
