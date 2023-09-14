@@ -67,3 +67,19 @@ def get_by_slug(objs, slug):
 JINJA_FILTERS = {
     "get_by_slug": get_by_slug,
 }
+
+# See https://docs.getpelican.com/en/stable/settings.html#example-settings and https://stackoverflow.com/questions/45605387/table-of-contents-in-pelican-blog-generator
+# The default configuration with the TOC plugin activated
+# See also https://jackdewinter.github.io/2019/10/16/fine-tuning-pelican-markdown-configuration/
+# and https://python-markdown.github.io/extensions/toc/
+MARKDOWN = {
+  'extension_configs': {
+    'markdown.extensions.toc': {
+      'anchorlink': True,
+    },
+    'markdown.extensions.codehilite': {'css_class': 'highlight'},
+    'markdown.extensions.extra': {},
+    'markdown.extensions.meta': {},
+  },
+  'output_format': 'html5',
+}

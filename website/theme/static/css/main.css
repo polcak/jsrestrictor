@@ -109,6 +109,15 @@ a:active {
   color: var(--link-color);
 }
 
+a.toclink {
+  text-decoration: none;
+}
+
+a.toclink:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--link-color);
+}
+
 /* remove formatting for external links
 a[href*="//"]:not([href*="jshelter.org"]):not(.button)::after {
   content: "↗";
