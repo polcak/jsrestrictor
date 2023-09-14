@@ -283,6 +283,5 @@ Describe what the wrapper tries to accomplish and its approach:
 
 ## Write unit tests or integration tests for the wrapper
 
-Follow instructions for [unit testing](https://pagure.io/JShelter/webextension/blob/main/f/tests/unit_tests/README.md) and
-[integration testing](https://pagure.io/JShelter/webextension/blob/main/f/tests/integration_tests/README.md) (see the `tests` directory in the
-repository).
+Follow instructions for [unit testing](/unit_tests/) and
+[integration testing](/integration_tests/).
