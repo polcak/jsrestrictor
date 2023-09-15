@@ -59,6 +59,10 @@ fi
 
 # Run script build_JSR_package.sh
 ./build_JSR_package.sh
+if [ "$?" != 0 ]; then
+		echo "ERROR!!! Please check errors above" >&2
+		exit
+fi
 
 # Go to JSR project root directory directory and save PWD.
 cd ../../../
