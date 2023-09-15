@@ -2,6 +2,11 @@
 title: Release history
 ---
 
+## 0.15.1
+
+* Fix Chrome manifest that by mistake included a file from a non-existing path. The error prevented
+  the extension from starting.
+
 ## 0.15
 
 * Update NSCL to uses built-in and faster function to compute sha256.
