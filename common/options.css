@@ -46,7 +46,7 @@ footer {
 	}
 }
 
-@media (min-width: 1300px) {
+@media (min-width: 1367px) {
 	body {
 		/*  Redefine the grid into a three column layout with empty space on the left and right. */
 		grid-template-columns: 1fr 10em 1000px 10% 1fr;
