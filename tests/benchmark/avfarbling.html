@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Benchmark</title>
+
+	<script type="text/javascript" src="./files/math.js"></script>
+	<script type="text/javascript" src="./files/avfarbling.js"></script>
+	<link rel="stylesheet" type="text/css" href="./files/global.css">
+</head>
+<body>
+	<h1>Benchmark</h1>
+	<hr>
+
+	<h2 id="canvash">Canvas fingerprinting</h2>
+
+	<p>Make sure to disable Time precision wrappers of JSS to receive valid results in the
+	console.</p>
+
+	<div id="canvas-wrap-1">
+		<h3 id="canvasUp">Canvas frame</h3>
+		<canvas id="canvas1" width="10px" height="10px"></canvas>
+	</div>
+	<button id="getData" onclick="benchmark('canvas1');">Start benchmark</button>
+	<br>
+
+	<h2 id="audioh">Audio</h2>
+	<button id="play" onclick="audioBenchmark()">Start benchmark</button>
+
+	<div id="canvas-wrap-2">
+		<h3 id="canvasUp2">3D canvas</h3>
+		<canvas id="canvas2" width="10px" height="10px"></canvas>
+	</div>
+	<button id="getData" onclick="benchmark3d('canvas2');">Start benchmark</button>
+	<br>
+
+</body></html>

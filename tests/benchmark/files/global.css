@@ -1,0 +1,62 @@
+/*
+ * SPDX-FileCopyrightText: 2019 Martin Timko
+ * SPDX-FileCopyrightText: 2021 Matúš Švancár
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+	font-size: 36px;
+}
+
+button {
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+#canvas-wrap-1 button,
+#canvas-wrap-2 button {
+	width: 300px;
+	height: 28px;
+	float: right;
+	clear: both;
+}
+
+#getData {
+	height: 28px;
+}
+
+.bottom-buttons-wrap button {
+	width: 400px;
+	height: 50px;
+}
+
+#demo-image , #fp-image{
+	display: none;
+}
+
+canvas {
+	border: 1px solid #000000;
+}
+
+.flex {
+	display: flex;
+}
+.flex *{
+ padding-right: 10px;
+}
+.hide{
+	display:none;
+}
+#precisionList li span {
+	float: left;
+	width: 320px;
+}
+#audio_results div {
+	overflow: hidden;
+}
