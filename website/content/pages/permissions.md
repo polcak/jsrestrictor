@@ -9,9 +9,8 @@ JShelter requires these permissions:
  * **notifications**: for notifying users on blocked HTTP requests/hosts
  * **browsingData**: Fingerprint Detector needs to remove data from any storage that can save the
 	 fingerprint
-
-Additionally, Firefox requires:
  * **webNavigation**: for deploying wrappers as early as possible to avoid page scripts accessing
-	 unwrapped objects. NSCL use a different approch for this purpose in Chromium-based browsers.
+	 unwrapped objects. NSCL use a different approch for this purpose in Chromium-based browsers. All
+	 brosers need the permission to apply `window.name` protection
 
 jShelter stores all configuration data in the browser or in the user account. It does not upload any data to our servers.

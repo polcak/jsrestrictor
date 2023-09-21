@@ -78,14 +78,40 @@ function generateId(len = 32) {
 
 /**
  * Parses given URL and converts it to a string that can be used to obtain JShelter settings for the
- * page. For example, removes "www." at the beggining of the given hostname.
+ * page. For example, removes "www." at the beginning of the given hostname.
+ *
+ * www.fit.vutbr.cz -> fit.vutbr.cz
+ * merlin.fit.vutbr.cz -> merlin.fit.vutbr.cz
+ * example.co.uk -> example.co.uk
  */
-function getSiteForURL(url) {
+function getEffectiveDomain(url) {
 	let u = new URL(url);
 	if (u.protocol === "file:") {
 		return u.protocol;
 	}
 	return String(u.hostname).replace(/^www\./,'');
+}
+
+/**
+ * Parses given URL and converts to eTLD+1.
+ * page.
+ *
+ * www.fit.vutbr.cz -> vutbr.cz
+ * example.co.uk -> example.co.uk
+ */
+function getSiteForURL(url) {
+	try {
+		let u = new URL(url);
+		if (u.hostname) {
+			return tld.getDomain(u.hostname);
+		}
+		else if (u.protocol) {
+			return u.protocol;
+		}
+	} catch (e) {
+		// intentionally empty
+	}
+	return "";
 }
 
 /**
