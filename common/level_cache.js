@@ -119,6 +119,7 @@ DocStartInjection.register(async ({url, frameId, tabId}) => {
  */
 NavCache.onUrlChanged.addListener(({tabId, frameId, previousUrl, url}) => {
 	if (getSiteForURL(previousUrl) === getSiteForURL(url)) return;
+	if (previousUrl === undefined) return; // First page in this window, see https://pagure.io/JShelter/webextension/issue/116#comment-875070
 	(async () => {
 		let configuration = await getContentConfiguration(url, frameId, tabId);
 		if (configuration.currentLevel.windowname) {
