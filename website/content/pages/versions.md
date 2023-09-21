@@ -2,6 +2,14 @@
 title: Release history
 ---
 
+## 0.15.2
+
+* Fix `window.name` protection, do not clear the property in the first visited page see
+  https://pagure.io/JShelter/webextension/issue/116#comment-875070 for more details. The fix affects
+  all Chromium-based browsers and Firefox installs with the protection active (by default it is off
+  in Firefox as Firefox contains the protection since Firefox 88). This fixes, for example, reCaptcha.
+* options: Improve space distribution, see https://github.com/polcak/jsrestrictor/pull/204#issuecomment-1727519706
+
 ## 0.15.1
 
 * Fix Chrome manifest that by mistake included a file from a non-existing path. The error prevented
