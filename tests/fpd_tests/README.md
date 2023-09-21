@@ -8,6 +8,7 @@ are wrapped and all specified accesses to them are properly logged according to 
 ## Install required programs and tools
 
 These programs and tools are required to be installed:
+
 * [PHP](https://www.php.net/downloads/)
 * Browser supported by JShelter:
     * [Google Chrome](https://www.google.com/chrome/)
@@ -42,6 +43,7 @@ The default behaviour is set to use files from `/common/fp_config` folder to enu
 ### Test results
 
 The results consist of these stats:
+
 * *PASSED* - Number of APIs with successful comparison of accesses.
 * *FAILED* - Number of APIs with failed comparison of accesses.
 * *NOT WRAPPED* - Number of not wrapped APIs by the current level of the extension.
@@ -58,6 +60,7 @@ Below these stats are all tested APIs with type of access (get, set, call) and c
 ## Adding custom tests
 
 You can add custom test scripts to describe more complex scenarios with these simple steps:
+
 * Create a new *JavaScript* file inside `fpd_tests/tests` folder (`"resources.js"` is reserved name, **do not use it**).
 * Create top level functions which will be used for testing according to these rules:
     * Name of the test function has to begin with prefix `test_` and contain `wrappers` as first parameter.
