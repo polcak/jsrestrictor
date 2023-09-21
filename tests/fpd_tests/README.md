@@ -17,7 +17,7 @@ These programs and tools are required to be installed:
 
 # RUN TESTS
     
-1. Open Terminal/WSL in folder `fpd_tests` and run command: `.\start_fpd_tests.sh` (do not close the terminal, testing server is running).
+1. Open Terminal/WSL in folder `fpd_tests` and run command: `.\start_fpd_tests.sh` (do not close the terminal, testing server is running). Note that the scripts modifies local filese in the local git repository. It also builds JShelter that has a modified FPD that communicates with the outside work. **DO NOT USE** that version outside this test.
 2. Open browser and import the extension.
 	* Firefox:
         1. Open `about:debugging` in the URL bar.
@@ -30,7 +30,7 @@ These programs and tools are required to be installed:
 		3. Click `Load unpacked`.
 		4. Import the `jshelter_chrome/` directory.
 3. Visit `localhost:8000` and choose test from menu.
-4. **IMPORTANT:** After testing, use *Ctrl+C* in Terminal/WSL to close testing server and revert extension files.
+4. **IMPORTANT:** After testing, use *Ctrl+C* in Terminal/WSL to close testing server and revert extension files. The script removes the build files with the modified FPD to prevent accidental leaks of the modified JShelter.
 
 # TEST CONFIGURATION
 
