@@ -71,7 +71,6 @@ function define_page_context_function(wrapper) {
 	var fp_call_count = 0;
 	let replacementF = function(${wrapper.wrapping_function_args}) {
 		try {
-			let args = Array.prototype.slice.apply(arguments);
 			${create_counter_call(wrapper, "call")}
 		}
 		catch (e) { /* No action: let the wrapper continue uninterupted. TODO: let the user decide? */ }`
