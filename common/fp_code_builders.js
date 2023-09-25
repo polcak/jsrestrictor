@@ -23,6 +23,10 @@
 /**
  *  Additional wrappers for specialized purposes.
  */
+var additional_wrappers_init_code = `
+	WrapHelper.shared["fpd_offsetHeight_set_cnt"] = 0;
+	WrapHelper.shared["fpd_offsetWidth_set_cnt"] = 0;
+`;
 var additional_wrappers = [
 	{
 		parent_object: "HTMLElement.prototype",
@@ -49,7 +53,10 @@ var additional_wrappers = [
 						property_value: `function() {
 							// workaround - style property is bound to HTMLElement instance, check fontFamily value with every access
 							let font = this.style.fontFamily;
-							updateCount("CSSStyleDeclaration.prototype.fontFamily", "set", [font]);
+							if (WrapHelper.shared["fpd_offsetHeight_set_cnt"] < 1000) {
+								updateCount("CSSStyleDeclaration.prototype.fontFamily", "set", [font]);
+								WrapHelper.shared["fpd_offsetHeight_set_cnt"] += 1;
+							}
 							return originalD_get.call(this);
 						}`
 					}
@@ -82,7 +89,10 @@ var additional_wrappers = [
 						property_value: `function() {
 							// workaround - style property is bound to HTMLElement instance, check fontFamily value with every access
 							let font = this.style.fontFamily;
-							updateCount("CSSStyleDeclaration.prototype.fontFamily", "set", [font]);
+							if (WrapHelper.shared["fpd_offsetWidth_set_cnt"] < 1000) {
+								updateCount("CSSStyleDeclaration.prototype.fontFamily", "set", [font]);
+								WrapHelper.shared["fpd_offsetWidth_set_cnt"] += 1;
+							}
 							return originalD_get.call(this);
 						}`
 					}
@@ -147,7 +157,7 @@ function fp_update_wrapping_code(code, jss_wrappers, fpd_wrappers) {
 	const fpd_wrappers_filtered = fpd_wrappers.filter(w => !jss_wrapper_resources.includes(w[0]));
 	const fpd_wrapped_codes = fp_generate_from_wrappers(fpd_wrappers_filtered);
 	const fpd_code = joinWrappingCode(Object.values(fpd_wrapped_codes));
-	return code.replace("// FPD_S\n", `// FPD_S\n ${fpd_code}`);
+	return code.replace("// FPD_S\n", `// FPD_S\n${additional_wrappers_init_code} ${fpd_code}`);
 }
 
 /**
@@ -159,7 +169,7 @@ function fp_update_wrapping_code(code, jss_wrappers, fpd_wrappers) {
  */
 function fp_generate_wrapping_code(fpd_wrappers) {
 	let fpd_wrapped_codes = fp_generate_from_wrappers(fpd_wrappers);
-	return generate_code("// FPD_S\n" + joinWrappingCode(Object.values(fpd_wrapped_codes)) + "\n// FPD_E");
+	return generate_code("// FPD_S\n" + additional_wrappers_init_code + joinWrappingCode(Object.values(fpd_wrapped_codes)) + "\n// FPD_E");
 }
 
 /**
