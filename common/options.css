@@ -143,7 +143,7 @@ section.content section#configuration_area #tweaks div.more, section.content div
 	padding: 0.5em;
 }
 
-.undo, .alert{
+.undo {
 	background-color: var(--attention-background);
 	color: var(--attention-color);
 	font-weight: bold;
