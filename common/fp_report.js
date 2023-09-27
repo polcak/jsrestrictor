@@ -44,7 +44,7 @@ function createReport(data) {
 	var {tabObj, groups, latestEvals, fpDb, exceptionWrappers} = data;
 	var report = document.getElementById("fpd-report");
 	if (!tabObj || !groups || !groups.root || !groups.all || !fpDb || !latestEvals) {
-		report.innerHTML = browser.i18n.getMessage("FPDReportMissingData");
+		report.innerHTML =`<div class="alert">${browser.i18n.getMessage("FPDReportMissingData")}</div>`;
 		return;
 	}
 
