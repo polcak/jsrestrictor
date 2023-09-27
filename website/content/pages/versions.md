@@ -2,6 +2,13 @@
 title: Release history
 ---
 
+## 0.16
+
+* Remove Workers in Recommended JSS level to make JShelter compatible with some pages. This change might be reverted when [Pagure issue 80](https://pagure.io/JShelter/webextension/issue/80#comment-852202) is solved.
+* FPD: Add possibility to learn the calling stack of functions that lead to the tracked APIs ([Pagure issue 52](https://pagure.io/JShelter/webextension/issue/52)). This information can be used to create block list or to study the calling code and its effects.
+* FPD: Fix browser overloading by FPD messages by HTMLElement.prototype.offsetHeight and offsetWidth wrappers that might have crashed browsers.
+* FPD: code cleanup
+
 ## 0.15.2
 
 * Fix `window.name` protection, do not clear the property in the first visited page see
