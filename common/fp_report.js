@@ -98,10 +98,21 @@ function createReport(data) {
 	// generate html code for evaluated resource (get,set,call)
 	let generateResource = (resource) => {
 		if (processedEvals[resource]) {
+			let callers = "";
+			if (fpDb[resource]) {
+				for (let t of Object.values(fpDb[resource])) {
+					for (trace of t.callers) {
+						if (trace !== "") {
+							callers += "<br><br>" + trace;
+						}
+					}
+				}
+			}
+			callers = callers.replace(/\n/g, '<br>');
 			let accessRaw = processedEvals[resource].total;
 			let accessCount = accessRaw >= 1000 ? "1000+" : accessRaw;
 			html += `<h4 class="hidden ${accessRaw > 0 ? "access" : "no-access"}"><span class="dot">-</span> ` +
-			`${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})</h4>`;
+			`${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})\n${callers}</h4>`;
 		}
 	}
 
@@ -186,14 +197,27 @@ function createReport(data) {
 
 	// Reload the report with data on the identity of the calling scripts
 	function trackCallers() {
+		tabId = new URLSearchParams(window.location.search).get("id");
 		function onReloaded() {
+			function refresh() {
+				browser.runtime.sendMessage({
+					purpose: "fpd-get-report-data",
+					tabId: tabId
+				}).then((result) => {
+					createReport(result);
+					showAll();
+				});
+				browser.runtime.sendMessage({purpose: "fpd-track-callers-stop"});
+			}
+			setInterval(refresh, 5000);
 		}
 		function onError(error) {
 			document.getElementById("fpdError").innerHTML = browser.i18n.getMessage("FPDReportTrackCallersFailed", error);
+			browser.runtime.sendMessage({purpose: "fpd-track-callers-stop"});
 		}
 		browser.runtime.sendMessage({
 			purpose: "fpd-track-callers",
-			tabId: new URLSearchParams(window.location.search).get("id")
+			tabId: tabId
 		}).then(onReloaded, onError);
 	}
 

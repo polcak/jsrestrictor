@@ -26,7 +26,7 @@
 
 var wrappersPort;
 var pageConfiguration = null;
-function configureInjection({currentLevel, fpdWrappers, domainHash}) {
+function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash}) {
 	if (pageConfiguration) return; // one shot
 	pageConfiguration = {currentLevel};
 	if(browser.extension.inIncognitoContext){
@@ -42,14 +42,14 @@ function configureInjection({currentLevel, fpdWrappers, domainHash}) {
 	// Append argument reporting setting to JSS wrapper definitions
 	fp_append_reporting_to_jss_wrappers(fpdWrappers);
 	// Generate wrapping code
-	var code = wrap_code(currentLevel.wrappers);
+	var code = wrap_code(currentLevel.wrappers, fpdTrackCallers);
 	// Generate FPD wrapping code
 	if (fpdWrappers) {
 		if (!code) {
-			code = fp_generate_wrapping_code(fpdWrappers);
+			code = fp_generate_wrapping_code(fpdWrappers, fpdTrackCallers);
 		}
 		else {
-			code = fp_update_wrapping_code(code, currentLevel.wrappers, fpdWrappers);
+			code = fp_update_wrapping_code(code, currentLevel.wrappers, fpdWrappers, fpdTrackCallers);
 		}
 	}
 	// Insert farbling WASM module into wrapped code if enabled, only when farbling is actually used 
@@ -68,13 +68,14 @@ function configureInjection({currentLevel, fpdWrappers, domainHash}) {
 		wrappersPort = patchWindow(aleaCode);	
 		wrappersPort.onMessage = msg => {
 			if (msg.wrapperName) {
-				let {wrapperName, wrapperType, wrapperArgs} = msg;			
+				let {wrapperName, wrapperType, wrapperArgs, stack} = msg;
 				// pass access logs to FPD background script
 				browser.runtime.sendMessage({
 					purpose: "fp-detection",
 					resource: wrapperName,
 					type: wrapperType,
 					args: wrapperArgs,
+					stack: stack,
 				});
 			}
 		}

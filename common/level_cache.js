@@ -64,6 +64,7 @@ function getContentConfiguration(url, frameId, tabId) {
 			resolve({
 				currentLevel: level,
 				fpdWrappers: isFpdOn(tabId) ? fp_levels.page_wrappers[fpdSettings.detection] : [],
+				fpdTrackCallers: fpd_track_callers_tab === tabId,
 				domainHash
 			});
 		}

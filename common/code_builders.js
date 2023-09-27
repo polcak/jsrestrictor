@@ -44,12 +44,20 @@ function enclose_wrapping2(code, name, params, call_with_window) {
 /**
  * Create code containing call of API counting function.
  */
-function create_counter_call(wrapper, type) {
+function create_counter_call(wrapper, type, fpdTrackCallers) {
 	let {parent_object, parent_object_property} = wrapper;
 	let resource = `${parent_object}.${parent_object_property}`;
 	let args = wrapper.report_args ? "args.map(x => JSON.stringify(x))" : "[]"
 	return `if (fp_enabled && fp_${type}_count < 1000) {
-		updateCount(${JSON.stringify(resource)}, "${type}", ${args});
+		var stack = undefined;
+		if (${fpdTrackCallers}) {
+			try {
+				throw new Error("FPDCallerTracker");
+			} catch (e) {
+				stack = e.stack.toString();
+			}
+		}
+		updateCount(${JSON.stringify(resource)}, "${type}", ${args}, stack);
 		fp_${type}_count += 1;
 	}`;
 }
@@ -58,7 +66,7 @@ function create_counter_call(wrapper, type) {
  * This function create code (as string) that creates code that can be used to inject (or overwrite)
  * a function in the page context.
  */
-function define_page_context_function(wrapper) {
+function define_page_context_function(fpdTrackCallers, wrapper) {
 	let {parent_object, parent_object_property, original_function, replace_original_function} = wrapper;
 	if (replace_original_function) {
 		let lastDot = original_function.lastIndexOf(".");
@@ -71,7 +79,7 @@ function define_page_context_function(wrapper) {
 	var fp_call_count = 0;
 	let replacementF = function(${wrapper.wrapping_function_args}) {
 		try {
-			${create_counter_call(wrapper, "call")}
+			${create_counter_call(wrapper, "call", fpdTrackCallers)}
 		}
 		catch (e) { /* No action: let the wrapper continue uninterupted. TODO: let the user decide? */ }`
 	
@@ -136,7 +144,7 @@ function generate_assign_function_code(code_spec_obj) {
 /**
  * This function wraps object properties using WrapHelper.defineProperties().
  */
-function generate_object_properties(code_spec_obj, fpd_only) {
+function generate_object_properties(fpdTrackCallers, code_spec_obj, fpd_only) {
 	var code = `
 		if (!("${code_spec_obj.parent_object_property}" in ${code_spec_obj.parent_object})) {
 			// Do not wrap an object that is not defined, e.g. because it is experimental feature.
@@ -157,7 +165,7 @@ function generate_object_properties(code_spec_obj, fpd_only) {
 
 		var counting_wrapper = `
 			function(...args) {
-				${create_counter_call(code_spec_obj, wrap_spec.property_name)}
+				${create_counter_call(code_spec_obj, wrap_spec.property_name, fpdTrackCallers)}
 
 				// checks type of underlying wrapper/definition and returns it (no changes to semantics)
 				if (typeof (${fpd_only ? original_property : wrap_spec.property_value}) === 'function') {
@@ -217,11 +225,11 @@ function generate_assignement(code_spec_obj) {
 /**
  * This function builds the wrapping code.
  */
-var build_code = function(wrapper, ...args) {
+var build_code = function(fpdTrackCallers, wrapper, ...args) {
 	let post_wrapping_functions = {
-		function_define: define_page_context_function,
+		function_define: define_page_context_function.bind(null, fpdTrackCallers),
 		function_export: generate_assign_function_code,
-		object_properties: generate_object_properties,
+		object_properties: generate_object_properties.bind(null, fpdTrackCallers),
 		delete_properties: generate_delete_properties,
 		assign: generate_assignement,
 	};
@@ -266,7 +274,7 @@ var build_code = function(wrapper, ...args) {
 		${wrapper.helping_code || ''}`;
 
 	if (wrapper.wrapping_function_body){
-		code += `${define_page_context_function(wrapper)}`;
+		code += `${define_page_context_function(fpdTrackCallers, wrapper)}`;
 	}
 
 	let build_post_normal = () => {
@@ -281,7 +289,7 @@ var build_code = function(wrapper, ...args) {
 				}
 				// if not wrapped because of apply_if condition in post wrapping object, still needs to be wrapped for FPD
 				if (code_spec.apply_if !== undefined && code_spec.code_type == "object_properties") {
-					code += "else {" + generate_object_properties(code_spec, true) + "}";
+					code += "else {" + generate_object_properties(fpdTrackCallers, code_spec, true) + "}";
 				}
 			}
 		}
@@ -292,7 +300,7 @@ var build_code = function(wrapper, ...args) {
 			for (code_spec of wrapper["post_wrapping_code"]) {
 				// if not wrapped because of apply_if condition in post wrapping object, still needs to be wrapped for FPD
 				if (code_spec.apply_if !== undefined && code_spec.code_type == "object_properties") {
-					code += generate_object_properties(code_spec, true);
+					code += generate_object_properties(fpdTrackCallers,code_spec, true);
 				}
 			}
 		}
@@ -330,14 +338,14 @@ var build_code = function(wrapper, ...args) {
 /**
  * Transform wrapping arrays into injectable code.
  */
-function wrap_code(wrappers) {
+function wrap_code(wrappers, fpdTrackCallers) {
 	if (wrappers.length === 0) {
 		return; // Nothing to wrap
 	}
 
 	let build = (wrapper) => {
 		try {
-			return build_code(build_wrapping_code[wrapper[0]], wrapper.slice(1));
+			return build_code(fpdTrackCallers, build_wrapping_code[wrapper[0]], wrapper.slice(1));
 		} catch (e) {
 			console.error(e);
 			return "";
@@ -442,11 +450,12 @@ function generate_code(wrapped_code) {
 		let xrayWindow = window; // the "privileged" xray window wrapper in Firefox
 		{
 			let {port} = env;
-			function updateCount(wrapperName, wrapperType, wrapperArgs) {
+			function updateCount(wrapperName, wrapperType, wrapperArgs, stack) {
 				port.postMessage({
 					wrapperName,
 					wrapperType,
-					wrapperArgs
+					wrapperArgs,
+					stack
 				});
 			}
 		}

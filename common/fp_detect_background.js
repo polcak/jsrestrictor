@@ -111,6 +111,12 @@ var exceptionWrappers = ["CSSStyleDeclaration.prototype.fontFamily"];
 var availableTabs = {};
 
 /**
+ * A global variable shared with level_cache that controls the collection of calling scripts for FPD
+ * report.
+ */
+var fpd_track_callers_tab = undefined;
+
+/**
 * Definition of settings supported by this module.
 */
 const FPD_DEF_SETTINGS = {
@@ -753,6 +759,10 @@ function fpdCommonMessageListener(record, sender) {
 				fpCounterObj["total"] = fpCounterObj["total"] || 0;
 				fpCounterObj["total"] += 1;
 				fpDb.update(record.resource, sender.tab.id, record.type, fpCounterObj["total"]);
+
+				// Track callers
+				fpCounterObj["callers"] = fpCounterObj["callers"] || new Set();
+				fpCounterObj["callers"].add(record.stack);
 				break;
 			case "fpd-state-change":
 				browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {
@@ -848,7 +858,12 @@ function fpdCommonMessageListener(record, sender) {
 				return Promise.resolve(hits);
 			}
 			case "fpd-track-callers": {
-				return browser.tabs.reload(Number(record.tabId));
+				let tabId = Number(record.tabId);
+				fpd_track_callers_tab = tabId;
+				return browser.tabs.reload(tabId);
+			}
+			case "fpd-track-callers-stop": {
+				fpd_track_callers_tab = undefined;
 			}
 		}
 	}
