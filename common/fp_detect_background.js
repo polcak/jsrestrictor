@@ -761,8 +761,10 @@ function fpdCommonMessageListener(record, sender) {
 				fpDb.update(record.resource, sender.tab.id, record.type, fpCounterObj["total"]);
 
 				// Track callers
-				fpCounterObj["callers"] = fpCounterObj["callers"] || new Set();
-				fpCounterObj["callers"].add(record.stack);
+				fpCounterObj["callers"] = fpCounterObj["callers"] || {};
+				if (record.stack !== undefined) {
+					fpCounterObj["callers"][record.stack] = true;
+				}
 				break;
 			case "fpd-state-change":
 				browser.storage.sync.get(["fpDetectionOn"]).then(function(result) {

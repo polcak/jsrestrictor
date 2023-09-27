@@ -101,7 +101,8 @@ function createReport(data) {
 			let callers = "";
 			if (fpDb[resource]) {
 				for (let t of Object.values(fpDb[resource])) {
-					for (trace of t.callers) {
+					let traces = Object.keys(t.callers);
+					for (trace of traces) {
 						if (trace !== "") {
 							callers += "<br><br>" + trace;
 						}
