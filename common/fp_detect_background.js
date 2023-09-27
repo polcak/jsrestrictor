@@ -847,6 +847,9 @@ function fpdCommonMessageListener(record, sender) {
 				}
 				return Promise.resolve(hits);
 			}
+			case "fpd-track-callers": {
+				return browser.tabs.reload(Number(record.tabId));
+			}
 		}
 	}
 }

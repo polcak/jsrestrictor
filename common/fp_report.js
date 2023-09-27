@@ -183,6 +183,19 @@ function createReport(data) {
 		hideBtn.classList.add("hidden");
 	}
 
+	// Reload the report with data on the identity of the calling scripts
+	function trackCallers() {
+		function onReloaded() {
+		}
+		function onError(error) {
+			document.getElementById("fpdError").innerHTML = browser.i18n.getMessage("FPDReportTrackCallersFailed", error);
+		}
+		browser.runtime.sendMessage({
+			purpose: "fpd-track-callers",
+			tabId: new URLSearchParams(window.location.search).get("id")
+		}).then(onReloaded, onError);
+	}
+
 	// show description/help for the report
 	let showDescription = () => {
 		for (let element of document.querySelectorAll(".description")) {
@@ -216,6 +229,7 @@ function createReport(data) {
 	document.getElementById("showBtn").addEventListener("click", showAll);
 	document.getElementById("hideBtn").addEventListener("click", hideDetails);
 	document.getElementById("exportBtn").addEventListener("click", exportReport.bind(null, `fpd_report_${url}.json`))
+	document.getElementById("trackCallersBtn").addEventListener("click", trackCallers)
 	document.getElementById("titletext").innerHTML += '<button id="help" class="help">?</button>';
 	document.getElementById("help").addEventListener("click", showDescription);
 	document.getElementById("unhideAll").addEventListener("click", showNotAccessed);
