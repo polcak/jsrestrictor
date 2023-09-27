@@ -236,7 +236,7 @@ level2 = TestedValues(
     webgl_precisions = 'REAL VALUE',
     webgl_pixels = 'SPOOF VALUE',
     webgl_dataURL = 'SPOOF VALUE',
-    worker = 'DISABLED',
+    worker = 'REMOVED',
     methods_toString='REAL VALUE'
 )
 

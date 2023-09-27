@@ -27,12 +27,12 @@
  * \param callback Function that initializes FPD report creation from fetched data.
  */
 window.addEventListener('load', () => {
-    browser.runtime.sendMessage({
-        purpose: "fpd-get-report-data", 
-        tabId: new URLSearchParams(window.location.search).get("id")
-    }).then((result) => {
-        createReport(result);
-    });
+	browser.runtime.sendMessage({
+		purpose: "fpd-get-report-data",
+		tabId: new URLSearchParams(window.location.search).get("id")
+	}).then((result) => {
+		createReport(result);
+	});
 });
 
 /**
@@ -41,182 +41,225 @@ window.addEventListener('load', () => {
  * \param data Information about latest fingerprinting evaluation consisting of all essential FPD objects.
  */
 function createReport(data) {
-    var {tabObj, groups, latestEvals, fpDb, exceptionWrappers} = data;
+	var {tabObj, groups, latestEvals, fpDb, exceptionWrappers} = data;
+	var reportContainer = document.getElementById("fpd-report-container");
+	if (!tabObj || !groups || !groups.root || !groups.all || !fpDb || !latestEvals) {
+		report.innerHTML =`<div class="alert">${browser.i18n.getMessage("FPDReportMissingData")}</div>`;
+		return;
+	}
+
+	// parse latestEvals to create more useful representation for FPD report generation
+	var processedEvals = {};
+	for (let item of latestEvals.evalStats) {
+		processedEvals[item.title] = processedEvals[item.title] || {};
+		processedEvals[item.title].type = item.type;
+		let total = 0;
+		if (fpDb[item.title]) {
+			for (let stat of Object.values(fpDb[item.title])) {
+				total += stat.total;
+			}
+		}
+		processedEvals[item.title].total = total;
+	}
+
+	// add page URL and FavIcon to header section of the report
+	if (tabObj) {
+		let urlObj = new URL(tabObj.url);
+		var url = urlObj.hostname + (urlObj.pathname.length > 1 ? urlObj.pathname : "");
+		document.getElementById("report-url").innerHTML = url;
+		let img = document.getElementById("pageFavicon");
+		img.src = tabObj.favIconUrl;
+	}
+
+	var html = "";
+
+	// generate html code for evaluated group
+	let generateGroup = (group) => {
+		if (processedEvals[group]) {
+			if (groups.all[group].description) {
+				html += "<div id=\"" + group + "\" class=\"fpd-group access\">";
+				html += "<h2>" + group + "</h2>";
+				html += "<p>" + groups.all[group].description + "</p>";
+			}
+			for (let [item, type] of Object.entries(groups.all[group].items)) {
+				if (type == "group") {
+					generateGroup(item);
+				}
+				else {
+					generateResource(item)
+				}
+			}
+			if (groups.all[group].description) {
+				html += "</div>";
+			}
+		}
+	}
+
+	// generate html code for evaluated resource (get,set,call)
+	let generateResource = (resource) => {
+		if (processedEvals[resource]) {
+			let callers = "";
+			if (fpDb[resource]) {
+				for (let t of Object.values(fpDb[resource])) {
+					let traces = Object.keys(t.callers);
+					for (trace of traces) {
+						if (trace !== "") {
+							callers += "<br><br>" + trace;
+						}
+					}
+				}
+			}
+			callers = callers.replace(/\n/g, '<br>');
+			let accessRaw = processedEvals[resource].total;
+			let accessCount = accessRaw >= 1000 ? "1000+" : accessRaw;
+			html += `<h4 class="hidden ${accessRaw > 0 ? "access" : "no-access"}"><span class="dot">-</span> ` +
+			`${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})\n${callers}</h4>`;
+		}
+	}
+
+	// start generating FPD report from the first group (root group)
+	generateGroup(groups.root);
 	var report = document.getElementById("fpd-report");
-    if (!tabObj || !groups || !groups.root || !groups.all || !fpDb || !latestEvals) {
-        report.innerHTML = browser.i18n.getMessage("FPDReportMissingData");
-        return;
-    }
+	report.innerHTML = html;
 
-    // parse latestEvals to create more useful representation for FPD report generation
-    var processedEvals = {};
-    for (let item of latestEvals.evalStats) {
-        processedEvals[item.title] = processedEvals[item.title] || {};
-        processedEvals[item.title].type = item.type;
-        let total = 0;
-        if (fpDb[item.title]) {
-            for (let stat of Object.values(fpDb[item.title])) {
-                total += stat.total;
-            }
-        }
-        processedEvals[item.title].total = total;
-    }
+	// process generated document
+	let groupElements = document.querySelectorAll(".fpd-group.access");
+	for (let i = groupElements.length; i > 0; i--) {
+		// remove duplicit entries from groups
+		let duplicitArray = [];
+		let elements = groupElements[i-1].querySelectorAll(":scope > h4");
+		elements.forEach((d) => {
+			if (duplicitArray.indexOf(d.innerHTML) > -1) {
+				d.remove();
+			}
+			else {
+				duplicitArray.push(d.innerHTML);
+			}
+		});
 
-    // add page URL and FavIcon to header section of the report
-    if (tabObj) {
-        let urlObj = new URL(tabObj.url);
-        var url = urlObj.hostname + (urlObj.pathname.length > 1 ? urlObj.pathname : "");
-        document.getElementById("report-url").innerHTML = url;
-        let img = document.getElementById("pageFavicon");
-        img.src = tabObj.favIconUrl;
-    }
+		// hide groups with no relevant entries
+		if (!document.querySelectorAll(`#${groupElements[i-1].id} > .access`).length) {
+			groupElements[i-1].classList.replace("access", "no-access");
+		}
+	}
 
-    var html = "";
+	// function that enables to show accessed resources of the group
+	let toggleResources = (event) => {
+		let parent =  event.target.parentElement;
+		for (let i = 0; i < parent.children.length; i++) {
+			let child = parent.children[i];
+			if (child.tagName == "H4") {
+				child.classList.toggle("hidden");
+			}
+		}
+	}
 
-    // generate html code for evaluated group
-    let generateGroup = (group) => {
-        if (processedEvals[group]) {
-            if (groups.all[group].description) {
-                html += "<div id=\"" + group + "\" class=\"fpd-group access\">";
-                html += "<h2>" + group + "</h2>";
-                html += "<p>" + groups.all[group].description + "</p>";
-            }
-            for (let [item, type] of Object.entries(groups.all[group].items)) {
-                if (type == "group") {
-                    generateGroup(item);
-                }
-                else {
-                    generateResource(item)
-                }
-            }
-            if (groups.all[group].description) {
-                html += "</div>";
-            }
-        }
-    }
+	// make group name clickable only if it makes sense - groups with resources
+	let makeClickableTitles = () => {
+		for (let element of document.querySelectorAll(".fpd-group")) {
+			let button;
+			let haveChild = false;
 
-    // generate html code for evaluated resource (get,set,call)
-    let generateResource = (resource) => {
-        if (processedEvals[resource]) {
-            let accessRaw = processedEvals[resource].total;
-            let accessCount = accessRaw >= 1000 ? "1000+" : accessRaw;
-            html += `<h4 class="hidden ${accessRaw > 0 ? "access" : "no-access"}"><span class="dot">-</span> ` +
-            `${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})</h4>`;
-        }
-    }
+			for (let i = 0; i < element.children.length; i++) {
+				let child = element.children[i];
+				if (child.tagName == "H2") {
+					button = child;
+				}
+				if (child.tagName == "H4" && !child.classList.contains("no-access")) {
+					haveChild = true;
+				}
+			}
 
-    // start generating FPD report from the first group (root group)
-    generateGroup(groups.root);
-    report.innerHTML += html;
+			if (button && haveChild) {
+				button.classList.add("clickable");
+				button.addEventListener("click", toggleResources);
+			}
+		}
+	}
+	makeClickableTitles();
 
-    // process generated document
-    let groupElements = document.querySelectorAll(".fpd-group.access");
-    for (let i = groupElements.length; i > 0; i--) {
-        // remove duplicit entries from groups
-        let duplicitArray = [];
-        let elements = groupElements[i-1].querySelectorAll(":scope > h4");
-        elements.forEach((d) => {
-            if (duplicitArray.indexOf(d.innerHTML) > -1) {
-                d.remove();
-            }
-            else {
-                duplicitArray.push(d.innerHTML);
-            }
-        });
-        
-        // hide groups with no relevant entries
-        if (!document.querySelectorAll(`#${groupElements[i-1].id} > .access`).length) {
-            groupElements[i-1].classList.replace("access", "no-access");
-        }
-    }
+	// show resources for every group in FPD report
+	let showAll = (event) => {
+		for (let element of document.querySelectorAll(".fpd-group > h4")) {
+			element.classList.remove("hidden");
+		}
+		showBtn.classList.add("hidden");
+		hideBtn.classList.remove("hidden");
+	}
 
-    // function that enables to show accessed resources of the group
-    let toggleResources = (event) => {
-        let parent =  event.target.parentElement;
-        for (let i = 0; i < parent.children.length; i++) {
-            let child = parent.children[i];
-            if (child.tagName == "H4") {
-                child.classList.toggle("hidden");
-            }
-        }
-    }
+	// hide resources for every group in FPD report
+	let hideDetails = (event) => {
+		for (let element of document.querySelectorAll(".fpd-group > h4")) {
+			element.classList.add("hidden");
+		}
+		showBtn.classList.remove("hidden");
+		hideBtn.classList.add("hidden");
+	}
 
-    // make group name clickable only if it makes sense - groups with resources
-    let makeClickableTitles = () => {
-        for (let element of document.querySelectorAll(".fpd-group")) {
-            let button;
-            let haveChild = false;
-            
-            for (let i = 0; i < element.children.length; i++) {
-                let child = element.children[i];
-                if (child.tagName == "H2") {
-                    button = child;
-                }
-                if (child.tagName == "H4" && !child.classList.contains("no-access")) {
-                    haveChild = true;
-                }
-            }
-            
-            if (button && haveChild) {
-                button.classList.add("clickable");
-                button.addEventListener("click", toggleResources);
-            }
-        }
-    }
-    makeClickableTitles();
+	// Reload the report with data on the identity of the calling scripts
+	function trackCallers() {
+		tabId = new URLSearchParams(window.location.search).get("id");
+		function onReloaded() {
+			function refresh() {
+				browser.runtime.sendMessage({
+					purpose: "fpd-get-report-data",
+					tabId: tabId
+				}).then((result) => {
+					createReport(result);
+					showAll();
+				});
+				browser.runtime.sendMessage({purpose: "fpd-track-callers-stop"});
+			}
+			setInterval(refresh, 5000);
+		}
+		function onError(error) {
+			document.getElementById("fpdError").innerHTML = browser.i18n.getMessage("FPDReportTrackCallersFailed", error);
+			browser.runtime.sendMessage({purpose: "fpd-track-callers-stop"});
+		}
+		browser.runtime.sendMessage({
+			purpose: "fpd-track-callers",
+			tabId: tabId
+		}).then(onReloaded, onError);
+	}
 
-    // show resources for every group in FPD report
-    let showAll = (event) => {
-        for (let element of document.querySelectorAll(".fpd-group > h4")) {      
-            element.classList.remove("hidden");
-        }
-        showBtn.classList.add("hidden");
-        hideBtn.classList.remove("hidden");
-    }
+	// show all groups/resources even if not accessed
+	let showNotAccessed = () => {
+		for (let element of document.querySelectorAll(".no-access")) {
+			element.classList.remove("no-access");
+		}
+		makeClickableTitles();
+	}
 
-    // hide resources for every group in FPD report
-    let hideDetails = (event) => {
-        for (let element of document.querySelectorAll(".fpd-group > h4")) {
-            element.classList.add("hidden");
-        }
-        showBtn.classList.remove("hidden");
-        hideBtn.classList.add("hidden");
-    }
+	// create on-site JSON representation of FPD evaluation data and download it
+	function exportReport(filename) {
+		let element = document.createElement("a");
+		let obj = {
+			fpd_evaluation_statistics: latestEvals.evalStats,
+			fpd_access_logs: fpDb
+		}
+		element.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj)));
+		element.setAttribute("download", filename);
+		element.style.display = "none";
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
+	}
 
-    // show description/help for the report
-    let showDescription = () => {
-        for (let element of document.querySelectorAll(".description")) {      
-            element.classList.toggle("hidden");
-        }
-    }
-
-    // show all groups/resources even if not accessed
-    let showNotAccessed = () => {
-        for (let element of document.querySelectorAll(".no-access")) {      
-            element.classList.remove("no-access");
-        }
-        makeClickableTitles();
-    }
-
-    // create on-site JSON representation of FPD evaluation data and download it
-    function exportReport(filename) {
-        let element = document.createElement("a");
-        let obj = {
-            fpd_evaluation_statistics: latestEvals.evalStats,
-            fpd_access_logs: fpDb
-        }
-        element.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj)));
-        element.setAttribute("download", filename);
-        element.style.display = "none";
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-    }
-
-    document.getElementById("showBtn").addEventListener("click", showAll);
-    document.getElementById("hideBtn").addEventListener("click", hideDetails);
-    document.getElementById("exportBtn").addEventListener("click", exportReport.bind(null, `fpd_report_${url}.json`))
-    document.getElementById("titletext").innerHTML += '<button id="help" class="help">?</button>';
-    document.getElementById("help").addEventListener("click", showDescription);
-    document.getElementById("unhideAll").addEventListener("click", showNotAccessed);
+	document.getElementById("showBtn").onclick = showAll;
+	document.getElementById("hideBtn").onclick = hideDetails;
+	document.getElementById("exportBtn").onclick = exportReport.bind(null, `fpd_report_${url}.json`);
+	document.getElementById("trackCallersBtn").onclick = trackCallers;
+	document.getElementById("unhideAll").onclick = showNotAccessed;
 }
+
+// show description/help for the report
+let showDescription = () => {
+	for (let element of document.querySelectorAll(".description")) {
+		element.classList.toggle("hidden");
+	}
+}
+
+window.addEventListener("DOMContentLoaded", function() {
+	document.getElementById("titletext").innerHTML += '<button id="help" class="help">?</button>';
+	document.getElementById("help").addEventListener("click", showDescription);
+});

@@ -817,7 +817,7 @@ var level_2 = {
 	"enumerateDevices": 2,
 	"hardware": 1,
 	"net": 1,
-	"webworker": 2,
+	"webworker": 3,
 	"geolocation": 3,
   "physical_environment": 1,
 	"useridle": 2,
