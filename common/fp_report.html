@@ -43,7 +43,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		<img class="logo" id="logo" src="../img/icon-128.png" alt="JShelter logo" />
 	</header>
 
-	<div id="fpd-report">
+	<div id="fpd-report-container">
 		<button id="showBtn" class="sticky-button" data-localize="FPDReportShowDetails">Show details</button>
 		<button id="hideBtn" class="sticky-button hidden" data-localize="FPDReportHideDetails">Hide details</button>
 		<button id="exportBtn" class="sticky-button" data-localize="FPDReportExportJSON">
@@ -51,6 +51,8 @@ SPDX-License-Identifier: GPL-3.0-or-later
 		</button>
 		<button id="trackCallersBtn" class="sticky-button" data-localize="FPDReportTrackCallers">Track callers</button>
 		<span class="alert" id="fpdError"></span>
+		<div id="fpd-report">
+		</div>
 	</div>
 </body>
 

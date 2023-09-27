@@ -42,7 +42,7 @@ window.addEventListener('load', () => {
  */
 function createReport(data) {
 	var {tabObj, groups, latestEvals, fpDb, exceptionWrappers} = data;
-	var report = document.getElementById("fpd-report");
+	var reportContainer = document.getElementById("fpd-report-container");
 	if (!tabObj || !groups || !groups.root || !groups.all || !fpDb || !latestEvals) {
 		report.innerHTML =`<div class="alert">${browser.i18n.getMessage("FPDReportMissingData")}</div>`;
 		return;
@@ -107,7 +107,8 @@ function createReport(data) {
 
 	// start generating FPD report from the first group (root group)
 	generateGroup(groups.root);
-	report.innerHTML += html;
+	var report = document.getElementById("fpd-report");
+	report.innerHTML = html;
 
 	// process generated document
 	let groupElements = document.querySelectorAll(".fpd-group.access");
@@ -196,13 +197,6 @@ function createReport(data) {
 		}).then(onReloaded, onError);
 	}
 
-	// show description/help for the report
-	let showDescription = () => {
-		for (let element of document.querySelectorAll(".description")) {
-			element.classList.toggle("hidden");
-		}
-	}
-
 	// show all groups/resources even if not accessed
 	let showNotAccessed = () => {
 		for (let element of document.querySelectorAll(".no-access")) {
@@ -226,11 +220,21 @@ function createReport(data) {
 		document.body.removeChild(element);
 	}
 
-	document.getElementById("showBtn").addEventListener("click", showAll);
-	document.getElementById("hideBtn").addEventListener("click", hideDetails);
-	document.getElementById("exportBtn").addEventListener("click", exportReport.bind(null, `fpd_report_${url}.json`))
-	document.getElementById("trackCallersBtn").addEventListener("click", trackCallers)
+	document.getElementById("showBtn").onclick = showAll;
+	document.getElementById("hideBtn").onclick = hideDetails;
+	document.getElementById("exportBtn").onclick = exportReport.bind(null, `fpd_report_${url}.json`);
+	document.getElementById("trackCallersBtn").onclick = trackCallers;
+	document.getElementById("unhideAll").onclick = showNotAccessed;
+}
+
+// show description/help for the report
+let showDescription = () => {
+	for (let element of document.querySelectorAll(".description")) {
+		element.classList.toggle("hidden");
+	}
+}
+
+window.addEventListener("DOMContentLoaded", function() {
 	document.getElementById("titletext").innerHTML += '<button id="help" class="help">?</button>';
 	document.getElementById("help").addEventListener("click", showDescription);
-	document.getElementById("unhideAll").addEventListener("click", showNotAccessed);
-}
+});
