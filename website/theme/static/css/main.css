@@ -723,7 +723,7 @@ p.download-buttons {
   margin-bottom: var(--mg-small) !important;
 }
 
-article.post footer {
+article.post footer, .blog-index section.series_list {
   border: 2px solid;
   margin: 2em;
   padding: 1em;
