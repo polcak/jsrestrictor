@@ -1,6 +1,7 @@
 ---
 title: We received support from NGI0 PET Fund
 date: 2021-03-30 09:00
+Series: JShelter background
 ---
 
 We are very happy to announce that the <a href="https://nlnet.nl/project/JSRestrictor/">JavaScript

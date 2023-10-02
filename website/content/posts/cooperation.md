@@ -1,6 +1,7 @@
 ---
 title: Cooperation with the JShelter project, rebranding, and latest features
 date: 2022-03-17 15:00
+Series: JShelter background
 ---
 
 This project started as JavaScript Restrictor at [Brno University of

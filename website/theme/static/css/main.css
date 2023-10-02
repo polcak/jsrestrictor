@@ -723,6 +723,12 @@ p.download-buttons {
   margin-bottom: var(--mg-small) !important;
 }
 
+article.post footer {
+  border: 2px solid;
+  margin: 2em;
+  padding: 1em;
+}
+
 /* Mobile layout
 */
 
