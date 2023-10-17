@@ -6,17 +6,29 @@ Slug: faq
 
 #### How can I get active and participate?
 
-Start using JShelter and tell your friends. You can fill an issue or pick up an
+Start using JShelter and tell your friends. You can fill an issue on our
+[bug tracker](https://pagure.io/JShelter/webextension/issues)
+([alternative](https://github.com/polcak/jsrestrictor/issues)) or pick up an
 issue and start working on JShelter. You can track the development in our
-[repository](https://pagure.io/JShelter/webextension). Please let us know
+[repository](https://pagure.io/JShelter/webextension)
+([alternative](https://github.com/polcak/jsrestrictor)). Please let us know
 before you start implementing, preferably directly in the issue. You can
-contact us by e-mail at jshelter@gnu.org. We have a [mailing
-list](https://lists.nongnu.org/archive/html/js-shield/).
+contact us by [e-mail](mailto:jshelter@gnu.org) to privately report issues or
+if you do not have a forge account. Join our
+[mailing list](https://lists.nongnu.org/archive/html/js-shield/) to follow
+updates and join in our discussions.
 
 #### Can I translate the extension to a new language?
 
-Yes. Please see [instructions](/i18n/), go to [Weblate](https://hosted.weblate.org/projects/jshelter/), or translate the extension in the JSON files. If you want to start translating a new language, let us know. For example, you can open
-an issue in the [issue tracker](https://pagure.io/JShelter/webextension/issues) or send us [e-mail](mailto:jshelter@gnu.org). If you are in doubt about how to translate a string or do not understand its meaning, let us know in an [issue](https://pagure.io/JShelter/webextension/issues) or send us [e-mail](mailto:jshelter@gnu.org).
+Yes. Please see [instructions](/i18n/), go to
+[Weblate](https://hosted.weblate.org/projects/jshelter/), or translate the
+extension in the JSON files. If you want to start translating a new language,
+let us know. For example, you can open an issue in the
+[issue tracker](https://pagure.io/JShelter/webextension/issues) or send us
+[e-mail](mailto:jshelter@gnu.org). If you are in doubt about how to translate a
+string or do not understand its meaning, let us know in an
+[issue](https://pagure.io/JShelter/webextension/issues) or send us
+[e-mail](mailto:jshelter@gnu.org).
 
 #### What is the current JShelter status? Is it ready, or is it still a work in progress?
 
