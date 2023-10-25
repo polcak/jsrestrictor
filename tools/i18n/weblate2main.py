@@ -74,7 +74,13 @@ if __name__ == "__main__":
             obj = db[key]
             if PLACEHOLDERS_DELIMITER in key:
                 origkey, phkey = key.split(PLACEHOLDERS_DELIMITER)
-                placeholders = db[origkey].get("placeholders", {})
+                try:
+                    placeholders = db[origkey].get("placeholders", {})
+                except KeyError:
+                    # There is a translated placeholder but the main string is not translated.
+                    # Do not add the partial translation until the main string is translated.
+                    del weblate_locales[locale][key]
+                    continue
                 d = {"content": obj["message"]}
                 if "description" in obj:
                     _, rest = obj["description"].split(" ### ")
