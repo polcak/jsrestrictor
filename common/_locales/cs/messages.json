@@ -45,11 +45,11 @@
 		"description": "The button in the popup that tweaks JSS"
 	},
 	"descriptionMore": {
-		"message": "(více...)",
+		"message": "(více…)",
 		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get more information about the level."
 	},
 	"descriptionLess": {
-		"message": "(skryj...)",
+		"message": "(skryj…)",
 		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get less information about the level."
 	},
 	"nameDescriptionSeparator": {
@@ -598,9 +598,8 @@
 		"message": "Informace o připojených zařízeních virtuální a rozšířené reality může být zneužita při tvorbě otisku prohlížeče. Webové stránky obvykle nepotřebují znát informace o takových připojených zařízeních, pokud se nejedná o specializované aplikace."
 	},
 	"jssgroupVirtualAndAugmentedRealityDevicesStrictDescription": {
-		"message": "Skryj všechna zařízení"
+		"message": "Skryj všechna zařízení."
 	},
-
 	"jssgroupMultimediaPlayback": {
 		"message": "Multimediální kodeky",
 		"description": "playback group"
@@ -722,7 +721,7 @@
 		"message": "Vypnuto"
 	},
 	"jssgroupWASMDisabledDescription": {
-		"message": "Urychlení pomocí WebAssembly není aplikováno"
+		"message": "Urychlení pomocí WebAssembly není aplikováno, používá se pomalejší JavaScript."
 	},
 	"jssgroupWASMPassive": {
 		"message": "Pasivní"
@@ -749,9 +748,8 @@
 		"message": "Zapnuto"
 	},
 	"jssgroupWASMEnabledDescription": {
-		"message": "Urychlení pomocí WebAssembly je aplikováno"
+		"message": "Urychlení pomocí WebAssembly je aplikováno."
 	},
-
 	"JShelterOptions": {
 		"message": "Hlavní nastavení JShelteru",
 		"description": "Title of the main options page"
@@ -1140,7 +1138,7 @@
 				"description": "Paragraph 2, please translate this text."
 			},
 			"paragraph3": {
-				"content": "Chování Štítu pro ochranu hranice sítě může být globálně nastaveno níže. Štít pro ochranu hranice sítě může také být vypnutý pro jednotlivé domény s využitím seznamu výjimek. Domény do tohoto seznamu mohou být přidány s využitím okna dostupného pro každou navštívenou stránku po kliknutí na ikonu JShelteru nebo ručně níže. Uvedením domény do tohoto seznamu také vypnete Štít pro ochranu hranice sítě na všech jejich poddoménách. Abyste deaktivovali Štít pro ochranu hranice sítě pro konkrétní doménu, vložte tuto doménu do seznamu (vynechte „www“, ale zahrňte všechny nadřazené domény jako je „.cz“).",
+				"content": "Chování Štítu pro ochranu hranice sítě může být globálně nastaveno níže. Štít pro ochranu hranice sítě může také být vypnutý pro jednotlivé domény s využitím seznamu výjimek. Domény do tohoto seznamu mohou být přidány s využitím okna dostupného pro každou navštívenou stránku po kliknutí na ikonu JShelteru nastavením <i>přepínače označeného Štít pro ochranu hranice sítě</i> nebo ručně níže po kliknutí na <i>Spravuj seznam domén s výjimkou</i>. Uvedením domény do tohoto seznamu také vypnete Štít pro ochranu hranice sítě na všech jejich poddoménách. Abyste deaktivovali Štít pro ochranu hranice sítě pro konkrétní doménu, vložte tuto doménu do seznamu (vynechte „www“, ale zahrňte všechny nadřazené domény jako je „.cz“).",
 				"description": "Paragraph 3, please translate this text, note that <i>Manage exception list</i> refers to the ManageWhitelist string."
 			}
 		}

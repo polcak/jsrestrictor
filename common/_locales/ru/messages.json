@@ -44,11 +44,11 @@
 		"description": "The button in the popup that tweaks JSS"
 	},
 	"descriptionMore": {
-		"message": "(больше...)",
+		"message": "(больше…)",
 		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get more information about the level."
 	},
 	"descriptionLess": {
-		"message": "(меньше...)",
+		"message": "(меньше…)",
 		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get less information about the level."
 	},
 	"nameDescriptionSeparator": {
@@ -1354,11 +1354,11 @@
 		"description": "Text shown in options during configuaration of the parameters of FPD"
 	},
 	"fpdDetectionDefaultDescription2": {
-		"message": "• Очень низкое количество ложноположительных обнаружений (сосредоточиться на явных случаях фингерпринтинга, очень низкое количество неразумно заблокированных сайтов)",
+		"message": "• Очень низкое количество ложноположительных обнаружений (сосредоточиться на явных случаях фингерпринтинга, очень низкое количество неразумно заблокированных сайтов).",
 		"description": "Text shown in options during configuaration of the parameters of FPD"
 	},
 	"fpdDetectionDefaultDescription3": {
-		"message": "• Приемлемое количество ложноположительных обнаружений (некоторые веб-сайты с фингерпринтингом могут обойти обнаружение)",
+		"message": "• Приемлемое количество ложноположительных обнаружений (некоторые веб-сайты с фингерпринтингом могут обойти обнаружение).",
 		"description": "Text shown in options during configuaration of the parameters of FPD"
 	},
 	"fpdStrict": {

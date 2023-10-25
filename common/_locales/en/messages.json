@@ -723,7 +723,7 @@
 		"message": "Disabled"
 	},
 	"jssgroupWASMDisabledDescription": {
-		"message": "Disable WebAssembly from creating little lies."
+		"message": "Do not create little lies in WebAssembly, use slower JavaScript."
 	},
 	"jssgroupWASMPassive": {
 		"message": "Passive"
@@ -1404,11 +1404,11 @@
 		"description": "Text shown in options during configuaration of the parameters of FPD"
 	},
 	"fpdDetectionDefaultDescription2": {
-		"message": "• Very low number of false positive detections (focus on clear fingerprinting cases, very low number of unreasonably blocked sites)",
+		"message": "• Very low number of false positive detections (focus on clear fingerprinting cases, very low number of unreasonably blocked sites).",
 		"description": "Text shown in options during configuaration of the parameters of FPD"
 	},
 	"fpdDetectionDefaultDescription3": {
-		"message": "• Acceptable amount of false negative detections (some fingerprinting websites may get around detection)",
+		"message": "• Acceptable amount of false negative detections (some fingerprinting websites may get around detection).",
 		"description": "Text shown in options during configuaration of the parameters of FPD"
 	},
   "fpdStrict": {
