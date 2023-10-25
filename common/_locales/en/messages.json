@@ -45,11 +45,11 @@
 		"description": "The button in the popup that tweaks JSS"
 	},
 	"descriptionMore": {
-		"message": "(more...)",
+		"message": "(more…)",
 		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get more information about the level."
 	},
 	"descriptionLess": {
-		"message": "(less...)",
+		"message": "(less…)",
 		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get less information about the level."
 	},
 	"nameDescriptionSeparator": {
