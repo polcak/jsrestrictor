@@ -2,3 +2,4 @@ pelican>=4.6.0
 Markdown>=3.3.4
 comment-parser>=1.2.3
 jinja2>=3.0
+pelican-series>=2.1.0

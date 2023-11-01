@@ -47,7 +47,7 @@ STATIC_LANG_SAVE_AS = "drafts/pages/{slug}-{lang}.html"
 # RELATIVE_URLS = True
 
 PLUGIN_PATHS = ["plugins"]
-PLUGINS = ["i18n_subsites"]
+PLUGINS = ["i18n_subsites", "series"]
 I18N_UNTRANSLATED_PAGES = "remove"  # needed to avoid index overwrites
 I18N_SUBSITES = {
     "pt": {

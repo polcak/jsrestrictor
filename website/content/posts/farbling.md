@@ -1,6 +1,7 @@
 ---
 title: Farbling-based wrappers to hinder browser fingerprinting
 date: 2021-08-23 09:00
+Series: Browser fingerprinting
 ---
 
 [Browser fingerprinting](https://arxiv.org/pdf/1905.01051.pdf) is a more and more popular technique used to identify browsers. The fingerprint is computed based on the results of JavaScript calls, the content of HTTP headers, hardware characteristics, underlying operating system and other software information. Consequently, browser fingerprints are used for cross-domain tracking. However, users cannot clear their browser fingerprint as it is not stored on the client-side. It is also challenging to determine whether a browser is being fingerprinted.

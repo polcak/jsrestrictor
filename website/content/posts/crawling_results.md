@@ -1,6 +1,7 @@
 ---
 title: "RESULTS: Measurement of JavaScript API usage on the web"
 date: 2022-01-14 12:00
+Series: JavaScript API usage
 ---
 
 A [previous blogpost](/crawling/) introduced a methodology to measure the usage of JavaScript APIs on the web by crawling the web. 

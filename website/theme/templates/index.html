@@ -8,7 +8,16 @@
     <h2>Blogposts</h2>
     <a href="{{ SITEURL }}/feeds/all.atom.xml" class="rss"><i class="fa fa-rss-square" aria-hidden="true"></i></a>
   </header>
+  <section class="series_list">
+    <h3>Recommended blog series</h3>
+    <ul>
+      <li><a href="/mv3/">Manifest v3</a></li>
+      <li><a href="/fingerprinting">Browser fingerprinting</a></li>
+    </ul>
+  </section>
 
+  <section>
+    <h3>Recent posts</h3>
 {% for article in articles_page.object_list %}
         <article class="hentry">
           <a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags }}">
@@ -24,6 +33,7 @@
           </a>
         </article>
 {% endfor %}
+  </section>
 
 {% if articles_page.has_other_pages() %}
     {% include 'pagination.html' %}
