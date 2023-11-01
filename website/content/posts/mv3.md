@@ -65,12 +65,10 @@ Further factors make any migration route even harder:
     vendors adopting it, including Mozilla, Microsoft and Apple.
 
 Notwithstanding the aforementioned critical issues, one year ago, Google
-announced a bellicose timeline to extinguish "legacy" MV2 extensions
-<https://developer.chrome.com/docs/extensions/mv3/mv2-sunset/>, starting
+announced a bellicose [timeline to extinguish "legacy" MV2 extensions](https://developer.chrome.com/docs/extensions/mv3/mv2-sunset/), starting
 with a "soft" deprecation on the 1st of January 2023 but quickly ramping
 up to enterprise-only support in June and complete extermination by the
-end of the year, except for backpedalling at the last moment
-<https://arstechnica.com/gadgets/2022/12/chrome-delays-plan-to-limit-ad-blockers-new-timeline-coming-in-march/>, 
+end of the year, except for [backpedalling at the last moment](https://arstechnica.com/gadgets/2022/12/chrome-delays-plan-to-limit-ad-blockers-new-timeline-coming-in-march/), 
 putting those dates "under review until March" with the admission that
 an API still in such a bad shape prevents too many extensions (even
 outside the controversial realm of content blockers) from migrating.
