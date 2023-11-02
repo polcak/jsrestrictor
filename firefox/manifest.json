@@ -16,6 +16,7 @@
         "update.js",
         "url.js",
         "levels_browser.js",
+        "settings_tweaks.js",
         "levels.js",
         "fp_levels.js",
         "fp_detect_background.js",

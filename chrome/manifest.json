@@ -15,6 +15,7 @@
         "session_hash.js",
         "update.js",
         "url.js",
+        "settings_tweaks.js",
         "levels.js",
         "fp_levels.js",
         "fp_detect_background.js",
