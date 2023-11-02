@@ -167,7 +167,7 @@ calls. See the highlighted column:
 #### How can I fix videos if they fail to play or retrieve data in time?
 
 JShelter reimplements more than 100 JavaScript APIs. However, pages can use several ways to access the
-same API. Unfortunately, browsers do not allow patching every possibility consistently through a simple call. Web Workers are one of the possibilities to access the APIs. Our ultimate goal is to patch APIs consistently. However, patching Web Worker is tricky, and we have yet to find a way to patch Workers seamlessly. Our ultimate goal was to replace Workers with synchronous code. However, so far, we offer only policies that either disable Workers or make them inoperable.
+same API. Unfortunately, browsers do not allow patching every possibility consistently through a simple call. Web Workers are one of the possibilities to access the APIs (see further [threats](#what-are-web-workers-and-what-are-the-threats-that-i-face)). Our ultimate goal is to patch APIs consistently. However, patching Web Worker is tricky, and we have yet to find a way to patch Workers seamlessly. Our ultimate goal was to replace Workers with synchronous code. However, so far, we offer only policies that either disable Workers or make them inoperable.
 
 We are [working](https://pagure.io/JShelter/webextension/issue/43) on [improvements](https://pagure.io/JShelter/webextension/issue/80). Currently, we patch Web Workers in the `Recommended` level (`Remove` policy). Nevertheless, the method breaks Web Workers, and they cannot be used for benign purposes. The page also cannot detect breakage to limit the fingerprintability of the browsers.
 
@@ -179,7 +179,7 @@ not have the powers of Web Workers, so you can make the page work at the cost of
 fingerprintability. Use FPD to evaluate that threat.
 
 If you believe the server
-operator and their partners not to misuse Web Workers to access original APIs, or if you
+operator and their partners not to misuse Web Workers to access original APIs and [other ways](#what-are-web-workers-and-what-are-the-threats-that-i-face), or if you
 do not mind, change the `WebWorker` policy from `Remove` to `Low` (in Chrome) or deactivate it completely
 ([in Firefox](https://pagure.io/JShelter/webextension/issue/80)). Videos and other functionality
 requiring Web Workers should
