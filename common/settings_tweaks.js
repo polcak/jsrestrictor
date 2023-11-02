@@ -21,13 +21,15 @@
 
 /// Tweaks for specific domains that are built-in for all users
 var tweak_domains_builtin = {
-	"docs.google.com": { // See https://pagure.io/JShelter/webextension/issue/122
+	"docs.google.com": {
+		"explanation": "https://pagure.io/JShelter/webextension/issue/122",
 		"level_id": "2",
 		"tweaks": {
 			"webworker": 2
 		}
 	},
-	"app.mediafire.com": { // See https://github.com/polcak/jsrestrictor/issues/207
+	"app.mediafire.com": {
+		"explanation": "https://github.com/polcak/jsrestrictor/issues/207",
 		"level_id": "2",
 		"tweaks": {
 			"webworker": 2

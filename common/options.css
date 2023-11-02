@@ -231,8 +231,8 @@ fieldset {
 	display: none;
 }
 
-#current-level-tweaks input[type=range] {
-	pointer-events:none; /* https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events */
+#current-level-tweaks input[type=range], #builtin-jss-tweaks input[type=range] {
+	pointer-events:none; /* do not allow modifications, https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events */
 }
 
 .protection-title {

@@ -17,6 +17,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
   <script src="levels.js" type="text/javascript" defer></script>
   <script src="options_init.js" type="text/javascript" defer></script>
   <script src="update.js" type="text/javascript" defer></script>
+  <script src="tweaks_gui.js" type="text/javascript" defer></script>
   <script src="options_advanced.js" type="text/javascript" defer></script>
 	<script src="i18n_translate_dom.js" type="text/javascript" defer></script>
 	<title data-localize="JShelterOptionsAdvanced">JShelter advanced options</title>
@@ -68,6 +69,31 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 		</section>
 
+		<section>
+			<h3 data-localize="JSSBuiltinExceptions">Built-in tweaks for JavaScript Shield</h3>
+			<div id="builtin-jss-tweaks">
+			</div>
+		</section>
+
 	</section>
+
+		<template id="tweak-head">
+		</template>
+		<template id="tweak-row">
+			<label>Wrapper group name</label>
+			<div class="tweak">
+				<input class="tlev" type="range" min="0" max="3" /><output></output>
+			</div>
+			<button class="help">⤵</button>
+			<div class="tweakfill"></div>
+			<div class="explainer hidden_descr">
+				<span class="description"></span>
+				<p>
+					<div class="more"></div>
+				</p>
+				<div class="status"></div>
+			</div>
+		</template>
+
 </body>
 </html>
