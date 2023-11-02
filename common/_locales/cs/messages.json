@@ -1112,6 +1112,21 @@
 		"message": "Zpět (zapomeň poslední přepis konfigurace)",
 		"description": "Displayed in expert settings, button that restores the configuration to the previous (back button)"
 	},
+	"JSSBuiltinExceptions": {
+		"message": "Vestavěné úpravy pro JavaScriptový štít",
+		"description": "Displayed in expert settings, heading for the table of built-in tweaks"
+	},
+	"JSSBuiltinExceptionsAppliedTo": {
+		"message": "Týká se jen úrovně $LEVEL_NAME$, pro více informací navštivte:",
+		"description": "Displayed in expert settings, text explaining what level is changed",
+		"placeholders": {
+			"level_name": {
+				"content": "$1",
+				"description": "The name of the level to which the exception applies, do not translate",
+				"example": "See JSSL*Name, e.g. Recommended"
+			}
+		}
+	},
 
 	"protectionConfigurationOptionActivatedOn": {
 		"message": "Zapnuto",

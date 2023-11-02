@@ -71,3 +71,26 @@ document.getElementById("levels-storage-undo").addEventListener("click", async f
 		}
 	}
 });
+
+window.addEventListener("DOMContentLoaded", function() {
+	function appendElement(type, innerHtml) {
+		let el = document.createElement(type);
+		el.innerHTML = innerHtml;
+		parent.appendChild(el);
+		return el;
+	}
+	let parent = document.getElementById("builtin-jss-tweaks");
+	for ([d, settings] of Object.entries(tweak_domains_builtin)) {
+		appendElement("h4", d);
+		appendElement("p", browser.i18n.getMessage("JSSBuiltinExceptionsAppliedTo",
+			levels[settings.level_id].level_text) + ` <a href="${settings.explanation}">${settings.explanation}</a>`);
+		var currentTweaksEl = appendElement("div", "");
+		currentTweaksEl.classList.add("tweakgrid");
+		let tweaksBusiness = Object.create(tweaks_gui);
+		tweaksBusiness.get_current_tweaks = function() {
+			return settings.tweaks;
+		};
+		tweaksBusiness.create_tweaks_html(currentTweaksEl);
+	}
+});
+

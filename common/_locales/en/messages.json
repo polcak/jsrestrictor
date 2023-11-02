@@ -1115,6 +1115,21 @@
 		"message": "Undo (discard last configuration override)",
 		"description": "Displayed in expert settings, button that restores the configuration to the previous (back button)"
 	},
+	"JSSBuiltinExceptions": {
+		"message": "Built-in tweaks for JavaScript Shield",
+		"description": "Displayed in expert settings, heading for the table of built-in tweaks"
+	},
+	"JSSBuiltinExceptionsAppliedTo": {
+		"message": "Applied only to level $LEVEL_NAME$, for more details, see:",
+		"description": "Displayed in expert settings, text explaining what level is changed",
+		"placeholders": {
+			"level_name": {
+				"content": "$1",
+				"description": "The name of the level to which the exception applies, do not translate",
+				"example": "See JSSL*Name, e.g. Recommended"
+			}
+		}
+	},
 
 	"protectionConfigurationOptionActivatedOn": {
 		"message": "On",
