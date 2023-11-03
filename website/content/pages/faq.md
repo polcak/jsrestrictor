@@ -201,6 +201,9 @@ First, see the explanation of [Web Workers](#what-are-web-workers-and-what-are-t
 
 See the [answer to the video question](#how-can-i-fix-videos-if-they-fail-to-play-or-retrieve-data-in-time).
 
+If you find a website that needs WebWorker protection set to `Strict` and does not work with `Remove` or vice-versa, please let us know in the [issue tracker](https://pagure.io/JShelter/webextension/issues) or send us
+[e-mail](mailto:jshelter@gnu.org).
+
 ### User interface issues
 
 #### Can I see a JShelter (badge) icon next to my navigation bar? I want to interact with the extension easily and avoid going through settings.

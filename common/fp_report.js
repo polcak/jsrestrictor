@@ -21,6 +21,8 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+let hiddenTraces = {};
+
 /**
  * Event listener that listens for a load of FPD report page. If the page is loaded, fetch FPD data from background.
  *
@@ -79,6 +81,8 @@ function createReport(data) {
 			if (groups.all[group].description) {
 				html += "<div id=\"" + group + "\" class=\"fpd-group access\">";
 				html += "<h2>" + group + "</h2>";
+				html += `<button class="help" id="expand${group}" >⤵</button>`;
+				html += "<section>";
 				html += "<p>" + groups.all[group].description + "</p>";
 			}
 			for (let [item, type] of Object.entries(groups.all[group].items)) {
@@ -90,7 +94,7 @@ function createReport(data) {
 				}
 			}
 			if (groups.all[group].description) {
-				html += "</div>";
+				html += "</section></div>";
 			}
 		}
 	}
@@ -103,17 +107,16 @@ function createReport(data) {
 				for (let t of Object.values(fpDb[resource])) {
 					let traces = Object.keys(t.callers);
 					for (trace of traces) {
-						if (trace !== "") {
-							callers += "<br><br>" + trace;
+						if (trace !== "" && !(trace in hiddenTraces)) {
+							callers += "<p>" + trace.replace(/\n/g, '<br>') + "</p>";
 						}
 					}
 				}
 			}
-			callers = callers.replace(/\n/g, '<br>');
 			let accessRaw = processedEvals[resource].total;
 			let accessCount = accessRaw >= 1000 ? "1000+" : accessRaw;
-			html += `<h4 class="hidden ${accessRaw > 0 ? "access" : "no-access"}"><span class="dot">-</span> ` +
-			`${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})\n${callers}</h4>`;
+			html += `<div class="details ${accessRaw > 0 ? "access" : "no-access"}"><h4><span class="dot">-</span> ` +
+			`${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})</h4>\n${callers}</div>`;
 		}
 	}
 
@@ -127,7 +130,7 @@ function createReport(data) {
 	for (let i = groupElements.length; i > 0; i--) {
 		// remove duplicit entries from groups
 		let duplicitArray = [];
-		let elements = groupElements[i-1].querySelectorAll(":scope > h4");
+		let elements = groupElements[i-1].querySelectorAll(":scope > section > div.details > h4");
 		elements.forEach((d) => {
 			if (duplicitArray.indexOf(d.innerHTML) > -1) {
 				d.remove();
@@ -138,49 +141,45 @@ function createReport(data) {
 		});
 
 		// hide groups with no relevant entries
-		if (!document.querySelectorAll(`#${groupElements[i-1].id} > .access`).length) {
+		if (!document.querySelectorAll(`#${groupElements[i-1].id} > section > .access`).length) {
 			groupElements[i-1].classList.replace("access", "no-access");
 		}
 	}
 
 	// function that enables to show accessed resources of the group
-	let toggleResources = (event) => {
+	function toggleResources(event) {
 		let parent =  event.target.parentElement;
 		for (let i = 0; i < parent.children.length; i++) {
 			let child = parent.children[i];
-			if (child.tagName == "H4") {
+			if (child.tagName == "SECTION") {
 				child.classList.toggle("hidden");
 			}
 		}
 	}
 
 	// make group name clickable only if it makes sense - groups with resources
-	let makeClickableTitles = () => {
+	function makeGroupExpansionsClickable() {
 		for (let element of document.querySelectorAll(".fpd-group")) {
 			let button;
-			let haveChild = false;
 
 			for (let i = 0; i < element.children.length; i++) {
 				let child = element.children[i];
-				if (child.tagName == "H2") {
+				if (child.tagName == "BUTTON") {
 					button = child;
-				}
-				if (child.tagName == "H4" && !child.classList.contains("no-access")) {
-					haveChild = true;
 				}
 			}
 
-			if (button && haveChild) {
+			if (button) {
 				button.classList.add("clickable");
 				button.addEventListener("click", toggleResources);
 			}
 		}
 	}
-	makeClickableTitles();
+	makeGroupExpansionsClickable();
 
 	// show resources for every group in FPD report
 	let showAll = (event) => {
-		for (let element of document.querySelectorAll(".fpd-group > h4")) {
+		for (let element of document.querySelectorAll(".fpd-group div.details")) {
 			element.classList.remove("hidden");
 		}
 		showBtn.classList.add("hidden");
@@ -189,28 +188,40 @@ function createReport(data) {
 
 	// hide resources for every group in FPD report
 	let hideDetails = (event) => {
-		for (let element of document.querySelectorAll(".fpd-group > h4")) {
+		for (let element of document.querySelectorAll(".fpd-group div.details")) {
 			element.classList.add("hidden");
 		}
 		showBtn.classList.remove("hidden");
 		hideBtn.classList.add("hidden");
+	}
+	hideDetails();
+
+	// refresh data in the report
+	function refreshReport() {
+		browser.runtime.sendMessage({
+			purpose: "fpd-get-report-data",
+			tabId: tabId
+		}).then((result) => {
+			createReport(result);
+			showAll();
+		});
+		browser.runtime.sendMessage({purpose: "fpd-track-callers-stop"});
+		document.getElementById("updateReportBtn").classList.remove("hidden");
+		document.getElementById("forgetCurrentBtn").classList.remove("hidden");
+		let trackCallersBtn = document.getElementById("trackCallersBtn");
+		trackCallersBtn.innerText = browser.i18n.getMessage("FPDReportTrackCallersRestart");
+		trackCallersBtn.classList.remove("hidden");
 	}
 
 	// Reload the report with data on the identity of the calling scripts
 	function trackCallers() {
 		tabId = new URLSearchParams(window.location.search).get("id");
 		function onReloaded() {
-			function refresh() {
-				browser.runtime.sendMessage({
-					purpose: "fpd-get-report-data",
-					tabId: tabId
-				}).then((result) => {
-					createReport(result);
-					showAll();
-				});
-				browser.runtime.sendMessage({purpose: "fpd-track-callers-stop"});
-			}
-			setInterval(refresh, 5000);
+			setTimeout(refreshReport, 5000);
+			report.innerHTML = browser.i18n.getMessage("FPDReportTrackCallersWaiting");
+			document.getElementById("trackCallersBtn").classList.add("hidden");
+			document.getElementById("updateReportBtn").classList.add("hidden");
+			document.getElementById("forgetCurrentBtn").classList.add("hidden");
 		}
 		function onError(error) {
 			document.getElementById("fpdError").innerHTML = browser.i18n.getMessage("FPDReportTrackCallersFailed", error);
@@ -222,12 +233,26 @@ function createReport(data) {
 		}).then(onReloaded, onError);
 	}
 
+	function updateReport() {
+	}
+
 	// show all groups/resources even if not accessed
 	let showNotAccessed = () => {
 		for (let element of document.querySelectorAll(".no-access")) {
 			element.classList.remove("no-access");
 		}
-		makeClickableTitles();
+		makeGroupExpansionsClickable();
+	}
+
+	function forgetTraces() {
+		for (resource of Object.values(fpDb)) {
+			for (type of Object.values(resource)) {
+				for (trace of Object.keys(type.callers)) {
+					hiddenTraces[trace] = true;
+				}
+			}
+		}
+		createReport(data);
 	}
 
 	// create on-site JSON representation of FPD evaluation data and download it
@@ -249,6 +274,8 @@ function createReport(data) {
 	document.getElementById("hideBtn").onclick = hideDetails;
 	document.getElementById("exportBtn").onclick = exportReport.bind(null, `fpd_report_${url}.json`);
 	document.getElementById("trackCallersBtn").onclick = trackCallers;
+	document.getElementById("forgetCurrentBtn").onclick = forgetTraces;
+	document.getElementById("updateReportBtn").onclick = refreshReport;
 	document.getElementById("unhideAll").onclick = showNotAccessed;
 }
 

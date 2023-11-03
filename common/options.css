@@ -259,3 +259,18 @@ fieldset {
 form {
 	margin: 2em;
 }
+
+#builtin-jss-tweaks {
+	display: grid;
+	grid-template-columns: auto auto auto auto;
+	column-gap: 3em;
+	row-gap: 3ex;
+}
+
+#builtin-jss-tweaks span {
+	text-align: left;
+}
+
+#builtin-jss-tweaks .tweak_domain {
+	color: var(--title-color);
+}

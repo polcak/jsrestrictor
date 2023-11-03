@@ -23,14 +23,14 @@
 var tweak_domains_builtin = {
 	"docs.google.com": {
 		"explanation": "https://pagure.io/JShelter/webextension/issue/122",
-		"level_id": "2",
+		"level_id": ["1", "2"],
 		"tweaks": {
 			"webworker": 2
 		}
 	},
 	"app.mediafire.com": {
 		"explanation": "https://github.com/polcak/jsrestrictor/issues/207",
-		"level_id": "2",
+		"level_id": ["1", "2"],
 		"tweaks": {
 			"webworker": 2
 		}
