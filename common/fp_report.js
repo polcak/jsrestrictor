@@ -194,6 +194,7 @@ function createReport(data) {
 		showBtn.classList.remove("hidden");
 		hideBtn.classList.add("hidden");
 	}
+	hideDetails();
 
 	// refresh data in the report
 	function refreshReport() {
