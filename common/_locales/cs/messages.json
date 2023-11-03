@@ -1116,16 +1116,25 @@
 		"message": "Vestavěné úpravy pro JavaScriptový štít",
 		"description": "Displayed in expert settings, heading for the table of built-in tweaks"
 	},
-	"JSSBuiltinExceptionsAppliedTo": {
-		"message": "Týká se jen úrovně $LEVEL_NAME$, pro více informací navštivte:",
-		"description": "Displayed in expert settings, text explaining what level is changed",
-		"placeholders": {
-			"level_name": {
-				"content": "$1",
-				"description": "The name of the level to which the exception applies, do not translate",
-				"example": "See JSSL*Name, e.g. Recommended"
-			}
-		}
+	"JSSBuiltinExceptionsDomain": {
+		"message": "Doména",
+		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
+	},
+	"JSSBuiltinExceptionsLevels": {
+		"message": "Úrovně",
+		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
+	},
+	"JSSBuiltinExceptionsLevelsSeparator": {
+		"message": ", ",
+		"description": "Displayed in expert settings, separator for levels displayed"
+	},
+	"JSSBuiltinExceptionsChanges": {
+		"message": "Změny",
+		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
+	},
+	"JSSBuiltinExceptionsReason": {
+		"message": "Vysvětlení",
+		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
 	},
 
 	"protectionConfigurationOptionActivatedOn": {

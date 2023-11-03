@@ -1119,16 +1119,25 @@
 		"message": "Built-in tweaks for JavaScript Shield",
 		"description": "Displayed in expert settings, heading for the table of built-in tweaks"
 	},
-	"JSSBuiltinExceptionsAppliedTo": {
-		"message": "Applied only to level $LEVEL_NAME$, for more details, see:",
-		"description": "Displayed in expert settings, text explaining what level is changed",
-		"placeholders": {
-			"level_name": {
-				"content": "$1",
-				"description": "The name of the level to which the exception applies, do not translate",
-				"example": "See JSSL*Name, e.g. Recommended"
-			}
-		}
+	"JSSBuiltinExceptionsDomain": {
+		"message": "Domain",
+		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
+	},
+	"JSSBuiltinExceptionsLevels": {
+		"message": "Levels",
+		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
+	},
+	"JSSBuiltinExceptionsLevelsSeparator": {
+		"message": ", ",
+		"description": "Displayed in expert settings, separator for levels displayed"
+	},
+	"JSSBuiltinExceptionsChanges": {
+		"message": "Changes",
+		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
+	},
+	"JSSBuiltinExceptionsReason": {
+		"message": "Reason",
+		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
 	},
 
 	"protectionConfigurationOptionActivatedOn": {

@@ -73,24 +73,31 @@ document.getElementById("levels-storage-undo").addEventListener("click", async f
 });
 
 window.addEventListener("DOMContentLoaded", function() {
-	function appendElement(type, innerHtml) {
+	function appendElement(innerText, type="span") {
 		let el = document.createElement(type);
-		el.innerHTML = innerHtml;
+		el.innerText = innerText;
 		parent.appendChild(el);
 		return el;
 	}
 	let parent = document.getElementById("builtin-jss-tweaks");
+	if (Object.keys(tweak_domains_builtin).length > 0) {
+		appendElement(browser.i18n.getMessage("JSSBuiltinExceptionsDomain"), "h4");
+		appendElement(browser.i18n.getMessage("JSSBuiltinExceptionsLevels"), "h4");
+		appendElement(browser.i18n.getMessage("JSSBuiltinExceptionsChanges"), "h4");
+		appendElement(browser.i18n.getMessage("JSSBuiltinExceptionsReason"), "h4");
+	}
 	for ([d, settings] of Object.entries(tweak_domains_builtin)) {
-		appendElement("h4", d);
-		appendElement("p", browser.i18n.getMessage("JSSBuiltinExceptionsAppliedTo",
-			appendElement((settings.level_id.map((id) => levels[id].level_text)).join(", ")); + ` <a href="${settings.explanation}">${settings.explanation}</a>`);
-		var currentTweaksEl = appendElement("div", "");
+		appendElement(d).classList.add("tweak_domain");
+		appendElement((settings.level_id.map((id) => levels[id].level_text)).join(browser.i18n.getMessage("JSSBuiltinExceptionsLevelsSeparator")));
+		let currentTweaksEl = appendElement("", "div");
 		currentTweaksEl.classList.add("tweakgrid");
 		let tweaksBusiness = Object.create(tweaks_gui);
 		tweaksBusiness.get_current_tweaks = function() {
 			return settings.tweaks;
 		};
 		tweaksBusiness.create_tweaks_html(currentTweaksEl);
+		let reasonEl = appendElement(settings.explanation, "a");
+		reasonEl.href = settings.explanation;
 	}
 });
 
