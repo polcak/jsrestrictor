@@ -79,6 +79,7 @@ function createReport(data) {
 			if (groups.all[group].description) {
 				html += "<div id=\"" + group + "\" class=\"fpd-group access\">";
 				html += "<h2>" + group + "</h2>";
+				html += `<button class="help" id="expand${group}" >⤵</button>`;
 				html += "<p>" + groups.all[group].description + "</p>";
 			}
 			for (let [item, type] of Object.entries(groups.all[group].items)) {
@@ -155,14 +156,14 @@ function createReport(data) {
 	}
 
 	// make group name clickable only if it makes sense - groups with resources
-	let makeClickableTitles = () => {
+	function makeGroupExpansionsClickable() {
 		for (let element of document.querySelectorAll(".fpd-group")) {
 			let button;
 			let haveChild = false;
 
 			for (let i = 0; i < element.children.length; i++) {
 				let child = element.children[i];
-				if (child.tagName == "H2") {
+				if (child.tagName == "BUTTON") {
 					button = child;
 				}
 				if (child.tagName == "H4" && !child.classList.contains("no-access")) {
@@ -176,7 +177,7 @@ function createReport(data) {
 			}
 		}
 	}
-	makeClickableTitles();
+	makeGroupExpansionsClickable();
 
 	// show resources for every group in FPD report
 	let showAll = (event) => {
@@ -239,7 +240,7 @@ function createReport(data) {
 		for (let element of document.querySelectorAll(".no-access")) {
 			element.classList.remove("no-access");
 		}
-		makeClickableTitles();
+		makeGroupExpansionsClickable();
 	}
 
 	// create on-site JSON representation of FPD evaluation data and download it
