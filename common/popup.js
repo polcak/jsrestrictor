@@ -119,7 +119,7 @@ function enableRefreshIfNeeded() {
 /**
  * Save level settings for current page, show correct button
  */
-function modify_level(level, levelButton) {
+function modify_level(level, levelButton, forceUpdateLevels = false) {
 	if (level) {
 		current_level = level;
 		saveDomainLevels();
@@ -127,7 +127,16 @@ function modify_level(level, levelButton) {
 			changeActiveLevel(levelButton);
 		}
 		update_level_info();
-		update_tweaks();
+		if (forceUpdateLevels) {
+			function refresh() {
+				current_level = getCurrentLevelJSON("https://" + site);
+				update_tweaks();
+			}
+			browser.storage.sync.get(null).then(updateLevels).then(refresh);
+		}
+		else {
+			update_tweaks();
+		}
 	}
 }
 
@@ -207,7 +216,7 @@ function add_level_buttons() {
 	default_lev_button = addButton({level_id: "DEFAULT", level_description: browser.i18n.getMessage("popupDefaultLevelHelpText"), level_text: browser.i18n.getMessage("defaultLevelSelection", default_level.level_text)});
 	default_lev_button.addEventListener("click", ev => {
 		delete domains[site];
-		modify_level(default_level, ev.target);
+		modify_level(default_level, ev.target, true); // We need to force update config to display built-in tweaks
 	});
 	// Load built-in and custom levels
 	for (let level_id in levels) {
