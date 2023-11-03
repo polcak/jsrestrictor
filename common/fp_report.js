@@ -196,21 +196,30 @@ function createReport(data) {
 		hideBtn.classList.add("hidden");
 	}
 
+	// refresh data in the report
+	function refreshReport() {
+		browser.runtime.sendMessage({
+			purpose: "fpd-get-report-data",
+			tabId: tabId
+		}).then((result) => {
+			createReport(result);
+			showAll();
+		});
+		browser.runtime.sendMessage({purpose: "fpd-track-callers-stop"});
+		document.getElementById("updateReportBtn").classList.remove("hidden");
+		let trackCallersBtn = document.getElementById("trackCallersBtn");
+		trackCallersBtn.innerText = browser.i18n.getMessage("FPDReportTrackCallersRestart");
+		trackCallersBtn.classList.remove("hidden");
+	}
+
 	// Reload the report with data on the identity of the calling scripts
 	function trackCallers() {
 		tabId = new URLSearchParams(window.location.search).get("id");
 		function onReloaded() {
-			function refresh() {
-				browser.runtime.sendMessage({
-					purpose: "fpd-get-report-data",
-					tabId: tabId
-				}).then((result) => {
-					createReport(result);
-					showAll();
-				});
-				browser.runtime.sendMessage({purpose: "fpd-track-callers-stop"});
-			}
-			setInterval(refresh, 5000);
+			setTimeout(refreshReport, 5000);
+			report.innerHTML = browser.i18n.getMessage("FPDReportTrackCallersWaiting");
+			document.getElementById("trackCallersBtn").classList.add("hidden");
+			document.getElementById("updateReportBtn").classList.add("hidden");
 		}
 		function onError(error) {
 			document.getElementById("fpdError").innerHTML = browser.i18n.getMessage("FPDReportTrackCallersFailed", error);
@@ -220,6 +229,9 @@ function createReport(data) {
 			purpose: "fpd-track-callers",
 			tabId: tabId
 		}).then(onReloaded, onError);
+	}
+
+	function updateReport() {
 	}
 
 	// show all groups/resources even if not accessed
@@ -249,6 +261,7 @@ function createReport(data) {
 	document.getElementById("hideBtn").onclick = hideDetails;
 	document.getElementById("exportBtn").onclick = exportReport.bind(null, `fpd_report_${url}.json`);
 	document.getElementById("trackCallersBtn").onclick = trackCallers;
+	document.getElementById("updateReportBtn").onclick = refreshReport;
 	document.getElementById("unhideAll").onclick = showNotAccessed;
 }
 
