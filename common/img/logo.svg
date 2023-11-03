@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="16.000002"
    height="16.000002"
    viewBox="0 0 4.2333336 4.2333336"
    version="1.1"
    id="svg4648"
-   inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
-   sodipodi:docname="logo.svg">
+   inkscape:version="1.3 (1:1.3+202307231459+0e150ed6c4)"
+   sodipodi:docname="logo4.svg"
+   inkscape:export-filename="logo3.png"
+   inkscape:export-xdpi="767.99994"
+   inkscape:export-ydpi="767.99994"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs4642" />
   <sodipodi:namedview
@@ -23,9 +26,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.9195959"
-     inkscape:cx="12.324635"
-     inkscape:cy="0.63646549"
+     inkscape:zoom="170.47"
+     inkscape:cx="4.0388338"
+     inkscape:cy="5.6930838"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -35,11 +38,14 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      units="px"
-     inkscape:window-width="1680"
-     inkscape:window-height="1009"
+     inkscape:window-width="1920"
+     inkscape:window-height="1020"
      inkscape:window-x="0"
-     inkscape:window-y="21"
-     inkscape:window-maximized="1" />
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
   <metadata
      id="metadata4645">
     <rdf:RDF>
@@ -48,7 +54,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -76,7 +81,13 @@
          stroke-linecap="butt"
          stroke-linejoin="miter"
          stroke-miterlimit="4"
-         style="font-family:none;font-variation-settings:normal;mix-blend-mode:normal;vector-effect:none;fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:0.0170486;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000" />
+         style="font-family:none;font-variation-settings:normal;mix-blend-mode:normal;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.0170486;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000" />
+      <path
+         id="path3072-1-6"
+         style="font-family:none;font-variation-settings:normal;mix-blend-mode:normal;vector-effect:none;fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:0.0170384;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+         d="m 0.52932551,1.3229166 c -0.0117656,0 -0.0232431,0.00109 -0.0346024,0.00258 -0.0278475,0.035822 -0.0449315,0.080745 -0.0449315,0.1296302 2e-8,0.1168314 0.0949155,0.2117465 0.21174602,0.2117465 0.0306472,0 0.0599596,-0.00688 0.0862477,-0.018592 0.0156676,-0.00699 0.0300029,-0.015932 0.0433821,-0.026339 0.001489,-0.011359 0.002582,-0.022836 0.002582,-0.034602 0,-0.1460373 -0.11838927,-0.2644249 -0.2644243,-0.2644249 z"
+         inkscape:label="path3072-1-2"
+         transform="translate(48.94792,71.437499)" />
       <path
          d="m 50.00625,73.025 c 0,-0.146125 0.118459,-0.264584 0.264586,-0.264584 0.146121,0 0.264581,0.118459 0.264581,0.264584 0,0.146127 -0.11846,0.264583 -0.264581,0.264583 -0.146127,0 -0.264586,-0.118456 -0.264586,-0.264583 z"
          id="path3076-4"
@@ -86,7 +97,13 @@
          stroke-linecap="butt"
          stroke-linejoin="miter"
          stroke-miterlimit="4"
-         style="font-family:none;font-variation-settings:normal;mix-blend-mode:normal;vector-effect:none;fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:0.0170486;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000" />
+         style="font-family:none;font-variation-settings:normal;mix-blend-mode:normal;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.0170486;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000" />
+      <path
+         id="path3072-1-6-5"
+         style="font-family:none;font-variation-settings:normal;mix-blend-mode:normal;fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:0.01693333;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+         d="m 1.3230757,1.3229166 c -0.011766,0 -0.023243,0.00109 -0.034602,0.00258 -0.027848,0.035822 -0.044931,0.080745 -0.044931,0.1296302 1e-7,0.1168314 0.094915,0.2117465 0.2117461,0.2117465 0.030647,0 0.05996,-0.00688 0.086248,-0.018592 0.015668,-0.00699 0.030003,-0.015932 0.043382,-0.026339 0.00149,-0.011359 0.00258,-0.022836 0.00258,-0.034602 0,-0.1460373 -0.1183893,-0.2644249 -0.2644243,-0.2644249 z"
+         inkscape:label="path3076-4-2"
+         transform="translate(48.94792,71.437499)" />
       <path
          id="path3064-2"
          style="font-family:none;mix-blend-mode:normal;fill:#e76f51;fill-opacity:1;stroke:none;stroke-width:0.0105265;stroke-dasharray:none;stroke-dashoffset:0"
