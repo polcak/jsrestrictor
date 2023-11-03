@@ -80,6 +80,7 @@ function createReport(data) {
 				html += "<div id=\"" + group + "\" class=\"fpd-group access\">";
 				html += "<h2>" + group + "</h2>";
 				html += `<button class="help" id="expand${group}" >⤵</button>`;
+				html += "<section>";
 				html += "<p>" + groups.all[group].description + "</p>";
 			}
 			for (let [item, type] of Object.entries(groups.all[group].items)) {
@@ -91,7 +92,7 @@ function createReport(data) {
 				}
 			}
 			if (groups.all[group].description) {
-				html += "</div>";
+				html += "</section></div>";
 			}
 		}
 	}
@@ -113,7 +114,7 @@ function createReport(data) {
 			callers = callers.replace(/\n/g, '<br>');
 			let accessRaw = processedEvals[resource].total;
 			let accessCount = accessRaw >= 1000 ? "1000+" : accessRaw;
-			html += `<h4 class="hidden ${accessRaw > 0 ? "access" : "no-access"}"><span class="dot">-</span> ` +
+			html += `<h4 class="${accessRaw > 0 ? "access" : "no-access"}"><span class="dot">-</span> ` +
 			`${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})\n${callers}</h4>`;
 		}
 	}
@@ -128,7 +129,7 @@ function createReport(data) {
 	for (let i = groupElements.length; i > 0; i--) {
 		// remove duplicit entries from groups
 		let duplicitArray = [];
-		let elements = groupElements[i-1].querySelectorAll(":scope > h4");
+		let elements = groupElements[i-1].querySelectorAll(":scope > section > h4");
 		elements.forEach((d) => {
 			if (duplicitArray.indexOf(d.innerHTML) > -1) {
 				d.remove();
@@ -139,17 +140,17 @@ function createReport(data) {
 		});
 
 		// hide groups with no relevant entries
-		if (!document.querySelectorAll(`#${groupElements[i-1].id} > .access`).length) {
+		if (!document.querySelectorAll(`#${groupElements[i-1].id} > section > .access`).length) {
 			groupElements[i-1].classList.replace("access", "no-access");
 		}
 	}
 
 	// function that enables to show accessed resources of the group
-	let toggleResources = (event) => {
+	function toggleResources(event) {
 		let parent =  event.target.parentElement;
 		for (let i = 0; i < parent.children.length; i++) {
 			let child = parent.children[i];
-			if (child.tagName == "H4") {
+			if (child.tagName == "SECTION") {
 				child.classList.toggle("hidden");
 			}
 		}
@@ -159,19 +160,15 @@ function createReport(data) {
 	function makeGroupExpansionsClickable() {
 		for (let element of document.querySelectorAll(".fpd-group")) {
 			let button;
-			let haveChild = false;
 
 			for (let i = 0; i < element.children.length; i++) {
 				let child = element.children[i];
 				if (child.tagName == "BUTTON") {
 					button = child;
 				}
-				if (child.tagName == "H4" && !child.classList.contains("no-access")) {
-					haveChild = true;
-				}
 			}
 
-			if (button && haveChild) {
+			if (button) {
 				button.classList.add("clickable");
 				button.addEventListener("click", toggleResources);
 			}
@@ -181,7 +178,7 @@ function createReport(data) {
 
 	// show resources for every group in FPD report
 	let showAll = (event) => {
-		for (let element of document.querySelectorAll(".fpd-group > h4")) {
+		for (let element of document.querySelectorAll(".fpd-group h4")) {
 			element.classList.remove("hidden");
 		}
 		showBtn.classList.add("hidden");
@@ -190,7 +187,7 @@ function createReport(data) {
 
 	// hide resources for every group in FPD report
 	let hideDetails = (event) => {
-		for (let element of document.querySelectorAll(".fpd-group > h4")) {
+		for (let element of document.querySelectorAll(".fpd-group h4")) {
 			element.classList.add("hidden");
 		}
 		showBtn.classList.remove("hidden");
