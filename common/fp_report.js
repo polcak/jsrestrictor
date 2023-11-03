@@ -21,6 +21,8 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+let hiddenTraces = {};
+
 /**
  * Event listener that listens for a load of FPD report page. If the page is loaded, fetch FPD data from background.
  *
@@ -105,7 +107,7 @@ function createReport(data) {
 				for (let t of Object.values(fpDb[resource])) {
 					let traces = Object.keys(t.callers);
 					for (trace of traces) {
-						if (trace !== "") {
+						if (trace !== "" && !(trace in hiddenTraces)) {
 							callers += "<p>" + trace.replace(/\n/g, '<br>') + "</p>";
 						}
 					}
@@ -204,6 +206,7 @@ function createReport(data) {
 		});
 		browser.runtime.sendMessage({purpose: "fpd-track-callers-stop"});
 		document.getElementById("updateReportBtn").classList.remove("hidden");
+		document.getElementById("forgetCurrentBtn").classList.remove("hidden");
 		let trackCallersBtn = document.getElementById("trackCallersBtn");
 		trackCallersBtn.innerText = browser.i18n.getMessage("FPDReportTrackCallersRestart");
 		trackCallersBtn.classList.remove("hidden");
@@ -217,6 +220,7 @@ function createReport(data) {
 			report.innerHTML = browser.i18n.getMessage("FPDReportTrackCallersWaiting");
 			document.getElementById("trackCallersBtn").classList.add("hidden");
 			document.getElementById("updateReportBtn").classList.add("hidden");
+			document.getElementById("forgetCurrentBtn").classList.add("hidden");
 		}
 		function onError(error) {
 			document.getElementById("fpdError").innerHTML = browser.i18n.getMessage("FPDReportTrackCallersFailed", error);
@@ -239,6 +243,17 @@ function createReport(data) {
 		makeGroupExpansionsClickable();
 	}
 
+	function forgetTraces() {
+		for (resource of Object.values(fpDb)) {
+			for (type of Object.values(resource)) {
+				for (trace of Object.keys(type.callers)) {
+					hiddenTraces[trace] = true;
+				}
+			}
+		}
+		createReport(data);
+	}
+
 	// create on-site JSON representation of FPD evaluation data and download it
 	function exportReport(filename) {
 		let element = document.createElement("a");
@@ -258,6 +273,7 @@ function createReport(data) {
 	document.getElementById("hideBtn").onclick = hideDetails;
 	document.getElementById("exportBtn").onclick = exportReport.bind(null, `fpd_report_${url}.json`);
 	document.getElementById("trackCallersBtn").onclick = trackCallers;
+	document.getElementById("forgetCurrentBtn").onclick = forgetTraces;
 	document.getElementById("updateReportBtn").onclick = refreshReport;
 	document.getElementById("unhideAll").onclick = showNotAccessed;
 }

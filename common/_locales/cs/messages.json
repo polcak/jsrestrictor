@@ -1546,6 +1546,10 @@
 			}
 		}
 	},
+	"FPDReportForgetTraces": {
+		"message": "Nezobrazuj současné volající",
+		"description": "Button caption"
+	},
 	"FPDReportRefresh": {
 		"message": "Aktualizuj zprávu",
 		"description": "Button caption"

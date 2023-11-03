@@ -1547,6 +1547,10 @@
 			}
 		}
 	},
+	"FPDReportForgetTraces": {
+		"message": "Hide current callers",
+		"description": "Button caption"
+	},
 	"FPDReportRefresh": {
 		"message": "Refresh report",
 		"description": "Button caption"
