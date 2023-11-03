@@ -106,16 +106,15 @@ function createReport(data) {
 					let traces = Object.keys(t.callers);
 					for (trace of traces) {
 						if (trace !== "") {
-							callers += "<br><br>" + trace;
+							callers += "<p>" + trace.replace(/\n/g, '<br>') + "</p>";
 						}
 					}
 				}
 			}
-			callers = callers.replace(/\n/g, '<br>');
 			let accessRaw = processedEvals[resource].total;
 			let accessCount = accessRaw >= 1000 ? "1000+" : accessRaw;
-			html += `<h4 class="${accessRaw > 0 ? "access" : "no-access"}"><span class="dot">-</span> ` +
-			`${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})\n${callers}</h4>`;
+			html += `<div class="details ${accessRaw > 0 ? "access" : "no-access"}"><h4><span class="dot">-</span> ` +
+			`${resource} (${exceptionWrappers.includes(resource) ? "n/a" : accessCount})</h4>\n${callers}</div>`;
 		}
 	}
 
@@ -129,7 +128,7 @@ function createReport(data) {
 	for (let i = groupElements.length; i > 0; i--) {
 		// remove duplicit entries from groups
 		let duplicitArray = [];
-		let elements = groupElements[i-1].querySelectorAll(":scope > section > h4");
+		let elements = groupElements[i-1].querySelectorAll(":scope > section > div.details > h4");
 		elements.forEach((d) => {
 			if (duplicitArray.indexOf(d.innerHTML) > -1) {
 				d.remove();
@@ -178,7 +177,7 @@ function createReport(data) {
 
 	// show resources for every group in FPD report
 	let showAll = (event) => {
-		for (let element of document.querySelectorAll(".fpd-group h4")) {
+		for (let element of document.querySelectorAll(".fpd-group div.details")) {
 			element.classList.remove("hidden");
 		}
 		showBtn.classList.add("hidden");
@@ -187,7 +186,7 @@ function createReport(data) {
 
 	// hide resources for every group in FPD report
 	let hideDetails = (event) => {
-		for (let element of document.querySelectorAll(".fpd-group h4")) {
+		for (let element of document.querySelectorAll(".fpd-group div.details")) {
 			element.classList.add("hidden");
 		}
 		showBtn.classList.remove("hidden");
