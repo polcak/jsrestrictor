@@ -83,7 +83,7 @@ window.addEventListener("DOMContentLoaded", function() {
 	for ([d, settings] of Object.entries(tweak_domains_builtin)) {
 		appendElement("h4", d);
 		appendElement("p", browser.i18n.getMessage("JSSBuiltinExceptionsAppliedTo",
-			levels[settings.level_id].level_text) + ` <a href="${settings.explanation}">${settings.explanation}</a>`);
+			appendElement((settings.level_id.map((id) => levels[id].level_text)).join(", ")); + ` <a href="${settings.explanation}">${settings.explanation}</a>`);
 		var currentTweaksEl = appendElement("div", "");
 		currentTweaksEl.classList.add("tweakgrid");
 		let tweaksBusiness = Object.create(tweaks_gui);

@@ -932,8 +932,8 @@ function updateLevels(res) {
 	default_level.is_default = true;
 	var redefined_domains = res["domains"] || {};
 	for (let [d, settings] of Object.entries(tweak_domains)) {
-		if ((settings.level_id === default_level.level_id) && !(d in redefined_domains)) {
-			redefined_domains[d] = settings;
+		if ((default_level.level_id in settings.level_id) && !(d in redefined_domains)) {
+			redefined_domains[d] = {level_id: default_level.level_id, tweaks: settings.tweaks};
 		}
 	}
 	for (let [d, {level_id, tweaks, restore, restore_tweaks}] of Object.entries(redefined_domains)) {
@@ -986,7 +986,7 @@ function saveDomainLevels() {
 		// Do not save built-in tweaks as they are automatically added in updateLevels
 		if (k in tweak_domains) {
 			// Skip further check if the user has a different default_level
-			if (tweak_domains[k].level_id === default_level.level_id) {
+			if (default_level.level_id in tweak_domains[k].level_id) {
 				tdb_tweaks = Object.entries(tweak_domains[k].tweaks);
 				current_tweaks = Object.entries(domains[k].tweaks);
 				if (tdb_tweaks.length === current_tweaks.length) {
