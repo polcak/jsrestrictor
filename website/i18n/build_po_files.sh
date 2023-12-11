@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# Generates .po files from the original Markdown source files.
+#18n 
 
 for f in ../content/pages/*.md; do
   md2po --quiet \
