@@ -1,7 +1,5 @@
----
-title: Recent improvements in JShelter performance
-date: 2023-09-21 15:00
----
+Title: Recent improvements in JShelter performance
+Date: 2023-09-21 15:00
 
 You might have noticed that [recent versions](/versions/#015/) improved JShelter performance. This
 blog post explains the improvements in more detail and contains graphs. The improvements are based on the [bachelor thesis of Martin Zmitko](https://www.vut.cz/en/students/final-thesis/detail/147218). If you are interested in this topic, you will find more information in the thesis. We thank Martin for his work and his proposals.

@@ -1,8 +1,6 @@
----
-title: Paper about JShelter
-date: 2022-04-05 00:00
+Title: Paper about JShelter
+Date: 2022-04-05 00:00
 Series: JShelter background
----
 
 We recently submitted a position paper about JShelter for [CNIL Privacy Research Day 2022](https://www.cnil.fr/en/privacy-research-day-2022) and posted the paper on [arXive](https://arxiv.org/abs/2204.01392). If you are interested in the project or if you are already using JShelter, we recommend reading the paper as it explains the project, its historical decisions, the thread model, design decision, experiments, and provides more information that you should know if you want to use JShelter correctly, or, you might decide that JShelter is not the correct tool for you and you might pick one of the alternative tools referenced in the paper.
 

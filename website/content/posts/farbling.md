@@ -1,6 +1,5 @@
----
-title: Farbling-based wrappers to hinder browser fingerprinting
-date: 2021-08-23 09:00
+Title: Farbling-based wrappers to hinder browser fingerprinting
+Date: 2021-08-23 09:00
 Series: Browser fingerprinting
 ---
 

@@ -1,7 +1,5 @@
----
-title: How JShelter prevents other parties from sniffing on your local applications?
-date: 2021-06-15 09:00
----
+Title: How JShelter prevents other parties from sniffing on your local applications?
+Date: 2021-06-15 09:00
 
 We recently found a [blog post](https://blog.nem.ec/2020/05/24/ebay-port-scanning/) about
 ThreatMetrix Inc. (a part of LexisNexis) scanning locally open ports for about 30,000 web

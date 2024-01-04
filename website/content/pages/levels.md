@@ -1,6 +1,4 @@
----
 Title: JavaScript Shield
----
 
 JavaScript Shield modifies the behaviour of the JavaScript environment availble for the visited webpage. JShelter provides fake information to confuse fingerprinters or make webpage triggered attacks impossible or harder.
 
