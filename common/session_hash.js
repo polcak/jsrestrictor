@@ -28,19 +28,32 @@
  * \note cached visited domains with related keys are only deleted after end of the session
  */
 var Hashes = {
-  sessionHash : gen_random64().toString(),
-  visitedDomains : {},
-  getFor(url){
+	sessionHash: null,
+	visitedDomains: null,
+	async getFor(url){
 		let site = getSiteForURL(url);
-	  let domainHash = this.visitedDomains[site];
-	  if (!domainHash) {
-		  let hmac = sha256.hmac.create(this.sessionHash);
-		  hmac.update(site);
-		  domainHash = hmac.hex();
-		  this.visitedDomains[site] = domainHash;
-	  }
-    return {
-      domainHash
-    };
-  }
+		let {sessionHash, visitedDomains} = this;
+		if (!visitedDomains) {
+			({sessionHash, visitedDomains} = await browser.storage.session.get({
+				sessionHash: null,
+				visitedDomains: {},
+			}));
+			this.sessionHash = sessionHash ||= gen_random64().toString();
+			this.visitedDomains = visitedDomains;
+		}
+		let domainHash = visitedDomains[site];
+		if (!domainHash) {
+			let hmac = sha256.hmac.create(this.sessionHash);
+			hmac.update(site);
+			domainHash = hmac.hex();
+			visitedDomains[site] = domainHash;
+			await browser.storage.session.set({
+				sessionHash,
+				visitedDomains,
+			});
+		}
+		return {
+			domainHash
+		};
+	}
 };

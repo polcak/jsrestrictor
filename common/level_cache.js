@@ -30,7 +30,7 @@
  */
 function getContentConfiguration(url, frameId, tabId) {
 	return new Promise(resolve => {
-		function resolve_promise() {
+		async function resolve_promise() {
 			let level = getCurrentLevelJSON(url);
 			if (level.is_default && frameId !== 0) {
 				/**
@@ -58,9 +58,9 @@ function getContentConfiguration(url, frameId, tabId) {
 				 * gets the user-defined settings for domain B but the iframe from domain C
 				 * is set with the level of domain A.
 				 */
-				level = getCurrentLevelJSON(TabCache.get(tabId).url);
+				level = getCurrentLevelJSON((await TabCache.async(tabId)).url);
 			}
-			let {domainHash} = Hashes.getFor(url);
+			let {domainHash} = await Hashes.getFor(url);
 			resolve({
 				currentLevel: level,
 				fpdWrappers: isFpdOn(tabId) ? fp_levels.page_wrappers[fpdSettings.detection] : [],

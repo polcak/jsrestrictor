@@ -23,7 +23,8 @@
         "background.js",
         "level_cache.js",
         "http_shield_firefox.js",
-        "http_shield_common.js"]
+        "http_shield_common.js"],
+        "persistent": false
   },
   "browser_action": {
     "browser_style": true,
@@ -96,7 +97,7 @@
   "browser_specific_settings": {
     "gecko": {
         "id": "jsr@javascriptrestrictor",
-        "strict_min_version": "78.0a1"
+        "strict_min_version": "79"
     },
     "gecko_android": {}
   }
