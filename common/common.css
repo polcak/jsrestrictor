@@ -13,7 +13,7 @@
 	--light-logo-contrast: #333333; /* Very dark grey */
 	--dark-logo: #e76f51; /* Logo dark red */
 	--dark-logo-contrast: white;
-	--help-icon-color: white;  
+	--help-icon-color: white;
 	--help-icon-background: blue;
 	--title-color: var(--dark-logo);
 	--good-news: darkgreen; /* Combine with background color */
@@ -22,6 +22,7 @@
 	--button-text-color: black;
 	--button-background-active-color: var(--light-logo);
 	--button-text-active-color: black;
+	--button-text-disabled-color: #888;
 	--button-background-hover-color: #c9c9c9; /* low dark grey */
 	--button-text-hover-color: black;
 	--menu-color: blue;
@@ -39,7 +40,7 @@
 		--text-color: #e8e6e3; /* Almost white */
 		--background-color: #181a1b; /* Very very dark grey */
 		--background-color-input: var(--background-color);
-		--help-icon-color: blue;  
+		--help-icon-color: blue;
 		--help-icon-background: white;
 		--title-color: var(--light-logo);
 		--good-news: lightgreen;
@@ -72,7 +73,11 @@ button {
 	color: var(--button-text-color);
 }
 
-button:hover {
+button:disabled {
+	color: var(--button-text-disabled-color);
+}
+
+button:hover:not(:disabled) {
 	cursor: pointer;
 	background-color: var(--button-background-hover-color);
 	color: var(--button-text-hover-color);
