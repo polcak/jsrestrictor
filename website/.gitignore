@@ -1,0 +1,4 @@
+# ignore auto-generated translations
+content/pages/*/*.md
+content/posts/*/*.md
+content/wrappers/*/*.md
