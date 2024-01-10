@@ -34,11 +34,11 @@ var Hashes = {
 		let site = getSiteForURL(url);
 		let {sessionHash, visitedDomains} = this;
 		if (!visitedDomains) {
-			({sessionHash, visitedDomains} = await browser.storage.session.get({
-				sessionHash: null,
-				visitedDomains: {},
-			}));
-			this.sessionHash = sessionHash ||= gen_random64().toString();
+			const DEFAULTS = {sessionHash: null, visitedDomains: {}};
+			({sessionHash, visitedDomains} =
+				(await browser.storage.session?.get(DEFAULTS)) || DEFAULTS
+			);
+			this.sessionHash = sessionHash ??= gen_random64().toString();
 			this.visitedDomains = visitedDomains;
 		}
 		let domainHash = visitedDomains[site];
@@ -47,7 +47,7 @@ var Hashes = {
 			hmac.update(site);
 			domainHash = hmac.hex();
 			visitedDomains[site] = domainHash;
-			await browser.storage.session.set({
+			await browser.storage.session?.set({
 				sessionHash,
 				visitedDomains,
 			});
