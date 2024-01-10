@@ -30,6 +30,7 @@
 	--attention-color: var(--dark-logo-contrast);
 	--attention-background: var(--dark-logo);
 	--slider-bg-color: white;
+	--slider-text-color: black;
 	--slider-off-color: gray;
 	--slider-on-color: var(--light-logo);
 	--slider-text-color: black;
@@ -186,7 +187,7 @@ a:hover, a:active {
 	background-color: var(--slider-bg-color);
 	-webkit-transition: .4s;
 	transition: .4s;
-	color: var(--off-color);
+	color: var(--slider-text-color);
 	content:"__MSG_ShieldOffSlider__";
 }
 
