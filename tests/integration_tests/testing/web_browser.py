@@ -96,15 +96,23 @@ class Browser:
                     self._jsr_options_page = elem.text.split(',')[2].split('=')[1][:-1] + "options.html"
         if self.type == BrowserType.CHROME:
             self.driver.get('chrome://system/')
-            WebDriverWait(self.driver, 10).until(
-                ec.presence_of_element_located((By.ID, 'expandAll'))
-            )
-            self.driver.find_element(By.ID, 'expandAll').click()
+            try:
+                WebDriverWait(self.driver, 2).until(
+                    ec.presence_of_element_located((By.ID, 'expandAll'))
+                )
+                self.driver.find_element(By.ID, 'expandAll').click()
+            except:
+                self.driver.find_elements(By.TAG_NAME, 'system-app')[0].shadow_root.find_elements(By.CSS_SELECTOR, 'button')[0].click()
             sleep(1)
             try:
                 extensions = self.driver.find_element(By.ID, 'div-extensions-value')
             except NoSuchElementException:
-                extensions = self.driver.find_element(By.ID, 'extensions-value')
+                try:
+                    extensions = self.driver.find_element(By.ID, 'extensions-value')
+                except NoSuchElementException:
+                    system_app = self.driver.find_elements(By.TAG_NAME, 'system-app')[0].shadow_root
+                    log_entry = system_app.find_elements(By.CSS_SELECTOR, 'log-entry')[5].shadow_root
+                    extensions = log_entry.find_elements(By.CLASS_NAME, 'stat-value')[0]
             for elem in extensions.text.splitlines():
                 if 'JShelter' in elem:
                     self._jsr_options_page = "chrome-extension://" + elem.split(':')[0][:-1] + "/options.html"
