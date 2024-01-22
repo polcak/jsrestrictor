@@ -20,6 +20,14 @@ for line in lines:
         break
     raw_frontmatter += line.strip() + ' '
 
+# remove header markup if present
+if raw_frontmatter.startswith('# '):
+    raw_frontmatter = raw_frontmatter.replace('# ', '', 1)
+if raw_frontmatter.startswith('## '):
+    raw_frontmatter = raw_frontmatter.replace('## ', '', 1)
+if raw_frontmatter.startswith('### '):
+    raw_frontmatter = raw_frontmatter.replace('### ', '', 1)
+
 # second pass: break lines on field names
 output = raw_frontmatter
 for name in FIELDNAMES:
