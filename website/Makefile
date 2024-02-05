@@ -55,7 +55,7 @@ extract:
 translate:
 	$(ACTIVATE); cd i18n; ./download.sh; ./translate_content.sh; for f in `ls ../content/posts/pt/*.md`; do ./postprocess.py $$f; done; for f in `ls ../content/pages/pt/*.md`; do ./postprocess.py $$f; done; for f in `ls ../content/wrappers/*.md`; do ./postprocess.py $$f; done
 
-html: extract translate
+html: extract 
 	cp ../tests/integration_tests/README.md content/pages/integration_tests.md
 	cp ../tests/unit_tests/README.md content/pages/unit_tests.md
 	mkdir -p output/ output/.well-known/
@@ -65,6 +65,8 @@ html: extract translate
 	$(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
 	# fix translated indexes to address a Pelican bug
 	# cd content/pages; for lang in */; do mv ../../output/$$lang/$$lang/index.html ../../output/$$lang; rm -f ../../output/$$lang/$$lang/index.html; done
+
+build: translate html
 
 clean:
 	[ ! -d "$(OUTPUTDIR)" ] || rm -rf "$(OUTPUTDIR)"
