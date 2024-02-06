@@ -60,7 +60,7 @@ function example(abc)
   find it before merge, it is better to fix the bug in the original commit.
   Available Git operations for this are `rebase (-i)`, `fixup`, `squash` and
   `push --force`.
-- This [pull request]() contains an example of big commits that needed to be refactored.
+- This pull request (FIXME: need to find link) contains an example of big commits that needed to be refactored.
 - Provide merge request more often rather than commiting big changes. If you fix
   Makefile or other scripts, provide the change and do not wait. Create code
   that is understandable and does not repeat itself. If possible, use variables

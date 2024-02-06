@@ -1,6 +1,18 @@
----
-title: Release history
----
+Title: Release history
+
+## 0.17
+
+* Added support for built-in tweaks for specific domains. The goal is to list several domains that
+  break unnecessarily. Typically, an addition to the list should be well explained and must not
+  lower protection. A nice candidate is WebWorker and the protection of Strict (break) and Remove.
+* Updated translations
+* Improved FPD report based on user feedback:
+ * Do not refresh report automatically when tracking callers but introduce an update button so that
+   users refresh when convenient (prevent glitches in the interfaces)
+ * Add buttons to hide/show details and fold/unfold groups
+ * Do not show traces in bold to better differentiate between API names and traces.
+ * Add possibility to forget current traces. Useful when there is a fingerprinting script that activates after some action. The button allows the user to hide the traces triggered in the past and later load only new traces.
+* Add support for [signing for Android on AMO](https://blog.mozilla.org/addons/2023/10/05/changes-to-android-extension-signing/), so we needed to increase minimal supported version
 
 ## 0.16
 

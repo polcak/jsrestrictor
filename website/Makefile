@@ -52,37 +52,45 @@ install:
 extract:
 	$(ACTIVATE); python extract_comments.py
 
-html: extract
+translate:
+	$(ACTIVATE); cd i18n; ./download.sh; ./translate_content.sh; for f in `ls ../content/posts/pt/*.md`; do ./postprocess.py $$f; done; for f in `ls ../content/pages/pt/*.md`; do ./postprocess.py $$f; done; for f in `ls ../content/wrappers/*.md`; do ./postprocess.py $$f; done
+
+html: extract 
 	cp ../tests/integration_tests/README.md content/pages/integration_tests.md
 	cp ../tests/unit_tests/README.md content/pages/unit_tests.md
 	mkdir -p output/ output/.well-known/
 	cp -r theme/favicon.ico output/
 	cp -r theme/security.txt output/.well-known/
 	$(ACTIVATE); python extract_comments.py
-	$(ACTIVATE); $(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
+	$(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
 	# fix translated indexes to address a Pelican bug
-	cd content/pages; for lang in */; do mv ../../output/$$lang/$$lang/index.html ../../output/$$lang; rm -f ../../output/$$lang/$$lang/index.html; done
+	# cd content/pages; for lang in */; do mv ../../output/$$lang/$$lang/index.html ../../output/$$lang; rm -f ../../output/$$lang/$$lang/index.html; done
+
+build: translate html
 
 clean:
 	[ ! -d "$(OUTPUTDIR)" ] || rm -rf "$(OUTPUTDIR)"
+	rm -fr content/pages/pt
+	rm -fr content/posts/pt
+	rm -fr content/wrappers/pt
 
 regenerate:
-	$(ACTIVATE); $(PELICAN) -r "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
+	$(PELICAN) -r "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
 
 serve:
-	$(ACTIVATE); $(PELICAN) -l "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
+	$(PELICAN) -l "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
 
 serve-global:
-	$(ACTIVATE); $(PELICAN) -l "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS) -b $(SERVER)
+	$(PELICAN) -l "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS) -b $(SERVER)
 
 devserver:
-	$(ACTIVATE); $(PELICAN) -lr "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
+	$(PELICAN) -lr "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
 
 devserver-global:
-	$(ACTIVATE); $(PELICAN) -lr $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS) -b 0.0.0.0
+	$(PELICAN) -lr $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS) -b 0.0.0.0
 
 publish:
-	$(ACTIVATE); $(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(PUBLISHCONF)" $(PELICANOPTS)
+	$(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(PUBLISHCONF)" $(PELICANOPTS)
 
 deploy: html
 	rsync -e "ssh -p 22" -P -rvzc output/ root@jshelter.org:/var/www/html/ --cvs-exclude

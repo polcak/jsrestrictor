@@ -45,7 +45,7 @@ h4 {
 	color: var(--title-color);
 }
 
-.fpd-group > .fpd-group  {
+.fpd-group   .fpd-group  {
 	padding-left: 2em;
 	border-left: 2px solid #aaa;
 }

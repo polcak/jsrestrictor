@@ -1,0 +1,5 @@
+# ignore auto-generated translations
+content/pages/*/*
+content/posts/*/*
+content/wrappers/*/*
+i18n/*/

@@ -1,8 +1,6 @@
----
-title: Protection against fingerprinting with Generic Sensor API
-date: 2022-05-06 15:34
+Title: Protection against fingerprinting with Generic Sensor API
+Date: 2022-05-06 15:34
 Series: Browser fingerprinting
----
 
 Today devices contain [various sensors](https://www.researchgate.net/publication/224170986_A_survey_of_mobile_phone_sensing_IEEE_Commun_Mag) for reading information about the device's position, state, and environment. Such equipment is typical for mobile devices like cellphones, tablets, or laptops that often include sensors for obtaining geolocation or device orientation data. Another example is a smartwatch that could monitor the heartbeat rate of the wearer, or a car with a tire pressure sensor, etc. While the benefits of having sensors are undisputed, allowing websites to access their readings represents a considerable danger.
 

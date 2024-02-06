@@ -1,5 +1,4 @@
 Title: Fingerprint Detector
-Slug: fpd
 
 Fingerprint Detector (FPD) provides heuristic analysis of fingerprinting
 behaviour. FPD monitors APIs that are commonly used by fingerprinters and

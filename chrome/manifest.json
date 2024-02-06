@@ -1,5 +1,5 @@
 {
-  "author": "Libor Polčák, Martin Bednář, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár, Giorgio Maone, Marek Saloň, Radek Hranický, Martin Zmitko",
+  "author": "Libor Polčák, Giorgio Maone, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár, Marek Saloň, Martin Bednář, Radek Hranický, Martin Zmitko",
   "background": {
       "scripts": [
         "nscl/lib/browser-polyfill.js",
@@ -92,5 +92,5 @@
   ],
   "optional_permissions": ["browsingData"],
   "short_name": "JShelter",
-  "version": "0.16"
+  "version": "0.17"
 }

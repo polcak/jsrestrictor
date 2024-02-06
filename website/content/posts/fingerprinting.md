@@ -1,10 +1,8 @@
----
-title: Browser fingerprinting and JShelter
-date: 2022-01-14 13:00
-modified: 2023-04-14 14:00
+Title: Browser fingerprinting and JShelter
+Date: 2022-01-14 13:00
+Modified: 2023-04-14 14:00
 Series: Browser fingerprinting
 series_index: 1
----
 
 This post introduces [browser fingerprinting](https://arxiv.org/pdf/1905.01051.pdf) and anti-fingerprinting mechanisms. We explain what JShelter implements and the strengths and downsides of the anti-fingerprinting mechanisms.
 
