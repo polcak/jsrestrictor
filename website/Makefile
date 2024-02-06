@@ -66,7 +66,7 @@ html: extract
 	# fix translated indexes to address a Pelican bug
 	# cd content/pages; for lang in */; do mv ../../output/$$lang/$$lang/index.html ../../output/$$lang; rm -f ../../output/$$lang/$$lang/index.html; done
 
-build: translate html
+build: html
 
 clean:
 	[ ! -d "$(OUTPUTDIR)" ] || rm -rf "$(OUTPUTDIR)"
