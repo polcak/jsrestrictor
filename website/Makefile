@@ -66,6 +66,10 @@ html: extract
 	# fix translated indexes to address a Pelican bug
 	# cd content/pages; for lang in */; do mv ../../output/$$lang/$$lang/index.html ../../output/$$lang; rm -f ../../output/$$lang/$$lang/index.html; done
 
+doxygen:
+	cd ..; make docs
+	cp -r ../doxygen/html output/doxygen
+
 build: html
 
 clean:
