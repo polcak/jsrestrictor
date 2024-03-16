@@ -22,8 +22,12 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-var tab_status = {};
-var tab_urls = {};
+// depends on /nscl/common/CachedStorage.js
+
+CachedStorage.init({
+	tab_status: {},
+	tab_urls: {},
+});
 
 function updateBadge(text, tabid) {
 	browser.browserAction.setBadgeText({text: text, tabId: tabid});
@@ -46,6 +50,7 @@ function tabUpdate(tabid, changeInfo) {
 	}
 	let current_level = getCurrentLevelJSON(url);
 	tab_urls[tabid] = url;
+	CachedStorage.save();
 	return current_level;
 }
 // on tab reload or tab change, update metadata
@@ -131,7 +136,7 @@ browser.runtime.onConnect.addListener(connected);
 /**
  * Listen to detected API calls and update badge accordingly
  */
-fpDb.add_observer({
+fpdObservable.add_observer({
 	notify: function(api, tabid, type, count) {
 		let group_name = wrapping_groups.wrapper_map[api];
 		if (!group_name) {

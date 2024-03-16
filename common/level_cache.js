@@ -85,6 +85,10 @@ function getContentConfiguration(url, frameId, tabId) {
  * Returns the promise with the message returned to the content script.
  */
 function contentScriptLevelSetter(message, {frameId, tab}) {
+	if (!tab) {
+		// privileged source, bail out
+		return;
+	}
 	switch (message.message) {
 	  case "get wrapping for URL":
 			return getContentConfiguration(message.url, frameId, tab.id)
