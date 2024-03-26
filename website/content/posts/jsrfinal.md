@@ -1,8 +1,6 @@
----
-title: Final remarks on the JSR project
-date: 2022-05-10 18:00
+Title: Final remarks on the JSR project
+Date: 2022-05-10 18:00
 Series: JShelter background
----
 
 The [JavaScript Restrictor](https://nlnet.nl/project/JSRestrictor/) ([JSR](/support/)) project (supported by [NGI0 PET
 Fund](https://nlnet.nl/PET), a fund established by [NLnet](https://nlnet.nl/) with financial support

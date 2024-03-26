@@ -2,7 +2,7 @@ Title: Instructions on how to run unit tests
 
 #### on Linux
 
-1. Install NodeJS ([https://nodejs.org]()).
+1. Install [NodeJS](https://nodejs.org).
 2. Install `jq` and another necessary tools (e.g. `sed`).
 3. Open Terminal.
 4. Run `npm install`.

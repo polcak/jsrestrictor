@@ -1,5 +1,5 @@
 Title: Frequently Asked Questions
-Slug: faq
+
 [TOC]
 
 ### Project information

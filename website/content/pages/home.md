@@ -40,12 +40,12 @@ URL:
         <h4>What is JShelter?</h4>
       </header>
       <div>
-        <p>JShelter is a browser extension to give back control over what your
+        <p>JShelter is a browser extension to give you control over what your
         browser is doing. A JavaScript-enabled web page can access much of the
         browser's functionality, with little control over this process available
         to the user: malicious websites can uniquely identify you through
         fingerprinting and use other tactics for tracking your activity.
-        JShelter aims to improve the privacy and security of your web
+        JShelter improves the privacy and security of your web
         browsing. For more details, see JShelter <a href="/threatmodel/">threat model</a>.</p>
       </div>
     </article>
@@ -70,7 +70,8 @@ URL:
       </header>
       <div>
         <p>First, install the extension using the button above or checking the various <a href="/install/">installation options</a>.</p>
-        <p>Afterwards, read our <a href="/blog/">blog</a>, <a href="https://arxiv.org/abs/2204.01392">paper</a>, <a href="/faq/">FAQ</a>, the <a href="/permissions/">required permissions</a> and the different protection <a href="/levels/">levels</a>.</p>
+        <p>Afterwards, read our <a href="/faq/">FAQ</a>, the <a href="/permissions/">required permissions</a> and the different protection <a href="/levels/">levels</a>.</p>
+        <p>For more details about what's going on under the hood, check out the <a href="/blog/">JShelter blog</a> and <a href="https://arxiv.org/abs/2204.01392">paper</a>.</p>
       </div>
     </article>
     <article>

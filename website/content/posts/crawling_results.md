@@ -1,8 +1,6 @@
----
-title: "RESULTS: Measurement of JavaScript API usage on the web"
-date: 2022-01-14 12:00
+Title: "RESULTS: Measurement of JavaScript API usage on the web"
+Date: 2022-01-14 12:00
 Series: JavaScript API usage
----
 
 A [previous blogpost](/crawling/) introduced a methodology to measure the usage of JavaScript APIs on the web by crawling the web. 
 The starting point of our web crawling research is the [work of Peter Snyder](https://www.peteresnyder.com/static/papers/improving-web-privacy-and-security-thesis.pdf). Most importantly,  we wanted to compare the differences in JS API usage between browsers with and without privacy extension (e.g., uBlock Origin). We have finished the development of the [crawling tool](https://github.com/martinbednar/web_crawler). We crawled thousands of websites and collected JavaScript calls on the visited web pages.

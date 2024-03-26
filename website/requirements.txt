@@ -3,3 +3,5 @@ Markdown>=3.3.4
 comment-parser>=1.2.3
 jinja2>=3.0
 pelican-series>=2.1.0
+mdpo==1.1.4
+wlc==1.13

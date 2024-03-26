@@ -1,8 +1,6 @@
----
-title: What should a JShelter developer know about internationalization?
-date: 2023-08-31 15:00
+Title: What should a JShelter developer know about internationalization?
+Date: 2023-08-31 15:00
 Series: i18n
----
 
 We are working to improve the internationalization of JShelter. While the webextension API already contains [APIs](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/i18n) for internationalization, not everything works great. This post is written for webextension developers as well as JShelter developers working with strings presented to our users. Please see our [other post](/i18n/) if you are looking for ways to translate JShelter.
 

@@ -1,8 +1,6 @@
----
-title: What is Manifest v3 and how it affects JShelter
-date: 2023-11-01 12:00
+Title: What is Manifest v3 and how it affects JShelter
+Date: 2023-11-01 12:00
 Series: Manifest v3
----
 
 Over the years, privacy and security-oriented browser extensions in the same category of JShelter (e.g. uBlock or NoScript, whose code is
 partially inherited by JShelter through the NoScript Commons Library),

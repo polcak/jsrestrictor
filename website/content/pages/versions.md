@@ -1,6 +1,4 @@
----
-title: Release history
----
+Title: Release history
 
 ## 0.17
 
