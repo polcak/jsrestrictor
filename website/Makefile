@@ -70,7 +70,7 @@ doxygen:
 	cd ..; make docs
 	cp -r ../doxygen/html output/doxygen
 
-build: html
+build: doxygen html
 
 clean:
 	[ ! -d "$(OUTPUTDIR)" ] || rm -rf "$(OUTPUTDIR)"
