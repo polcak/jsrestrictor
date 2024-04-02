@@ -68,7 +68,7 @@ def comment_to_md(text):
         if line.startswith("\\note"):
             line = line.replace("\\note", "**Note**: ")
         if line.startswith("\\see"):
-            line = line.replace("\\note", "**See also**: ")
+            line = line.replace("\\see", "**See also**: ")
         if line.startswith("\\bug"):
             line = line.replace("\\bug", "**Known bug**: ")
         newtext += line + "\n"
