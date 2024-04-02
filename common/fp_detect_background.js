@@ -922,7 +922,7 @@ function fpdRequestCancel(requestDetails) {
  * The function that loads module configuration from sync storage.
  */
 async function fpdLoadConfiguration() {
-	({fpDetection, fpdWhitelist, fpdSettings} = await browser.storage.sync.get({
+	({fpDetectionOn, fpdWhitelist, fpdSettings} = await browser.storage.sync.get({
 		fpDetectionOn: false,
 		fpdWhitelist: {},
 		fpdSettings: {},
