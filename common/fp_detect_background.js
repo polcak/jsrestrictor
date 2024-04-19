@@ -49,20 +49,31 @@
  * \ingroup FPD
  */
 
+
+// START persistent configuration data
+
 /**
  * FPD enable flag. Evaluate only when active.
  */
 var fpDetectionOn;
 
 /**
- * Associtive array of hosts, that are currently among trusted ones.
+ * Associative array of hosts, that are currently among trusted ones.
  */
 var fpdWhitelist = {};
 
 /**
- * Associtive array of settings supported by this module.
+ * Associative array of settings supported by this module.
  */
 var fpdSettings = {};
+
+// END persistent configuration data
+
+
+/**
+ *  Array containing names of unsupported wrappers that should be treated like supported ones during groups evaluation.
+ */
+const exceptionWrappers = ["CSSStyleDeclaration.prototype.fontFamily"];
 
 /**
  * API logs database of following structure:
@@ -80,42 +91,44 @@ var fpdSettings = {};
  *	*values in quotations are substituted by concrete names				
  *
  */
-var fpDb = new Observable();
+var fpdObservable = new Observable();
+
+// depends on /nscl/common/CachedStorage.js
+// session-bound globals
+var fpdGlobals = CachedStorage.init({
+
+	fpDb: {},
 
 /**
  *  Stores latest evaluation statistics for every examined tab. This statistics contains data about accessed groups and resources
  *  and their weights after evaluation. It can be used for debugging or as an informative statement in GUI.
  * 	It also contains flag for every tab to limit number of notifications.
  */
-var latestEvals = {};
+	latestEvals: {},
 
 /**
  *  Parsed groups object containing necessary group information needed for evaluation.
  * 	Groups are indexed by level and name for easier and faster access.
  */
-var fpGroups = {};
+	fpGroups: {},
 
 /**
  *  Object containing information about unsupported wrappers for given browser.
  */
-var unsupportedWrappers = {};
-
-/**
- *  Array containing names of unsupported wrappers that should be treated like supported ones during groups evaluation.
- */
-var exceptionWrappers = ["CSSStyleDeclaration.prototype.fontFamily"];
+	unsupportedWrappers: {},
 
 /**
  *  Contains information about tabs current state.
  */
-var availableTabs = {};
+	availableTabs: {},
 
 /**
  * A global variable shared with level_cache that controls the collection of calling scripts for FPD
  * report.
  */
-var fpd_track_callers_tab = undefined;
+	fpd_track_callers_tab: undefined,
 
+});
 /**
 * Definition of settings supported by this module.
 */
@@ -210,7 +223,7 @@ if (typeof browser.browserAction.setBadgeTextColor === "function") {
 /**
  * This function initializes FPD module, loads configuration from storage, and registers listeners needed for fingerprinting detection.
  */
-function initFpd() {
+async function initFpd() {
 	// fill up fpGroups object with necessary data for evaluation
 	for (let groupsLevel in fp_levels.groups) {
 		fpGroups[groupsLevel] = fpGroups[groupsLevel] || {};
@@ -222,8 +235,9 @@ function initFpd() {
 		}
 	}
 
-	// load configuration and settings from storage 
-	fpdLoadConfiguration();
+	// load configuration and settings from storage
+	await fpdLoadConfiguration();
+	await fpdGlobals;
 
 	// take care of unsupported resources for cross-browser behaviour uniformity
 	balanceUnsupportedWrappers();
@@ -285,7 +299,7 @@ function initFpd() {
 	browser.tabs.query({}).then(function(results) {
 		results.forEach(function(tab) {
 			availableTabs[tab.id] = tab;
-			fpDb[tab.id] = {};
+			fpDb[tab.id] ||= {};
 			periodicEvaluation(tab.id, 500);
 		});
 	});
@@ -499,6 +513,7 @@ function evaluateGroups(tabId) {
 		}
 	}
 
+	CachedStorage.save();
 	return ret;
 }
 
@@ -606,6 +621,7 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
 		sum: res.actualWeightsSum
 	});
 
+	CachedStorage.save();
 	return [res];
 }
 
@@ -625,7 +641,7 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
  * 		type (Type of resource - call/get/set)
  * 		accesses (Number of accesses to specified resource)
  */
-function evaluateResourcesCriteria(resource, groupName, level, tabId) {	
+function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 	// all result objects for given resource (set/get/call)
 	var scores = [];
 
@@ -633,7 +649,7 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
 	var resourceObj = fp_levels.wrappers[level].filter((x) => (x.resource == resource))[0];
 	var groupsArray = resourceObj.groups.filter((x) => (x.group == groupName));
 
-	// evaluate every retrieved group object 
+	// evaluate every retrieved group object
 	for (let groupObj of groupsArray) {
 		// initialize new result object
 		var res = {}
@@ -737,8 +753,10 @@ function evaluateResourcesCriteria(resource, groupName, level, tabId) {
  * \param message Receives full message.
  * \param sender Sender of the message.
  */
-function fpdCommonMessageListener(record, sender) {
-	if (record) {
+async function fpdCommonMessageListener(record, sender) {
+	if (!record) return;
+	await fpdGlobals;
+	try {
 		switch (record.purpose) {
 			case "fp-detection":
 				// check objects existance => if do not exist, create new one
@@ -758,7 +776,7 @@ function fpdCommonMessageListener(record, sender) {
 				// increase counter for total accesses
 				fpCounterObj["total"] = fpCounterObj["total"] || 0;
 				fpCounterObj["total"] += 1;
-				fpDb.update(record.resource, sender.tab.id, record.type, fpCounterObj["total"]);
+				fpdObservable.update(record.resource, sender.tab.id, record.type, fpCounterObj["total"]);
 
 				// Track callers
 				fpCounterObj["callers"] = fpCounterObj["callers"] || {};
@@ -868,6 +886,11 @@ function fpdCommonMessageListener(record, sender) {
 				fpd_track_callers_tab = undefined;
 			}
 		}
+	} catch (e) {
+		console.error(e, "Error processing", record);
+		throw e;
+	} finally {
+		CachedStorage.save();
 	}
 }
 
@@ -898,12 +921,12 @@ function fpdRequestCancel(requestDetails) {
 /**
  * The function that loads module configuration from sync storage.
  */
-function fpdLoadConfiguration() {
-	browser.storage.sync.get(["fpDetectionOn", "fpdWhitelist", "fpdSettings"]).then(function(result) {
-		fpDetectionOn = result.fpDetectionOn ? true : false;
-		fpdWhitelist = result.fpdWhitelist ? result.fpdWhitelist : {};
-		fpdSettings = result.fpdSettings ? result.fpdSettings : {};
-	});
+async function fpdLoadConfiguration() {
+	({fpDetectionOn, fpdWhitelist, fpdSettings} = await browser.storage.sync.get({
+		fpDetectionOn: false,
+		fpdWhitelist: {},
+		fpdSettings: {},
+ 	}));
 }
 
 /**
@@ -915,7 +938,7 @@ function fpdLoadConfiguration() {
 function processGroupsRecursive(input, groupsLevel) {
 	fpGroups[groupsLevel][input.name] = {};
 	fpGroups[groupsLevel][input.name]["description"] = input["description"] || "";
-	
+
 	// criteria missing => set implicit criteria
 	fpGroups[groupsLevel][input.name]["criteria"] = input["criteria"] || [{value:1, weight:1}];
 	fpGroups[groupsLevel][input.name]["items"] = {};
@@ -1031,6 +1054,7 @@ function refreshDb(tabId) {
 	if (availableTabs[tabId] && availableTabs[tabId].timerId) {
 		clearTimeout(availableTabs[tabId].timerId);
 	}
+	CachedStorage.save();
 }
 
 /**

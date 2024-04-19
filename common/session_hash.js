@@ -27,20 +27,28 @@
  *
  * \note cached visited domains with related keys are only deleted after end of the session
  */
+
+// depends on /nscl/common/CachedStorage.js
+
 var Hashes = {
-  sessionHash : gen_random64().toString(),
-  visitedDomains : {},
-  getFor(url){
+	async getFor(url){
 		let site = getSiteForURL(url);
-	  let domainHash = this.visitedDomains[site];
-	  if (!domainHash) {
-		  let hmac = sha256.hmac.create(this.sessionHash);
-		  hmac.update(site);
-		  domainHash = hmac.hex();
-		  this.visitedDomains[site] = domainHash;
-	  }
-    return {
-      domainHash
-    };
-  }
+		let {sessionHash, visitedDomains} = await CachedStorage.init({
+			sessionHash: null,
+			visitedDomains: {}
+		}, "Hashes");
+		this.sessionHash = sessionHash ??= gen_random64().toString();
+		let domainHash = visitedDomains[site];
+		if (!domainHash) {
+			let hmac = sha256.hmac.create(this.sessionHash);
+			hmac.update(site);
+			domainHash = hmac.hex();
+			visitedDomains[site] = domainHash;
+			await CachedStorage.save(this);
+		}
+		return {
+			domainHash
+		};
+	}
 };
+
