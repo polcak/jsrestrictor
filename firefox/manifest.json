@@ -98,7 +98,7 @@
   "browser_specific_settings": {
     "gecko": {
         "id": "jsr@javascriptrestrictor",
-        "strict_min_version": "79"
+        "strict_min_version": "79.0"
     },
     "gecko_android": {}
   }
