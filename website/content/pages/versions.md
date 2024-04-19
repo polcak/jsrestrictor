@@ -1,5 +1,9 @@
 Title: Release history
 
+## 0.18
+
+* Migrate to non-persistent background pages as a [first step towards Manifest v3](/first-mv3-step/).
+
 ## 0.17
 
 * Added support for built-in tweaks for specific domains. The goal is to list several domains that
