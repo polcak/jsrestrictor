@@ -679,7 +679,7 @@ a.button {
 */
 
 .hero {
-  background: rgba(var(--hero-background-color), 0.5) url('../images/crumbled-paper.png') no-repeat 0 0 / cover;
+  background: rgba(var(--hero-background-color), 0.5) url('../images/crumpled-paper.jpg') no-repeat 0 0 / cover;
   padding: calc(2 * var(--mg-xlarge)) var(--mg-medium);
 }
 
