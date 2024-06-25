@@ -41,13 +41,21 @@ To link to a page or blog post, use its slug (which is the same as its file name
 
 The JShelter website uses [Weblate](https://hosted.weblate.org) to manage translations. The `website/i18n/` directory contains a set of scripts to automate translation management, and the website build process (`make html`) runs these to synchronise the most recent updates to the translations on Weblate. Translators shouldn't need to worry about the internals as the build process should take care of everything; for more involved operations such as adding languages, updating the source files and others, here is a rundown of the translation pipeline.
 
-### 1. Generate the translation source files
+### Adding a new language
 
-The `build_po_files.sh` script scans the Markdown content files and groups all the strings into `.po` files. The files are placed inside the `website/i18n/en/` directory. This process uses the `md2po` command from the [mdpo](https://mondeja.github.io/mdpo/latest/) Markdown parsing package.
+To add a new language to the website, 
+- pelicanconf
+- base files on weblate branch
 
-This step is necessary when there are changes to the source content (e.g. updating a post or page) to make sure the new strings will show up on the Weblate interface.
+### Applying translations
 
-NOTE/TODO: Uploading the `.po` files to Weblate needs to be done manually through the Weblate web UI. We intend to automate this part but there are a couple of bugs to deal with to make this feasible.
+### Updating the Weblate string list
+
+When there are updates to the site content, Weblate needs to be updated to provide the new strings for translation.
+
+First, run the `i18n/build_po_files.sh` script, which will generate PO files inside the `i18n/en/` directory. This process uses the `md2po` command from the [mdpo](https://mondeja.github.io/mdpo/latest/) Markdown parsing package.
+
+The resulting files can be uploaded to Weblate to update the string list. Right now this upload needs to be done manually on a per-component basis, but the following links will take you directly to each component's page so you can upload the appropriate PO file: [Website](https://hosted.weblate.org/projects/jshelter/website/en/#upload) (pages.po), [Blog Posts](https://hosted.weblate.org/projects/jshelter/website-posts/en/#upload) (posts.po) or [Wrappers](https://hosted.weblate.org/projects/jshelter/website-posts/en/#upload) (wrappers.po).
 
 ### 2. Download the latest translations
 
@@ -64,10 +72,9 @@ The conversion process mangles the YAML frontmatter (there is an [open issue](ht
 Currently the script runs on a single file outputting the result to stdout. The full set of files can be processed as in the website build `Makefile`:
 
 ```bash
-for f in `ls ../content/pages/*.md`
+for f in `ls ../content/{pages,posts,wrappers}/*.md`
   do ./postprocess.py $f
 done
 ```
 
-Note that this example only processes the `pages` section; just repeat it on the `posts` and `wrappers` dir to post-process the full set of translated files.
 
