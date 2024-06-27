@@ -448,17 +448,6 @@ function generate_code(wrapped_code) {
 
 		// cross-wrapper globals
 		let xrayWindow = window; // the "privileged" xray window wrapper in Firefox
-		{
-			let {port} = env;
-			function updateCount(wrapperName, wrapperType, wrapperArgs, stack) {
-				port.postMessage({
-					wrapperName,
-					wrapperType,
-					wrapperArgs,
-					stack
-				});
-			}
-		}
 		let WrapHelper; // xray boundary helper
 		{
 			const XRAY = (xrayWindow.top !== unwrappedWindow.top && typeof XPCNativeWrapper !== "undefined");
@@ -748,12 +737,23 @@ function generate_code(wrapped_code) {
 			
 			// add flag variable that determines whether messages should be sent
 			let fp_enabled = false;
-			
-			try {
-				// WRAPPERS //
-			} finally {
-				// cleanup environment if necessary
-			}
+
+			(function () {
+				let {port} = env;
+				function updateCount(wrapperName, wrapperType, wrapperArgs, stack) {
+					port.postMessage({
+						wrapperName,
+						wrapperType,
+						wrapperArgs,
+						stack
+					});
+				}
+				try {
+					// WRAPPERS //
+				} finally {
+					// cleanup environment if necessary
+				}
+			})();
 
 			// after injection code completed, allow messages (calls from wrappers won't be counted)
 			fp_enabled = true;
