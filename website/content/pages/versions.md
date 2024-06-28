@@ -1,5 +1,22 @@
 Title: Release history
 
+## 0.18.1
+
+Fix the scope where updateCount used by FPD is created ([Pagure issue
+141](https://pagure.io/JShelter/webextension/issue/141). Although the function was not visible to
+page scripts, page script could have define their own function with several consequences as JShelter
+would call the page script function:
+
+* FPD would not learn about the calls and consequently would not detect fingeprinting attempts by
+  the page,
+* pop up would not show calls to the wrapped APIs,
+* the page would be able to detect that JShelter is being installed,
+* if the page would not expect that someone is calling its function it can have any undesired
+  consequences.
+
+The bug was present in JShelter since the introduction of FPD in 0.6 and all versions up to 0.18 are
+affected.
+
 ## 0.18
 
 * Migrate to non-persistent background pages as a [first step towards Manifest v3](/first-mv3-step/).

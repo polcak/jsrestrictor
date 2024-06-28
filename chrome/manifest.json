@@ -93,5 +93,5 @@
   ],
   "optional_permissions": ["browsingData"],
   "short_name": "JShelter",
-  "version": "0.18"
+  "version": "0.18.1"
 }
