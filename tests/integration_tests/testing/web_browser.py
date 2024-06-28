@@ -95,23 +95,23 @@ class Browser:
                 if 'id=jsr@javascriptrestrictor' in elem.text:
                     self._jsr_options_page = elem.text.split(',')[2].split('=')[1][:-1] + "options.html"
         if self.type == BrowserType.CHROME:
-            self.driver.get('chrome://system/')
+            self.driver.get('chrome://system/#extensions')
+            sleep(2)
+            system_app = self.driver.find_elements(By.TAG_NAME, 'system-app')[0].shadow_root
             try:
-                WebDriverWait(self.driver, 2).until(
-                    ec.presence_of_element_located((By.ID, 'expandAll'))
-                )
-                self.driver.find_element(By.ID, 'expandAll').click()
+                system_app = system_app.find_elements(By.CSS_SELECTOR, 'key-value-pair-viewer')[0].shadow_root
             except:
-                self.driver.find_elements(By.TAG_NAME, 'system-app')[0].shadow_root.find_elements(By.CSS_SELECTOR, 'button')[0].click()
-            sleep(1)
+                pass
             try:
                 extensions = self.driver.find_element(By.ID, 'div-extensions-value')
             except NoSuchElementException:
                 try:
                     extensions = self.driver.find_element(By.ID, 'extensions-value')
                 except NoSuchElementException:
-                    system_app = self.driver.find_elements(By.TAG_NAME, 'system-app')[0].shadow_root
-                    log_entry = system_app.find_elements(By.CSS_SELECTOR, 'log-entry')[5].shadow_root
+                    try:
+                        log_entry = system_app.find_elements(By.CSS_SELECTOR, 'log-entry')[5].shadow_root
+                    except:
+                        log_entry = system_app.find_elements(By.CSS_SELECTOR, 'key-value-pair-entry')[5].shadow_root
                     extensions = log_entry.find_elements(By.CLASS_NAME, 'stat-value')[0]
             for elem in extensions.text.splitlines():
                 if 'JShelter' in elem:
