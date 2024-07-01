@@ -8,7 +8,7 @@
 
 import sys
 
-FIELDNAMES = ["Series", "series_index", "Date", "Modified", "Filename"]
+FIELDNAMES = ["Series", "series_index", "Date", "Modified", "Filename", "Title"]
 
 with open(sys.argv[1], 'r') as f:
     lines = f.readlines()
@@ -46,4 +46,4 @@ for line in lines:
     output += line
 
 with open(sys.argv[1], 'w') as f:
-    f.write(output)
+    f.write(output.strip() + '\n')
