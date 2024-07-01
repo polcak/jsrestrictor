@@ -113,4 +113,3 @@ Despite all the efforts, there is no ultimate approach that can prevent
 fingerprinting while keeping a high level of usability in mind. Every approach
 has its strengths and weaknesses, so the challenge is to find a balance between
 privacy and usability.
-

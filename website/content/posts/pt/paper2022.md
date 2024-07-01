@@ -70,4 +70,3 @@ example, approximate colour values of several pixels or repeat an effect
 multiple times? JShelter should not be considered a single bullet-proof
 solution. We anticipate that everyday users will install JShelter together with
 other webextensions like list-based blockers or JavaScript blockers.
-

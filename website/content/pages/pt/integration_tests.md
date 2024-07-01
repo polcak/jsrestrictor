@@ -124,4 +124,3 @@ default location of the default profile is:
 
 If the script does not find the needed files in the default location, it prompts
 you for the path.
-

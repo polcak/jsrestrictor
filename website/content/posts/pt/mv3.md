@@ -105,4 +105,3 @@ prototype;
 1. *sharing the results with other extension developers* through the [NoScript
 Commons Library](https://noscript.net/commons-library); the compatibility
 layer eases the migration work for other developers.
-

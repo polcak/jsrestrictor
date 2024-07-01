@@ -85,4 +85,3 @@ JShelter's goal is to make targeted attacks harder. Still, we do not believe tha
 we are in a position to prevent them completely. We suggest using [Tor
 Browser](https://www.torproject.org/download/) or a similar privacy-enhancing
 tool for users concerned with targeted attacks.
-

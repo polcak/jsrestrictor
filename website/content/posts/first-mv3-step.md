@@ -1,8 +1,6 @@
----
-title: First step towards MV3
+Title: First step towards MV3
 date: 2024-04-19 17:00
 Series: Manifest v3
----
 
 We have been working on migration to Manifest v3 (MV3) for some time and today we are shipping a
 JShelter version 0.18 that implements stateless replacement for background pages which is a first step towards MV3.

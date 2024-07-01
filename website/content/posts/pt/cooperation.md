@@ -124,4 +124,3 @@ icon in the late 0.5 releases.
 
 We intend to keep the current infrastructure like the Github repository intact.
 All Github pages links should work and are redirected to the new website.
-

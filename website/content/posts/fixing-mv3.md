@@ -1,9 +1,6 @@
----
 title: "Fixing" Manifest V3
 date: 2024-02-07 12:00
 Series: Manifest v3
----
-
 
 In the previous post of this series, [What is Manifest v3 and how
 it affects JShelter](/mv3/), we've stressed the

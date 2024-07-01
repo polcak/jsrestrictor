@@ -31,4 +31,3 @@ implementation.
 More information about the Network Boundary Shield can be obtained from the
 [master thesis by Pavel
 Pohner](https://www.vutbr.cz/studenti/zav-prace/detail/129272) (in Czech).
-

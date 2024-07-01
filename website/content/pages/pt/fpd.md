@@ -40,4 +40,3 @@ JShelter interaction with the page (no API blocking).
 
 ![FPD report shows the reasoning to claim that a page is fingerprinting the
 browser]({attach}/images/cooperation/fpd-report.png)
-

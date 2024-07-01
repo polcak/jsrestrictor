@@ -8,4 +8,3 @@ JShelter can be installed directly through each browser's extension repository:
 
 To compile the extension from the source code, see the [building from
 scratch](/build/) documentation.
-

@@ -146,4 +146,3 @@ counting the number of different APIs employed by a page, especially APIs that
 are not frequently used for benign purposes. When a fingerprinting attempt is
 identified, we want to (1) inform the user, (2) prevent uploading of the
 fingerprint to the server, (3) prevent storing the fingerprint for later usage.
-

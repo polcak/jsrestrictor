@@ -140,4 +140,3 @@ the requests and the precise destination (IP address or a domain name).
 Depending on the interaction with DNS, NBS can be side-stepped on Chrome. In
 this case, ThreatMetrix does not try any evasion technique, so NBS just works in
 the case of eBay and ThreatMetrix.
-

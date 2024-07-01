@@ -64,4 +64,3 @@ your freedoms and provide anti-malware protections. This cooperation should also
 improve the GUI of the extension and create explenatory web pages explaining the
 functionality and its risks. It is possible that the project will be rebranded
 as a result of the cooperation.
-

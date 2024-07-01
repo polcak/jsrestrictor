@@ -144,4 +144,3 @@ If you have not noticed yet, we created a [FAQ section](/faq/) and the page
 describing [JShelter
 threat model](/threatmodel/) during the final stages of the
 JSR project.
-

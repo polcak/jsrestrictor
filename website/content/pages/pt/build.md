@@ -36,4 +36,3 @@ such calls, run `make debug`.
 
 1. On Windows, import the extension to the browser according to the instructions
 for Linux (above).
-

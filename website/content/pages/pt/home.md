@@ -111,4 +111,3 @@ Title: Home Template: home save_as: index.html URL:
         <p>JShelter is copylefted software, available under the <a href="/license/">GNU General Public License</a>.</p>
       </div>
     </article>
-

@@ -508,4 +508,3 @@ For both sensor classes, we return the faked orientation values using the wrappe
 `OrientationSensor.prototype`. Based on the constructor name the wrapper detects
 whether it should simulate the absolute or relative orientation sensor's
 behaviour.
-

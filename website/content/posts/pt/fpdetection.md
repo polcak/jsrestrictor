@@ -273,4 +273,3 @@ have room for improvement. The real-world testing yields stimulating research
 questions. How to define an excessive fingerprint? What fingerprints should be
 blocked by the extension, and what fingerprints should not? What is the best
 behaviour (threshold) so that the users find the extension helpful?
-

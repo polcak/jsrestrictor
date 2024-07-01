@@ -1,8 +1,5 @@
-*** 
-
-## title: "Fixing" Manifest V3
-date: 2024-02-07 12:00
-Series: Manifest v3
+title: "Fixing" Manifest V3 date: 2024-02-07 12:00 
+Series: Manifest v3 
 
 In the previous post of this series, [What is Manifest v3 and how
 it affects
@@ -62,4 +59,3 @@ Browser vendors now signalling adequate understanding of our requirements and
 their will to implement our API proposals or equivalent alternatives before MV2
 sunset can finally induce some cautious optimism about a reasonably better MV3
 for privacy and security extensions.
-

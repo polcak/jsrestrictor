@@ -198,4 +198,3 @@ farbling-like anti-fingerprinting masking may complicate some log in processes),
 so it is not completely clear what defences are the best and the choice of the
 defences also depends on specific use cases. We will investigate fingerprinting
 scripts further during the future work on this project.
-

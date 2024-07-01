@@ -1,8 +1,5 @@
-*** 
-
-## title: First step towards MV3
-date: 2024-04-19 17:00
-Series: Manifest v3
+Title: First step towards MV3 date: 2024-04-19 17:00 
+Series: Manifest v3 
 
 We have been working on migration to Manifest v3 (MV3) for some time and today we
 are shipping a JShelter version 0.18 that implements stateless replacement for
@@ -39,4 +36,3 @@ including removal of Network Boundary Shield for Chromium-based browsers soon.
 Hence, keep cautious also in the following months and report back any issues
 that you encounter. Have a look at our [Release page](/versions/) for more
 information about the changes in JShelter.
-

@@ -53,4 +53,3 @@ fingerprintable because the results of API calls are generally modified in the
 same way on all webistes and in each session. Use this level if you want to
 limit the information provided by your browser. If you are worried about
 fingerprinters, make sure the Fingerprint Detector is activated.
-

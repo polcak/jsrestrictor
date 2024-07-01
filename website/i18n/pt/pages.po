@@ -1,7 +1,7 @@
 #
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-06-26 16:09+0000\n"
+"PO-Revision-Date: 2024-07-01 14:38+0000\n"
 "Last-Translator: Ana Isabel Carvalho <ana@manufacturaindependente.org>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jshelter/"
 "website/pt/>\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.6-rc\n"
+"X-Generator: Weblate 5.7-dev\n"
 
 #: ../content/pages/build.md:block 1 (paragraph)
 msgid "Title: Building from scratch"
@@ -484,12 +484,12 @@ msgid ""
 "other tools](#interactions-between-jshelter-and-other-similar-tools) for "
 "possible caveats."
 msgstr ""
-"Acreditamos que o nível `Recommended`modifica a tua pegada digital e por "
-"isso os métodos habituais de recolha de pegada digital vão falhar a "
+"Acreditamos que o nível `Recommended`modifica a tua impressão digital e por "
+"isso os métodos habituais de recolha de impressão digital vão falhar a "
 "correlacionar as tuas atividades cross-origin e atividades na mesma origiem "
 "durante sessões diferentes do browser. Vê o [modelo de ameaças]](/"
-"threatmodel/), as perguntas na [secção sobre recolha de pegada digital no "
-"browser](#browser-fingerprinting) e a [secção sobre interação com outras "
+"threatmodel/), as perguntas na [secção sobre recolha de impressões digitais "
+"no browser](#browser-fingerprinting) e a [secção sobre interação com outras "
 "ferramentas](#interactions-between-jshelter-and-other-similar-tools) para "
 "possíveis exceções."
 
@@ -499,9 +499,9 @@ msgid ""
 "level and test again to see that it considerably lowers the information "
 "about your computer:"
 msgstr ""
-"Testa o teu browser nos avaliadores de recolha de pegada digital mais "
+"Testa o teu browser nos avaliadores de recolha de impressão digital mais "
 "comuns. Depois ativa o nível `Strict` e volta a testar para veres como reduz "
-"consideravelmente a informação sobre o teu computado:"
+"consideravelmente a informação sobre o teu computador:"
 
 #: ../content/pages/faq.md:block 12 (unordered list)
 msgid "[EFF Cover your tracks](https://coveryourtracks.eff.org/)"
@@ -629,7 +629,7 @@ msgid ""
 msgstr ""
 "A página pode ter deixado de funcionar porque a [Barreira de Proteção da "
 "Rede](/nbs/) (BPR) ou o [Detetor de impressões digitais](/fpd/) (DID) "
-"encontraram um problema. Nestes casos aparece uma notificação exceto se "
+"encontraram um problema. Nestes casos aparece uma notificação, exceto se "
 "tiveres desligado as notificações. Não recomendamos desligar as notificações "
 "(vê as [perguntas sobre notificações](#why-do-i-see-so-many-notifications-"
 "from-jshelter)). Quando o BPR ou o DID detetam um problema fica ao teu "
@@ -720,10 +720,13 @@ msgid ""
 "The depicted setting will turn NBS off for all pages of the visited origin. "
 "If you want to disable NBS for all pages, change the `Global settings`."
 msgstr ""
+"A definição da imagem vai desligar o BPR para todas as páginas da origem "
+"visitada. Se quiseres desligar o BPR para todas as páginas muda as `"
+"Definições gerais`."
 
 #: ../content/pages/faq.md:block 34 (header)
 msgid "JavaScript Shield (JSS)"
-msgstr ""
+msgstr "Escudo Javascript (EJS)"
 
 #: ../content/pages/faq.md:block 35 (paragraph)
 msgid ""
@@ -734,27 +737,35 @@ msgid ""
 "uses-web-workers-but-it-is-broken-how-can-i-fix-the-site) for specific JSS "
 "tweaks that might solve your problem."
 msgstr ""
+"Se não viste nenhuma notificação (e não desligaste as notificações "
+"manualmente), é o Escudo Javascript (EJS) que pode ter estragado a página. "
+"Vê as perguntas sobre [vídeos estragados](#how-can-i-fix-videos-if-they-fail-"
+"to-play-or-retrieve-data-in-time) e [web workers](#i-want-to-use-a-website-"
+"that-uses-web-workers-but-it-is-broken-how-can-i-fix-the-site) para ajustes "
+"do EJS que possam resolver o teu problema."
 
 #: ../content/pages/faq.md:block 36 (paragraph)
 msgid "In other cases, depending on your courage, try:"
-msgstr ""
+msgstr "Noutros casos, dependendo da tua coragem, experimenta:"
 
 #: ../content/pages/faq.md:block 37 (header)
 msgid "Disable JSS for this domain"
-msgstr ""
+msgstr "Desligar o EJS neste domínio"
 
 #: ../content/pages/faq.md:block 38 (paragraph)
 msgid ""
 "You can disable JSS for all pages on the visited domain by turning JSS off:"
 msgstr ""
+"Podes desativar o EJS para todas as páginas visitadas neste domínio, "
+"desligando o EJS:"
 
 #: ../content/pages/faq.md:block 39 (paragraph)
 msgid "![Turn JSS off](/images/faq/jss_off.png)"
-msgstr ""
+msgstr "![Desligar o EJS](/images/faq/jss_off.png)"
 
 #: ../content/pages/faq.md:block 41 (paragraph)
 msgid "Advanced users can change JSS level:"
-msgstr ""
+msgstr "Utilizadores experientes podem mudar o nível do EJS:"
 
 #: ../content/pages/faq.md:block 42 (ordered list)
 msgid ""
@@ -762,10 +773,13 @@ msgid ""
 "does not try to fingerprint you, you might want to disable all "
 "fingerprinting protection."
 msgstr ""
+"Falsificar resultados da chamada da API ocupa alguns recursos. Se vires que "
+"a página não está a tentar recolher a tua impressão digital, podes querer "
+"desativar toda a proteção contra esta recolha."
 
 #: ../content/pages/faq.md:block 42 (ordered list)
 msgid "Click the `Modify` button next to the JavaScript Shield label."
-msgstr ""
+msgstr "Carrega no botão `Modificar`, próximo do texto Escudo JavaScript."
 
 #: ../content/pages/faq.md:block 42 (ordered list)
 msgid ""
@@ -773,19 +787,26 @@ msgid ""
 "related [wrappers](#what-is-a-wrapper), but all fingerprinting protection "
 "will be disabled."
 msgstr ""
+"Seleciona `Desligar o nível de proteção de recolha de impressões digitais`. "
+"Isto vai manter ativos os [embrulhos](#what-is-a-wrapper) relacionados com "
+"segurança, mas toda a proteção de recolha de impressões digitais estará "
+"desativada."
 
 #: ../content/pages/faq.md:block 43 (paragraph)
 msgid "![Turn JSS fingerprinting protection off](/images/faq/jss_low.png)"
 msgstr ""
+"![Desligar proteção de recolha de impressões digitais do EJS](/images/faq/"
+"jss_low.png)"
 
 #: ../content/pages/faq.md:block 44 (paragraph)
 msgid ""
 "You can create your own JSS protection levels on the `Global settings` page."
 msgstr ""
+"Podes criar níveis de proteção EJS teus na página de `Definições gerais`."
 
 #: ../content/pages/faq.md:block 45 (header)
 msgid "Tweak JSS for this domain"
-msgstr ""
+msgstr "Afinar o EJS para este domínio"
 
 #: ../content/pages/faq.md:block 46 (paragraph)
 msgid ""

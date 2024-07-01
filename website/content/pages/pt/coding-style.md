@@ -71,4 +71,3 @@ that needed to be refactored.
 Makefile or other scripts, provide the change and do not wait. Create code
 that is understandable and does not repeat itself. If possible, use variables
 instead of copying the same code.
-

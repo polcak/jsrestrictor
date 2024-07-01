@@ -17,4 +17,3 @@ purpose in Chromium-based browsers. All brosers need the permission to apply
 
 jShelter stores all configuration data in the browser or in the user account. It
 does not upload any data to our servers.
-

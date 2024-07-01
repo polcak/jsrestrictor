@@ -46,9 +46,9 @@ section](#browser-fingerprinting), and [the section on interaction with other
 tools](#interactions-between-jshelter-and-other-similar-tools) for possible
 caveats.
 
-Testa o teu browser nos avaliadores de recolha de pegada digital mais comuns.
+Testa o teu browser nos avaliadores de recolha de impressão digital mais comuns.
 Depois ativa o nível `Strict` e volta a testar para veres como reduz
-consideravelmente a informação sobre o teu computado:
+consideravelmente a informação sobre o teu computador:
 
 * [EFF Apaga o teu rasto](https://coveryourtracks.eff.org/)
 * [Sou único?](https://amiunique.org/)
@@ -141,44 +141,48 @@ garante que o DNS revolver 0.0.0.0 para os domínios bloqueados.
 
 ![Desligar o BPR](/images/faq/nbs_off.png)
 
-The depicted setting will turn NBS off for all pages of the visited origin. If
-you want to disable NBS for all pages, change the `Global settings`.
+A definição da imagem vai desligar o BPR para todas as páginas da origem
+visitada. Se quiseres desligar o BPR para todas as páginas muda as
+`Definições gerais`.
 
-##### JavaScript Shield (JSS)
+##### Escudo Javascript (EJS)
 
-If you have not seen any notifications (and didn't disable notifications
-manually), it is JavaScript Shield (JSS) that might have broken the page. See
-questions on [broken
-videos](#how-can-i-fix-videos-if-they-fail-to-play-or-retrieve-data-in-time) and
-[web
+Se não viste nenhuma notificação (e não desligaste as notificações manualmente),
+é o Escudo Javascript (EJS) que pode ter estragado a página. Vê as perguntas
+sobre [vídeos
+estragados](#how-can-i-fix-videos-if-they-fail-to-play-or-retrieve-data-in-time)
+e [web
 workers](#i-want-to-use-a-website-that-uses-web-workers-but-it-is-broken-how-can-i-fix-the-site)
-for specific JSS tweaks that might solve your problem.
+para ajustes do EJS que possam resolver o teu problema.
 
-In other cases, depending on your courage, try:
+Noutros casos, dependendo da tua coragem, experimenta:
 
-###### Disable JSS for this domain
+###### Desligar o EJS neste domínio
 
-You can disable JSS for all pages on the visited domain by turning JSS off:
+Podes desativar o EJS para todas as páginas visitadas neste domínio, desligando o
+EJS:
 
-![Turn JSS off](/images/faq/jss_off.png)
+![Desligar o EJS](/images/faq/jss_off.png)
 
-###### Disable JSS for this domain
+###### Desligar o EJS neste domínio
 
-Advanced users can change JSS level:
+Utilizadores experientes podem mudar o nível do EJS:
 
-1. Spoofing API call results takes some resources. If you see that the page does
-not try to fingerprint you, you might want to disable all fingerprinting
-protection.
-1. Click the `Modify` button next to the JavaScript Shield label.
-1. Select `Turn fingerprinting protection off level`. This will keep
-security-related [wrappers](#what-is-a-wrapper), but all fingerprinting
-protection will be disabled.
+1. Falsificar resultados da chamada da API ocupa alguns recursos. Se vires que a
+página não está a tentar recolher a tua impressão digital, podes querer
+desativar toda a proteção contra esta recolha.
+1. Carrega no botão `Modificar`, próximo do texto Escudo JavaScript.
+1. Seleciona `Desligar o nível de proteção de recolha de impressões digitais`.
+Isto vai manter ativos os [embrulhos](#what-is-a-wrapper) relacionados com
+segurança, mas toda a proteção de recolha de impressões digitais estará
+desativada.
 
-![Turn JSS fingerprinting protection off](/images/faq/jss_low.png)
+![Desligar proteção de recolha de impressões digitais do
+EJS](/images/faq/jss_low.png)
 
-You can create your own JSS protection levels on the `Global settings` page.
+Podes criar níveis de proteção EJS teus na página de `Definições gerais`.
 
-###### Tweak JSS for this domain
+###### Afinar o EJS para este domínio
 
 Sometimes you will want to tweak JSS a little bit. For example, you generally do
 not need audio. Still, you might want to make a call on some pages. Or, you
@@ -186,7 +190,7 @@ generally do not want to reveal your location, but you want to use a map page to
 navigate. Occasionally, a JSS can modify an API in a way that breaks a page. In
 that case, you might want to tweak your protection level.
 
-1. Click the `Modify` button next to the JavaScript Shield label.
+1. Carrega no botão `Modificar`, próximo do texto Escudo JavaScript.
 1. Click the `Detail tweaks of JS Shield for this site` button.
 
 ![Go to tweaking JSS mode](/images/faq/jss_tweak_start.png)
@@ -880,4 +884,3 @@ That paper has an extended version at [ArXiv
 paper](https://arxiv.org/abs/2204.01392). Please cite the published version if
 possible. We are working on other publications. We will update this answer in
 the future.
-

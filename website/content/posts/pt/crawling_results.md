@@ -368,4 +368,3 @@ blogpost](/fpdetection/).
 The crawl identified JavaScript endpoints, often used to create a browser
 fingerprint. The observed data allow assigning weights for each endpoint.
 [FingerPrint Detector](/fpdetection/) configuration file uses the crawl results.
-

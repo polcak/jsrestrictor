@@ -87,4 +87,3 @@ Copyright (c) 2010, Linden Research, Inc., Copyright (c) 2014, Joshua Bell
 Alea](https://github.com/nquinlan/better-random-numbers-for-javascript-mirror)
 by (C) 2010 Johannes Baagøe
 * [JS-sha256](https://github.com/emn178/js-sha256) by (C) Chen, Yi-Cyuan
-

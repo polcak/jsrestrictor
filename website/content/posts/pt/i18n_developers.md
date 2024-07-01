@@ -281,4 +281,3 @@ developers](https://mozilla-l10n.github.io/documentation/localization/dev_best_p
 internationalization](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization),
 and the [i18n API
 documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/i18n).
-

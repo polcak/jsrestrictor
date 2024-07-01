@@ -113,4 +113,3 @@ tested with JShelter 0.12.2, the score dropped to 62.5. The average of all
 tested pages raised to 64 with JShelter 0.15.1. The performance score was the
 same or better in JShelter 0.15.1 compared to 0.12.2 on 33 pages. It increased
 on 18 pages.
-

@@ -149,4 +149,3 @@ When a new test script is created, add a new entry to the global configuration
 (*./config/global.json* file). The new entry must be created according to the
 example (*./config/global-example.json* file) and schema
 (*./config/global-schema.json* file).
-
