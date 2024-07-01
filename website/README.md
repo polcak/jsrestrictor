@@ -51,7 +51,7 @@ To add a new language to the website,
 
 ### Updating the Weblate string list
 
-When there are updates to the site content, Weblate needs to be updated to provide the new strings for translation.
+When there are updates to the site content, Weblate needs to be manually updated to provide the new strings for translation.
 
 First, run the `i18n/build_po_files.sh` script, which will generate PO files inside the `i18n/en/` directory. This process uses the `md2po` command from the [mdpo](https://mondeja.github.io/mdpo/latest/) Markdown parsing package.
 
