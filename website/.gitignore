@@ -1,4 +1,4 @@
 # ignore auto-generated translations
-content/pages/*/*
-content/posts/*/*
-content/wrappers/*/*
+# content/pages/*/*
+# content/posts/*/*
+# content/wrappers/*/*

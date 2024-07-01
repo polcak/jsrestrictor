@@ -56,7 +56,7 @@ translate-extract:
 	$(ACTIVATE); cd i18n; ./build_po_files.sh
 
 translate:
-	$(ACTIVATE); cd i18n; ./download.sh; ./translate_content.sh; for f in `ls ../content/posts/pt/*.md`; do ./postprocess.py $$f; done; for f in `ls ../content/pages/pt/*.md`; do ./postprocess.py $$f; done; for f in `ls ../content/wrappers/*.md`; do ./postprocess.py $$f; done
+	$(ACTIVATE); cd i18n; ./download.sh; ./translate_content.sh
 
 html: extract 
 	cp ../tests/integration_tests/README.md content/pages/integration_tests.md

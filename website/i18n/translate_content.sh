@@ -9,6 +9,7 @@ for lang in `ls -d */ | sed 's/\///' | grep -v '^en$'`; do
     for f in `ls ../content/$section/*.md`; do
        # echo $f
        po2md $f -p $lang/$section.po >| ${f/$section/$section\/$lang}
+       ./postprocess.py ${f/$section/$section\/$lang}
     done
   done
 done
