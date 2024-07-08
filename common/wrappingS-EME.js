@@ -28,12 +28,15 @@
  * `Navigator.requestMediaKeySystemAccess()` provides access to `MediaKeySystemAccess` object that
  * allows to query supported encryption mechanisms and other information about the system.
  *
- * For example, visit https://www.fit.vutbr.cz/~polcak/jsr/hdcp/ and try a different browser or
+ * For example, visit <https://www.fit.vutbr.cz/~polcak/jsr/hdcp/> and try a different browser or
  * computer.
  *
  * \see https://w3c.github.io/encrypted-media/
+ *
  * \see https://developer.mozilla.org/en-US/docs/Web/API/Navigator/requestMediaKeySystemAccess
+ *
  * \see https://developer.mozilla.org/en-US/docs/Web/API/MediaKeySystemAccess
+ *
  * \see https://developer.mozilla.org/en-US/docs/Web/API/MediaKeySystemAccess/getConfiguration 
  *
  * We provide two modes of protection:

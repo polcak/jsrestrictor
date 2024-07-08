@@ -38,6 +38,7 @@
 /** \file
  * \ingroup wrappers
  * This file contains wrappers for calls related to the Canvas API, about which you can read more at MDN:
+ *
  *  * [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
  *  * [CanvasRenderingContext2D](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D)
  *  * [OffscreenCanvas](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas)
