@@ -8,7 +8,7 @@
 
 import sys
 
-FIELDNAMES = ["Series", "series_index", "Date", "Modified", "Filename", "Title"]
+FIELDNAMES = ["Series", "series_index", "Date", "Modified", "Filename", "Title", "Template", "save_as", "URL"]
 
 with open(sys.argv[1], 'r') as f:
     lines = f.readlines()
