@@ -1,6 +1,7 @@
 Title: What should a JShelter developer know about internationalization? 
 Date: 2023-08-31 15:00 
 Series: i18n 
+series_index: 2 
 
 We are working to improve the internationalization of JShelter. While the
 webextension API already contains
