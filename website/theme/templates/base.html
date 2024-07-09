@@ -100,9 +100,8 @@
         <label for="language-selector" class="visually-hidden">Select your preferred language</label>
         <div class="select">
           <select id="language-selector" name="language">
-            <option value="en-US">English (US)</option>
-            <option value="pt-pt">Português</option>
-            <option value="pl">Polski</option>
+            <option value="en">English (US)</option>
+            <option value="pt">Português</option>
           </select>
         </div>
       </div>
@@ -262,6 +261,18 @@
       sidebarNav.classList.toggle('is-shown');
       sidebarOverlay.classList.toggle('is-shown');
     }
+
+    var selectDropdown = document.getElementById('language-selector');
+    selectDropdown.addEventListener('change', function (e) { 
+      lang = selectDropdown.options[selectDropdown.selectedIndex].value;
+      console.log(lang);
+      if (lang === "en") {
+        window.location.href = '/';
+      } else {
+        window.location.href = '/' + lang + '/';
+      }
+    });
+
   </script>
 
 </body>
