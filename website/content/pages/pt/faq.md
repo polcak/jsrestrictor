@@ -184,206 +184,220 @@ Podes criar níveis de proteção EJS teus na página de `Definições gerais`.
 
 ###### Afinar o EJS para este domínio
 
-Sometimes you will want to tweak JSS a little bit. For example, you generally do
-not need audio. Still, you might want to make a call on some pages. Or, you
-generally do not want to reveal your location, but you want to use a map page to
-navigate. Occasionally, a JSS can modify an API in a way that breaks a page. In
-that case, you might want to tweak your protection level.
+Por vezes vais querer afinar o EJS. Por exemplo, normalmente não precisas do
+áudio embora, por vezes, tenhas de fazer uma chamada online. Outro exemplo,
+habitualmente não queres revelar a tua localização mas precisas de usar uma
+página com um mapa para te orientares. Ocasionalmente, o EJS pode modificar uma
+API de uma forma que a página fica estragada. Nesse caso, podes precisar de
+afinar o nível de proteção.
 
 1. Carrega no botão `Modificar`, próximo do texto Escudo JavaScript.
-1. Click the `Detail tweaks of JS Shield for this site` button.
+1. Carrega no botão `Afinações pormenorizadas do Escudo JS neste site`.
 
-![Go to tweaking JSS mode](/images/faq/jss_tweak_start.png)
+![Vai a afinações ao modo do EJS](/images/faq/jss_tweak_start.png)
 
-The JSS section will expand. The applied protection groups are sorted depending
-on the number of calls of each API group. Typically, you will want to tweak the
-settings of one of the groups with the most calls. See the highlighted column:
+A secção do EJS vai expandir. Os grupos de proteção aplicados estão ordenados
+pelo número de chamadas à API em cada grupo. Tipicamente, vais querer afinar as
+definições de um dos grupos com mais chamadas. Vê a coluna destacada:
 
-![Tweaking JSS mode](/images/faq/jss_tweak_sorting.png)
+![Afinar o modo EJS](/images/faq/jss_tweak_sorting.png)
 
-1. Before you tweak any wrapping group, see the description.
-1. Tweak the protection according to your needs.
+1. Antes de afinares qualquer um dos grupos de embrulho, vê a descrição.
+1. Afinar a proteção de acordo com as tuas necessidades.
 
-![Tweaking JSS mode](/images/faq/jss_tweaking.png)
+![Afinar o modo EJS](/images/faq/jss_tweaking.png)
 
-#### How can I fix videos if they fail to play or retrieve data in time?
+#### Como posso consertar vídeos se falharem a reproduzir ou a recuperar dados a tempo?
 
-JShelter reimplements more than 100 JavaScript APIs. However, pages can use
-several ways to access the same API. Unfortunately, browsers do not allow
-patching every possibility consistently through a simple call. Web Workers are
-one of the possibilities to access the APIs (see further
-[threats](#what-are-web-workers-and-what-are-the-threats-that-i-face)). Our
-ultimate goal is to patch APIs consistently. However, patching Web Worker is
-tricky, and we have yet to find a way to patch Workers seamlessly. Our ultimate
-goal was to replace Workers with synchronous code. However, so far, we offer
-only policies that either disable Workers or make them inoperable.
+O JShelter re-implementa mais de 100 APIs JavaScript. Contudo, as páginas podem
+usar vários métodos para aceder à mesma API. Infelizmente, os navegadores não
+permitem remendar todas as possibilidades, de forma consistente, numa única
+chamada. Os Web Workers são uma das possibilidades para aceder às APIs (ver
+outras [ameaças](#what-are-web-workers-and-what-are-the-threats-that-i-face)). O
+nosso objetivo final é remendar APIs de forma consistente. No entanto, remendar
+Web Workers é complicado e ainda não encontramos forma de remendar Workers de
+forma contínua. O nosso objetivo final é substituir os Workers com código
+síncrono. Porém, até agora, só oferecemos medidas que desativam os Workers ou
+que os tornam inoperacionais.
 
-We are [working](https://pagure.io/JShelter/webextension/issue/43) on
-[improvements](https://pagure.io/JShelter/webextension/issue/80). Currently, we
-patch Web Workers in the `Recommended` level (`Remove` policy). Nevertheless,
-the method breaks Web Workers, and they cannot be used for benign purposes. The
-page also cannot detect breakage to limit the fingerprintability of the browsers.
+Estamos a [trabalhar](https://pagure.io/JShelter/webextension/issue/43) em
+[melhoramentos](https://pagure.io/JShelter/webextension/issue/80). Atualmente,
+remendamos Web Workers no nível `Recomendado`(política de`Eliminação`). Todavia,
+este método interfere no bom funcionamento dos Web Workers e eles deixam de
+poder ser usados para fins benignos. A página também deixa de poder detetar
+estragos para limitar a identificação da impressão digital dos navegadores.
 
-JShelter users reported that video streaming servers are often affected. We
-encountered pages that detect the presence of Web Worker support in browsers and
-provide polyfills if they do not detect Web Worker support. The `Remove`
-WebWorker policy is ideal for such servers. The page can easily detect missing
-Web Worker support. Suppose a page provides its own alternatives like polyfills.
-The alternatives do not have the powers of Web Workers, so you can make the page
-work at the cost of increased fingerprintability. Use FPD to evaluate that
-threat.
+Utilizadores do JShelter indicaram que os servidores de streaming de vídeo são
+frequentamente afetados. Encontramos páginas que detetam se o navegador tem
+suporte de Web Workers e fornecem polyfills quando detetam que não há suporte. A
+opção de `Apagar` Web Workers é ideal para estes servidores. A página pode
+facilmente detetar a falta de suporte dos Web Workers. Imagina que a página
+oferece alternativas como os polyfills. As alternativas não tem a mesma
+capacidade dos Web Workers, neste caso podes fazer com que a página funcione em
+troca de uma maior facilidade na deteção da tua impressão digital. Usa o DID
+para avaliar esta ameaça.
 
-If you believe the server operator and their partners not to misuse Web Workers
-to access original APIs and [other
-ways](#what-are-web-workers-and-what-are-the-threats-that-i-face), or if you do
-not mind, change the `WebWorker` policy from `Remove` to `Low` (in Chrome) or
-deactivate it completely ([in
-Firefox](https://pagure.io/JShelter/webextension/issue/80)). Videos and other
-functionality requiring Web Workers should work. To change the policy, follow
-these steps:
+Se confias que o operador do servidor e os seus associados não farão mau uso dos
+Web Workers para aceder as APIs originais e [outras
+fontes](#what-are-web-workers-and-what-are-the-threats-that-i-face), ou se não
+te imporares, muda a opção dos `Web Workers` de `Apagar`para `Baixo`(em Chrome)
+ou desactiva-a completamente ([em
+Firefox](https://pagure.io/JShelter/webextension/issue/80)). Vídeos e outras
+funcionalidades que requerem Web Workers deverão funcionar. Para mudar a opção
+segue estes passos:
 
-1. Navigate to a page with a video you want to watch.
-1. Click on the JShelter badge icon (typically in the toolbar next to your
-navigation bar; if you cannot locate the icon, see [this
-question](#can-i-see-a-jshelter-badge-icon-next-to-my-navigation-bar-i-want-to-interact-with-the-extension-easily-and-avoid-going-through-settings)).
-1. Click on the `Modify` button.
-1. Click on the `Detail tweaks of JS shield for this site` button.
-1. Click and drag the `WebWorker` slider to the left until `Remove` is replaced
-by the `Low` value (Chromium-based browser) or `Unprotected` (Firefox).
-1. Click on the `Refresh page` button at the top.
-1. Watch the video.
+1. Navega até à página com o vídeo que queres ver.
+1. Carrega no ícone do JShelter (normalmente está na barra de ferramentas, junto
+à barra de navegação; se não conseguires localizar o ícones vê [esta
+pergunta](#can-i-see-a-jshelter-badge-icon-next-to-my-navigation-bar-i-want-to-interact-with-the-extension-easily-and-avoid-going-through-settings)).
+1. Carrega no botão de `Modificar`.
+1. Carregar no botão `Afinações pormenorizadas do Escudo JS neste site`.
+1. Carrega e arrasta o slider dos `Web Workers` para a esquerda até veres que o
+valor `Apagar` é substituído por `Baixo` (em browsers baseados no Chromium)
+ou `Desprotegido`(Firefox).
+1. Carregar no botão `Atualizar página`, no topo.
+1. Vê o vídeo.
 
-#### I want to use a website that uses Web Workers, but it is broken. How can I fix
-the site?
+#### Quero usar um website que usa Web Workers mas que não está a funcionar. Como
+posso corrigir o problema?
 
-First, see the explanation of [Web
+Primeiro, vê a explicação sobre [Web
 Workers](#what-are-web-workers-and-what-are-the-threats-that-i-face).
 
-See the [answer to the video
-question](#how-can-i-fix-videos-if-they-fail-to-play-or-retrieve-data-in-time).
+Lê a [resposta à pergunta sobre
+vídeo](#how-can-i-fix-videos-if-they-fail-to-play-or-retrieve-data-in-time).
 
-If you find a website that needs WebWorker protection set to `Strict` and does
-not work with `Remove` or vice-versa, please let us know in the [issue
-tracker](https://pagure.io/JShelter/webextension/issues) or send us
-[e-mail](mailto:jshelter@gnu.org).
+Se encontrares um website que precisa de ter a proteção contra Web Workers em
+nível `Restrito`e não funciona com `Apagar`ou vice-versa, avisa-nos disso
+através do [issue tracker](https://pagure.io/JShelter/webextension/issues) ou
+por [e-mail](mailto:jshelter@gnu.org).
 
-### User interface issues
+### Problemas do interface de utilizador
 
-#### Can I see a JShelter (badge) icon next to my navigation bar? I want to interact
-with the extension easily and avoid going through settings.
+#### Consigo ver um ícone do JShelter perto da minha barra de navegação? Quero
+interagir com a extensão e evitar editar as definições.
 
-JShelter has a badge icon in the toolbar that allows you to open the popup.
-However, browsers tend to hide the icon. If you cannot see a JShelter icon to
-the right of the bar where you enter URLs. Try to:
+O JShelter tem um ícone na barra de ferramentas que te permite abrir uma janela
+popup. Contudo os browsers tem tendência a esconder o ícone. Se não conseguires
+ver o ícone do JShelter à direita da barra onde escrever URLs experimenta:
 
-1. Click on the extension icon (typically looks like a puzzle tile).
-1. Pin JShelter to the toolbar.
+1. Carregar no ícone das extensões (normalmente é um desenho de uma peça de
+puzzle).
+1. Afixa o JShelter na barra de ferramentas.
 
-The figure below shows how to accomplish these two steps in Firefox and a
-Chromium-based browser.
+A imagem abaixo mostra como executar estes dois passos em Firefox e browsers
+baseados no Chromium.
 
-![Pin JShelter to Firefox
-toolbar]({attach}/images/faq/firefox_pintoolbar.png) ![Pin JShelter to a
-Chromium-based browser toolbar]({attach}/images/faq/chromium_pintoolbar.png)
+![Afixa o JShelter na barra de ferramentas do
+Firefox]({attach}/images/faq/firefox_pintoolbar.png) ![Afixa o JShelter na barra
+de ferramentas em browsers baseado no
+Chromium]({attach}/images/faq/chromium_pintoolbar.png)
 
-#### A site opened a popup window, I want to tweak settings for that window, but I do
-not see a badge JShelter icon there. How can I tweak JShelter settings?
+#### O site abrir uma janela popup. Quero mudar as definições para essa janela mas não
+vejo o ícone do JShelter lá. Como como afinar as definições do JShelter nesta
+situação?
 
-If you are using Firefox:
+Se estiveres a usar Firefox:
 
-1. Open `about:config`, click to `Accept the Risk and Continue`,
-1. set `browser.link.open_newwindow` to `3`,
-1. set `browser.link.open_newwindow.restriction` to `0`.
+1. Abre a página `about:config`, carrega na opção `Aceitar o Risco e Continuar`,
+1. altera a opção `browser.link.open_newwindow` para `3`,
+1. altera a opção `browser.link.open_newwindow.restriction` para `0`.
 
-This will force all popup windows to open in a new tab, meaning the JShelter
-settings could be adjusted easily everywhere.
+Estas definições vão obrigar as janelas popup a abrir como tabs novas e, assim,
+torna-se mais simples configurar as definições do JShelter em qualquer páginas.
 
-#### Why do I see so many notifications from JShelter?
+#### Porque é que vejo tantas notificações do JShelter?
 
-Generally speaking, you should see only a few notifications by JShelter. The
-default settings are tailored to give the user critical information about
-JShelter behavior and its possible changes to the page's ability to make network
-requests that often break the page's behavior.
+De forma geral, devias ver apenas algumas notificações do JShelter. Por omissão,
+as definições estão configuradas para dar ao utilizador informação vital sobre o
+comportamento do JShelter e as suas alterações à capacidade da página para
+efetuar pedidos de rede que frequentemente estragam o funcionamento da página.
 
-We suggest installing a tracker blocker like uBlock Origin. The blocker will
-eliminate the most common security and privacy threats.
+Sugerimos instalar um bloqueador de anúncios como o uBlock Origin. O bloqueador
+vai conter as ameças mais comuns à segurança e privacidade.
 
-Also, see [the question on NBS
-notifications](#i-am-seeing-too-many-nbs-notifications).
+Vê também [a pergunta sobre notificações da
+BPR](#i-am-seeing-too-many-nbs-notifications).
 
-##### I am seeing too many NBS notifications
+##### Estou a ver demasiadas notificações da BPR
 
-NBS protects from attacks that occur very rarely. JShelter users often complain
-about too many notifications when they employ DNS-based blocking. DNS-blocking
-resolver resolves predefined domains to a fake IP address, usually `0.0.0.0` or
-`127.0.0.1` (IPv4) and `::` or `::1` (IPv6). If your DNS-blocking resolver
-returns `127.0.0.1` and `::1`. Please reconfigure the resolver to return
-`0.0.0.0` or `::`.
+A BPR protege de ataques que acontecem muito raramente. O utilizadores do
+JShelter queixam-se frequentemente de ver demasiadas notificações quando usam
+formas de bloqueio baseadas no DNS. Os mecanismo de utrapassar o bloqueio via
+DNS pre-definem um endereço de IP falso, normalmente `0.0.0.0` ou `127.0.0.1`
+(IPv4) e `::` ou `::1` (IPv6). Se o teu mecanismo de utrapassar o bloqueio via
+DNS devolve `127.0.0.1` e `::1` por favor configura-o para devolver `0.0.0.0` ou
+`::`.
 
-1. Depending on your OS, you will consume fewer resources. For example, Windows
-machines do not create any TCP stream when a website connects to `0.0.0.0` or
-`::`, but it creates a TCP stream to `127.0.0.1` and `::1`. Hence, a remote web
-page can access a web server if it is running on the local machine. Note that
-Linux hosts try to establish a connection to a localhost port on all these
-addresses.
-1. If your DNS-based filtering returns `0.0.0.0` or `::`, it will give JShelter a
-report on the intentions. If it returns `127.0.0.1` or `::1`, JShelter has no
-way to differentiate between such DNS blocker and an attack like the one in the
-[blog](/localportscanning/).
+1. Dependendo do teu sistema operativo vais usar poucos recursos. Por exemplo, as
+máquinas que correm Windows não criam um stream PCT quando um website se liga
+a `0.0.0.0` ou `::`, pelo contrário criam um stream PCT quando um website se
+liga a quando se ligam a `127.0.0.1` e `::1`. Assim uma página web remota pode
+aceder a um wervidor web se estiver a correr localmente na máquina. Nota que a
+maioria dos servidores Linux tentam estabelecer uma ligação à porta do localhost
+em todos estes endereços.
+1. Se o teu mecanismo de filtragem de DNS devolve `0.0.0.0` ou `::`, vai passar
+ao JShelter um relatório de intenções. Se devolver `127.0.0.1` ou `::1`, o
+JShelter não tem forma de diferenciar o bloqueio de DNS e um ataque como o que
+está detalhado no [blog](/localportscanning/).
 
-### Browser fingerprinting
+### Detetor de impressões digitais no browser
 
-#### What is the little lies approach to protect from fingerprinters?
+#### Qual é a abordagem das pequenas mentiras para proteção contra identificadores de
+impressões digitais?
 
-Please see [the blog post](/farbling/).
+Por favor consulta [este artigo do blog](/farbling/).
 
-#### What is the difference between the little lies and white lies approach to protect
-from fingerprinters and farbling?
+#### Qual é a diferença entre as abordagens das pequenas mentiras e mentiras brancas
+na proteção contra identificadores de impressões digitais e farbling?
 
-None. All refer to the same technique [that is explained in another
-question](#what-is-the-little-lies-approach-to-protect-from-fingerprinters).
+Nenhuma. Ambas se referem à mesma técnica [que está explicada em detalhe nesta
+pergunta](#what-is-the-little-lies-approach-to-protect-from-fingerprinters).
 
-#### What JShelter configuration should I pick?
+#### Que configuração de JShelter devia escolher?
 
-First, see our [blog post](/fingerprinting/). Consult also other [blog
-posts](/blog/) and other questions in this FAQ.
+Primeiro, lê [este artigo do blog](/fingerprinting/). Consulta outros [artigos do
+blog](/blog/) e outras perguntas nesta secção.
 
-1. If you want to have the same fingerprint as many users, We suggest going for
-Tor Browser (do not install JShelter in Tor Browser).
-1. If you want to make cross-site fingerprinting linkage hard, go for the
-`Recommended` JShelter level. If you want better protection for the real data
-at the cost of having the same fingerprint on different sites, go for the
-`Strict` JShelter level.
-1. Keep NBS active.
-1. If you want to detect and prevent fingerprinting attempts, use FPD.
+1. Se quiseres ter a mesma impressão digital que muitos outros utilizadores
+sugerimos usar o browser Tor (não instales o JShelter no Tor).
+1. Se quiseres que seja difícil cruzar a tua impressão digital entre sites
+diferentes opta pelo nível `Recomendado`, no JShelter. Se quiseres melhor
+proteção de dados sacrificando a identificação da impressão digital entre sites
+diferentes, opta pelo nível `Restrito`.
+1. Mantém a BPR ligada.
+1. Se quiseres detetar e evitar tentativas de identificação da impressão digital
+usa DID.
 
-#### I have a unique fingerprint? Some properties wrapped by JShelter return random
-values.
+#### Tenho uma impressão digital única? Algumas das propriedades protegidas pelo
+JShelter devolvem valores aleatórios.
 
-First, see our [blog post](/fingerprinting/).
+Primeiro, consulta o nosso [artigo do blog](/fingerprinting/).
 
-JShelter indeed modifies some properties like WebGL strings (`renderer`,
-`vendor`) to random strings in the `Recommended` level. JShelter also does not
-modify random identifiers of microphones and cameras. All these properties
-contain random strings that uniquely identify your browser session.
+No nível `Recomendado`o JShelter modifica de facto algumas propriedades como
+sequências de WebGL (`renderer`, `vendor`) para sequências aleatórias. Mas o
+JShelter não modifica identificadores aleatórios de microfones e câmaras. Todas
+estas propriedades contêm sequências aleatórias que identificam de forma única a
+tua sessão no browser.
 
-JShelter provides different lies on different domains, so cross-domain linking is
-hard. But remember that a single domain can link all your activities during a
-browser session. If you do not want JShelter to generate the random strings, use
-`Strict` protection (but see [other FAQ entries](#browser-fingerprinting)).
+O JShelter passa mentiras diferentes em domínios diferentes, assim torna-se
+difícil o cruzamento entre domínios. Ainda assim convém lembrar que um único
+domínio pode ligar todas as tuas atividades durante uma sessão no browser. Se
+não quiseres que o JShelter gere sequências aleatórias usa o nível de proteção
+`Restrito`(mas vê [outras perguntas nesta secção](#browser-fingerprinting)).
 
-We are [considering](https://pagure.io/JShelter/webextension/issue/68) adding
-better control for the little lies approach.
+Estamos a [considerar](https://pagure.io/JShelter/webextension/issue/68) uma
+forma de controlar melhor o método das pequenas mentiras.
 
-We are also [considering](https://pagure.io/JShelter/webextension/issue/69)
-replacing the random strings of the Web GL API with real-world strings. However,
-we do not have such a database. We are also worried about creating
-inconsistencies if we apply invalid combinations of real-world strings. As
-creating the real-world database would take a lot of time, and a dedicated
-fingerprinter might reveal the inconsistencies anyway, we do not actively work
-on the issue.
+Também estamos a [considerar](https://pagure.io/JShelter/webextension/issue/69)
+substituir as sequências aleatórias da API da Web GL com sequências reais.
+Contudo falta-nos esta base de dados. Ao mesmo tempo, preocupa-nos a introdução
+de inconsistências se aplicar combinações inválidas de sequências reais. Como
+criar uma base de dados de sequências reais tomaria muito tempo e, mesmo assim,
+um identificador de impressões digitais poderia reconhecer inconsistências,
+decidimos não trabalhar ativamente neste issue.
 
-#### Is browser fingerprinting a real threat?
+#### A identificação das impressões digitais no browser é uma ameaça real?
 
 More than 100 advertisement companies reveal in the [adtech transparency a
 consent
@@ -394,106 +408,115 @@ characteristics. Vendors can create an identifier using data collected via
 actively scanning a device for specific characteristics, e.g., installed fonts
 or screen resolution, use such an identifier to re-identify a device.
 
-![TCF participants actively scanning devices to create a
-fingerprint](https://www.fit.vutbr.cz/~polcak/tcf/graphs/v2sf2.svg)
+![Participantes na MTC a fazer identificação atica de aparelhos para criar
+impressões digitais](https://www.fit.vutbr.cz/~polcak/tcf/graphs/v2sf2.svg)
 
-See papers like [Browser Fingerprinting: A
+Consulta os papers [Browser Fingerprinting: A
 survey](https://arxiv.org/pdf/1905.01051.pdf), [Fingerprinting the
-Fingerprinters](https://uiowa-irl.github.io/FP-Inspector/) or [The Elephant in
+Fingerprinters](https://uiowa-irl.github.io/FP-Inspector/) ou [The Elephant in
 the Background](https://fpmon.github.io/fingerprinting-monitor/files/FPMON.pdf).
 
-#### Does FPD collect a list of pages/origins that fingerprinted me?
+#### O DID recolhe uma lista de páginas/origens que identificaram a minha impressão
+digital?
 
-No, FPD does not store any information. Each page load starts a new detection
-that is not dependent on previous interactions between the browser and the site.
+Não, o DID não recolhe qualquer informação. Cada página carregada inicia uma nova
+deteção que não está dependente de interações anteriores entre o browser e o
+site.
 
-#### Quando o DID deteta que uma origem me está a tentar identificar a minha pegada,
-isso significa que vai ativar uma proteção mais forte, por exemplo mudar o EJS
-para o nível `Restrito` ou aplicar o bloqueio de pedidos HTTP iniciados pelo
-domínio?
+#### Quando o DID deteta que uma origem me está a tentar identificar a minha impressão
+difital, isso significa que vai ativar uma proteção mais forte, por exemplo
+mudar o EJS para o nível `Restrito` ou aplicar o bloqueio de pedidos HTTP
+iniciados pelo domínio?
 
 Não.
 
 Em primeiro, o nível `Restrito` do EJS não corresponde a uma proteção mais forte
-da pegada digital. Na verdade, o que faz é tornar a pegada existente estável.
-Não recomendamos usar o nível `Restrito` como proteção anti-pegada digital.
+da impressão digital. Na verdade, o que faz é tornar a impressão digital
+existente estável. Não recomendamos usar o nível `Restrito` como proteção
+anti-impressão digital.
 
-Em segundo, a pegada digital é bastante comum em páginas de login. Se uma página
-guarda a tua pegada isso não significa que todas vão fazer o mesmo.
+Em segundo, a impressão digital é bastante comum em páginas de login. Se uma
+página guarda a tua impressão isso não significa que todas irão fazer o mesmo.
 
-Em terceiro, o script de recolha da pegada digital pode ser carregado na página
-de forma irregular. Queremos evitar o bloqueio de um site quando não é detetada
-esta recolha.
+Em terceiro, o script de deteção da impressáo digital pode ser carregado na
+página de forma irregular. Queremos evitar o bloqueio de um site quando não é
+detetada esta recolha.
 
-Se quiseres mudar para um nível diferente num website podes fazê-lo manualmente.
-Contudo, não recomendamos esta prática.
+Se quiseres mudar para um nível diferente, num website, podes fazê-lo
+manualmente. Contudo, não recomendamos esta prática.
 
-#### O meu banco (ou outro site de confiança) está a recolher a minha pegada digital
-durante uma tentativa de login. Deveria ficar preocupado?
+#### O meu banco (ou outro site de confiança) está a recolher a minha impressão
+digital durante uma tentativa de login. Deveria estar preocupado?
 
-A recolha da pegada digital no browser faz parte da autenticação multi-fator (MFA
-ou 2FA). O fornecedor tenta proteger a tua conta. Não deves ficar preocupada, no
-entanto podes ser forçada a desligar o DID nesse site. Contudo, sugerimos que
-não desligues o Escudo Javascript e as suas proteções anti-recolha de pegada
-digital.
+A recolha da impressão digital no browser faz parte da autenticação multi-fator
+(MFA ou 2FA). O fornecedor tenta proteger a tua conta. Não deves ficar
+preocupada, no entanto podes ser forçada a desligar o DID nesse site. Contudo,
+sugerimos que não desligues o Escudo Javascript e as suas proteções contra a
+deteção da impressão digital.
 
 Do ponto de vista europeu, o [Grupo de Trabalho 29
 clarificou](https://ec.europa.eu/justice/article-29/documentation/opinion-recommendation/files/2014/wp224_en.pdf)
 (use case 7.5) que a garantia de segurança do utilizador pode ser vista como
 absolutamente necessária para fornecer um serviço online. Assim, parece provável
-que a recolha das pegadas digitais no browser, por motivos de segurança, seja
+que a recolha das impressões digitais no browser, por motivos de segurança, seja
 considerada uma exceção da privacidade e por isso não seja necessário o
-consentimento do utilizador. De acordo com as circunstâncias, a pegada digital
-pode ser um dado pessoal. O RGPD também se pode aplicar. O RGPD enumera a
-segurança como um possível interesse legítimo de um responsável pelo tratamento
-de dados, ver recital 49. No entanto, saber se toda a recolha de pegadas
-digitais é pertinente é uma questão em aberto.
+consentimento do utilizador. De acordo com as circunstâncias, a impressão
+digital pode ser considerada um dado pessoal. O RGPD também se pode aplicar
+aqui. O RGPD enumera a segurança como um possível interesse legítimo de um
+responsável pelo tratamento de dados, ver recital 49. No entanto, saber se toda
+a deteção de impressões digitais é pertinente é uma questão em aberto.
 
 Compreendemos que nem todas as nossas utlizadoras queiram fornecer informação
 sobre os seus aparelhos. Por conseguinte sugeriumos ter o Escudo Javascript
-ativo em sites com recolha de pegada digital. É uma decisão tua se queres
+ativo em sites com deteção de impressão digital. Fica ao teu critério se queres
 fornecer o mínimo de informação necessária (nível `Restrito`), se queres ter uma
-pegada digital diferente em cada visita (nível `Recomendado`, não esqueças que
-estás a fornecer os teus dados de login e por isso as tuas ações são passíveis
-de identificação), ou se queres criar o teu próprio nível.
+impressão digital diferente em cada visita (nível `Recomendado`, não esqueças
+que estás a fornecer os teus dados de login e por isso as tuas ações são
+passíveis de identificação), ou se queres criar o teu próprio nível.
 
-#### Do you protect against font enumeration fingerprinting?
+#### O JShelter protege contra a deteção de impressão digital a partir da análise das
+fontes instaladas?
 
-No. We currently do not have a consistent method that spoofs fonts reliably. If
-you are concerned about font enumeration, you can track the relevant JShelter
-[issue](https://pagure.io/JShelter/webextension/issue/60).
+Não. Neste momento não temos um método fiável para falsificar as fontes
+instaladas. Se estás preocupada com a análise das fontes instaladas podes [o
+issue](https://pagure.io/JShelter/webextension/issue/60) do JShelter sobre este
+tema.
 
-If you are using Firefox and want your fonts hidden consistently, activate
-resistFingerprinting. However, cosider [the interaction between JShelter and
+Se estás a usar Firefox e queres ter as tuas fontes ocultas de forma consistente,
+liga a opção resistFingerprinting. No entanto considera a [interação entre o
+JShelter e a opção
 resistFingerprinting](#i-am-using-firefox-fingerprinting-protection-resistfingerprinting-should-i-continue-should-i-turn-firefox-fingerprinting-protection-on).
 
-#### Does JShelter completely prevent browser fingerprinting?
+#### O JShelter protege integralmente a deteção de impressão digital no browser?
 
-No. See the [threat model](/threatmodel/). As explained there, JShelter applies
-reasonable precautions but:
+Não. Vê o [modelo de ameça](/threatmodel/). Tal como lá está explicado, o
+JShelter cria proteções suficientes mas:
 
-1. There is no clear boundary between fingerprinting and benign behavior.
-1. A fingerprinter might deploy focused attacks. While we try to deploy
-undetectable and reasonable countermeasures, expect that a focused and
-motivated attacker will be able to detect JShelter users.
-1. We expect that users will run FPD and JSS in parallel. As both protect from
-fingerprinting differently, they complement each other.
+1. Não existe um limite definido entre a deteção da impressão digital e as
+intenções benignas.
+1. Um detetor de impressões digitais pode usar ataques direcionados. Enquanto nós
+tentamos usar contra-medidas suficientes e indetetáveis é de esperar que um
+atacante, focado e motivado, será capaz de detetar utilizadores do JShelter.
+1. Esperamos que os utlizadores usem o DID e o EJS em paralelo. Como ambos
+protegem contra a deteção da impressão digital de forma diferente,
+complementam-se.
 
-Also, read [the other questions in the browser fingerprinting
-section](#browser-fingerprinting).
+Lê também [as outras perguntas na secção sobre deteção de impressão digital no
+browser](#browser-fingerprinting).
 
-### Other protections by JShelter
+### Outras proteções do JShelter
 
-#### What are Web Workers, and what are the threats that I face?
+#### O que são Web Workers, e quais são as ameaças que colocam?
 
-In essence, Web Workers are a threat to JShelter users for two reasons:
+De forma resumida, os Web Workers são uma ameaça para os utilizadores do JShelter
+por dois motivos:
 
-1. They allow access to some of the modified APIs. There is no simple call that
-JShelter can issue to apply the modifications to Web Workers. So, if you do
-not apply WebWorker protection, you risk that Web Workers can remove other
-protections.
-1. They increase the capabilities of attackers. For example, malicious actors can
-install long-lived proxies to the browser.
+1. Permitem o acesso a algumas das APIs modificadas. Não há uma forma simples que
+o JShelter possa usar para aplicar modificações aos Web Workers. Por isso, se
+não usares proteção contra Web Workers arriscas a que os Web Workers possam
+anular outras proteções.
+1. Aumentam as capacidades dos atacantes. Por exemplo, agentes maliciosos podem
+instalar proxies de longa duração no browser.
 
 For more details, see [Web Worker
 documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers),
@@ -504,23 +527,23 @@ attacks](https://www.researchgate.net/publication/313953354_Assessing_the_threat
 and other
 [works](http://www.diva-portal.se/smash/get/diva2:1218197/FULLTEXT01.pdf).
 
-#### What is Network Boundary Shield (NBS)?
+#### O que é a Barreira de Proteção de Rede (BPR)?
 
-Your browser can be instructed by the creators of the visited page (or malicious
-actors that successfully inserted their code into the visited page) to act as an
-intermediary device that creates connections to other devices in the network.
-NBS detects and prevents such attacks, see its [dedicated page](/nbs/) and our
-[blog post](/localportscanning/) for more information.
+O teu browser pode receber instruções do criador da página visitada (ou de
+agentes maliciosos que conseguiram acrescentar o seu código à página) para agir
+como um intermediário que cria ligações a outros aparelhos na rede. A BPR deteta
+e evita este tipo de ataques. Para mais informação há uma [página
+dedicada](/nbs/) e um [artigo no blog](/localportscanning/).
 
-#### My device has a lot of sensors. Are these accessible by web pages? Does JShelter
-help me?
+#### O meu aparelho tem muitos sensores. Eles estão acessíveis para as páginas web? O
+JShelter protege-me?
 
 Depending on your browser and your settings, web pages can read sensors leading
 to various attacks that include revealing hidden information, and
 fingerprinting. JShelter [deals with
 sensors](/sensorapi/).
 
-#### Does JShelter help me against attacks exploiting hardware faults?
+#### O JShelter protege-me de ataques que exploram falhas de hardware?
 
 Yes, JShelter modifies all timestamps, which limits the precision of time
 measurements. JShelter rounds the timestamps and adds random number of
@@ -530,12 +553,12 @@ skew](https://www.jucs.org/jucs_21_9/clock_skew_based_computer/jucs_21_09_1210_1
 of your device quickly. See [our
 paper](#what-is-the-proper-way-to-cite-jshelter-in-a-paper) for more details.
 
-#### Does JShelter protect my IP address?
+#### O JShelter protege o meu endereço IP?
 
-No, and it never will. You need to find a VPN, Tor, or a similar technique to
-hide your IP address.
+Não, não é esse o seu propósito. Para esconder o teu endereço de IP tens de usar
+uma VPN, o Tor ou outra técnica semelhante.
 
-#### Does JShelter replace a tracker blocker?
+#### O JShelter subsitui um bloqueador de rastreamento?
 
 No, many extensions specialize in list-based tracking. We consider list-based
 tracking out-of-scope of the JShelter mission. You should keep using a tracker
@@ -543,45 +566,49 @@ blocker like [uBlock
 Origin](https://github.com/gorhill/uBlock#ublock-origin) in
 parallel with JShelter.
 
-#### Does JShelter modify identifiers in cookies, web storage or other tracking IDs?
+#### O JShelter modifica identificadores de cookies, armazenamento web ou outros IDs
+de rastreamento?
 
-Not directly. Use other tools to block such trackers. Firefox's built-in
-protection mechanisms and tracker blockers are excellent tools that complement
-JShelter well.
+Não de forma direta. É melhor usar outro tipo de ferramentas para bloquear este
+tipo de rastreadores. Por exemplo, o Firefox inclui mecanismos de proteção e
+bloqueadores de rastreadores que complementam o JShelter na perfeição.
 
-Nevertheless, some IDs might be derived based on fingerprinting scripts. In that
-case, JShelter will modify such ID, and depending on the implementation and your
-JShelter settings, your identity might change for each visited origin and each
-session.
+Contudo, alguns IDs podem ser obtidos com base em scripts de identificação da
+impressão digital. Nesse caso, o JShelter vai modificar esses IDs e, de acordo
+com as tuas definições, a tua identidade será diferente para cada origem
+visitada e em cada sessão.
 
-### Interactions between JShelter and other similar tools
+### Interações entre o JShelter e outras ferramentas semelhantes
 
-#### What other extension do you recommend to run along JShelter?
+#### Que outras extensões recomendam correr em paralelo com o JShelter?
 
-We consider a tracker blocker like [uBlock
-Origin](https://github.com/gorhill/uBlock#ublock-origin) as a must. It will make
-your browsing faster, make your pages clean, and improve your privacy.
-Nevertheless, it is easy to evade blockers. The malicious web server needs to
-change the URL of the script. JShelter developers encountered several malicious
-scripts that evaded common lists. Hence, blocklist-based filtering is beneficial
-as a first-line defense. However, blockers are not enough as niche cases evade
-the blockers.
+Nós consideramos fundamental usar um bloqueador de rastreadores com o [uBlock
+Origin](https://github.com/gorhill/uBlock#ublock-origin). Vai ajudar a tornar a
+navegação mais rápida, limpar as páginas e melhorar a tua privacidade. No
+entanto, é fácil contornar os bloqueadores. Os servidores web maliciosos só
+precisam de mudar a URL do script. O criadores do JShelter encontraram vários
+scripts maliciosos que evitam os bloqueadores de rastreio baseados em listagens.
+É por isso que os bloqueadores, apesar de serem uma importante primeira linha de
+defesa, não são suficientes porque lhes escapam estes casos em que os scripts
+contornam a proteção oferecida.
 
-Web extensions like [NoScript Security Suite](https://noscript.net/) or
-[uMatrix](https://github.com/gorhill/uMatrix) allow users to block JavaScript or
-other content, either completely or per domain. However, the user needs to
-evaluate which domains to allow scripts. [HTTP Archive
-reports](https://httparchive.org/reports/page-weight?
-start=earliest&end=latest&view=list#reqJs) that an average page includes (at the
-time of writing this text) 22 external requests (21 requests for mobile
-devices). Many pages depend on JavaScript. Users must select what content to
-trust. A typical page contains resources from many external sources, so such a
-user requires excellent knowledge. Moreover, malicious code may be only a part
-of a resource; the rest of the resource can be necessary for correct page
-functionality. We believe that web extensions like NoScript Security Suite and
-uMatrix origin are good but do not protect the user from accidentally allowing
-malicious code. The NoScript Suite main developer is a part of the JShelter
-team, and JShelter shares a lot of code with NoScript.
+Extensões web como a [NoScript Security Suite](https://noscript.net/) ou o
+[uMatrix](https://github.com/gorhill/uMatrix) permitem às utilizadoras bloquear
+JavaScript ou outro tipo de conteúdo, de forma geral ou por domínio. Contudo a
+utilizadora tem de avaliar em que domínios deve permitir scripts. O [Arquivo
+HTTP denuncia](https://httparchive.org/reports/page-weight?
+start=earliest&end=latest&view=list#reqJs) que as páginas incluem, por média (na
+data em que este texto foi escrito), 22 pedidos externos (e 21 pedidos em
+aparelhos móveis). Muitas páginas estão dependentes do uso de JavaScript para
+funcionar. As utilizadores tem de decidir qual o conteúdo que é de confiança,
+uma tarefa difícil e que exige muito conhecimento uma vez que a grande maioria
+das páginas recorre vários recursos externos a ela. Pior, o código malicioso
+pode ser uma parte pequena de um recurso externo e o resto desse recurso pode
+ser necessário para que a página funcione corretamente. Extensões como as que
+referimos, NoScript Security Suite e uMatrix origin, são boas mas não protegem
+completamente a utilizadora de, acidentalmente, permitir código malicioso. O
+criador da NoScript Suite faz parte da equipa do JShelter, e o JShelter partilha
+uma grande parte do seu código com o NoScript.
 
 We suggest that you use other extensions like [Cookie
 AutoDelete](https://github.com/Cookie-AutoDelete/Cookie-AutoDelete),
@@ -590,24 +617,26 @@ AutoDelete](https://github.com/Cookie-AutoDelete/Cookie-AutoDelete),
 making your browser leak as little data as possible, and all these protections
 are out-of-scope of JShelter.
 
-Also consider that [web extensions cannot hide your IP
-address](#does-jshelter-protect-my-ip-address).
+É importante saber que [as extensões não conseguem esconder o teu endereço
+IP](#does-jshelter-protect-my-ip-address).
 
-#### I already have a blocking extension installed. Do I need JShelter?
+#### Já tenho uma extensão para bloqueio de rastreadores. Preciso do JShelter?
 
-Blocking extensions are typically based on a list of commonly known malicious
-URLs. Hence, someone needs to discover such a URL first. Some malicious URLs are
-never added to blocking lists because they were not discovered. Others might be
-added to a small or specialized list only. JShelter protects you from some
-threats not yet added to the lists.
+As extensões de bloqueio de rastreadores são baseadas numa lista de URLs
+maliciosas conhecida. Ou seja, alguém precisou de identificar estas URLs em
+primeiro lugar. Algumas URLs maliciosas não estão na lista porque ainda não
+foram descobertas. Outras podem estar incluídas numa lista especializada ou
+menos conhecida. O JShelter protege-te de certas ameças que não são cobertas por
+estas listas.
 
-Some login pages fingerprint you during the login process. But you might want to
-keep your specific device configuration private from such a page. JShelter can
-limit (`Strict` level) or fake (`Recommended` level) information commonly used
-for browser fingerprinting.
+Algumas páginas de login identificama tua impressão digital quando as estás a
+usar. Nestes casos, podes precisar de manter privada a configuração de um
+aparelho em particular. O JShelter pode limitar (nível `Restrito`) ou criar
+informação falsa (nível `Recomendado`) para contornar os métodos de
+identificação da impressão digital, no browser.
 
-#### I am using Firefox Fingerprinting Protection (resistFingerprinting). Should I
-continue? Should I turn Firefox Fingerprinting Protection on?
+#### Estou a usar a proteção contra identificação da impressão digital do Firefox
+(resistFingerprinting). Devo continuar a usá-la? Devo ativar esta proteção?
 
 Mozilla is working on integrating fingerprinting resisting techniques [from
 Torbrowser](https://bugzilla.mozilla.org/show_bug.cgi?id=1329996) to Firefox
@@ -618,251 +647,278 @@ will create a [homogeneous fingerprint](/fingerprinting/). It is a research
 question if the homogeneous fingerprint strategy makes sense before it is
 adopted by all users.
 
-Moreover, inconsistencies arise. For example, Torbrowser does not implement
-WebGL. As Firefox adopts fingerprinting protections from Torbrowser, Firefox
-modifies readings from 2D canvas and does not modify WebGL canvas. That creates
-a false sense of protection. JShelter modifies 2D and WebGL canvas consistently.
+Além disso existem algumas inconsistências. Por exemplo, o browser Tor não
+implementa WebGL. Ao adotar proteções contra identificação da impressão digital
+do browser Tor, o Firefox modifica as renderizações de canvas em 2D mas não
+altera as de canvas WebGL. Isto cria um falso sentimento de proteção. O JShelter
+modifica o canvas em 2D e o WebGL de forma consistente.
 
-Firefox Fingerprinting Protection may be useful for cases like having an ordinary
-laptop with default settings that changes IP addresses a lot. But if you like to
-have the same fingerprint as many other users, we suggest that you use Tor
-Browser.
+Proteção contra Identificação da Impressão Digital no Firefox pode ser útil em
+casos como o de um portátil comum, com definições predefinidas, que muda
+frequentemente de IP. Mas se não te importas de ter a mesma impressão digital,
+tal como muitas outras utilizadoras, sugerimos que uses o browser Tor.
 
-You cannot tweak Firefox Fingerprinting Protection. You must activate all or
-nothing. JShelter provides options to modify behavior per domain.
+Não podes afinar a Proteção contra Identificação da Impressão Digital no Firefox.
+É uma opção que pode ser ativada ou não. O JShelter tem opções que te permitem
+modificar o seu comportamento por domínio.
 
-#### Should I install JShelter if I am using Brave browser?
+#### Devo instalar o JShelter se estiver a usar o browser Brave?
 
-Many JShelter protections come from Brave. While JShelter offers some additional
-protections, the key parts are shared with Brave. You should not use JavaScript
-Shield, or you should tweak its levels to remove duplicates. You should use the
-Network Boundary Shield and Fingerprint Detector. While we keep a close eye on
-Brave protection, we do not offer any protection specifically tailored for
-Brave. If you have one, please let us know.
+Muitas das proteções do JShelter são provenientes do Brave. Apsar do JShelter ter
+proteções adicionais, as mais importantes são comuns ao Brave. Não deves usar o
+Escudo JavaScript, se usares deves afinar os níveis para remover duplicados.
+Deves usar a Barreira de Proteção de Rede e o Detetor de Impressões Digitais.
+Apesar de estarmos atentos às proteções do Brave não temos uma configuração
+específica para ele. Se tiveres uma por favor partilha-a connosco.
 
-#### I am using some other anti-fingerprinting extension. Should I continue? Should I
-combine such extensions?
+#### Estou a usar outra proteção anti deteção de impressão digital. Devo continuar?
+Faz sentido combinar este tipo de extensões?
 
-You should consider (at least) the following. But first, see our blog post on
-[fingerprinting](/fingerprinting/).
+Vê o artigo do nosso blog sobre [deteção da impressão digital](/fingerprinting/).
+Além disso, deves considerar os seguintes pontos:
 
-JSS modifies your fingerprint while FPD detects or prevents (if allowed)
-fingerprinting. If you combine more approaches to modify the fingerprint, the
-results are not predictable. All extensions might modify the same or similar
-data, or they might modify different APIs. If you use multiple approaches that
-focus on different APIs, you might be less fingerprintable. However, you might
-as well use a unique combination and be easily fingerprintable by a focused or
-advanced fingerprinter.
+EJS modifica a tua impressão digital, enquanto o DID deteta ou evita (se ativo) a
+deteção da impressão digital. Se combinares mais formas de modificar a impressão
+digital, os resultados não são fáceis de prever. As extensões instaladas podem
+estar a modificar os mesmo dados (ou dados similares) ou podem estar a modificar
+APIs distintas. Se usas várias estratégias que se focam em diferentes APIs, à
+partida será mais difícil identificar a tua impressão digital. Ao mesmo tempo, é
+possível que a combinação que as extensões criam seja única e, por isso, fácil
+de identificar por um detetor sofisticado.
 
-Let us see an example. Suppose that you install an extension A that modifies the
-content of the canvas element. As JShelter modifies only data during reading
-from canvas, it will apply its countermeasures after the countermeasures of A.
-In `Strict` level, it will override all modifications by A. The little lies
-approach would slightly modify the modifications of A. That would likely be
-pointless or even counterproductive.
+Vamos pensar num exemplo. Imagina que instalas a extensão A, que altera o
+conteúdo do elemento canvas. O JShelter alterar dados durante a renderização do
+canvas por isso vai aplicar as suas medidas de proteção depois das medidas
+aplicadas pela extensão A. No nível `Restrito`vai alterar todas as modificações
+feitas pela extensão A. O método das pequenas mentiras alteraria ligeiramente as
+modificações da extensão A, o que é inútil ou mesmo contraproducente.
 
-Now, consider another extension B that modifies the read data as well. Both
-extensions try to change the same APIs, which likely creates a race condition on
-which defense mechanism wins. If it is indeed the race condition, you may be
-fingerprintable better as the one who uses both B and JShelter or less because
-the fingerprinter sees different fingerprints. Which one is correct depends on
-how smart and focused the fingerprinter is.
+Agora vamos imaginar outra extensão, chamada B, que altera os dados renderizados.
+As duas extensões, JShelter e B, estão a tentar modificar as mesmas APIs e por
+isso é provável que se crie uma [condição de
+corrida](https://pt.wikipedia.org/wiki/Condi%C3%A7%C3%A3o_de_corrida) em que o
+mecanismo mais rápido sairá vencedor. Se este cenário se colocar, e ocorrer a
+condição de corrida, podes ser mais facilmente identificado porque o detetor de
+impressões digitais vê impressões diferentes. Identificar a impressão verdadeira
+vai depender de quão preciso e sofisticado é o detetor.
 
-Jshelter tries to apply consistent modifications. However, if B modifies only a
-subset of APIs that JShelter modifies, and an advanced fingerprinter can misuse
-that information to improve the fingerprint.
+O JShelter tenta aplicar modificações de forma consistente. Contudo, se a
+extensão B altera só uma parte das APIs que o JShelter modificou um detetor de
+impressões digitais sofisticado pode usar esta informação para melhorar a sua
+eficácia.
 
-If you use more approaches similar to FPD, they will likely not interact badly
-with each other.
+Se usares mais métodos similares ao DID é provável que não interajam mal entre
+elas.
 
-You can tweak JShelter to apply only some protections. For example, by creating
-your own JSS levels. You can also use the "Turn fingerprinting protection off"
-built-in level to keep the non-fingerprinting countermeasures. You can also turn
-JSS off and benefit from FPD and NBS.
+Podes afinar o JShelter para aplicar apenas algumas proteções como, por exemplo,
+criar os teus próprios níveis para o EJS. Também podes usar o nível predefinido
+"Desligar proteção da deteção de impressão digital" para manter as
+contra-medidas que evitam a recolha da impressão digital. Outra opção seria
+desligar o EJS e tirar partido das proteções dadas pelo DID e pela BPR.
 
-JShelter includes advanced techniques through
-[NSCL](https://noscript.net/commons-library) to inject API
-[wrappers](#what-is-a-wrapper) in time and reliably. Other extensions might not
-apply their protection reliably. See also [the
-question](#i-saw-several-extensions-that-claim-that-it-is-not-possible-to-modify-the-javascript-environment-reliably-are-you-aware-of-the-firefox-bug-1267027)
-on [Firefox bug 1267027](https://bugzilla.mozilla.org/show_bug.cgi?id=1267027).
+O JShelter incluí técnicas sofisticadas através da [Biblioteca Partilhada do
+NoScript](https://noscript.net/commons-library)(NSCL) para injetar
+[wrappers](#what-is-a-wrapper) da API atempadamente e de forma fiável enquanto
+outras extensões podem não estar. Consulta também [a
+pergunta](#i-saw-several-extensions-that-claim-that-it-is-not-possible-to-modify-the-javascript-environment-reliably-are-you-aware-of-the-firefox-bug-1267027)
+[neste bug de Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1267027).
 
-Most other tools focus on [homogeneous fingerprints](/fingerprinting/). By
-running the `Recommended` JShelter JSS level, you will modify the fingerprint
-and create a very small group, likely consisting only of you. Nevertheless, some
-fingerprinters can be confused even in that case, so you might be less
-identifiable by such dumb fingerprinters.
+A maior parte das outras ferramentas concentram-se em [impressões digitais
+homogéneas](/fingerprinting/). Ao usar o JShelter com o EJS no nível
+`Recomendado` vais alterar a impressão digital e criar um pequeno grupo, de que
+possivelmente só tu fazes parte. Apesar disso alguns os detetores de impressão
+digital vão continuar confusos, o que diminui a probabilidade de seres
+identificado por estes detetores pouco inteligentes.
 
-Suppose a dumb fingerprinter that creates a single number by combining all
-fingerprintable data. As JShelter modifies the APIs differently in each session
-and on each domain. There is no point in installing other fingerprint-modifying
-extensions.
+Imagina um detetor pouco inteligente que cria um único número com a combinação de
+todos os dados que consegue recolher. Como o JShelter modifica as APIs de forma
+diferente em cada sessão e para cada domínio não vale a pena instalar mais
+nenhuma extensão para modificar a impressão digital.
 
-Suppose a more clever fingerprinter that somehow analyses the fingerprintable
-data. It might detect that you use JShelter or a similar approach. However, it
-is possible that the analysis fails in case of unexpected behavior of multiple
-extensions, so multiple extensions might help you confuse the fingerprinter.
+Agora imagina o oposto, um detetor inteligente que analisa os dados recolhidos
+para a impressão digital. É possível que ele detete que usas o JShelter ou algo
+semelhante. Ao usares múltiplas extensões, cuja interação é imprevisível, podes
+conseguir interferir com a análises que ele faz e, dessa forma, o conseguir
+confundi-lo.
 
-An even more clever fingerprinter can focus on unique traits of your extensions
-(that modify the page, including page decorators or extensions that include
-buttons to the page, like downloaders or password managers. As the JShelter's
-[threat model](/threatmodel/) does not protect from such fingerprinters, you
-will be better off if you do not let JShelter modify the fingerprint.
+Um detetor de impressões digitais ainda mais inteligente pode-se focar nas
+características únicas das extensões que usas (e que modificam a página,
+incluindo alterações estéticas ou extensões que adicionam botões, como os
+gestores de palavras-passe ou transferência de conteúdos). Como o [modelo de
+ameaças](/threatmodel/) do JShelter não protege deste tipo de detetores de
+impressão digital tens melhores hipóteses de não ser identificado se não
+deixares o JShelter alterar a tua impressão digital.
 
-#### I saw several extensions that claim that it is not possible to modify the
-JavaScript environment reliably. Are you aware of the [Firefox bug
-1267027](https://bugzilla.mozilla.org/show_bug.cgi?id=1267027)
+#### Vi várias extensões que afirmam ser impossível modificar o ambiente JavaScript de
+forma fiável. Estão a par [deste bug do
+Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1267027)?
 
-Yes, we are aware of the issues concerning reliable script injections before page
-scripts can permanently access original API calls. In fact, JShelter (then
-JavaScript Restrictor) [suffered from the
-bug](https://github.com/polcak/jsrestrictor/issues/25) for several versions.
-JShelter integrates [NSCL](https://noscript.net/commons-library) that allows
-JShelter to insert its scripts reliably before page scripts start running.
-Hence, the APIs are guaranteed to be protected. NSCL provides a cross-browser
-layer that aims at modifying all ways to obtain API functions like iframes,
-pages protected by CSP, and others. See our
-[paper](https://arxiv.org/pdf/1905.01051.pdf) for more details on the
-integration of NSCL to JShelter.
+Sim, estamos a par dos problemas ligados à fiabilidade da injeção de scripts
+antes que os scripts da página possam aceder de forma permanente às chamadas
+originais da API. De facto, o próprio JShelter (na altura chamado de JavaScript
+Restrictor) [sofreu do mesmo
+bug](https://github.com/polcak/jsrestrictor/issues/25) durante algumas versões.
+O JShelter integra a [Biblioteca Partilhada do
+NoScript](https://noscript.net/commons-library)(no original NoScript Common
+Library, abreviada para NSCL), o que permite inserir scripts de forma fiável
+antes que os scripts da página se iniciem. Desta forma, podemos garantir que as
+APIs estão protegidas. A BPNS disponibiliza uma camada transversal aos vários
+browsers com o objetivo de modificar todas as formas de aceder a funções da API,
+desde iframes a páginas protegidas por Content Security Policy (Política de
+Segurança de Conteúdo, também conhecida como CSP), e mais. Consulta o nosso
+[paper](https://arxiv.org/pdf/1905.01051.pdf) para mais detalhes sobre a
+integração da NSCL no JShelter.
 
-#### How does NBS interact with proxies? Do my DNS requests leak through NBS?
+#### Como é que a BPR interage com proxies? Pode haver uma fuga dos meus pedidos DNS
+através da BPR?
 
-If you are using a proxy, the attacks, which the NBS tries to prevent, go through
-the proxy to the local network of the proxy (but keep in mind that this might
-not be true for more complex configurations).
+Se estás a usar um proxy, os ataques que a BPR tentar impedir passam através do
+proxy para a rede local do proxy (atenção que isto pode não se verificar no caso
+de configurações mais complexas do JShelter).
 
-NBS in Chromium-based browsers works the same way as it would work without the
-proxy. NBS protects the local network of the proxy in that case. Depending on
-the deployment and exact configuration, it may also protect your local network.
+Em browsers baseado no Chromium, a BPR funciona da mesma forma que funcionaria
+sem o proxy. Nesse caso, a BPR protege a rede local do proxy. Dependendo da
+implementação e da configuração, também poderá proteger a tua rede local.
 
-NBS in Firefox employs the DNS API that initiates DNS requests. Contextual
-identities allow users to go through a proxy in some tabs and not in others. We
-decided not to perform DNS resolution in NBS for proxied requests. See <a
-href="https://pagure.io/JShelter/webextension/issue/41">issue 41</a> and <a
-href="https://pagure.io/JShelter/webextension/issue/85">issue 85</a> for more
-details. We might decide to reimplement NBS in Firefox similarly to the Chromium
-version in the future for proxied requests. Another possible option, we might
-consider in the future, is adding a configuration option to allow users to
-opt-in to perform DNS resolution in NBS, which would be useful for users running
-an HTTP proxy in their local network. If you have good arguments for changing
-the behavior, please share them with us.
+No Firefox, a BPR usa a API DNS que inicia o pedido DNS. Identidades contextuais
+permitem que as utilizadoras passem por um proxy em alguns separadores e noutros
+não. Nós optamos por não fazer resolução DNS para pedidos proxy na BPR. Vê o <a
+href="https://pagure.io/JShelter/webextension/issue/41">issue 41</a> e o <a
+href="https://pagure.io/JShelter/webextension/issue/85">issue 85</a> para mais
+detalhes. No futuro, podemos voltar a re-implementar a BPR para pedidos com
+proxies em Firefox da mesma forma que esta implementada para Chromium. Outra
+possibilidade que podemos considerar, no futuro, será acrescentar uma opção que
+permita às utilizadoras aderir à resolução DNS na BPR. Isto seria útil para
+utilizadoras que usem um proxy HTTP na sua redel local. Se tens bons argumentos
+para nos convencer a mudar este funcionamento fala connosco.
 
-### Limitations of supported browsers
+### Limitações dos browsers suportados
 
-#### Why does JShelter/NSCL initiate web requests to ff00::?
+#### Porque é que o JShelter / Biblioteca Partilhada do NoScript (no original NoScript
+Common Library) inicia pedidos web para o ff00::?
 
-First, see [question on reliable JavaScript environment
-modifications](#i-saw-several-extensions-that-claim-that-it-is-not-possible-to-modify-the-javascript-environment-reliably-are-you-aware-of-the-firefox-bug-1267027).
+Em primeiro, consulta [a pergunta sobre modificações fiáveis ao ambiente
+JavaScript]](#i-saw-several-extensions-that-claim-that-it-is-not-possible-to-modify-the-javascript-environment-reliably-are-you-aware-of-the-firefox-bug-1267027).
 
-NSCL needs a synchronous way to transfer data between different scripts of the
-extension. Web Extension APIs only allow asynchronous communication. But do not
-worry. The request is canceled in the
-[code](https://github.com/hackademix/nscl/blob/40e765f0d66a10b25a27a375bc62ea141a73734f/common/SyncMessage.js#L106).
+A NSCL precisa de uma forma síncrona de transferir dados entre os diferentes
+scripts da extensão. As APIs das extensões web só permitem comunicação
+assíncrona. Mas não há problema porque o pedido é cancelado no
+[código](https://github.com/hackademix/nscl/blob/40e765f0d66a10b25a27a375bc62ea141a73734f/common/SyncMessage.js#L106).
 
-Additionally [ff00::]
+Adicionalmente [ff00::]
 
-* is a [reserved multicast IPV6
-address](https://www.iana.org/assignments/ipv6-multicast-addresses/ipv6-multicast-addresses.xhtml#ipv6-scope),
-* hence, it is not a valid HTTP endpoint (if you try to navigate http://[ff00::]
-the browser will always tell you that the resource is unreachable),
-* the [SyncMessage back-end cancels the
+* é um [endereço IPV6 reservado de difusão
+múltipla](https://www.iana.org/assignments/ipv6-multicast-addresses/ipv6-multicast-addresses.xhtml#ipv6-scope),
+* e portanto não é um endpoint HTTP válido (se tentares aceder a http://[ff00::]
+o browser vai-te sempre dizer que esse recurso é inacessível,
+* o [back-end da SyncMessage cancela o
 webRequest](https://github.com/hackademix/nscl/blob/40e765f0d66a10b25a27a375bc62ea141a73734f/common/SyncMessage.js#L106).
 
-Some tools can see such a request, but it will never leave your browser.
+Algumas ferramentas podem ver este pedido mas ele nunca vai sair do teu browser.
 
-#### Does NBS work the same way in Firefox and Chromium-based browsers?
+#### A BPR funciona da mesma maneira no Firefox e em browsers baseados no Chromium?
 
-No. Firefox allows webextensions to perform DNS resolution of the domain name
-that the browser is about to get information from. The resolution of the DNS
-name to an IP address is crucial for FPD. As Firefox allows to perform the
-resolution before any request leaves the browser, JShelter can prevent each
-attempt to cross the network boundary.
+Não. O Firefoz permite que as extensões executem resolução DNS do nome do domínio
+ao qual o browser está prester a ir buscar informação. A resolução do nome DNS
+para um endereço IP é fundamental para o DID. Como o Firefox permite executar a
+resolução antes que qualquer pedido seja enviado pelo browser, o JShelter pode
+impedir todas as tentativas de atravessar a barreira da rede.
 
-Chromium-based browsers do not offer the DNS resolution APIs. JShelter collects
-resolution results in a cache that is filled during the processing of each
-request (after the browser makes the request). That means that the first request
-for each domain name goes through. JShleter blocks all subsequent requests only.
+Os browsers baseados em Chromium não contemplam APIs para resolução de DNS. O
+JShelter recolhe os resultados de resolução em cache, durante o processamente de
+cada pedido (isto depois do browser fazer o pedido). Isso significa que o
+primeiro pedido para cada domínio passa pela rede. A partir daí o JShelter
+bloqueia os pedidos consecutivos.
 
-Keep in mind that an adversary can change the domain with each request. For
-example, the attacker can use a.attacker.com, b.a.attacker.com,
-c.b.a.attacker.com in sequence for its requests to go through. So it is easy for
-an attacker to bypass NBS. In practice, we know about attackers that do not
-change domain names (for example, see [our blog](/localportscanning/)). So we
-keep the NBS in Chromium-based browsers, even though it is not perfect.
+Atenção, é possível que um atacante tente mudar o domínio em cada pedido. Para
+fazer isso pode usar, por exemplo, uma sequência assim a.attacker.com,
+b.a.attacker.com, c.b.a.attacker.com. Como vês, é relativamente simples
+ultrapassar a proteção da BPR. Na prática, sabemos que os atacantes não mudam os
+nomes dos domínios (podes ver um exemplo no [nosso blog](/localportscanning/)).
+Apesar de não ser a solução ideal mantemos a BPR nos browser baseados em
+Chromium.
 
-#### Do you support Firefox for Android?
+#### Há suporte de Firefox em Android?
 
-We tested JShelter in Firefox for Android in the past and it worked as expected.
-We do not test JShelter in Firefox for Android regularly but a volunteer that
-tracks the status of JShelter in Firefox for Android is welcomed.
+Fizemos testes ao JShelter em Firefox para Android, e vimos que funcionava. De
+momento não temos capacidade para manter testes regulares. Se quiseres juntar-te
+e seguir o estado do JShelter em Firefox para Android és bem-vinda!
 
-##### I cannot see JShelter listed in the addons supported by Firefox for Android.
+##### Não vejo o JShelter na lista de addons suportador pelo Firefox para Android.
 
-For whatever reason, Mozilla decided to only present [a small number of curated
-extensions](https://support.mozilla.org/en-US/kb/find-and-install-add-ons-firefox-android)
-in their mobile application by default. There are some great extensions there
-like uBlock Origin, NoScript, and DarkReader, but JShelter was not one of them.
+Não porquê mas a Mozilla optou por mostrar [apenas um pequeno número de extensões
+selecionadas](https://support.mozilla.org/en-US/kb/find-and-install-add-ons-firefox-android)
+na versão mobile do Firefox. A lista tem extensões ótimas como o uBlock Origin,
+o NoScript, e o DarkReader, mas o JShelter não foi incluído nesta lista.
 
-You should be able to workaround the limitations by creating a [collection with
-JShelter](https://www.androidpolice.com/install-add-on-extension-mozilla-firefox-android/).
+Se criares uma [coleção em que inclua o
+JShelter](https://www.androidpolice.com/install-add-on-extension-mozilla-firefox-android/)
+consegues ultrapassar as limitações atuais.
 
-A change in the policy of the default extensions listed by Addons Mozilla.org is
-out of our control.
+Alterar a lista de Addons selecionados da Mozilla.org está fora do nosso controlo.
 
-### Other questions
+### Outra perguntas
 
-#### What is a wrapper?
+#### O que é um wrapper?
 
-Wrapper is typically a small block of code that JShelter attach to some of the
-APIs offered by the browser. These code typically reads the original value to
-modify that before returning to the caller. Page scripts cannot side-step the
-wrappers to get direct access to the original API. Nevertheless, see the
-[question on reliable JavaScript environment
-modifications](#i-saw-several-extensions-that-claim-that-it-is-not-possible-to-modify-the-javascript-environment-reliably-are-you-aware-of-the-firefox-bug-1267027).
+Um wrapper é um pequeno bloco de código a que o JShelter acrescenta às APIs
+disponibilizadas pelo browser. Este bloco código lê o valor original e
+modifica-o antes que seja passado para responder a um pedido. Os scripts de uma
+página não podem ultrapassar os wrappers e ter acesso aos valores originais da
+API. Contudo faz sentido consultar também a [pergunta sobre modificações fiáveis
+ao ambiente
+Javascript](#i-saw-several-extensions-that-claim-that-it-is-not-possible-to-modify-the-javascript-environment-reliably-are-you-aware-of-the-firefox-bug-1267027).
 
-#### What is WebAssembly speed-up?
+#### Em que consiste um aceleramento da WebAssembly?
 
-In 2023, we improved the speed of some code inside JShelter. Some of the
-[wrappers](#what-is-a-wrapper) were reimplemented in WebAssembly with the focus
-on providing the same results as the original JavaScript-only wrappers.
+Em 2023 melhoramos a performance de algum do código do JShelter. Alguns dos
+[wrappers](#what-is-a-wrapper) foram reimplementados em WebAssembly mantendo o
+mesmo objetivo que a implementação original, que usa exclusivamente JavaScript.
 
-Unless hit by Chrome-bug that prevents injecting WebAssembly wrappers to some
-pages, WebAssembly wrappers are enabled by default. We suggest that you keep
-WebAssembly wrappers activated. However, you can turn off WebAssembly speed-up
-and return to JavaScript-only wrappers.
+Os wrappers WebAssembly estão ativos por omissão, podendo falhar excecionalmente
+em Chrome, se atacados por um bug que impede o seu funcionamento em algumas
+páginas. A nossa sugestão é que mantenhas o wrappers WebAssembly sempre ativos.
+No entanto, tens a opção de desativá-los e usar os wrappers baseados
+exclusivamente em JavaScript.
 
-#### I am a web developer, can JShelter help me?
+#### Sou um programador web, o JShelter pode ajudar-me?
 
-Possibly yes.
+Provavelmente.
 
-First of all, you can use [FPD and its reports](/fpd/) to learn the APIs that
-your page calls. Of course, FPD focuses on APIs that are often misused during
-browser fingerprinting, so that you learn only some APIs.
+Podes usar o [DID e o seu relatório](/fpd/) para aprender quais as APIs que a tua
+página está a requisitar. A lista não é compreensiva uma vez que o DID foca
+apenas as APIs que são passíveis de usar incorretamente durante a recolha de
+impressões digitais.
 
-You can create JSS levels that remove some functionality like geolocation,
-workers, or access to sensor API to test that your page handles such browsers.
+Podes criar níveis para o EJS que apagam funcionalidades como a geolocalização,
+workers, ou o acesso à API de sensores para testar se a tua página é compatível
+com os browsers.
 
-#### I am a data protection officer or I work for a data protection agency. Can
-JShelter help me?
+#### Sou um DPO (Responsável de Proteção de Dados) ou trabalho numa entidade de
+proteção de dados. O JShelter pode ajudar-me?
 
-Yes. Change JShelter configuration to passive mode:
+Sim. Muda as definições do JShelter para o modo passivo:
 
-1. *Turn JavaScript Shield off*,
-1. disable blocking behaviour of [NBS](/nbs/) but keep the notifications,
-1. set [FPD](/fpd/) to passive, keep the notifications on, and depending on your
-use case, set the detection mode to *default* or *strict*.
+1. *desligar Escudo JavaScript*,
+1. desativa a opção de bloqueio na [BPR](/nbs/) mas mantém as notificações ativas,
+1. configura o [DID](/fpd/) para modo passivo, mantém as notificações ativas e,
+dependendo do teu caso de estudo, altera o modo de deteção para *default* or
+*restrito*.
 
-Compare the information provided by NBS and FPD in notifications and [FPD
-report](/fpd/) to the information in the privacy policy of the tested website.
+Compara as informações disponibilizadas nas notificações da BPR e do DID e no
+[relatório do DID](/fpd/) com a Política de Privacidade do site que estás a
+testar.
 
-[Let us know](mailto:jshelter@gnu.org) about any question or experience.
+[Entra em contacto connosco](mailto:jshelter@gnu.org) se tiveres dúvidas ou
+quiseres partilhar a tua experiência.
 
-#### What is the proper way to cite JShelter in a paper?
+#### Como posso citar o JShelter num paper?
 
-Please cite *POLČÁK Libor, SALOŇ Marek, MAONE Giorgio, HRANICKÝ Radek and McMAHON
-Michael. JShelter: Give Me My Browser Back. In: Proceedings of the 20th
-International Conference on Security and Cryptography. Rome: SciTePress -
-Science and Technology Publications, 2023, pp. 287-294. ISBN 978-989-758-666-8.*
+Usa a seguinte referência: *POLČÁK Libor, SALOŇ Marek, MAONE Giorgio, HRANICKÝ
+Radek e McMAHON Michael. JShelter: Give Me My Browser Back. Em: Proceedings of
+the 20th International Conference on Security and Cryptography. Rome:
+SciTePress - Science and Technology Publications, 2023, pp. 287-294. ISBN
+978-989-758-666-8.*
 
 ```
 @INPROCEEDINGS{JShelter,
@@ -880,7 +936,7 @@ Science and Technology Publications, 2023, pp. 287-294. ISBN 978-989-758-666-8.*
 }
 ```
 
-That paper has an extended version at [ArXiv
-paper](https://arxiv.org/abs/2204.01392). Please cite the published version if
-possible. We are working on other publications. We will update this answer in
-the future.
+Este paper tem uma versão alargada em [ArXiv
+paper](https://arxiv.org/abs/2204.01392). Sempre que possível, incluí na
+referência a versão que usaste. Estamos a trabalhar noutras publicações, quando
+estiverem terminadas vamos atualizar esta resposta.

@@ -1,4 +1,7 @@
-Title: Home Template: home save_as: index.html URL: 
+Title: Home 
+Template: home 
+save_as: index.html 
+URL: 
 
 <section class="hero block has-text-centered">
     <header>

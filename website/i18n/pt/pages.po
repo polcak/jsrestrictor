@@ -1,7 +1,7 @@
 #
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-07-01 14:38+0000\n"
+"PO-Revision-Date: 2024-07-09 14:29+0000\n"
 "Last-Translator: Ana Isabel Carvalho <ana@manufacturaindependente.org>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jshelter/"
 "website/pt/>\n"
@@ -13,11 +13,11 @@ msgstr ""
 
 #: ../content/pages/build.md:block 1 (paragraph)
 msgid "Title: Building from scratch"
-msgstr ""
+msgstr "Title: Construir de raiz"
 
 #: ../content/pages/build.md:block 2 (header)
 msgid "GNU/Linux and Mac OS"
-msgstr ""
+msgstr "GNU/Linux e Mac OS"
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid ""
@@ -27,56 +27,62 @@ msgstr ""
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Download the desired branch, e.g. as zip archive."
-msgstr ""
+msgstr "Faz download de um branch à tua escolha, por exemplo, como arquivo zip."
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Unpack the zip archive."
-msgstr ""
+msgstr "Descompacta o arquivo zip."
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Run `make`."
-msgstr ""
+msgstr "Corre o comando `make`."
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid ""
 "You will need common software, such as `zip`, `wget`, `bash`, `awk`, `sed`."
-msgstr ""
+msgstr "Vais precisar de software como `zip`, `wget`, `bash`, `awk`, `sed`."
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid ""
 "Note that running `make` removes all `console.debug` calls. If you want to "
 "keep such calls, run `make debug`."
 msgstr ""
+"Atenção, ao correr `make` são ignoradas as chamadas do `console.debug`. Se "
+"as quiseres ter ativas corre antes `make debug`."
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Import the extension to the browser."
-msgstr ""
+msgstr "Importa a extensão para o browser."
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid ""
 "[Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/"
 "WebExtensions/Your_first_WebExtension#installing)"
 msgstr ""
+"[Firefox](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/"
+"WebExtensions/Your_first_WebExtension#installing)"
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Open `about:debugging`."
-msgstr ""
+msgstr "Abre a página `about:debugging`."
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Click the *This Firefox* option"
-msgstr ""
+msgstr "Clica na opção *This Firefox*"
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Click the *Load Temporary Add-on* button"
-msgstr ""
+msgstr "Clica no botão *Load Temporary Add-on*"
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Select the file `jshelter_firefox.zip` created by `make`."
 msgstr ""
+"Seleciona o ficheiro `jshelter_firefox.zip` que foi criado quando correste o "
+"`make`."
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Chromium-based browsers:"
-msgstr ""
+msgstr "Browsers baseados em Chromium"
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Open `chrome://extensions`."
@@ -817,14 +823,20 @@ msgid ""
 "way that breaks a page. In that case, you might want to tweak your "
 "protection level."
 msgstr ""
+"Por vezes vais querer afinar o EJS. Por exemplo, normalmente não precisas do "
+"áudio embora, por vezes, tenhas de fazer uma chamada online. Outro exemplo, "
+"habitualmente não queres revelar a tua localização mas precisas de usar uma "
+"página com um mapa para te orientares. Ocasionalmente, o EJS pode modificar "
+"uma API de uma forma que a página fica estragada. Nesse caso, podes precisar "
+"de afinar o nível de proteção."
 
 #: ../content/pages/faq.md:block 47 (ordered list)
 msgid "Click the `Detail tweaks of JS Shield for this site` button."
-msgstr ""
+msgstr "Carrega no botão `Afinações pormenorizadas do Escudo JS neste site`."
 
 #: ../content/pages/faq.md:block 48 (paragraph)
 msgid "![Go to tweaking JSS mode](/images/faq/jss_tweak_start.png)"
-msgstr ""
+msgstr "![Vai a afinações ao modo do EJS](/images/faq/jss_tweak_start.png)"
 
 #: ../content/pages/faq.md:block 49 (paragraph)
 msgid ""
@@ -833,26 +845,32 @@ msgid ""
 "to tweak the settings of one of the groups with the most calls. See the "
 "highlighted column:"
 msgstr ""
+"A secção do EJS vai expandir. Os grupos de proteção aplicados estão "
+"ordenados pelo número de chamadas à API em cada grupo. Tipicamente, vais "
+"querer afinar as definições de um dos grupos com mais chamadas. Vê a coluna "
+"destacada:"
 
 #: ../content/pages/faq.md:block 50 (paragraph)
 msgid "![Tweaking JSS mode](/images/faq/jss_tweak_sorting.png)"
-msgstr ""
+msgstr "![Afinar o modo EJS](/images/faq/jss_tweak_sorting.png)"
 
 #: ../content/pages/faq.md:block 51 (ordered list)
 msgid "Before you tweak any wrapping group, see the description."
-msgstr ""
+msgstr "Antes de afinares qualquer um dos grupos de embrulho, vê a descrição."
 
 #: ../content/pages/faq.md:block 51 (ordered list)
 msgid "Tweak the protection according to your needs."
-msgstr ""
+msgstr "Afinar a proteção de acordo com as tuas necessidades."
 
 #: ../content/pages/faq.md:block 52 (paragraph)
 msgid "![Tweaking JSS mode](/images/faq/jss_tweaking.png)"
-msgstr ""
+msgstr "![Afinar o modo EJS](/images/faq/jss_tweaking.png)"
 
 #: ../content/pages/faq.md:block 53 (header)
 msgid "How can I fix videos if they fail to play or retrieve data in time?"
 msgstr ""
+"Como posso consertar vídeos se falharem a reproduzir ou a recuperar dados a "
+"tempo?"
 
 #: ../content/pages/faq.md:block 54 (paragraph)
 msgid ""
@@ -866,6 +884,16 @@ msgid ""
 "replace Workers with synchronous code. However, so far, we offer only "
 "policies that either disable Workers or make them inoperable."
 msgstr ""
+"O JShelter re-implementa mais de 100 APIs JavaScript. Contudo, as páginas "
+"podem usar vários métodos para aceder à mesma API. Infelizmente, os "
+"navegadores não permitem remendar todas as possibilidades, de forma "
+"consistente, numa única chamada. Os Web Workers são uma das possibilidades "
+"para aceder às APIs (ver outras [ameaças](#what-are-web-workers-and-what-are-"
+"the-threats-that-i-face)). O nosso objetivo final é remendar APIs de forma "
+"consistente. No entanto, remendar Web Workers é complicado e ainda não "
+"encontramos forma de remendar Workers de forma contínua. O nosso objetivo "
+"final é substituir os Workers com código síncrono. Porém, até agora, só "
+"oferecemos medidas que desativam os Workers ou que os tornam inoperacionais."
 
 #: ../content/pages/faq.md:block 55 (paragraph)
 msgid ""
@@ -876,6 +904,13 @@ msgid ""
 "benign purposes. The page also cannot detect breakage to limit the "
 "fingerprintability of the browsers."
 msgstr ""
+"Estamos a [trabalhar](https://pagure.io/JShelter/webextension/issue/43) em "
+"[melhoramentos](https://pagure.io/JShelter/webextension/issue/80). "
+"Atualmente, remendamos Web Workers no nível `Recomendado`(política "
+"de`Eliminação`). Todavia, este método interfere no bom funcionamento dos Web "
+"Workers e eles deixam de poder ser usados para fins benignos. A página "
+"também deixa de poder detetar estragos para limitar a identificação da "
+"impressão digital dos navegadores."
 
 #: ../content/pages/faq.md:block 56 (paragraph)
 msgid ""
@@ -888,6 +923,15 @@ msgid ""
 "you can make the page work at the cost of increased fingerprintability. Use "
 "FPD to evaluate that threat."
 msgstr ""
+"Utilizadores do JShelter indicaram que os servidores de streaming de vídeo "
+"são frequentamente afetados. Encontramos páginas que detetam se o navegador "
+"tem suporte de Web Workers e fornecem polyfills quando detetam que não há "
+"suporte. A opção de `Apagar` Web Workers é ideal para estes servidores. A "
+"página pode facilmente detetar a falta de suporte dos Web Workers. Imagina "
+"que a página oferece alternativas como os polyfills. As alternativas não tem "
+"a mesma capacidade dos Web Workers, neste caso podes fazer com que a página "
+"funcione em troca de uma maior facilidade na deteção da tua impressão "
+"digital. Usa o DID para avaliar esta ameaça."
 
 #: ../content/pages/faq.md:block 57 (paragraph)
 msgid ""
@@ -899,10 +943,17 @@ msgid ""
 "Videos and other functionality requiring Web Workers should work. To change "
 "the policy, follow these steps:"
 msgstr ""
+"Se confias que o operador do servidor e os seus associados não farão mau uso "
+"dos Web Workers para aceder as APIs originais e [outras fontes](#what-are-"
+"web-workers-and-what-are-the-threats-that-i-face), ou se não te imporares, "
+"muda a opção dos `Web Workers` de `Apagar`para `Baixo`(em Chrome) ou "
+"desactiva-a completamente ([em Firefox](https://pagure.io/JShelter/"
+"webextension/issue/80)). Vídeos e outras funcionalidades que requerem Web "
+"Workers deverão funcionar. Para mudar a opção segue estes passos:"
 
 #: ../content/pages/faq.md:block 58 (ordered list)
 msgid "Navigate to a page with a video you want to watch."
-msgstr ""
+msgstr "Navega até à página com o vídeo que queres ver."
 
 #: ../content/pages/faq.md:block 58 (ordered list)
 msgid ""
@@ -911,46 +962,59 @@ msgid ""
 "see-a-jshelter-badge-icon-next-to-my-navigation-bar-i-want-to-interact-with-"
 "the-extension-easily-and-avoid-going-through-settings))."
 msgstr ""
+"Carrega no ícone do JShelter (normalmente está na barra de ferramentas, "
+"junto à barra de navegação; se não conseguires localizar o ícones vê [esta "
+"pergunta](#can-i-see-a-jshelter-badge-icon-next-to-my-navigation-bar-i-want-"
+"to-interact-with-the-extension-easily-and-avoid-going-through-settings))."
 
 #: ../content/pages/faq.md:block 58 (ordered list)
 msgid "Click on the `Modify` button."
-msgstr ""
+msgstr "Carrega no botão de `Modificar`."
 
 #: ../content/pages/faq.md:block 58 (ordered list)
 msgid "Click on the `Detail tweaks of JS shield for this site` button."
-msgstr ""
+msgstr "Carregar no botão `Afinações pormenorizadas do Escudo JS neste site`."
 
 #: ../content/pages/faq.md:block 58 (ordered list)
 msgid ""
 "Click and drag the `WebWorker` slider to the left until `Remove` is replaced "
 "by the `Low` value (Chromium-based browser) or `Unprotected` (Firefox)."
 msgstr ""
+"Carrega e arrasta o slider dos `Web Workers` para a esquerda até veres que o "
+"valor `Apagar` é substituído por `Baixo` (em browsers baseados no Chromium) "
+"ou `Desprotegido`(Firefox)."
 
 #: ../content/pages/faq.md:block 58 (ordered list)
 msgid "Click on the `Refresh page` button at the top."
-msgstr ""
+msgstr "Carregar no botão `Atualizar página`, no topo."
 
 #: ../content/pages/faq.md:block 58 (ordered list)
 msgid "Watch the video."
-msgstr ""
+msgstr "Vê o vídeo."
 
 #: ../content/pages/faq.md:block 59 (header)
 msgid ""
 "I want to use a website that uses Web Workers, but it is broken. How can I "
 "fix the site?"
 msgstr ""
+"Quero usar um website que usa Web Workers mas que não está a funcionar. Como "
+"posso corrigir o problema?"
 
 #: ../content/pages/faq.md:block 60 (paragraph)
 msgid ""
 "First, see the explanation of [Web Workers](#what-are-web-workers-and-what-"
 "are-the-threats-that-i-face)."
 msgstr ""
+"Primeiro, vê a explicação sobre [Web Workers](#what-are-web-workers-and-what-"
+"are-the-threats-that-i-face)."
 
 #: ../content/pages/faq.md:block 61 (paragraph)
 msgid ""
 "See the [answer to the video question](#how-can-i-fix-videos-if-they-fail-to-"
 "play-or-retrieve-data-in-time)."
 msgstr ""
+"Lê a [resposta à pergunta sobre vídeo](#how-can-i-fix-videos-if-they-fail-to-"
+"play-or-retrieve-data-in-time)."
 
 #: ../content/pages/faq.md:block 62 (paragraph)
 msgid ""
@@ -959,16 +1023,22 @@ msgid ""
 "tracker](https://pagure.io/JShelter/webextension/issues) or send us [e-mail]"
 "(mailto:jshelter@gnu.org)."
 msgstr ""
+"Se encontrares um website que precisa de ter a proteção contra Web Workers "
+"em nível `Restrito`e não funciona com `Apagar`ou vice-versa, avisa-nos disso "
+"através do [issue tracker](https://pagure.io/JShelter/webextension/issues) "
+"ou por [e-mail](mailto:jshelter@gnu.org)."
 
 #: ../content/pages/faq.md:block 63 (header)
 msgid "User interface issues"
-msgstr ""
+msgstr "Problemas do interface de utilizador"
 
 #: ../content/pages/faq.md:block 64 (header)
 msgid ""
 "Can I see a JShelter (badge) icon next to my navigation bar? I want to "
 "interact with the extension easily and avoid going through settings."
 msgstr ""
+"Consigo ver um ícone do JShelter perto da minha barra de navegação? Quero "
+"interagir com a extensão e evitar editar as definições."
 
 #: ../content/pages/faq.md:block 65 (paragraph)
 msgid ""
@@ -976,20 +1046,28 @@ msgid ""
 "However, browsers tend to hide the icon. If you cannot see a JShelter icon "
 "to the right of the bar where you enter URLs. Try to:"
 msgstr ""
+"O JShelter tem um ícone na barra de ferramentas que te permite abrir uma "
+"janela popup. Contudo os browsers tem tendência a esconder o ícone. Se não "
+"conseguires ver o ícone do JShelter à direita da barra onde escrever URLs "
+"experimenta:"
 
 #: ../content/pages/faq.md:block 66 (ordered list)
 msgid "Click on the extension icon (typically looks like a puzzle tile)."
 msgstr ""
+"Carregar no ícone das extensões (normalmente é um desenho de uma peça de "
+"puzzle)."
 
 #: ../content/pages/faq.md:block 66 (ordered list)
 msgid "Pin JShelter to the toolbar."
-msgstr ""
+msgstr "Afixa o JShelter na barra de ferramentas."
 
 #: ../content/pages/faq.md:block 67 (paragraph)
 msgid ""
 "The figure below shows how to accomplish these two steps in Firefox and a "
 "Chromium-based browser."
 msgstr ""
+"A imagem abaixo mostra como executar estes dois passos em Firefox e browsers "
+"baseados no Chromium."
 
 #: ../content/pages/faq.md:block 68 (paragraph)
 msgid ""
@@ -997,38 +1075,48 @@ msgid ""
 "png) ![Pin JShelter to a Chromium-based browser toolbar]({attach}/images/faq/"
 "chromium_pintoolbar.png)"
 msgstr ""
+"![Afixa o JShelter na barra de ferramentas do Firefox]({attach}/images/faq/"
+"firefox_pintoolbar.png) ![Afixa o JShelter na barra de ferramentas em "
+"browsers baseado no Chromium]({attach}/images/faq/chromium_pintoolbar.png)"
 
 #: ../content/pages/faq.md:block 69 (header)
 msgid ""
 "A site opened a popup window, I want to tweak settings for that window, but "
 "I do not see a badge JShelter icon there. How can I tweak JShelter settings?"
 msgstr ""
+"O site abrir uma janela popup. Quero mudar as definições para essa janela "
+"mas não vejo o ícone do JShelter lá. Como como afinar as definições do "
+"JShelter nesta situação?"
 
 #: ../content/pages/faq.md:block 70 (paragraph)
 msgid "If you are using Firefox:"
-msgstr ""
+msgstr "Se estiveres a usar Firefox:"
 
 #: ../content/pages/faq.md:block 71 (ordered list)
 msgid "Open `about:config`, click to `Accept the Risk and Continue`,"
 msgstr ""
+"Abre a página `about:config`, carrega na opção `Aceitar o Risco e Continuar`,"
 
 #: ../content/pages/faq.md:block 71 (ordered list)
 msgid "set `browser.link.open_newwindow` to `3`,"
-msgstr ""
+msgstr "altera a opção `browser.link.open_newwindow` para `3`,"
 
 #: ../content/pages/faq.md:block 71 (ordered list)
 msgid "set `browser.link.open_newwindow.restriction` to `0`."
-msgstr ""
+msgstr "altera a opção `browser.link.open_newwindow.restriction` para `0`."
 
 #: ../content/pages/faq.md:block 72 (paragraph)
 msgid ""
 "This will force all popup windows to open in a new tab, meaning the JShelter "
 "settings could be adjusted easily everywhere."
 msgstr ""
+"Estas definições vão obrigar as janelas popup a abrir como tabs novas e, "
+"assim, torna-se mais simples configurar as definições do JShelter em "
+"qualquer páginas."
 
 #: ../content/pages/faq.md:block 73 (header)
 msgid "Why do I see so many notifications from JShelter?"
-msgstr ""
+msgstr "Porque é que vejo tantas notificações do JShelter?"
 
 #: ../content/pages/faq.md:block 74 (paragraph)
 msgid ""
@@ -1037,22 +1125,31 @@ msgid ""
 "JShelter behavior and its possible changes to the page's ability to make "
 "network requests that often break the page's behavior."
 msgstr ""
+"De forma geral, devias ver apenas algumas notificações do JShelter. Por "
+"omissão, as definições estão configuradas para dar ao utilizador informação "
+"vital sobre o comportamento do JShelter e as suas alterações à capacidade da "
+"página para efetuar pedidos de rede que frequentemente estragam o "
+"funcionamento da página."
 
 #: ../content/pages/faq.md:block 75 (paragraph)
 msgid ""
 "We suggest installing a tracker blocker like uBlock Origin. The blocker will "
 "eliminate the most common security and privacy threats."
 msgstr ""
+"Sugerimos instalar um bloqueador de anúncios como o uBlock Origin. O "
+"bloqueador vai conter as ameças mais comuns à segurança e privacidade."
 
 #: ../content/pages/faq.md:block 76 (paragraph)
 msgid ""
 "Also, see [the question on NBS notifications](#i-am-seeing-too-many-nbs-"
 "notifications)."
 msgstr ""
+"Vê também [a pergunta sobre notificações da BPR](#i-am-seeing-too-many-nbs-"
+"notifications)."
 
 #: ../content/pages/faq.md:block 77 (header)
 msgid "I am seeing too many NBS notifications"
-msgstr ""
+msgstr "Estou a ver demasiadas notificações da BPR"
 
 #: ../content/pages/faq.md:block 78 (paragraph)
 msgid ""
@@ -1063,6 +1160,13 @@ msgid ""
 "DNS-blocking resolver returns `127.0.0.1` and `::1`. Please reconfigure the "
 "resolver to return `0.0.0.0` or `::`."
 msgstr ""
+"A BPR protege de ataques que acontecem muito raramente. O utilizadores do "
+"JShelter queixam-se frequentemente de ver demasiadas notificações quando "
+"usam formas de bloqueio baseadas no DNS. Os mecanismo de utrapassar o "
+"bloqueio via DNS pre-definem um endereço de IP falso, normalmente `0.0.0.0` "
+"ou `127.0.0.1` (IPv4) e `::` ou `::1` (IPv6). Se o teu mecanismo de "
+"utrapassar o bloqueio via DNS devolve `127.0.0.1` e `::1` por favor "
+"configura-o para devolver `0.0.0.0` ou `::`."
 
 #: ../content/pages/faq.md:block 79 (ordered list)
 msgid ""
@@ -1073,6 +1177,13 @@ msgid ""
 "machine. Note that Linux hosts try to establish a connection to a localhost "
 "port on all these addresses."
 msgstr ""
+"Dependendo do teu sistema operativo vais usar poucos recursos. Por exemplo, "
+"as máquinas que correm Windows não criam um stream PCT quando um website se "
+"liga a `0.0.0.0` ou `::`, pelo contrário criam um stream PCT quando um "
+"website se liga a quando se ligam a `127.0.0.1` e `::1`. Assim uma página "
+"web remota pode aceder a um wervidor web se estiver a correr localmente na "
+"máquina. Nota que a maioria dos servidores Linux tentam estabelecer uma "
+"ligação à porta do localhost em todos estes endereços."
 
 #: ../content/pages/faq.md:block 79 (ordered list)
 msgid ""
@@ -1081,46 +1192,61 @@ msgid ""
 "no way to differentiate between such DNS blocker and an attack like the one "
 "in the [blog](/localportscanning/)."
 msgstr ""
+"Se o teu mecanismo de filtragem de DNS devolve `0.0.0.0` ou `::`, vai passar "
+"ao JShelter um relatório de intenções. Se devolver `127.0.0.1` ou `::1`, o "
+"JShelter não tem forma de diferenciar o bloqueio de DNS e um ataque como o "
+"que está detalhado no [blog](/localportscanning/)."
 
 #: ../content/pages/faq.md:block 80 (header)
 msgid "Browser fingerprinting"
-msgstr ""
+msgstr "Detetor de impressões digitais no browser"
 
 #: ../content/pages/faq.md:block 81 (header)
 msgid "What is the little lies approach to protect from fingerprinters?"
 msgstr ""
+"Qual é a abordagem das pequenas mentiras para proteção contra "
+"identificadores de impressões digitais?"
 
 #: ../content/pages/faq.md:block 82 (paragraph)
 msgid "Please see [the blog post](/farbling/)."
-msgstr ""
+msgstr "Por favor consulta [este artigo do blog](/farbling/)."
 
 #: ../content/pages/faq.md:block 83 (header)
 msgid ""
 "What is the difference between the little lies and white lies approach to "
 "protect from fingerprinters and farbling?"
 msgstr ""
+"Qual é a diferença entre as abordagens das pequenas mentiras e mentiras "
+"brancas na proteção contra identificadores de impressões digitais e farbling?"
 
 #: ../content/pages/faq.md:block 84 (paragraph)
 msgid ""
 "None. All refer to the same technique [that is explained in another question]"
 "(#what-is-the-little-lies-approach-to-protect-from-fingerprinters)."
 msgstr ""
+"Nenhuma. Ambas se referem à mesma técnica [que está explicada em detalhe "
+"nesta pergunta](#what-is-the-little-lies-approach-to-protect-from-"
+"fingerprinters)."
 
 #: ../content/pages/faq.md:block 85 (header)
 msgid "What JShelter configuration should I pick?"
-msgstr ""
+msgstr "Que configuração de JShelter devia escolher?"
 
 #: ../content/pages/faq.md:block 86 (paragraph)
 msgid ""
 "First, see our [blog post](/fingerprinting/). Consult also other [blog posts]"
 "(/blog/) and other questions in this FAQ."
 msgstr ""
+"Primeiro, lê [este artigo do blog](/fingerprinting/). Consulta outros ["
+"artigos do blog](/blog/) e outras perguntas nesta secção."
 
 #: ../content/pages/faq.md:block 87 (ordered list)
 msgid ""
 "If you want to have the same fingerprint as many users, We suggest going for "
 "Tor Browser (do not install JShelter in Tor Browser)."
 msgstr ""
+"Se quiseres ter a mesma impressão digital que muitos outros utilizadores "
+"sugerimos usar o browser Tor (não instales o JShelter no Tor)."
 
 #: ../content/pages/faq.md:block 87 (ordered list)
 msgid ""
@@ -1129,24 +1255,32 @@ msgid ""
 "data at the cost of having the same fingerprint on different sites, go for "
 "the `Strict` JShelter level."
 msgstr ""
+"Se quiseres que seja difícil cruzar a tua impressão digital entre sites "
+"diferentes opta pelo nível `Recomendado`, no JShelter. Se quiseres melhor "
+"proteção de dados sacrificando a identificação da impressão digital entre "
+"sites diferentes, opta pelo nível `Restrito`."
 
 #: ../content/pages/faq.md:block 87 (ordered list)
 msgid "Keep NBS active."
-msgstr ""
+msgstr "Mantém a BPR ligada."
 
 #: ../content/pages/faq.md:block 87 (ordered list)
 msgid "If you want to detect and prevent fingerprinting attempts, use FPD."
 msgstr ""
+"Se quiseres detetar e evitar tentativas de identificação da impressão "
+"digital usa DID."
 
 #: ../content/pages/faq.md:block 88 (header)
 msgid ""
 "I have a unique fingerprint? Some properties wrapped by JShelter return "
 "random values."
 msgstr ""
+"Tenho uma impressão digital única? Algumas das propriedades protegidas pelo "
+"JShelter devolvem valores aleatórios."
 
 #: ../content/pages/faq.md:block 89 (paragraph)
 msgid "First, see our [blog post](/fingerprinting/)."
-msgstr ""
+msgstr "Primeiro, consulta o nosso [artigo do blog](/fingerprinting/)."
 
 #: ../content/pages/faq.md:block 90 (paragraph)
 msgid ""
@@ -1156,6 +1290,11 @@ msgid ""
 "properties contain random strings that uniquely identify your browser "
 "session."
 msgstr ""
+"No nível `Recomendado`o JShelter modifica de facto algumas propriedades como "
+"sequências de WebGL (`renderer`, `vendor`) para sequências aleatórias. Mas o "
+"JShelter não modifica identificadores aleatórios de microfones e câmaras. "
+"Todas estas propriedades contêm sequências aleatórias que identificam de "
+"forma única a tua sessão no browser."
 
 #: ../content/pages/faq.md:block 91 (paragraph)
 msgid ""
@@ -1165,12 +1304,20 @@ msgid ""
 "the random strings, use `Strict` protection (but see [other FAQ entries]"
 "(#browser-fingerprinting))."
 msgstr ""
+"O JShelter passa mentiras diferentes em domínios diferentes, assim torna-se "
+"difícil o cruzamento entre domínios. Ainda assim convém lembrar que um único "
+"domínio pode ligar todas as tuas atividades durante uma sessão no browser. "
+"Se não quiseres que o JShelter gere sequências aleatórias usa o nível de "
+"proteção `Restrito`(mas vê [outras perguntas nesta secção](#browser-"
+"fingerprinting))."
 
 #: ../content/pages/faq.md:block 92 (paragraph)
 msgid ""
 "We are [considering](https://pagure.io/JShelter/webextension/issue/68) "
 "adding better control for the little lies approach."
 msgstr ""
+"Estamos a [considerar](https://pagure.io/JShelter/webextension/issue/68) uma "
+"forma de controlar melhor o método das pequenas mentiras."
 
 #: ../content/pages/faq.md:block 93 (paragraph)
 msgid ""
@@ -1182,10 +1329,17 @@ msgid ""
 "fingerprinter might reveal the inconsistencies anyway, we do not actively "
 "work on the issue."
 msgstr ""
+"Também estamos a [considerar](https://pagure.io/JShelter/webextension/issue/"
+"69) substituir as sequências aleatórias da API da Web GL com sequências "
+"reais. Contudo falta-nos esta base de dados. Ao mesmo tempo, preocupa-nos a "
+"introdução de inconsistências se aplicar combinações inválidas de sequências "
+"reais. Como criar uma base de dados de sequências reais tomaria muito tempo "
+"e, mesmo assim, um identificador de impressões digitais poderia reconhecer "
+"inconsistências, decidimos não trabalhar ativamente neste issue."
 
 #: ../content/pages/faq.md:block 94 (header)
 msgid "Is browser fingerprinting a real threat?"
-msgstr ""
+msgstr "A identificação das impressões digitais no browser é uma ameaça real?"
 
 #: ../content/pages/faq.md:block 95 (paragraph)
 msgid ""
@@ -1197,12 +1351,23 @@ msgid ""
 "actively scanning a device for specific characteristics, e.g., installed "
 "fonts or screen resolution, use such an identifier to re-identify a device."
 msgstr ""
+"Mais de 100 empresas de anúncios revelam no [modelo para a transparência e "
+"consentimento adtech](https://www.fit.vutbr.cz/~polcak/tcf/tcf2.html) em que "
+"admitem procurar ativamente detetar caraterísticas dos aparelhos com o "
+"objetivo de os identificar: os aparelhos podem ser identificados com base na "
+"recolha da combinação única das suas caraterísticas. Os distribuidores podem "
+"criar um perfil a partir dos dados recolhidos que permitem a deteção de um "
+"aparelho com base na combinação única das suas caraterísticas, por exemplo, "
+"fontes instaladas e resolução do ecrã, e este perfil é usado para voltar a "
+"reconhecer um aparelho."
 
 #: ../content/pages/faq.md:block 96 (paragraph)
 msgid ""
 "![TCF participants actively scanning devices to create a fingerprint]"
 "(https://www.fit.vutbr.cz/~polcak/tcf/graphs/v2sf2.svg)"
 msgstr ""
+"![Participantes na MTC a fazer identificação atica de aparelhos para criar "
+"impressões digitais](https://www.fit.vutbr.cz/~polcak/tcf/graphs/v2sf2.svg)"
 
 #: ../content/pages/faq.md:block 97 (paragraph)
 msgid ""
@@ -1211,10 +1376,16 @@ msgid ""
 "github.io/FP-Inspector/) or [The Elephant in the Background](https://fpmon."
 "github.io/fingerprinting-monitor/files/FPMON.pdf)."
 msgstr ""
+"Consulta os papers [Browser Fingerprinting: A survey](https://arxiv.org/pdf/"
+"1905.01051.pdf), [Fingerprinting the Fingerprinters](https://uiowa-irl.github"
+".io/FP-Inspector/) ou [The Elephant in the Background](https://fpmon.github."
+"io/fingerprinting-monitor/files/FPMON.pdf)."
 
 #: ../content/pages/faq.md:block 98 (header)
 msgid "Does FPD collect a list of pages/origins that fingerprinted me?"
 msgstr ""
+"O DID recolhe uma lista de páginas/origens que identificaram a minha "
+"impressão digital?"
 
 #: ../content/pages/faq.md:block 99 (paragraph)
 msgid ""
@@ -1222,6 +1393,9 @@ msgid ""
 "detection that is not dependent on previous interactions between the browser "
 "and the site."
 msgstr ""
+"Não, o DID não recolhe qualquer informação. Cada página carregada inicia uma "
+"nova deteção que não está dependente de interações anteriores entre o "
+"browser e o site."
 
 #: ../content/pages/faq.md:block 100 (header)
 msgid ""
@@ -1230,9 +1404,9 @@ msgid ""
 "JSS level or applying the blocking of HTTP requests initiated by the domain?"
 msgstr ""
 "Quando o DID deteta que uma origem me está a tentar identificar a minha "
-"pegada, isso significa que vai ativar uma proteção mais forte, por exemplo "
-"mudar o EJS para o nível `Restrito` ou aplicar o bloqueio de pedidos HTTP "
-"iniciados pelo domínio?"
+"impressão difital, isso significa que vai ativar uma proteção mais forte, "
+"por exemplo mudar o EJS para o nível `Restrito` ou aplicar o bloqueio de "
+"pedidos HTTP iniciados pelo domínio?"
 
 #: ../content/pages/faq.md:block 101 (paragraph)
 msgid "No."
@@ -1245,9 +1419,9 @@ msgid ""
 "recommend using `Strict` level as an anti-fingerprinting mechanism."
 msgstr ""
 "Em primeiro, o nível `Restrito` do EJS não corresponde a uma proteção mais "
-"forte da pegada digital. Na verdade, o que faz é tornar a pegada existente "
-"estável. Não recomendamos usar o nível `Restrito` como proteção anti-pegada "
-"digital."
+"forte da impressão digital. Na verdade, o que faz é tornar a impressão "
+"digital existente estável. Não recomendamos usar o nível `Restrito` como "
+"proteção anti-impressão digital."
 
 #: ../content/pages/faq.md:block 103 (paragraph)
 msgid ""
@@ -1255,15 +1429,16 @@ msgid ""
 "fingerprints you, it does not mean that all pages are going to fingerprint "
 "you."
 msgstr ""
-"Em segundo, a pegada digital é bastante comum em páginas de login. Se uma "
-"página guarda a tua pegada isso não significa que todas vão fazer o mesmo."
+"Em segundo, a impressão digital é bastante comum em páginas de login. Se uma "
+"página guarda a tua impressão isso não significa que todas irão fazer o "
+"mesmo."
 
 #: ../content/pages/faq.md:block 104 (paragraph)
 msgid ""
 "Thirdly, the fingerprinting script may be loaded into the page irregularly. "
 "We want to prevent blocking the site when no fingerprinting is detected."
 msgstr ""
-"Em terceiro, o script de recolha da pegada digital pode ser carregado na "
+"Em terceiro, o script de deteção da impressáo digital pode ser carregado na "
 "página de forma irregular. Queremos evitar o bloqueio de um site quando não "
 "é detetada esta recolha."
 
@@ -1272,7 +1447,7 @@ msgid ""
 "If you want to switch to a different level for the website, you can do so "
 "manually. We do not recommend such action."
 msgstr ""
-"Se quiseres mudar para um nível diferente num website podes fazê-lo "
+"Se quiseres mudar para um nível diferente, num website, podes fazê-lo "
 "manualmente. Contudo, não recomendamos esta prática."
 
 #: ../content/pages/faq.md:block 106 (header)
@@ -1280,8 +1455,8 @@ msgid ""
 "My bank (or another trusted site) fingerprinted me during a login attempt. "
 "Should I worry?"
 msgstr ""
-"O meu banco (ou outro site de confiança) está a recolher a minha pegada "
-"digital durante uma tentativa de login. Deveria ficar preocupado?"
+"O meu banco (ou outro site de confiança) está a recolher a minha impressão "
+"digital durante uma tentativa de login. Deveria estar preocupado?"
 
 #: ../content/pages/faq.md:block 107 (paragraph)
 msgid ""
@@ -1291,11 +1466,11 @@ msgid ""
 "you do not turn off JavaScript Shield and its anti-fingerprinting "
 "protections."
 msgstr ""
-"A recolha da pegada digital no browser faz parte da autenticação multi-fator "
-"(MFA ou 2FA). O fornecedor tenta proteger a tua conta. Não deves ficar "
+"A recolha da impressão digital no browser faz parte da autenticação multi-"
+"fator (MFA ou 2FA). O fornecedor tenta proteger a tua conta. Não deves ficar "
 "preocupada, no entanto podes ser forçada a desligar o DID nesse site. "
 "Contudo, sugerimos que não desligues o Escudo Javascript e as suas proteções "
-"anti-recolha de pegada digital."
+"contra a deteção da impressão digital."
 
 #: ../content/pages/faq.md:block 108 (paragraph)
 msgid ""
@@ -1314,14 +1489,14 @@ msgstr ""
 "europa.eu/justice/article-29/documentation/opinion-recommendation/files/2014/"
 "wp224_en.pdf) (use case 7.5) que a garantia de segurança do utilizador pode "
 "ser vista como absolutamente necessária para fornecer um serviço online. "
-"Assim, parece provável que a recolha das pegadas digitais no browser, por "
+"Assim, parece provável que a recolha das impressões digitais no browser, por "
 "motivos de segurança, seja considerada uma exceção da privacidade e por isso "
 "não seja necessário o consentimento do utilizador. De acordo com as "
-"circunstâncias, a pegada digital pode ser um dado pessoal. O RGPD também se "
-"pode aplicar. O RGPD enumera a segurança como um possível interesse legítimo "
-"de um responsável pelo tratamento de dados, ver recital 49. No entanto, "
-"saber se toda a recolha de pegadas digitais é pertinente é uma questão em "
-"aberto."
+"circunstâncias, a impressão digital pode ser considerada um dado pessoal. O "
+"RGPD também se pode aplicar aqui. O RGPD enumera a segurança como um "
+"possível interesse legítimo de um responsável pelo tratamento de dados, ver "
+"recital 49. No entanto, saber se toda a deteção de impressões digitais é "
+"pertinente é uma questão em aberto."
 
 #: ../content/pages/faq.md:block 109 (paragraph)
 msgid ""
@@ -1334,16 +1509,18 @@ msgid ""
 msgstr ""
 "Compreendemos que nem todas as nossas utlizadoras queiram fornecer "
 "informação sobre os seus aparelhos. Por conseguinte sugeriumos ter o Escudo "
-"Javascript ativo em sites com recolha de pegada digital. É uma decisão tua "
-"se queres fornecer o mínimo de informação necessária (nível `Restrito`), se "
-"queres ter uma pegada digital diferente em cada visita (nível `Recomendado`, "
-"não esqueças que estás a fornecer os teus dados de login e por isso as tuas "
-"ações são passíveis de identificação), ou se queres criar o teu próprio "
-"nível."
+"Javascript ativo em sites com deteção de impressão digital. Fica ao teu "
+"critério se queres fornecer o mínimo de informação necessária (nível "
+"`Restrito`), se queres ter uma impressão digital diferente em cada visita ("
+"nível `Recomendado`, não esqueças que estás a fornecer os teus dados de "
+"login e por isso as tuas ações são passíveis de identificação), ou se queres "
+"criar o teu próprio nível."
 
 #: ../content/pages/faq.md:block 110 (header)
 msgid "Do you protect against font enumeration fingerprinting?"
 msgstr ""
+"O JShelter protege contra a deteção de impressão digital a partir da análise "
+"das fontes instaladas?"
 
 #: ../content/pages/faq.md:block 111 (paragraph)
 msgid ""
@@ -1351,6 +1528,10 @@ msgid ""
 "If you are concerned about font enumeration, you can track the relevant "
 "JShelter [issue](https://pagure.io/JShelter/webextension/issue/60)."
 msgstr ""
+"Não. Neste momento não temos um método fiável para falsificar as fontes "
+"instaladas. Se estás preocupada com a análise das fontes instaladas podes [o "
+"issue](https://pagure.io/JShelter/webextension/issue/60) do JShelter sobre "
+"este tema."
 
 #: ../content/pages/faq.md:block 112 (paragraph)
 msgid ""
@@ -1360,20 +1541,30 @@ msgid ""
 "resistfingerprinting-should-i-continue-should-i-turn-firefox-fingerprinting-"
 "protection-on)."
 msgstr ""
+"Se estás a usar Firefox e queres ter as tuas fontes ocultas de forma "
+"consistente, liga a opção resistFingerprinting. No entanto considera a ["
+"interação entre o JShelter e a opção resistFingerprinting](#i-am-using-"
+"firefox-fingerprinting-protection-resistfingerprinting-should-i-continue-"
+"should-i-turn-firefox-fingerprinting-protection-on)."
 
 #: ../content/pages/faq.md:block 113 (header)
 msgid "Does JShelter completely prevent browser fingerprinting?"
 msgstr ""
+"O JShelter protege integralmente a deteção de impressão digital no browser?"
 
 #: ../content/pages/faq.md:block 114 (paragraph)
 msgid ""
 "No. See the [threat model](/threatmodel/). As explained there, JShelter "
 "applies reasonable precautions but:"
 msgstr ""
+"Não. Vê o [modelo de ameça](/threatmodel/). Tal como lá está explicado, o "
+"JShelter cria proteções suficientes mas:"
 
 #: ../content/pages/faq.md:block 115 (ordered list)
 msgid "There is no clear boundary between fingerprinting and benign behavior."
 msgstr ""
+"Não existe um limite definido entre a deteção da impressão digital e as "
+"intenções benignas."
 
 #: ../content/pages/faq.md:block 115 (ordered list)
 msgid ""
@@ -1381,30 +1572,41 @@ msgid ""
 "undetectable and reasonable countermeasures, expect that a focused and "
 "motivated attacker will be able to detect JShelter users."
 msgstr ""
+"Um detetor de impressões digitais pode usar ataques direcionados. Enquanto "
+"nós tentamos usar contra-medidas suficientes e indetetáveis é de esperar que "
+"um atacante, focado e motivado, será capaz de detetar utilizadores do "
+"JShelter."
 
 #: ../content/pages/faq.md:block 115 (ordered list)
 msgid ""
 "We expect that users will run FPD and JSS in parallel. As both protect from "
 "fingerprinting differently, they complement each other."
 msgstr ""
+"Esperamos que os utlizadores usem o DID e o EJS em paralelo. Como ambos "
+"protegem contra a deteção da impressão digital de forma diferente, "
+"complementam-se."
 
 #: ../content/pages/faq.md:block 116 (paragraph)
 msgid ""
 "Also, read [the other questions in the browser fingerprinting section]"
 "(#browser-fingerprinting)."
 msgstr ""
+"Lê também [as outras perguntas na secção sobre deteção de impressão digital "
+"no browser](#browser-fingerprinting)."
 
 #: ../content/pages/faq.md:block 117 (header)
 msgid "Other protections by JShelter"
-msgstr ""
+msgstr "Outras proteções do JShelter"
 
 #: ../content/pages/faq.md:block 118 (header)
 msgid "What are Web Workers, and what are the threats that I face?"
-msgstr ""
+msgstr "O que são Web Workers, e quais são as ameaças que colocam?"
 
 #: ../content/pages/faq.md:block 119 (paragraph)
 msgid "In essence, Web Workers are a threat to JShelter users for two reasons:"
 msgstr ""
+"De forma resumida, os Web Workers são uma ameaça para os utilizadores do "
+"JShelter por dois motivos:"
 
 #: ../content/pages/faq.md:block 120 (ordered list)
 msgid ""
@@ -1413,12 +1615,18 @@ msgid ""
 "not apply WebWorker protection, you risk that Web Workers can remove other "
 "protections."
 msgstr ""
+"Permitem o acesso a algumas das APIs modificadas. Não há uma forma simples "
+"que o JShelter possa usar para aplicar modificações aos Web Workers. Por "
+"isso, se não usares proteção contra Web Workers arriscas a que os Web "
+"Workers possam anular outras proteções."
 
 #: ../content/pages/faq.md:block 120 (ordered list)
 msgid ""
 "They increase the capabilities of attackers. For example, malicious actors "
 "can install long-lived proxies to the browser."
 msgstr ""
+"Aumentam as capacidades dos atacantes. Por exemplo, agentes maliciosos podem "
+"instalar proxies de longa duração no browser."
 
 #: ../content/pages/faq.md:block 121 (paragraph)
 msgid ""
@@ -1432,10 +1640,19 @@ msgid ""
 "and other [works](http://www.diva-portal.se/smash/get/diva2:1218197/"
 "FULLTEXT01.pdf)."
 msgstr ""
+"Para mais detalhes, consulta a [documentação dos Web "
+"Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/"
+"Using_web_workers), a [explicação sobre o uso dos Web Workers como Man-In-"
+"The-Middle proxy](https://betterprogramming.pub/man-in-the-middle-attacks-"
+"via-javascript-service-workers-52647ac929a2), papers como [Assessing the "
+"threat of web worker distributed attacks](https://www.researchgate.net/"
+"publication/313953354_Assessing_the_threat_of_web_worker_distributed_attacks)"
+", e outras [publicações](http://www.diva-portal.se/smash/get/diva2:1218197/"
+"FULLTEXT01.pdf)."
 
 #: ../content/pages/faq.md:block 122 (header)
 msgid "What is Network Boundary Shield (NBS)?"
-msgstr ""
+msgstr "O que é a Barreira de Proteção de Rede (BPR)?"
 
 #: ../content/pages/faq.md:block 123 (paragraph)
 msgid ""
@@ -1446,12 +1663,19 @@ msgid ""
 "[dedicated page](/nbs/) and our [blog post](/localportscanning/) for more "
 "information."
 msgstr ""
+"O teu browser pode receber instruções do criador da página visitada (ou de "
+"agentes maliciosos que conseguiram acrescentar o seu código à página) para "
+"agir como um intermediário que cria ligações a outros aparelhos na rede. A "
+"BPR deteta e evita este tipo de ataques. Para mais informação há uma [página "
+"dedicada](/nbs/) e um [artigo no blog](/localportscanning/)."
 
 #: ../content/pages/faq.md:block 124 (header)
 msgid ""
 "My device has a lot of sensors. Are these accessible by web pages? Does "
 "JShelter help me?"
 msgstr ""
+"O meu aparelho tem muitos sensores. Eles estão acessíveis para as páginas "
+"web? O JShelter protege-me?"
 
 #: ../content/pages/faq.md:block 125 (paragraph)
 msgid ""
@@ -1459,10 +1683,14 @@ msgid ""
 "leading to various attacks that include revealing hidden information, and "
 "fingerprinting. JShelter [deals with sensors](/sensorapi/)."
 msgstr ""
+"Dependendo do teu browser e das definições, as páginas web podem ler "
+"sensores o que conduz a vários ataques, incluindo a revelação de informação "
+"escondida e a deteção da impressão digital. O JShelter [lida com sensores](/"
+"sensorapi/)."
 
 #: ../content/pages/faq.md:block 126 (header)
 msgid "Does JShelter help me against attacks exploiting hardware faults?"
-msgstr ""
+msgstr "O JShelter protege-me de ataques que exploram falhas de hardware?"
 
 #: ../content/pages/faq.md:block 127 (paragraph)
 msgid ""
@@ -1474,20 +1702,30 @@ msgid ""
 "jucs_21_09_1210_1233_polcak.pdf) of your device quickly. See [our paper]"
 "(#what-is-the-proper-way-to-cite-jshelter-in-a-paper) for more details."
 msgstr ""
+"Sim, o JShelter modifica todos os timestamps o que limita a precisão das "
+"medições de tempo. O JShelter arredonda os timestamps e adiciona números "
+"aleatórios de milisegundos ao valor arredondado, mantendo assim a "
+"consistência dos timestamps. Estas modificações também retiram a "
+"possibilidade de rapidamente [detetar desfasamentos no relógio](https://www."
+"jucs.org/jucs_21_9/clock_skew_based_computer/jucs_21_09_1210_1233_polcak.pdf)"
+" no teu aparelho. Consulta [o nosso paper](#what-is-the-proper-way-to-cite-"
+"jshelter-in-a-paper) para mais detalhes."
 
 #: ../content/pages/faq.md:block 128 (header)
 msgid "Does JShelter protect my IP address?"
-msgstr ""
+msgstr "O JShelter protege o meu endereço IP?"
 
 #: ../content/pages/faq.md:block 129 (paragraph)
 msgid ""
 "No, and it never will. You need to find a VPN, Tor, or a similar technique "
 "to hide your IP address."
 msgstr ""
+"Não, não é esse o seu propósito. Para esconder o teu endereço de IP tens de "
+"usar uma VPN, o Tor ou outra técnica semelhante."
 
 #: ../content/pages/faq.md:block 130 (header)
 msgid "Does JShelter replace a tracker blocker?"
-msgstr ""
+msgstr "O JShelter subsitui um bloqueador de rastreamento?"
 
 #: ../content/pages/faq.md:block 131 (paragraph)
 msgid ""
@@ -1496,12 +1734,19 @@ msgid ""
 "tracker blocker like [uBlock Origin](https://github.com/gorhill/"
 "uBlock#ublock-origin) in parallel with JShelter."
 msgstr ""
+"Não. Há muitas extensões especializadas em bloqueio de rastreadores, com "
+"base em listagens destes. Nós consideramos que este tipo de função está fora "
+"do âmbito de ação do JShelter. Deves continuar a usar um bloqueador de "
+"rastreadores como o [uBlock Origin](https://github.com/gorhill/uBlock#ublock-"
+"origin), em paralelo com o JShelter."
 
 #: ../content/pages/faq.md:block 132 (header)
 msgid ""
 "Does JShelter modify identifiers in cookies, web storage or other tracking "
 "IDs?"
 msgstr ""
+"O JShelter modifica identificadores de cookies, armazenamento web ou outros "
+"IDs de rastreamento?"
 
 #: ../content/pages/faq.md:block 133 (paragraph)
 msgid ""
@@ -1509,6 +1754,10 @@ msgid ""
 "protection mechanisms and tracker blockers are excellent tools that "
 "complement JShelter well."
 msgstr ""
+"Não de forma direta. É melhor usar outro tipo de ferramentas para bloquear "
+"este tipo de rastreadores. Por exemplo, o Firefox inclui mecanismos de "
+"proteção e bloqueadores de rastreadores que complementam o JShelter na "
+"perfeição."
 
 #: ../content/pages/faq.md:block 134 (paragraph)
 msgid ""
@@ -1517,14 +1766,18 @@ msgid ""
 "and your JShelter settings, your identity might change for each visited "
 "origin and each session."
 msgstr ""
+"Contudo, alguns IDs podem ser obtidos com base em scripts de identificação "
+"da impressão digital. Nesse caso, o JShelter vai modificar esses IDs e, de "
+"acordo com as tuas definições, a tua identidade será diferente para cada "
+"origem visitada e em cada sessão."
 
 #: ../content/pages/faq.md:block 135 (header)
 msgid "Interactions between JShelter and other similar tools"
-msgstr ""
+msgstr "Interações entre o JShelter e outras ferramentas semelhantes"
 
 #: ../content/pages/faq.md:block 136 (header)
 msgid "What other extension do you recommend to run along JShelter?"
-msgstr ""
+msgstr "Que outras extensões recomendam correr em paralelo com o JShelter?"
 
 #: ../content/pages/faq.md:block 137 (paragraph)
 msgid ""
@@ -1537,6 +1790,15 @@ msgid ""
 "first-line defense. However, blockers are not enough as niche cases evade "
 "the blockers."
 msgstr ""
+"Nós consideramos fundamental usar um bloqueador de rastreadores com o ["
+"uBlock Origin](https://github.com/gorhill/uBlock#ublock-origin). Vai ajudar "
+"a tornar a navegação mais rápida, limpar as páginas e melhorar a tua "
+"privacidade. No entanto, é fácil contornar os bloqueadores. Os servidores "
+"web maliciosos só precisam de mudar a URL do script. O criadores do JShelter "
+"encontraram vários scripts maliciosos que evitam os bloqueadores de rastreio "
+"baseados em listagens. É por isso que os bloqueadores, apesar de serem uma "
+"importante primeira linha de defesa, não são suficientes porque lhes escapam "
+"estes casos em que os scripts contornam a proteção oferecida."
 
 #: ../content/pages/faq.md:block 138 (paragraph)
 msgid ""
@@ -1556,6 +1818,24 @@ msgid ""
 "accidentally allowing malicious code. The NoScript Suite main developer is a "
 "part of the JShelter team, and JShelter shares a lot of code with NoScript."
 msgstr ""
+"Extensões web como a [NoScript Security Suite](https://noscript.net/) ou o "
+"[uMatrix](https://github.com/gorhill/uMatrix) permitem às utilizadoras "
+"bloquear JavaScript ou outro tipo de conteúdo, de forma geral ou por "
+"domínio. Contudo a utilizadora tem de avaliar em que domínios deve permitir "
+"scripts. O [Arquivo HTTP denuncia](https://httparchive.org/reports/page-"
+"weight?start=earliest&end=latest&view=list#reqJs) que as páginas incluem, "
+"por média (na data em que este texto foi escrito), 22 pedidos externos (e 21 "
+"pedidos em aparelhos móveis). Muitas páginas estão dependentes do uso de "
+"JavaScript para funcionar. As utilizadores tem de decidir qual o conteúdo "
+"que é de confiança, uma tarefa difícil e que exige muito conhecimento uma "
+"vez que a grande maioria das páginas recorre vários recursos externos a ela. "
+"Pior, o código malicioso pode ser uma parte pequena de um recurso externo e "
+"o resto desse recurso pode ser necessário para que a página funcione "
+"corretamente. Extensões como as que referimos, NoScript Security Suite e "
+"uMatrix origin, são boas mas não protegem completamente a utilizadora de, "
+"acidentalmente, permitir código malicioso. O criador da NoScript Suite faz "
+"parte da equipa do JShelter, e o JShelter partilha uma grande parte do seu "
+"código com o NoScript."
 
 #: ../content/pages/faq.md:block 139 (paragraph)
 msgid ""
@@ -1565,16 +1845,25 @@ msgid ""
 "extensions are important in making your browser leak as little data as "
 "possible, and all these protections are out-of-scope of JShelter."
 msgstr ""
+"Estas são outras extensões que sugerimos usar: [Cookie "
+"AutoDelete](https://github.com/Cookie-AutoDelete/Cookie-AutoDelete), "
+"[Decentraleyes](https://decentraleyes.org), [ClearURLs](https://docs."
+"clearurls.xyz). Todas elas são importantes para fazer com que o teu browser "
+"partilhe o mínimo possível de dados e abrangem proteções que estão fora do "
+"âmbito do JShelter."
 
 #: ../content/pages/faq.md:block 140 (paragraph)
 msgid ""
 "Also consider that [web extensions cannot hide your IP address](#does-"
 "jshelter-protect-my-ip-address)."
 msgstr ""
+"É importante saber que [as extensões não conseguem esconder o teu endereço IP"
+"](#does-jshelter-protect-my-ip-address)."
 
 #: ../content/pages/faq.md:block 141 (header)
 msgid "I already have a blocking extension installed. Do I need JShelter?"
 msgstr ""
+"Já tenho uma extensão para bloqueio de rastreadores. Preciso do JShelter?"
 
 #: ../content/pages/faq.md:block 142 (paragraph)
 msgid ""
@@ -1584,6 +1873,12 @@ msgid ""
 "discovered. Others might be added to a small or specialized list only. "
 "JShelter protects you from some threats not yet added to the lists."
 msgstr ""
+"As extensões de bloqueio de rastreadores são baseadas numa lista de URLs "
+"maliciosas conhecida. Ou seja, alguém precisou de identificar estas URLs em "
+"primeiro lugar. Algumas URLs maliciosas não estão na lista porque ainda não "
+"foram descobertas. Outras podem estar incluídas numa lista especializada ou "
+"menos conhecida. O JShelter protege-te de certas ameças que não são cobertas "
+"por estas listas."
 
 #: ../content/pages/faq.md:block 143 (paragraph)
 msgid ""
@@ -1592,12 +1887,19 @@ msgid ""
 "JShelter can limit (`Strict` level) or fake (`Recommended` level) "
 "information commonly used for browser fingerprinting."
 msgstr ""
+"Algumas páginas de login identificama tua impressão digital quando as estás "
+"a usar. Nestes casos, podes precisar de manter privada a configuração de um "
+"aparelho em particular. O JShelter pode limitar (nível `Restrito`) ou criar "
+"informação falsa (nível `Recomendado`) para contornar os métodos de "
+"identificação da impressão digital, no browser."
 
 #: ../content/pages/faq.md:block 144 (header)
 msgid ""
 "I am using Firefox Fingerprinting Protection (resistFingerprinting). Should "
 "I continue? Should I turn Firefox Fingerprinting Protection on?"
 msgstr ""
+"Estou a usar a proteção contra identificação da impressão digital do Firefox "
+"(resistFingerprinting). Devo continuar a usá-la? Devo ativar esta proteção?"
 
 #: ../content/pages/faq.md:block 145 (paragraph)
 msgid ""
@@ -1610,6 +1912,16 @@ msgid ""
 "question if the homogeneous fingerprint strategy makes sense before it is "
 "adopted by all users."
 msgstr ""
+"A Mozilla está a trabalhar para integrar técnicas de combate à deteção de "
+"impressão digital do [browser Tor](https://bugzilla.mozilla.org/show_bug."
+"cgi?id=1329996) no Firefox (a Proteção contra Identificação da Impressão "
+"Digital no Firefox, também conhecida como Resist Fingerprinting). Contudo o "
+"trabalho ainda não está terminado, a Proteção contra Identificação da "
+"Impressão Digital no Firefox tenta confundir os detetores com dados "
+"aleatórios. Os detetores sofisticados são capazes de criar uma [impressão "
+"digital homogénea](/fingerprinting/). É uma pergunta de investigação saber "
+"se a estratégia de usar impressões digitais homogéneas faz sentido antes que "
+"seja adotada de forma geral por todas as utilizadoras."
 
 #: ../content/pages/faq.md:block 146 (paragraph)
 msgid ""
@@ -1619,6 +1931,11 @@ msgid ""
 "creates a false sense of protection. JShelter modifies 2D and WebGL canvas "
 "consistently."
 msgstr ""
+"Além disso existem algumas inconsistências. Por exemplo, o browser Tor não "
+"implementa WebGL. Ao adotar proteções contra identificação da impressão "
+"digital do browser Tor, o Firefox modifica as renderizações de canvas em 2D "
+"mas não altera as de canvas WebGL. Isto cria um falso sentimento de "
+"proteção. O JShelter modifica o canvas em 2D e o WebGL de forma consistente."
 
 #: ../content/pages/faq.md:block 147 (paragraph)
 msgid ""
@@ -1627,16 +1944,24 @@ msgid ""
 "if you like to have the same fingerprint as many other users, we suggest "
 "that you use Tor Browser."
 msgstr ""
+"Proteção contra Identificação da Impressão Digital no Firefox pode ser útil "
+"em casos como o de um portátil comum, com definições predefinidas, que muda "
+"frequentemente de IP. Mas se não te importas de ter a mesma impressão "
+"digital, tal como muitas outras utilizadoras, sugerimos que uses o browser "
+"Tor."
 
 #: ../content/pages/faq.md:block 148 (paragraph)
 msgid ""
 "You cannot tweak Firefox Fingerprinting Protection. You must activate all or "
 "nothing. JShelter provides options to modify behavior per domain."
 msgstr ""
+"Não podes afinar a Proteção contra Identificação da Impressão Digital no "
+"Firefox. É uma opção que pode ser ativada ou não. O JShelter tem opções que "
+"te permitem modificar o seu comportamento por domínio."
 
 #: ../content/pages/faq.md:block 149 (header)
 msgid "Should I install JShelter if I am using Brave browser?"
-msgstr ""
+msgstr "Devo instalar o JShelter se estiver a usar o browser Brave?"
 
 #: ../content/pages/faq.md:block 150 (paragraph)
 msgid ""
@@ -1647,18 +1972,29 @@ msgid ""
 "we keep a close eye on Brave protection, we do not offer any protection "
 "specifically tailored for Brave. If you have one, please let us know."
 msgstr ""
+"Muitas das proteções do JShelter são provenientes do Brave. Apsar do "
+"JShelter ter proteções adicionais, as mais importantes são comuns ao Brave. "
+"Não deves usar o Escudo JavaScript, se usares deves afinar os níveis para "
+"remover duplicados. Deves usar a Barreira de Proteção de Rede e o Detetor de "
+"Impressões Digitais. Apesar de estarmos atentos às proteções do Brave não "
+"temos uma configuração específica para ele. Se tiveres uma por favor "
+"partilha-a connosco."
 
 #: ../content/pages/faq.md:block 151 (header)
 msgid ""
 "I am using some other anti-fingerprinting extension. Should I continue? "
 "Should I combine such extensions?"
 msgstr ""
+"Estou a usar outra proteção anti deteção de impressão digital. Devo "
+"continuar? Faz sentido combinar este tipo de extensões?"
 
 #: ../content/pages/faq.md:block 152 (paragraph)
 msgid ""
 "You should consider (at least) the following. But first, see our blog post "
 "on [fingerprinting](/fingerprinting/)."
 msgstr ""
+"Vê o artigo do nosso blog sobre [deteção da impressão digital](/"
+"fingerprinting/). Além disso, deves considerar os seguintes pontos:"
 
 #: ../content/pages/faq.md:block 153 (paragraph)
 msgid ""
@@ -1670,6 +2006,15 @@ msgid ""
 "However, you might as well use a unique combination and be easily "
 "fingerprintable by a focused or advanced fingerprinter."
 msgstr ""
+"EJS modifica a tua impressão digital, enquanto o DID deteta ou evita (se "
+"ativo) a deteção da impressão digital. Se combinares mais formas de "
+"modificar a impressão digital, os resultados não são fáceis de prever. As "
+"extensões instaladas podem estar a modificar os mesmo dados (ou dados "
+"similares) ou podem estar a modificar APIs distintas. Se usas várias "
+"estratégias que se focam em diferentes APIs, à partida será mais difícil "
+"identificar a tua impressão digital. Ao mesmo tempo, é possível que a "
+"combinação que as extensões criam seja única e, por isso, fácil de "
+"identificar por um detetor sofisticado."
 
 #: ../content/pages/faq.md:block 154 (paragraph)
 msgid ""
@@ -1680,6 +2025,13 @@ msgid ""
 "by A. The little lies approach would slightly modify the modifications of A. "
 "That would likely be pointless or even counterproductive."
 msgstr ""
+"Vamos pensar num exemplo. Imagina que instalas a extensão A, que altera o "
+"conteúdo do elemento canvas. O JShelter alterar dados durante a renderização "
+"do canvas por isso vai aplicar as suas medidas de proteção depois das "
+"medidas aplicadas pela extensão A. No nível `Restrito`vai alterar todas as "
+"modificações feitas pela extensão A. O método das pequenas mentiras "
+"alteraria ligeiramente as modificações da extensão A, o que é inútil ou "
+"mesmo contraproducente."
 
 #: ../content/pages/faq.md:block 155 (paragraph)
 msgid ""
@@ -1690,6 +2042,14 @@ msgid ""
 "JShelter or less because the fingerprinter sees different fingerprints. "
 "Which one is correct depends on how smart and focused the fingerprinter is."
 msgstr ""
+"Agora vamos imaginar outra extensão, chamada B, que altera os dados "
+"renderizados. As duas extensões, JShelter e B, estão a tentar modificar as "
+"mesmas APIs e por isso é provável que se crie uma [condição de "
+"corrida](https://pt.wikipedia.org/wiki/Condi%C3%A7%C3%A3o_de_corrida) em que "
+"o mecanismo mais rápido sairá vencedor. Se este cenário se colocar, e "
+"ocorrer a condição de corrida, podes ser mais facilmente identificado porque "
+"o detetor de impressões digitais vê impressões diferentes. Identificar a "
+"impressão verdadeira vai depender de quão preciso e sofisticado é o detetor."
 
 #: ../content/pages/faq.md:block 156 (paragraph)
 msgid ""
@@ -1697,12 +2057,18 @@ msgid ""
 "only a subset of APIs that JShelter modifies, and an advanced fingerprinter "
 "can misuse that information to improve the fingerprint."
 msgstr ""
+"O JShelter tenta aplicar modificações de forma consistente. Contudo, se a "
+"extensão B altera só uma parte das APIs que o JShelter modificou um detetor "
+"de impressões digitais sofisticado pode usar esta informação para melhorar a "
+"sua eficácia."
 
 #: ../content/pages/faq.md:block 157 (paragraph)
 msgid ""
 "If you use more approaches similar to FPD, they will likely not interact "
 "badly with each other."
 msgstr ""
+"Se usares mais métodos similares ao DID é provável que não interajam mal "
+"entre elas."
 
 #: ../content/pages/faq.md:block 158 (paragraph)
 msgid ""
@@ -1711,6 +2077,12 @@ msgid ""
 "protection off\" built-in level to keep the non-fingerprinting "
 "countermeasures. You can also turn JSS off and benefit from FPD and NBS."
 msgstr ""
+"Podes afinar o JShelter para aplicar apenas algumas proteções como, por "
+"exemplo, criar os teus próprios níveis para o EJS. Também podes usar o nível "
+"predefinido \"Desligar proteção da deteção de impressão digital\" para "
+"manter as contra-medidas que evitam a recolha da impressão digital. Outra "
+"opção seria desligar o EJS e tirar partido das proteções dadas pelo DID e "
+"pela BPR."
 
 #: ../content/pages/faq.md:block 159 (paragraph)
 msgid ""
@@ -1722,6 +2094,13 @@ msgid ""
 "firefox-bug-1267027) on [Firefox bug 1267027](https://bugzilla.mozilla.org/"
 "show_bug.cgi?id=1267027)."
 msgstr ""
+"O JShelter incluí técnicas sofisticadas através da [Biblioteca Partilhada do "
+"NoScript](https://noscript.net/commons-library)(NSCL) para injetar [wrappers"
+"](#what-is-a-wrapper) da API atempadamente e de forma fiável enquanto outras "
+"extensões podem não estar. Consulta também [a pergunta](#i-saw-several-"
+"extensions-that-claim-that-it-is-not-possible-to-modify-the-javascript-"
+"environment-reliably-are-you-aware-of-the-firefox-bug-1267027) [neste bug de "
+"Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1267027)."
 
 #: ../content/pages/faq.md:block 160 (paragraph)
 msgid ""
@@ -1731,6 +2110,12 @@ msgid ""
 "Nevertheless, some fingerprinters can be confused even in that case, so you "
 "might be less identifiable by such dumb fingerprinters."
 msgstr ""
+"A maior parte das outras ferramentas concentram-se em [impressões digitais "
+"homogéneas](/fingerprinting/). Ao usar o JShelter com o EJS no nível "
+"`Recomendado` vais alterar a impressão digital e criar um pequeno grupo, de "
+"que possivelmente só tu fazes parte. Apesar disso alguns os detetores de "
+"impressão digital vão continuar confusos, o que diminui a probabilidade de "
+"seres identificado por estes detetores pouco inteligentes."
 
 #: ../content/pages/faq.md:block 161 (paragraph)
 msgid ""
@@ -1739,6 +2124,10 @@ msgid ""
 "session and on each domain. There is no point in installing other "
 "fingerprint-modifying extensions."
 msgstr ""
+"Imagina um detetor pouco inteligente que cria um único número com a "
+"combinação de todos os dados que consegue recolher. Como o JShelter modifica "
+"as APIs de forma diferente em cada sessão e para cada domínio não vale a "
+"pena instalar mais nenhuma extensão para modificar a impressão digital."
 
 #: ../content/pages/faq.md:block 162 (paragraph)
 msgid ""
@@ -1748,6 +2137,11 @@ msgid ""
 "unexpected behavior of multiple extensions, so multiple extensions might "
 "help you confuse the fingerprinter."
 msgstr ""
+"Agora imagina o oposto, um detetor inteligente que analisa os dados "
+"recolhidos para a impressão digital. É possível que ele detete que usas o "
+"JShelter ou algo semelhante. Ao usares múltiplas extensões, cuja interação é "
+"imprevisível, podes conseguir interferir com a análises que ele faz e, dessa "
+"forma, o conseguir confundi-lo."
 
 #: ../content/pages/faq.md:block 163 (paragraph)
 msgid ""
@@ -1758,6 +2152,13 @@ msgid ""
 "fingerprinters, you will be better off if you do not let JShelter modify the "
 "fingerprint."
 msgstr ""
+"Um detetor de impressões digitais ainda mais inteligente pode-se focar nas "
+"características únicas das extensões que usas (e que modificam a página, "
+"incluindo alterações estéticas ou extensões que adicionam botões, como os "
+"gestores de palavras-passe ou transferência de conteúdos). Como o [modelo de "
+"ameaças](/threatmodel/) do JShelter não protege deste tipo de detetores de "
+"impressão digital tens melhores hipóteses de não ser identificado se não "
+"deixares o JShelter alterar a tua impressão digital."
 
 #: ../content/pages/faq.md:block 164 (header)
 msgid ""
@@ -1765,6 +2166,9 @@ msgid ""
 "JavaScript environment reliably. Are you aware of the [Firefox bug 1267027]"
 "(https://bugzilla.mozilla.org/show_bug.cgi?id=1267027)"
 msgstr ""
+"Vi várias extensões que afirmam ser impossível modificar o ambiente "
+"JavaScript de forma fiável. Estão a par [deste bug do "
+"Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1267027)?"
 
 #: ../content/pages/faq.md:block 165 (paragraph)
 msgid ""
@@ -1779,11 +2183,28 @@ msgid ""
 "CSP, and others. See our [paper](https://arxiv.org/pdf/1905.01051.pdf) for "
 "more details on the integration of NSCL to JShelter."
 msgstr ""
+"Sim, estamos a par dos problemas ligados à fiabilidade da injeção de scripts "
+"antes que os scripts da página possam aceder de forma permanente às chamadas "
+"originais da API. De facto, o próprio JShelter (na altura chamado de "
+"JavaScript Restrictor) [sofreu do mesmo bug](https://github.com/polcak/"
+"jsrestrictor/issues/25) durante algumas versões. O JShelter integra a ["
+"Biblioteca Partilhada do NoScript](https://noscript.net/commons-library)(no "
+"original NoScript Common Library, abreviada para NSCL), o que permite "
+"inserir scripts de forma fiável antes que os scripts da página se iniciem. "
+"Desta forma, podemos garantir que as APIs estão protegidas. A BPNS "
+"disponibiliza uma camada transversal aos vários browsers com o objetivo de "
+"modificar todas as formas de aceder a funções da API, desde iframes a "
+"páginas protegidas por Content Security Policy (Política de Segurança de "
+"Conteúdo, também conhecida como CSP), e mais. Consulta o nosso "
+"[paper](https://arxiv.org/pdf/1905.01051.pdf) para mais detalhes sobre a "
+"integração da NSCL no JShelter."
 
 #: ../content/pages/faq.md:block 166 (header)
 msgid ""
 "How does NBS interact with proxies? Do my DNS requests leak through NBS?"
 msgstr ""
+"Como é que a BPR interage com proxies? Pode haver uma fuga dos meus pedidos "
+"DNS através da BPR?"
 
 #: ../content/pages/faq.md:block 167 (paragraph)
 msgid ""
@@ -1791,6 +2212,9 @@ msgid ""
 "through the proxy to the local network of the proxy (but keep in mind that "
 "this might not be true for more complex configurations)."
 msgstr ""
+"Se estás a usar um proxy, os ataques que a BPR tentar impedir passam através "
+"do proxy para a rede local do proxy (atenção que isto pode não se verificar "
+"no caso de configurações mais complexas do JShelter)."
 
 #: ../content/pages/faq.md:block 168 (paragraph)
 msgid ""
@@ -1799,6 +2223,10 @@ msgid ""
 "Depending on the deployment and exact configuration, it may also protect "
 "your local network."
 msgstr ""
+"Em browsers baseado no Chromium, a BPR funciona da mesma forma que "
+"funcionaria sem o proxy. Nesse caso, a BPR protege a rede local do proxy. "
+"Dependendo da implementação e da configuração, também poderá proteger a tua "
+"rede local."
 
 #: ../content/pages/faq.md:block 169 (paragraph)
 msgid ""
@@ -1814,14 +2242,28 @@ msgid ""
 "useful for users running an HTTP proxy in their local network. If you have "
 "good arguments for changing the behavior, please share them with us."
 msgstr ""
+"No Firefox, a BPR usa a API DNS que inicia o pedido DNS. Identidades "
+"contextuais permitem que as utilizadoras passem por um proxy em alguns "
+"separadores e noutros não. Nós optamos por não fazer resolução DNS para "
+"pedidos proxy na BPR. Vê o <a href=\"https://pagure.io/JShelter/webextension/"
+"issue/41\">issue 41</a> e o <a href=\"https://pagure.io/JShelter/"
+"webextension/issue/85\">issue 85</a> para mais detalhes. No futuro, podemos "
+"voltar a re-implementar a BPR para pedidos com proxies em Firefox da mesma "
+"forma que esta implementada para Chromium. Outra possibilidade que podemos "
+"considerar, no futuro, será acrescentar uma opção que permita às "
+"utilizadoras aderir à resolução DNS na BPR. Isto seria útil para "
+"utilizadoras que usem um proxy HTTP na sua redel local. Se tens bons "
+"argumentos para nos convencer a mudar este funcionamento fala connosco."
 
 #: ../content/pages/faq.md:block 170 (header)
 msgid "Limitations of supported browsers"
-msgstr ""
+msgstr "Limitações dos browsers suportados"
 
 #: ../content/pages/faq.md:block 171 (header)
 msgid "Why does JShelter/NSCL initiate web requests to ff00::?"
 msgstr ""
+"Porque é que o JShelter / Biblioteca Partilhada do NoScript (no original "
+"NoScript Common Library) inicia pedidos web para o ff00::?"
 
 #: ../content/pages/faq.md:block 172 (paragraph)
 msgid ""
@@ -1829,6 +2271,10 @@ msgid ""
 "saw-several-extensions-that-claim-that-it-is-not-possible-to-modify-the-"
 "javascript-environment-reliably-are-you-aware-of-the-firefox-bug-1267027)."
 msgstr ""
+"Em primeiro, consulta [a pergunta sobre modificações fiáveis ao ambiente "
+"JavaScript]](#i-saw-several-extensions-that-claim-that-it-is-not-possible-to-"
+"modify-the-javascript-environment-reliably-are-you-aware-of-the-firefox-"
+"bug-1267027)."
 
 #: ../content/pages/faq.md:block 173 (paragraph)
 msgid ""
@@ -1838,22 +2284,32 @@ msgid ""
 "hackademix/nscl/blob/40e765f0d66a10b25a27a375bc62ea141a73734f/common/"
 "SyncMessage.js#L106)."
 msgstr ""
+"A NSCL precisa de uma forma síncrona de transferir dados entre os diferentes "
+"scripts da extensão. As APIs das extensões web só permitem comunicação "
+"assíncrona. Mas não há problema porque o pedido é cancelado no "
+"[código](https://github.com/hackademix/nscl/blob/"
+"40e765f0d66a10b25a27a375bc62ea141a73734f/common/SyncMessage.js#L106)."
 
 #: ../content/pages/faq.md:block 174 (paragraph)
 msgid "Additionally [ff00::]"
-msgstr ""
+msgstr "Adicionalmente [ff00::]"
 
 #: ../content/pages/faq.md:block 175 (unordered list)
 msgid ""
 "is a [reserved multicast IPV6 address](https://www.iana.org/assignments/ipv6-"
 "multicast-addresses/ipv6-multicast-addresses.xhtml#ipv6-scope),"
 msgstr ""
+"é um [endereço IPV6 reservado de difusão múltipla](https://www.iana.org/"
+"assignments/ipv6-multicast-addresses/ipv6-multicast-addresses."
+"xhtml#ipv6-scope),"
 
 #: ../content/pages/faq.md:block 175 (unordered list)
 msgid ""
 "hence, it is not a valid HTTP endpoint (if you try to navigate http://"
 "[ff00::] the browser will always tell you that the resource is unreachable),"
 msgstr ""
+"e portanto não é um endpoint HTTP válido (se tentares aceder a "
+"http://[ff00::] o browser vai-te sempre dizer que esse recurso é inacessível,"
 
 #: ../content/pages/faq.md:block 175 (unordered list)
 msgid ""
@@ -1861,15 +2317,22 @@ msgid ""
 "hackademix/nscl/blob/40e765f0d66a10b25a27a375bc62ea141a73734f/common/"
 "SyncMessage.js#L106)."
 msgstr ""
+"o [back-end da SyncMessage cancela o webRequest](https://github.com/"
+"hackademix/nscl/blob/40e765f0d66a10b25a27a375bc62ea141a73734f/common/"
+"SyncMessage.js#L106)."
 
 #: ../content/pages/faq.md:block 176 (paragraph)
 msgid ""
 "Some tools can see such a request, but it will never leave your browser."
 msgstr ""
+"Algumas ferramentas podem ver este pedido mas ele nunca vai sair do teu "
+"browser."
 
 #: ../content/pages/faq.md:block 177 (header)
 msgid "Does NBS work the same way in Firefox and Chromium-based browsers?"
 msgstr ""
+"A BPR funciona da mesma maneira no Firefox e em browsers baseados no "
+"Chromium?"
 
 #: ../content/pages/faq.md:block 178 (paragraph)
 msgid ""
@@ -1879,6 +2342,12 @@ msgid ""
 "perform the resolution before any request leaves the browser, JShelter can "
 "prevent each attempt to cross the network boundary."
 msgstr ""
+"Não. O Firefoz permite que as extensões executem resolução DNS do nome do "
+"domínio ao qual o browser está prester a ir buscar informação. A resolução "
+"do nome DNS para um endereço IP é fundamental para o DID. Como o Firefox "
+"permite executar a resolução antes que qualquer pedido seja enviado pelo "
+"browser, o JShelter pode impedir todas as tentativas de atravessar a "
+"barreira da rede."
 
 #: ../content/pages/faq.md:block 179 (paragraph)
 msgid ""
@@ -1888,6 +2357,11 @@ msgid ""
 "first request for each domain name goes through. JShleter blocks all "
 "subsequent requests only."
 msgstr ""
+"Os browsers baseados em Chromium não contemplam APIs para resolução de DNS. "
+"O JShelter recolhe os resultados de resolução em cache, durante o "
+"processamente de cada pedido (isto depois do browser fazer o pedido). Isso "
+"significa que o primeiro pedido para cada domínio passa pela rede. A partir "
+"daí o JShelter bloqueia os pedidos consecutivos."
 
 #: ../content/pages/faq.md:block 180 (paragraph)
 msgid ""
@@ -1898,10 +2372,17 @@ msgid ""
 "change domain names (for example, see [our blog](/localportscanning/)). So "
 "we keep the NBS in Chromium-based browsers, even though it is not perfect."
 msgstr ""
+"Atenção, é possível que um atacante tente mudar o domínio em cada pedido. "
+"Para fazer isso pode usar, por exemplo, uma sequência assim a.attacker.com, "
+"b.a.attacker.com, c.b.a.attacker.com. Como vês, é relativamente simples "
+"ultrapassar a proteção da BPR. Na prática, sabemos que os atacantes não "
+"mudam os nomes dos domínios (podes ver um exemplo no [nosso blog](/"
+"localportscanning/)). Apesar de não ser a solução ideal mantemos a BPR nos "
+"browser baseados em Chromium."
 
 #: ../content/pages/faq.md:block 181 (header)
 msgid "Do you support Firefox for Android?"
-msgstr ""
+msgstr "Há suporte de Firefox em Android?"
 
 #: ../content/pages/faq.md:block 182 (paragraph)
 msgid ""
@@ -1910,11 +2391,15 @@ msgid ""
 "volunteer that tracks the status of JShelter in Firefox for Android is "
 "welcomed."
 msgstr ""
+"Fizemos testes ao JShelter em Firefox para Android, e vimos que funcionava. "
+"De momento não temos capacidade para manter testes regulares. Se quiseres "
+"juntar-te e seguir o estado do JShelter em Firefox para Android és bem-vinda!"
 
 #: ../content/pages/faq.md:block 183 (header)
 msgid ""
 "I cannot see JShelter listed in the addons supported by Firefox for Android."
 msgstr ""
+"Não vejo o JShelter na lista de addons suportador pelo Firefox para Android."
 
 #: ../content/pages/faq.md:block 184 (paragraph)
 msgid ""
@@ -1924,6 +2409,11 @@ msgid ""
 "some great extensions there like uBlock Origin, NoScript, and DarkReader, "
 "but JShelter was not one of them."
 msgstr ""
+"Não porquê mas a Mozilla optou por mostrar [apenas um pequeno número de "
+"extensões selecionadas](https://support.mozilla.org/en-US/kb/find-and-"
+"install-add-ons-firefox-android) na versão mobile do Firefox. A lista tem "
+"extensões ótimas como o uBlock Origin, o NoScript, e o DarkReader, mas o "
+"JShelter não foi incluído nesta lista."
 
 #: ../content/pages/faq.md:block 185 (paragraph)
 msgid ""
@@ -1931,20 +2421,25 @@ msgid ""
 "with JShelter](https://www.androidpolice.com/install-add-on-extension-"
 "mozilla-firefox-android/)."
 msgstr ""
+"Se criares uma [coleção em que inclua o JShelter](https://www.androidpolice."
+"com/install-add-on-extension-mozilla-firefox-android/) consegues ultrapassar "
+"as limitações atuais."
 
 #: ../content/pages/faq.md:block 186 (paragraph)
 msgid ""
 "A change in the policy of the default extensions listed by Addons Mozilla."
 "org is out of our control."
 msgstr ""
+"Alterar a lista de Addons selecionados da Mozilla.org está fora do nosso "
+"controlo."
 
 #: ../content/pages/faq.md:block 187 (header)
 msgid "Other questions"
-msgstr ""
+msgstr "Outra perguntas"
 
 #: ../content/pages/faq.md:block 188 (header)
 msgid "What is a wrapper?"
-msgstr ""
+msgstr "O que é um wrapper?"
 
 #: ../content/pages/faq.md:block 189 (paragraph)
 msgid ""
@@ -1957,10 +2452,18 @@ msgid ""
 "to-modify-the-javascript-environment-reliably-are-you-aware-of-the-firefox-"
 "bug-1267027)."
 msgstr ""
+"Um wrapper é um pequeno bloco de código a que o JShelter acrescenta às APIs "
+"disponibilizadas pelo browser. Este bloco código lê o valor original e "
+"modifica-o antes que seja passado para responder a um pedido. Os scripts de "
+"uma página não podem ultrapassar os wrappers e ter acesso aos valores "
+"originais da API. Contudo faz sentido consultar também a [pergunta sobre "
+"modificações fiáveis ao ambiente Javascript](#i-saw-several-extensions-that-"
+"claim-that-it-is-not-possible-to-modify-the-javascript-environment-reliably-"
+"are-you-aware-of-the-firefox-bug-1267027)."
 
 #: ../content/pages/faq.md:block 190 (header)
 msgid "What is WebAssembly speed-up?"
-msgstr ""
+msgstr "Em que consiste um aceleramento da WebAssembly?"
 
 #: ../content/pages/faq.md:block 191 (paragraph)
 msgid ""
@@ -1968,6 +2471,10 @@ msgid ""
 "[wrappers](#what-is-a-wrapper) were reimplemented in WebAssembly with the "
 "focus on providing the same results as the original JavaScript-only wrappers."
 msgstr ""
+"Em 2023 melhoramos a performance de algum do código do JShelter. Alguns dos "
+"[wrappers](#what-is-a-wrapper) foram reimplementados em WebAssembly mantendo "
+"o mesmo objetivo que a implementação original, que usa exclusivamente "
+"JavaScript."
 
 #: ../content/pages/faq.md:block 192 (paragraph)
 msgid ""
@@ -1976,14 +2483,19 @@ msgid ""
 "keep WebAssembly wrappers activated. However, you can turn off WebAssembly "
 "speed-up and return to JavaScript-only wrappers."
 msgstr ""
+"Os wrappers WebAssembly estão ativos por omissão, podendo falhar "
+"excecionalmente em Chrome, se atacados por um bug que impede o seu "
+"funcionamento em algumas páginas. A nossa sugestão é que mantenhas o "
+"wrappers WebAssembly sempre ativos. No entanto, tens a opção de desativá-los "
+"e usar os wrappers baseados exclusivamente em JavaScript."
 
 #: ../content/pages/faq.md:block 193 (header)
 msgid "I am a web developer, can JShelter help me?"
-msgstr ""
+msgstr "Sou um programador web, o JShelter pode ajudar-me?"
 
 #: ../content/pages/faq.md:block 194 (paragraph)
 msgid "Possibly yes."
-msgstr ""
+msgstr "Provavelmente."
 
 #: ../content/pages/faq.md:block 195 (paragraph)
 msgid ""
@@ -1991,6 +2503,10 @@ msgid ""
 "that your page calls. Of course, FPD focuses on APIs that are often misused "
 "during browser fingerprinting, so that you learn only some APIs."
 msgstr ""
+"Podes usar o [DID e o seu relatório](/fpd/) para aprender quais as APIs que "
+"a tua página está a requisitar. A lista não é compreensiva uma vez que o DID "
+"foca apenas as APIs que são passíveis de usar incorretamente durante a "
+"recolha de impressões digitais."
 
 #: ../content/pages/faq.md:block 196 (paragraph)
 msgid ""
@@ -1998,30 +2514,40 @@ msgid ""
 "workers, or access to sensor API to test that your page handles such "
 "browsers."
 msgstr ""
+"Podes criar níveis para o EJS que apagam funcionalidades como a "
+"geolocalização, workers, ou o acesso à API de sensores para testar se a tua "
+"página é compatível com os browsers."
 
 #: ../content/pages/faq.md:block 197 (header)
 msgid ""
 "I am a data protection officer or I work for a data protection agency. Can "
 "JShelter help me?"
 msgstr ""
+"Sou um DPO (Responsável de Proteção de Dados) ou trabalho numa entidade de "
+"proteção de dados. O JShelter pode ajudar-me?"
 
 #: ../content/pages/faq.md:block 198 (paragraph)
 msgid "Yes. Change JShelter configuration to passive mode:"
-msgstr ""
+msgstr "Sim. Muda as definições do JShelter para o modo passivo:"
 
 #: ../content/pages/faq.md:block 199 (ordered list)
 msgid "*Turn JavaScript Shield off*,"
-msgstr ""
+msgstr "*desligar Escudo JavaScript*,"
 
 #: ../content/pages/faq.md:block 199 (ordered list)
 msgid "disable blocking behaviour of [NBS](/nbs/) but keep the notifications,"
 msgstr ""
+"desativa a opção de bloqueio na [BPR](/nbs/) mas mantém as notificações "
+"ativas,"
 
 #: ../content/pages/faq.md:block 199 (ordered list)
 msgid ""
 "set [FPD](/fpd/) to passive, keep the notifications on, and depending on "
 "your use case, set the detection mode to *default* or *strict*."
 msgstr ""
+"configura o [DID](/fpd/) para modo passivo, mantém as notificações ativas e, "
+"dependendo do teu caso de estudo, altera o modo de deteção para *default* or "
+"*restrito*."
 
 #: ../content/pages/faq.md:block 200 (paragraph)
 msgid ""
@@ -2029,15 +2555,20 @@ msgid ""
 "report](/fpd/) to the information in the privacy policy of the tested "
 "website."
 msgstr ""
+"Compara as informações disponibilizadas nas notificações da BPR e do DID e "
+"no [relatório do DID](/fpd/) com a Política de Privacidade do site que estás "
+"a testar."
 
 #: ../content/pages/faq.md:block 201 (paragraph)
 msgid ""
 "[Let us know](mailto:jshelter@gnu.org) about any question or experience."
 msgstr ""
+"[Entra em contacto connosco](mailto:jshelter@gnu.org) se tiveres dúvidas ou "
+"quiseres partilhar a tua experiência."
 
 #: ../content/pages/faq.md:block 202 (header)
 msgid "What is the proper way to cite JShelter in a paper?"
-msgstr ""
+msgstr "Como posso citar o JShelter num paper?"
 
 #: ../content/pages/faq.md:block 203 (paragraph)
 msgid ""
@@ -2047,6 +2578,11 @@ msgid ""
 "- Science and Technology Publications, 2023, pp. 287-294. ISBN "
 "978-989-758-666-8.*"
 msgstr ""
+"Usa a seguinte referência: *POLČÁK Libor, SALOŇ Marek, MAONE Giorgio, "
+"HRANICKÝ Radek e McMAHON Michael. JShelter: Give Me My Browser Back. Em: "
+"Proceedings of the 20th International Conference on Security and "
+"Cryptography. Rome: SciTePress - Science and Technology Publications, 2023, "
+"pp. 287-294. ISBN 978-989-758-666-8.*"
 
 #: ../content/pages/faq.md:block 205 (paragraph)
 msgid ""
@@ -2054,6 +2590,10 @@ msgid ""
 "abs/2204.01392). Please cite the published version if possible. We are "
 "working on other publications. We will update this answer in the future."
 msgstr ""
+"Este paper tem uma versão alargada em [ArXiv paper](https://arxiv.org/abs/"
+"2204.01392). Sempre que possível, incluí na referência a versão que usaste. "
+"Estamos a trabalhar noutras publicações, quando estiverem terminadas vamos "
+"atualizar esta resposta."
 
 #: ../content/pages/fpd.md:block 1 (paragraph)
 msgid "Title: Fingerprint Detector"
@@ -2131,35 +2671,43 @@ msgstr ""
 
 #: ../content/pages/install.md:block 1 (paragraph)
 msgid "Title: Installing"
-msgstr ""
+msgstr "Title: Instalação"
 
 #: ../content/pages/install.md:block 2 (paragraph)
 msgid ""
 "JShelter can be installed directly through each browser's extension "
 "repository:"
 msgstr ""
+"O JShelter pode ser instalado diretamente do repositório de extensões de "
+"cada browser:"
 
 #: ../content/pages/install.md:block 3 (unordered list)
 msgid ""
 "[Firefox](https://addons.mozilla.org/firefox/addon/javascript-restrictor/)"
 msgstr ""
+"[Firefox](https://addons.mozilla.org/firefox/addon/javascript-restrictor/)"
 
 #: ../content/pages/install.md:block 3 (unordered list)
 msgid ""
 "[Chrome](https://chrome.google.com/webstore/detail/javascript-restrictor/"
 "ammoloihpcbognfddfjcljgembpibcmb)"
 msgstr ""
+"[Chrome](https://chrome.google.com/webstore/detail/javascript-restrictor/"
+"ammoloihpcbognfddfjcljgembpibcmb)"
 
 #: ../content/pages/install.md:block 3 (unordered list)
 msgid ""
 "[Opera](https://addons.opera.com/extensions/details/javascript-restrictor/)"
 msgstr ""
+"[Opera](https://addons.opera.com/extensions/details/javascript-restrictor/)"
 
 #: ../content/pages/install.md:block 4 (paragraph)
 msgid ""
 "To compile the extension from the source code, see the [building from "
 "scratch](/build/) documentation."
 msgstr ""
+"Para compilar a extensão a partir do código fonte consulta a secção da "
+"documentação sobre [correr de raiz](/build/)."
 
 #: ../content/pages/integration_tests.md:block 1 (paragraph)
 msgid "Title: Instructions on how to run integration tests"
@@ -5700,6 +6248,9 @@ msgid ""
 "An anti-malware Web browser extension to mitigate potential threats from "
 "JavaScript, including fingerprinting, tracking, and data collection!"
 msgstr ""
+"Uma extensão de browser anti-malware para te proteger dos JavaScripts de "
+"risco, da deteção de impressões digitais, rastreio e recolha de dados "
+"pessoais!"
 
 #: ../content/pages/home-tmp.md:block 4 (paragraph)
 msgid ""
@@ -5712,18 +6263,26 @@ msgid ""
 "restrictor/ \"https://addons.opera.com/extensions/details/javascript-"
 "restrictor/\")"
 msgstr ""
+"[Instalar em Firefox](https://addons.mozilla.org/firefox/addon/"
+"javascript-restrictor/ \"https://addons.mozilla.org/firefox/addon/"
+"javascript-restrictor/\") [Instalar em Chrome](https://chrome.google.com/"
+"webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb "
+"\"https://chrome.google.com/webstore/detail/javascript-restrictor/"
+"ammoloihpcbognfddfjcljgembpibcmb\") [Instalar em Opera](https://addons.opera."
+"com/extensions/details/javascript-restrictor/ \"https://addons.opera.com/"
+"extensions/details/javascript-restrictor/\")"
 
 #: ../content/pages/home-tmp.md:block 5 (paragraph)
 msgid "Visit the [Install page](/install \"/install\") for other options"
-msgstr ""
+msgstr "[Ver todas as opções de instalação](/install \"/install\")"
 
 #: ../content/pages/home-tmp.md:block 6 (header)
 msgid "About"
-msgstr ""
+msgstr "Sobre"
 
 #: ../content/pages/home-tmp.md:block 7 (header)
 msgid "What is JShelter?"
-msgstr ""
+msgstr "O que é o JShelter?"
 
 #: ../content/pages/home-tmp.md:block 8 (paragraph)
 msgid ""
@@ -5735,10 +6294,20 @@ msgid ""
 "security of your web browsing. For more details, see JShelter [threat model]"
 "(/threatmodel/ \"/threatmodel/\")."
 msgstr ""
+"O JShelter é uma extensão de browser que te dá controlo sobre o que o teu "
+"browser está a fazer. Qualquer página web que use Javascript (e praticamente "
+"todas usam) pode aceder à informação que está guardada no teu browser e não "
+"tens uma forma simples de poder controlar o que acontece. Usando esta "
+"técnica, websites maliciosos conseguem criar uma impressão digital tua que "
+"lhes permite identificar-te e monitorizar a tua actividade online. O "
+"JShelter protege-te destas técnicas de identificação ao melhorar a "
+"privacidade e segurança do teu browser. Para mais detalhes sobre como "
+"funciona consulta o [modelo de ameaças](/threatmodel/ \"/threatmodel/\") do "
+"JShelter."
 
 #: ../content/pages/home-tmp.md:block 9 (header)
 msgid "How does it work?"
-msgstr ""
+msgstr "Como funciona?"
 
 #: ../content/pages/home-tmp.md:block 10 (paragraph)
 msgid ""
@@ -5750,16 +6319,28 @@ msgid ""
 "the city area. This layer can also aid as a countermeasure against attacks "
 "targeting the browser, operating system or hardware."
 msgstr ""
+"Tal como uma firewall controla as ligações do teu computador à rede, o "
+"JShlter controla as APIs do browser, restringindo a informação que elas "
+"recolhem e que enviam aos websites. O JShelter acrescenta uma camada de "
+"segurança que permite à utilizadora escolher, em cada site, quais acções "
+"devem ser proibidas e quais podem ser permitidas segundo certas restrições. "
+"Por exemplo, permitir o acesso a uma geolocalização pouco precisa, onde se "
+"indica apenas a cidade e não a morada completa. Esta camada de protecção "
+"também atua como medida preventiva contra ataques ao browser, sistema "
+"operativo ou equipamento."
 
 #: ../content/pages/home-tmp.md:block 11 (header)
 msgid "How can I get started?"
-msgstr ""
+msgstr "Por onde posso começar?"
 
 #: ../content/pages/home-tmp.md:block 12 (paragraph)
 msgid ""
 "First, install the extension using the button above or checking the various "
 "[installation options](/install/ \"/install/\")."
 msgstr ""
+"Primeiro instala a extensão. Podes usar o botão que está mais acima ou a ["
+"página de instalação](/install/ \"/install/\"), onde estão listadas todas as "
+"opções disponíveis."
 
 #: ../content/pages/home-tmp.md:block 13 (paragraph)
 msgid ""
@@ -5767,6 +6348,9 @@ msgid ""
 "permissions/ \"/permissions/\") and the different protection [levels](/"
 "levels/ \"/levels/\")."
 msgstr ""
+"Depois disso, consulta as [FAQ](/faq/ \"/faq/\")(Perguntas e Respostas "
+"Frequentes), as [permissões necessárias](/permissions/ \"/permissions/\") e "
+"os diferentes [níveis](/levels/ \"/levels/\") de proteção."
 
 #: ../content/pages/home-tmp.md:block 14 (paragraph)
 msgid ""
@@ -5774,22 +6358,28 @@ msgid ""
 "[JShelter blog](/blog/ \"/blog/\") and [paper](https://arxiv.org/"
 "abs/2204.01392 \"https://arxiv.org/abs/2204.01392\")."
 msgstr ""
+"Se quiseres saber mais sobre os desenvolvimentos do JShelter e em que "
+"estamos a trabalhar podes ver o [blog](/blog/ \"/blog/\") e ler o "
+"]paper](https://arxiv.org/abs/2204.01392 \"https://arxiv.org/abs/2204.01392\""
+")."
 
 #: ../content/pages/home-tmp.md:block 15 (header)
 msgid "Who's behind this project?"
-msgstr ""
+msgstr "Quem está por detrás deste projecto?"
 
 #: ../content/pages/home-tmp.md:block 16 (paragraph)
 msgid "See the [credits page](/credits/ \"/credits/\")."
 msgstr ""
+"Há uma lista detalhada dos autores envolvidos na [página de créditos](/"
+"credits/ \"/credits/\")."
 
 #: ../content/pages/home-tmp.md:block 17 (header)
 msgid "Contribute"
-msgstr ""
+msgstr "Contribui"
 
 #: ../content/pages/home-tmp.md:block 18 (header)
 msgid "I found a bug!"
-msgstr ""
+msgstr "Encontrei um bug!"
 
 #: ../content/pages/home-tmp.md:block 19 (paragraph)
 msgid ""
@@ -5798,10 +6388,15 @@ msgid ""
 "webextension/issues\") is the place for posting those. We especially "
 "appreciate feedback, so feel free to use the issue tracker for chiming in."
 msgstr ""
+"Temos um sítio para colocar dúvidas e registar bugs. Encontraste um? Deixa-"
+"nos mais detalhes no [issue tracker](https://pagure.io/JShelter/webextension/"
+"issues \"https://pagure.io/JShelter/webextension/issues\") do JShelter. "
+"Sugestões e testemunhos sobre a tua experiência com o JShelter são valiosos, "
+"deixa-os no issue tracker também."
 
 #: ../content/pages/home-tmp.md:block 20 (header)
 msgid "How can I help?"
-msgstr ""
+msgstr "Como posso ajudar?"
 
 #: ../content/pages/home-tmp.md:block 21 (paragraph)
 msgid ""
@@ -5811,13 +6406,20 @@ msgid ""
 "project itself, post your ideas on the issue tracker or just go ahead and "
 "make a pull request."
 msgstr ""
+"Usar o JShelter e colocar no [issue tracker](https://pagure.io/JShelter/"
+"webextension/issues \"https://pagure.io/JShelter/webextension/issues\") o "
+"registo dos problemas que encontrares é uma ajuda enorme. Se quiseres "
+"contribuir para o código do projecto publica as tuas ideias no issue tracker "
+"ou avança para a implementação e envia-nos um pull request."
 
 #: ../content/pages/home-tmp.md:block 22 (header)
 msgid "What is the license?"
-msgstr ""
+msgstr "Qual é a licença?"
 
 #: ../content/pages/home-tmp.md:block 23 (paragraph)
 msgid ""
 "JShelter is copylefted software, available under the [GNU General Public "
 "License](/license/ \"/license/\")."
 msgstr ""
+"O JShelter é software copyleft, disponível segundo a [Licença Pública Geral "
+"GNU](/license/ \"/license/\")."

@@ -1,6 +1,7 @@
-Title: Installing 
+Title: Instalação 
 
-JShelter can be installed directly through each browser's extension repository:
+O JShelter pode ser instalado diretamente do repositório de extensões de cada
+browser:
 
 - [Firefox](https://addons.mozilla.org/firefox/addon/javascript-restrictor/)
 - [Chrome](https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb)
