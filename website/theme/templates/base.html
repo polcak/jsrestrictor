@@ -252,12 +252,12 @@
   {% block extrascripts %}{% endblock %}
   <script>
     // mobile navigation
-    var navBurguer = document.getElementsByClassName('navbar-burger')[0];
+    var navBurger = document.getElementsByClassName('navbar-burger')[0];
     var sidebarNav = document.getElementsByClassName('sidebar')[0];
     var sidebarOverlay = document.getElementsByClassName('sidebar-overlay')[0];
 
-    navBurguer.onclick = function() {
-      navBurguer.classList.toggle('is-active');
+    navBurger.onclick = function() {
+      navBurger.classList.toggle('is-active');
       sidebarNav.classList.toggle('is-shown');
       sidebarOverlay.classList.toggle('is-shown');
     }
