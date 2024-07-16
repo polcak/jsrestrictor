@@ -55,8 +55,11 @@ extract:
 translate-extract:
 	$(ACTIVATE); cd i18n; ./build_po_files.sh
 
+translate-pull:
+	$(ACTIVATE); cd i18n; ./download.sh; 
+
 translate:
-	$(ACTIVATE); cd i18n; ./download.sh; ./translate_content.sh
+	$(ACTIVATE); cd i18n; ./translate_content.sh
 
 html: extract 
 	cp ../tests/integration_tests/README.md content/pages/integration_tests.md
@@ -72,7 +75,7 @@ doxygen:
 	mkdir -p output
 	cp -r ../doxygen/html output/doxygen
 
-build: doxygen html
+build: doxygen translate html
 
 clean:
 	[ ! -d "$(OUTPUTDIR)" ] || rm -rf "$(OUTPUTDIR)"
