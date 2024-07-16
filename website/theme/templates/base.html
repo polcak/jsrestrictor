@@ -262,10 +262,24 @@
       sidebarOverlay.classList.toggle('is-shown');
     }
 
+    // language dropdown setup
+    function setSelectedValue(selectObj, valueToSet) {
+      for (var i = 0; i < selectObj.options.length; i++) {
+        if (selectObj.options[i].value == valueToSet) {
+          selectObj.options[i].selected = true;
+          return;
+        }
+      }
+    }
     var selectDropdown = document.getElementById('language-selector');
+    // get active language from URL and make that the selected option
+    var pageLang = window.location.pathname.split('/').filter(n => n)[0];
+    if (pageLang && pageLang.length == 2) {
+      setSelectedValue(selectDropdown, pageLang);
+    }
+    // redirect when another language is selected
     selectDropdown.addEventListener('change', function (e) { 
       lang = selectDropdown.options[selectDropdown.selectedIndex].value;
-      console.log(lang);
       if (lang === "en") {
         window.location.href = '/';
       } else {
