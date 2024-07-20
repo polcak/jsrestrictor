@@ -724,8 +724,9 @@ modify_wrapping_groups();
  * @param String to the object which presence to check.
  */
 function is_api_undefined(api) {
+	if (!self.window) return false; // mv3 service worker?
 	let s = api.split(".");
-	let last = window;
+	let last = self;
 	for (p of s) {
 		try {
 			if (last[p] === undefined) {

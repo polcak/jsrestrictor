@@ -29,6 +29,7 @@ var pageConfiguration = null;
 function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash}) {
 	if (pageConfiguration) return; // one shot
 	pageConfiguration = {currentLevel};
+	console.log(`Configuration injected: ${document.readyState}\n ${document.title} ${document.documentElement.outerHTML} `)
 	if(browser.extension.inIncognitoContext){
 		// Redefine the domainHash for incognito context:
 		// Compute the SHA256 hash of the original hash so that the incognito hash is:
@@ -95,7 +96,7 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 if ("configuration" in window) {
 	console.debug("Early configuration found!", configuration);
 	configureInjection(configuration);
-} else {
+} else if ("sendSyncMessage" in browser.runtime) { // not in mv3 chrome
 	/// Get current level configuration from the background script
 	configureInjection(browser.runtime.sendSyncMessage({
 			message: "get wrapping for URL",

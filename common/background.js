@@ -98,11 +98,17 @@ function cspRequestProcessor(details) {
 // page context, subject to the page's CSP. Code inserted as script tags isn't subject
 // to script-src origins, it is, however, subject to the 'unsafe' group of script evaluation rules.
 if (typeof browser_polyfill_used !== "undefined" && browser_polyfill_used) {
-	browser.webRequest.onHeadersReceived.addListener(cspRequestProcessor,
-		{urls: ["<all_urls>"],
-		types: ["main_frame", "sub_frame"]},
-		["blocking", "responseHeaders"]
-	);
+	try {
+		browser.webRequest.onHeadersReceived.addListener(cspRequestProcessor,
+			{urls: ["<all_urls>"],
+			types: ["main_frame", "sub_frame"]},
+			["blocking", "responseHeaders"]
+		);
+	} catch (e) {
+		console.error(e);
+		// mv3, can't block!
+		// TODO: check whether we can do something about this eiter with DNR or new scripting APIs
+	}
 }
 
 // Communication channels

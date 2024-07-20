@@ -94,7 +94,7 @@ function contentScriptLevelSetter(message, {frameId, tab}) {
 			return getContentConfiguration(message.url, frameId, tab.id)
 	}
 }
-browser.runtime.onSyncMessage.addListener(contentScriptLevelSetter);
+browser.runtime.onSyncMessage?.addListener(contentScriptLevelSetter);
 
 
 /**
@@ -106,11 +106,17 @@ browser.runtime.onSyncMessage.addListener(contentScriptLevelSetter);
 
 DocStartInjection.register(async ({url, frameId, tabId}) => {
 	let configuration = await getContentConfiguration(url, frameId, tabId);
-	return `
+	return browser.tabs.executeScript ? `
 		window.configuration = ${JSON.stringify(configuration)};
 		if (typeof configureInjection === "function") configureInjection(configuration);
 		console.debug("DocStartInjection while doc", document.readyState);
-		`;
+		` :
+		// mv3
+		{
+			callback: "configureInjection",
+			assign: "configuration",
+			data: configuration,
+		};
 });
 
 /**
@@ -128,6 +134,17 @@ NavCache.onUrlChanged.addListener(({tabId, frameId, previousUrl, url}) => {
 	(async () => {
 		let configuration = await getContentConfiguration(url, frameId, tabId);
 		if (configuration.currentLevel.windowname) {
+			if (!browser.tabs.executeScript && browser.scripting) {
+				browser.scripting.executeScript({
+					func: () => { window.name = ""; },
+					injectImmediately: true,
+					target: {
+						frameIds: [frameId],
+						tabId
+					}
+				});
+				return;
+			}
 			browser.tabs.executeScript(tabId, {
 				code: `window.name = "";`,
 				frameId,

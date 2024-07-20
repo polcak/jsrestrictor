@@ -1,33 +1,9 @@
 {
   "author": "Libor Polčák, Giorgio Maone, Martin Timko, Pavel Pohner, Peter Horňák, Matúš Švancár, Marek Saloň, Martin Bednář, Radek Hranický, Martin Zmitko",
   "background": {
-      "scripts": [
-        "nscl/lib/browser-polyfill.js",
-        "lib/sha256.js",
-        "nscl/common/CachedStorage.js",
-        "nscl/common/log.js",
-        "nscl/common/uuid.js",
-        "nscl/common/SyncMessage.js",
-        "nscl/common/tld.js",
-        "nscl/service/DocStartInjection.js",
-        "nscl/service/TabCache.js",
-        "nscl/service/NavCache.js",
-        "helpers.js",
-        "session_hash.js",
-        "update.js",
-        "url.js",
-        "settings_tweaks.js",
-        "levels.js",
-        "fp_levels.js",
-        "fp_detect_background.js",
-        "background.js",
-        "level_cache.js",
-        "http_shield_chrome.js",
-        "http_shield_common.js"
-      ],
-      "persistent": true
+    "service_worker": "service_worker.js"
   },
-  "browser_action": {
+  "action": {
     "default_icon": {
       "16": "img/icon-16.png",
       "32": "img/icon-32.png",
@@ -50,7 +26,6 @@
       "js": [
         "nscl/lib/browser-polyfill.js",
         "nscl/common/uuid.js",
-        "nscl/common/SyncMessage.js",
         "nscl/content/patchWindow.js",
         "lib/sha256.js",
         "alea.js",
@@ -77,20 +52,27 @@
     "256": "img/icon-256.png",
     "512": "img/icon-512.png"
   },
-  "web_accessible_resources": ["farble.wasm"],
-  "manifest_version": 2,
+  "web_accessible_resources": [{
+    "resources": ["farble.wasm"],
+    "matches": ["<all_urls>"]
+  }],
+  "manifest_version": 3,
+  "minimum_chrome_version": "120",
   "name": "__MSG_extensionName__",
   "options_page": "options.html",
-  "content_security_policy": "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self';base-uri 'self';form-action 'self'",
+  "content_security_policy": {
+    "extension_pages": "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self';base-uri 'self';form-action 'self'"
+  },
   "permissions": [
     "storage",
     "tabs",
     "webRequest",
-    "webRequestBlocking",
     "webNavigation",
-    "<all_urls>",
-    "notifications"
+    "notifications",
+    "scripting",
+    "userScripts"
   ],
+  "host_permissions": ["<all_urls>"],
   "optional_permissions": ["browsingData"],
   "short_name": "JShelter",
   "version": "0.18.1"
