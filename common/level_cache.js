@@ -60,12 +60,13 @@ function getContentConfiguration(url, frameId, tabId) {
 				 */
 				level = getCurrentLevelJSON((await TabCache.async(tabId)).url);
 			}
-			let {domainHash} = await Hashes.getFor(url);
+			let {domainHash, incognitoHash} = await Hashes.getFor(url);
 			resolve({
 				currentLevel: level,
 				fpdWrappers: isFpdOn(tabId) ? fp_levels.page_wrappers[fpdSettings.detection] : [],
 				fpdTrackCallers: fpd_track_callers_tab === tabId,
-				domainHash
+				domainHash,
+				incognitoHash,
 			});
 		}
 		if (levels_initialised && fp_levels_initialised) {

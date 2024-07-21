@@ -26,19 +26,12 @@
 
 var wrappersPort;
 var pageConfiguration = null;
-function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash}) {
+function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash, incognitoHash}) {
 	if (pageConfiguration) return; // one shot
 	pageConfiguration = {currentLevel};
 	console.log(`Configuration injected: ${document.readyState}\n ${document.title} ${document.documentElement.outerHTML} `)
-	if(browser.extension.inIncognitoContext){
-		// Redefine the domainHash for incognito context:
-		// Compute the SHA256 hash of the original hash so that the incognito hash is:
-		// * significantly different to the original domainHash,
-		// * computationally difficult to revert,
-		// * the same for all incognito windows (for the same domain).
-		var hash = sha256.create();
-		hash.update(JSON.stringify(domainHash));
-		domainHash = hash.hex();
+	if (browser.extension.inIncognitoContext) {
+		domainHash = incognitoHash;
 	}
 	// Append argument reporting setting to JSS wrapper definitions
 	fp_append_reporting_to_jss_wrappers(fpdWrappers);

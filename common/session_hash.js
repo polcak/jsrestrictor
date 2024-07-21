@@ -38,17 +38,23 @@ var Hashes = {
 			visitedDomains: {}
 		}, "Hashes");
 		this.sessionHash = sessionHash ??= gen_random64().toString();
-		let domainHash = visitedDomains[site];
-		if (!domainHash) {
+		let siteHashes = visitedDomains[site];
+		if (!siteHashes) {
 			let hmac = sha256.hmac.create(this.sessionHash);
 			hmac.update(site);
-			domainHash = hmac.hex();
-			visitedDomains[site] = domainHash;
+			const domainHash = hmac.hex();
+			const hash = sha256.create();
+			hash.update(JSON.stringify(domainHash));
+			// Redefine the domainHash for incognito context:
+			// Compute the SHA256 hash of the original hash so that the incognito hash is:
+			// * significantly different to the original domainHash,
+			// * computationally difficult to revert,
+			// * the same for all incognito windows (for the same domain).
+			const incognitoHash = hash.hex();
+			visitedDomains[site] = siteHashes = {domainHash, incognitoHash};
 			await CachedStorage.save(this);
 		}
-		return {
-			domainHash
-		};
+		return siteHashes;
 	}
 };
 
