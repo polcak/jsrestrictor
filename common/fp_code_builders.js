@@ -109,7 +109,7 @@ var additional_wrappers = [
  * 
  * \returns Injectable code created from FPD wrappers.
  */
-function fp_generate_from_wrappers(fpd_wrappers, fpdTrackCallers) {
+function fp_generate_from_wrappers(fpd_wrappers) {
 	// define wrapper for each FPD endpoint (using default JSS definition of wrappers)
 	let tmp_build_wrapping_code = {};
 	for (let wrap_item of fpd_wrappers) {
@@ -134,7 +134,7 @@ function fp_generate_from_wrappers(fpd_wrappers, fpdTrackCallers) {
 	let fp_wrapped_codes = {};
 	for (let build_item in tmp_build_wrapping_code) {
 		try {
-			fp_wrapped_codes[build_item] = build_code(fpdTrackCallers, tmp_build_wrapping_code[build_item]);
+			fp_wrapped_codes[build_item] = build_code(tmp_build_wrapping_code[build_item]);
 		} catch (e) {
 			console.error(e);
 			fp_wrapped_codes[build_item] = "";
@@ -152,10 +152,10 @@ function fp_generate_from_wrappers(fpd_wrappers, fpdTrackCallers) {
  * 
  * \returns Modified injectable code that also contains FPD wrapping code.
  */
-function fp_update_wrapping_code(code, jss_wrappers, fpd_wrappers, fpdTrackCallers) {
+function fp_update_wrapping_code(code, jss_wrappers, fpd_wrappers) {
 	const jss_wrapper_resources = jss_wrappers.map(x => x[0]);
 	const fpd_wrappers_filtered = fpd_wrappers.filter(w => !jss_wrapper_resources.includes(w[0]));
-	const fpd_wrapped_codes = fp_generate_from_wrappers(fpd_wrappers_filtered, fpdTrackCallers);
+	const fpd_wrapped_codes = fp_generate_from_wrappers(fpd_wrappers_filtered);
 	const fpd_code = joinWrappingCode(Object.values(fpd_wrapped_codes));
 	return code.replace("// FPD_S\n", `// FPD_S\n${additional_wrappers_init_code} ${fpd_code}`);
 }
@@ -167,8 +167,8 @@ function fp_update_wrapping_code(code, jss_wrappers, fpd_wrappers, fpdTrackCalle
  * 
  * \returns Injectable code containing only FPD wrapping code.
  */
-function fp_generate_wrapping_code(fpd_wrappers, fpdTrackCallers) {
-	let fpd_wrapped_codes = fp_generate_from_wrappers(fpd_wrappers, fpdTrackCallers);
+function fp_generate_wrapping_code(fpd_wrappers) {
+	let fpd_wrapped_codes = fp_generate_from_wrappers(fpd_wrappers);
 	return generate_code("// FPD_S\n" + additional_wrappers_init_code + joinWrappingCode(Object.values(fpd_wrapped_codes)) + "\n// FPD_E");
 }
 

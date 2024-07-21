@@ -43,14 +43,14 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 	// Append argument reporting setting to JSS wrapper definitions
 	fp_append_reporting_to_jss_wrappers(fpdWrappers);
 	// Generate wrapping code
-	var code = wrap_code(currentLevel.wrappers, fpdTrackCallers);
+	var code = wrap_code(currentLevel.wrappers);
 	// Generate FPD wrapping code
 	if (fpdWrappers) {
 		if (!code) {
-			code = fp_generate_wrapping_code(fpdWrappers, fpdTrackCallers);
+			code = fp_generate_wrapping_code(fpdWrappers);
 		}
 		else {
-			code = fp_update_wrapping_code(code, currentLevel.wrappers, fpdWrappers, fpdTrackCallers);
+			code = fp_update_wrapping_code(code, currentLevel.wrappers, fpdWrappers);
 		}
 	}
 	// Insert farbling WASM module into wrapped code if enabled, only when farbling is actually used 
@@ -59,6 +59,7 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 	}
 
 	var aleaCode = `(() => {
+	var fpdTrackCallers = ${JSON.stringify(fpdTrackCallers)};
 	var domainHash =  ${JSON.stringify(domainHash)};
 	${crc16}
 	${alea}
