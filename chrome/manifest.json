@@ -31,9 +31,6 @@
         "alea.js",
         "crc16.js",
         "helpers.js",
-        WRAPPING,
-        "code_builders.js",
-        "fp_code_builders.js",
         "document_start.js"
       ],
       "run_at": "document_start"

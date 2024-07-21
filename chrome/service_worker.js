@@ -42,6 +42,9 @@ importScripts(
   "fp_detect_background.js",
   "background.js",
   "level_cache.js",
+  WRAPPING,
+  "code_builders.js",
+  "fp_code_builders.js"
   //"http_shield_chrome.js",
   //"http_shield_common.js"
 );
