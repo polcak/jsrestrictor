@@ -26,41 +26,31 @@
 
 var wrappersPort;
 var pageConfiguration = null;
-function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash, incognitoHash}) {
+
+function wrapWindow(currentLevel, fpdWrappers, wrappersConf) {
+	const code = fp_assemble_injection(currentLevel, fpdWrappers, `
+		init(${JSON.stringify(wrappersConf)});
+	`);
+	return patchWindow(code);
+}
+
+function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash, incognitoHash, portId}) {
 	if (pageConfiguration) return; // one shot
 	pageConfiguration = {currentLevel};
-	console.log(`Configuration injected: ${document.readyState}\n ${document.title} ${document.documentElement.outerHTML} `)
+	console.log(`Configuration injected: ${document.readyState}\n${document.title} ${document.documentElement.outerHTML}`);
 	if (browser.extension.inIncognitoContext) {
 		domainHash = incognitoHash;
 	}
-	// Append argument reporting setting to JSS wrapper definitions
-	fp_append_reporting_to_jss_wrappers(fpdWrappers);
-	// Generate wrapping code
-	var code = wrap_code(currentLevel.wrappers);
-	// Generate FPD wrapping code
-	if (fpdWrappers) {
-		if (!code) {
-			code = fp_generate_wrapping_code(fpdWrappers);
-		}
-		else {
-			code = fp_update_wrapping_code(code, currentLevel.wrappers, fpdWrappers);
-		}
-	}
-	// Insert farbling WASM module into wrapped code if enabled, only when farbling is actually used 
-	if (currentLevel.wasm && (currentLevel.audiobuffer === 1 || currentLevel.htmlcanvaselement === 1)) {
-		code = insert_wasm_code(code);
-	}
-
-	var aleaCode = `(() => {
-	var fpdTrackCallers = ${JSON.stringify(fpdTrackCallers)};
-	var domainHash =  ${JSON.stringify(domainHash)};
-	${crc16}
-	${alea}
-	var prng = alea(domainHash); // Do not use this in wrappers, create your own prng to generate repeatable sequences
-	${code}
-	})()`;
 	try {
-		wrappersPort = patchWindow(aleaCode);	
+		const wrappersConf = {
+			fpdTrackCallers,
+			domainHash,
+		};
+		wrappersPort = portId ? patchWindow({portId}) : wrapWindow(currentLevel, fpdWrappers, wrappersConf);
+
+		// initialize in case the userScript API already injected
+		wrappersPort.postMessage(wrappersConf);
+
 		wrappersPort.onMessage = msg => {
 			if (msg.wrapperName) {
 				let {wrapperName, wrapperType, wrapperArgs, stack} = msg;
@@ -73,10 +63,14 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 					stack: stack,
 				});
 			}
+			if (msg.init) {
+				// initialize on late demand
+				return wrappersConf;
+			}
 		}
 		return true;
 	} catch (e) {
-		console.error(e, `Trying to run\n${aleaCode}`)
+		console.error(e, "Trying to initialize wrappers.");
 	}
 	return false;
 }

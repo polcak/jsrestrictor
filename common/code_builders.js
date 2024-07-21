@@ -763,4 +763,3 @@ function generate_code(wrapped_code) {
 	console.debug(code);
 	return `(${code})();`;
 }
-

@@ -297,3 +297,42 @@ function fp_append_reporting_to_jss_wrappers(fpd_wrappers) {
 		}
 	}
 }
+
+function fp_assemble_injection(currentLevel, fpdWrappers, initializer) {
+	// Append argument reporting setting to JSS wrapper definitions
+	fp_append_reporting_to_jss_wrappers(fpdWrappers);
+	// Generate wrapping code
+	let code = wrap_code(currentLevel.wrappers);
+	// Generate FPD wrapping code
+	if (fpdWrappers) {
+		if (!code) {
+			code = fp_generate_wrapping_code(fpdWrappers);
+		}
+		else {
+			code = fp_update_wrapping_code(code, currentLevel.wrappers, fpdWrappers);
+		}
+	}
+	// Insert farbling WASM module into wrapped code if enabled, only when farbling is actually used
+	if (currentLevel.wasm && (currentLevel.audiobuffer === 1 || currentLevel.htmlcanvaselement === 1)) {
+		code = insert_wasm_code(code);
+	}
+	initializer ||= `
+	{
+		env.port.onMessage = msg => msg.domainHash && init(msg);
+		let conf = env.port.postMessage({init: true});
+		if (conf) init(conf);
+	}
+	`;
+	return `(() => {
+		let inited = false;
+		const init = ({domainHash, fpdTrackCallers}) => {
+			if (inited) return;
+			inited = true;
+			${crc16}
+			${alea}
+			var prng = alea(domainHash); // Do not use this in wrappers, create your own prng to generate repeatable sequences
+			${code}
+		};
+		${initializer}
+	})()`;
+}
