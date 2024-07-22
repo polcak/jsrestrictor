@@ -30,7 +30,7 @@ CachedStorage.init({
 });
 
 function updateBadge(text, tabid) {
-	browser.browserAction.setBadgeText({text: text, tabId: tabid});
+	actionApi.setBadgeText({text: text, tabId: tabid});
 }
 
 // get active tab and pass it
