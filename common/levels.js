@@ -964,9 +964,104 @@ function updateLevels(res) {
 		var orig_levels_updated_callbacks = levels_updated_callbacks;
 		levels_updated_callbacks = [];
 		orig_levels_updated_callbacks.forEach((it) => it());
+		updateUserScripts();
 	}
 }
 browser.storage.sync.get(null).then(updateLevels);
+
+var wrappersPortId = null;
+var cachedSiteSettings = null;
+async function updateUserScripts() {
+	if (browser.tabs.executeScript || !("userScripts" in browser)) {
+		return;
+	}
+	siteSettings = JSON.stringify({domains, fpdWhitelist, fpdOn: fpDetectionOn && fpdSettings.detection});
+	if (siteSettings == cachedSiteSettings) {
+		console.debug("userScripts: site settings not changed, nothing to update.");
+		return;
+	}
+	cachedSiteSettings = siteSettings;
+	const confCache = new Map();
+	const allGlobs = new Set();
+	const entries = Object.entries(domains);
+	entries.push(["*", default_level]);
+	for (const [domain, l] of entries) {
+		if (l.tweaks && !l.wrappers) {
+			l.wrappers = wrapping_groups.get_wrappers(l);
+		}
+		const fpdOn = fpDetectionOn && !isFpdWhitelisted(domain);
+		const confKey = JSON.stringify([l.wrappers, fpdOn]);
+		let conf = confCache.get(confKey);
+		const glob = `*.${domain}`;
+		if (!conf) {
+			const fpdWrappers = fpdOn ? fp_levels.page_wrappers[fpdSettings.detection] : [];
+			const injection = fp_assemble_injection(l, fpdWrappers);
+			conf = {
+				injection,
+				includeGlobs: [glob],
+				excludeGlobs: [],
+			};
+			confCache.set(confKey, conf);
+		} else {
+			conf.includeGlobs.push(glob);
+		}
+		if (domain == '*') { // default level
+			conf.excludeGlobs = [... allGlobs].filter(g => !conf.includeGlobs.includes(g));
+			conf.includeGlobs = [];
+			conf.matches = ["<all_urls>"];
+			break;
+		}
+		allGlobs.add(glob);
+		const imply = `.${domain}`;
+		for (const otherConf of confCache.values()) {
+			if (otherConf === conf) continue;
+			const otherImplied = otherConf.includeGlobs.filter(g => g !== glob && g.endsWith(imply));
+			for (const impliedGlob of otherImplied) {
+				conf.excludeGlobs.push(impliedGlob);
+			}
+			const otherImplies = otherConf.includeGlobs.filter(g => glob.endsWith(g.replace('*', '')));
+			for (const implyingGlob of otherImplies) {
+				otherConf.excludeGlobs.push(implyingGlob);
+			}
+		}
+	}
+
+	const usTemplate = {
+		runAt: "document_start",
+		allFrames: true,
+		world: "MAIN",
+	};
+	const scripts = [];
+	let count = 0;
+	for (const conf of confCache.values()) {
+		const {portId, code} = patchWindow({
+			portId: wrappersPortId,
+			code: conf.injection,
+		});
+		if (wrappersPortId !== portId) {
+			console.debug(`Switching wrappersPortId from ${wrappersPortId} to ${portId} on userScripts update.`);
+			wrappersPortId = portId;
+		}
+		const opts = {
+			id: `wrapper:${count++}`,
+			js: [{code}],
+			matches: [... new Set(conf.includeGlobs)].map(g => `*://${g}/*'`),
+			excludeGlobs:	[... new Set(conf.excludeGlobs)],
+		};
+		if (conf.matches) {
+			opts.matches = conf.matches;
+		}
+		scripts.push(
+			Object.assign(opts, usTemplate)
+		);
+	}
+
+	await browser.userScripts.unregister();
+	console.debug("Registering wrapping userScripts", confCache, scripts, domains);
+	if (scripts.length) {
+		await browser.userScripts.register(scripts);
+	}
+}
 
 function changedLevels(changed, area) {
 	browser.storage.sync.get(null).then(updateLevels);
@@ -1034,7 +1129,7 @@ function getCurrentLevelJSON(url) {
 	for (let domain of subDomains.reverse()) {
 		if (domain in domains) {
 			let l = domains[domain];
-			if (l.tweaks) {
+			if (l.tweaks && !l.wrappers) {
 				l.wrappers = wrapping_groups.get_wrappers(l);
 			}
 			return l;

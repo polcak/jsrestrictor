@@ -43,8 +43,11 @@ importScripts(
   "background.js",
   "level_cache.js",
   WRAPPING,
+  "alea.js",
+  "crc16.js",
   "code_builders.js",
-  "fp_code_builders.js"
+  "fp_code_builders.js",
+  "nscl/content/patchWindow.js"
   //"http_shield_chrome.js",
   //"http_shield_common.js"
 );

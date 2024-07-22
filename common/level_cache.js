@@ -67,6 +67,7 @@ function getContentConfiguration(url, frameId, tabId) {
 				fpdTrackCallers: fpd_track_callers_tab === tabId,
 				domainHash,
 				incognitoHash,
+				portId: wrappersPortId,
 			});
 		}
 		if (levels_initialised && fp_levels_initialised) {
@@ -107,17 +108,20 @@ browser.runtime.onSyncMessage?.addListener(contentScriptLevelSetter);
 
 DocStartInjection.register(async ({url, frameId, tabId}) => {
 	let configuration = await getContentConfiguration(url, frameId, tabId);
-	return browser.tabs.executeScript ? `
+	if (browser.tabs.executeScript) {
+		// mv2
+		return `
 		window.configuration = ${JSON.stringify(configuration)};
 		if (typeof configureInjection === "function") configureInjection(configuration);
 		console.debug("DocStartInjection while doc", document.readyState);
-		` :
-		// mv3
-		{
-			callback: "configureInjection",
-			assign: "configuration",
-			data: configuration,
-		};
+		`;
+	}
+
+	return {
+		callback: "configureInjection",
+		assign: "configuration",
+		data: configuration,
+	};
 });
 
 /**

@@ -28,8 +28,6 @@
         "nscl/common/uuid.js",
         "nscl/content/patchWindow.js",
         "lib/sha256.js",
-        "alea.js",
-        "crc16.js",
         "helpers.js",
         "document_start.js"
       ],

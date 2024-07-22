@@ -49,6 +49,7 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 		wrappersPort = portId ? patchWindow({portId}) : wrapWindow(currentLevel, fpdWrappers, wrappersConf);
 
 		// initialize in case the userScript API already injected
+		console.log(portId, wrappersPort, wrappersConf);
 		wrappersPort.postMessage(wrappersConf);
 
 		wrappersPort.onMessage = msg => {

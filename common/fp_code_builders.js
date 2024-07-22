@@ -298,7 +298,7 @@ function fp_append_reporting_to_jss_wrappers(fpd_wrappers) {
 	}
 }
 
-function fp_assemble_injection(currentLevel, fpdWrappers, initializer) {
+function fp_assemble_injection(currentLevel, fpdWrappers, initializer = '') {
 	// Append argument reporting setting to JSS wrapper definitions
 	fp_append_reporting_to_jss_wrappers(fpdWrappers);
 	// Generate wrapping code
@@ -318,21 +318,28 @@ function fp_assemble_injection(currentLevel, fpdWrappers, initializer) {
 	}
 	initializer ||= `
 	{
-		env.port.onMessage = msg => msg.domainHash && init(msg);
+		env.port.onMessage = msg => {
+			console.debug("JShelter wrappers received message " + JSON.stringify(msg));
+			return msg.domainHash && init(msg);
+		};
 		let conf = env.port.postMessage({init: true});
-		if (conf) init(conf);
+		if (conf?.domainHash) init(conf);
+		console.debug("JShelter wrappers early init attempt " + JSON.stringify(conf));
 	}
 	`;
 	return `(() => {
 		let inited = false;
 		const init = ({domainHash, fpdTrackCallers}) => {
 			if (inited) return;
+			console.debug("JSShelter wrappers initializing at " + document.readyState);
 			inited = true;
 			${crc16}
 			${alea}
 			var prng = alea(domainHash); // Do not use this in wrappers, create your own prng to generate repeatable sequences
 			${code}
+			console.debug("JSShelter wrappers initialized.");
 		};
 		${initializer}
+		console.debug("JSShelter wrappers injected at " + document.readyState);
 	})()`;
 }
