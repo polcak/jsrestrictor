@@ -972,7 +972,7 @@ browser.storage.sync.get(null).then(updateLevels);
 var wrappersPortId = null;
 var cachedSiteSettings = null;
 async function updateUserScripts() {
-	if (browser.tabs.executeScript || !("userScripts" in browser)) {
+	if (browser.tabs.executeScript || !("userScripts" in browser) || self.window) {
 		return;
 	}
 	siteSettings = JSON.stringify({domains, fpdWhitelist, fpdOn: fpDetectionOn && fpdSettings.detection});
