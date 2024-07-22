@@ -230,3 +230,11 @@ input:checked + .slider:before {
 	font-weight: bold;
 }
 
+:root.mv3 .mv2 {
+	display: none !important;
+}
+
+:root.mv2 .mv3 {
+	display: none !important;
+}
+
