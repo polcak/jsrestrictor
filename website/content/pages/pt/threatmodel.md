@@ -1,4 +1,4 @@
-Title: Threat model 
+Title: Modelo de ameaças 
 
 JShelter focuses on threats that target mainstream internet users. Attackers
 derive information and create attacks aimed at mainstream browsers, using

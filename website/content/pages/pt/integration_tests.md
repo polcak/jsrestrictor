@@ -1,4 +1,4 @@
-Title: Instructions on how to run integration tests 
+Title: Como correr os testes de integração 
 
 JShelter's integration tests automatically verify that JShelter wraps the
 supported JavaScript APIs and does not affect other attributes. You need to set

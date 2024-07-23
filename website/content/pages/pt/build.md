@@ -17,8 +17,8 @@ quiseres ter ativas corre antes `make debug`.
       1. Clica no botão *Load Temporary Add-on*
       1. Seleciona o ficheiro `jshelter_firefox.zip` que foi criado quando correste o
 `make`.
-   * Browsers baseados em Chromium
-      1. Open `chrome://extensions`.
+   * Browsers baseados em Chromium:
+      1. Abre a página `chrome://extensions`.
       1. Enable developper mode.
       1. Click `Load unpacked`.
       1. Import the `jshelter_chrome/` directory created by `make`.

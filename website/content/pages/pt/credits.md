@@ -1,4 +1,4 @@
-Title: Credits 
+Title: Créditos 
 
 [TOC]
 

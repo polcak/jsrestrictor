@@ -1,4 +1,4 @@
-Title: Release history 
+Title: Historial de versões 
 
 ## 0.18
 

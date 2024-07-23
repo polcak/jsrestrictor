@@ -1,4 +1,4 @@
-Title: GNU General Public License 
+Title: Licença Geral Pública GNU 
 
 Version 3, 29 June 2007
 

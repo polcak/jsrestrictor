@@ -1,4 +1,4 @@
-Title: Permissions 
+Title: Permissões 
 
 JShelter requires these permissions:
 

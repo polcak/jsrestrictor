@@ -1,4 +1,4 @@
-Title: Home 
+Title: Início 
 Template: home 
 save_as: index.html 
 URL: 

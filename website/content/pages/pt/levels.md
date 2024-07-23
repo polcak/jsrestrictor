@@ -1,4 +1,4 @@
-Title: JavaScript Shield 
+Title: Escudo JavaScript 
 
 JavaScript Shield modifies the behaviour of the JavaScript environment availble
 for the visited webpage. JShelter provides fake information to confuse

@@ -1,4 +1,4 @@
-Title: How to write a new wrapper 
+Title: Como criar um novo wrapper 
 
 The primary focus of jShelter is to provide security and privacy oriented
 wrappers of JavaScript APIs. As some of the code is very similar for each
