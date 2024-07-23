@@ -1324,6 +1324,29 @@
 		}
 	},
 
+	"MV3DevmodeRequired": {
+		"message": "Due to severe limitations imposed by <a href=\"$MV3URL$\" target=\"_blank\">Google's Manifest V3</a>, JShelter and other browser extensions cannot work anymore on Chromium-based browsers unless you switch on the <em>Developer mode</em> in <strong>chrome://extensions</strong> (<a href=\"$INFOURL$\" target=\"_blank\">more information on Google's developers site</a>).",
+		"placeholders": {
+			"mv3url": {
+				"content": "https://jshelter.org/mv3/"
+			},
+			"infourl": {
+				"content": "https://developer.chrome.com/docs/extensions/reference/api/userScripts#developer_mode_for_extension_users"
+			}
+		},
+		"description": "This message is displayed as an alert in popup and options when development mode is disabled. Make sure that you keep correct HTML markup"
+	},
+
+	"MV3BrokenFeatures": {
+		"message": "Due to severe limitations imposed by <a href=\"$MV3URL$\" target=\"_blank\">Google's Manifest V3</a>, some JShelter features (e.g. Network Boundary Shield and Fingerprinting Detection in Blocking Mode) won't work on recent Chrome-based browsers, and other ones might be less reliable than they were in the past and still are on Firefox.",
+		"placeholders": {
+			"mv3url": {
+				"content": "https://jshelter.org/mv3/"
+			}
+		},
+		"description": "This message is displayed as an alert near features broken by Manifest V3. Make sure that you keep correct HTML markup"
+	},
+
 	"FPDDescription": {
 		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
 		"description": "This is the description of FPD shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs.",

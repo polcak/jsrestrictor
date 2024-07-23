@@ -287,9 +287,17 @@ function correctSettingsForRemovedPermissions(permissions, settings, definition)
 	});
 };
 {
+
 	// hide incompatible UI
 	if (browser.tabs && self.document) {
 		const mv = "executeScript" in browser.tabs ? 2 : 3;
 		document.documentElement.classList.add(`mv${mv}`);
+		let devmode = false;
+		try {
+			devmode = !!browser.userScripts;
+		} catch (e) {
+		}
+		document.documentElement.classList.toggle("devmode", devmode);
 	}
+
 }

@@ -230,6 +230,10 @@ input:checked + .slider:before {
 	font-weight: bold;
 }
 
+.alert a, .alert a:visited {
+	color: var(--help-icon-color);
+}
+
 :root.mv3 .mv2 {
 	display: none !important;
 }
@@ -238,3 +242,10 @@ input:checked + .slider:before {
 	display: none !important;
 }
 
+#mv3-devmode-required {
+	border: 2px solid red;
+}
+
+:root.devmode #mv3-devmode-required {
+	display: none;
+}
