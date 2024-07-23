@@ -1,8 +1,8 @@
 #
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-07-09 14:29+0000\n"
-"Last-Translator: Ana Isabel Carvalho <ana@manufacturaindependente.org>\n"
+"PO-Revision-Date: 2024-07-23 09:53+0000\n"
+"Last-Translator: Ricardo Lafuente <r@manufacturaindependente.org>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jshelter/"
 "website/pt/>\n"
 "Language: pt\n"
@@ -82,11 +82,11 @@ msgstr ""
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Chromium-based browsers:"
-msgstr "Browsers baseados em Chromium"
+msgstr "Browsers baseados em Chromium:"
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Open `chrome://extensions`."
-msgstr ""
+msgstr "Abre a página `chrome://extensions`."
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid "Enable developper mode."
@@ -132,7 +132,7 @@ msgstr ""
 
 #: ../content/pages/coding-style.md:block 1 (paragraph)
 msgid "Title: Coding style"
-msgstr ""
+msgstr "Title: Guia de estilo"
 
 #: ../content/pages/coding-style.md:block 2 (header)
 msgid "General guidelines"
@@ -240,7 +240,7 @@ msgstr ""
 
 #: ../content/pages/credits.md:block 1 (paragraph)
 msgid "Title: Credits"
-msgstr ""
+msgstr "Title: Créditos"
 
 #: ../content/pages/credits.md:block 2 (paragraph)
 msgid "[TOC]"
@@ -2597,7 +2597,7 @@ msgstr ""
 
 #: ../content/pages/fpd.md:block 1 (paragraph)
 msgid "Title: Fingerprint Detector"
-msgstr ""
+msgstr "Title: Detetor de impressão digital"
 
 #: ../content/pages/fpd.md:block 2 (paragraph)
 msgid ""
@@ -2667,7 +2667,7 @@ msgstr ""
 
 #: ../content/pages/home.md:block 1 (paragraph)
 msgid "Title: Home Template: home save_as: index.html URL:"
-msgstr ""
+msgstr "Title: Início Template: home save_as: index.html URL:"
 
 #: ../content/pages/install.md:block 1 (paragraph)
 msgid "Title: Installing"
@@ -2711,7 +2711,7 @@ msgstr ""
 
 #: ../content/pages/integration_tests.md:block 1 (paragraph)
 msgid "Title: Instructions on how to run integration tests"
-msgstr ""
+msgstr "Title: Como correr os testes de integração"
 
 #: ../content/pages/integration_tests.md:block 2 (paragraph)
 msgid ""
@@ -2944,7 +2944,7 @@ msgstr ""
 
 #: ../content/pages/levels.md:block 1 (paragraph)
 msgid "Title: JavaScript Shield"
-msgstr ""
+msgstr "Title: Escudo JavaScript"
 
 #: ../content/pages/levels.md:block 2 (paragraph)
 msgid ""
@@ -3043,7 +3043,7 @@ msgstr ""
 
 #: ../content/pages/license.md:block 1 (paragraph)
 msgid "Title: GNU General Public License"
-msgstr ""
+msgstr "Title: Licença Geral Pública GNU"
 
 #: ../content/pages/license.md:block 2 (paragraph)
 msgid "Version 3, 29 June 2007"
@@ -4005,7 +4005,7 @@ msgstr ""
 
 #: ../content/pages/nbs.md:block 1 (paragraph)
 msgid "Title: Network Boundary Shield"
-msgstr ""
+msgstr "Title: Escudo da Fronteira de Rede"
 
 #: ../content/pages/nbs.md:block 2 (paragraph)
 msgid ""
@@ -4059,7 +4059,7 @@ msgstr ""
 
 #: ../content/pages/new-wrapper.md:block 1 (paragraph)
 msgid "Title: How to write a new wrapper"
-msgstr ""
+msgstr "Title: Como criar um novo wrapper"
 
 #: ../content/pages/new-wrapper.md:block 2 (paragraph)
 msgid ""
@@ -4485,7 +4485,7 @@ msgstr ""
 
 #: ../content/pages/permissions.md:block 1 (paragraph)
 msgid "Title: Permissions"
-msgstr ""
+msgstr "Title: Permissões"
 
 #: ../content/pages/permissions.md:block 2 (paragraph)
 msgid "JShelter requires these permissions:"
@@ -4537,7 +4537,7 @@ msgstr ""
 
 #: ../content/pages/threatmodel.md:block 1 (paragraph)
 msgid "Title: Threat model"
-msgstr ""
+msgstr "Title: Modelo de ameaças"
 
 #: ../content/pages/threatmodel.md:block 2 (paragraph)
 msgid ""
@@ -4664,7 +4664,7 @@ msgstr ""
 
 #: ../content/pages/unit_tests.md:block 1 (paragraph)
 msgid "Title: Instructions on how to run unit tests"
-msgstr ""
+msgstr "Title: Como correr os testes"
 
 #: ../content/pages/unit_tests.md:block 2 (header)
 msgid "on Linux"
@@ -4837,7 +4837,7 @@ msgstr ""
 
 #: ../content/pages/versions.md:block 1 (paragraph)
 msgid "Title: Release history"
-msgstr ""
+msgstr "Title: Historial de versões"
 
 #: ../content/pages/versions.md:block 2 (header)
 msgid "0.17"
