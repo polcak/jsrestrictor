@@ -120,7 +120,7 @@
               </a>
               {% set slug = output_file.split('/')[0] %}
               <ul>
-                <li><a href="{{ SITEURL }}/">Home</a></li>
+                <li><a href="{{ SITEURL }}/">{{ HOME }}</a></li>
                 <li {% if slug == 'blog' %} class="active" {% endif %}><a href="{{ SITEURL }}/blog/">Blog</a></li>
                 {% for pagename in ['faq', 'threatmodel', 'install', 'permissions', 'versions', 'credits', 'license'] %}
                 {% set p = (pages|get_by_slug(pagename)) %}
@@ -136,33 +136,52 @@
                 {% endfor %}
               </ul>
             <li class="menu-heading">
-              <strong>Key protection</strong>
+              <strong>{{ KEY_PROTECTION }}</strong>
               <ul>
+                {% for pagename in ['levels', 'nbs', 'fpd'] %}
+                {% set p = (pages|get_by_slug(pagename)) %}
+                {% if p %}
+                {% if pagename == slug %}
+                <li class="active">
+                  {% else %}
+                <li>
+                  {% endif %}
+                  <a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {# 
                 <li {% if slug == 'levels' %} class="active" {% endif %}><a href="{{ SITEURL }}/levels">JavaScript Shield</a></li>
                 <li {% if slug == 'nbs' %} class="active" {% endif %}><a href="{{ SITEURL }}/nbs">Network Boundary Shield</a></li>
                 <li {% if slug == 'fpd' %} class="active" {% endif %}><a href="{{ SITEURL }}/fpd">Fingerprint Detector</a></li>
+                #}
               </ul>
             </li>
             <li class="menu-heading">
-              <strong>Developer notes</strong>
+              <strong>{{ DEVELOPER_NOTES }}</strong>
               <ul>
-                {% for pagename in ['build', 'new-wrapper', 'coding-style'] %}
-                {% set p = (pages|get_by_slug(pagename)) %}
+                {% for pagename in ['build', 'new-wrapper', 'coding-style', 'i18n_developers', 'unit_tests', 'integration_tests'] %}
+                {% set p = (pages|get_by_slug(pagename)) or (articles|get_by_slug(pagename))%}
                 {% if p %}
-                <li {% if pagename == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a></li>
+                <li {% if pagename == slug %} class="active" {% endif %}>
+                  <a href="{{ SITEURL }}/{{ pagename }}/">
+                    {% if 'i18n_developers' == pagename %}
+                    i18n
+                    {% else %}
+                    {{ p.title }}
+                    {% endif %}
+                  </a>
+                </li>
                 {% endif %}
                 {% endfor %}
-                <li {% if 'i18n_developers' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/i18n_developers/">I18n</a></li>
-                <li {% if 'unit_tests' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/unit_tests/">Unit tests</a></li>
-                <li {% if 'integration_tests' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/integration_tests/">Integration tests</a></li>
-                <li><a href="https://pagure.io/JShelter/webextension">View source code</a></li>
+                <li><a href="https://pagure.io/JShelter/webextension">{{ VIEW_SOURCE_CODE }}</a></li>
               </ul>
             </li>
             <li class="menu-heading">
-              <strong>Notes for translators</strong>
+              <strong>{{ NOTES_FOR_TRANSLATORS }}</strong>
               <ul>
-                <li {% if 'i18n' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/i18n/">Instructions</a></li>
-                <li><a href="https://hosted.weblate.org/projects/jshelter/">Translate at Weblate</a></li>
+                <li {% if 'i18n' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/i18n/">{{ TRANSLATION_INSTRUCTIONS }}</a></li>
+                <li><a href="https://hosted.weblate.org/projects/jshelter/">{{ TRANSLATION_WEBLATE }}</a></li>
               </ul>
             </li>
           </ul>

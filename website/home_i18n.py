@@ -5,6 +5,13 @@ AUTHOR = "The JShelter team"
 SITENAME = "JShelter"
 DESCRIPTION = "Your browser extension to keep you safe"
 LONGDESCRIPTION = "An anti-malware Web browser extension to mitigate potential threats from JavaScript, including fingerprinting, tracking, and data collection!"
+HOME = "Home"
+VIEW_SOURCE_CODE = "View source code"
+KEY_PROTECTION = "Key protection"
+DEVELOPER_NOTES = "Developer notes"
+NOTES_FOR_TRANSLATORS = "Notes for translators"
+TRANSLATION_INSTRUCTIONS = "Translation instructions"
+TRANSLATION_WEBLATE = "Translate at Weblate"
 INSTALL_IN = "Install in"
 INSTALL_OTHER = 'Visit the <a href="/install">Install page</a> for other options'
 TITLE_ABOUT = 'About'
@@ -28,6 +35,13 @@ I18N_SUBSITES = {
     "pt": {
         "DESCRIPTION": "A extensão para navegar em segurança",
         "LONGDESCRIPTION": "Uma extensão anti-malware para o teu navegador web que vai pôr sob controlo ameaças de JavaScript, incluindo a recolha de impressões digitais, rastreamento e recolha de dados",
+        "HOME": "Início",
+        "VIEW_SOURCE_CODE": "Ver o código-fonte",
+        "KEY_PROTECTION": "Proteções",
+        "DEVELOPER_NOTES": "Notas de desenvolvimento",
+        "NOTES_FOR_TRANSLATORS": "Notas de tradução",
+        "TRANSLATION_INSTRUCTIONS": "Instruções de tradução",
+        "TRANSLATION_WEBLATE": "Traduzir no Weblate",
         "INSTALL_IN": "Instalar no",
         "INSTALL_OTHER": 'Visita a <a href="/pt/install">página sobre instalação</a> para outras opções',
         "TITLE_ABOUT": 'Acerca',
