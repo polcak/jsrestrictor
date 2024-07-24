@@ -16,7 +16,7 @@ Before starting, it's important to keep in mind that:
 To make a local copy of the web site, follow these steps:
 
 1. Install the dependencies with `make install`
-2. Generate the site with `make html`
+2. Generate the site with `make build`
 3. Run the local webserver with `make serve` and go to `http://localhost:8000`
    in your browser
 
@@ -37,3 +37,22 @@ series_index: 1
 
 To link to a page or blog post, use its slug (which is the same as its file name), e.g. `/pagename/`.
 
+## Options for generating the website
+
+The included Makefile makes it easier to take care of the website generation tasks. These are the essential directives for working on the website:
+
+* `make install`: Install all dependencies in a local virtualenv. Necessary for development.
+* `make build`: Generate the full website after extracting the wrapper comments and generating the Doxygen docs.
+* `make serve`: Run a local webserver at `127.0.0.1:8000` for previewing the generated site.
+* `make translate-pull`: Download the latest translation files from Weblate.
+* `make translate-extract`: Generates the source .po files that can be uploaded to Weblate to serve as a base for translations. Necessary when content files are changed or added.
+* `make translate`
+* `make clean`
+
+These are directives that are called by the main directives above; useful for debugging or carrying out specific operations:
+
+* `make translate`: Apply the translations from the downloaded Weblate files and generate localised content directories. Called on `make build`.
+* `make doxygen`: Generates a Doxygen website in  the `output/doxygen/`. This is used for the "view technical documentation" links in the wrapper pages.
+* `make html`: Only generates the Pelican site.
+* `make extract`: Creates the wrapper pages from the comments in the wrapper source files. Called when generating the site with `make html`.
+* `make deploy`: For copying over the website to the live server. It's of little use outside the admin team, unless you want to adjust the addresses to upload it to your own web space.
