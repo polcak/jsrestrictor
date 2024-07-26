@@ -985,6 +985,7 @@ async function updateUserScripts() {
 	const allGlobs = new Set();
 	const entries = Object.entries(domains);
 	entries.push(["*", default_level]);
+	let count = 0;
 	for (const [domain, l] of entries) {
 		if (l.tweaks && !l.wrappers) {
 			l.wrappers = wrapping_groups.get_wrappers(l);
@@ -997,6 +998,7 @@ async function updateUserScripts() {
 			const fpdWrappers = fpdOn ? fp_levels.page_wrappers[fpdSettings.detection] : [];
 			const injection = fp_assemble_injection(l, fpdWrappers);
 			conf = {
+				id: `L:${l.level_id}-FPD:${fpdOn}-C:${count++}`,
 				injection,
 				includeGlobs: [glob],
 				excludeGlobs: [],
@@ -1031,26 +1033,26 @@ async function updateUserScripts() {
 		allFrames: true,
 		world: "MAIN",
 	};
+	const globs2matches = globs => [... new Set(globs)].map(g => `*://${g}/*`);
+
 	const scripts = [];
-	let count = 0;
 	for (const conf of confCache.values()) {
 		const {portId, code} = patchWindow({
 			portId: wrappersPortId,
 			code: conf.injection,
 		});
 		if (wrappersPortId !== portId) {
-			console.debug(`Switching wrappersPortId from ${wrappersPortId} to ${portId} on userScripts update.`);
+			console.log(`Switching wrappersPortId from ${wrappersPortId} to ${portId} on userScripts update.`);
 			wrappersPortId = portId;
 		}
+		const {id, includeGlobs, excludeGlobs} = conf;
 		const opts = {
-			id: `wrapper:${count++}`,
-			js: [{code}],
-			matches: [... new Set(conf.includeGlobs)].map(g => `*://${g}/*'`),
-			excludeGlobs:	[... new Set(conf.excludeGlobs)],
+			id,
+			matches: conf.matches || globs2matches(includeGlobs),
+			excludeMatches: globs2matches(excludeGlobs),
 		};
-		if (conf.matches) {
-			opts.matches = conf.matches;
-		}
+		const debugCode = `console.info("Injecting wrapper for " + document.URL + ": "  + JSON.stringify(${JSON.stringify(opts)}) + ", ${portId}.");`;
+		opts.js =  [{code: debugCode}, {code}];
 		scripts.push(
 			Object.assign(opts, usTemplate)
 		);
