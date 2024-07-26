@@ -356,8 +356,9 @@ async function getCurrentSite() {
 		// Obtain and normalize hostname
 		return site = getEffectiveDomain(tab.url);
 	} catch (e) {
-		if (e.toString() === "Error: Missing host permission for the tab") {
-			await async_sleep(200); // recursively call itself, this exception occurs in Firefox during an inactive tab activation (tab page was not reload after the browser start)
+		if (/^Error: (?:Missing host permissions|Could not establish connection)/.test(e.toString())) {
+			console.warn("Recoverable timing error during popup startup, retrying in 300ms", e);
+			await async_sleep(200);
 			return await getCurrentSite();
 		}
 		console.error(e);
