@@ -1,5 +1,14 @@
 Title: Release history
 
+## 0.19
+
+* [First Manifest V3 release](/mv3-jshelter-debut/), using only MV3 APIs on Chromium-based browsers.
+* Updated [NoScript Commons Library](https://github.com/hackademix/nscl) dependency to the `mv3` branch.
+* _All browsers_: fixed UI popup failing to render when opened first time after long inactivity
+* _Chromium-only_: user-facing warnings about [developer mode](https://developer.chrome.com/docs/extensions/reference/api/userScripts#developer_mode_for_extension_users) being currently required on MV3.
+* _Chromium-only_: removed Network Boundary Shield (unimplementable in current MV3).
+* _Chromium-only_: removed blocking mode Fingerprinting Detection (unimplementable in current MV3).
+
 ## 0.18.1
 
 Fix the scope where updateCount used by FPD is created ([Pagure issue
