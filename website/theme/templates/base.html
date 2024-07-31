@@ -182,6 +182,12 @@
               <ul>
                 <li {% if 'i18n' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/i18n/">{{ TRANSLATION_INSTRUCTIONS }}</a></li>
                 <li><a href="https://hosted.weblate.org/projects/jshelter/">{{ TRANSLATION_WEBLATE }}</a></li>
+                {% set ptw = articles|get_by_slug('i18n_website') %}
+                <li {% if 'i18n_website' == slug %} class="active" {% endif %}>
+                  <a href="{{ SITEURL }}/i18n_website/">
+                    {{ ptw.title }}
+                  </a>
+                </li>
               </ul>
             </li>
           </ul>
