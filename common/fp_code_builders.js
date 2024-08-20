@@ -109,7 +109,7 @@ var additional_wrappers = [
  * 
  * \returns Injectable code created from FPD wrappers.
  */
-function fp_generate_from_wrappers(fpd_wrappers, fpdTrackCallers) {
+function fp_generate_from_wrappers(fpd_wrappers) {
 	// define wrapper for each FPD endpoint (using default JSS definition of wrappers)
 	let tmp_build_wrapping_code = {};
 	for (let wrap_item of fpd_wrappers) {
@@ -134,7 +134,7 @@ function fp_generate_from_wrappers(fpd_wrappers, fpdTrackCallers) {
 	let fp_wrapped_codes = {};
 	for (let build_item in tmp_build_wrapping_code) {
 		try {
-			fp_wrapped_codes[build_item] = build_code(fpdTrackCallers, tmp_build_wrapping_code[build_item]);
+			fp_wrapped_codes[build_item] = build_code(tmp_build_wrapping_code[build_item]);
 		} catch (e) {
 			console.error(e);
 			fp_wrapped_codes[build_item] = "";
@@ -152,10 +152,10 @@ function fp_generate_from_wrappers(fpd_wrappers, fpdTrackCallers) {
  * 
  * \returns Modified injectable code that also contains FPD wrapping code.
  */
-function fp_update_wrapping_code(code, jss_wrappers, fpd_wrappers, fpdTrackCallers) {
+function fp_update_wrapping_code(code, jss_wrappers, fpd_wrappers) {
 	const jss_wrapper_resources = jss_wrappers.map(x => x[0]);
 	const fpd_wrappers_filtered = fpd_wrappers.filter(w => !jss_wrapper_resources.includes(w[0]));
-	const fpd_wrapped_codes = fp_generate_from_wrappers(fpd_wrappers_filtered, fpdTrackCallers);
+	const fpd_wrapped_codes = fp_generate_from_wrappers(fpd_wrappers_filtered);
 	const fpd_code = joinWrappingCode(Object.values(fpd_wrapped_codes));
 	return code.replace("// FPD_S\n", `// FPD_S\n${additional_wrappers_init_code} ${fpd_code}`);
 }
@@ -167,8 +167,8 @@ function fp_update_wrapping_code(code, jss_wrappers, fpd_wrappers, fpdTrackCalle
  * 
  * \returns Injectable code containing only FPD wrapping code.
  */
-function fp_generate_wrapping_code(fpd_wrappers, fpdTrackCallers) {
-	let fpd_wrapped_codes = fp_generate_from_wrappers(fpd_wrappers, fpdTrackCallers);
+function fp_generate_wrapping_code(fpd_wrappers) {
+	let fpd_wrapped_codes = fp_generate_from_wrappers(fpd_wrappers);
 	return generate_code("// FPD_S\n" + additional_wrappers_init_code + joinWrappingCode(Object.values(fpd_wrapped_codes)) + "\n// FPD_E");
 }
 
@@ -296,4 +296,50 @@ function fp_append_reporting_to_jss_wrappers(fpd_wrappers) {
 			Object.values(wrapper.post_wrapping_code).forEach(append_reporting);
 		}
 	}
+}
+
+function fp_assemble_injection(currentLevel, fpdWrappers, initializer = '') {
+	// Append argument reporting setting to JSS wrapper definitions
+	fp_append_reporting_to_jss_wrappers(fpdWrappers);
+	// Generate wrapping code
+	let code = wrap_code(currentLevel.wrappers);
+	// Generate FPD wrapping code
+	if (fpdWrappers) {
+		if (!code) {
+			code = fp_generate_wrapping_code(fpdWrappers);
+		}
+		else {
+			code = fp_update_wrapping_code(code, currentLevel.wrappers, fpdWrappers);
+		}
+	}
+	// Insert farbling WASM module into wrapped code if enabled, only when farbling is actually used
+	if (currentLevel.wasm && (currentLevel.audiobuffer === 1 || currentLevel.htmlcanvaselement === 1)) {
+		code = insert_wasm_code(code);
+	}
+	initializer ||= `
+	{
+		env.port.onMessage = msg => {
+			console.debug("JShelter wrappers received message " + JSON.stringify(msg));
+			return msg.domainHash && init(msg);
+		};
+		let conf = env.port.postMessage({init: true});
+		if (conf?.domainHash) init(conf);
+		console.debug("JShelter wrappers early init attempt " + JSON.stringify(conf));
+	}
+	`;
+	return `(() => {
+		let inited = false;
+		const init = ({domainHash, fpdTrackCallers}) => {
+			if (inited) return;
+			console.debug("JSShelter wrappers initializing at " + document.readyState);
+			inited = true;
+			${crc16}
+			${alea}
+			var prng = alea(domainHash); // Do not use this in wrappers, create your own prng to generate repeatable sequences
+			${code}
+			console.debug("JSShelter wrappers initialized.");
+		};
+		${initializer}
+		console.debug("JSShelter wrappers injected at " + document.readyState);
+	})()`;
 }

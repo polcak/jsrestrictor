@@ -60,12 +60,14 @@ function getContentConfiguration(url, frameId, tabId) {
 				 */
 				level = getCurrentLevelJSON((await TabCache.async(tabId)).url);
 			}
-			let {domainHash} = await Hashes.getFor(url);
+			let {domainHash, incognitoHash} = await Hashes.getFor(url);
 			resolve({
 				currentLevel: level,
 				fpdWrappers: isFpdOn(tabId) ? fp_levels.page_wrappers[fpdSettings.detection] : [],
 				fpdTrackCallers: fpd_track_callers_tab === tabId,
-				domainHash
+				domainHash,
+				incognitoHash,
+				portId: wrappersPortId,
 			});
 		}
 		if (levels_initialised && fp_levels_initialised) {
@@ -94,7 +96,7 @@ function contentScriptLevelSetter(message, {frameId, tab}) {
 			return getContentConfiguration(message.url, frameId, tab.id)
 	}
 }
-browser.runtime.onSyncMessage.addListener(contentScriptLevelSetter);
+browser.runtime.onSyncMessage?.addListener(contentScriptLevelSetter);
 
 
 /**
@@ -106,11 +108,20 @@ browser.runtime.onSyncMessage.addListener(contentScriptLevelSetter);
 
 DocStartInjection.register(async ({url, frameId, tabId}) => {
 	let configuration = await getContentConfiguration(url, frameId, tabId);
-	return `
+	if (browser.tabs.executeScript) {
+		// mv2
+		return `
 		window.configuration = ${JSON.stringify(configuration)};
 		if (typeof configureInjection === "function") configureInjection(configuration);
 		console.debug("DocStartInjection while doc", document.readyState);
 		`;
+	}
+
+	return {
+		callback: "configureInjection",
+		assign: "configuration",
+		data: configuration,
+	};
 });
 
 /**
@@ -128,6 +139,17 @@ NavCache.onUrlChanged.addListener(({tabId, frameId, previousUrl, url}) => {
 	(async () => {
 		let configuration = await getContentConfiguration(url, frameId, tabId);
 		if (configuration.currentLevel.windowname) {
+			if (!browser.tabs.executeScript && browser.scripting) {
+				browser.scripting.executeScript({
+					func: () => { window.name = ""; },
+					injectImmediately: true,
+					target: {
+						frameIds: [frameId],
+						tabId
+					}
+				});
+				return;
+			}
 			browser.tabs.executeScript(tabId, {
 				code: `window.name = "";`,
 				frameId,

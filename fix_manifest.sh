@@ -24,6 +24,6 @@
 
 pushd $1
 	WRAPPING=`ls wrapping*.js | sort | awk '{ print "\"" $0 "\"" }' | tr '\n' ',' |  sed 's/,$//'`
-	sed -i -e "s/WRAPPING/${WRAPPING}/" manifest.json
+	sed -i -e "s/WRAPPING/${WRAPPING}/" manifest.json service_worker.js
 popd
 

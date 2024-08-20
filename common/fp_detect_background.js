@@ -126,7 +126,7 @@ var fpdGlobals = CachedStorage.init({
  * A global variable shared with level_cache that controls the collection of calling scripts for FPD
  * report.
  */
-	fpd_track_callers_tab: undefined,
+	fpd_track_callers_tab: null,
 
 });
 /**
@@ -212,12 +212,14 @@ const FPD_DEF_SETTINGS = {
 	}
 };
 
+
+var actionApi = browser.browserAction || browser.action;
 // unify default color of popup badge background between different browsers
-browser.browserAction.setBadgeBackgroundColor({color: "#6E7378"});
+actionApi.setBadgeBackgroundColor({color: "#6E7378"});
 
 // unify default color of popup badge text between different browsers
-if (typeof browser.browserAction.setBadgeTextColor === "function") {
-	browser.browserAction.setBadgeTextColor({color: "#FFFFFF"});
+if (typeof actionApi.setBadgeTextColor === "function") {
+	actionApi.setBadgeTextColor({color: "#FFFFFF"});
 }
 
 /**
@@ -275,13 +277,23 @@ async function initFpd() {
 		browser.storage.sync.set({"fpdSettings": fpdSettings});
 	});
 
-	// listen for requests through webRequest API and decide whether to block them
-	browser.webRequest.onBeforeRequest.addListener(
-		fpdRequestCancel,
-		{urls: ["<all_urls>"]},
-		["blocking"]
-	);
-
+	if (self.window) {
+		// Firefox, event page has window
+		// listen for requests through webRequest API and decide whether to block them
+		browser.webRequest.onBeforeRequest.addListener(
+			fpdRequestCancel,
+			{urls: ["<all_urls>"]},
+			["blocking"]
+		);
+	} else {
+		// mv3: cannot block!
+		// hide behavior settings
+		// TODO: shame Google in the setting panels for the missing feature
+		delete FPD_DEF_SETTINGS["behavior"];
+		// force passive behavior setting
+		fpdSettings.behavior = 0;
+		browser.storage.sync.set({"fpdSettings": fpdSettings});
+	}
 	// listen for navigation events to initiate storage clearing of fingerprinting web pages
 	browser.webNavigation.onBeforeNavigate.addListener((details) => {
 		if (latestEvals[details.tabId] && latestEvals[details.tabId].stopNotifyFlag && fpdSettings.behavior > 0) {
@@ -316,6 +328,7 @@ async function initFpd() {
  * It checks which resources are unsupported for given browser and adjust criteria of loaded FPD configuration accordingly.
  */
 function balanceUnsupportedWrappers() {
+	if (!self.window) return false; // mv3 service worker?
 	// object containing groups effected by criteria adjustment and corresponding deleted subgroups
 	var effectedGroups = {};
 
@@ -1091,9 +1104,9 @@ function evaluateFingerprinting(tabId) {
 			latestEvals[tabId].severity = evalResult.severity;
 		}
 
-		// modify color of browserAction
+		// modify color of action icon
 		if (evalResult.severity[2]) {
-			browser.browserAction.setBadgeBackgroundColor({color: evalResult.severity[2], tabId: tabId});
+			actionApi.setBadgeBackgroundColor({color: evalResult.severity[2], tabId: tabId});
 		}
 
 		// if actualWeight of root group is higher than 0 => reactive phase and applying measures

@@ -336,21 +336,32 @@ document.getElementById("fpd-switch").addEventListener("change", () => {setTimeo
 async function getCurrentSite() {
 	if (typeof site !== "undefined") return site;
 	try {
+		let [tab] = await browser.tabs.query({currentWindow: true, active: true});
 		// Check whether content scripts are allowed on the current tab:
 		// if an exception is thrown, showing per-site settings is pointless,
 		// because we couldn't operate here anyway
-		[pageConfiguration = {}] = await browser.tabs.executeScript({code:
-			`typeof pageConfiguration === "object" && pageConfiguration || {};`});
+		if ("executeScript" in browser.tabs) {
+			[pageConfiguration = {}] = await browser.tabs.executeScript({
+				code: `typeof pageConfiguration === "object" && pageConfiguration || {};`
+			});
+		} else {
+			pageConfiguration = (await browser.scripting.executeScript({
+        injectImmediately: true,
+				func: () => typeof pageConfiguration === "object" && pageConfiguration || {},
+				target: {tabId: tab.id},
+			}))[0].result;
+		}
 
-		let [tab] = await browser.tabs.query({currentWindow: true, active: true});
 		hits = await browser.runtime.sendMessage({purpose: 'fpd-fetch-hits', tabId: tab.id});
 		// Obtain and normalize hostname
 		return site = getEffectiveDomain(tab.url);
 	} catch (e) {
-		if (e.toString() === "Error: Missing host permission for the tab") {
-			await async_sleep(200); // recursively call itself, this exception occurs in Firefox during an inactive tab activation (tab page was not reload after the browser start)
+		if (/^Error: (?:Missing host permissions|Could not establish connection)/.test(e.toString())) {
+			console.warn("Recoverable timing error during popup startup, retrying in 300ms", e);
+			await async_sleep(200);
 			return await getCurrentSite();
 		}
+		console.error(e);
 		return site = null;
 	}
 }
@@ -430,6 +441,7 @@ async function control_whitelist(prefix)
 
 addEventListener("DOMContentLoaded", async () => {
 	await init_jsshield();
+	console.log("Loaded ", site);
 	if (!site) {
 		return;
 	}

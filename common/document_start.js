@@ -26,46 +26,32 @@
 
 var wrappersPort;
 var pageConfiguration = null;
-function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash}) {
+
+function wrapWindow(currentLevel, fpdWrappers, wrappersConf) {
+	const code = fp_assemble_injection(currentLevel, fpdWrappers, `
+		init(${JSON.stringify(wrappersConf)});
+	`);
+	return patchWindow(code);
+}
+
+function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash, incognitoHash, portId}) {
 	if (pageConfiguration) return; // one shot
 	pageConfiguration = {currentLevel};
-	if(browser.extension.inIncognitoContext){
-		// Redefine the domainHash for incognito context:
-		// Compute the SHA256 hash of the original hash so that the incognito hash is:
-		// * significantly different to the original domainHash,
-		// * computationally difficult to revert,
-		// * the same for all incognito windows (for the same domain).
-		var hash = sha256.create();
-		hash.update(JSON.stringify(domainHash));
-		domainHash = hash.hex();
+	console.log(`Configuration injected: ${document.readyState}\n${document.title} ${document.documentElement.outerHTML}`);
+	if (browser.extension.inIncognitoContext) {
+		domainHash = incognitoHash;
 	}
-	// Append argument reporting setting to JSS wrapper definitions
-	fp_append_reporting_to_jss_wrappers(fpdWrappers);
-	// Generate wrapping code
-	var code = wrap_code(currentLevel.wrappers, fpdTrackCallers);
-	// Generate FPD wrapping code
-	if (fpdWrappers) {
-		if (!code) {
-			code = fp_generate_wrapping_code(fpdWrappers, fpdTrackCallers);
-		}
-		else {
-			code = fp_update_wrapping_code(code, currentLevel.wrappers, fpdWrappers, fpdTrackCallers);
-		}
-	}
-	// Insert farbling WASM module into wrapped code if enabled, only when farbling is actually used 
-	if (currentLevel.wasm && (currentLevel.audiobuffer === 1 || currentLevel.htmlcanvaselement === 1)) {
-		code = insert_wasm_code(code);
-	}
-
-	var aleaCode = `(() => {
-	var domainHash =  ${JSON.stringify(domainHash)};
-	${crc16}
-	${alea}
-	var prng = alea(domainHash); // Do not use this in wrappers, create your own prng to generate repeatable sequences
-	${code}
-	})()`;
 	try {
-		wrappersPort = patchWindow(aleaCode);	
+		const wrappersConf = {
+			fpdTrackCallers,
+			domainHash,
+		};
+		wrappersPort = portId ? patchWindow({portId}) : wrapWindow(currentLevel, fpdWrappers, wrappersConf);
+
+		// initialize in case the userScript API already injected
+		console.log(portId, wrappersPort, wrappersConf);
+		wrappersPort.postMessage(wrappersConf);
+
 		wrappersPort.onMessage = msg => {
 			if (msg.wrapperName) {
 				let {wrapperName, wrapperType, wrapperArgs, stack} = msg;
@@ -78,10 +64,14 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 					stack: stack,
 				});
 			}
+			if (msg.init) {
+				// initialize on late demand
+				return wrappersConf;
+			}
 		}
 		return true;
 	} catch (e) {
-		console.error(e, `Trying to run\n${aleaCode}`)
+		console.error(e, "Trying to initialize wrappers.");
 	}
 	return false;
 }
@@ -95,7 +85,7 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 if ("configuration" in window) {
 	console.debug("Early configuration found!", configuration);
 	configureInjection(configuration);
-} else {
+} else if ("sendSyncMessage" in browser.runtime) { // not in mv3 chrome
 	/// Get current level configuration from the background script
 	configureInjection(browser.runtime.sendSyncMessage({
 			message: "get wrapping for URL",

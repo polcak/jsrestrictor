@@ -54,7 +54,7 @@ function byteToHex(byte) {
  */
 function gen_random32() {
 	var array = new Uint32Array(1);
-	window.crypto.getRandomValues(array);
+	self.crypto.getRandomValues(array);
 	return array[0];
 }
 
@@ -63,7 +63,7 @@ function gen_random32() {
  */
 function gen_random64() {
   var array = new Uint32Array(2);
-  window.crypto.getRandomValues(array);
+  self.crypto.getRandomValues(array);
   return BigInt("" + array[0] + array[1]);
 }
 
@@ -72,7 +72,7 @@ function gen_random64() {
  */
 function generateId(len = 32) {
   var arr = new Uint8Array(len / 2);
-  window.crypto.getRandomValues(arr);
+  self.crypto.getRandomValues(arr);
   return Array.from(arr, byteToHex).join("");
 }
 
@@ -286,3 +286,18 @@ function correctSettingsForRemovedPermissions(permissions, settings, definition)
 			});
 	});
 };
+{
+
+	// hide incompatible UI
+	if (browser.tabs && self.document) {
+		const mv = "executeScript" in browser.tabs ? 2 : 3;
+		document.documentElement.classList.add(`mv${mv}`);
+		let devmode = false;
+		try {
+			devmode = !!browser.userScripts;
+		} catch (e) {
+		}
+		document.documentElement.classList.toggle("devmode", devmode);
+	}
+
+}
