@@ -532,7 +532,6 @@ function evaluateGroups(tabId) {
 		}
 	}
 
-	CachedStorage.save();
 	return ret;
 }
 
@@ -640,8 +639,6 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
 		sum: res.actualWeightsSum
 	});
 
-	// CachedStorage.save(); // evaluateGroupsCriteria is called only recursively or by evaluateGroups
-	// that itself stores the CachedStorage
 	return [res];
 }
 
