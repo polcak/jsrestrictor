@@ -100,27 +100,14 @@ var fpdGlobals = CachedStorage.init({
 	fpDb: {},
 
 /**
- *  Stores latest evaluation statistics for every examined tab. This statistics contains data about accessed groups and resources
- *  and their weights after evaluation. It can be used for debugging or as an informative statement in GUI.
- * 	It also contains flag for every tab to limit number of notifications.
- */
-	latestEvals: {},
-
-/**
- *  Parsed groups object containing necessary group information needed for evaluation.
- * 	Groups are indexed by level and name for easier and faster access.
- */
-	fpGroups: {},
-
-/**
- *  Object containing information about unsupported wrappers for given browser.
- */
-	unsupportedWrappers: {},
-
-/**
  *  Contains information about tabs current state.
  */
 	availableTabs: {},
+
+	/**
+	 * Store if the user was already notified about fingerprinting activity in the tab.
+	 */
+	stopNotifyFlag: {},
 
 /**
  * A global variable shared with level_cache that controls the collection of calling scripts for FPD
@@ -129,6 +116,25 @@ var fpdGlobals = CachedStorage.init({
 	fpd_track_callers_tab: null,
 
 });
+
+/**
+ *  Stores latest evaluation statistics for every examined tab. This statistics contains data about accessed groups and resources
+ *  and their weights after evaluation. It can be used for debugging or as an informative statement in GUI.
+ * 	It also contains flag for every tab to limit number of notifications.
+ */
+let latestEvals = {};
+
+/**
+ *  Parsed groups object containing necessary group information needed for evaluation.
+ * 	Groups are indexed by level and name for easier and faster access.
+ */
+let fpGroups = {};
+
+/**
+ *  Object containing information about unsupported wrappers for given browser.
+ */
+let unsupportedWrappers = {};
+
 /**
 * Definition of settings supported by this module.
 */
@@ -296,7 +302,7 @@ async function initFpd() {
 	}
 	// listen for navigation events to initiate storage clearing of fingerprinting web pages
 	browser.webNavigation.onBeforeNavigate.addListener((details) => {
-		if (latestEvals[details.tabId] && latestEvals[details.tabId].stopNotifyFlag && fpdSettings.behavior > 0) {
+		if (latestEvals[details.tabId] && stopNotifyFlag[details.tabId] && fpdSettings.behavior > 0) {
 			// clear storages (using content script) for every frame in this tab
 			if (details.tabId >= 0) {
 				browser.tabs.sendMessage(details.tabId, {
@@ -634,7 +640,8 @@ function evaluateGroupsCriteria(rootGroup, level, tabId) {
 		sum: res.actualWeightsSum
 	});
 
-	CachedStorage.save();
+	// CachedStorage.save(); // evaluateGroupsCriteria is called only recursively or by evaluateGroups
+	// that itself stores the CachedStorage
 	return [res];
 }
 
@@ -1113,9 +1120,10 @@ function evaluateFingerprinting(tabId) {
 		if (evalResult.weight) {
 
 			// create notification for user if behavior is "notification" or higher (only once for every tab load)
-			if (fpdSettings.notifications == 1 && !latestEvals[tabId].stopNotifyFlag) {
-				latestEvals[tabId].stopNotifyFlag = true;
+			if (fpdSettings.notifications == 1 && !stopNotifyFlag[tabId]) {
 				notifyFingerprintBlocking(tabId);
+				stopNotifyFlag[tabId] = true;
+				CachedStorage.save();
 			}
 
 			// block request and clear cache data only if "blocking" behavior is set
