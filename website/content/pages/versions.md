@@ -1,5 +1,9 @@
 Title: Release history
 
+## 0.19.1
+
+* Improve performance of FPD in temporary background scripts: Limit the amount of data that is stored to the permanent storage as well as the number of write operations without a real hit stemming from the need to recomupte the data.
+
 ## 0.19
 
 * [First Manifest V3 release](/mv3-jshelter-debut/), using only MV3 APIs on Chromium-based browsers.
@@ -8,6 +12,10 @@ Title: Release history
 * _Chromium-only_: user-facing warnings about [developer mode](https://developer.chrome.com/docs/extensions/reference/api/userScripts#developer_mode_for_extension_users) being currently required on MV3.
 * _Chromium-only_: removed Network Boundary Shield (unimplementable in current MV3).
 * _Chromium-only_: removed blocking mode Fingerprinting Detection (unimplementable in current MV3).
+
+## 0.18.2
+
+* Improve performance of FPD in temporary background scripts: Limit the amount of data that is stored to the permanent storage as well as the number of write operations without a real hit stemming from the need to recomupte the data.
 
 ## 0.18.1
 
