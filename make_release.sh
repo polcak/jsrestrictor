@@ -41,3 +41,8 @@ git clone https://pagure.io/JShelter/webextension.git --branch $1 --depth 1 --re
 rm -rf $DIR/.git* $DIR/*/.git*
 zip -r jshelter-$1.zip $DIR
 tar czf jshelter-$1.tar.gz $DIR
+pushd "$DIR"
+	make
+popd
+mv "$DIR/jshelter_firefox.zip" jshelter-$1-firefox.zip
+mv "$DIR/jshelter_chrome.zip" jshelter-$1-chrome.zip
