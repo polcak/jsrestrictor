@@ -36,8 +36,10 @@ get_csv:
 	cp ipv6.csv common/ipv6.dat
 
 submodules:
+ifneq (,$(wildcard .git))
 	git submodule init
 	git submodule update
+endif
 
 jshelter_%.zip: $(COMMON_FILES) get_csv submodules wasm
 	@mkdir -p build/
