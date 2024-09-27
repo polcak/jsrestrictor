@@ -3,21 +3,10 @@
   <!-- Navigation index tabs for HTML output -->
   <navindex>
     <tab type="mainpage" visible="yes" title=""/>
-		<tab type="usergroup" title="Basic info">
+		<tab type="usergroup" title="Basic info for developers">
 			<tab type="user" url="md_LICENSE.html" title="License"/>
-			<tab type="user" url="md_docs_versions.html" title="Release history"/>
-			<tab type="usergroup" title="Basic info for users">
-				<tab type="user" url="md_docs__includes_stores.html" title="Get the extension"/>
-				<tab type="user" url="md_docs_levels.html" title="Levels"/>
-				<tab type="user" url="md_docs_permissions.html" title="Permissions"/>
-			</tab>
-			<tab type="usergroup" title="Basic info for developers">
-				<tab type="user" url="md_CODING_STYLE.html" title="Coding style"/>
-				<tab type="user" url="md_docs_build.html" title="How to build the extension"/>
-				<tab type="user" url="md_docs_new_wrapper.html" title="How to write a new wrapper?"/>
-				<tab type="user" url="@ref wrappers" title="Docs for existing wrappers"/>
-			</tab>
-			<tab type="user" url="md_docs_credits.html" title="Credits"/>
+			<tab type="user" url="md_CODING__STYLE.html" title="Coding style"/>
+			<tab type="user" url="@ref wrappers" title="Docs for existing wrappers"/>
 		</tab>
     <tab type="modules" visible="yes" title="" intro=""/>
     <tab type="namespaces" visible="yes" title="">
@@ -45,11 +34,11 @@
       <tab type="exceptionhierarchy" visible="yes" title="" intro=""/>
     </tab>
 		<tab type="usergroup" title="Testing">
-			<tab type="user" url="md_tests_unit_tests_README.html" title="Introduction to unit tests"/>
-			<tab type="user" url="md_tests_common_files_webbrowser_drivers_DOWNLOAD_WEB_DRIVERS_HERE.html" title="Get Selenium web drivers for integration and system tests"/>
-			<tab type="user" url="md_tests_integration_tests_README.html" title="How to run integration tests"/>
-			<tab type="user" url="md_tests_system_tests_README.html" title="How to run system tests"/>
-      <tab type="user" url="md_tests_fpd_tests_README.html" title="How to run FPD tests"/>
+			<tab type="user" url="md_tests_2unit__tests_2README.html" title="Introduction to unit tests"/>
+			<tab type="user" url="md_tests_2common__files_2webbrowser__drivers_2DOWNLOAD_01WEB_01DRIVERS_01HERE.html" title="Get Selenium web drivers for integration and system tests"/>
+			<tab type="user" url="md_tests_2integration__tests_2README.html" title="How to run integration tests"/>
+			<tab type="user" url="md_tests_2system__tests_2README.html" title="How to run system tests"/>
+      <tab type="user" url="tests_2fpd__tests_2README_8md.html" title="How to run FPD tests"/>
 		</tab>
     <tab type="files" visible="yes" title="">
       <tab type="filelist" visible="yes" title="" intro=""/>
@@ -57,11 +46,6 @@
     </tab>
     <tab type="examples" visible="yes" title="" intro=""/>  
     <tab type="pages" visible="yes" title="" intro=""/>
-		<tab type="usergroup" title="Blog">
-			<tab type="user" url="md_docs_blogarticles_support.html" title="We received support from NGI0 PET Fund"/>
-			<tab type="user" url="md_docs_blogarticles_crawling.html" title="Measurement of JavaScript API usage on the web"/>
-			<tab type="user" url="md_docs_blogarticles_localportscanning.html" title="How JavaScript restrictor prevents other parties from sniffing on your local applications?"/>
-		</tab>
   </navindex>
 
   <!-- Layout definition for a class page -->
