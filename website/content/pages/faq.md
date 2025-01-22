@@ -273,6 +273,29 @@ questions in this FAQ.
 1. Keep NBS active.
 1. If you want to detect and prevent fingerprinting attempts, use FPD.
 
+#### Should I create my own level for JavaScript Shield?
+
+The problem with browser fingerprinting is that the more you change your configuration, the more
+unique you fingerprint can be. Hence, we suggest that you do not tweak built-in levels at all, or do
+it only when needed to tweak the configuration for a specific site.
+
+#### I changed my configuration. What should I expect after future updates of the extension, will I lose the settings?
+
+We change the configuration so that updates keep the user settings from previous version. So far, we
+managed to transfer almost all configuration with an exception of a [bug](/versions/#0113). We plan
+to continue this practise so if you configure something now, it should work also in the future.
+
+Nevertheless, from time to time, we modify new APIs. Typically, we insert a simple logic to the
+update that tries to estimate your preference. Keep in mind that it is just an estimation. If you
+modify a built-in level a little bit, the estimation would likely be OK. If you design a level that
+should modify only a fraction of APIs, it is likely that the update process would add additional
+protection to that level in the future.
+
+We do not guarantee backwards compatibility. Typically, the configuration should work. Big changes
+in configuration format appear in [update information](/versions/).
+
+In summary, read [update information](/versions/). Additionally, you should check your configuration from time to time. The frequency should depend on the changes that you make. The more your configuration differs from the built-in configuration, the more frequently you should validate your configuration.
+
 #### I have a unique fingerprint? Some properties wrapped by JShelter return random values.
 
 First, see our [blog post](/fingerprinting/).
