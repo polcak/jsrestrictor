@@ -51,7 +51,7 @@ jshelter_%.zip: $(COMMON_FILES) get_csv submodules wasm
 	@nscl/include.sh build/$*
 	@if [ $(DEBUG) -eq 0 ]; \
 	then \
-		find build/$*/ -type f -name "*.js" -exec sed -i '/console\.debug/d' {} + ; \
+		find build/$*/ -type f -name "*.js" -exec sed -i '/console\.debug(.*);/d' {} + ; \
 		cp wasm/build/release.wasm build/$*/farble.wasm; \
 	else \
 		cp wasm/build/debug.wasm build/$*/farble.wasm; \
