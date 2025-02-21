@@ -31,6 +31,7 @@
 function getContentConfiguration(url, frameId, tabId) {
 	return new Promise(resolve => {
 		async function resolve_promise() {
+			await updateUserScripts();
 			let level = getCurrentLevelJSON(url);
 			if (level.is_default && frameId !== 0) {
 				/**

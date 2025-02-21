@@ -27,7 +27,7 @@ importScripts(
   "nscl/common/CachedStorage.js",
   "nscl/common/log.js",
   "nscl/common/uuid.js",
-  // "nscl/common/SyncMessage.js",
+  "nscl/common/SyncMessage.js",
   "nscl/common/tld.js",
   "nscl/service/DocStartInjection.js",
   "nscl/service/TabCache.js",

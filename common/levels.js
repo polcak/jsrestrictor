@@ -913,7 +913,7 @@ let levels_initialised = false; // Initialized in updateLevels()
 let fp_levels_initialised = false; // Initialized in fp_levels.js/loadFpdConfig()
 let levels_updated_callbacks = [];
 var tweak_domains = tweak_domains || {};
-function updateLevels(res) {
+async function updateLevels(res) {
 	init_levels();
 	custom_levels = res["custom_levels"] || {};
 	for (let key in custom_levels) {
@@ -964,7 +964,7 @@ function updateLevels(res) {
 		var orig_levels_updated_callbacks = levels_updated_callbacks;
 		levels_updated_callbacks = [];
 		orig_levels_updated_callbacks.forEach((it) => it());
-		updateUserScripts();
+		await updateUserScripts();
 	}
 }
 browser.storage.sync.get(null).then(updateLevels);
@@ -974,6 +974,10 @@ var cachedSiteSettings = null;
 async function updateUserScripts() {
 	if (browser.tabs.executeScript || !("userScripts" in browser) || self.window) {
 		return;
+	}
+	if (!cachedSiteSettings) {
+		({wrappersPortId, cachedSiteSettings} = await
+			browser.storage.local.get(["wrappersPortId", "cachedSiteSettings"]));
 	}
 	siteSettings = JSON.stringify({domains, fpdWhitelist, fpdOn: fpDetectionOn && fpdSettings.detection});
 	if (siteSettings == cachedSiteSettings) {
@@ -1045,6 +1049,7 @@ async function updateUserScripts() {
 			console.log(`Switching wrappersPortId from ${wrappersPortId} to ${portId} on userScripts update.`);
 			wrappersPortId = portId;
 		}
+		browser.storage.local.set({cachedSiteSettings, wrappersPortId});
 		const {id, includeGlobs, excludeGlobs} = conf;
 		const opts = {
 			id,
@@ -1066,6 +1071,7 @@ async function updateUserScripts() {
 }
 
 function changedLevels(changed, area) {
+	if (area !== "sync") return;
 	browser.storage.sync.get(null).then(updateLevels);
 }
 browser.storage.onChanged.addListener(changedLevels);

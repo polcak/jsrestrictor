@@ -104,6 +104,7 @@ var fp_levels = {};
 			var orig_levels_updated_callbacks = levels_updated_callbacks;
 			levels_updated_callbacks = [];
 			orig_levels_updated_callbacks.forEach((it) => it());
+			await updateUserScripts();
 		}
 	}
 	loadFpdConfig();
