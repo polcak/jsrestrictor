@@ -1,5 +1,13 @@
 Title: Release history
 
+## 0.20
+
+* More robust SyncMessage implementation
+* Prevent patchWindow from throwing on SOP violations.
+* Chromium-based: Fix bug that wrappers were sometimes not timely applied (MV3 bug of 0.19)
+* Firefox: Work around issue that could have prevented XML documents from being parsed/loaded by the browser (see also https://bugzilla.mozilla.org/show_bug.cgi?id=1899786)
+* Firefox: minimal requirements increased to 115
+
 ## 0.19.1
 
 * Improve performance of FPD in temporary background scripts: Limit the amount of data that is stored to the permanent storage as well as the number of write operations without a real hit stemming from the need to recomupte the data.
