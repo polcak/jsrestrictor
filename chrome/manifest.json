@@ -26,6 +26,7 @@
       "js": [
         "nscl/lib/browser-polyfill.js",
         "nscl/common/uuid.js",
+        "nscl/common/SyncMessage.js",
         "nscl/content/patchWindow.js",
         "lib/sha256.js",
         "helpers.js",
@@ -62,6 +63,7 @@
     "storage",
     "tabs",
     "webRequest",
+    "declarativeNetRequest",
     "webNavigation",
     "notifications",
     "scripting",
