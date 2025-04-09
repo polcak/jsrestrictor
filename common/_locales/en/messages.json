@@ -73,7 +73,7 @@
 		"description": "Column headding in the popup detailed JSS shield"
 	},
 	"FingerprintQualityLabel": {
-		"message": "⤷ The number of APIs misused for fingerprinting called by the page: ",
+		"message": "⤷ The number of APIs misusable for fingerprinting called by the page: ",
 		"description": "This text is displayed in the popup as additional information from FPD"
 	},
 	"popupDefaultLevelHelpText": {
@@ -1475,7 +1475,7 @@
 		"description": "Text shown in options during configuaration of the parameters of FPD"
 	},
 	"FPDSeverityNone": {
-		"message": "None",
+		"message": "None or negligible",
 		"description": "The level of the number of detected APIs misusable for fingerprinting"
 	},
 	"FPDSeverityLow": {

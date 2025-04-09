@@ -1449,7 +1449,7 @@
 		"description": "Text shown in options during configuaration of the parameters of FPD"
 	},
 	"FPDSeverityNone": {
-		"message": "Žádný",
+		"message": "Žádné nebo zanedbatelné",
 		"description": "The level of the number of detected APIs misusable for fingerprinting"
 	},
 	"FPDSeverityLow": {
