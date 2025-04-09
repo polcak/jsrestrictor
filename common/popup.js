@@ -441,7 +441,7 @@ async function control_whitelist(prefix)
 
 addEventListener("DOMContentLoaded", async () => {
 	await init_jsshield();
-	console.log("Loaded ", site);
+	console.debug("Loaded ", site);
 	if (!site) {
 		return;
 	}

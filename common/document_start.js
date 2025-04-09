@@ -37,7 +37,7 @@ function wrapWindow(currentLevel, fpdWrappers, wrappersConf) {
 function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash, incognitoHash, portId}) {
 	if (pageConfiguration) return; // one shot
 	pageConfiguration = {currentLevel};
-	console.log(`Configuration injected: ${document.readyState}\n${document.title} ${document.documentElement.outerHTML}`);
+	console.debug(`Configuration injected: ${document.readyState}\n${document.title} ${document.documentElement.outerHTML}`);
 	if (browser.extension.inIncognitoContext) {
 		domainHash = incognitoHash;
 	}
@@ -49,7 +49,7 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 		wrappersPort = portId ? patchWindow({portId}) : wrapWindow(currentLevel, fpdWrappers, wrappersConf);
 
 		// initialize in case the userScript API already injected
-		console.log(portId, wrappersPort, wrappersConf);
+		console.debug(portId, wrappersPort, wrappersConf);
 		wrappersPort.postMessage(wrappersConf);
 
 		wrappersPort.onMessage = msg => {

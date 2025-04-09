@@ -1046,7 +1046,7 @@ async function updateUserScripts() {
 			code: conf.injection,
 		});
 		if (wrappersPortId !== portId) {
-			console.log(`Switching wrappersPortId from ${wrappersPortId} to ${portId} on userScripts update.`);
+			console.debug(`Switching wrappersPortId from ${wrappersPortId} to ${portId} on userScripts update.`);
 			wrappersPortId = portId;
 		}
 		browser.storage.local.set({cachedSiteSettings, wrappersPortId});
