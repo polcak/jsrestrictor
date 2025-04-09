@@ -104,7 +104,7 @@ function define_page_context_function(wrapper) {
 		code += `
 			let innerF = replacementF;
 			replacementF = function(...args) {
-				// let jshelter_debug_timestamp = xrayWindow.performance.now(); console.debug('JShelter performance ${originalF} start:', jshelter_debug_timestamp); // Intentionally one line
+				let jshelter_debug_timestamp = xrayWindow.performance.now(); console.debug('JShelter performance ${originalF} start:', jshelter_debug_timestamp); // Intentionally one line
 
 				// prepare callbacks
 				args = args.map(a => typeof a === "function" ? WrapHelper.pageAPI(a) : a);
