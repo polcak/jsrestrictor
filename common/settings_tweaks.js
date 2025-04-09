@@ -35,6 +35,13 @@ var tweak_domains_builtin = {
 			"webworker": 2
 		}
 	},
+	"pad.riseup.net": {
+		"explanation": "https://pagure.io/JShelter/webextension/issue/152",
+		"level_id": ["1", "2"],
+		"tweaks": {
+			"webworker": 2
+		}
+	},
 };
 
 // TODO: implement the possibility of community-currated lists of exceptions
