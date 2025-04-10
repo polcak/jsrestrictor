@@ -72,5 +72,5 @@
   "host_permissions": ["<all_urls>"],
   "optional_permissions": ["browsingData"],
   "short_name": "JShelter",
-  "version": "0.20"
+  "version": "0.20.1"
 }

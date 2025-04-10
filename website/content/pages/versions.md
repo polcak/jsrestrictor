@@ -1,5 +1,11 @@
 Title: Release history
 
+## 0.20.1
+
+* Change Worker settings for [pad.riseup.net](https://pagure.io/JShelter/webextension/issue/152) and [kiwi.com](https://pagure.io/JShelter/webextension/issue/153)
+* Fine-tune strings shown in popup for FPD
+* Limit logging to console by JShelter (do not produce output that the user is not concerned with). Developers can see such output in debug builds.
+
 ## 0.20
 
 * More robust SyncMessage implementation
