@@ -105,7 +105,7 @@ visited with active blocking extension.
 
 Web API Manager is a browser extension, that aims to block explicitly
 defined JavaScript APIs. It has been developed by Snyders in 2016 and
-used in several studies conducted by [Snyders et al.](https://www.peteresnyder.com/https://www.peteresnyder.com/).
+used in several studies conducted by [Snyders et al.](https://www.peteresnyder.com/).
 
 The original purpose of the Web API Manager is to block explicitly
 defined JavaScript APIs. However, in our measurements, we just need to
