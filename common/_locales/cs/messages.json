@@ -73,7 +73,7 @@
 		"description": "Column headding in the popup detailed JSS shield"
 	},
 	"FingerprintQualityLabel": {
-		"message": "⤷ Počet API zneužívaných pro tvorbu otisku prohlížeče volaných stránkou: ",
+		"message": "⤷ Počet API zneužitelných pro tvorbu otisku prohlížeče volaných stránkou: ",
 		"description": "This text is displayed in the popup as additional information from FPD"
 	},
 	"popupDefaultLevelHelpText": {
