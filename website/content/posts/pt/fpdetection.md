@@ -64,6 +64,7 @@ crawl](/crawling_results/), and available tools focused on browser
 fingerprinting.
 
 * We extracted and modified detection rules from studies like:
+
    * [Fingerprinting the
 Fingerprinters](https://web.cs.ucdavis.edu/~zubair/files/fpinspector-sp2021.pdf)
    * [A 1-million-site Measurement and
@@ -71,10 +72,12 @@ Analysis](https://www.cs.princeton.edu/~arvindn/publications/OpenWPM_1_million_s
    * [The Web Never
 Forgets](https://securehomes.esat.kuleuven.be/~gacar/persistent/the_web_never_forgets.pdf)
 * We reflected traits of known fingerprinting tools like:
+
    * [FingerprintJS](https://github.com/fingerprintjs)
    * [Am I Unique](https://amiunique.org/)
    * [Cover Your Tracks](https://coveryourtracks.eff.org/)
 * We utilized knowledge of existing detection tools like:
+
    * [A Fingerprinting Monitor For Chrome
 (FPMON)](https://fpmon.github.io/fingerprinting-monitor/)
    * [Don't FingerPrint Me (DFPM)](https://github.com/freethenation/DFPM)
@@ -226,12 +229,15 @@ above, we manually inspected FPD in these situations. Finally, we consider
 anything below the score of 2 as not fingerprinting.
 
 * Number of fingerprinting web pages identified by *our ground truth*.
+
    * Homepages: **20**
    * Login pages: **34**
 * Number of fingerprinting web pages identified by *JShelter*.
+
    * Homepages: **20**
    * Login pages: **30**
 * Number of wrong identifications by *JShelter*.
+
    * Homepages: **2**
       * False positives: **1**
       * False negatives: **1**
