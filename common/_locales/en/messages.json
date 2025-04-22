@@ -1325,7 +1325,7 @@
 	},
 
 	"MV3DevmodeRequired": {
-		"message": "Due to severe limitations imposed by <a href=\"$MV3URL$\" target=\"_blank\">Google's Manifest V3</a>, JShelter and other browser extensions cannot work anymore on Chromium-based browsers unless you switch on the <em>Developer mode</em> in <strong>chrome://extensions</strong> (<a href=\"$INFOURL$\" target=\"_blank\">more information on Google's developers site</a>).",
+		"message": "Due to severe limitations imposed by <a href=\"$MV3URL$\" target=\"_blank\">Google's Manifest V3</a>, JShelter and other browser extensions cannot work anymore on Chromium-based browsers (including yours) unless you switch on the <em>Developer mode</em> in <strong>chrome://extensions</strong> (<a href=\"$INFOURL$\" target=\"_blank\">more information on Google's developers site</a>).",
 		"placeholders": {
 			"mv3url": {
 				"content": "https://jshelter.org/mv3/"
@@ -1338,7 +1338,7 @@
 	},
 
 	"MV3BrokenFeatures": {
-		"message": "Due to severe limitations imposed by <a href=\"$MV3URL$\" target=\"_blank\">Google's Manifest V3</a>, some JShelter features (e.g. Network Boundary Shield and Fingerprinting Detection in Blocking Mode) won't work on recent Chrome-based browsers, and other ones might be less reliable than they were in the past and still are on Firefox.",
+		"message": "Due to severe limitations imposed by <a href=\"$MV3URL$\" target=\"_blank\">Google's Manifest V3</a>, some JShelter features (e.g. Network Boundary Shield and Fingerprinting Detection in Blocking Mode) won't work on recent Chromium-based browsers (including yours), and other ones might be less reliable than they were in the past and still are on Firefox.",
 		"placeholders": {
 			"mv3url": {
 				"content": "https://jshelter.org/mv3/"
