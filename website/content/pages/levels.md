@@ -6,7 +6,7 @@ JavaScript Shield internally consists of wrappers, small pieces of code that mod
 
 * **Precision reduction**: The original value is too precise and it is not necessary for most use cases. JavaScript Shield modifies the values so that typical and benign use cases are not affected.
 
-* **Provide fake information**: Some wrappers provide fake information mostly to confuse fingerprinters. For example, canvas wrappers modifify the image so that the same instructions produce different result in each session and for each domain.
+* **Provide fake information**: Some wrappers provide fake information mostly to confuse fingerprinters. For example, canvas wrappers modify the image so that the same instructions produce different result in each session and for each domain.
 
 * **Hide information**: Some APIs provide information that is not generally needed and can be hidden from most of the pages. Depending on the API, JavaScript Shield might return an error, an empty value, or block the API completely.
 
