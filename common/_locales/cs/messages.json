@@ -1158,7 +1158,7 @@
 				"description": "Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
 			},
 			"paragraph2": {
-				"content": "Obvykle byste měli nechat Štít pro ochranu hranice sítě vyhledávat podezřelé požadavky v celém provozu. Ale některé stránky vyžadují interakci mezi veřejným Internetem a lokální sítí, např.  Štít pro ochranu hranice sítě může rozbít některé Intranetové informační systémy. Uživatelé JShelteru také nahlásili zvýšené množství falešných poplachů v kombinací s filtrovacími programy modifikujícími odpovědi DNS. Pokud takový program používáte, ujistěte se, že DNS vrací 0.0.0.0 pro blokované domény.",
+				"content": "Obvykle byste měli nechat Štít pro ochranu hranice sítě vyhledávat podezřelé požadavky v celém provozu. Ale některé stránky vyžadují interakci mezi veřejným Internetem a lokální sítí, např. Štít pro ochranu hranice sítě může rozbít některé Intranetové informační systémy. Uživatelé JShelteru také nahlásili zvýšené množství falešných poplachů v kombinací s filtrovacími programy modifikujícími odpovědi DNS. Pokud takový program používáte, ujistěte se, že DNS vrací 0.0.0.0 pro blokované domény.",
 				"description": "Paragraph 2, please translate this text."
 			},
 			"paragraph3": {
