@@ -98,6 +98,12 @@ devserver-global:
 publish:
 	$(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(PUBLISHCONF)" $(PELICANOPTS)
 
+staging-deploy: html
+	rsync -e "ssh -p 22" -P -rvzc output/ manufactura@opal5.opalstack.com:/home/manufactura/apps/js-shield/ --cvs-exclude
+
+staging-dry-deploy: html
+	rsync -n -e "ssh -p 22" -P -rvzc output/ manufactura@opal5.opalstack.com:/home/manufactura/apps/js-shield/ --cvs-exclude
+
 deploy: html
 	rsync -e "ssh -p 22" -P -rvzc output/ root@jshelter.org:/var/www/html/ --cvs-exclude
 
