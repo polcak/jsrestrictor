@@ -60,6 +60,8 @@ I18N_SUBSITES = {
         "SECTION_HELP": 'Usar o JShelter e colocar no <a href="https://pagure.io/JShelter/webextension/issues">issue tracker</a> o registo dos problemas que encontrares é uma ajuda enorme. Se quiseres contribuir para o código do projecto publica as tuas ideias no issue tracker ou avança para a implementação e envia-nos um pull request.',
         "SECTION_LICENSE_TITLE": 'Qual é a licença?',
         "SECTION_LICENSE": 'O JShelter é software copyleft, disponível segundo a <a href="/pt/license">Licença Pública Geral GNU.',
+    },
+    "ru": {
     }
 }
 

@@ -20,6 +20,9 @@ for line in lines:
         break
     raw_frontmatter += line.strip() + ' '
 
+# fix translated tags
+raw_frontmatter = raw_frontmatter.replace('Название: ', 'Title: ')
+
 # remove header markup if present
 if raw_frontmatter.startswith('# '):
     raw_frontmatter = raw_frontmatter.replace('# ', '', 1)
