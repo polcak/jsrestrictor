@@ -3,7 +3,9 @@ Markdown>=3.3.4
 comment-parser>=1.2.3
 jinja2>=3.0
 pelican-series>=2.1.0
-mdpo>=2.0.1
+# mdpo>=1.0.3
 wlc==1.13
 markdownify>=0.12.0
 
+# FIXME: replace this by 2.1.4 once it comes out
+https://github.com/mondeja/mdpo/archive/fe0d4d7b92518e2353d3a872fd0faf469be321f9.zip
