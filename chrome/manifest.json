@@ -48,10 +48,6 @@
     "256": "img/icon-256.png",
     "512": "img/icon-512.png"
   },
-  "web_accessible_resources": [{
-    "resources": ["farble.wasm"],
-    "matches": ["<all_urls>"]
-  }],
   "manifest_version": 3,
   "minimum_chrome_version": "120",
   "name": "__MSG_extensionName__",

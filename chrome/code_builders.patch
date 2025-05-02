@@ -1,0 +1,27 @@
+diff --git a/code_builders.js b/code_builders.js
+index 002e2e18..6e82a90e 100644
+--- a/code_builders.js
++++ b/code_builders.js
+@@ -380,7 +380,12 @@ function insert_wasm_code(code) {
+ 		const reserved_offset = 544;
+ 		const data_offset = 1024;
+ 
+-		WebAssembly.instantiateStreaming(fetch("/* WASM_URL */"), {env: {memory: wasm_memory}}).then(result => {
++		let wasm_string = atob("__WASM_CODE_DURING_BUILD__");
++		let wasm_bytes = new Uint8Array(wasm_string.length);
++		for (let i = 0; i < wasm_string.length; i++) {
++      wasm_bytes[i] = wasm_string.charCodeAt(i);
++		}
++		WebAssembly.instantiate(wasm_bytes, {env: {memory: wasm_memory}}).then(result => {
+ 			new Uint16Array(wasm_memory.buffer, crc_offset, crc16_table.length).set(crc16_table);
+ 			const xoring = new Uint32Array(wasm_memory.buffer, xoring_offset, 8);
+ 			for (let i = 0; i < 64; i += 8) {
+@@ -435,7 +440,7 @@ function insert_wasm_code(code) {
+ 		}).catch(e => {
+ 			console.warn("Failed to instantiate WASM farbling module, falling back to JS implementation", e);
+ 		});
+-	}).toString().replace("/* WASM_URL */", browser.runtime.getURL("farble.wasm"));
++	}).toString();
+ 
+ 	return code.replace("// WASM_CODE //", `(${wasm_code})()`);
+ }
