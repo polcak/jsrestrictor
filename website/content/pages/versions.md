@@ -1,5 +1,12 @@
 Title: Release history
 
+## 0.20.2
+
+* Avoid web accessible resources in Chrome-based browsers to prevent simple and precise JShelter detection by page scripts at the cost of slight performance decrease, see [the commit message for details](https://pagure.io/JShelter/webextension/c/b4cffc1dd17851cb258e6a8ba73d6572fb9d8514?branch=main)
+* Update NSCL (code refactoring and removal of debug statements from non-debug runs)
+* Change messages about failures in WASM code to warnings as these might be useful to users
+* Small update of Czech and English user-facing strings
+
 ## 0.20.1
 
 * Change Worker settings for [pad.riseup.net](https://pagure.io/JShelter/webextension/issue/152) and [kiwi.com](https://pagure.io/JShelter/webextension/issue/153)
