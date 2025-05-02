@@ -760,6 +760,5 @@ function generate_code(wrapped_code) {
 		}
 	}).toString().replace('// WRAPPERS //', wrapped_code)
 
-	console.debug(code);
 	return `(${code})();`;
 }

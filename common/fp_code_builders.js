@@ -327,7 +327,7 @@ function fp_assemble_injection(currentLevel, fpdWrappers, initializer = '') {
 		console.debug("JShelter wrappers early init attempt " + JSON.stringify(conf));
 	}
 	`;
-	return `(() => {
+	var injected_code = `(() => {
 		let inited = false;
 		const init = ({domainHash, fpdTrackCallers}) => {
 			if (inited) return;
@@ -342,4 +342,6 @@ function fp_assemble_injection(currentLevel, fpdWrappers, initializer = '') {
 		${initializer}
 		console.debug("JShelter wrappers injected at " + document.readyState);
 	})()`;
+	console.debug("Code to be injected by JShelter (JSS and FPD)", injected_code);
+	return injected_code;
 }
