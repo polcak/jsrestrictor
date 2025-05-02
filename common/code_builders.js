@@ -420,7 +420,7 @@ function insert_wasm_code(code) {
 						try {
 							wasm_memory.grow(Math.ceil((needed_bytes - memory_size) / 65536));
 						} catch (e) {
-							console.debug("Failed to grow WASM memory, falling back to JS implementation", e);
+							console.warn("Failed to grow WASM memory, falling back to JS implementation", e);
 							return false;
 						}
 					}
@@ -433,7 +433,7 @@ function insert_wasm_code(code) {
 			Object.freeze(wasm);
 			console.debug("WASM farbling module initialized");
 		}).catch(e => {
-			console.debug("Failed to instantiate WASM farbling module, falling back to JS implementation", e);
+			console.warn("Failed to instantiate WASM farbling module, falling back to JS implementation", e);
 		});
 	}).toString().replace("/* WASM_URL */", browser.runtime.getURL("farble.wasm"));
 
