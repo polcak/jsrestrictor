@@ -42,4 +42,3 @@ else
 	popd
 	sed --in-place "s~__WASM_CODE_DURING_BUILD__~`base64 --wrap=0 $WASM_FILE `~" build/chrome/code_builders.js
 fi
-echo $BROWSER $WASM_FILE
