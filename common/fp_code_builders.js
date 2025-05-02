@@ -337,9 +337,9 @@ function fp_assemble_injection(currentLevel, fpdWrappers, initializer = '') {
 			${alea}
 			var prng = alea(domainHash); // Do not use this in wrappers, create your own prng to generate repeatable sequences
 			${code}
-			console.debug("JSShelter wrappers initialized.");
+			console.debug("JShelter wrappers initialized.");
 		};
 		${initializer}
-		console.debug("JSShelter wrappers injected at " + document.readyState);
+		console.debug("JShelter wrappers injected at " + document.readyState);
 	})()`;
 }
