@@ -104,15 +104,16 @@ if __name__ == "__main__":
         bl = base_locales[locale] # Base language json
         wl = weblate_locales[locale] # Weblate language json
         for key in wl.keys():
-            if bl[key] == wl[key]:
-                continue # Skip strings that are the same in Weblate and base branch
-            # Check if the only difference is a missing empty description
-            if bl[key]["message"] == wl[key]["message"] and \
-                bl[key]["description"] == "" and "description" not in wl[key] and \
-                (("placeholders" not in bl[key] and "placeholders" not in wl[key]) or \
-                (["placeholders"] in bl[key] and "placeholders" in wl[key] and \
-                bl[key]["placeholders"] == wl[key]["placeholders"])):
-                    continue # Skip such strings
+            if key in bl: # Not a new string translated in Weblate but not yet in git
+                if bl[key] == wl[key]:
+                    continue # Skip strings that are the same in Weblate and base branch
+                # Check if the only difference is a missing empty description
+                if bl[key]["message"] == wl[key]["message"] and \
+                    bl[key]["description"] == "" and "description" not in wl[key] and \
+                    (("placeholders" not in bl[key] and "placeholders" not in wl[key]) or \
+                    (["placeholders"] in bl[key] and "placeholders" in wl[key] and \
+                    bl[key]["placeholders"] == wl[key]["placeholders"])):
+                        continue # Skip such strings
             bl[key] = wl[key]
             updated_locales[locale] = updated_locales.get(locale, 0) + 1
 
