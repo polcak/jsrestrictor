@@ -72,7 +72,7 @@
 		"description": "Column headding in the popup detailed JSS shield"
 	},
 	"FingerprintQualityLabel": {
-		"message": "⤷ Количество API, недобросовестно используемых для фингерпринтинга на странице: ",
+		"message": "⤷ Количество API, вызываемых страницей, которые можно использовать для отпечатков пальцев: ",
 		"description": "This text is displayed in the popup as additional information from FPD"
 	},
 	"popupDefaultLevelHelpText": {
@@ -686,7 +686,7 @@
 		"message": "Выключено"
 	},
 	"jssgroupWASMDisabledDescription": {
-		"message": "Выключить создание малой лжи с помощью WebAssembly."
+		"message": "Не создавайте маленькую ложь в WebAssembly, используйте более медленный JavaScript."
 	},
 	"jssgroupWASMPassive": {
 		"message": "Пассивно"
@@ -1378,7 +1378,7 @@
 		"description": "Text shown in options during configuaration of the parameters of FPD"
 	},
 	"FPDSeverityNone": {
-		"message": "Нет",
+		"message": "Отсутствует или незначительна",
 		"description": "The level of the number of detected APIs misusable for fingerprinting"
 	},
 	"FPDSeverityLow": {
@@ -1486,7 +1486,12 @@
 		"message": "Предустановленные твики дляJavaScript Shield"
 	},
 	"FPDReportTrackCallersFailed": {
-		"message": "Невозможно отслеживать вызывающие сценарии из-за ошибки. $errorFromBrowser$"
+		"message": "Невозможно отслеживать вызывающие сценарии из-за ошибки. $errorFromBrowser$",
+		"placeholders": {
+			"errorFromBrowser": {
+				"content": "$1"
+			}
+		}
 	},
 	"MV3BrokenFeatures": {
 		"message": "Из-за строгих ограничений, налагаемых <a href=\"$MV3URL$\" target=\"_blank\">Google's Manifest V3</a>, некоторые функции JShelter (например, сетевая защита и обнаружение отпечатков пальцев в режиме блокировки) не будут работать на последних браузерах основанных на Chromium (включая ваш), а другие могут быть менее надежными, чем были в прошлом и по-прежнему находятся на Firefox.",
@@ -1533,5 +1538,8 @@
 	},
 	"FPDReportTrackCallers": {
 		"message": "Отслеживание вызываемых сценариев"
+	},
+	"FPDReportForgetTraces": {
+		"message": "Скрыть текущих абонентов"
 	}
 }
