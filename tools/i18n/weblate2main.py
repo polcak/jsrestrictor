@@ -109,6 +109,7 @@ if __name__ == "__main__":
                     continue # Skip strings that are the same in Weblate and base branch
                 # Check if the only difference is a missing empty description
                 if bl[key]["message"] == wl[key]["message"] and \
+                    "description" in bl[key] and \
                     bl[key]["description"] == "" and "description" not in wl[key] and \
                     (("placeholders" not in bl[key] and "placeholders" not in wl[key]) or \
                     (["placeholders"] in bl[key] and "placeholders" in wl[key] and \
