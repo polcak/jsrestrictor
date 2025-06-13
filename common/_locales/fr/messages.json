@@ -261,7 +261,7 @@
 		"description": "Explains the protection to the user"
 	},
 	"jssgroupLocallyGeneratedAudioDescription2": {
-		"message": "Fonctions $api$ produit la data modifiée.",
+		"message": "Fonctions $apis$ produit la data modifiée.",
 		"placeholders": {
 			"apis": {
 				"content": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData(), et AnalyserNode.getFloatFrequencyData()",

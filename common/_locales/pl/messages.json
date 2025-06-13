@@ -162,10 +162,6 @@
 		"message": "Wtyczka poprawiająca poziom bezpieczeństwa i prywatności użytkownika.",
 		"description": "Description of the extension."
 	},
-	"FPDDescription": {
-		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
-		"description": "This is the description of FPD shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs."
-	},
 	"JSSBuiltinExceptionsLevels": {
 		"message": "Poziomy",
 		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
@@ -235,10 +231,6 @@
 		"message": "Zachowanie",
 		"description": "A label shown in options during configuaration of the parameters of FPD"
 	},
-	"javascriptShieldDescription": {
-		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><ul><li>$REDUCTION$</li><li>$FAKE$</li><li>$HIDE$</li></ul><p>$BLOGS$</p>",
-		"description": "This is the description of JSS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs."
-	},
 	"jssgroupGamepads": {
 		"message": "Kontrolery do gier",
 		"description": "gamepads group"
@@ -292,10 +284,6 @@
 	"jssgroupAsk": {
 		"message": "Pytaj",
 		"description": "Displayed during JSS level tweaking for XHR and possibly more (in the future)"
-	},
-	"NBSDescription": {
-		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
-		"description": "This is the description of NBS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs."
 	},
 	"formlabelDescription": {
 		"message": "Opis:",
@@ -645,7 +633,13 @@
 		"description": "Displayed in expert settings, button that loads current configuration to the textarea"
 	},
 	"jssgroupLocallyGeneratedAudioDescription2": {
-		"message": "Funkcje $apis$ zwracają zmienione dane."
+		"message": "Funkcje $apis$ zwracają zmienione dane.",
+		"placeholders": {
+			"apis": {
+				"content": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData(), and AnalyserNode.getFloatFrequencyData()",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
 	},
 	"fpdNotificationsOnDescription": {
 		"message": "Włączono wykrywanie/blokowanie powiadomień.",
@@ -697,7 +691,13 @@
 		"description": "Displayed during JSS level tweaking for InstalledBrowserPlugins and possibly more (in the future)"
 	},
 	"jssgroupGraphicCardInformationDescription3": {
-		"message": "$apis$ zwraca zmodyfikowane wartości."
+		"message": "$apis$ zwraca zmodyfikowane wartości.",
+		"placeholders": {
+			"apis": {
+				"content": "WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions(), and .getExtension()",
+				"description": "Keep the names of the API but translate the punctuation and conjunctions"
+			}
+		}
 	},
 	"jssgroupInstalledBrowserPluginsFakeDescription": {
 		"message": "Zwróć dwie fałszywe wtyczki."

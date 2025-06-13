@@ -95,7 +95,13 @@
 		"message": "Aseta yleisesti pätevä oletustaso JavaScript Shield -tasoksi tälle sivulle."
 	},
 	"defaultLevelSelection": {
-		"message": "Oletustaso ($levelName$)"
+		"message": "Oletustaso ($levelName$)",
+		"description": "This text is displayed as the default level in the popup",
+		"placeholders": {
+			"levelName": {
+				"content": "$1"
+			}
+		}
 	},
 	"ShieldOffSlider": {
 		"message": "Pois päältä"
@@ -162,6 +168,10 @@
 		"placeholders": {
 			"apis": {
 				"content": "(Päivämäärä, suorituskyky, tapahtumat, Gamepad API ja Web VR API)"
+			},
+			"jssgroupPhysicalLocationGeolocation": {
+				"content": "$1",
+				"description": "Translated version of the jssgroupPhysicalLocationGeolocation string"
 			}
 		}
 	},
@@ -226,7 +236,12 @@
 		"message": "Huijaa näytönohjaimesi yksityistiedot, joita voidaan käyttää, esimerkiksi sormenjälkien ottamisen vaikeuttamiseksi."
 	},
 	"jssgroupGraphicCardInformationDescription2": {
-		"message": "Funktio $api$ palauttaa tietyille parametreille muokattuja tai alimpia arvoja."
+		"message": "Funktio $api$ palauttaa tietyille parametreille muokattuja tai alimpia arvoja.",
+		"placeholders": {
+			"api": {
+				"content": "WebGLRenderingContext.getParameter()"
+			}
+		}
 	},
 	"jssgroupGraphicCardInformationDescription3": {
 		"message": "$apis$ palauttaa muokattuja arvoja.",
@@ -267,7 +282,13 @@
 		"message": "Estä sormenjälkien otto tietokoneeseen kytkettyjen multimedialaitteiden perusteella."
 	},
 	"jssgroupConnectedCamerasAndMicrophonesDescription2": {
-		"message": "Funktiota $api$ on muokattu palauttamaan tyhjä tai muokattu tulos."
+		"message": "Funktiota $api$ on muokattu palauttamaan tyhjä tai muokattu tulos.",
+		"placeholders": {
+			"api": {
+				"content": "MediaDevices.enumerateDevices()",
+				"description": "Keep the names of the API"
+			}
+		}
 	},
 	"jssgroupConnectedCamerasAndMicrophonesLittleLiesDescription": {
 		"message": "Satunnaistetaan laitteiden järjestys. Nykyiset laitteet eivät ole linkitettävissä eri verkkotunnuksissa ja istuntojen välillä."
@@ -285,7 +306,13 @@
 		"message": "Huijaa laitteistotiedot RAM-muistin määrästä ja suorittimen lukumäärästä."
 	},
 	"jssgroupHardwareDescription2": {
-		"message": "Getterit $apis$ palauttavat muokattuja arvoja."
+		"message": "Getterit $apis$ palauttavat muokattuja arvoja.",
+		"placeholders": {
+			"apis": {
+				"content": "navigator.deviceMemory and navigator.hardwareConcurrency",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
 	},
 	"jssgroupHardwareLowDescription": {
 		"message": "Palauta satunnainen kelvollinen arvo vähimmäisarvon ja todellisen arvon välillä. Palautettu arvo vaihtelee vierailtujen verkkotunnusten mukaan ja istuntojen välillä."
