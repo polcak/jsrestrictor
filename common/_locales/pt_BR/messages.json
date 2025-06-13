@@ -1,0 +1,278 @@
+{
+	"descriptionLess": {
+		"message": "(menos...)",
+		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get less information about the level."
+	},
+	"extensionName": {
+		"message": "JShelter",
+		"description": "Name of the extension. Please, do not translate unless properly justified."
+	},
+	"extensionDescription": {
+		"message": "Extensão para aumentar o nível de segurança e privacidade do usuário.",
+		"description": "Description of the extension."
+	},
+	"refreshPage": {
+		"message": "Atualizar página",
+		"description": "The button in the popup that refreshes the currently displayed page"
+	},
+	"modifyJSSPopup": {
+		"message": "Modificar",
+		"description": "The button in the popup that tweaks JSS"
+	},
+	"descriptionMore": {
+		"message": "(mais...)",
+		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get more information about the level."
+	},
+	"levelOfDefense": {
+		"message": "Nível de defesa",
+		"description": "Column headding in the popup detailed JSS shield"
+	},
+	"jssgroupUnprotected": {
+		"message": "Desprotegido",
+		"description": "Displayed during JSS level tweaking in case the API group is completely disabled"
+	},
+	"jssgroupMedium": {
+		"message": "Médio",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"jssgroupLow": {
+		"message": "Baixo",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"jssgroupHigh": {
+		"message": "Alto",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"settingsForDomain": {
+		"message": "Configurações do domínio",
+		"description": "The text in the popup that introduces the context of the information in the popup"
+	},
+	"fingerprintDetector": {
+		"message": "Detector de impressão digital"
+	},
+	"FPDgloballyOff": {
+		"message": "Detector de impressão digital está globalmente desativado"
+	},
+	"globalSettings": {
+		"message": "Configurações gerais"
+	},
+	"javascriptShield": {
+		"message": "Proteção JavaScript"
+	},
+	"networkBoundaryShield": {
+		"message": "Barreira de Proteção de Rede"
+	},
+	"NBSgloballyOff": {
+		"message": "Barreira de Proteção de Rede está globalmente desativada"
+	},
+	"nameDescriptionSeparator": {
+		"message": " — "
+	},
+	"detailTweaksOfJSShieldForThisSite": {
+		"message": "Ajustes detalhados do JS Shield para este site"
+	},
+	"wrappers": {
+		"message": "Grupos de APIs"
+	},
+	"numberOfCalls": {
+		"message": "Número de chamadas"
+	},
+	"FingerprintQualityLabel": {
+		"message": "⤷ O número de APIs usadas indevidamente para impressão digital chamadas pela página: "
+	},
+	"popupDefaultLevelHelpText": {
+		"message": "Defina o nível padrão global como o nível de proteção JavaScript para essa página."
+	},
+	"defaultLevelSelection": {
+		"message": "Nível padrão ($levelName$)",
+		"placeholders": {
+			"levelName": {
+				"content": "$1"
+			}
+		}
+	},
+	"ShieldOffSlider": {
+		"message": "DESLIGADO"
+	},
+	"ShieldOnSlider": {
+		"message": "LIGADO"
+	},
+	"jssgroupPoor": {
+		"message": "Fraco"
+	},
+	"jssgroupLittleLies": {
+		"message": "Pequenas mensagens"
+	},
+	"jssgroupStrict": {
+		"message": "Estrito"
+	},
+	"jssgroupConfuse": {
+		"message": "Confuso"
+	},
+	"jssgroupFake": {
+		"message": "Falso"
+	},
+	"jssgroupAddFake": {
+		"message": "Adicionar falso"
+	},
+	"jssgroupAsk": {
+		"message": "Perguntar"
+	},
+	"jssgroupBlock": {
+		"message": "Bloquear"
+	},
+	"jssgroupRemove": {
+		"message": "Remover"
+	},
+	"jssgroupTimePrecision": {
+		"message": "Precisão de tempo"
+	},
+	"jssgroupTimePrecisionDescription": {
+		"message": "Impedir ataques e técnicas de impressão digital que dependam da medição precisa de tempo (ou dificultá-los)."
+	},
+	"jssgroupTimePrecisionDescription2": {
+		"message": "Limite a precisão dos marcadores de tempo com alta resolução $apis$. Os marcadores de data e hora fornecidos pela API de geolocalização também serão agrupados se você ativar a proteção “$jssgroupPhysicalLocationGeolocation$”.",
+		"placeholders": {
+			"apis": {
+				"content": "(Data, desempenho, eventos, API do Gamepad e API de VR da Web)"
+			},
+			"jssgroupPhysicalLocationGeolocation": {
+				"content": "$1"
+			}
+		}
+	},
+	"jssgroupLocallyRenderedImagesDescription": {
+		"message": "Protege contra o rastreamento de impressões digitais do \"canvas\" ou o vazamento de informações sobre as capacidades de renderização da placa de vídeo."
+	},
+	"jssgroupLocallyRenderedImagesLittleLiesDescription": {
+		"message": "Aplica pequenas modificações na leitura de imagens de modo que a aparência delas se mantenha a mesma, mas seus valores precisos sejam diferentes com base no domínio visitado e entre sessões. O objetivo é prevenir o rastreamento de impressões digitais do \"Canvas\", ou pelo menos dificultá-lo."
+	},
+	"jssgroupTimePoorDescription": {
+		"message": "Arredonda o tempo para centésimos de segundo (1.230)"
+	},
+	"jssgroupTimeLowDescription": {
+		"message": "Arredonda o tempo para décimos de segundo (1.200)"
+	},
+	"jssgroupTimeHighDescription": {
+		"message": "Randomiza dígitos decimais usando ruído (1.451)"
+	},
+	"jssgroupLocallyRenderedImages": {
+		"message": "Imagens renderizadas localmente"
+	},
+	"jssgroupLocallyRenderedImagesDescription2": {
+		"message": "Funções $apis$ retornam dados de imagem modificados.",
+		"placeholders": {
+			"apis": {
+				"content": "canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() e WebGLRenderingContext.readPixels"
+			}
+		}
+	},
+	"jssgroupLocallyRenderedImagesDescription3": {
+		"message": "$apis$ são modificadas para mentir com probabilidade.",
+		"placeholders": {
+			"apis": {
+				"content": "CanvasRenderingContext2D.isPointInStroke() e CanvasRenderingContext2D.isPointInPath()"
+			}
+		}
+	},
+	"jssgroupLocallyGeneratedAudioLittleLiesDescription": {
+		"message": "Adiciona um pequeno ruído de amplitude que altera o som mas o mantém similar ao original para o ouvido humano. Os valores precisos variam com base no domínio visitado e entre sessões. O objetivo é prevenir o rastreamento de impressões digitais de Áudio, ou pelo menos dificultá-lo."
+	},
+	"jssgroupLocallyGeneratedAudio": {
+		"message": "Áudio gerado localmente"
+	},
+	"jssgroupLocallyGeneratedAudioDescription": {
+		"message": "Protege contra o vazamento de informações sobre as capacidades de renderização da placa de áudio, que poderiam ser usadas, por exemplo, no rastreamento de impressões digitais por áudio."
+	},
+	"jssgroupLocallyGeneratedAudioDescription2": {
+		"message": "Funções $apis$ retornam dados modificados.",
+		"placeholders": {
+			"apis": {
+				"content": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() e AnalyserNode.getFloatFrequencyData()"
+			}
+		}
+	},
+	"jssgroupLocallyGeneratedAudioStrictDescription": {
+		"message": "Dados de som são substituídos por ruído branco que varia com base no domínio visitado e entre sessões. O objetivo é limitar o vazamento de informações sobre o hardware de áudio e, ao mesmo tempo, dificultar o rastreamento de impressões digitais de Áudio."
+	},
+	"jssgroupGraphicCardInformation": {
+		"message": "Informações da placa de vídeo"
+	},
+	"jssgroupGraphicCardInformationDescription2": {
+		"message": "Função $api$ retorna valores modificados ou vazios para certos parâmetros.",
+		"placeholders": {
+			"api": {
+				"content": "WebGLRenderingContext.getParameter()"
+			}
+		}
+	},
+	"jssgroupGraphicCardInformationDescription3": {
+		"message": "$apis$ retornam valores modificados.",
+		"placeholders": {
+			"apis": {
+				"content": "Funções WebGLRenderingContext .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() e .getExtension()"
+			}
+		}
+	},
+	"jssgroupConnectedCamerasAndMicrophonesAddFakeDescription": {
+		"message": "Adiciona de 0 a 4 dispositivos falsos e randomiza a ordem. Os dispositivos existentes não serão vinculáveis em diferentes domínios e entre sessões."
+	},
+	"jssgroupInstalledBrowserPlugins": {
+		"message": "Plugins de navegador instalados"
+	},
+	"jssgroupGraphicCardInformationStrictDescription": {
+		"message": "Retorna valores vazios (null, strings vazias). Note que essa opção não previne o rastreamento de impressões digitais."
+	},
+	"jssgroupInstalledBrowserPluginsDescription": {
+		"message": "Protege contra o rastreamento de impressões digitais de plugin."
+	},
+	"jssgroupInstalledBrowserPluginsLittleLiesDescription": {
+		"message": "Edita os plugins atuais e adiciona dois plugins falsos."
+	},
+	"jssgroupInstalledBrowserPluginsFakeDescription": {
+		"message": "Retorna dois plugins falsos."
+	},
+	"jssgroupInstalledBrowserPluginsStrictDescription": {
+		"message": "Esconde todos os plugins."
+	},
+	"jssgroupConnectedCamerasAndMicrophones": {
+		"message": "Câmeras e microfones conectados"
+	},
+	"jssgroupConnectedCamerasAndMicrophonesDescription": {
+		"message": "Previne o rastreamento de impressões digitais baseadas nos dispositivos multimídia conectados ao computador."
+	},
+	"jssgroupConnectedCamerasAndMicrophonesDescription2": {
+		"message": "Função $api$ é modificada para retornar um resultado vazio ou modificado.",
+		"placeholders": {
+			"api": {
+				"content": "MediaDevices.enumerateDevices()"
+			}
+		}
+	},
+	"jssgroupConnectedCamerasAndMicrophonesLittleLiesDescription": {
+		"message": "Randomiza a ordem dos dispositivos. Os dispositivos existentes não serão vinculáveis em diferentes domínios e entre sessões."
+	},
+	"jssgroupConnectedCamerasAndMicrophonesStrictDescription": {
+		"message": "Retorna uma lista de dispositivos vazia."
+	},
+	"jssgroupHardwareLowDescription": {
+		"message": "Retorna um valor válido aleatório entre o valor mínimo e o valor real. O valor retornado varia com base nos domínios visitados e entre sessões."
+	},
+	"jssgroupHardware": {
+		"message": "Memória e CPU do dispositivo"
+	},
+	"jssgroupHardwareDescription2": {
+		"message": "Getters $apis$ retornam valores modificados.",
+		"placeholders": {
+			"apis": {
+				"content": "navigator.deviceMemory e navigator.hardwareConcurrency"
+			}
+		}
+	},
+	"jssgroupHardwareMediumDescription": {
+		"message": "Retorna um valor válido aleatório entre o mínimo e 8. O valor retornado varia com base nos domínios visitados e entre sessões."
+	},
+	"jssgroupHardwareHighDescription": {
+		"message": "Retorna 4 para navigator.deviceMemory e 2 para navigator.hardwareConcurrency."
+	}
+}
