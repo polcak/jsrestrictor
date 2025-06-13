@@ -1,0 +1,403 @@
+{
+	"extensionName": {
+		"message": "JShelter",
+		"description": "Name of the extension. Please, do not translate unless properly justified."
+	},
+	"extensionDescription": {
+		"message": "Extension pour augmenter le niveau de sécurité et de confidentialité de l’utilisateur.",
+		"description": "Description of the extension."
+	},
+	"descriptionMore": {
+		"message": "(plus...)",
+		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get more information about the level."
+	},
+	"jssgroupStrict": {
+		"message": "Strict",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"jssgroupLow": {
+		"message": "Bas",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"modifyJSSPopup": {
+		"message": "modifier",
+		"description": "The button in the popup that tweaks JSS"
+	},
+	"jssgroupTimePrecision": {
+		"message": "Précision chronologique"
+	},
+	"refreshPage": {
+		"message": "Actualiser la page",
+		"description": "The button in the popup that refreshes the currently displayed page"
+	},
+	"jssgroupPoor": {
+		"message": "Pauvre",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"networkBoundaryShield": {
+		"message": "Bouclier de limite de réseau",
+		"description": "The name of the Network Boundary Shield displayed at multiple places"
+	},
+	"jssgroupMedium": {
+		"message": "Moyen",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"fingerprintDetector": {
+		"message": "Détecteur de fingerprinting",
+		"description": "The name of the Fingerprint Detector displayed at multiple places"
+	},
+	"globalSettings": {
+		"message": "Paramètres globaux",
+		"description": "The button in the popup that opens options page"
+	},
+	"jssgroupAddFake": {
+		"message": "Ajouter un faux",
+		"description": "Displayed during JSS level tweaking for Connected cameras and microphones and possibly more (in the future)"
+	},
+	"FPDgloballyOff": {
+		"message": "Détecteur de fingerprinting est globalement désactivé",
+		"description": "Informs the user that FPD is globally disabled, displayed e.g. in popup"
+	},
+	"numberOfCalls": {
+		"message": "nombre d'appels",
+		"description": "Column headding in the popup detailed JSS shield"
+	},
+	"jssgroupFake": {
+		"message": "Faux",
+		"description": "Displayed during JSS level tweaking for InstalledBrowserPlugins and possibly more (in the future)"
+	},
+	"ShieldOnSlider": {
+		"message": "MARCHE",
+		"description": "Displayed in sliders that control activation of shields in popup and options, keep the text short to prevent overflow"
+	},
+	"jssgroupBlock": {
+		"message": "Bloquer",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"settingsForDomain": {
+		"message": "Paramètres du domaine",
+		"description": "The text in the popup that introduces the context of the information in the popup"
+	},
+	"jssgroupUnprotected": {
+		"message": "Non protégé",
+		"description": "Displayed during JSS level tweaking in case the API group is completely disabled"
+	},
+	"nameDescriptionSeparator": {
+		"message": " — ",
+		"description": "Used for example in the popup to separate the current JSS level from its description."
+	},
+	"jssgroupRemove": {
+		"message": "Soustraire",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"popupDefaultLevelHelpText": {
+		"message": "Définir le niveau global par défaut comme le niveau du JavaScript sur cette page.",
+		"description": "This text is displayed in the popup as a tooltip for the Default level button"
+	},
+	"jssgroupTimePrecisionDescription": {
+		"message": "Préviens les attaques et techniques de fingerprinting dépendant d'un timing précis (ou les rends difficiles).",
+		"description": "Displayed at various places"
+	},
+	"wrappers": {
+		"message": "Groupes d'APIs",
+		"description": "Column headding in the popup detailed JSS shield"
+	},
+	"NBSgloballyOff": {
+		"message": "Bouclier de limite de réseau est globalement activé",
+		"description": "Informs the user that NBS is globally disabled, displayed e.g. in popup"
+	},
+	"FingerprintQualityLabel": {
+		"message": "⤷Le nombre d'APIs a mauvaise utilisation pour le fingerprinting appelé par la page : ",
+		"description": "This text is displayed in the popup as additional information from FPD"
+	},
+	"jssgroupHigh": {
+		"message": "Haut",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"levelOfDefense": {
+		"message": "Niveau de défense",
+		"description": "Column headding in the popup detailed JSS shield"
+	},
+	"jssgroupConfuse": {
+		"message": "Confondre",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"detailTweaksOfJSShieldForThisSite": {
+		"message": "Détail des réglages du bouclier JS pour ce site",
+		"description": "Button in the popup that allows to tweak JSS."
+	},
+	"defaultLevelSelection": {
+		"message": "Niveau par défaut ($levelName$)",
+		"description": "This text is displayed as the default level in the popup",
+		"placeholders": {
+			"levelName": {
+				"content": "$1",
+				"description": "Translated name of the default level used by the user",
+				"example": "Recommended, see the keys JSSL*Name like JSSL2Name"
+			}
+		}
+	},
+	"ShieldOffSlider": {
+		"message": "ARRÊT",
+		"description": "Displayed in sliders that control activation of shields in popup and options, keep the text short to prevent overflow"
+	},
+	"descriptionLess": {
+		"message": "(moins...)",
+		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get less information about the level."
+	},
+	"javascriptShield": {
+		"message": "Bouclier JavaScript",
+		"description": "The name of the JavaScript Shield displayed at multiple places"
+	},
+	"jssgroupLittleLies": {
+		"message": "Petits mensonges",
+		"description": "Displayed during JSS level tweaking for several API groups"
+	},
+	"jssgroupAsk": {
+		"message": "Demander",
+		"description": "Displayed during JSS level tweaking for XHR and possibly more (in the future)"
+	},
+	"jssgroupGraphicCardInformationDescription2": {
+		"message": "Fonction $api$ retourne des values modifiées ou basses pour certain paramètres.",
+		"placeholders": {
+			"api": {
+				"content": "WebGLRenderingContext.getParameter()",
+				"description": "Keep the names of the API"
+			}
+		}
+	},
+	"jssgroupGraphicCardInformationDescription3": {
+		"message": "$apis$ retourne des valeurs modifiées.",
+		"placeholders": {
+			"apis": {
+				"content": "WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions(), et .getExtension()",
+				"description": "Keep the names of the API but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupLocallyRenderedImages": {
+		"message": "Images générées localement",
+		"description": "htmlcanvaselement group"
+	},
+	"jssgroupTimePrecisionDescription2": {
+		"message": "Limite la précision d'horodatage haute résolution des $apis$. Horodatage produit par API de Géolocalisation sont enveloppés aussi si vous activés la protection \"$jssgroupPhysicalLocationGeolocation$\".",
+		"description": "Displayed at various places",
+		"placeholders": {
+			"jssgroupPhysicalLocationGeolocation": {
+				"content": "$1",
+				"description": "Translated version of the jssgroupPhysicalLocationGeolocation string"
+			},
+			"apis": {
+				"content": "(Date, Performance, événements, Gamepad API, et Web VR API)",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupTimePoorDescription": {
+		"message": "Temps arrondis a la centième seconde (1.230)",
+		"description": "Explains the protection to the user"
+	},
+	"jssgroupLocallyRenderedImagesLittleLiesDescription": {
+		"message": "Appliquez de petites modifications aux données d'image lue pour que ces images apparaisses similaires, mais que la value précise diffère en fonction du domaine visité et a travers sessions. Le but est de prévenir le fingerprinting de Canvas ou au moins le rendre plus difficile.",
+		"description": "Consider keeping reference to Canvas fingerprinting in English"
+	},
+	"jssgroupTimeLowDescription": {
+		"message": "Temps arrondit au dixième de seconde (1.200)",
+		"description": "Explains the protection to the user"
+	},
+	"jssgroupLocallyGeneratedAudioLittleLiesDescription": {
+		"message": "Ajouter un bruit de faible amplitude pour que le son soit similaire a l'original à un humain. La value précise diffère en fonction du domaine visité et a travers les sessions. Le but est de prévenir le fingerprinting audio ou au moins le rendre plus difficile.",
+		"description": "Consider keeping reference to Audio fingerprinting in English"
+	},
+	"jssgroupGraphicCardInformation": {
+		"message": "Information de la carte graphique",
+		"description": "webgl group"
+	},
+	"jssgroupLocallyGeneratedAudioStrictDescription": {
+		"message": "La data audio est remplacée par du bruit blanc qui varie en fonction du domaine visité et a travers les sessions. Le but est de limiter les fuites sur le hardware audio et en même temps rendre le fingerprinting audio plus difficile.",
+		"description": "Consider keeping reference to Audio fingerprinting in English"
+	},
+	"jssgroupLocallyGeneratedAudioDescription": {
+		"message": "Protège contre la fuite d'information sur les capacités de la carte audio qui peuvent être utilisés, par exemple, en fingerprinting audio.",
+		"description": "Try to keep reference to audio fingerprinting"
+	},
+	"jssgroupLocallyRenderedImagesDescription2": {
+		"message": "Fonctions $apis$ génères des données d'image modifié.",
+		"description": "Displayed at various places",
+		"placeholders": {
+			"apis": {
+				"content": "canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob(), et WebGLRenderingContext.readPixels",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupLocallyRenderedImagesDescription": {
+		"message": "Protège contre le fingerprinting de canvas ou la fuite d'information sur les capacités d’interprétation de la carte graphique.",
+		"description": "Displayed at various places, try to keep canvas in English or make sure that the user can understand that the protection is about the Canvas API"
+	},
+	"jssgroupLocallyRenderedImagesDescription3": {
+		"message": "Les $apis$ sont modifiées pour mentir avec probabilité.",
+		"description": "Displayed after jssgroupLocallyRenderedImagesDescription2",
+		"placeholders": {
+			"apis": {
+				"content": "CanvasRenderingContext2D.isPointInStroke() et CanvasRenderingContext2D.isPointInPath()",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupLocallyGeneratedAudio": {
+		"message": "Audio généré localement",
+		"description": "audiobuffer group"
+	},
+	"jssgroupGraphicCardInformationDescription": {
+		"message": "Parodier les détails utiles de votre carte graphique, par exemple, pour rendre le fingerprinting plus difficile."
+	},
+	"jssgroupLocallyRenderedImagesStrictDescription": {
+		"message": "Lire images blanches (à partir du canevas WebGL, lisez un tableau vide). Cette option ne protège pas contre le fingerprinting de Canevas.",
+		"description": "Consider keeping reference to Canvas fingerprinting in English"
+	},
+	"jssgroupTimeHighDescription": {
+		"message": "Randomiser les chiffres décimaux avec du bruit (1.451)",
+		"description": "Explains the protection to the user"
+	},
+	"jssgroupLocallyGeneratedAudioDescription2": {
+		"message": "Fonctions $api$ produit la data modifiée.",
+		"placeholders": {
+			"apis": {
+				"content": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData(), et AnalyserNode.getFloatFrequencyData()",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupGraphicCardInformationLittleLiesDescription": {
+		"message": "Générez des nombres raisonnable ou des chaînes aléatoires qui différent selon le domaine visité et entre sessions. L'objectif étant de limiter les fuites des cartes graphiques tout en même temp rendre le fingerprinting plus difficile."
+	},
+	"jssgroupNetworkConditions": {
+		"message": "Conditions du réseau",
+		"description": "net group"
+	},
+	"jssgroupInstalledBrowserPlugins": {
+		"message": "Plugins de navigateur installés",
+		"description": "plugins group"
+	},
+	"jssgroupXMLHttpRequestRequests": {
+		"message": "XMLHttpRequest (XHR) transfère de data",
+		"description": "Keep the name of the API in English"
+	},
+	"jssgroupHardwareMediumDescription": {
+		"message": "Randomiser une value valide entre le minimum et 8. La value générée diffère en fonction des domaines visité et a travers sessions."
+	},
+	"jssgroupInstalledBrowserPluginsLittleLiesDescription": {
+		"message": "Éditez les plugins courant et ajouter deux faux plugins."
+	},
+	"jssgroupConnectedCamerasAndMicrophonesLittleLiesDescription": {
+		"message": "Randomisez l'ordre des appareils. Les appareils existant ne peuvent pas être liés sur différent domaines et a travers les sessions."
+	},
+	"jssgroupXMLHttpRequestRequestsBlockDescription": {
+		"message": "Bloquer toutes demandes XHR",
+		"description": "Keep the name of the API in English"
+	},
+	"jssgroupHardware": {
+		"message": "Appareil mémoire et CPU",
+		"description": "hardware group"
+	},
+	"jssgroupInstalledBrowserPluginsStrictDescription": {
+		"message": "Cacher tous les plugins."
+	},
+	"jssgroupInstalledBrowserPluginsDescription": {
+		"message": "Protection contre le fingerprinting des plugin."
+	},
+	"jssgroupInstalledBrowserPluginsDescription2": {
+		"message": "La protection n’est pas appliquée si votre navigateur génère une liste vide ou les cinq plugins PDF spécifiés par le standard HTML vivant. Ainsi, la protection n’est pas appliquée dans un navigateur moderne.",
+		"description": "The protection is not applied in modern browsers"
+	},
+	"jssgroupConnectedCamerasAndMicrophonesStrictDescription": {
+		"message": "Générer une liste vide d'appareils."
+	},
+	"jssgroupHardwareDescription": {
+		"message": "Parodier l'information hardware concernant la quantité de RAM et le nombre de CPU."
+	},
+	"jssgroupHardwareDescription2": {
+		"message": "Les $apis$ Getters génères des values modifiées.",
+		"placeholders": {
+			"apis": {
+				"content": "navigator.deviceMemory et navigator.hardwareConcurrency",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupArrays": {
+		"message": "ArrayBuffer API",
+		"description": "arrays group"
+	},
+	"jssgroupXMLHttpRequestRequestsAskDescription": {
+		"message": "Demander avant d’exécuter une demande XHR",
+		"description": "Keep the name of the API in English"
+	},
+	"jssgroupInstalledBrowserPluginsFakeDescription": {
+		"message": "Générer deux faux plugins."
+	},
+	"jssgroupXMLHttpRequestRequestsDescription": {
+		"message": "Filtrer les demandes XHR reliable au server."
+	},
+	"jssgroupNetworkConditionsDescription": {
+		"message": "Désactiver l’accès a l'information du réseau pour limiter le fingerprinting et enlever la possibilité d'observer les motifs d’accès au réseau pour apprendre si l'usager est a la maison, au travail ou en voyage."
+	},
+	"jssgroupHardwareHighDescription": {
+		"message": "Génère 4 pour navigator.deviceMemory et 2 pour navigator.hardwareConcurrency.",
+		"description": "Keep the names of the APIs in English"
+	},
+	"jssgroupXMLHttpRequestRequestsDescription2": {
+		"message": "Notez que les demandes XHR sont largement utilisé a des fin bénin et que les $apis$ no sont pas bloqués. Tous on des moyen similaires et certains même mieux pour communique avec le serveur. On vous recommande d'activer le Détecteur de Fingerprinting a la place des wrappers XHR pour un usage pratique. JShelter garde le wrapper parce-qu'il est utile a certains usager pour des raison expérimentales.",
+		"placeholders": {
+			"apis": {
+				"content": "Fetch, SSE, WebRTC, et WebSockets APIs",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupNetworkConditionsRemoveDescription": {
+		"message": "Désactiver NetworkInformation API",
+		"description": "Keep the name of the API in English"
+	},
+	"jssgroupConnectedCamerasAndMicrophonesDescription2": {
+		"message": "La fonction $api$ est modifiée pour générer un résulta vide ou modifié.",
+		"placeholders": {
+			"api": {
+				"content": "MediaDevices.enumerateDevices()",
+				"description": "Keep the names of the API"
+			}
+		}
+	},
+	"jssgroupConnectedCamerasAndMicrophonesDescription": {
+		"message": "Préviens le fingerprinting basé sur les périphériques multimédia connectés a l'ordinateur."
+	},
+	"jssgroupHardwareLowDescription": {
+		"message": "Randomiser une value valide entre le minimum et la vrai value. La value générée diffère en fonction des domaines visité et a travers sessions."
+	},
+	"jssgroupConnectedCamerasAndMicrophones": {
+		"message": "Cameras et microphones connectées"
+	},
+	"jssgroupConnectedCamerasAndMicrophonesAddFakeDescription": {
+		"message": "Ajouter 0-4 faux appareils et randomiser l'ordre. Les appareils existant ne peuvent plus être liés sur différent domaines et a travers sessions."
+	},
+	"jssgroupSharedArraysBuffer": {
+		"message": "SharedArrayBuffer API",
+		"description": "shared_array group"
+	},
+	"jssgroupArraysDescription": {
+		"message": "Protège contre les exploitation de type ArrayBuffer par exemple, pour prévenir des attaques secondaires sur la disposition de la mémoire (ou le rendre plus difficile)."
+	},
+	"jssgroupArraysRandomize": {
+		"message": "Randomiser"
+	},
+	"jssgroupArraysShift": {
+		"message": "Décaler"
+	},
+	"jssgroupGraphicCardInformationStrictDescription": {
+		"message": "Retourne des valeurs minimales (chaînes nulles et vide). Noter que cette option n’empêche pas le fingerprinting."
+	},
+	"jssgroupArraysShiftDescription": {
+		"message": "Décale les index pour rendre plus difficile la détection des limites de la page mémoire."
+	}
+}
