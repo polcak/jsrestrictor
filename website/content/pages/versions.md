@@ -1,5 +1,11 @@
 Title: Release history
 
+## 0.20.3
+
+* Chromium-based browsers: Handle [userScripts API permissions change](https://pagure.io/JShelter/webextension/issue/166)
+* Update ru and cs strings
+* Add fi, fr, pl, and pt\_BR translations that have only about [20-60% of strings translated](https://lists.nongnu.org/archive/html/js-shield/2025-06/msg00000.html).
+
 ## 0.20.2
 
 * Avoid web accessible resources in Chrome-based browsers to prevent simple and precise JShelter detection by page scripts at the cost of slight performance decrease, see [the commit message for details](https://pagure.io/JShelter/webextension/c/b4cffc1dd17851cb258e6a8ba73d6572fb9d8514?branch=main)
