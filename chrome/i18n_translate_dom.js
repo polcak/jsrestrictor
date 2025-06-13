@@ -2,6 +2,7 @@
  * \brief JS code that retrieves all HTML files with data-localize attributes and localizes them
  *
  *  \author Copyright (C) 2022  TotalCaesar659
+ *  \author Copyright (C) 2025  Libor Polčák
  *
  *  See https://github.com/polcak/jsrestrictor/pull/189 for the origins of the code.
  *
@@ -39,6 +40,22 @@ function localizeHTMLelement(e) {
 
 const textElements = document.querySelectorAll('[data-localize]');
 textElements.forEach(localizeHTMLelement);
+
+function localizeIssue166Element(e) {
+	let version = Number(navigator.userAgent.match(/(Chrome|Chromium)\/([0-9]+)/)?.[2]);
+	let translated = "Untranslated";
+	if (version >= 138) {
+	  // Allow User Scripts toggle will be used.
+		translated = browser.i18n.getMessage("MV3AllowUserScriptsRequired");
+	} else {
+	  // Developer mode toggle will be used.
+		translated = browser.i18n.getMessage("MV3DevmodeRequired");
+	}
+	e.innerHTML = translated;
+}
+
+const issue166Elements = document.querySelectorAll('[issue166-localize]');
+issue166Elements.forEach(localizeIssue166Element);
 
 const templates = document.getElementsByTagName("template");
 for (t of templates) {
