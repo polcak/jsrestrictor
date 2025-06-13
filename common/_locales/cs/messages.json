@@ -1333,6 +1333,18 @@
 		},
 		"description": "This message is displayed as an alert in popup and options when development mode is disabled. Make sure that you keep correct HTML markup"
 	},
+	"MV3AllowUserScriptsRequired": {
+		"message": "Kvůli omezením způsobených <a href=\"$MV3URL$\" target=\"_blank\">Googlím Manifestem V3</a> nemůže JShelter a další rozšíření prohlížeče pracovat správně v prohlížečích založených na Chromiu (včetně vašeho prohlížeče) než zapnete <em>uživatelské skripty</em> na stránce JShelteru dostupné z <strong>chrome://extensions</strong> (<a href=\"$INFOURL$\" target=\"_blank\">více informací o tomto režimu na stránkách Google pro vývojáře</a>).",
+		"placeholders": {
+			"mv3url": {
+				"content": "https://jshelter.org/mv3/"
+			},
+			"infourl": {
+				"content": "https://developer.chrome.com/docs/extensions/reference/api/userScripts#chrome_versions_138_and_newer_allow_user_scripts_toggle"
+			}
+		},
+		"description": "This message is displayed as an alert in popup and options when development mode is disabled. Make sure that you keep correct HTML markup"
+	},
 
 	"MV3BrokenFeatures": {
 		"message": "Kvůli omezením způsobených <a href=\"$MV3URL$\" target=\"_blank\">Googlím Manifestem V3</a> nejsou dostupné některé části JShelteru (např. Štít pro ochranu hranice sítě a Detektor získávání otisku prohlížeče v blokujícím režimu) v nejnovějších prohlížečích založených na Chromiu (včetně vašeho), některé části JShelteru mohou pracovat s nižší spolehlivostí než dříve a než stále pracují ve Firefoxu.",
