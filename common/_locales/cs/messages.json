@@ -1,1622 +1,1491 @@
 {
-	"extensionName": {
-		"message": "JShelter",
-		"description": "Jméno rozšíření. Prosím nepřekládat pokud není patřičně zdůvodněno."
-	},
-	"extensionDescription": {
-		"message": "Rozšíření pro zvýšení bezpečnosti a soukromí uživatele prohlížeče.",
-		"description": "Description of the extension."
-	},
-	"javascriptShield": {
-		"message": "JavaScriptový štít",
-		"description": "The name of the JavaScript Shield displayed at multiple places"
-	},
-	"networkBoundaryShield": {
-		"message": "Štít pro ochranu hranice sítě",
-		"description": "The name of the Network Boundary Shield displayed at multiple places"
-	},
-	"NBSgloballyOff": {
-		"message": "Štít pro ochranu hranice sítě je úplně deaktivovaný",
-		"description": "Informs the user that NBS is globally disabled, displayed e.g. in popup"
-	},
-	"fingerprintDetector": {
-		"message": "Detektor získávání otisku prohlížeče",
-		"description": "The name of the Fingerprint Detector displayed at multiple places"
-	},
-	"FPDgloballyOff": {
-		"message": "Detektor získávání otisku prohlížeče je úplně deaktivovaný",
-		"description": "Informs the user that FPD is globally disabled, displayed e.g. in popup"
-	},
-	"globalSettings": {
-		"message": "Globální nastavení",
-		"description": "The button in the popup that opens options page"
-	},
-	"settingsForDomain": {
-		"message": "Nastavení pro doménu",
-		"description": "The text in the popup that introduces the context of the information in the popup"
-	},
-
-	"refreshPage": {
-		"message": "Obnov stránku",
-		"description": "The button in the popup that refreshes the currently displayed page"
-	},
-	"modifyJSSPopup": {
-		"message": "Upravit",
-		"description": "The button in the popup that tweaks JSS"
-	},
-	"descriptionMore": {
-		"message": "(více…)",
-		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get more information about the level."
-	},
-	"descriptionLess": {
-		"message": "(skryj…)",
-		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get less information about the level."
-	},
-	"nameDescriptionSeparator": {
-		"message": " — ",
-		"description": "Used for example in the popup to separate the current JSS level from its description."
-	},
-	"detailTweaksOfJSShieldForThisSite": {
-		"message": "Podrobná nastavení JavaScriptového štítu",
-		"description": "Button in the popup that allows to tweak JSS."
-	},
-	"wrappers": {
-		"message": "Skupiny volání",
-		"description": "Column headding in the popup detailed JSS shield"
-	},
-	"levelOfDefense": {
-		"message": "Úroveň aplikované ochrany",
-		"description": "Column headding in the popup detailed JSS shield"
-	},
-	"numberOfCalls": {
-		"message": "Počet volání API",
-		"description": "Column headding in the popup detailed JSS shield"
-	},
-	"FingerprintQualityLabel": {
-		"message": "⤷ Počet API zneužitelných pro tvorbu otisku prohlížeče volaných stránkou: ",
-		"description": "This text is displayed in the popup as additional information from FPD"
-	},
-	"popupDefaultLevelHelpText": {
-		"message": "Nastav úroveň ochrany pro tuto stránku na globálně nastavenou výchozí úroveň.",
-		"description": "This text is displayed in the popup as a tooltip for the Default level button"
-	},
-	"defaultLevelSelection": {
-		"message": "Výchozí úroveň ($levelName$)",
-		"description": "This text is displayed as the default level in the popup",
-		"placeholders": {
-			"levelName": {
-				"content": "$1",
-				"description": "Translated name of the default level used by the user",
-				"example": "Recommended, see the keys JSSL*Name like JSSL2Name"
-			}
-		}
-	},
-	"ShieldOffSlider": {
-		"message": "Vyp.",
-		"description": "Displayed in sliders that control activation of shields in popup and options, keep the text short to prevent overflow"
-	},
-	"ShieldOnSlider": {
-		"message": "Zap.",
-		"description": "Displayed in sliders that control activation of shields in popup and options, keep the text short to prevent overflow"
-	},
-
-	"jssgroupUnprotected": {
-		"message": "Bez ochrany",
-		"description": "Displayed during JSS level tweaking in case the API group is completely disabled"
-	},
-	"jssgroupPoor": {
-		"message": "Slabá",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"jssgroupLow": {
-		"message": "Nízká",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"jssgroupMedium": {
-		"message": "Střední",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"jssgroupHigh": {
-		"message": "Vysoká",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"jssgroupLittleLies": {
-		"message": "Drobné lži",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"jssgroupStrict": {
-		"message": "Přísná",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"jssgroupConfuse": {
-		"message": "Zmatení",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"jssgroupFake": {
-		"message": "Falešné",
-		"description": "Displayed during JSS level tweaking for InstalledBrowserPlugins and possibly more (in the future)"
-	},
-	"jssgroupAddFake": {
-		"message": "Přidej falešné",
-		"description": "Displayed during JSS level tweaking for Connected cameras and microphones and possibly more (in the future)"
-	},
-	"jssgroupAsk": {
-		"message": "Ptej se",
-		"description": "Displayed during JSS level tweaking for XHR and possibly more (in the future)"
-	},
-	"jssgroupBlock": {
-		"message": "Blokace",
-		"description": "Displayed during JSS level tweaking for XHR and possibly more (in the future)"
-	},
-	"jssgroupRemove": {
-		"message": "Odstraň",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-
-	"jssgroupTimePrecision": {
-		"message": "Přesnost měření času"
-	},
-	"jssgroupTimePrecisionDescription": {
-		"message": "Znesnadňuje a brání útokům a získávání otisku prohlížeče vyžadující přesné měření času.",
-		"description": "Displayed at various places"
-	},
-	"jssgroupTimePrecisionDescription2": {
-		"message": "Omezuje přesnost časových značek dostupných v API jako je $apis$. Časové značky Geolocation API jsou také změněny, pokud je zároveň aktivní ochrana „$jssgroupPhysicalLocationGeolocation$“.",
-		"description": "Displayed at various places",
-		"placeholders": {
-			"apis": {
-				"content": "Date, Performance, Gamepad API, Web VR API a v rámci událostí",
-				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
-			},
-			"jssgroupPhysicalLocationGeolocation": {
-				"content": "$1",
-				"description": "Translated version of the jssgroupPhysicalLocationGeolocation string"
-			}
-		}
-	},
-	"jssgroupTimePoorDescription": {
-		"message": "Zaokrouhluje čas na setiny sekundy (1.230)",
-		"description": "Explains the protection to the user"
-	},
-	"jssgroupTimeLowDescription": {
-		"message": "Zaokrouhluje čas na desetiny sekundy (1.200)",
-		"description": "Explains the protection to the user"
-	},
-	"jssgroupTimeHighDescription": {
-		"message": "Přidává šum do desetinných míst (1.451)",
-		"description": "Explains the protection to the user"
-	},
-
-	"jssgroupLocallyRenderedImages": {
-		"message": "Lokálně generované obrázky",
-		"description": "htmlcanvaselement group"
-	},
-	"jssgroupLocallyRenderedImagesDescription": {
-		"message": "Chrání před získáváním otisku prohlížeče založeném na generování obrázků lokální grafickou kartou (Canvas fingerprinting), nebo získávání informací o chování grafické karty.",
-		"description": "Displayed at various places, try to keep canvas in English or make sure that the user can understand that the protection is about the Canvas API"
-	},
-	"jssgroupLocallyRenderedImagesDescription2": {
-		"message": "Funkce $apis$ vrací modifikované informace.",
-		"description": "Displayed at various places",
-		"placeholders": {
-			"apis": {
-				"content": "canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() a WebGLRenderingContext.readPixels",
-				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
-			}
-		}
-	},
-	"jssgroupLocallyRenderedImagesDescription3": {
-		"message": "Výsledky $apis$ jsou modifikovány jen s určitou pravděpodobností.",
-		"description": "Displayed after jssgroupLocallyRenderedImagesDescription2",
-		"placeholders": {
-			"apis": {
-				"content": "CanvasRenderingContext2D.isPointInStroke() a CanvasRenderingContext2D.isPointInPath()",
-				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
-			}
-		}
-	},
-	"jssgroupLocallyRenderedImagesLittleLiesDescription": {
-		"message": "Drobně upravuje generované obrázky tak, aby vizuálně vypadaly stejně, ale přesné hodnoty se lišily v závislosti na doméně a sezení. Cílem je znemožnit, či ztížit Canvas fingerprinting.",
-		"description": "Consider keeping reference to Canvas fingerprinting in English"
-	},
-	"jssgroupLocallyRenderedImagesStrictDescription": {
-		"message": "Vrací bílé obrázky. Plátno (canvas) WebGL vrací prázdné pole. Nechrání před Canvas fingerprintingem.",
-		"description": "Consider keeping reference to Canvas fingerprinting in English"
-	},
-
-	"jssgroupLocallyGeneratedAudio": {
-		"message": "Lokálně generované zvuky",
-		"description": "audiobuffer group"
-	},
-	"jssgroupLocallyGeneratedAudioDescription": {
-		"message": "Chrání před získáváním informací o schopnostech generování zvuku, např. zvukovou kartou, které lze využit např. pro vytváření otisků prohlížeče založeném na analýze generovaného audia (audio fingerprinting).",
-		"description": "Try to keep reference to audio fingerprinting"
-	},
-	"jssgroupLocallyGeneratedAudioDescription2": {
-		"message": "Modifikuje výsledky funkcí $apis$.",
-		"placeholders": {
-			"apis": {
-				"content": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() a AnalyserNode.getFloatFrequencyData()",
-				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
-			}
-		}
-	},
-	"jssgroupLocallyGeneratedAudioLittleLiesDescription": {
-		"message": "Přidává drobný šum k amplitudě tak, aby byl zvuk pro člověka podobný původnímu zvuku. Přesné hodnoty se však liší na různých doménách a v rámci různých sezení. Cílem je chránit před Audio fingerprintingem, nebo jej alespoň udělat těžším.",
-		"description": "Consider keeping reference to Audio fingerprinting in English"
-	},
-	"jssgroupLocallyGeneratedAudioStrictDescription": {
-		"message": "Zvuková data jsou nahrazené bílým šumem, který se liší podle navštívené domény a v rámci různých sezení Cílem je omezit informace, které unikají o zvukovém hardware a zároveň zkomplikovat získávání otisku prohlížeče (Audio fingerprinting).",
-		"description": "Consider keeping reference to Audio fingerprinting in English"
-	},
-
-	"jssgroupGraphicCardInformation": {
-		"message": "Informace o grafické kartě",
-		"description": "webgl group"
-	},
-	"jssgroupGraphicCardInformationDescription": {
-		"message": "Podvrhnout informace o grafické kartě, např. pro ztížení získávání otisku prohlížeče."
-	},
-	"jssgroupGraphicCardInformationDescription2": {
-		"message": "Funkce $api$ vrací modifikované hodnoty pro vybrané parametry.",
-		"placeholders": {
-			"api": {
-				"content": "WebGLRenderingContext.getParameter()",
-				"description": "Keep the names of the API"
-			}
-		}
-	},
-	"jssgroupGraphicCardInformationDescription3": {
-		"message": "$apis$ vrací modifikované výsledky.",
-		"placeholders": {
-			"apis": {
-				"content": "WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() a .getExtension()",
-				"description": "Keep the names of the API but translate the punctuation and conjunctions"
-			}
-		}
-	},
-	"jssgroupGraphicCardInformationLittleLiesDescription": {
-		"message": "Nahraď původní hodnoty rozumnými čísly, nebo náhodnými řetězci, které se liší podle navštívené domény a napříč sezeními. Cílem je omezit informace o grafickém hardware a zároveň ztížit získávání otisku prohlížeče."
-	},
-	"jssgroupGraphicCardInformationStrictDescription": {
-		"message": "Vrať prázdné hodnoty (null, prázdné řetězce). Pozor, toto nastavení nebrání získávání otisku prohlížeče."
-	},
-
-	"jssgroupInstalledBrowserPlugins": {
-		"message": "Nainstalované rozšiřující moduly prohlížeče",
-		"description": "plugins group"
-	},
-	"jssgroupInstalledBrowserPluginsDescription": {
-		"message": "Chraň před tvorbou otisku prohlížeče založenou na seznamu nainstalovaných rozšiřujících modulů prohlížeče."
-	},
-	"jssgroupInstalledBrowserPluginsDescription2": {
-		"message": "Tato ochrana se neuplatňuje pokud prohlížeč vrací prázdný seznam rozšiřujících modulů, nebo tento seznam obsahuje pouze pět modulů specifikovaných HTML living standard. Takže se tato ochrana neuplatňuje v moderních prohlížečích.",
-		"description": "The protection is not applied in modern browsers"
-	},
-	"jssgroupInstalledBrowserPluginsLittleLiesDescription": {
-		"message": "Přidej dva falešné moduly.",
-		"description": ""
-	},
-	"jssgroupInstalledBrowserPluginsFakeDescription": {
-		"message": "Vrať pouze dva falešné moduly.",
-		"description": ""
-	},
-	"jssgroupInstalledBrowserPluginsStrictDescription": {
-		"message": "Nevracej žádný modul.",
-		"description": ""
-	},
-
-	"jssgroupConnectedCamerasAndMicrophones": {
-		"message": "Připojené kamery a mikrofóny"
-	},
-	"jssgroupConnectedCamerasAndMicrophonesDescription": {
-		"message": "Braň před tvorbou otisku prohlížeče založené na informacích o připojených zařízeních typu kamera a mikrofón."
-	},
-	"jssgroupConnectedCamerasAndMicrophonesDescription2": {
-		"message": "Funkce $api$ vrací upravené výsledky.",
-		"placeholders": {
-			"api": {
-				"content": "MediaDevices.enumerateDevices()",
-				"description": "Keep the names of the API"
-			}
-		}
-	},
-	"jssgroupConnectedCamerasAndMicrophonesLittleLiesDescription": {
-		"message": "Náhodně změní pořadí zařízení. Skutečná zařízení jsou označená jinými identifikátory na různých doménách a napříč sezeními."
-	},
-	"jssgroupConnectedCamerasAndMicrophonesAddFakeDescription": {
-		"message": "Přidá 0-4 zařízení a změní pořadí. Skutečná zařízení jsou označená jinými identifikátory na různých doménách a napříč sezeními.",
-		"description": ""
-	},
-	"jssgroupConnectedCamerasAndMicrophonesStrictDescription": {
-		"message": "Nevrací žádné informace o připojených zařízeních.",
-		"description": ""
-	},
-
-	"jssgroupHardware": {
-		"message": "Informace o operační paměti a procesoru",
-		"description": "hardware group"
-	},
-	"jssgroupHardwareDescription": {
-		"message": "Podvrhni hardwarové informace o množství operační paměti a procesorů."
-	},
-	"jssgroupHardwareDescription2": {
-		"message": "API $apis$ vrací modifikované hodnoty.",
-		"placeholders": {
-			"apis": {
-				"content": "navigator.deviceMemory a navigator.hardwareConcurrency",
-				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
-			}
-		}
-	},
-	"jssgroupHardwareLowDescription": {
-		"message": "Vrací náhodnou platnou hodnotu mezi minimální a skutečnou hodnotou. Návratová hodnota se liší na různých navštívených doménách a napříč sezeními."
-	},
-	"jssgroupHardwareMediumDescription": {
-		"message": "Vrací náhodnou platnou hodnotu mezi minimální a 8. Návratová hodnota se liší na různých navštívených doménách a napříč sezeními."
-	},
-	"jssgroupHardwareHighDescription": {
-		"message": "Vrací 4 pro navigator.deviceMemory a 2 pro navigator.hardwareConcurrency.",
-		"description": "Keep the names of the APIs in English"
-	},
-
-	"jssgroupNetworkConditions": {
-		"message": "Stav sítě",
-		"description": "net group"
-	},
-	"jssgroupNetworkConditionsDescription": {
-		"message": "Blokování přístupu k informacím o stavu sítě, např. pro omezení získávání informací pro tvorbu otisku prohlížeče a zamezení zneužití informací pro sledování vzorů chování uživatele při přístupu k sítím, např. pro zjištění, jestli je uživatel doma, v práci, nebo cestuje.",
-		"description": ""
-	},
-	"jssgroupNetworkConditionsRemoveDescription": {
-		"message": "Odeber API NetworkInformation",
-		"description": "Keep the name of the API in English"
-	},
-
-	"jssgroupXMLHttpRequestRequests": {
-		"message": "Přenosy dat pomocí XMLHttpRequest (XHR)",
-		"description": "Keep the name of the API in English"
-	},
-	"jssgroupXMLHttpRequestRequestsDescription": {
-		"message": "Filtruje spolehlivé přenosy informací na server pomocí API XHR."
-	},
-	"jssgroupXMLHttpRequestRequestsDescription2": {
-		"message": "Pozor, API XHR se naprosto běžně používá pro nezávadné přenosy. Zároveň mějte na paměti, že tato volba neřeší obdobná API, jako jsou $apis$, která dovolují přenos dat k serveru. Pokud si nejste jisti, že víte, co děláte, ponechte tuto skupinu neaktivní. JShelter nadále poskytuje úpravy XHR pro experimentální použití. Pro blokování přenosů dat potřebných pro tvorbu otisku prohlížeče zapněte „Detektor získávání otisků prohlížeče“.",
-		"placeholders": {
-			"apis": {
-				"content": "API Fetch, SSE, WebRTC a WebSockets",
-				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
-			}
-		}
-	},
-	"jssgroupXMLHttpRequestRequestsAskDescription": {
-		"message": "Zeptej se před vykonáním každého požadavku pomocí XHR",
-		"description": "Keep the name of the API in English"
-	},
-	"jssgroupXMLHttpRequestRequestsBlockDescription": {
-		"message": "Blokuj všechny požadavky pomocí XHR",
-		"description": "Keep the name of the API in English"
-	},
-
-	"jssgroupArrays": {
-		"message": "API ArrayBuffer",
-		"description": "arrays group"
-	},
-	"jssgroupArraysDescription": {
-		"message": "Ochrana před zneužitím API ArrayBuffer, např. pro zamezení zneužití pro tvorbu postranních kanálů k útokům na operační paměť (nebo alespoň znesnadní takové útoky).",
-		"description": ""
-	},
-	"jssgroupArraysShift": {
-		"message": "Posun"
-	},
-	"jssgroupArraysShiftDescription": {
-		"message": "Posune indexy polí pro znesnadnění detekce hranice stránek v operační paměti."
-	},
-	"jssgroupArraysRandomize": {
-		"message": "Náhodné"
-	},
-	"jssgroupArraysRandomizeDescription": {
-		"message": "Náhodně prohází prvky pole v paměti, což je pomalejší než posun, ale účinější."
-	},
-
-	"jssgroupSharedArraysBuffer": {
-		"message": "API SharedArrayBuffer",
-		"description": "shared_array group"
-	},
-	"jssgroupSharedArraysBufferDescription": {
-		"message": "Ochrana před zneužitím API SharedArrayBuffer, např. pro zamezení zneužití pro tvorbu postranních kanálů (nebo alespoň znesnadní takové útoky).",
-		"description": ""
-	},
-	"jssgroupSharedArraysBufferMediumDescription": {
-		"message": "Náhodně zpomalí zprávy jako prevence tvorby vysoce přesných časovačů",
-		"description": ""
-	},
-	"jssgroupSharedArraysBufferStrictDescription": {
-		"message": "Blokování SharedArrayBuffer",
-		"description": ""
-	},
-
-	"jssgroupWebWorker": {
-		"message": "API WebWorker",
-		"description": "webworker group, keep the name of the API in English"
-	},
-	"jssgroupWebWorkerDescription": {
-		"message": "Chraň před zneužitím WebWorkerů",
-		"description": "Keep the name of the API in English"
-	},
-	"jssgroupWebWorkerDescription2": {
-		"message": "Workeři poskytují bohatá API, která např. umožňují nainstalovat odposlouchávání dat pro navštívenou stránku komukoliv, kdo může do stránky vložit JavaScriptový kód. Vyšší úrovně ochrany odstraňují tuto možnost. Pozor na to, že Workeři jsou běžně používání i pro účely, které nejsou pro uživatele škodlivé, např. pro umožnění práce s webovou aplikací offline, během interaktivního vyhledávání, dočasného kešování informací, např. při přehrávání multimédií apod.",
-		"description": "Try to keep the reference to the Worker in English"
-	},
-	"jssgroupWebWorkerLowDescription": {
-		"message": "Náhodně zpomalí komunikaci s WebWorkery, aby se zabránilo jejich zneužití pro tvorbu časovačů s velkou přesností. Zachovává plné možnosti Workerů včetně jejich přístupu k originálním API (bez úpravy JShelterem). Používejte jen s nejvyšší opatrností.",
-		"description": "Try to keep the reference to the Worker in English"
-	},
-	"jssgroupWebWorkerStrictDescription": {
-		"message": "Rozbije WebWorkers tak, že nevykonávají žádnou činnost. Pro stránku se však tato volba tváří tak že prohlížeč Workery podporuje a tak nemohou jednoduše poskytnout náhradní řešení (které některé stránky poskytují). Tato volba pomáhá proti tvorbě unikátního otisku prohlížeče.",
-		"description": "Try to keep the reference to the Worker in English"
-	},
-	"jssgroupWebWorkerRemoveDescription": {
-		"message": "Odstraň podporu WebWorkerů z prohlížeče. To je snadno detekovatelné stránkou, takže tato volba zvyšuje možnosti tvorby unikátního otisku prohlížeče. Na druhou stranu tato volba dává stránkám možnost nasazení náhradního řešení, která nemají rizika původního API.",
-		"description": "Try to keep the reference to the Worker in English"
-	},
-
-	"jssgroupPhysicalLocationGeolocation": {
-		"message": "Umístění v prostoru (geolokace)"
-	},
-	"jssgroupPhysicalLocationGeolocationDescription": {
-		"message": "Omezuje množství informací poskytovaných Geolocation API.",
-		"description": "Displayed at various places, keep the name of the API in the English"
-	},
-	"jssgroupPhysicalLocationGeolocationDescription2": {
-		"message": "Mění pozici pro různé domény různě. Pro každé sezení reportuje stejnou lokaci pro každou jednotlivou doménu.",
-		"description": "Displayed at various places"
-	},
-	"jssgroupGeolocationTimestampOnly": {
-		"message": "Jen časové značky",
-		"description": "Displayed during level tweaks"
-	},
-	"jssgroupGeolocationTimestampOnlyDescription": {
-		"message": "Poskytuje přesnou pozici (použitelné pokud potřebujete poskytnout přesnou polohu a zároveň chcete chránit časové značky při aktivní ochraně „$jssgroupTimePrecision$“)",
-		"description": "Explains the protection to the user",
-		"placeholders": {
-			"jssgroupTimePrecision": {
-				"content": "$1",
-				"example": "Translated string of the jssgroupTimePrecision"
-			}
-		}
-	},
-	"jssgroupGeolocationVillage": {
-		"message": "Vesnice",
-		"description": "Displayed during level tweaks"
-	},
-	"jssgroupGeolocationVillageDescription": {
-		"message": "Poloha přesná na stovky metrů.",
-		"description": "Explains the protection to the user"
-	},
-	"jssgroupGeolocationTown": {
-		"message": "Město",
-		"description": "Displayed during level tweaks"
-	},
-	"jssgroupGeolocationTownDescription": {
-		"message": "Poloha přesná na kilometry.",
-		"description": "Explains the protection to the user"
-	},
-	"jssgroupGeolocationRegion": {
-		"message": "Oblast",
-		"description": "Displayed during level tweaks"
-	},
-	"jssgroupGeolocationRegionDescription": {
-		"message": "Poloha přesná na desítky kilometrů.",
-		"description": "Explains the protection to the user"
-	},
-	"jssgroupGeolocationLongDistance": {
-		"message": "Velká oblast",
-		"description": "Displayed during level tweaks"
-	},
-	"jssgroupGeolocationLongDistanceDescription": {
-		"message": "Poloha přesná na stovky kilometrů.",
-		"description": "Explains the protection to the user"
-	},
-	"jssgroupGeolocationRemoveDescription": {
-		"message": "Deaktivuj API.",
-		"description": "Explains the protection to the user"
-	},
-
-	"jssgroupPhysicalEnvironmentSensors": {
-		"message": "Senzory okolního prostředí",
-		"description": "physical_environment group"
-	},
-	"jssgroupPhysicalEnvironmentSensorsDescription": {
-		"message": "Omezuje množství informací poskytovaných ze senzorů zkoumající stav prostředí obklopující zařízení jako je magnetometr a akcelerometr.",
-		"description": "Consider replacing Magnetometer and Accelerometer with localized version of the sensor"
-	},
-	"jssgroupPhysicalEnvironmentSensorsDescription2": {
-		"message": "Informace poskytované blokovanými senzory mohou být zneužity pro mnoho účelů včetně získávání otisku okolního prostředí, sledování polohy uživatele, detekce blízkých zařízení, odhadu akcí uživatele, které se zařízením provádí a mnoho dalších. Ale údaje poskytované senzory mohou být potřeba pro užitečné aplikace jako je navigace, hry a další, pokud jsou tyto aplikace závislé na údajích poskytovaných senzory. Např. některé aplikace využívají orientaci zařízení pro ovládání akcí poskytovaných aplikací."
-	},
-	"jssgroupPhysicalEnvironmentSensorsHighDescription": {
-		"message": "Simuluje statické zařízení, které poskytuje konzistentní data, která se liší napříč doménami a sezeními."
-	},
-
-	"jssgroupUserIdleDetection": {
-		"message": "Detekce aktivity uživatele",
-		"description": "useridle group"
-	},
-	"jssgroupUserIdleDetectionDescription": {
-		"message": "API Idle Detection detekuje neaktivního uživatele a uzamčenou obrazovku zařízení.",
-		"description": "Try to keep the name of the API in English"
-	},
-	"jssgroupUserIdleDetectionDescription2": {
-		"message": "Webové aplikace mohou tyto informace použít např. pro zjištění zda uživateli zobrazovat notifikace. Tyto informace však mohou být zneužity ke sledování aktivity uživatele a korelaci stavu napříč doménami."
-	},
-	"jssgroupUserIdleConfuseDescription": {
-		"message": "Vždy vrací informací, že je uživatel aktivní a obrazovka není uzamčená."
-	},
-	"jssgroupUserIdleBlockDescription": {
-		"message": "Automaticky odmítá provést akci bez zobrazení výzvy uživateli."
-	},
-	"jssgroupUserIdleRemoveDescription": {
-		"message": "Odstraní API."
-	},
-	"jssgroupCoopschedule": {
-		"message": "Plánovač úloh",
-		"description": "coopschedule group"
-	},
-	"jssgroupCoopscheduleDescription": {
-		"message": "API Cooperative Scheduling patřící mezi API Background Tasks může naplánovat výpočetně náročné úlohy na dobu, kdy nebudou způsobovat prodlevy detekovatelné uživatelem nebo v jiných úlohách sdílejících stejnou smyčku událostí.",
-		"description": "Try to keep the names of the APIs in English"
-	},
-	"jssgroupCoopscheduleDescription2": {
-		"message": "Toto API umožňuje získat přístup k informacím o vytížení prohlížeče jinými úlohami."
-	},
-	"jssgroupCoopscheduleConfuseDescription": {
-		"message": "Upravuje informace, aby zmátl nepřítele."
-	},
-
-	"jssgroupGamepads": {
-		"message": "Gamepady",
-		"description": "gamepads group"
-	},
-	"jssgroupGamepadsDescription": {
-		"message": "Blokuje přístup stránek k informacím o připojených gamepadech."
-	},
-	"jssgroupGamepadsDescription2": {
-		"message": "Informace o připojených gamepadech může být zneužita při tvorbě otisku prohlížeče. Webové stránky obvykle nepotřebují znát informace o připojených gamepadech, pokud se nejedná o specializované, obvykle herní, aplikace."
-	},
-	"jssgroupGamepadsStrictDescription": {
-		"message": "Skryj všechny gamepady."
-	},
-
-	"jssgroupVirtualAndAugmentedRealityDevices": {
-		"message": "Zařízení virtuální a rozšířené reality",
-		"description": "vr group (also includes XR API)"
-	},
-	"jssgroupVirtualAndAugmentedRealityDevicesDescription": {
-		"message": "Zamezí webovým aplikacím ke zjišťování informací o displejích virtuální a rozšířené reality."
-	},
-	"jssgroupVirtualAndAugmentedRealityDevicesDescription2": {
-		"message": "Informace o připojených zařízeních virtuální a rozšířené reality může být zneužita při tvorbě otisku prohlížeče. Webové stránky obvykle nepotřebují znát informace o takových připojených zařízeních, pokud se nejedná o specializované aplikace."
-	},
-	"jssgroupVirtualAndAugmentedRealityDevicesStrictDescription": {
-		"message": "Skryj všechna zařízení."
-	},
-	"jssgroupMultimediaPlayback": {
-		"message": "Multimediální kodeky",
-		"description": "playback group"
-	},
-	"jssgroupMultimediaPlaybackDescription": {
-		"message": "Zamezí aplikacím k přístupu k informacím o instalovaných kodecích, schopnostech kódovat a dekódovat multimédia a výkonu."
-	},
-	"jssgroupMultimediaPlaybackDescription2": {
-		"message": "Informace poskytované API mohou být zneužity na tvorbu otisku prohlížeče. Tato ochrana by měla být aktivována pro stránky, které nezpracovávají audio a video. Aplikace zpracovávající audio, nebo video mohou být ochranou rozbité."
-	},
-	"jssgroupMultimediaPlaybackLittleLiesDescription": {
-		"message": "S pravděpodobností 12,5% reportuj kódovací a dekódovací mechanismus jako nepodporovaný."
-	},
-	"jssgroupMultimediaPlaybackStrictDescription": {
-		"message": "Reportuj všechny kódovací a dekódovací mechanismy jako nepodporované."
-	},
-	"jssgroupMultimediaPlaybackBlockDescription": {
-		"message": "Nevracej žádné informace."
-	},
-
-	"jssgroupUnreliableTransfersToServerBeacons": {
-		"message": "Nespolehlivé přenosy na server",
-		"description": "analytics group"
-	},
-	"jssgroupUnreliableTransfersToServerBeaconsDescription": {
-		"message": "Zabraňuje nespolehlivým přenosům na server, nazývané také jako beacons, nebo majáky."
-	},
-	"jssgroupUnreliableTransfersToServerBeaconsDescription2": {
-		"message": "Tyto přenosy jsou typicky zneužívané pro analytické účely, ale občas mohou být vyžadované pro správnou funkčnost e-shopů a jiných služeb."
-	},
-	"jssgroupUnreliableTransfersToServerBeaconsDescription3": {
-		"message": "Brání stránkám ve využití API Beacon.",
-		"description": "Keep the name of the API"
-	},
-	"jssgroupUnreliableTransfersToServerBeaconsBlockDescription": {
-		"message": "Blokuje datové přenosy pomocí API Beacon. V rámci volání se neprovádí žádná akce."
-	},
-
-	"jssgroupHardwareBattery": {
-		"message": "Stav baterie",
-		"description": "battery group"
-	},
-	"jssgroupHardwareBatteryDescription": {
-		"message": "Odstraňuje podporu API Battery Status, které je zneužívané pro tvorbu otisku prohlížeče.",
-		"description": "Try to keep the reference to the English name of the API"
-	},
-	"jssgroupHardwareBatteryRemoveDescription": {
-		"message": "Odstraní API"
-	},
-
-	"jssgroupPersistentIdentifierOfTheBrowserTab": {
-		"message": "Trvalý identifikátor panelu prohlížeče",
-		"description": "windowname group"
-	},
-	"jssgroupPersistentIdentifierOfTheBrowserTabDescription": {
-		"message": "Na rozdíl od jiných částí prostředí prohlížeče se vlastnost window.name neresetuje během načítání stránky. Důsledkem je, že si může stránka do této vlastnosti uložit jedinečný identifikátor, nebo neškodná a užitečná data.",
-		"description": "Try to keep reference to window.name."
-	},
-	"jssgroupPersistentIdentifierOfTheBrowserTabDescription2": {
-		"message": "Toto API poskytuje možnost identifikace panelu prohlížeče napříč doménami v rámci jednoho sezení."
-	},
-	"jssgroupPersistentIdentifierOfTheBrowserTabStrictDescription": {
-		"message": "Vymaž obsah vlastnosti window.name při přechodu na jinou službu (změna eTLD+1) během načítání stránky. Tato volba nebrání většině neškodných využití API a zároveň znemožňuje zneužití pro útoky identifikující stejný panel prohlížeče napříč doménami.",
-		"description": "Try to keep reference to window.name and eTLD+1"
-	},
-	"jssgroupPersistentIdentifierOfTheBrowserTabFirefox88": {
-		"message": "$BROWSER$ a již obsahuje tuto ochranu.",
-		"placeholders": {
-			"browser": {
-				"content": "Firefox 88"
-			}
-		}
-	},
-
-	"jssgroupNFC": {
-		"message": "Near Field Communication (NFC)",
-		"description": "nfc group"
-	},
-	"jssgroupNFCDescription": {
-		"message": "Near Field Communication (NFC) umožňuje bezdrátovou komunikaci mezi dvěma velmi blízkými zařízeními, obvykle maximálně jednotky centimetru. Komunikace probíhá na základě standardu ISO/IEC 18092 na frekvenci 13.56 MHz.",
-		"description": "Keep the technical references"
-	},
-	"jssgroupNFCDescription2": {
-		"message": "API NFC může být zneužito pro zjištění informací o zařízeních v těsné blízkosti."
-	},
-	"jssgroupNFCRemoveDescription": {
-		"message": "Odstraň API"
-	},
-
-	"jssgroupWASM": {
-		"message": "Urychlení pomocí WebAssembly",
-		"description": "webassembly group"
-	},
-	"jssgroupWASMDescription": {
-		"message": "Urychlí úpravy nutné pro aplikaci drobných lží do obrázků a audia pomocí WebAssembly.",
-		"description": "Keep reference to WebAssembly"
-	},
-	"jssgroupWASMDescription2": {
-		"message": "Tato volba má význam jen pokud je ochrana „$CANVAS$“ nebo „$AUDIO$“ nastavená na úroveň „$LITTLElies$“.",
-		"placeholders": {
-			"canvas": {
-				"content": "$1",
-				"example": "Translation of jssgroupLocallyRenderedImages"
-			},
-			"audio": {
-				"content": "$2",
-				"example": "Translation of jssgroupLocallyGeneratedAudio"
-			},
-			"littlelies": {
-				"content": "$3",
-				"example": "Translation of jssgroupLittleLies"
-			}
-		}
-	},
-	"jssgroupWASMDescription3": {
-		"message": "Kód ve WebAssembly generuje stejné úpravy jako originální kód, takže je aktivace této volby bezpečná z pohledu ochrany před získávání otisku prohlížeče."
-	},
-	"jssgroupWASMDisabled": {
-		"message": "Vypnuto"
-	},
-	"jssgroupWASMDisabledDescription": {
-		"message": "Urychlení pomocí WebAssembly není aplikováno, používá se pomalejší JavaScript."
-	},
-	"jssgroupWASMPassive": {
-		"message": "Pasivní"
-	},
-	"jssgroupWASMPassiveDescription": {
-		"message": "Povol urychlení pomocí WebAssembly, ale využij původní (pomalejší) implementaci, pokud nemůže být kód ve WebAssembly vložen."
-	},
-	"jssgroupWASMActive": {
-		"message": "Aktivní"
-	},
-	"jssgroupWASMActiveDescription": {
-		"message": "Upravuje direktivu 'wasm-unsafe-eval' Content-Security Policy (CSP), aby umožnil vložení kódu ve WebAssembly v případech, kdy CSP navštívené stránky brání v aplikaci rychlejší implementace."
-	},
-	"jssgroupWASMActiveDescription2": {
-		"message": "Inicializace modulů WebAssembly je kontrolováno CSP navštívené stránky v prohlížečích založených na Chromiu."
-	},
-	"jssgroupWASMActiveDescription3": {
-		"message": "Výhoda tohoto nastavení je, že výpočty běží rychleji na všech stránkách."
-	},
-	"jssgroupWASMActiveDescription4": {
-		"message": "Nevýhodou tohoto nastavení je zvýšené rizika spuštění kódu ve WebAssembly, kterému by za normálních okolností zabránila CSP stránky, např. pokud je stránka samotná zranitelná útokem nazývaným cross-site scripting. Toto nastavení také může interagovat s jinými rozšířeními prohlížeče, které mohou modifikace CSP vrátit zpět."
-	},
-	"jssgroupWASMEnabled": {
-		"message": "Zapnuto"
-	},
-	"jssgroupWASMEnabledDescription": {
-		"message": "Urychlení pomocí WebAssembly je aplikováno."
-	},
-	"JShelterOptions": {
-		"message": "Hlavní nastavení JShelteru",
-		"description": "Title of the main options page"
-	},
-	"mainSettings": {
-		"message": "Hlavní nastavení",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"JShelterOptionsJSSFineTune": {
-		"message": "Detaily Javascriptového štítu: nastavení pro konkrétní domény",
-		"description": "Title of the JS Shield details options page"
-	},
-	"jSSShieldDetails": {
-		"message": "Detail JS štítu",
-		"description": "Displayed in options in the navigation bar, try to keep JS shield abbreviated to keep the text short"
-	},
-	"JShelterOptionsAdvanced": {
-		"message": "Expertní nastavení JShelteru",
-		"description": "Title of the expert options page"
-	},
-	"advancedOptions": {
-		"message": "Expertní nastavení",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"externalLinks": {
-		"message": "Webové odkazy",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"ExternalLinksSeparator": {
-		"message": ":",
-		"description": "Displayed in options in the navigation bar, for example after external links"
-	},
-	"threatModel": {
-		"message": "Uvažované hrozby",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"fAQ": {
-		"message": "Časté dotazy",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"testPage": {
-		"message": "Testovací stránka",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"permissions": {
-		"message": "Požadovaná oprávnění",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"sourceCode": {
-		"message": "Zdrojový kód",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"issueTracker": {
-		"message": "Sledování chyb",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"credits": {
-		"message": "Autoři",
-		"description": "Displayed in options in the navigation bar"
-	},
-
-	"ExampleDomainsText": {
-		"message": "příklad.com nebo cokoliv.example.com",
-		"description": "Displayed in text inputs that expect a domain"
-	},
-	"ButtonSignExpandOneCharacterDown": {
-		"message": "⤵",
-		"description": "A button caption that can be used generically by JShelter, it should contain a single character that intuitively tells the user that by clicking the button, more information will be shown"
-	},
-	"ButtonSave": {
-		"message": "Ulož",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"ButtonRestore": {
-		"message": "Obnov",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"ButtonRestoreLevel": {
-		"message": "Obnov úroveň $LEVELNAME$",
-		"description": "A button caption that can be used generically by JShelter",
-		"placeholders": {
-			"levelName": {
-				"content": "$1",
-				"example": "Level name of the level to be restored, for example, Default"
-			}
-		}
-	},
-	"ButtonEdit": {
-		"message": "Uprav",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"ButtonRemove": {
-		"message": "Odstraň",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"ButtonSaveCustomLevel": {
-		"message": "Ulož vlastní úroveň",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"ButtonCancel": {
-		"message": "Storno",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"ButtonAddNewLevel": {
-		"message": "Přidej novou úroveň",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"addToList": {
-		"message": "Přidej do seznamu",
-		"description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
-	},
-	"saveAll": {
-		"message": "Ulož vše",
-		"description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
-	},
-	"deleteAll": {
-		"message": "Smaž vše",
-		"description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
-	},
-	"ManageWhitelist": {
-		"message": "Spravuj seznam domén s výjimkou ⤵",
-		"description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list would appear below (the arrow at the end)."
-	},
-	"HideWhitelist": {
-		"message": "Skrýj seznam domén s výjimkou ⤵",
-		"description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list is located below (the arrow at the end)."
-	},
-	"ButtonDisableForDomain": {
-		"message": "<strong>$DISABLE$</strong> $FORTHEDOMAIN$",
-		"description": "A button caption that can be used generically by JShelter, e.g. in the options; if necessary, edit the structure of the message but make sure to emhasize the disablement. Translate the placeholders.",
-		"placeholders": {
-			"disable": {
-				"content": "Vypnout",
-				"description": "Please translate"
-			},
-			"forTheDomain": {
-				"content": "pro doménu",
-				"description": "Please translate"
-			}
-		}
-	},
-	"ButtonEnableForSelectedDomains": {
-		"message": "<strong>$ENABLE$</strong> $FORTHEDOMAIN$",
-		"description": "A button caption that can be used generically by JShelter, e.g. in the options; if necessary, edit the structure of the message but make sure to emhasize the enablement. Translate the placeholders.",
-		"placeholders": {
-			"enable": {
-				"content": "Povol",
-				"description": "Please translate"
-			},
-			"forTheDomain": {
-				"content": "pro vybrané domény",
-				"description": "Please translate"
-			}
-		}
-	},
-	"ManageWhitelistDescription": {
-		"message": "Uvedená doménová jména jsou zpracovávaná v rámci hierarchie doménových jmen, takže uvedením <strong>example.com</strong> také vypnete štít pro <strong>news.example.com</strong>.",
-		"description": "Information text that can be used generically by JShelter, e.g. in options to explain the exception list of NBS and FPD."
-	},
-
-	"javascriptShieldDescription": {
-		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><ul><li>$REDUCTION$</li><li>$FAKE$</li><li>$HIDE$</li></ul><p>$BLOGS$</p>",
-		"description": "This is the description of JSS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs but please keed all paragraphs in the jss_description class.",
-		"placeholders": {
-			"paragraph1": {
-				"content": "Javascriptový štít upravuje chování prostředí interpretu JavaScriptu, které je dostupné navštíveným stránkám. JShelter poskytuje falešné informace, aby zmátl skripty získávající otisky prohlížečů, nebo zabránil útokům zneužívající JavaScript, nebo je alespoň učinil složitějšími.",
-				"description": "Paragraph 1, please translate this text."
-			},
-			"paragraph2": {
-				"content": "Javascriptový štít se skládá z wraperů, malých kusů kódu, které modifikují původní chování JavaScriptových API (funkcí nebo vlastností) definovaných standardy. Chování většiny wraperů obvykle spadá do jedné z následujících kategorií:",
-				"description": "Paragraph 2, please translate this text."
-			},
-			"reduction": {
-				"content": "Omezení přesnosti: Původní hodnota je příliš přesná, což ve většině případů použití není potřeba. Javascriptový štít upravuje poskytované hodnoty takovým způsobem, aby obvyklé neškodné použití nebylo ovlivněno.",
-				"description": "UL item 1, please translate this text."
-			},
-			"fake": {
-				"content": "Falešné hodnoty: Některé wrapery poskytují falešné informace, většinou se tak děje pro zmatení skriptů tvořících otisk prohlížeče. Některé wrapery poskytují možné údaje, které však nejsou založeny na skutečných datech. Další wrapery upravují skutečné hodnoty malými změnami, které typicky nejsou detekovatelné člověkem, ale jsou významné pro skript počítající otisk prohlížeče. Takové změny JShelter aplikuje různě na různých navštívených doménách a v různých sezeních, takže provozovatelé různých domén nemohou použít přečtené informace ke spojení prohlížeče. Např. wrapery pro plátno canvas upravují obrázek tak, aby stejné pokyny vedly k různým výsledkům na různých doménách a v různých sezeních.",
-				"description": "UL item 2, please translate this text."
-			},
-			"hide": {
-				"content": "Skrytí informací: Některá API poskytují informace, které nejsou obvykle potřeba a mohou být ukryté před většinou stránek. V závislosti na API, Javascriptový štít vrací chybu, prázdnou hodnotu, nebo úplně blokuje API.",
-				"description": "UL item 3, please translate this text."
-			},
-			"blogs": {
-				"content": "Pro více informací se podívejte na naše blogové příspěvky o <a href='https://jshelter.org/fingerprinting/'>protiopatřením před získáváním otisku prohlížeče</a> a <a href='https://jshelter.org/farbling/'>metodě drobných lží</a>.",
-				"description": "Last paragraph, please translate this text, keep the URLs to the English version unless a translation exists on the web."
-			}
-		}
-	},
-	"JavascriptShieldLevelsMainLevelOptionHeading": {
-		"message": "Tvorba vlastních úrovní ochrany a nastavení výchozí úrovně",
-		"description": "A heading in the options above the configuration of the default JSS level and the possibility to list existing levels and create own levels."
-	},
-	"addCustomLevel": {
-		"message": "Přidej vlastní úroveň",
-		"description": "A button caption, the button creates a custom JSS level."
-	},
-
-	"JSSL0Name": {
-		"message": "Vypnout JavaScriptový štít",
-		"description": "The name of JSS L0 that is used at various places in the UI"
-	},
-	"JSSL0Description": {
-		"message": "JavaScriptová APIs nejsou chráněná. Vypněte JavaScriptový štít jen pokud 1. věříte provozovateli zobrazené stránky a chete mu (a všem nepřátelům, kteří mohli vložit kód do stránky) dát přístup ke všem API podporovaných prohlížečem, nebo 2. pokud JavaScriptový štít nechcete používat, ale chcete využívat jiné ochranné mechanismy JShelteru.",
-		"description": "The description of JSS L0 that is used at various places in the UI"
-	},
-	"JSSL1Name": {
-		"message": "Bez ochrany před tvorbou otisku prohlížeče",
-		"description": "The name of JSS L1 that is used at various places in the UI"
-	},
-	"JSSL1Description": {
-		"message": "Uplatňuje bezpečnostní opatření, které nejspíše nerozbijí chování stránky, ale nechrání před tvorbou otisku prohlížeče. Vypíná API, která nejsou obvyklými stránkami využívaná. Použijte tuto úroveň pokud Detektor získávání otisku prohlížeče hlásí, že stránka volala nízký počet API zneužívaných pro tvorbu otisku prohlížeče, věříte provozovateli stránek nebo si myslíte, že JShelter příliš zpomaluje zobrazené stránky, nebo je rozbíjí, a vaše touha zobrazit stránky je tak vysoká, že nechcete chránit před tvorbou otisku prohlížeče.",
-		"description": "The description of JSS L1 that is used at various places in the UI, see also FingerprintQualityLabel label for the origin of 'The description of JSS L1 that is used at various places in the UI, see also FingerprintQualityLabel label for the origin of 'the page called a low number of APIs misued for fingerprinting''"
-	},
-	"JSSL2Name": {
-		"message": "Doporučená",
-		"description": "The name of JSS L2 that is used at various places in the UI"
-	},
-	"JSSL2Description": {
-		"message": "Snaží se prohlížeč upravit tak, aby vypadal rozdílně na stránkách různých domén. Uplatňuje bezpečnostní opatření, která obvykle nerozbíjejí stránky. Drobně upravuje výsledky volání API různými způsoby na stránkách různých domén tak, aby otisk prohlížeče sestavený na různých doménách byl jiný. Hodnoty zneužívané pro vytváření otisku prohlížeče se také liší s každým spuštěním prohlížeče. Pokud potřebujete získat jiný otisk prohlížeče bez restartu prohlížeče, zkuste použít anonymní mód. Mějte na paměti, že i když se odhlásíte od používání služby, smažete cookies, změníte adresu IP, upravené API poskytnou možnost výpočtu stejného otisku prohlížeče. Restartujte prohlížeč pokud chcete změnit svůj otisk prohlížeče. Pokud nevíte jakou úroveň ochrany zvolit, zvolte tuto.",
-		"description": "The description of JSS L1 that is used at various places in the UI"
-	},
-	"JSSL3Name": {
-		"message": "Přísná",
-		"description": "The name of JSS L3 that is used at various places in the UI"
-	},
-	"JSSL3Description": {
-		"message": "Zapíná všechny ochrany, kterou nejsou považovány za experimentální. Obalená API vrací falešné hodnoty. Některá API jsou úplně odstraněná, další poskytují smysluplné, ale neobvyklé hodnoty. Některá API vrací bezvýznamné hodnoty. Tato úroveň dovolí výpočet stabilního otisku prohlížeče, protože volání jednotlivých API obvykle vrací stejné hodnoty na všech webech a ve všech sezeních. Použijte tuto úroveň pokud chcete omezit množství informací poskytnutých vašim prohlížečem. Pokud se bojíte získávání otisku prohlížeče,zapněte Detektor získávání otisku prohlížeče.",
-		"description": "The description of JSS L2 that is used at various places in the UI"
-	},
-	"JSSLexperimentalName": {
-		"message": "Experimentální",
-		"description": "The name of JSS experimental level that is used at various places in the UI"
-	},
-	"JSSLexperimentalDescription": {
-		"message": "Stejné volby jako o přísné úrovně ochrany s dodatečnými úpravami (včetně API, o kterých je známo, že jejich úpravy běžně rozbíjejí stránky, a API, která nefungují dostatečně dobře). Tuto úroveň používejte jen pro experimenty s JShelterem. Pro běžné prohlížení použijte Doporučenou, nebo Přísnou úroveň s aktivním Detektorem získávání otisku prohlížeče.",
-		"description": "The description of JSS experimental level that is used at various places in the UI"
-	},
-
-	"omittedAPIsHeading": {
-		"message": "Jako ochranu před tvorbou otisku prohlížeče, JShelter nevytváří neexistující vlastnosti. Tento prohlížeč nepodporuje:",
-		"description": "This message is displayed while giving the possibility to create a new level or edit existing levels in options"
-	},
-	"newLevelsNotRecommended": {
-		"message": "Nedoporučujeme tvorbu vlastních úrovní ochrany a změnu konfigurace pokud používáte JShelter jako ochranu před tvorbou otisku prohlížeče. Přečtěte si <a href=\"$FAQURL$\">FAQ</a> a náš <a href=\"$PAPERURL$\">článek</a>. V případě, že se vaše nastavení bude lišit od nastavení jiných uživatelů, usnadňujete vaši identifikaci v budoucnu.",
-		"placeholders": {
-			"faqurl": {
-				"content": "https://jshelter.org/faq/"
-			},
-			"paperurl": {
-				"content": "https://arxiv.org/abs/2204.01392"
-			}
-		},
-		"description": "This message is displayed while creating a new level in options. Make sure that you keep correct HTML markup"
-	},
-
-	"formlabelName": {
-		"message": "Jméno:",
-		"description": "Used in forms whenever a name should be enered (atm new level name)"
-	},
-	"formlabelDescription": {
-		"message": "Popis:",
-		"description": "Used in forms whenever a description should be enered (atm new level description)"
-	},
-
-	"customLevelAlreadyExistsItWillBeOverridden": {
-		"message": "Vlastní úroveň $CUSTOMNAME$ již existuje a bude přepsána.",
-		"description": "Alert message shown during level editing, translate the message but not the placeholder",
-		"placeholders": {
-			"customName": {
-				"content": "$1",
-				"example": "User provided value, any text",
-				"description": "The level name that is about to be overwritten"
-			}
-		}
-	},
-	"customLevelWereNotUpdated": {
-		"message": "Vlastní úrovně nebyly aktualizovány, prosím opakujte akci později.",
-		"description": "The configuration with the chaged or new level was not saved because of unknown reason."
-	},
-	"NewLevelMissingNameOrDescription": {
-		"message": "Jak jméno, tak popis úrovně ochrany jsou povinné, prosím vyplňte obě pole.",
-		"description": "User did not supply all mandatory fields for a JSS level"
-	},
-	"JSSeditLevelHeading": {
-		"message": "Úprava úrovně $LEVELNAME$",
-		"description": "Heading shown during JSS tweaking (edit level form)",
-		"placeholders": {
-			"levelName": {
-				"content": "$1",
-				"example": "User provided value, any text",
-				"description": "The level name that is about to be overwritten, do not translate"
-			}
-		}
-	},
-	"JSSaddLevelHeading": {
-		"message": "Tvorba nové úrovně zabezpečení",
-		"description": "Form heading during creation of a new level. You likely want to use the same or very similar value as ButtonAddNewLevel translation string."
-	},
-
-	"javaScriptShieldPerWebsiteConfiguration": {
-		"message": "Nastavení Javascriptového štítu pro jednotlivé navštívené domény",
-		"description": "Displayed in JSS advanced options page"
-	},
-	"setJavaScriptShieldForWebsite": {
-		"message": "Nastav JavaScriptový štít pro doménu:",
-		"description": "Displayed in JSS advanced options page"
-	},
-	"aListOfWebsiteWithRedefinedJavaScriptShield": {
-		"message": "Seznam domén s vlastní konfigurací Javascriptového štítu:",
-		"description": "Displayed in JSS advanced options page"
-	},
-	"JSSAdvancedConfirmOverwrite": {
-		"message": "Nastavení pro doménu $DOMAIN$ již existuje a bude přepsáno.",
-		"description": "Displayed in JSS advanced options page",
-		"placeholders": {
-			"domain": {
-				"content": "$1",
-				"example": "The domain whose settings are about to be overwritten, like example.com"
-			}
-		}
-	},
-	"LevelAndDescription": {
-		"message": "$LEVELNAME$: $LEVELSHORTDESCRIPTION$",
-		"description": "Displayed in options pages in select elements to give the user an idea what level to apply by listing both its name and a short description",
-		"placeholders": {
-			"levelName": {
-				"content": "$1",
-				"example": "Name of the level"
-			},
-			"levelShortDescription": {
-				"content": "$2",
-				"example": "Short description of the level"
-			}
-		}
-	},
-
-	"doNotModifyThisConfiguration": {
-		"message": "POZOR! Neměňte tuto konfiguraci, pokud nevíte, co děláte.",
-		"description": "Displayed in expert settings"
-	},
-	"JShelterFullConfiguration": {
-		"message": "Plné nastavení JShelteru v textové podobě",
-		"description": "Displayed in expert settings, label for the full extension configuration in textarea"
-	},
-	"ExpertLoadCurrentlyStoredConfiguration": {
-		"message": "Načíst aktuálně uložené nastavení",
-		"description": "Displayed in expert settings, button that loads current configuration to the textarea"
-	},
-	"ExpertOverwriteConfiguration": {
-		"message": "Přepiš nastavení (přepíše uložené nastavení tím, které je zobrazené na této stránce)",
-		"description": "Displayed in expert settings, button that stores the current configuration permanently"
-	},
-	"ExpertResetConfiguration": {
-		"message": "Vrať se k výchozímu nastavení (odstraní všechno lokální nastavení)",
-		"description": "Displayed in expert settings, button that reset to the configuration that we ship (factory reset)"
-	},
-	"ExpertUndoConfiguration": {
-		"message": "Zpět (zapomeň poslední přepis konfigurace)",
-		"description": "Displayed in expert settings, button that restores the configuration to the previous (back button)"
-	},
-	"JSSBuiltinExceptions": {
-		"message": "Vestavěné úpravy pro JavaScriptový štít",
-		"description": "Displayed in expert settings, heading for the table of built-in tweaks"
-	},
-	"JSSBuiltinExceptionsDomain": {
-		"message": "Doména",
-		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
-	},
-	"JSSBuiltinExceptionsLevels": {
-		"message": "Úrovně",
-		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
-	},
-	"JSSBuiltinExceptionsLevelsSeparator": {
-		"message": ", ",
-		"description": "Displayed in expert settings, separator for levels displayed"
-	},
-	"JSSBuiltinExceptionsChanges": {
-		"message": "Změny",
-		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
-	},
-	"JSSBuiltinExceptionsReason": {
-		"message": "Vysvětlení",
-		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
-	},
-
-	"protectionConfigurationOptionActivatedOn": {
-		"message": "Zapnuto",
-		"description": "Displayed during NBS and FPD configuration when the option is activated (on)"
-	},
-	"protectionConfigurationOptionActivatedOff": {
-		"message": "Vypnuto",
-		"description": "Displayed during NBS and FPD configuration when the option is deactivated (off)"
-	},
-	"shieldNotifications": {
-		"message": "Notifikace",
-		"description": "Displayed as a text label during NBS and FPD configuration when the user can activate or deactivate notifications"
-	},
-	"NBSDescription": {
-		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
-		"description": "This is the description of NBS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs.",
-		"placeholders": {
-			"paragraph1": {
-				"content": "Štít pro ochranu hranice sítě znemožňuje navštíveným stránkám zneužít prohlížeč jako mezičlánek mezi veřejným Internetem a lokální sítí. Podívejte se na <a href='https://jshelter.org/localportscanning/'>náš příspěvek na blogu</a> a <a href='https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf'>zprávu společnosti Force Point</a> pro příklady útoků, kterým Štít pro ochranu hranice sítě brání. Štít pro ochranu hranice sítě využívá WebRequest API, takže zachycuje všechny odchozí požadavky.",
-				"description": "Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
-			},
-			"paragraph2": {
-				"content": "Obvykle byste měli nechat Štít pro ochranu hranice sítě vyhledávat podezřelé požadavky v celém provozu. Ale některé stránky vyžadují interakci mezi veřejným Internetem a lokální sítí, např. Štít pro ochranu hranice sítě může rozbít některé Intranetové informační systémy. Uživatelé JShelteru také nahlásili zvýšené množství falešných poplachů v kombinací s filtrovacími programy modifikujícími odpovědi DNS. Pokud takový program používáte, ujistěte se, že DNS vrací 0.0.0.0 pro blokované domény.",
-				"description": "Paragraph 2, please translate this text."
-			},
-			"paragraph3": {
-				"content": "Chování Štítu pro ochranu hranice sítě může být globálně nastaveno níže. Štít pro ochranu hranice sítě může také být vypnutý pro jednotlivé domény s využitím seznamu výjimek. Domény do tohoto seznamu mohou být přidány s využitím okna dostupného pro každou navštívenou stránku po kliknutí na ikonu JShelteru nastavením <i>přepínače označeného Štít pro ochranu hranice sítě</i> nebo ručně níže po kliknutí na <i>Spravuj seznam domén s výjimkou</i>. Uvedením domény do tohoto seznamu také vypnete Štít pro ochranu hranice sítě na všech jejich poddoménách. Abyste deaktivovali Štít pro ochranu hranice sítě pro konkrétní doménu, vložte tuto doménu do seznamu (vynechte „www“, ale zahrňte všechny nadřazené domény jako je „.cz“).",
-				"description": "Paragraph 3, please translate this text, note that <i>Manage exception list</i> refers to the ManageWhitelist string."
-			}
-		}
-	},
-	"NBSHttpProxyDNSAPINote": {
-		"message": "Pokud používáte HTTP proxy, Štít pro ochranu hranice sítě chrání síť této proxy, protože proxy provádí HTTP dotazy. JShelter zamezuje úniku DNS dotazů tak, že v případě využití HTTP proxy neresolvuje DNS domény pro detekci možných dotazů do místní sítě. I tak v takovém případě bere Štít v úvahu IP adresy přímo vložené v URL. Takže Štít pro ochranu hranice sítě chrání síť použité proxy, ale jen částečně.",
-		"description": "This note is appended to NBS description in Firefox, see https://pagure.io/JShelter/webextension/issue/41 for the context of the issue"
-	},
-
-	"nbsBlocking": {
-		"message": "Blokace",
-		"description": "Displayed during NBS configuration, label for a configuration option"
-	},
-	"nbsBlockingDescription": {
-		"message": "Blokuje požadavky, které se snaží přistupovat k místní síti.",
-		"description": "Displayed during NBS configuration, basic explanation of the configuration option"
-	},
-	"nbsBlockingDescription2": {
-		"message": "Doporučujeme ponechat toto nastavení aktivní.",
-		"description": "Displayed during NBS configuration, further explanation of the configuration option"
-	},
-	"nbsBlockingOffDescription": {
-		"message": "Závadné požadavky neblokovány.",
-		"description": "Displayed during NBS configuration, further explanation of the selected configuration level"
-	},
-	"nbsBlockingOnDescription": {
-		"message": "Závadné požadavky blokovány.",
-		"description": "Displayed during NBS configuration, further explanation of the selected configuration level"
-	},
-	"NBSNotificationsDescription": {
-		"message": "Povolení nebo zakázání notifikací o podezřelém dění, nebo blokovaných požadavcích.",
-		"description": "Displayed in NBS options, globaly disables or enables notifications"
-	},
-	"NBSNotificationsDescription2": {
-		"message": "V případě, že povolíte notifikace: s aktivním blokováním budete upozorněni notifikací o blokacích, bez aktivního blokování budete ve stejných situacích informování o podezřelé aktivitě, která blokována nebude.",
-		"description": "Displayed in NBS options, globaly disables or enables notifications"
-	},
-	"NBSNotificationsOffDescription": {
-		"message": "Notifikace vypnuty.",
-		"description": "Displayed in NBS options, notifications about blocked requests are globally disabled"
-	},
-	"NBSNotificationsOnDescription": {
-		"message": "Notifikace zapnuty.",
-		"description": "Displayed in NBS options, notifications about blocked requests are globally enabled"
-	},
-	"NBSBlockedTitle": {
-		"message": "Štít pro ochranu hranice sítě zablokoval podezřelé požadavky!",
-		"description": "Title of the notifications that is displayed when NBS actually blocks requests"
-	},
-	"NBSDetectedTitle": {
-		"message": "Štít pro ochranu hranice sítě detekoval podezřelé požadavky!",
-		"description": "Title of the notifications that is displayed when NBS detects a suspicious requests but does not block them because blocking is disabled"
-	},
-	"NBSBlockedMessageMultipleTargets": {
-		"message": "Počet blokovaných požadavků\nod $ORIGIN$,\nkteré se směřovaly do místní\nsítě: $COUNT$.",
-		"description": "The message shown when the page contacted multiple targets in the local network. Produce short lines.",
-		"placeholders": {
-			"origin": {
-				"content": "$1",
-				"description": "Domain name or IP address, do not translate",
-				"example": "domainname.example.com"
-			},
-			"count": {
-				"content": "$2",
-				"description": "A positive number, do not translate",
-				"example": "5"
-			}
-		}
-	},
-	"NBSDetectedMessageMultipleTargets": {
-		"message": "Počet detekovaných požadavků\nod $ORIGIN$,\nkteré se odešly do místní\nsítě: $COUNT$.",
-		"description": "The message shown when the page contacted multiple targets in the local network. Produce short lines.",
-		"placeholders": {
-			"origin": {
-				"content": "$1",
-				"description": "Domain name or IP address, do not translate",
-				"example": "domainname.example.com"
-			},
-			"count": {
-				"content": "$2",
-				"description": "A positive number, do not translate",
-				"example": "5"
-			}
-		}
-	},
-	"NBSBlockedMessageWithTarget": {
-		"message": "Blokovaných požadavků: $COUNT$\nod $ORIGIN$\nna $TARGET$.",
-		"description": "The message shown when the page contacted single target in the local network. Produce short lines.",
-		"placeholders": {
-			"origin": {
-				"content": "$1",
-				"description": "Domain name or IP address, do not translate",
-				"example": "domainname.example.com"
-			},
-			"target": {
-				"content": "$2",
-				"description": "IP address (maybe domain), do not translate",
-				"example": "10.0.0.1"
-			},
-			"count": {
-				"content": "$3",
-				"description": "A positive number, do not translate",
-				"example": "5"
-			}
-		}
-	},
-	"NBSDetectedMessageWithTarget": {
-		"message": "Detekovaných požadavků: $COUNT$\nod $ORIGIN$\nna $TARGET$.",
-		"description": "The message shown when the page contacted single target in the local network. Produce short lines.",
-		"placeholders": {
-			"origin": {
-				"content": "$1",
-				"description": "Domain name or IP address, do not translate",
-				"example": "domainname.example.com"
-			},
-			"target": {
-				"content": "$2",
-				"description": "IP address (maybe domain), do not translate",
-				"example": "10.0.0.1"
-			},
-			"count": {
-				"content": "$3",
-				"description": "A positive number, do not translate",
-				"example": "5"
-			}
-		}
-	},
-	"NBSBlockedHostTitle": {
-		"message": "Štít pro ochranu hranice sítě zablokoval podezřelý stroj!",
-		"description": "Title of the notifications that is displayed when NBS blocks future requests by a host in Chromium-based browsers"
-	},
-	"NBSDetectedHostTitle": {
-		"message": "Štít pro ochranu hranice sítě detekoval podezřelý stroj!",
-		"description": "Title of the notifications that is displayed when NBS detects suspicious requests by a host in Chromium-based browsers but does not block them because blocking is disabled"
-	},
-	"NBSBlockedHost": {
-		"message": "Všechny další požadavky od $HOST$ budou blokovány.",
-		"description": "The message shown in Chromium-based browsers when NBS starts blocking a host.",
-		"placeholders": {
-			"host": {
-				"content": "$1",
-				"description": "Domain name or IP address, do not translate",
-				"example": "domainname.example.com"
-			}
-		}
-	},
-	"NBSDetectedHost": {
-		"message": "Zapněte blokování požadavků pro blokování všech požadavků od $HOST$ do místní sítě.",
-		"description": "The message shown in Chromium-based browsers when NBS detects a suspicious host.",
-		"placeholders": {
-			"host": {
-				"content": "$1",
-				"description": "Domain name or IP address, do not translate",
-				"example": "domainname.example.com"
-			}
-		}
-	},
-
-	"MV3DevmodeRequired": {
-		"message": "Kvůli omezením způsobených <a href=\"$MV3URL$\" target=\"_blank\">Googlím Manifestem V3</a> nemůže JShelter a další rozšíření prohlížeče pracovat správně v prohlížečích založených na Chromiu (včetně vašeho prohlížeče) než zapnete <em>režim pro vývojáře</em> na stránce <strong>chrome://extensions</strong> (<a href=\"$INFOURL$\" target=\"_blank\">více informací o tomto režimu na stránkách Google pro vývojáře</a>).",
-		"placeholders": {
-			"mv3url": {
-				"content": "https://jshelter.org/mv3/"
-			},
-			"infourl": {
-				"content": "https://developer.chrome.com/docs/extensions/reference/api/userScripts#chrome_versions_prior_to_138_developer_mode_toggle"
-			}
-		},
-		"description": "This message is displayed as an alert in popup and options when development mode is disabled. Make sure that you keep correct HTML markup"
-	},
-	"MV3AllowUserScriptsRequired": {
-		"message": "Kvůli omezením způsobených <a href=\"$MV3URL$\" target=\"_blank\">Googlím Manifestem V3</a> nemůže JShelter a další rozšíření prohlížeče pracovat správně v prohlížečích založených na Chromiu (včetně vašeho prohlížeče) než zapnete <em>uživatelské skripty</em> na stránce JShelteru dostupné z <strong>chrome://extensions</strong> (<a href=\"$INFOURL$\" target=\"_blank\">více informací o tomto režimu na stránkách Google pro vývojáře</a>).",
-		"placeholders": {
-			"mv3url": {
-				"content": "https://jshelter.org/mv3/"
-			},
-			"infourl": {
-				"content": "https://developer.chrome.com/docs/extensions/reference/api/userScripts#chrome_versions_138_and_newer_allow_user_scripts_toggle"
-			}
-		},
-		"description": "This message is displayed as an alert in popup and options when development mode is disabled. Make sure that you keep correct HTML markup"
-	},
-
-	"MV3BrokenFeatures": {
-		"message": "Kvůli omezením způsobených <a href=\"$MV3URL$\" target=\"_blank\">Googlím Manifestem V3</a> nejsou dostupné některé části JShelteru (např. Štít pro ochranu hranice sítě a Detektor získávání otisku prohlížeče v blokujícím režimu) v nejnovějších prohlížečích založených na Chromiu (včetně vašeho), některé části JShelteru mohou pracovat s nižší spolehlivostí než dříve a než stále pracují ve Firefoxu.",
-		"placeholders": {
-			"mv3url": {
-				"content": "https://jshelter.org/mv3/"
-			}
-		},
-		"description": "This message is displayed as an alert near features broken by Manifest V3. Make sure that you keep correct HTML markup"
-	},
-
-	"FPDDescription": {
-		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
-		"description": "This is the description of FPDBS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs.",
-		"placeholders": {
-			"paragraph1": {
-				"content": "Detektor získávání otisku prohlížeče poskytuje mechanismus, který informuje uživatele o aktivitách webových stránek, které mohou směřovat k získání otisku prohlížeče. Detektor také může zabránit stránkám v přenosu otisku prohlížeče k serveru, pokud se tak uživatel rozhodne. Podívejte se na <a href='https://jshelter.org/fpdetection/'>náš příspěvek na blogu</a> nebo článek <a href='https://arxiv.org/pdf/1905.01051.pdf'>shrnující výzkum v oblasti získávání a používání otisků prohlížeče</a> pro bližší popis tématu.",
-				"description": "Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
-			},
-			"paragraph2": {
-				"content": "Zapnutý detektor může zobrazit upozornění kdykoliv navštívíte stránku s podezřelým chováním. Detektor měří počet volaných API zneužívaných k tvorbě otisku prohlížeče na každé navštívené stránce. Na základě heuristiky nad voláními a jejich obsahem vyhodnocuje, míru závažnosti volaných API z pohledu tvorby otisku prohlížeče. Tato míra závažnosti je zobrazená jako barva ikony JShelteru a také v okně zobrazeném po kliknutí na tuto ikonu (stavové okno). V případě vysoké závažnosti můžete být upozorněni notifikací. JShelter umožňuje zobrazit detaily aktivit vedoucích k tvorbě otisku prohlížeče formou zprávy. Tuto zprávu můžete získat kliknutím na stavové okno nebo kliknutím na upozornění o možném získání otisku prohlížeče navštívenou stránkou.",
-				"description": "Paragraph 2, please translate this text."
-			},
-			"paragraph3": {
-				"content": "Výchozí chování Detektoru získávání otisku prohlížeče můžete upravit. Blokující chování cílí na zamezení stránky v předání otisku prohlížeče ven z prohlížeče. Detektor získávání otisku prohlížeče blokuje všechny odchozí požadavky protokolem HTTP a maže úložiště v prohlížeči poté, co detekuje volání vysokého množství API zneužívaných k tvorbě otisku prohlížeče. <strong>Blokace všech odchozích požadavků HTTP obvykle rozbíjí chování webových stránek</strong>. Při rozbití stránek důvěryhodných doménách byste měli tyto domény zařadit mezi výjimky. Vypnutí detektoru ve stavovém okně přidá navštívenou doménu do seznamu výjimek. Domény uvedené v seznamu výjimek nejsou detektorem vyhodnocované ani blokované. Výjimky můžete spravovat níže.",
-				"description": "Paragraph 3, please translate this text."
-			}
-		}
-	},
-
-	"fpdBehavior": {
-		"message": "Chování",
-		"description": "A label shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdBehaviorDescription": {
-		"message": "Specifikuje chování modulu.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdBehaviorPassive": {
-		"message": "Pasivní",
-		"description": "A label shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdBehaviorPassiveDescription": {
-		"message": "Zobrazuje počet API zneužitelných pro tvorbu otisku prohlížeče volaných stránkou jako barvu v ikoně rozšíření.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdBehaviorLimitedBlocking": {
-		"message": "Omezené blokování",
-		"description": "A label shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdBehaviorBlockingDescription": {
-		"message": "Detektor reaguje na stránky volající velké množství API zneužitelných pro tvorbu otisku prohlížeče.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdBehaviorBlockingDescription2": {
-		"message": "• Znemožní stránce další komunikaci přes síť, aby se zabránilo úniku vytvořeného otisku prohlížeče.",
-		"description": "Additional information to fpdBehaviorLimitedBlockingDescription"
-	},
-	"fpdBehaviorLimitedBlockingDescription3": {
-		"message": "• Smaže úložiště <strong>specifikovaná níže</strong> stránky v prohlížeči, aby se předešlo možnému částečnému uložení otisku prohlížeče v těchto úložištích. (Nevyžaduje žádná další povolení.)",
-		"description": "Additional information to fpdBehaviorLimitedBlockingDescription"
-	},
-	"fpdBehaviorLimitedBlockingDescription4": {
-		"message": "• Maže se: <strong>localStorage, sessionStorage, JS cookies, IndexedDB, keše, window.name</strong>",
-		"description": "Additional information to fpdBehaviorLimitedBlockingDescription"
-	},
-	"fpdBehaviorBlockingDescriptionWarning": {
-		"message": "POZOR: Tato volba může znemožnit správné chování některých stránek.",
-		"description": "Additional information to fpdBehaviorLimitedBlockingDescription"
-	},
-	"fpdBehaviorFullBlocking": {
-		"message": "Úplné blokování",
-		"description": "A label shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdBehaviorFullBlockingDescription3": {
-		"message": "• Maže <strong>všechny</strong> dostupné mechanismy pro uložení dat. (Vyžaduje oprávnění BrowsingData.)",
-		"description": "Additional information to fpdBehaviorBlockingDescription"
-	},
-	"fpdBehaviorFullBlockingDescription4": {
-		"message": "• maže: <strong>localStorage, sessionStorage, cookies, IndexedDB, keše, window.name, fileSystems, WebSQL, serviceWorkers</strong>",
-		"description": "Additional information to fpdBehaviorBlockingDescription"
-	},
-	"fpdNotificationsDescription": {
-		"message": "Zapíná a vypíná notifikace o detekci chování umožňující tvorbu otisku prohlížeče a o blokaci požadavků HTTP.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdNotificationsDescription2": {
-		"message": "POZOR: Doporučujeme zapnout notifikace, pokud zvolíte blokující chování detektoru.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdNotificationsOffDescription": {
-		"message": "Notifikace jsou vypnuté.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdNotificationsOnDescription": {
-		"message": "Notifikace jsou zapnuté.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdDetection": {
-		"message": "Detekce",
-		"description": "A label shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdDetectionDescription": {
-		"message": "Upravuje nastavení heuristiky, která poskytuje hranice ovlivňující zda je stránka považovaná za takovou, která volala příliš mnoho API zneužitelných pro tvorbu otisku prohlížeče.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdDetectionDefault": {
-		"message": "Výchozí",
-		"description": "Option shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdDetectionDefaultDescription": {
-		"message": "Doporučené nastavení pro většinu uživatelů.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdDetectionDefaultDescription2": {
-		"message": "• Velmi malé množství mylné detekce aktivit směřujících k tvorbě otisku prohlížeče (zaměřuje se na jasné případy tvorby otisku prohlížeče, což vede k velmi malému množství zbytečně blokovaných stránek).",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdDetectionDefaultDescription3": {
-		"message": "• Přijatelné množství neodhalených pokusu o tvorbu otisku prohlížeče (některé skripty pro tvorbu otisku prohlížeče se mohou vyhnout detekci).",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-  "fpdStrict": {
-    "message": "Přísná",
-		"description": "Option shown in options during configuaration of the parameters of FPD"
-  },
-	"fpdStrictDescription": {
-		"message": "Snížený práh detekce pořizování otisku prohlížeče pro obezřetnější uživatele. Raději blokuj, než bys nechal někoho projít.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdStrictDescription2": {
-		"message": "• Nižší množství neodhalených pokusu o tvorbu otisku prohlížeče (detekuje pokusy o získání otisku prohlížeče u více stránek)",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"fpdStrictDescription3": {
-		"message": "• Zvýšené riziko nesprávné detekce získávání otisku prohlížeče (blokuje hraniční případy)",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"FPDSeverityNone": {
-		"message": "Žádné nebo zanedbatelné",
-		"description": "The level of the number of detected APIs misusable for fingerprinting"
-	},
-	"FPDSeverityLow": {
-		"message": "Nízký",
-		"description": "The level of the number of detected APIs misusable for fingerprinting"
-	},
-	"FPDSeverityModerate": {
-		"message": "Střední",
-		"description": "The level of the number of detected APIs misusable for fingerprinting"
-	},
-	"FPDSeverityHigh": {
-		"message": "Vysoký",
-		"description": "The level of the number of detected APIs misusable for fingerprinting"
-	},
-	"FPDSeverityVeryHigh": {
-		"message": "Velmi vysoký",
-		"description": "The level of the number of detected APIs misusable for fingerprinting"
-	},
-	"fpdBlockingSubsequent": {
-		"message": "Budu blokovat další požadavky HTTP.",
-		"description": "Shown in a notification when FPD starts blocking HTTP requests"
-	},
-	"fpdClickNotificationDetails": {
-		"message": "Pro více informací klikni na notifikaci.",
-		"description": "Shown in a notification when FPD detects a suspicious activity but is not configured to block"
-	},
-	"fpdNotificationMessage": {
-		"message": "$MESSAGE$\n\nStránka: $PAGETITLE$\nDoména: $DOMAIN$",
-		"description": "Constructs the full message for the notification when FPD detects suspicious activity",
-		"placeholders": {
-			"message": {
-				"content": "$1",
-				"example": "Blocking all subsequent requests.",
-				"description": "Translated fpdBlockingSubsequent or fpdClickNotificationDetails"
-			},
-			"pagetitle": {
-				"content": "$2",
-				"example": "JShelter test page",
-				"description": "The content of the title element of the fingerprinting page (in case it is long, only the start of the string)"
-			},
-			"domain": {
-				"content": "$3",
-				"example": "example.com",
-				"description": "The domain of the visited page or IP address (taken from the URL bar)"
-			}
-		}
-	},
-	"fpdNotificationTitle": {
-		"message": "Stránka se může pokoušet o vytvoření otisku prohlížeče!",
-		"description": ""
-	},
-	"FPDReportTitle": {
-		"message": "Zpráva Detektoru získávání otisku prohlížeče",
-		"description": "Title of a fingeprint report"
-	},
-	"FPDReportDescriptionPara1": {
-		"message": "Tato zpráva obsahuje seznam všech koncových bodů, ke kterým přistoupila zobrazená stránka a které jsou považovány JShelterem za relevantní pro získávání otisku prohlížeče. Detektoru získávání otisku prohlížeče používá tato data při rozhodování, zda je stránka podezřelá ze sbírání dat pro výpočet otisku prohlížeče.",
-		"description": "Explanation text in the report, it can be shown by clicking on the help icon"
-	},
-	"FPDReportDescriptionPara2": {
-		"message": "Detektor získávání otisku prohlížeče zpracovává volání API ve skupinách podle jejich sémantiky. Toto okno ukazuje počet detekovaných volání jednotlivých API. Výchozí zobrazení ukazuje jen skupiny, které stránka nejméně jednou využila. Pokud stránka nevyužila žádné API, toto okno může být prázdné. Pokud chcete vidět všechny API monitorované Detektorem získávání otisku prohlížeče, klikněte $STARTTAG$ sem $ENDTAG$",
-		"description": "Explanation text in the report, it can be shown by clicking on the help icon",
-		"placeholders": {
-			"starttag": {
-				"content": "<span id='unhideAll'>",
-				"description": "Please keep the tag as is, do not translate"
-			},
-			"endtag": {
-				"content": "</span>",
-				"description": "Please keep the tag as is, do not translate"
-			}
-		}
-	},
-	"FPDReportDescriptionPara3": {
-		"message": "Data z této zprávy můžete exportovat do formátu JSON. Exportovaná data zahrnují použité váhy nastavené jednotlivým API a jejich skupinám ($NOTE1$). Dále zahrnují využité API a využité argumenty ($NOTE2$).",
-		"description": "Explanation text in the report, it can be shown by clicking on the help icon",
-		"placeholders": {
-			"note1": {
-				"content": "<i>fpd_evaluation_statistics</i>",
-				"description": "Please keep as is, do not translate"
-			},
-			"note2": {
-				"content": "<i>fpd_access_logs</i>",
-				"description": "Please keep as is, do not translate"
-			}
-		}
-	},
-	"FPDReportShowDetails": {
-		"message": "Zobraz detaily",
-		"description": "Button caption"
-	},
-	"FPDReportHideDetails": {
-		"message": "Skryj detaily",
-		"description": "Button caption"
-	},
-	"FPDReportTrackCallers": {
-		"message": "Zjisti volající skripty",
-		"description": "Button caption. The purpose of the button is to reload the page while injecting additional scripts that track the location of the callers. This functionality needs to be on demand as it is performance heavy."
-	},
-	"FPDReportTrackCallersRestart": {
-		"message": "Znovu spusť zjišťování volajících skriptů",
-		"description": "Button caption. The purpose of the button is to reload the page while injecting additional scripts that track the location of the callers. This functionality needs to be on demand as it is performance heavy."
-	},
-	"FPDReportTrackCallersWaiting": {
-		"message": "Zjišťuji volající skripty. Prosím, počkejte chvíli.",
-		"description": "Text displayed inside FPD report to explain what is happening."
-	},
-	"FPDReportTrackCallersFailed": {
-		"message": "Není možné zjistit volající skripty kvůli chybě. $errorFromBrowser$",
-		"description": "Prefix strings that intoroduces an error strings generated by the browser. Shown when action started by clicking on button with text of FPDReportTrackCallers failed.",
-		"placeholders": {
-			"errorFromBrowser": {
-				"content": "$1",
-				"description": "An error message generated by the browser. Do not translate.",
-				"example": "Error: Invalid tab ID: 16"
-			}
-		}
-	},
-	"FPDReportForgetTraces": {
-		"message": "Nezobrazuj současné volající",
-		"description": "Button caption"
-	},
-	"FPDReportRefresh": {
-		"message": "Aktualizuj zprávu",
-		"description": "Button caption"
-	},
-	"FPDReportExportJSON": {
-		"message": "Exportuj úplnou zprávu jako JSON",
-		"description": "Button caption"
-	},
-	"FPDReportMissingData": {
-		"message": "CHYBA: Nemám data a nemůžu vytvořit zprávu! Pokuste se znovu načíst stránku a znovu otevřít zprávu.",
-		"description": "Text shown if the windows cannot communicate with the internals of the extension"
-	}
+    "extensionName": {
+        "message": "JShelter",
+        "description": "Jméno rozšíření. Prosím nepřekládat pokud není patřičně zdůvodněno."
+    },
+    "extensionDescription": {
+        "message": "Rozšíření pro zvýšení bezpečnosti a soukromí uživatele prohlížeče.",
+        "description": "Description of the extension."
+    },
+    "javascriptShield": {
+        "message": "JavaScriptový štít",
+        "description": "The name of the JavaScript Shield displayed at multiple places"
+    },
+    "networkBoundaryShield": {
+        "message": "Štít pro ochranu hranice sítě",
+        "description": "The name of the Network Boundary Shield displayed at multiple places"
+    },
+    "NBSgloballyOff": {
+        "message": "Štít pro ochranu hranice sítě je úplně deaktivovaný",
+        "description": "Informs the user that NBS is globally disabled, displayed e.g. in popup"
+    },
+    "fingerprintDetector": {
+        "message": "Detektor získávání otisku prohlížeče",
+        "description": "The name of the Fingerprint Detector displayed at multiple places"
+    },
+    "FPDgloballyOff": {
+        "message": "Detektor získávání otisku prohlížeče je úplně deaktivovaný",
+        "description": "Informs the user that FPD is globally disabled, displayed e.g. in popup"
+    },
+    "globalSettings": {
+        "message": "Globální nastavení",
+        "description": "The button in the popup that opens options page"
+    },
+    "settingsForDomain": {
+        "message": "Nastavení pro doménu",
+        "description": "The text in the popup that introduces the context of the information in the popup"
+    },
+    "refreshPage": {
+        "message": "Obnov stránku",
+        "description": "The button in the popup that refreshes the currently displayed page"
+    },
+    "modifyJSSPopup": {
+        "message": "Upravit",
+        "description": "The button in the popup that tweaks JSS"
+    },
+    "descriptionMore": {
+        "message": "(více…)",
+        "description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get more information about the level."
+    },
+    "descriptionLess": {
+        "message": "(skryj…)",
+        "description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get less information about the level."
+    },
+    "nameDescriptionSeparator": {
+        "message": " — ",
+        "description": "Used for example in the popup to separate the current JSS level from its description."
+    },
+    "detailTweaksOfJSShieldForThisSite": {
+        "message": "Podrobná nastavení JavaScriptového štítu",
+        "description": "Button in the popup that allows to tweak JSS."
+    },
+    "wrappers": {
+        "message": "Skupiny volání",
+        "description": "Column headding in the popup detailed JSS shield"
+    },
+    "levelOfDefense": {
+        "message": "Úroveň aplikované ochrany",
+        "description": "Column headding in the popup detailed JSS shield"
+    },
+    "numberOfCalls": {
+        "message": "Počet volání API",
+        "description": "Column headding in the popup detailed JSS shield"
+    },
+    "FingerprintQualityLabel": {
+        "message": "⤷ Počet API zneužitelných pro tvorbu otisku prohlížeče volaných stránkou: ",
+        "description": "This text is displayed in the popup as additional information from FPD"
+    },
+    "popupDefaultLevelHelpText": {
+        "message": "Nastav úroveň ochrany pro tuto stránku na globálně nastavenou výchozí úroveň.",
+        "description": "This text is displayed in the popup as a tooltip for the Default level button"
+    },
+    "defaultLevelSelection###placeholders###levelName": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Translated name of the default level used by the user ###EXAMPLE### Recommended, see the keys JSSL*Name like JSSL2Name"
+    },
+    "defaultLevelSelection": {
+        "message": "Výchozí úroveň ($levelName$)",
+        "description": "This text is displayed as the default level in the popup"
+    },
+    "ShieldOffSlider": {
+        "message": "Vyp.",
+        "description": "Displayed in sliders that control activation of shields in popup and options, keep the text short to prevent overflow"
+    },
+    "ShieldOnSlider": {
+        "message": "Zap.",
+        "description": "Displayed in sliders that control activation of shields in popup and options, keep the text short to prevent overflow"
+    },
+    "jssgroupUnprotected": {
+        "message": "Bez ochrany",
+        "description": "Displayed during JSS level tweaking in case the API group is completely disabled"
+    },
+    "jssgroupPoor": {
+        "message": "Slabá",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupLow": {
+        "message": "Nízká",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupMedium": {
+        "message": "Střední",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupHigh": {
+        "message": "Vysoká",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupLittleLies": {
+        "message": "Drobné lži",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupStrict": {
+        "message": "Přísná",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupConfuse": {
+        "message": "Zmatení",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupFake": {
+        "message": "Falešné",
+        "description": "Displayed during JSS level tweaking for InstalledBrowserPlugins and possibly more (in the future)"
+    },
+    "jssgroupAddFake": {
+        "message": "Přidej falešné",
+        "description": "Displayed during JSS level tweaking for Connected cameras and microphones and possibly more (in the future)"
+    },
+    "jssgroupAsk": {
+        "message": "Ptej se",
+        "description": "Displayed during JSS level tweaking for XHR and possibly more (in the future)"
+    },
+    "jssgroupBlock": {
+        "message": "Blokace",
+        "description": "Displayed during JSS level tweaking for XHR and possibly more (in the future)"
+    },
+    "jssgroupRemove": {
+        "message": "Odstraň",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupTimePrecision": {
+        "message": "Přesnost měření času"
+    },
+    "jssgroupTimePrecisionDescription": {
+        "message": "Znesnadňuje a brání útokům a získávání otisku prohlížeče vyžadující přesné měření času.",
+        "description": "Displayed at various places"
+    },
+    "jssgroupTimePrecisionDescription2###placeholders###apis": {
+        "message": "Date, Performance, Gamepad API, Web VR API a v rámci událostí",
+        "description": "This string defines a substring of jssgroupTimePrecisionDescription2 ### Keep the names of the APIs but translate the punctuation and conjunctions"
+    },
+    "jssgroupTimePrecisionDescription2###placeholders###jssgroupPhysicalLocationGeolocation": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Translated version of the jssgroupPhysicalLocationGeolocation string"
+    },
+    "jssgroupTimePrecisionDescription2": {
+        "message": "Omezuje přesnost časových značek dostupných v API jako je $apis$. Časové značky Geolocation API jsou také změněny, pokud je zároveň aktivní ochrana „$jssgroupPhysicalLocationGeolocation$“.",
+        "description": "Displayed at various places"
+    },
+    "jssgroupTimePoorDescription": {
+        "message": "Zaokrouhluje čas na setiny sekundy (1.230)",
+        "description": "Explains the protection to the user"
+    },
+    "jssgroupTimeLowDescription": {
+        "message": "Zaokrouhluje čas na desetiny sekundy (1.200)",
+        "description": "Explains the protection to the user"
+    },
+    "jssgroupTimeHighDescription": {
+        "message": "Přidává šum do desetinných míst (1.451)",
+        "description": "Explains the protection to the user"
+    },
+    "jssgroupLocallyRenderedImages": {
+        "message": "Lokálně generované obrázky",
+        "description": "htmlcanvaselement group"
+    },
+    "jssgroupLocallyRenderedImagesDescription": {
+        "message": "Chrání před získáváním otisku prohlížeče založeném na generování obrázků lokální grafickou kartou (Canvas fingerprinting), nebo získávání informací o chování grafické karty.",
+        "description": "Displayed at various places, try to keep canvas in English or make sure that the user can understand that the protection is about the Canvas API"
+    },
+    "jssgroupLocallyRenderedImagesDescription2###placeholders###apis": {
+        "message": "canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() a WebGLRenderingContext.readPixels",
+        "description": "This string defines a substring of jssgroupLocallyRenderedImagesDescription2 ### Keep the names of the APIs but translate the punctuation and conjunctions"
+    },
+    "jssgroupLocallyRenderedImagesDescription2": {
+        "message": "Funkce $apis$ vrací modifikované informace.",
+        "description": "Displayed at various places"
+    },
+    "jssgroupLocallyRenderedImagesDescription3###placeholders###apis": {
+        "message": "CanvasRenderingContext2D.isPointInStroke() a CanvasRenderingContext2D.isPointInPath()",
+        "description": "This string defines a substring of jssgroupLocallyRenderedImagesDescription3 ### Keep the names of the APIs but translate the punctuation and conjunctions"
+    },
+    "jssgroupLocallyRenderedImagesDescription3": {
+        "message": "Výsledky $apis$ jsou modifikovány jen s určitou pravděpodobností.",
+        "description": "Displayed after jssgroupLocallyRenderedImagesDescription2"
+    },
+    "jssgroupLocallyRenderedImagesLittleLiesDescription": {
+        "message": "Drobně upravuje generované obrázky tak, aby vizuálně vypadaly stejně, ale přesné hodnoty se lišily v závislosti na doméně a sezení. Cílem je znemožnit, či ztížit Canvas fingerprinting.",
+        "description": "Consider keeping reference to Canvas fingerprinting in English"
+    },
+    "jssgroupLocallyRenderedImagesStrictDescription": {
+        "message": "Vrací bílé obrázky. Plátno (canvas) WebGL vrací prázdné pole. Nechrání před Canvas fingerprintingem.",
+        "description": "Consider keeping reference to Canvas fingerprinting in English"
+    },
+    "jssgroupLocallyGeneratedAudio": {
+        "message": "Lokálně generované zvuky",
+        "description": "audiobuffer group"
+    },
+    "jssgroupLocallyGeneratedAudioDescription": {
+        "message": "Chrání před získáváním informací o schopnostech generování zvuku, např. zvukovou kartou, které lze využit např. pro vytváření otisků prohlížeče založeném na analýze generovaného audia (audio fingerprinting).",
+        "description": "Try to keep reference to audio fingerprinting"
+    },
+    "jssgroupLocallyGeneratedAudioDescription2###placeholders###apis": {
+        "message": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() a AnalyserNode.getFloatFrequencyData()",
+        "description": "This string defines a substring of jssgroupLocallyGeneratedAudioDescription2 ### Keep the names of the APIs but translate the punctuation and conjunctions"
+    },
+    "jssgroupLocallyGeneratedAudioDescription2": {
+        "message": "Modifikuje výsledky funkcí $apis$."
+    },
+    "jssgroupLocallyGeneratedAudioLittleLiesDescription": {
+        "message": "Přidává drobný šum k amplitudě tak, aby byl zvuk pro člověka podobný původnímu zvuku. Přesné hodnoty se však liší na různých doménách a v rámci různých sezení. Cílem je chránit před Audio fingerprintingem, nebo jej alespoň udělat těžším.",
+        "description": "Consider keeping reference to Audio fingerprinting in English"
+    },
+    "jssgroupLocallyGeneratedAudioStrictDescription": {
+        "message": "Zvuková data jsou nahrazené bílým šumem, který se liší podle navštívené domény a v rámci různých sezení Cílem je omezit informace, které unikají o zvukovém hardware a zároveň zkomplikovat získávání otisku prohlížeče (Audio fingerprinting).",
+        "description": "Consider keeping reference to Audio fingerprinting in English"
+    },
+    "jssgroupGraphicCardInformation": {
+        "message": "Informace o grafické kartě",
+        "description": "webgl group"
+    },
+    "jssgroupGraphicCardInformationDescription": {
+        "message": "Podvrhnout informace o grafické kartě, např. pro ztížení získávání otisku prohlížeče."
+    },
+    "jssgroupGraphicCardInformationDescription2###placeholders###api": {
+        "message": "WebGLRenderingContext.getParameter()",
+        "description": "This string defines a substring of jssgroupGraphicCardInformationDescription2 ### Keep the names of the API"
+    },
+    "jssgroupGraphicCardInformationDescription2": {
+        "message": "Funkce $api$ vrací modifikované hodnoty pro vybrané parametry."
+    },
+    "jssgroupGraphicCardInformationDescription3###placeholders###apis": {
+        "message": "WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() a .getExtension()",
+        "description": "This string defines a substring of jssgroupGraphicCardInformationDescription3 ### Keep the names of the API but translate the punctuation and conjunctions"
+    },
+    "jssgroupGraphicCardInformationDescription3": {
+        "message": "$apis$ vrací modifikované výsledky."
+    },
+    "jssgroupGraphicCardInformationLittleLiesDescription": {
+        "message": "Nahraď původní hodnoty rozumnými čísly, nebo náhodnými řetězci, které se liší podle navštívené domény a napříč sezeními. Cílem je omezit informace o grafickém hardware a zároveň ztížit získávání otisku prohlížeče."
+    },
+    "jssgroupGraphicCardInformationStrictDescription": {
+        "message": "Vrať prázdné hodnoty (null, prázdné řetězce). Pozor, toto nastavení nebrání získávání otisku prohlížeče."
+    },
+    "jssgroupInstalledBrowserPlugins": {
+        "message": "Nainstalované rozšiřující moduly prohlížeče",
+        "description": "plugins group"
+    },
+    "jssgroupInstalledBrowserPluginsDescription": {
+        "message": "Chraň před tvorbou otisku prohlížeče založenou na seznamu nainstalovaných rozšiřujících modulů prohlížeče."
+    },
+    "jssgroupInstalledBrowserPluginsDescription2": {
+        "message": "Tato ochrana se neuplatňuje pokud prohlížeč vrací prázdný seznam rozšiřujících modulů, nebo tento seznam obsahuje pouze pět modulů specifikovaných HTML living standard. Takže se tato ochrana neuplatňuje v moderních prohlížečích.",
+        "description": "The protection is not applied in modern browsers"
+    },
+    "jssgroupInstalledBrowserPluginsLittleLiesDescription": {
+        "message": "Přidej dva falešné moduly.",
+        "description": ""
+    },
+    "jssgroupInstalledBrowserPluginsFakeDescription": {
+        "message": "Vrať pouze dva falešné moduly.",
+        "description": ""
+    },
+    "jssgroupInstalledBrowserPluginsStrictDescription": {
+        "message": "Nevracej žádný modul.",
+        "description": ""
+    },
+    "jssgroupConnectedCamerasAndMicrophones": {
+        "message": "Připojené kamery a mikrofóny"
+    },
+    "jssgroupConnectedCamerasAndMicrophonesDescription": {
+        "message": "Braň před tvorbou otisku prohlížeče založené na informacích o připojených zařízeních typu kamera a mikrofón."
+    },
+    "jssgroupConnectedCamerasAndMicrophonesDescription2###placeholders###api": {
+        "message": "MediaDevices.enumerateDevices()",
+        "description": "This string defines a substring of jssgroupConnectedCamerasAndMicrophonesDescription2 ### Keep the names of the API"
+    },
+    "jssgroupConnectedCamerasAndMicrophonesDescription2": {
+        "message": "Funkce $api$ vrací upravené výsledky."
+    },
+    "jssgroupConnectedCamerasAndMicrophonesLittleLiesDescription": {
+        "message": "Náhodně změní pořadí zařízení. Skutečná zařízení jsou označená jinými identifikátory na různých doménách a napříč sezeními."
+    },
+    "jssgroupConnectedCamerasAndMicrophonesAddFakeDescription": {
+        "message": "Přidá 0-4 zařízení a změní pořadí. Skutečná zařízení jsou označená jinými identifikátory na různých doménách a napříč sezeními.",
+        "description": ""
+    },
+    "jssgroupConnectedCamerasAndMicrophonesStrictDescription": {
+        "message": "Nevrací žádné informace o připojených zařízeních.",
+        "description": ""
+    },
+    "jssgroupHardware": {
+        "message": "Informace o operační paměti a procesoru",
+        "description": "hardware group"
+    },
+    "jssgroupHardwareDescription": {
+        "message": "Podvrhni hardwarové informace o množství operační paměti a procesorů."
+    },
+    "jssgroupHardwareDescription2###placeholders###apis": {
+        "message": "navigator.deviceMemory a navigator.hardwareConcurrency",
+        "description": "This string defines a substring of jssgroupHardwareDescription2 ### Keep the names of the APIs but translate the punctuation and conjunctions"
+    },
+    "jssgroupHardwareDescription2": {
+        "message": "API $apis$ vrací modifikované hodnoty."
+    },
+    "jssgroupHardwareLowDescription": {
+        "message": "Vrací náhodnou platnou hodnotu mezi minimální a skutečnou hodnotou. Návratová hodnota se liší na různých navštívených doménách a napříč sezeními."
+    },
+    "jssgroupHardwareMediumDescription": {
+        "message": "Vrací náhodnou platnou hodnotu mezi minimální a 8. Návratová hodnota se liší na různých navštívených doménách a napříč sezeními."
+    },
+    "jssgroupHardwareHighDescription": {
+        "message": "Vrací 4 pro navigator.deviceMemory a 2 pro navigator.hardwareConcurrency.",
+        "description": "Keep the names of the APIs in English"
+    },
+    "jssgroupNetworkConditions": {
+        "message": "Stav sítě",
+        "description": "net group"
+    },
+    "jssgroupNetworkConditionsDescription": {
+        "message": "Blokování přístupu k informacím o stavu sítě, např. pro omezení získávání informací pro tvorbu otisku prohlížeče a zamezení zneužití informací pro sledování vzorů chování uživatele při přístupu k sítím, např. pro zjištění, jestli je uživatel doma, v práci, nebo cestuje.",
+        "description": ""
+    },
+    "jssgroupNetworkConditionsRemoveDescription": {
+        "message": "Odeber API NetworkInformation",
+        "description": "Keep the name of the API in English"
+    },
+    "jssgroupXMLHttpRequestRequests": {
+        "message": "Přenosy dat pomocí XMLHttpRequest (XHR)",
+        "description": "Keep the name of the API in English"
+    },
+    "jssgroupXMLHttpRequestRequestsDescription": {
+        "message": "Filtruje spolehlivé přenosy informací na server pomocí API XHR."
+    },
+    "jssgroupXMLHttpRequestRequestsDescription2###placeholders###apis": {
+        "message": "API Fetch, SSE, WebRTC a WebSockets",
+        "description": "This string defines a substring of jssgroupXMLHttpRequestRequestsDescription2 ### Keep the names of the APIs but translate the punctuation and conjunctions"
+    },
+    "jssgroupXMLHttpRequestRequestsDescription2": {
+        "message": "Pozor, API XHR se naprosto běžně používá pro nezávadné přenosy. Zároveň mějte na paměti, že tato volba neřeší obdobná API, jako jsou $apis$, která dovolují přenos dat k serveru. Pokud si nejste jisti, že víte, co děláte, ponechte tuto skupinu neaktivní. JShelter nadále poskytuje úpravy XHR pro experimentální použití. Pro blokování přenosů dat potřebných pro tvorbu otisku prohlížeče zapněte „Detektor získávání otisků prohlížeče“."
+    },
+    "jssgroupXMLHttpRequestRequestsAskDescription": {
+        "message": "Zeptej se před vykonáním každého požadavku pomocí XHR",
+        "description": "Keep the name of the API in English"
+    },
+    "jssgroupXMLHttpRequestRequestsBlockDescription": {
+        "message": "Blokuj všechny požadavky pomocí XHR",
+        "description": "Keep the name of the API in English"
+    },
+    "jssgroupArrays": {
+        "message": "API ArrayBuffer",
+        "description": "arrays group"
+    },
+    "jssgroupArraysDescription": {
+        "message": "Ochrana před zneužitím API ArrayBuffer, např. pro zamezení zneužití pro tvorbu postranních kanálů k útokům na operační paměť (nebo alespoň znesnadní takové útoky).",
+        "description": ""
+    },
+    "jssgroupArraysShift": {
+        "message": "Posun"
+    },
+    "jssgroupArraysShiftDescription": {
+        "message": "Posune indexy polí pro znesnadnění detekce hranice stránek v operační paměti."
+    },
+    "jssgroupArraysRandomize": {
+        "message": "Náhodné"
+    },
+    "jssgroupArraysRandomizeDescription": {
+        "message": "Náhodně prohází prvky pole v paměti, což je pomalejší než posun, ale účinější."
+    },
+    "jssgroupSharedArraysBuffer": {
+        "message": "API SharedArrayBuffer",
+        "description": "shared_array group"
+    },
+    "jssgroupSharedArraysBufferDescription": {
+        "message": "Ochrana před zneužitím API SharedArrayBuffer, např. pro zamezení zneužití pro tvorbu postranních kanálů (nebo alespoň znesnadní takové útoky).",
+        "description": ""
+    },
+    "jssgroupSharedArraysBufferMediumDescription": {
+        "message": "Náhodně zpomalí zprávy jako prevence tvorby vysoce přesných časovačů",
+        "description": ""
+    },
+    "jssgroupSharedArraysBufferStrictDescription": {
+        "message": "Blokování SharedArrayBuffer",
+        "description": ""
+    },
+    "jssgroupWebWorker": {
+        "message": "API WebWorker",
+        "description": "webworker group, keep the name of the API in English"
+    },
+    "jssgroupWebWorkerDescription": {
+        "message": "Chraň před zneužitím WebWorkerů",
+        "description": "Keep the name of the API in English"
+    },
+    "jssgroupWebWorkerDescription2": {
+        "message": "Workeři poskytují bohatá API, která např. umožňují nainstalovat odposlouchávání dat pro navštívenou stránku komukoliv, kdo může do stránky vložit JavaScriptový kód. Vyšší úrovně ochrany odstraňují tuto možnost. Pozor na to, že Workeři jsou běžně používání i pro účely, které nejsou pro uživatele škodlivé, např. pro umožnění práce s webovou aplikací offline, během interaktivního vyhledávání, dočasného kešování informací, např. při přehrávání multimédií apod.",
+        "description": "Try to keep the reference to the Worker in English"
+    },
+    "jssgroupWebWorkerLowDescription": {
+        "message": "Náhodně zpomalí komunikaci s WebWorkery, aby se zabránilo jejich zneužití pro tvorbu časovačů s velkou přesností. Zachovává plné možnosti Workerů včetně jejich přístupu k originálním API (bez úpravy JShelterem). Používejte jen s nejvyšší opatrností.",
+        "description": "Try to keep the reference to the Worker in English"
+    },
+    "jssgroupWebWorkerStrictDescription": {
+        "message": "Rozbije WebWorkers tak, že nevykonávají žádnou činnost. Pro stránku se však tato volba tváří tak že prohlížeč Workery podporuje a tak nemohou jednoduše poskytnout náhradní řešení (které některé stránky poskytují). Tato volba pomáhá proti tvorbě unikátního otisku prohlížeče.",
+        "description": "Try to keep the reference to the Worker in English"
+    },
+    "jssgroupWebWorkerRemoveDescription": {
+        "message": "Odstraň podporu WebWorkerů z prohlížeče. To je snadno detekovatelné stránkou, takže tato volba zvyšuje možnosti tvorby unikátního otisku prohlížeče. Na druhou stranu tato volba dává stránkám možnost nasazení náhradního řešení, která nemají rizika původního API.",
+        "description": "Try to keep the reference to the Worker in English"
+    },
+    "jssgroupPhysicalLocationGeolocation": {
+        "message": "Umístění v prostoru (geolokace)"
+    },
+    "jssgroupPhysicalLocationGeolocationDescription": {
+        "message": "Omezuje množství informací poskytovaných Geolocation API.",
+        "description": "Displayed at various places, keep the name of the API in the English"
+    },
+    "jssgroupPhysicalLocationGeolocationDescription2": {
+        "message": "Mění pozici pro různé domény různě. Pro každé sezení reportuje stejnou lokaci pro každou jednotlivou doménu.",
+        "description": "Displayed at various places"
+    },
+    "jssgroupGeolocationTimestampOnly": {
+        "message": "Jen časové značky",
+        "description": "Displayed during level tweaks"
+    },
+    "jssgroupGeolocationTimestampOnlyDescription###placeholders###jssgroupTimePrecision": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ###  ###EXAMPLE### Translated string of the jssgroupTimePrecision"
+    },
+    "jssgroupGeolocationTimestampOnlyDescription": {
+        "message": "Poskytuje přesnou pozici (použitelné pokud potřebujete poskytnout přesnou polohu a zároveň chcete chránit časové značky při aktivní ochraně „$jssgroupTimePrecision$“)",
+        "description": "Explains the protection to the user"
+    },
+    "jssgroupGeolocationVillage": {
+        "message": "Vesnice",
+        "description": "Displayed during level tweaks"
+    },
+    "jssgroupGeolocationVillageDescription": {
+        "message": "Poloha přesná na stovky metrů.",
+        "description": "Explains the protection to the user"
+    },
+    "jssgroupGeolocationTown": {
+        "message": "Město",
+        "description": "Displayed during level tweaks"
+    },
+    "jssgroupGeolocationTownDescription": {
+        "message": "Poloha přesná na kilometry.",
+        "description": "Explains the protection to the user"
+    },
+    "jssgroupGeolocationRegion": {
+        "message": "Oblast",
+        "description": "Displayed during level tweaks"
+    },
+    "jssgroupGeolocationRegionDescription": {
+        "message": "Poloha přesná na desítky kilometrů.",
+        "description": "Explains the protection to the user"
+    },
+    "jssgroupGeolocationLongDistance": {
+        "message": "Velká oblast",
+        "description": "Displayed during level tweaks"
+    },
+    "jssgroupGeolocationLongDistanceDescription": {
+        "message": "Poloha přesná na stovky kilometrů.",
+        "description": "Explains the protection to the user"
+    },
+    "jssgroupGeolocationRemoveDescription": {
+        "message": "Deaktivuj API.",
+        "description": "Explains the protection to the user"
+    },
+    "jssgroupPhysicalEnvironmentSensors": {
+        "message": "Senzory okolního prostředí",
+        "description": "physical_environment group"
+    },
+    "jssgroupPhysicalEnvironmentSensorsDescription": {
+        "message": "Omezuje množství informací poskytovaných ze senzorů zkoumající stav prostředí obklopující zařízení jako je magnetometr a akcelerometr.",
+        "description": "Consider replacing Magnetometer and Accelerometer with localized version of the sensor"
+    },
+    "jssgroupPhysicalEnvironmentSensorsDescription2": {
+        "message": "Informace poskytované blokovanými senzory mohou být zneužity pro mnoho účelů včetně získávání otisku okolního prostředí, sledování polohy uživatele, detekce blízkých zařízení, odhadu akcí uživatele, které se zařízením provádí a mnoho dalších. Ale údaje poskytované senzory mohou být potřeba pro užitečné aplikace jako je navigace, hry a další, pokud jsou tyto aplikace závislé na údajích poskytovaných senzory. Např. některé aplikace využívají orientaci zařízení pro ovládání akcí poskytovaných aplikací."
+    },
+    "jssgroupPhysicalEnvironmentSensorsHighDescription": {
+        "message": "Simuluje statické zařízení, které poskytuje konzistentní data, která se liší napříč doménami a sezeními."
+    },
+    "jssgroupUserIdleDetection": {
+        "message": "Detekce aktivity uživatele",
+        "description": "useridle group"
+    },
+    "jssgroupUserIdleDetectionDescription": {
+        "message": "API Idle Detection detekuje neaktivního uživatele a uzamčenou obrazovku zařízení.",
+        "description": "Try to keep the name of the API in English"
+    },
+    "jssgroupUserIdleDetectionDescription2": {
+        "message": "Webové aplikace mohou tyto informace použít např. pro zjištění zda uživateli zobrazovat notifikace. Tyto informace však mohou být zneužity ke sledování aktivity uživatele a korelaci stavu napříč doménami."
+    },
+    "jssgroupUserIdleConfuseDescription": {
+        "message": "Vždy vrací informací, že je uživatel aktivní a obrazovka není uzamčená."
+    },
+    "jssgroupUserIdleBlockDescription": {
+        "message": "Automaticky odmítá provést akci bez zobrazení výzvy uživateli."
+    },
+    "jssgroupUserIdleRemoveDescription": {
+        "message": "Odstraní API."
+    },
+    "jssgroupCoopschedule": {
+        "message": "Plánovač úloh",
+        "description": "coopschedule group"
+    },
+    "jssgroupCoopscheduleDescription": {
+        "message": "API Cooperative Scheduling patřící mezi API Background Tasks může naplánovat výpočetně náročné úlohy na dobu, kdy nebudou způsobovat prodlevy detekovatelné uživatelem nebo v jiných úlohách sdílejících stejnou smyčku událostí.",
+        "description": "Try to keep the names of the APIs in English"
+    },
+    "jssgroupCoopscheduleDescription2": {
+        "message": "Toto API umožňuje získat přístup k informacím o vytížení prohlížeče jinými úlohami."
+    },
+    "jssgroupCoopscheduleConfuseDescription": {
+        "message": "Upravuje informace, aby zmátl nepřítele."
+    },
+    "jssgroupGamepads": {
+        "message": "Gamepady",
+        "description": "gamepads group"
+    },
+    "jssgroupGamepadsDescription": {
+        "message": "Blokuje přístup stránek k informacím o připojených gamepadech."
+    },
+    "jssgroupGamepadsDescription2": {
+        "message": "Informace o připojených gamepadech může být zneužita při tvorbě otisku prohlížeče. Webové stránky obvykle nepotřebují znát informace o připojených gamepadech, pokud se nejedná o specializované, obvykle herní, aplikace."
+    },
+    "jssgroupGamepadsStrictDescription": {
+        "message": "Skryj všechny gamepady."
+    },
+    "jssgroupVirtualAndAugmentedRealityDevices": {
+        "message": "Zařízení virtuální a rozšířené reality",
+        "description": "vr group (also includes XR API)"
+    },
+    "jssgroupVirtualAndAugmentedRealityDevicesDescription": {
+        "message": "Zamezí webovým aplikacím ke zjišťování informací o displejích virtuální a rozšířené reality."
+    },
+    "jssgroupVirtualAndAugmentedRealityDevicesDescription2": {
+        "message": "Informace o připojených zařízeních virtuální a rozšířené reality může být zneužita při tvorbě otisku prohlížeče. Webové stránky obvykle nepotřebují znát informace o takových připojených zařízeních, pokud se nejedná o specializované aplikace."
+    },
+    "jssgroupVirtualAndAugmentedRealityDevicesStrictDescription": {
+        "message": "Skryj všechna zařízení."
+    },
+    "jssgroupMultimediaPlayback": {
+        "message": "Multimediální kodeky",
+        "description": "playback group"
+    },
+    "jssgroupMultimediaPlaybackDescription": {
+        "message": "Zamezí aplikacím k přístupu k informacím o instalovaných kodecích, schopnostech kódovat a dekódovat multimédia a výkonu."
+    },
+    "jssgroupMultimediaPlaybackDescription2": {
+        "message": "Informace poskytované API mohou být zneužity na tvorbu otisku prohlížeče. Tato ochrana by měla být aktivována pro stránky, které nezpracovávají audio a video. Aplikace zpracovávající audio, nebo video mohou být ochranou rozbité."
+    },
+    "jssgroupMultimediaPlaybackLittleLiesDescription": {
+        "message": "S pravděpodobností 12,5% reportuj kódovací a dekódovací mechanismus jako nepodporovaný."
+    },
+    "jssgroupMultimediaPlaybackStrictDescription": {
+        "message": "Reportuj všechny kódovací a dekódovací mechanismy jako nepodporované."
+    },
+    "jssgroupMultimediaPlaybackBlockDescription": {
+        "message": "Nevracej žádné informace."
+    },
+    "jssgroupUnreliableTransfersToServerBeacons": {
+        "message": "Nespolehlivé přenosy na server",
+        "description": "analytics group"
+    },
+    "jssgroupUnreliableTransfersToServerBeaconsDescription": {
+        "message": "Zabraňuje nespolehlivým přenosům na server, nazývané také jako beacons, nebo majáky."
+    },
+    "jssgroupUnreliableTransfersToServerBeaconsDescription2": {
+        "message": "Tyto přenosy jsou typicky zneužívané pro analytické účely, ale občas mohou být vyžadované pro správnou funkčnost e-shopů a jiných služeb."
+    },
+    "jssgroupUnreliableTransfersToServerBeaconsDescription3": {
+        "message": "Brání stránkám ve využití API Beacon.",
+        "description": "Keep the name of the API"
+    },
+    "jssgroupUnreliableTransfersToServerBeaconsBlockDescription": {
+        "message": "Blokuje datové přenosy pomocí API Beacon. V rámci volání se neprovádí žádná akce."
+    },
+    "jssgroupHardwareBattery": {
+        "message": "Stav baterie",
+        "description": "battery group"
+    },
+    "jssgroupHardwareBatteryDescription": {
+        "message": "Odstraňuje podporu API Battery Status, které je zneužívané pro tvorbu otisku prohlížeče.",
+        "description": "Try to keep the reference to the English name of the API"
+    },
+    "jssgroupHardwareBatteryRemoveDescription": {
+        "message": "Odstraní API"
+    },
+    "jssgroupPersistentIdentifierOfTheBrowserTab": {
+        "message": "Trvalý identifikátor panelu prohlížeče",
+        "description": "windowname group"
+    },
+    "jssgroupPersistentIdentifierOfTheBrowserTabDescription": {
+        "message": "Na rozdíl od jiných částí prostředí prohlížeče se vlastnost window.name neresetuje během načítání stránky. Důsledkem je, že si může stránka do této vlastnosti uložit jedinečný identifikátor, nebo neškodná a užitečná data.",
+        "description": "Try to keep reference to window.name."
+    },
+    "jssgroupPersistentIdentifierOfTheBrowserTabDescription2": {
+        "message": "Toto API poskytuje možnost identifikace panelu prohlížeče napříč doménami v rámci jednoho sezení."
+    },
+    "jssgroupPersistentIdentifierOfTheBrowserTabStrictDescription": {
+        "message": "Vymaž obsah vlastnosti window.name při přechodu na jinou službu (změna eTLD+1) během načítání stránky. Tato volba nebrání většině neškodných využití API a zároveň znemožňuje zneužití pro útoky identifikující stejný panel prohlížeče napříč doménami.",
+        "description": "Try to keep reference to window.name and eTLD+1"
+    },
+    "jssgroupPersistentIdentifierOfTheBrowserTabFirefox88###placeholders###browser": {
+        "message": "Firefox 88"
+    },
+    "jssgroupPersistentIdentifierOfTheBrowserTabFirefox88": {
+        "message": "$BROWSER$ a již obsahuje tuto ochranu."
+    },
+    "jssgroupNFC": {
+        "message": "Near Field Communication (NFC)",
+        "description": "nfc group"
+    },
+    "jssgroupNFCDescription": {
+        "message": "Near Field Communication (NFC) umožňuje bezdrátovou komunikaci mezi dvěma velmi blízkými zařízeními, obvykle maximálně jednotky centimetru. Komunikace probíhá na základě standardu ISO/IEC 18092 na frekvenci 13.56 MHz.",
+        "description": "Keep the technical references"
+    },
+    "jssgroupNFCDescription2": {
+        "message": "API NFC může být zneužito pro zjištění informací o zařízeních v těsné blízkosti."
+    },
+    "jssgroupNFCRemoveDescription": {
+        "message": "Odstraň API"
+    },
+    "jssgroupWASM": {
+        "message": "Urychlení pomocí WebAssembly",
+        "description": "webassembly group"
+    },
+    "jssgroupWASMDescription": {
+        "message": "Urychlí úpravy nutné pro aplikaci drobných lží do obrázků a audia pomocí WebAssembly.",
+        "description": "Keep reference to WebAssembly"
+    },
+    "jssgroupWASMDescription2###placeholders###canvas": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ###  ###EXAMPLE### Translation of jssgroupLocallyRenderedImages"
+    },
+    "jssgroupWASMDescription2###placeholders###audio": {
+        "message": "$2",
+        "description": "If in doubt, keep as is ###  ###EXAMPLE### Translation of jssgroupLocallyGeneratedAudio"
+    },
+    "jssgroupWASMDescription2###placeholders###littlelies": {
+        "message": "$3",
+        "description": "If in doubt, keep as is ###  ###EXAMPLE### Translation of jssgroupLittleLies"
+    },
+    "jssgroupWASMDescription2": {
+        "message": "Tato volba má význam jen pokud je ochrana „$CANVAS$“ nebo „$AUDIO$“ nastavená na úroveň „$LITTLElies$“."
+    },
+    "jssgroupWASMDescription3": {
+        "message": "Kód ve WebAssembly generuje stejné úpravy jako originální kód, takže je aktivace této volby bezpečná z pohledu ochrany před získávání otisku prohlížeče."
+    },
+    "jssgroupWASMDisabled": {
+        "message": "Vypnuto"
+    },
+    "jssgroupWASMDisabledDescription": {
+        "message": "Urychlení pomocí WebAssembly není aplikováno, používá se pomalejší JavaScript."
+    },
+    "jssgroupWASMPassive": {
+        "message": "Pasivní"
+    },
+    "jssgroupWASMPassiveDescription": {
+        "message": "Povol urychlení pomocí WebAssembly, ale využij původní (pomalejší) implementaci, pokud nemůže být kód ve WebAssembly vložen."
+    },
+    "jssgroupWASMActive": {
+        "message": "Aktivní"
+    },
+    "jssgroupWASMActiveDescription": {
+        "message": "Upravuje direktivu 'wasm-unsafe-eval' Content-Security Policy (CSP), aby umožnil vložení kódu ve WebAssembly v případech, kdy CSP navštívené stránky brání v aplikaci rychlejší implementace."
+    },
+    "jssgroupWASMActiveDescription2": {
+        "message": "Inicializace modulů WebAssembly je kontrolováno CSP navštívené stránky v prohlížečích založených na Chromiu."
+    },
+    "jssgroupWASMActiveDescription3": {
+        "message": "Výhoda tohoto nastavení je, že výpočty běží rychleji na všech stránkách."
+    },
+    "jssgroupWASMActiveDescription4": {
+        "message": "Nevýhodou tohoto nastavení je zvýšené rizika spuštění kódu ve WebAssembly, kterému by za normálních okolností zabránila CSP stránky, např. pokud je stránka samotná zranitelná útokem nazývaným cross-site scripting. Toto nastavení také může interagovat s jinými rozšířeními prohlížeče, které mohou modifikace CSP vrátit zpět."
+    },
+    "jssgroupWASMEnabled": {
+        "message": "Zapnuto"
+    },
+    "jssgroupWASMEnabledDescription": {
+        "message": "Urychlení pomocí WebAssembly je aplikováno."
+    },
+    "JShelterOptions": {
+        "message": "Hlavní nastavení JShelteru",
+        "description": "Title of the main options page"
+    },
+    "mainSettings": {
+        "message": "Hlavní nastavení",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "JShelterOptionsJSSFineTune": {
+        "message": "Detaily Javascriptového štítu: nastavení pro konkrétní domény",
+        "description": "Title of the JS Shield details options page"
+    },
+    "jSSShieldDetails": {
+        "message": "Detail JS štítu",
+        "description": "Displayed in options in the navigation bar, try to keep JS shield abbreviated to keep the text short"
+    },
+    "JShelterOptionsAdvanced": {
+        "message": "Expertní nastavení JShelteru",
+        "description": "Title of the expert options page"
+    },
+    "advancedOptions": {
+        "message": "Expertní nastavení",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "externalLinks": {
+        "message": "Webové odkazy",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "ExternalLinksSeparator": {
+        "message": ":",
+        "description": "Displayed in options in the navigation bar, for example after external links"
+    },
+    "threatModel": {
+        "message": "Uvažované hrozby",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "fAQ": {
+        "message": "Časté dotazy",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "testPage": {
+        "message": "Testovací stránka",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "permissions": {
+        "message": "Požadovaná oprávnění",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "sourceCode": {
+        "message": "Zdrojový kód",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "issueTracker": {
+        "message": "Sledování chyb",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "credits": {
+        "message": "Autoři",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "ExampleDomainsText": {
+        "message": "příklad.com nebo cokoliv.example.com",
+        "description": "Displayed in text inputs that expect a domain"
+    },
+    "ButtonSignExpandOneCharacterDown": {
+        "message": "⤵",
+        "description": "A button caption that can be used generically by JShelter, it should contain a single character that intuitively tells the user that by clicking the button, more information will be shown"
+    },
+    "ButtonSave": {
+        "message": "Ulož",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "ButtonRestore": {
+        "message": "Obnov",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "ButtonRestoreLevel###placeholders###levelName": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ###  ###EXAMPLE### Level name of the level to be restored, for example, Default"
+    },
+    "ButtonRestoreLevel": {
+        "message": "Obnov úroveň $LEVELNAME$",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "ButtonEdit": {
+        "message": "Uprav",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "ButtonRemove": {
+        "message": "Odstraň",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "ButtonSaveCustomLevel": {
+        "message": "Ulož vlastní úroveň",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "ButtonCancel": {
+        "message": "Storno",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "ButtonAddNewLevel": {
+        "message": "Přidej novou úroveň",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "addToList": {
+        "message": "Přidej do seznamu",
+        "description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
+    },
+    "saveAll": {
+        "message": "Ulož vše",
+        "description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
+    },
+    "deleteAll": {
+        "message": "Smaž vše",
+        "description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
+    },
+    "ManageWhitelist": {
+        "message": "Spravuj seznam domén s výjimkou ⤵",
+        "description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list would appear below (the arrow at the end)."
+    },
+    "HideWhitelist": {
+        "message": "Skrýj seznam domén s výjimkou ⤵",
+        "description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list is located below (the arrow at the end)."
+    },
+    "ButtonDisableForDomain###placeholders###disable": {
+        "message": "Vypnout",
+        "description": "This string defines a substring of ButtonDisableForDomain ### Please translate"
+    },
+    "ButtonDisableForDomain###placeholders###forTheDomain": {
+        "message": "pro doménu",
+        "description": "This string defines a substring of ButtonDisableForDomain ### Please translate"
+    },
+    "ButtonDisableForDomain": {
+        "message": "<strong>$DISABLE$</strong> $FORTHEDOMAIN$",
+        "description": "A button caption that can be used generically by JShelter, e.g. in the options; if necessary, edit the structure of the message but make sure to emhasize the disablement. Translate the placeholders."
+    },
+    "ButtonEnableForSelectedDomains###placeholders###enable": {
+        "message": "Povol",
+        "description": "This string defines a substring of ButtonEnableForSelectedDomains ### Please translate"
+    },
+    "ButtonEnableForSelectedDomains###placeholders###forTheDomain": {
+        "message": "pro vybrané domény",
+        "description": "This string defines a substring of ButtonEnableForSelectedDomains ### Please translate"
+    },
+    "ButtonEnableForSelectedDomains": {
+        "message": "<strong>$ENABLE$</strong> $FORTHEDOMAIN$",
+        "description": "A button caption that can be used generically by JShelter, e.g. in the options; if necessary, edit the structure of the message but make sure to emhasize the enablement. Translate the placeholders."
+    },
+    "ManageWhitelistDescription": {
+        "message": "Uvedená doménová jména jsou zpracovávaná v rámci hierarchie doménových jmen, takže uvedením <strong>example.com</strong> také vypnete štít pro <strong>news.example.com</strong>.",
+        "description": "Information text that can be used generically by JShelter, e.g. in options to explain the exception list of NBS and FPD."
+    },
+    "javascriptShieldDescription###placeholders###paragraph1": {
+        "message": "Javascriptový štít upravuje chování prostředí interpretu JavaScriptu, které je dostupné navštíveným stránkám. JShelter poskytuje falešné informace, aby zmátl skripty získávající otisky prohlížečů, nebo zabránil útokům zneužívající JavaScript, nebo je alespoň učinil složitějšími.",
+        "description": "This string defines a substring of javascriptShieldDescription ### Paragraph 1, please translate this text."
+    },
+    "javascriptShieldDescription###placeholders###paragraph2": {
+        "message": "Javascriptový štít se skládá z wraperů, malých kusů kódu, které modifikují původní chování JavaScriptových API (funkcí nebo vlastností) definovaných standardy. Chování většiny wraperů obvykle spadá do jedné z následujících kategorií:",
+        "description": "This string defines a substring of javascriptShieldDescription ### Paragraph 2, please translate this text."
+    },
+    "javascriptShieldDescription###placeholders###reduction": {
+        "message": "Omezení přesnosti: Původní hodnota je příliš přesná, což ve většině případů použití není potřeba. Javascriptový štít upravuje poskytované hodnoty takovým způsobem, aby obvyklé neškodné použití nebylo ovlivněno.",
+        "description": "This string defines a substring of javascriptShieldDescription ### UL item 1, please translate this text."
+    },
+    "javascriptShieldDescription###placeholders###fake": {
+        "message": "Falešné hodnoty: Některé wrapery poskytují falešné informace, většinou se tak děje pro zmatení skriptů tvořících otisk prohlížeče. Některé wrapery poskytují možné údaje, které však nejsou založeny na skutečných datech. Další wrapery upravují skutečné hodnoty malými změnami, které typicky nejsou detekovatelné člověkem, ale jsou významné pro skript počítající otisk prohlížeče. Takové změny JShelter aplikuje různě na různých navštívených doménách a v různých sezeních, takže provozovatelé různých domén nemohou použít přečtené informace ke spojení prohlížeče. Např. wrapery pro plátno canvas upravují obrázek tak, aby stejné pokyny vedly k různým výsledkům na různých doménách a v různých sezeních.",
+        "description": "This string defines a substring of javascriptShieldDescription ### UL item 2, please translate this text."
+    },
+    "javascriptShieldDescription###placeholders###hide": {
+        "message": "Skrytí informací: Některá API poskytují informace, které nejsou obvykle potřeba a mohou být ukryté před většinou stránek. V závislosti na API, Javascriptový štít vrací chybu, prázdnou hodnotu, nebo úplně blokuje API.",
+        "description": "This string defines a substring of javascriptShieldDescription ### UL item 3, please translate this text."
+    },
+    "javascriptShieldDescription###placeholders###blogs": {
+        "message": "Pro více informací se podívejte na naše blogové příspěvky o <a href='https://jshelter.org/fingerprinting/'>protiopatřením před získáváním otisku prohlížeče</a> a <a href='https://jshelter.org/farbling/'>metodě drobných lží</a>.",
+        "description": "This string defines a substring of javascriptShieldDescription ### Last paragraph, please translate this text, keep the URLs to the English version unless a translation exists on the web."
+    },
+    "javascriptShieldDescription": {
+        "message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><ul><li>$REDUCTION$</li><li>$FAKE$</li><li>$HIDE$</li></ul><p>$BLOGS$</p>",
+        "description": "This is the description of JSS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs but please keed all paragraphs in the jss_description class."
+    },
+    "JavascriptShieldLevelsMainLevelOptionHeading": {
+        "message": "Tvorba vlastních úrovní ochrany a nastavení výchozí úrovně",
+        "description": "A heading in the options above the configuration of the default JSS level and the possibility to list existing levels and create own levels."
+    },
+    "addCustomLevel": {
+        "message": "Přidej vlastní úroveň",
+        "description": "A button caption, the button creates a custom JSS level."
+    },
+    "JSSL0Name": {
+        "message": "Vypnout JavaScriptový štít",
+        "description": "The name of JSS L0 that is used at various places in the UI"
+    },
+    "JSSL0Description": {
+        "message": "JavaScriptová APIs nejsou chráněná. Vypněte JavaScriptový štít jen pokud 1. věříte provozovateli zobrazené stránky a chete mu (a všem nepřátelům, kteří mohli vložit kód do stránky) dát přístup ke všem API podporovaných prohlížečem, nebo 2. pokud JavaScriptový štít nechcete používat, ale chcete využívat jiné ochranné mechanismy JShelteru.",
+        "description": "The description of JSS L0 that is used at various places in the UI"
+    },
+    "JSSL1Name": {
+        "message": "Bez ochrany před tvorbou otisku prohlížeče",
+        "description": "The name of JSS L1 that is used at various places in the UI"
+    },
+    "JSSL1Description": {
+        "message": "Uplatňuje bezpečnostní opatření, které nejspíše nerozbijí chování stránky, ale nechrání před tvorbou otisku prohlížeče. Vypíná API, která nejsou obvyklými stránkami využívaná. Použijte tuto úroveň pokud Detektor získávání otisku prohlížeče hlásí, že stránka volala nízký počet API zneužívaných pro tvorbu otisku prohlížeče, věříte provozovateli stránek nebo si myslíte, že JShelter příliš zpomaluje zobrazené stránky, nebo je rozbíjí, a vaše touha zobrazit stránky je tak vysoká, že nechcete chránit před tvorbou otisku prohlížeče.",
+        "description": "The description of JSS L1 that is used at various places in the UI, see also FingerprintQualityLabel label for the origin of 'The description of JSS L1 that is used at various places in the UI, see also FingerprintQualityLabel label for the origin of 'the page called a low number of APIs misued for fingerprinting''"
+    },
+    "JSSL2Name": {
+        "message": "Doporučená",
+        "description": "The name of JSS L2 that is used at various places in the UI"
+    },
+    "JSSL2Description": {
+        "message": "Snaží se prohlížeč upravit tak, aby vypadal rozdílně na stránkách různých domén. Uplatňuje bezpečnostní opatření, která obvykle nerozbíjejí stránky. Drobně upravuje výsledky volání API různými způsoby na stránkách různých domén tak, aby otisk prohlížeče sestavený na různých doménách byl jiný. Hodnoty zneužívané pro vytváření otisku prohlížeče se také liší s každým spuštěním prohlížeče. Pokud potřebujete získat jiný otisk prohlížeče bez restartu prohlížeče, zkuste použít anonymní mód. Mějte na paměti, že i když se odhlásíte od používání služby, smažete cookies, změníte adresu IP, upravené API poskytnou možnost výpočtu stejného otisku prohlížeče. Restartujte prohlížeč pokud chcete změnit svůj otisk prohlížeče. Pokud nevíte jakou úroveň ochrany zvolit, zvolte tuto.",
+        "description": "The description of JSS L1 that is used at various places in the UI"
+    },
+    "JSSL3Name": {
+        "message": "Přísná",
+        "description": "The name of JSS L3 that is used at various places in the UI"
+    },
+    "JSSL3Description": {
+        "message": "Zapíná všechny ochrany, kterou nejsou považovány za experimentální. Obalená API vrací falešné hodnoty. Některá API jsou úplně odstraněná, další poskytují smysluplné, ale neobvyklé hodnoty. Některá API vrací bezvýznamné hodnoty. Tato úroveň dovolí výpočet stabilního otisku prohlížeče, protože volání jednotlivých API obvykle vrací stejné hodnoty na všech webech a ve všech sezeních. Použijte tuto úroveň pokud chcete omezit množství informací poskytnutých vašim prohlížečem. Pokud se bojíte získávání otisku prohlížeče,zapněte Detektor získávání otisku prohlížeče.",
+        "description": "The description of JSS L2 that is used at various places in the UI"
+    },
+    "JSSLexperimentalName": {
+        "message": "Experimentální",
+        "description": "The name of JSS experimental level that is used at various places in the UI"
+    },
+    "JSSLexperimentalDescription": {
+        "message": "Stejné volby jako o přísné úrovně ochrany s dodatečnými úpravami (včetně API, o kterých je známo, že jejich úpravy běžně rozbíjejí stránky, a API, která nefungují dostatečně dobře). Tuto úroveň používejte jen pro experimenty s JShelterem. Pro běžné prohlížení použijte Doporučenou, nebo Přísnou úroveň s aktivním Detektorem získávání otisku prohlížeče.",
+        "description": "The description of JSS experimental level that is used at various places in the UI"
+    },
+    "omittedAPIsHeading": {
+        "message": "Jako ochranu před tvorbou otisku prohlížeče, JShelter nevytváří neexistující vlastnosti. Tento prohlížeč nepodporuje:",
+        "description": "This message is displayed while giving the possibility to create a new level or edit existing levels in options"
+    },
+    "newLevelsNotRecommended###placeholders###faqurl": {
+        "message": "https://jshelter.org/faq/"
+    },
+    "newLevelsNotRecommended###placeholders###paperurl": {
+        "message": "https://arxiv.org/abs/2204.01392"
+    },
+    "newLevelsNotRecommended": {
+        "message": "Nedoporučujeme tvorbu vlastních úrovní ochrany a změnu konfigurace pokud používáte JShelter jako ochranu před tvorbou otisku prohlížeče. Přečtěte si <a href=\"$FAQURL$\">FAQ</a> a náš <a href=\"$PAPERURL$\">článek</a>. V případě, že se vaše nastavení bude lišit od nastavení jiných uživatelů, usnadňujete vaši identifikaci v budoucnu.",
+        "description": "This message is displayed while creating a new level in options. Make sure that you keep correct HTML markup"
+    },
+    "formlabelName": {
+        "message": "Jméno:",
+        "description": "Used in forms whenever a name should be enered (atm new level name)"
+    },
+    "formlabelDescription": {
+        "message": "Popis:",
+        "description": "Used in forms whenever a description should be enered (atm new level description)"
+    },
+    "customLevelAlreadyExistsItWillBeOverridden###placeholders###customName": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### The level name that is about to be overwritten ###EXAMPLE### User provided value, any text"
+    },
+    "customLevelAlreadyExistsItWillBeOverridden": {
+        "message": "Vlastní úroveň $CUSTOMNAME$ již existuje a bude přepsána.",
+        "description": "Alert message shown during level editing, translate the message but not the placeholder"
+    },
+    "customLevelWereNotUpdated": {
+        "message": "Vlastní úrovně nebyly aktualizovány, prosím opakujte akci později.",
+        "description": "The configuration with the chaged or new level was not saved because of unknown reason."
+    },
+    "NewLevelMissingNameOrDescription": {
+        "message": "Jak jméno, tak popis úrovně ochrany jsou povinné, prosím vyplňte obě pole.",
+        "description": "User did not supply all mandatory fields for a JSS level"
+    },
+    "JSSeditLevelHeading###placeholders###levelName": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### The level name that is about to be overwritten, do not translate ###EXAMPLE### User provided value, any text"
+    },
+    "JSSeditLevelHeading": {
+        "message": "Úprava úrovně $LEVELNAME$",
+        "description": "Heading shown during JSS tweaking (edit level form)"
+    },
+    "JSSaddLevelHeading": {
+        "message": "Tvorba nové úrovně zabezpečení",
+        "description": "Form heading during creation of a new level. You likely want to use the same or very similar value as ButtonAddNewLevel translation string."
+    },
+    "javaScriptShieldPerWebsiteConfiguration": {
+        "message": "Nastavení Javascriptového štítu pro jednotlivé navštívené domény",
+        "description": "Displayed in JSS advanced options page"
+    },
+    "setJavaScriptShieldForWebsite": {
+        "message": "Nastav JavaScriptový štít pro doménu:",
+        "description": "Displayed in JSS advanced options page"
+    },
+    "aListOfWebsiteWithRedefinedJavaScriptShield": {
+        "message": "Seznam domén s vlastní konfigurací Javascriptového štítu:",
+        "description": "Displayed in JSS advanced options page"
+    },
+    "JSSAdvancedConfirmOverwrite###placeholders###domain": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ###  ###EXAMPLE### The domain whose settings are about to be overwritten, like example.com"
+    },
+    "JSSAdvancedConfirmOverwrite": {
+        "message": "Nastavení pro doménu $DOMAIN$ již existuje a bude přepsáno.",
+        "description": "Displayed in JSS advanced options page"
+    },
+    "LevelAndDescription###placeholders###levelName": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ###  ###EXAMPLE### Name of the level"
+    },
+    "LevelAndDescription###placeholders###levelShortDescription": {
+        "message": "$2",
+        "description": "If in doubt, keep as is ###  ###EXAMPLE### Short description of the level"
+    },
+    "LevelAndDescription": {
+        "message": "$LEVELNAME$: $LEVELSHORTDESCRIPTION$",
+        "description": "Displayed in options pages in select elements to give the user an idea what level to apply by listing both its name and a short description"
+    },
+    "doNotModifyThisConfiguration": {
+        "message": "POZOR! Neměňte tuto konfiguraci, pokud nevíte, co děláte.",
+        "description": "Displayed in expert settings"
+    },
+    "JShelterFullConfiguration": {
+        "message": "Plné nastavení JShelteru v textové podobě",
+        "description": "Displayed in expert settings, label for the full extension configuration in textarea"
+    },
+    "ExpertLoadCurrentlyStoredConfiguration": {
+        "message": "Načíst aktuálně uložené nastavení",
+        "description": "Displayed in expert settings, button that loads current configuration to the textarea"
+    },
+    "ExpertOverwriteConfiguration": {
+        "message": "Přepiš nastavení (přepíše uložené nastavení tím, které je zobrazené na této stránce)",
+        "description": "Displayed in expert settings, button that stores the current configuration permanently"
+    },
+    "ExpertResetConfiguration": {
+        "message": "Vrať se k výchozímu nastavení (odstraní všechno lokální nastavení)",
+        "description": "Displayed in expert settings, button that reset to the configuration that we ship (factory reset)"
+    },
+    "ExpertUndoConfiguration": {
+        "message": "Zpět (zapomeň poslední přepis konfigurace)",
+        "description": "Displayed in expert settings, button that restores the configuration to the previous (back button)"
+    },
+    "JSSBuiltinExceptions": {
+        "message": "Vestavěné úpravy pro JavaScriptový štít",
+        "description": "Displayed in expert settings, heading for the table of built-in tweaks"
+    },
+    "JSSBuiltinExceptionsDomain": {
+        "message": "Doména",
+        "description": "Displayed in expert settings, heading in the table of built-in tweaks"
+    },
+    "JSSBuiltinExceptionsLevels": {
+        "message": "Úrovně",
+        "description": "Displayed in expert settings, heading in the table of built-in tweaks"
+    },
+    "JSSBuiltinExceptionsLevelsSeparator": {
+        "message": ", ",
+        "description": "Displayed in expert settings, separator for levels displayed"
+    },
+    "JSSBuiltinExceptionsChanges": {
+        "message": "Změny",
+        "description": "Displayed in expert settings, heading in the table of built-in tweaks"
+    },
+    "JSSBuiltinExceptionsReason": {
+        "message": "Vysvětlení",
+        "description": "Displayed in expert settings, heading in the table of built-in tweaks"
+    },
+    "protectionConfigurationOptionActivatedOn": {
+        "message": "Zapnuto",
+        "description": "Displayed during NBS and FPD configuration when the option is activated (on)"
+    },
+    "protectionConfigurationOptionActivatedOff": {
+        "message": "Vypnuto",
+        "description": "Displayed during NBS and FPD configuration when the option is deactivated (off)"
+    },
+    "shieldNotifications": {
+        "message": "Notifikace",
+        "description": "Displayed as a text label during NBS and FPD configuration when the user can activate or deactivate notifications"
+    },
+    "NBSDescription###placeholders###paragraph1": {
+        "message": "Štít pro ochranu hranice sítě znemožňuje navštíveným stránkám zneužít prohlížeč jako mezičlánek mezi veřejným Internetem a lokální sítí. Podívejte se na <a href='https://jshelter.org/localportscanning/'>náš příspěvek na blogu</a> a <a href='https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf'>zprávu společnosti Force Point</a> pro příklady útoků, kterým Štít pro ochranu hranice sítě brání. Štít pro ochranu hranice sítě využívá WebRequest API, takže zachycuje všechny odchozí požadavky.",
+        "description": "This string defines a substring of NBSDescription ### Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
+    },
+    "NBSDescription###placeholders###paragraph2": {
+        "message": "Obvykle byste měli nechat Štít pro ochranu hranice sítě vyhledávat podezřelé požadavky v celém provozu. Ale některé stránky vyžadují interakci mezi veřejným Internetem a lokální sítí, např. Štít pro ochranu hranice sítě může rozbít některé Intranetové informační systémy. Uživatelé JShelteru také nahlásili zvýšené množství falešných poplachů v kombinací s filtrovacími programy modifikujícími odpovědi DNS. Pokud takový program používáte, ujistěte se, že DNS vrací 0.0.0.0 pro blokované domény.",
+        "description": "This string defines a substring of NBSDescription ### Paragraph 2, please translate this text."
+    },
+    "NBSDescription###placeholders###paragraph3": {
+        "message": "Chování Štítu pro ochranu hranice sítě může být globálně nastaveno níže. Štít pro ochranu hranice sítě může také být vypnutý pro jednotlivé domény s využitím seznamu výjimek. Domény do tohoto seznamu mohou být přidány s využitím okna dostupného pro každou navštívenou stránku po kliknutí na ikonu JShelteru nastavením <i>přepínače označeného Štít pro ochranu hranice sítě</i> nebo ručně níže po kliknutí na <i>Spravuj seznam domén s výjimkou</i>. Uvedením domény do tohoto seznamu také vypnete Štít pro ochranu hranice sítě na všech jejich poddoménách. Abyste deaktivovali Štít pro ochranu hranice sítě pro konkrétní doménu, vložte tuto doménu do seznamu (vynechte „www“, ale zahrňte všechny nadřazené domény jako je „.cz“).",
+        "description": "This string defines a substring of NBSDescription ### Paragraph 3, please translate this text, note that <i>Manage exception list</i> refers to the ManageWhitelist string."
+    },
+    "NBSDescription": {
+        "message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
+        "description": "This is the description of NBS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs."
+    },
+    "NBSHttpProxyDNSAPINote": {
+        "message": "Pokud používáte HTTP proxy, Štít pro ochranu hranice sítě chrání síť této proxy, protože proxy provádí HTTP dotazy. JShelter zamezuje úniku DNS dotazů tak, že v případě využití HTTP proxy neresolvuje DNS domény pro detekci možných dotazů do místní sítě. I tak v takovém případě bere Štít v úvahu IP adresy přímo vložené v URL. Takže Štít pro ochranu hranice sítě chrání síť použité proxy, ale jen částečně.",
+        "description": "This note is appended to NBS description in Firefox, see https://pagure.io/JShelter/webextension/issue/41 for the context of the issue"
+    },
+    "nbsBlocking": {
+        "message": "Blokace",
+        "description": "Displayed during NBS configuration, label for a configuration option"
+    },
+    "nbsBlockingDescription": {
+        "message": "Blokuje požadavky, které se snaží přistupovat k místní síti.",
+        "description": "Displayed during NBS configuration, basic explanation of the configuration option"
+    },
+    "nbsBlockingDescription2": {
+        "message": "Doporučujeme ponechat toto nastavení aktivní.",
+        "description": "Displayed during NBS configuration, further explanation of the configuration option"
+    },
+    "nbsBlockingOffDescription": {
+        "message": "Závadné požadavky neblokovány.",
+        "description": "Displayed during NBS configuration, further explanation of the selected configuration level"
+    },
+    "nbsBlockingOnDescription": {
+        "message": "Závadné požadavky blokovány.",
+        "description": "Displayed during NBS configuration, further explanation of the selected configuration level"
+    },
+    "NBSNotificationsDescription": {
+        "message": "Povolení nebo zakázání notifikací o podezřelém dění, nebo blokovaných požadavcích.",
+        "description": "Displayed in NBS options, globaly disables or enables notifications"
+    },
+    "NBSNotificationsDescription2": {
+        "message": "V případě, že povolíte notifikace: s aktivním blokováním budete upozorněni notifikací o blokacích, bez aktivního blokování budete ve stejných situacích informování o podezřelé aktivitě, která blokována nebude.",
+        "description": "Displayed in NBS options, globaly disables or enables notifications"
+    },
+    "NBSNotificationsOffDescription": {
+        "message": "Notifikace vypnuty.",
+        "description": "Displayed in NBS options, notifications about blocked requests are globally disabled"
+    },
+    "NBSNotificationsOnDescription": {
+        "message": "Notifikace zapnuty.",
+        "description": "Displayed in NBS options, notifications about blocked requests are globally enabled"
+    },
+    "NBSBlockedTitle": {
+        "message": "Štít pro ochranu hranice sítě zablokoval podezřelé požadavky!",
+        "description": "Title of the notifications that is displayed when NBS actually blocks requests"
+    },
+    "NBSDetectedTitle": {
+        "message": "Štít pro ochranu hranice sítě detekoval podezřelé požadavky!",
+        "description": "Title of the notifications that is displayed when NBS detects a suspicious requests but does not block them because blocking is disabled"
+    },
+    "NBSBlockedMessageMultipleTargets###placeholders###origin": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Domain name or IP address, do not translate ###EXAMPLE### domainname.example.com"
+    },
+    "NBSBlockedMessageMultipleTargets###placeholders###count": {
+        "message": "$2",
+        "description": "If in doubt, keep as is ### A positive number, do not translate ###EXAMPLE### 5"
+    },
+    "NBSBlockedMessageMultipleTargets": {
+        "message": "Počet blokovaných požadavků\nod $ORIGIN$,\nkteré se směřovaly do místní\nsítě: $COUNT$.",
+        "description": "The message shown when the page contacted multiple targets in the local network. Produce short lines."
+    },
+    "NBSDetectedMessageMultipleTargets###placeholders###origin": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Domain name or IP address, do not translate ###EXAMPLE### domainname.example.com"
+    },
+    "NBSDetectedMessageMultipleTargets###placeholders###count": {
+        "message": "$2",
+        "description": "If in doubt, keep as is ### A positive number, do not translate ###EXAMPLE### 5"
+    },
+    "NBSDetectedMessageMultipleTargets": {
+        "message": "Počet detekovaných požadavků\nod $ORIGIN$,\nkteré se odešly do místní\nsítě: $COUNT$.",
+        "description": "The message shown when the page contacted multiple targets in the local network. Produce short lines."
+    },
+    "NBSBlockedMessageWithTarget###placeholders###origin": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Domain name or IP address, do not translate ###EXAMPLE### domainname.example.com"
+    },
+    "NBSBlockedMessageWithTarget###placeholders###target": {
+        "message": "$2",
+        "description": "If in doubt, keep as is ### IP address (maybe domain), do not translate ###EXAMPLE### 10.0.0.1"
+    },
+    "NBSBlockedMessageWithTarget###placeholders###count": {
+        "message": "$3",
+        "description": "If in doubt, keep as is ### A positive number, do not translate ###EXAMPLE### 5"
+    },
+    "NBSBlockedMessageWithTarget": {
+        "message": "Blokovaných požadavků: $COUNT$\nod $ORIGIN$\nna $TARGET$.",
+        "description": "The message shown when the page contacted single target in the local network. Produce short lines."
+    },
+    "NBSDetectedMessageWithTarget###placeholders###origin": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Domain name or IP address, do not translate ###EXAMPLE### domainname.example.com"
+    },
+    "NBSDetectedMessageWithTarget###placeholders###target": {
+        "message": "$2",
+        "description": "If in doubt, keep as is ### IP address (maybe domain), do not translate ###EXAMPLE### 10.0.0.1"
+    },
+    "NBSDetectedMessageWithTarget###placeholders###count": {
+        "message": "$3",
+        "description": "If in doubt, keep as is ### A positive number, do not translate ###EXAMPLE### 5"
+    },
+    "NBSDetectedMessageWithTarget": {
+        "message": "Detekovaných požadavků: $COUNT$\nod $ORIGIN$\nna $TARGET$.",
+        "description": "The message shown when the page contacted single target in the local network. Produce short lines."
+    },
+    "NBSBlockedHostTitle": {
+        "message": "Štít pro ochranu hranice sítě zablokoval podezřelý stroj!",
+        "description": "Title of the notifications that is displayed when NBS blocks future requests by a host in Chromium-based browsers"
+    },
+    "NBSDetectedHostTitle": {
+        "message": "Štít pro ochranu hranice sítě detekoval podezřelý stroj!",
+        "description": "Title of the notifications that is displayed when NBS detects suspicious requests by a host in Chromium-based browsers but does not block them because blocking is disabled"
+    },
+    "NBSBlockedHost###placeholders###host": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Domain name or IP address, do not translate ###EXAMPLE### domainname.example.com"
+    },
+    "NBSBlockedHost": {
+        "message": "Všechny další požadavky od $HOST$ budou blokovány.",
+        "description": "The message shown in Chromium-based browsers when NBS starts blocking a host."
+    },
+    "NBSDetectedHost###placeholders###host": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Domain name or IP address, do not translate ###EXAMPLE### domainname.example.com"
+    },
+    "NBSDetectedHost": {
+        "message": "Zapněte blokování požadavků pro blokování všech požadavků od $HOST$ do místní sítě.",
+        "description": "The message shown in Chromium-based browsers when NBS detects a suspicious host."
+    },
+    "MV3DevmodeRequired###placeholders###mv3url": {
+        "message": "https://jshelter.org/mv3/"
+    },
+    "MV3DevmodeRequired###placeholders###infourl": {
+        "message": "https://developer.chrome.com/docs/extensions/reference/api/userScripts#chrome_versions_prior_to_138_developer_mode_toggle"
+    },
+    "MV3DevmodeRequired": {
+        "message": "Kvůli omezením způsobených <a href=\"$MV3URL$\" target=\"_blank\">Googlím Manifestem V3</a> nemůže JShelter a další rozšíření prohlížeče pracovat správně v prohlížečích založených na Chromiu (včetně vašeho prohlížeče) než zapnete <em>režim pro vývojáře</em> na stránce <strong>chrome://extensions</strong> (<a href=\"$INFOURL$\" target=\"_blank\">více informací o tomto režimu na stránkách Google pro vývojáře</a>).",
+        "description": "This message is displayed as an alert in popup and options when development mode is disabled. Make sure that you keep correct HTML markup"
+    },
+    "MV3AllowUserScriptsRequired###placeholders###mv3url": {
+        "message": "https://jshelter.org/mv3/"
+    },
+    "MV3AllowUserScriptsRequired###placeholders###infourl": {
+        "message": "https://developer.chrome.com/docs/extensions/reference/api/userScripts#chrome_versions_138_and_newer_allow_user_scripts_toggle"
+    },
+    "MV3AllowUserScriptsRequired": {
+        "message": "Kvůli omezením způsobených <a href=\"$MV3URL$\" target=\"_blank\">Googlím Manifestem V3</a> nemůže JShelter a další rozšíření prohlížeče pracovat správně v prohlížečích založených na Chromiu (včetně vašeho prohlížeče) než zapnete <em>uživatelské skripty</em> na stránce JShelteru dostupné z <strong>chrome://extensions</strong> (<a href=\"$INFOURL$\" target=\"_blank\">více informací o tomto režimu na stránkách Google pro vývojáře</a>).",
+        "description": "This message is displayed as an alert in popup and options when development mode is disabled. Make sure that you keep correct HTML markup"
+    },
+    "MV3BrokenFeatures###placeholders###mv3url": {
+        "message": "https://jshelter.org/mv3/"
+    },
+    "MV3BrokenFeatures": {
+        "message": "Kvůli omezením způsobených <a href=\"$MV3URL$\" target=\"_blank\">Googlím Manifestem V3</a> nejsou dostupné některé části JShelteru (např. Štít pro ochranu hranice sítě a Detektor získávání otisku prohlížeče v blokujícím režimu) v nejnovějších prohlížečích založených na Chromiu (včetně vašeho), některé části JShelteru mohou pracovat s nižší spolehlivostí než dříve a než stále pracují ve Firefoxu.",
+        "description": "This message is displayed as an alert near features broken by Manifest V3. Make sure that you keep correct HTML markup"
+    },
+    "FPDDescription###placeholders###paragraph1": {
+        "message": "Detektor získávání otisku prohlížeče poskytuje mechanismus, který informuje uživatele o aktivitách webových stránek, které mohou směřovat k získání otisku prohlížeče. Detektor také může zabránit stránkám v přenosu otisku prohlížeče k serveru, pokud se tak uživatel rozhodne. Podívejte se na <a href='https://jshelter.org/fpdetection/'>náš příspěvek na blogu</a> nebo článek <a href='https://arxiv.org/pdf/1905.01051.pdf'>shrnující výzkum v oblasti získávání a používání otisků prohlížeče</a> pro bližší popis tématu.",
+        "description": "This string defines a substring of FPDDescription ### Paragraph 1, please translate this text, keep the URLs or replace them to a translated version of the targets."
+    },
+    "FPDDescription###placeholders###paragraph2": {
+        "message": "Zapnutý detektor může zobrazit upozornění kdykoliv navštívíte stránku s podezřelým chováním. Detektor měří počet volaných API zneužívaných k tvorbě otisku prohlížeče na každé navštívené stránce. Na základě heuristiky nad voláními a jejich obsahem vyhodnocuje, míru závažnosti volaných API z pohledu tvorby otisku prohlížeče. Tato míra závažnosti je zobrazená jako barva ikony JShelteru a také v okně zobrazeném po kliknutí na tuto ikonu (stavové okno). V případě vysoké závažnosti můžete být upozorněni notifikací. JShelter umožňuje zobrazit detaily aktivit vedoucích k tvorbě otisku prohlížeče formou zprávy. Tuto zprávu můžete získat kliknutím na stavové okno nebo kliknutím na upozornění o možném získání otisku prohlížeče navštívenou stránkou.",
+        "description": "This string defines a substring of FPDDescription ### Paragraph 2, please translate this text."
+    },
+    "FPDDescription###placeholders###paragraph3": {
+        "message": "Výchozí chování Detektoru získávání otisku prohlížeče můžete upravit. Blokující chování cílí na zamezení stránky v předání otisku prohlížeče ven z prohlížeče. Detektor získávání otisku prohlížeče blokuje všechny odchozí požadavky protokolem HTTP a maže úložiště v prohlížeči poté, co detekuje volání vysokého množství API zneužívaných k tvorbě otisku prohlížeče. <strong>Blokace všech odchozích požadavků HTTP obvykle rozbíjí chování webových stránek</strong>. Při rozbití stránek důvěryhodných doménách byste měli tyto domény zařadit mezi výjimky. Vypnutí detektoru ve stavovém okně přidá navštívenou doménu do seznamu výjimek. Domény uvedené v seznamu výjimek nejsou detektorem vyhodnocované ani blokované. Výjimky můžete spravovat níže.",
+        "description": "This string defines a substring of FPDDescription ### Paragraph 3, please translate this text."
+    },
+    "FPDDescription": {
+        "message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
+        "description": "This is the description of FPDBS shown in options. Please do not modify the template string in the message but translate the paragraphs in the placeholders section. If you find necessary, you can remove or add paragraphs."
+    },
+    "fpdBehavior": {
+        "message": "Chování",
+        "description": "A label shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdBehaviorDescription": {
+        "message": "Specifikuje chování modulu.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdBehaviorPassive": {
+        "message": "Pasivní",
+        "description": "A label shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdBehaviorPassiveDescription": {
+        "message": "Zobrazuje počet API zneužitelných pro tvorbu otisku prohlížeče volaných stránkou jako barvu v ikoně rozšíření.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdBehaviorLimitedBlocking": {
+        "message": "Omezené blokování",
+        "description": "A label shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdBehaviorBlockingDescription": {
+        "message": "Detektor reaguje na stránky volající velké množství API zneužitelných pro tvorbu otisku prohlížeče.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdBehaviorBlockingDescription2": {
+        "message": "• Znemožní stránce další komunikaci přes síť, aby se zabránilo úniku vytvořeného otisku prohlížeče.",
+        "description": "Additional information to fpdBehaviorLimitedBlockingDescription"
+    },
+    "fpdBehaviorLimitedBlockingDescription3": {
+        "message": "• Smaže úložiště <strong>specifikovaná níže</strong> stránky v prohlížeči, aby se předešlo možnému částečnému uložení otisku prohlížeče v těchto úložištích. (Nevyžaduje žádná další povolení.)",
+        "description": "Additional information to fpdBehaviorLimitedBlockingDescription"
+    },
+    "fpdBehaviorLimitedBlockingDescription4": {
+        "message": "• Maže se: <strong>localStorage, sessionStorage, JS cookies, IndexedDB, keše, window.name</strong>",
+        "description": "Additional information to fpdBehaviorLimitedBlockingDescription"
+    },
+    "fpdBehaviorBlockingDescriptionWarning": {
+        "message": "POZOR: Tato volba může znemožnit správné chování některých stránek.",
+        "description": "Additional information to fpdBehaviorLimitedBlockingDescription"
+    },
+    "fpdBehaviorFullBlocking": {
+        "message": "Úplné blokování",
+        "description": "A label shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdBehaviorFullBlockingDescription3": {
+        "message": "• Maže <strong>všechny</strong> dostupné mechanismy pro uložení dat. (Vyžaduje oprávnění BrowsingData.)",
+        "description": "Additional information to fpdBehaviorBlockingDescription"
+    },
+    "fpdBehaviorFullBlockingDescription4": {
+        "message": "• maže: <strong>localStorage, sessionStorage, cookies, IndexedDB, keše, window.name, fileSystems, WebSQL, serviceWorkers</strong>",
+        "description": "Additional information to fpdBehaviorBlockingDescription"
+    },
+    "fpdNotificationsDescription": {
+        "message": "Zapíná a vypíná notifikace o detekci chování umožňující tvorbu otisku prohlížeče a o blokaci požadavků HTTP.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdNotificationsDescription2": {
+        "message": "POZOR: Doporučujeme zapnout notifikace, pokud zvolíte blokující chování detektoru.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdNotificationsOffDescription": {
+        "message": "Notifikace jsou vypnuté.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdNotificationsOnDescription": {
+        "message": "Notifikace jsou zapnuté.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdDetection": {
+        "message": "Detekce",
+        "description": "A label shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdDetectionDescription": {
+        "message": "Upravuje nastavení heuristiky, která poskytuje hranice ovlivňující zda je stránka považovaná za takovou, která volala příliš mnoho API zneužitelných pro tvorbu otisku prohlížeče.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdDetectionDefault": {
+        "message": "Výchozí",
+        "description": "Option shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdDetectionDefaultDescription": {
+        "message": "Doporučené nastavení pro většinu uživatelů.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdDetectionDefaultDescription2": {
+        "message": "• Velmi malé množství mylné detekce aktivit směřujících k tvorbě otisku prohlížeče (zaměřuje se na jasné případy tvorby otisku prohlížeče, což vede k velmi malému množství zbytečně blokovaných stránek).",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdDetectionDefaultDescription3": {
+        "message": "• Přijatelné množství neodhalených pokusu o tvorbu otisku prohlížeče (některé skripty pro tvorbu otisku prohlížeče se mohou vyhnout detekci).",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdStrict": {
+        "message": "Přísná",
+        "description": "Option shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdStrictDescription": {
+        "message": "Snížený práh detekce pořizování otisku prohlížeče pro obezřetnější uživatele. Raději blokuj, než bys nechal někoho projít.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdStrictDescription2": {
+        "message": "• Nižší množství neodhalených pokusu o tvorbu otisku prohlížeče (detekuje pokusy o získání otisku prohlížeče u více stránek)",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "fpdStrictDescription3": {
+        "message": "• Zvýšené riziko nesprávné detekce získávání otisku prohlížeče (blokuje hraniční případy)",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "FPDSeverityNone": {
+        "message": "Žádné nebo zanedbatelné",
+        "description": "The level of the number of detected APIs misusable for fingerprinting"
+    },
+    "FPDSeverityLow": {
+        "message": "Nízký",
+        "description": "The level of the number of detected APIs misusable for fingerprinting"
+    },
+    "FPDSeverityModerate": {
+        "message": "Střední",
+        "description": "The level of the number of detected APIs misusable for fingerprinting"
+    },
+    "FPDSeverityHigh": {
+        "message": "Vysoký",
+        "description": "The level of the number of detected APIs misusable for fingerprinting"
+    },
+    "FPDSeverityVeryHigh": {
+        "message": "Velmi vysoký",
+        "description": "The level of the number of detected APIs misusable for fingerprinting"
+    },
+    "fpdBlockingSubsequent": {
+        "message": "Budu blokovat další požadavky HTTP.",
+        "description": "Shown in a notification when FPD starts blocking HTTP requests"
+    },
+    "fpdClickNotificationDetails": {
+        "message": "Pro více informací klikni na notifikaci.",
+        "description": "Shown in a notification when FPD detects a suspicious activity but is not configured to block"
+    },
+    "fpdNotificationMessage###placeholders###message": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Translated fpdBlockingSubsequent or fpdClickNotificationDetails ###EXAMPLE### Blocking all subsequent requests."
+    },
+    "fpdNotificationMessage###placeholders###pagetitle": {
+        "message": "$2",
+        "description": "If in doubt, keep as is ### The content of the title element of the fingerprinting page (in case it is long, only the start of the string) ###EXAMPLE### JShelter test page"
+    },
+    "fpdNotificationMessage###placeholders###domain": {
+        "message": "$3",
+        "description": "If in doubt, keep as is ### The domain of the visited page or IP address (taken from the URL bar) ###EXAMPLE### example.com"
+    },
+    "fpdNotificationMessage": {
+        "message": "$MESSAGE$\n\nStránka: $PAGETITLE$\nDoména: $DOMAIN$",
+        "description": "Constructs the full message for the notification when FPD detects suspicious activity"
+    },
+    "fpdNotificationTitle": {
+        "message": "Stránka se může pokoušet o vytvoření otisku prohlížeče!",
+        "description": ""
+    },
+    "FPDReportTitle": {
+        "message": "Zpráva Detektoru získávání otisku prohlížeče",
+        "description": "Title of a fingeprint report"
+    },
+    "FPDReportDescriptionPara1": {
+        "message": "Tato zpráva obsahuje seznam všech koncových bodů, ke kterým přistoupila zobrazená stránka a které jsou považovány JShelterem za relevantní pro získávání otisku prohlížeče. Detektoru získávání otisku prohlížeče používá tato data při rozhodování, zda je stránka podezřelá ze sbírání dat pro výpočet otisku prohlížeče.",
+        "description": "Explanation text in the report, it can be shown by clicking on the help icon"
+    },
+    "FPDReportDescriptionPara2###placeholders###starttag": {
+        "message": "<span id='unhideAll'>",
+        "description": "This string defines a substring of FPDReportDescriptionPara2 ### Please keep the tag as is, do not translate"
+    },
+    "FPDReportDescriptionPara2###placeholders###endtag": {
+        "message": "</span>",
+        "description": "This string defines a substring of FPDReportDescriptionPara2 ### Please keep the tag as is, do not translate"
+    },
+    "FPDReportDescriptionPara2": {
+        "message": "Detektor získávání otisku prohlížeče zpracovává volání API ve skupinách podle jejich sémantiky. Toto okno ukazuje počet detekovaných volání jednotlivých API. Výchozí zobrazení ukazuje jen skupiny, které stránka nejméně jednou využila. Pokud stránka nevyužila žádné API, toto okno může být prázdné. Pokud chcete vidět všechny API monitorované Detektorem získávání otisku prohlížeče, klikněte $STARTTAG$ sem $ENDTAG$",
+        "description": "Explanation text in the report, it can be shown by clicking on the help icon"
+    },
+    "FPDReportDescriptionPara3###placeholders###note1": {
+        "message": "<i>fpd_evaluation_statistics</i>",
+        "description": "This string defines a substring of FPDReportDescriptionPara3 ### Please keep as is, do not translate"
+    },
+    "FPDReportDescriptionPara3###placeholders###note2": {
+        "message": "<i>fpd_access_logs</i>",
+        "description": "This string defines a substring of FPDReportDescriptionPara3 ### Please keep as is, do not translate"
+    },
+    "FPDReportDescriptionPara3": {
+        "message": "Data z této zprávy můžete exportovat do formátu JSON. Exportovaná data zahrnují použité váhy nastavené jednotlivým API a jejich skupinám ($NOTE1$). Dále zahrnují využité API a využité argumenty ($NOTE2$).",
+        "description": "Explanation text in the report, it can be shown by clicking on the help icon"
+    },
+    "FPDReportShowDetails": {
+        "message": "Zobraz detaily",
+        "description": "Button caption"
+    },
+    "FPDReportHideDetails": {
+        "message": "Skryj detaily",
+        "description": "Button caption"
+    },
+    "FPDReportTrackCallers": {
+        "message": "Zjisti volající skripty",
+        "description": "Button caption. The purpose of the button is to reload the page while injecting additional scripts that track the location of the callers. This functionality needs to be on demand as it is performance heavy."
+    },
+    "FPDReportTrackCallersRestart": {
+        "message": "Znovu spusť zjišťování volajících skriptů",
+        "description": "Button caption. The purpose of the button is to reload the page while injecting additional scripts that track the location of the callers. This functionality needs to be on demand as it is performance heavy."
+    },
+    "FPDReportTrackCallersWaiting": {
+        "message": "Zjišťuji volající skripty. Prosím, počkejte chvíli.",
+        "description": "Text displayed inside FPD report to explain what is happening."
+    },
+    "FPDReportTrackCallersFailed###placeholders###errorFromBrowser": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### An error message generated by the browser. Do not translate. ###EXAMPLE### Error: Invalid tab ID: 16"
+    },
+    "FPDReportTrackCallersFailed": {
+        "message": "Není možné zjistit volající skripty kvůli chybě. $errorFromBrowser$",
+        "description": "Prefix strings that intoroduces an error strings generated by the browser. Shown when action started by clicking on button with text of FPDReportTrackCallers failed."
+    },
+    "FPDReportForgetTraces": {
+        "message": "Nezobrazuj současné volající",
+        "description": "Button caption"
+    },
+    "FPDReportRefresh": {
+        "message": "Aktualizuj zprávu",
+        "description": "Button caption"
+    },
+    "FPDReportExportJSON": {
+        "message": "Exportuj úplnou zprávu jako JSON",
+        "description": "Button caption"
+    },
+    "FPDReportMissingData": {
+        "message": "CHYBA: Nemám data a nemůžu vytvořit zprávu! Pokuste se znovu načíst stránku a znovu otevřít zprávu.",
+        "description": "Text shown if the windows cannot communicate with the internals of the extension"
+    }
 }

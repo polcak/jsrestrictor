@@ -1,773 +1,742 @@
 {
-	"jssgroupGeolocationRegion": {
-		"message": "Region",
-		"description": "Displayed during level tweaks"
-	},
-	"descriptionMore": {
-		"message": "(więcej…)",
-		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get more information about the level."
-	},
-	"jssgroupGeolocationTown": {
-		"message": "Miasto",
-		"description": "Displayed during level tweaks"
-	},
-	"jssgroupStrict": {
-		"message": "Ścisłe",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"jssgroupLow": {
-		"message": "Niskie",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"modifyJSSPopup": {
-		"message": "Modyfikuj",
-		"description": "The button in the popup that tweaks JSS"
-	},
-	"ButtonDisableForDomain": {
-		"message": "<strong>$DISABLE$</strong> $FORTHEDOMAIN$",
-		"description": "A button caption that can be used generically by JShelter, e.g. in the options; if necessary, edit the structure of the message but make sure to emhasize the disablement. Translate the placeholders.",
-		"placeholders": {
-			"disable": {
-				"content": "Wyłącz",
-				"description": "Please translate"
-			},
-			"forTheDomain": {
-				"content": "dla domeny",
-				"description": "Please translate"
-			}
-		}
-	},
-	"refreshPage": {
-		"message": "Odśwież stronę",
-		"description": "The button in the popup that refreshes the currently displayed page"
-	},
-	"jssgroupPoor": {
-		"message": "Słaba",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"JSSBuiltinExceptionsLevelsSeparator": {
-		"message": ", ",
-		"description": "Displayed in expert settings, separator for levels displayed"
-	},
-	"jssgroupMedium": {
-		"message": "Średnie",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"jssgroupGeolocationVillage": {
-		"message": "Wieś",
-		"description": "Displayed during level tweaks"
-	},
-	"ExternalLinksSeparator": {
-		"message": " »",
-		"description": "Displayed in options in the navigation bar, for example after external links"
-	},
-	"fingerprintDetector": {
-		"message": "Wykrywanie fingerprintingu",
-		"description": "The name of the Fingerprint Detector displayed at multiple places"
-	},
-	"shieldNotifications": {
-		"message": "Powiadomienia",
-		"description": "Displayed as a text label during NBS and FPD configuration when the user can activate or deactivate notifications"
-	},
-	"globalSettings": {
-		"message": "Globalne ustawienia",
-		"description": "The button in the popup that opens options page"
-	},
-	"JSSBuiltinExceptionsDomain": {
-		"message": "Domena",
-		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
-	},
-	"extensionName": {
-		"message": "JShelter",
-		"description": "Name of the extension. Please, do not translate unless properly justified."
-	},
-	"jssgroupWASMPassive": {
-		"message": "Pasywne"
-	},
-	"fAQ": {
-		"message": "FAQ",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"permissions": {
-		"message": "Pozwolenia",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"FPDgloballyOff": {
-		"message": "Wykrywanie fingerprintingu jest wyłączone globalnie",
-		"description": "Informs the user that FPD is globally disabled, displayed e.g. in popup"
-	},
-	"ButtonEnableForSelectedDomains": {
-		"message": "<strong>$ENABLE$</strong> $FORTHEDOMAIN$",
-		"description": "A button caption that can be used generically by JShelter, e.g. in the options; if necessary, edit the structure of the message but make sure to emhasize the enablement. Translate the placeholders.",
-		"placeholders": {
-			"enable": {
-				"content": "Włącz",
-				"description": "Please translate"
-			},
-			"forTheDomain": {
-				"content": "dla wybranych domen",
-				"description": "Please translate"
-			}
-		}
-	},
-	"fpdDetectionDefault": {
-		"message": "Domyślne",
-		"description": "Option shown in options during configuaration of the parameters of FPD"
-	},
-	"numberOfCalls": {
-		"message": "Liczba wywołań",
-		"description": "Column headding in the popup detailed JSS shield"
-	},
-	"JSSLexperimentalName": {
-		"message": "Eksperymentalny",
-		"description": "The name of JSS experimental level that is used at various places in the UI"
-	},
-	"fpdBehaviorPassive": {
-		"message": "Pasywne",
-		"description": "A label shown in options during configuaration of the parameters of FPD"
-	},
-	"ShieldOnSlider": {
-		"message": "WŁĄCZ",
-		"description": "Displayed in sliders that control activation of shields in popup and options, keep the text short to prevent overflow"
-	},
-	"jssgroupBlock": {
-		"message": "Zablokuj",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"settingsForDomain": {
-		"message": "Ustawienia dla domeny",
-		"description": "The text in the popup that introduces the context of the information in the popup"
-	},
-	"fpdStrict": {
-		"message": "Ścisły",
-		"description": "Option shown in options during configuaration of the parameters of FPD"
-	},
-	"FPDSeverityLow": {
-		"message": "Niski",
-		"description": "The level of the number of detected APIs misusable for fingerprinting"
-	},
-	"jssgroupUnprotected": {
-		"message": "Niechronione",
-		"description": "Displayed during JSS level tweaking in case the API group is completely disabled"
-	},
-	"nameDescriptionSeparator": {
-		"message": " — ",
-		"description": "Used for example in the popup to separate the current JSS level from its description."
-	},
-	"jssgroupRemove": {
-		"message": "Usuń",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"extensionDescription": {
-		"message": "Wtyczka poprawiająca poziom bezpieczeństwa i prywatności użytkownika.",
-		"description": "Description of the extension."
-	},
-	"JSSBuiltinExceptionsLevels": {
-		"message": "Poziomy",
-		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
-	},
-	"wrappers": {
-		"message": "Grupy API",
-		"description": "Column headding in the popup detailed JSS shield"
-	},
-	"jssgroupArraysRandomize": {
-		"message": "Losuj"
-	},
-	"ButtonRestore": {
-		"message": "Przywróć",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"JSSL3Name": {
-		"message": "Ścisły",
-		"description": "The name of JSS L3 that is used at various places in the UI"
-	},
-	"protectionConfigurationOptionActivatedOff": {
-		"message": "Wyłączone",
-		"description": "Displayed during NBS and FPD configuration when the option is deactivated (off)"
-	},
-	"ButtonCancel": {
-		"message": "Anuluj",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"jssgroupHigh": {
-		"message": "Wysokie",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"jssgroupWASMActive": {
-		"message": "Aktywne"
-	},
-	"levelOfDefense": {
-		"message": "Poziom ochrony",
-		"description": "Column headding in the popup detailed JSS shield"
-	},
-	"jssgroupArraysShift": {
-		"message": "Zmiana"
-	},
-	"JSSL2Name": {
-		"message": "Zalecane",
-		"description": "The name of JSS L2 that is used at various places in the UI"
-	},
-	"detailTweaksOfJSShieldForThisSite": {
-		"message": "Szczegółowe ustawienia ochrony JS dla tej strony",
-		"description": "Button in the popup that allows to tweak JSS."
-	},
-	"protectionConfigurationOptionActivatedOn": {
-		"message": "Włączone",
-		"description": "Displayed during NBS and FPD configuration when the option is activated (on)"
-	},
-	"ButtonEdit": {
-		"message": "Edytuj",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"ShieldOffSlider": {
-		"message": "WYŁĄCZ",
-		"description": "Displayed in sliders that control activation of shields in popup and options, keep the text short to prevent overflow"
-	},
-	"ButtonSave": {
-		"message": "Zapisz",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"fpdBehavior": {
-		"message": "Zachowanie",
-		"description": "A label shown in options during configuaration of the parameters of FPD"
-	},
-	"jssgroupGamepads": {
-		"message": "Kontrolery do gier",
-		"description": "gamepads group"
-	},
-	"ButtonSignExpandOneCharacterDown": {
-		"message": "⤵",
-		"description": "A button caption that can be used generically by JShelter, it should contain a single character that intuitively tells the user that by clicking the button, more information will be shown"
-	},
-	"jssgroupWASMDisabled": {
-		"message": "Wyłączono"
-	},
-	"FPDSeverityModerate": {
-		"message": "Umiarkowany",
-		"description": "The level of the number of detected APIs misusable for fingerprinting"
-	},
-	"descriptionLess": {
-		"message": "(mniej…)",
-		"description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get less information about the level."
-	},
-	"nbsBlocking": {
-		"message": "Blokowanie",
-		"description": "Displayed during NBS configuration, label for a configuration option"
-	},
-	"JSSBuiltinExceptionsChanges": {
-		"message": "Zmiany",
-		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
-	},
-	"FPDSeverityNone": {
-		"message": "Brak",
-		"description": "The level of the number of detected APIs misusable for fingerprinting"
-	},
-	"javascriptShield": {
-		"message": "Ochrona JavaScript",
-		"description": "The name of the JavaScript Shield displayed at multiple places"
-	},
-	"ButtonRemove": {
-		"message": "Usuń",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"FPDSeverityHigh": {
-		"message": "Wysoki",
-		"description": "The level of the number of detected APIs misusable for fingerprinting"
-	},
-	"jssgroupWASMEnabled": {
-		"message": "Włączono"
-	},
-	"fpdDetection": {
-		"message": "Wykrywanie",
-		"description": "A label shown in options during configuaration of the parameters of FPD"
-	},
-	"jssgroupAsk": {
-		"message": "Pytaj",
-		"description": "Displayed during JSS level tweaking for XHR and possibly more (in the future)"
-	},
-	"formlabelDescription": {
-		"message": "Opis:",
-		"description": "Used in forms whenever a description should be enered (atm new level description)"
-	},
-	"LevelAndDescription": {
-		"message": "$LEVELNAME$: $LEVELSHORTDESCRIPTION$",
-		"description": "Displayed in options pages in select elements to give the user an idea what level to apply by listing both its name and a short description",
-		"placeholders": {
-			"levelName": {
-				"content": "$1",
-				"example": "Name of the level"
-			},
-			"levelShortDescription": {
-				"content": "$2",
-				"example": "Short description of the level"
-			}
-		}
-	},
-	"formlabelName": {
-		"message": "Nazwa:",
-		"description": "Used in forms whenever a name should be enered (atm new level name)"
-	},
-	"JSSBuiltinExceptionsReason": {
-		"message": "Powód",
-		"description": "Displayed in expert settings, heading in the table of built-in tweaks"
-	},
-	"credits": {
-		"message": "Twórcy",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"ButtonAddNewLevel": {
-		"message": "Dodaj nowy poziom",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"jssgroupHardwareBatteryRemoveDescription": {
-		"message": "Usuń API"
-	},
-	"jssgroupInstalledBrowserPlugins": {
-		"message": "Zainstalowane wtyczki do przeglądarki",
-		"description": "plugins group"
-	},
-	"ButtonRestoreLevel": {
-		"message": "Przywróć poziom $LEVELNAME$",
-		"description": "A button caption that can be used generically by JShelter",
-		"placeholders": {
-			"levelName": {
-				"content": "$1",
-				"example": "Level name of the level to be restored, for example, Default"
-			}
-		}
-	},
-	"jssgroupLocallyRenderedImages": {
-		"message": "Lokalnie renderowane obrazy",
-		"description": "htmlcanvaselement group"
-	},
-	"JShelterOptionsAdvanced": {
-		"message": "Zaawansowane ustawienia JShelter",
-		"description": "Title of the expert options page"
-	},
-	"jssgroupVirtualAndAugmentedRealityDevicesStrictDescription": {
-		"message": "Ukryj wszystkie urządzenia."
-	},
-	"jssgroupPhysicalLocationGeolocation": {
-		"message": "Fizyczna lokalizacja (geolokalizacja)"
-	},
-	"jssgroupSharedArraysBufferStrictDescription": {
-		"message": "Blokuj SharedArrayBuffer"
-	},
-	"jssgroupGamepadsStrictDescription": {
-		"message": "Ukryj wszystkie kontrolery do gier."
-	},
-	"jssgroupInstalledBrowserPluginsStrictDescription": {
-		"message": "Ukryj wszystkie wtyczki."
-	},
-	"jssgroupUserIdleRemoveDescription": {
-		"message": "Usuń API."
-	},
-	"fpdBehaviorFullBlocking": {
-		"message": "Pełne blokowanie",
-		"description": "A label shown in options during configuaration of the parameters of FPD"
-	},
-	"saveAll": {
-		"message": "Zapisz wszystko",
-		"description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
-	},
-	"jssgroupGraphicCardInformation": {
-		"message": "Informacje o karcie graficznej",
-		"description": "webgl group"
-	},
-	"JShelterOptions": {
-		"message": "Główne ustawienia JShelter",
-		"description": "Title of the main options page"
-	},
-	"issueTracker": {
-		"message": "Śledzenie zgłoszeń",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"externalLinks": {
-		"message": "Linki zewnętrzne",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"jssgroupLocallyRenderedImagesDescription2": {
-		"message": "Funkcje $apis$ zwracają zmodyfikowane dane obrazów.",
-		"description": "Displayed at various places",
-		"placeholders": {
-			"apis": {
-				"content": "canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() i WebGLRenderingContext.readPixels",
-				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
-			}
-		}
-	},
-	"jssgroupGeolocationLongDistance": {
-		"message": "Duży dystans",
-		"description": "Displayed during level tweaks"
-	},
-	"deleteAll": {
-		"message": "Usuń wszystko",
-		"description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
-	},
-	"jssgroupLocallyGeneratedAudio": {
-		"message": "Lokalnie generowane audio",
-		"description": "audiobuffer group"
-	},
-	"defaultLevelSelection": {
-		"message": "Domyślny poziom ($levelName$)",
-		"description": "This text is displayed as the default level in the popup",
-		"placeholders": {
-			"levelName": {
-				"content": "$1",
-				"description": "Translated name of the default level used by the user",
-				"example": "Recommended, see the keys JSSL*Name like JSSL2Name"
-			}
-		}
-	},
-	"jssgroupUserIdleDetection": {
-		"message": "Wykrywanie bezczynności",
-		"description": "useridle group"
-	},
-	"jSSShieldDetails": {
-		"message": "Szczegóły ochrony JS",
-		"description": "Displayed in options in the navigation bar, try to keep JS shield abbreviated to keep the text short"
-	},
-	"jssgroupWebWorker": {
-		"message": "API WebWorker",
-		"description": "webworker group, keep the name of the API in English"
-	},
-	"JSSaddLevelHeading": {
-		"message": "Dodaj nowy poziom",
-		"description": "Form heading during creation of a new level. You likely want to use the same or very similar value as ButtonAddNewLevel translation string."
-	},
-	"testPage": {
-		"message": "Strona testowa",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"FPDReportShowDetails": {
-		"message": "Pokaż szczegóły",
-		"description": "Button caption"
-	},
-	"FPDReportHideDetails": {
-		"message": "Ukryj szczegóły",
-		"description": "Button caption"
-	},
-	"JSSeditLevelHeading": {
-		"message": "Edytuj poziom $LEVELNAME$",
-		"description": "Heading shown during JSS tweaking (edit level form)",
-		"placeholders": {
-			"levelName": {
-				"content": "$1",
-				"description": "The level name that is about to be overwritten, do not translate",
-				"example": "User provided value, any text"
-			}
-		}
-	},
-	"advancedOptions": {
-		"message": "Ustawienia zaawansowane",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"sourceCode": {
-		"message": "Kod źródłowy",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"jssgroupNetworkConditionsRemoveDescription": {
-		"message": "Wyłącz API NetworkInformation",
-		"description": "Keep the name of the API in English"
-	},
-	"addToList": {
-		"message": "Dodaj do listy",
-		"description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
-	},
-	"jssgroupMultimediaPlayback": {
-		"message": "Odtwarzanie multimediów",
-		"description": "playback group"
-	},
-	"ButtonSaveCustomLevel": {
-		"message": "Zapisz własny poziom",
-		"description": "A button caption that can be used generically by JShelter"
-	},
-	"ExampleDomainsText": {
-		"message": "example.com lub en.example.com",
-		"description": "Displayed in text inputs that expect a domain"
-	},
-	"FPDSeverityVeryHigh": {
-		"message": "Bardzo wysoki",
-		"description": "The level of the number of detected APIs misusable for fingerprinting"
-	},
-	"jssgroupHardwareBattery": {
-		"message": "API stanu baterii",
-		"description": "battery group"
-	},
-	"jssgroupNFCRemoveDescription": {
-		"message": "Usuń API"
-	},
-	"FPDReportRefresh": {
-		"message": "Odśwież zgłoszenie",
-		"description": "Button caption"
-	},
-	"mainSettings": {
-		"message": "Główne ustawienia",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"addCustomLevel": {
-		"message": "Dodaj własny poziom",
-		"description": "A button caption, the button creates a custom JSS level."
-	},
-	"fpdBehaviorLimitedBlocking": {
-		"message": "Ograniczone blokowanie",
-		"description": "A label shown in options during configuaration of the parameters of FPD"
-	},
-	"JSSL1Name": {
-		"message": "Wyłącz ochronę przed fingerprintingiem",
-		"description": "The name of JSS L1 that is used at various places in the UI"
-	},
-	"ManageWhitelist": {
-		"message": "Zarządzaj listą wyjątków ⤵",
-		"description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list would appear below (the arrow at the end)."
-	},
-	"jssgroupXMLHttpRequestRequests": {
-		"message": "Przesyłanie danych XMLHttpRequest (XHR)",
-		"description": "Keep the name of the API in English"
-	},
-	"jssgroupMultimediaPlaybackStrictDescription": {
-		"message": "Zgłaszaj wszystkie kodeki i mechanizmy szyfrowania jako niewspierane."
-	},
-	"jssgroupXMLHttpRequestRequestsBlockDescription": {
-		"message": "Blokuj wszystkie zapytania XHR",
-		"description": "Keep the name of the API in English"
-	},
-	"NBSBlockedHost": {
-		"message": "Wszystkie przyszłe zapytania HTTP z $HOST$ zostaną zablokowane.",
-		"description": "The message shown in Chromium-based browsers when NBS starts blocking a host.",
-		"placeholders": {
-			"host": {
-				"content": "$1",
-				"description": "Domain name or IP address, do not translate",
-				"example": "domainname.example.com"
-			}
-		}
-	},
-	"jssgroupSharedArraysBuffer": {
-		"message": "API SharedArrayBuffer",
-		"description": "shared_array group"
-	},
-	"jssgroupWASMEnabledDescription": {
-		"message": "Twórz małe zakłócenia w WebAssembly."
-	},
-	"nbsBlockingOnDescription": {
-		"message": "Włączono blokowanie zapytań.",
-		"description": "Displayed during NBS configuration, further explanation of the selected configuration level"
-	},
-	"NBSNotificationsOffDescription": {
-		"message": "Wyłączono blokowanie powiadomień.",
-		"description": "Displayed in NBS options, notifications about blocked requests are globally disabled"
-	},
-	"javaScriptShieldPerWebsiteConfiguration": {
-		"message": "Ustawienia ochrony JavaScript dla poszczególnych stron",
-		"description": "Displayed in JSS advanced options page"
-	},
-	"jssgroupConnectedCamerasAndMicrophonesStrictDescription": {
-		"message": "Zwraca pustą listę urządzeń."
-	},
-	"fpdNotificationsOffDescription": {
-		"message": "Wyłączono wykrywanie/blokowanie powiadomień.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"NBSDetectedHost": {
-		"message": "Aby zablokować żądania HTTP z $HOST$ włącz blokowanie.",
-		"description": "The message shown in Chromium-based browsers when NBS detects a suspicious host.",
-		"placeholders": {
-			"host": {
-				"content": "$1",
-				"description": "Domain name or IP address, do not translate",
-				"example": "domainname.example.com"
-			}
-		}
-	},
-	"jssgroupArrays": {
-		"message": "API ArrayBuffer",
-		"description": "arrays group"
-	},
-	"jssgroupXMLHttpRequestRequestsAskDescription": {
-		"message": "Zapytaj przed wykonaniem zapytania XHR",
-		"description": "Keep the name of the API in English"
-	},
-	"ExpertUndoConfiguration": {
-		"message": "Cofnij (przywraca poprzednie ustawienia)",
-		"description": "Displayed in expert settings, button that restores the configuration to the previous (back button)"
-	},
-	"jssgroupUnreliableTransfersToServerBeaconsDescription3": {
-		"message": "Zapobiegaj wysyłaniu danych przez API Beacon.",
-		"description": "Keep the name of the API"
-	},
-	"setJavaScriptShieldForWebsite": {
-		"message": "Ustaw ochronę JavaScript dla strony:",
-		"description": "Displayed in JSS advanced options page"
-	},
-	"NBSNotificationsOnDescription": {
-		"message": "Włączono blokowanie powiadomień.",
-		"description": "Displayed in NBS options, notifications about blocked requests are globally enabled"
-	},
-	"HideWhitelist": {
-		"message": "Ukryj listę wyjątków ⤵",
-		"description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list is located below (the arrow at the end)."
-	},
-	"fpdDetectionDefaultDescription": {
-		"message": "Zalecane ustawienia dla większości użytkowników.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"JSSL0Name": {
-		"message": "Wyłącz ochronę JavaScript",
-		"description": "The name of JSS L0 that is used at various places in the UI"
-	},
-	"jssgroupVirtualAndAugmentedRealityDevices": {
-		"message": "Urządzenia wirtualnej i rozszerzonej rzeczywistości",
-		"description": "vr group (also includes XR API)"
-	},
-	"jssgroupTimeHighDescription": {
-		"message": "Losuj cyfry dziesiętne z szumem (1.451)",
-		"description": "Explains the protection to the user"
-	},
-	"JSSBuiltinExceptions": {
-		"message": "Wbudowane ustawienia ochrony JavaScript",
-		"description": "Displayed in expert settings, heading for the table of built-in tweaks"
-	},
-	"ExpertLoadCurrentlyStoredConfiguration": {
-		"message": "Załaduj obecnie przechowywaną konfigurację",
-		"description": "Displayed in expert settings, button that loads current configuration to the textarea"
-	},
-	"jssgroupLocallyGeneratedAudioDescription2": {
-		"message": "Funkcje $apis$ zwracają zmienione dane.",
-		"placeholders": {
-			"apis": {
-				"content": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData(), and AnalyserNode.getFloatFrequencyData()",
-				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
-			}
-		}
-	},
-	"fpdNotificationsOnDescription": {
-		"message": "Włączono wykrywanie/blokowanie powiadomień.",
-		"description": "Text shown in options during configuaration of the parameters of FPD"
-	},
-	"jssgroupWebWorkerDescription": {
-		"message": "Ochrona przed wykorzystywaniem WebWorker",
-		"description": "Keep the name of the API in English"
-	},
-	"fpdNotificationMessage": {
-		"message": "$MESSAGE$\n\nStrona: $PAGETITLE$\nHost: $DOMAIN$",
-		"description": "Constructs the full message for the notification when FPD detects suspicious activity",
-		"placeholders": {
-			"message": {
-				"content": "$1",
-				"description": "Translated fpdBlockingSubsequent or fpdClickNotificationDetails",
-				"example": "Blocking all subsequent requests."
-			},
-			"pagetitle": {
-				"content": "$2",
-				"description": "The content of the title element of the fingerprinting page (in case it is long, only the start of the string)",
-				"example": "JShelter test page"
-			},
-			"domain": {
-				"content": "$3",
-				"description": "The domain of the visited page or IP address (taken from the URL bar)",
-				"example": "example.com"
-			}
-		}
-	},
-	"nbsBlockingOffDescription": {
-		"message": "Wyłączono blokowanie zapytań.",
-		"description": "Displayed during NBS configuration, further explanation of the selected configuration level"
-	},
-	"networkBoundaryShield": {
-		"message": "Ochrona sieci",
-		"description": "The name of the Network Boundary Shield displayed at multiple places"
-	},
-	"jssgroupLittleLies": {
-		"message": "Drobne podmiany",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"jssgroupConfuse": {
-		"message": "Podmienianie",
-		"description": "Displayed during JSS level tweaking for several API groups"
-	},
-	"jssgroupFake": {
-		"message": "Fałszowanie",
-		"description": "Displayed during JSS level tweaking for InstalledBrowserPlugins and possibly more (in the future)"
-	},
-	"jssgroupGraphicCardInformationDescription3": {
-		"message": "$apis$ zwraca zmodyfikowane wartości.",
-		"placeholders": {
-			"apis": {
-				"content": "WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions(), and .getExtension()",
-				"description": "Keep the names of the API but translate the punctuation and conjunctions"
-			}
-		}
-	},
-	"jssgroupInstalledBrowserPluginsFakeDescription": {
-		"message": "Zwróć dwie fałszywe wtyczki."
-	},
-	"jssgroupConnectedCamerasAndMicrophones": {
-		"message": "Podłączone kamery i mikrofony"
-	},
-	"jssgroupHardware": {
-		"message": "Pamięć urządzenia i procesor",
-		"description": "hardware group"
-	},
-	"jssgroupNetworkConditions": {
-		"message": "Warunek sieci",
-		"description": "net group"
-	},
-	"jssgroupPhysicalEnvironmentSensors": {
-		"message": "Czujniki środowiska fizycznego",
-		"description": "physical_environment group"
-	},
-	"jssgroupGeolocationRemoveDescription": {
-		"message": "Całkowicie usuń usługi geolokalizacji.",
-		"description": "Explains the protection to the user"
-	},
-	"jssgroupNFC": {
-		"message": "Near Field Communication (NFC)",
-		"description": "nfc group"
-	},
-	"jssgroupWASM": {
-		"message": "Przyspieszenie WebAssembly",
-		"description": "webassembly group"
-	},
-	"fpdNotificationTitle": {
-		"message": "Wykryto próby fingerprintingu!",
-		"description": "Title of a notification"
-	},
-	"jssgroupTimePrecision": {
-		"message": "Precyzja czasu"
-	},
-	"threatModel": {
-		"message": "Model zagrożenia",
-		"description": "Displayed in options in the navigation bar"
-	},
-	"FPDReportTitle": {
-		"message": "Raport o próbach fingerprintingu",
-		"description": "Title of a fingeprint report"
-	},
-	"jssgroupGeolocationTownDescription": {
-		"message": "Użyj dokładności co do kilometrów.",
-		"description": "Explains the protection to the user"
-	},
-	"jssgroupInstalledBrowserPluginsLittleLiesDescription": {
-		"message": "Edytuj aktualne wtyczki i dodaj dwie fałszywe wtyczki."
-	},
-	"jssgroupCoopscheduleConfuseDescription": {
-		"message": "Modyfikuj dostępne informacje w celu zmylenia adwersarzy."
-	},
-	"doNotModifyThisConfiguration": {
-		"message": "UWAGA! Nie modyfikuj tej konfiguracji chyba że ty wiesz co robisz.",
-		"description": "Displayed in expert settings"
-	},
-	"JShelterFullConfiguration": {
-		"message": "Pełna konfiguracja JShelter w tekście",
-		"description": "Displayed in expert settings, label for the full extension configuration in textarea"
-	},
-	"ExpertResetConfiguration": {
-		"message": "Zresetuj konfiguracje (skasuje wszystkie niestandardowe zmiany)",
-		"description": "Displayed in expert settings, button that reset to the configuration that we ship (factory reset)"
-	},
-	"NBSDetectedTitle": {
-		"message": "Ochrona Sieci wykryto podejrzane żądania!",
-		"description": "Title of the notifications that is displayed when NBS detects a suspicious requests but does not block them because blocking is disabled"
-	}
+    "jssgroupGeolocationRegion": {
+        "message": "Region",
+        "description": "Displayed during level tweaks"
+    },
+    "descriptionMore": {
+        "message": "(więcej…)",
+        "description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get more information about the level."
+    },
+    "jssgroupGeolocationTown": {
+        "message": "Miasto",
+        "description": "Displayed during level tweaks"
+    },
+    "jssgroupStrict": {
+        "message": "Ścisłe",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupLow": {
+        "message": "Niskie",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "modifyJSSPopup": {
+        "message": "Modyfikuj",
+        "description": "The button in the popup that tweaks JSS"
+    },
+    "ButtonDisableForDomain###placeholders###disable": {
+        "message": "Wyłącz",
+        "description": "This string defines a substring of ButtonDisableForDomain ### Please translate"
+    },
+    "ButtonDisableForDomain###placeholders###forTheDomain": {
+        "message": "dla domeny",
+        "description": "This string defines a substring of ButtonDisableForDomain ### Please translate"
+    },
+    "ButtonDisableForDomain": {
+        "message": "<strong>$DISABLE$</strong> $FORTHEDOMAIN$",
+        "description": "A button caption that can be used generically by JShelter, e.g. in the options; if necessary, edit the structure of the message but make sure to emhasize the disablement. Translate the placeholders."
+    },
+    "refreshPage": {
+        "message": "Odśwież stronę",
+        "description": "The button in the popup that refreshes the currently displayed page"
+    },
+    "jssgroupPoor": {
+        "message": "Słaba",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "JSSBuiltinExceptionsLevelsSeparator": {
+        "message": ", ",
+        "description": "Displayed in expert settings, separator for levels displayed"
+    },
+    "jssgroupMedium": {
+        "message": "Średnie",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupGeolocationVillage": {
+        "message": "Wieś",
+        "description": "Displayed during level tweaks"
+    },
+    "ExternalLinksSeparator": {
+        "message": " »",
+        "description": "Displayed in options in the navigation bar, for example after external links"
+    },
+    "fingerprintDetector": {
+        "message": "Wykrywanie fingerprintingu",
+        "description": "The name of the Fingerprint Detector displayed at multiple places"
+    },
+    "shieldNotifications": {
+        "message": "Powiadomienia",
+        "description": "Displayed as a text label during NBS and FPD configuration when the user can activate or deactivate notifications"
+    },
+    "globalSettings": {
+        "message": "Globalne ustawienia",
+        "description": "The button in the popup that opens options page"
+    },
+    "JSSBuiltinExceptionsDomain": {
+        "message": "Domena",
+        "description": "Displayed in expert settings, heading in the table of built-in tweaks"
+    },
+    "extensionName": {
+        "message": "JShelter",
+        "description": "Name of the extension. Please, do not translate unless properly justified."
+    },
+    "jssgroupWASMPassive": {
+        "message": "Pasywne"
+    },
+    "fAQ": {
+        "message": "FAQ",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "permissions": {
+        "message": "Pozwolenia",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "FPDgloballyOff": {
+        "message": "Wykrywanie fingerprintingu jest wyłączone globalnie",
+        "description": "Informs the user that FPD is globally disabled, displayed e.g. in popup"
+    },
+    "ButtonEnableForSelectedDomains###placeholders###enable": {
+        "message": "Włącz",
+        "description": "This string defines a substring of ButtonEnableForSelectedDomains ### Please translate"
+    },
+    "ButtonEnableForSelectedDomains###placeholders###forTheDomain": {
+        "message": "dla wybranych domen",
+        "description": "This string defines a substring of ButtonEnableForSelectedDomains ### Please translate"
+    },
+    "ButtonEnableForSelectedDomains": {
+        "message": "<strong>$ENABLE$</strong> $FORTHEDOMAIN$",
+        "description": "A button caption that can be used generically by JShelter, e.g. in the options; if necessary, edit the structure of the message but make sure to emhasize the enablement. Translate the placeholders."
+    },
+    "fpdDetectionDefault": {
+        "message": "Domyślne",
+        "description": "Option shown in options during configuaration of the parameters of FPD"
+    },
+    "numberOfCalls": {
+        "message": "Liczba wywołań",
+        "description": "Column headding in the popup detailed JSS shield"
+    },
+    "JSSLexperimentalName": {
+        "message": "Eksperymentalny",
+        "description": "The name of JSS experimental level that is used at various places in the UI"
+    },
+    "fpdBehaviorPassive": {
+        "message": "Pasywne",
+        "description": "A label shown in options during configuaration of the parameters of FPD"
+    },
+    "ShieldOnSlider": {
+        "message": "WŁĄCZ",
+        "description": "Displayed in sliders that control activation of shields in popup and options, keep the text short to prevent overflow"
+    },
+    "jssgroupBlock": {
+        "message": "Zablokuj",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "settingsForDomain": {
+        "message": "Ustawienia dla domeny",
+        "description": "The text in the popup that introduces the context of the information in the popup"
+    },
+    "fpdStrict": {
+        "message": "Ścisły",
+        "description": "Option shown in options during configuaration of the parameters of FPD"
+    },
+    "FPDSeverityLow": {
+        "message": "Niski",
+        "description": "The level of the number of detected APIs misusable for fingerprinting"
+    },
+    "jssgroupUnprotected": {
+        "message": "Niechronione",
+        "description": "Displayed during JSS level tweaking in case the API group is completely disabled"
+    },
+    "nameDescriptionSeparator": {
+        "message": " — ",
+        "description": "Used for example in the popup to separate the current JSS level from its description."
+    },
+    "jssgroupRemove": {
+        "message": "Usuń",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "extensionDescription": {
+        "message": "Wtyczka poprawiająca poziom bezpieczeństwa i prywatności użytkownika.",
+        "description": "Description of the extension."
+    },
+    "JSSBuiltinExceptionsLevels": {
+        "message": "Poziomy",
+        "description": "Displayed in expert settings, heading in the table of built-in tweaks"
+    },
+    "wrappers": {
+        "message": "Grupy API",
+        "description": "Column headding in the popup detailed JSS shield"
+    },
+    "jssgroupArraysRandomize": {
+        "message": "Losuj"
+    },
+    "ButtonRestore": {
+        "message": "Przywróć",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "JSSL3Name": {
+        "message": "Ścisły",
+        "description": "The name of JSS L3 that is used at various places in the UI"
+    },
+    "protectionConfigurationOptionActivatedOff": {
+        "message": "Wyłączone",
+        "description": "Displayed during NBS and FPD configuration when the option is deactivated (off)"
+    },
+    "ButtonCancel": {
+        "message": "Anuluj",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "jssgroupHigh": {
+        "message": "Wysokie",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupWASMActive": {
+        "message": "Aktywne"
+    },
+    "levelOfDefense": {
+        "message": "Poziom ochrony",
+        "description": "Column headding in the popup detailed JSS shield"
+    },
+    "jssgroupArraysShift": {
+        "message": "Zmiana"
+    },
+    "JSSL2Name": {
+        "message": "Zalecane",
+        "description": "The name of JSS L2 that is used at various places in the UI"
+    },
+    "detailTweaksOfJSShieldForThisSite": {
+        "message": "Szczegółowe ustawienia ochrony JS dla tej strony",
+        "description": "Button in the popup that allows to tweak JSS."
+    },
+    "protectionConfigurationOptionActivatedOn": {
+        "message": "Włączone",
+        "description": "Displayed during NBS and FPD configuration when the option is activated (on)"
+    },
+    "ButtonEdit": {
+        "message": "Edytuj",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "ShieldOffSlider": {
+        "message": "WYŁĄCZ",
+        "description": "Displayed in sliders that control activation of shields in popup and options, keep the text short to prevent overflow"
+    },
+    "ButtonSave": {
+        "message": "Zapisz",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "fpdBehavior": {
+        "message": "Zachowanie",
+        "description": "A label shown in options during configuaration of the parameters of FPD"
+    },
+    "jssgroupGamepads": {
+        "message": "Kontrolery do gier",
+        "description": "gamepads group"
+    },
+    "ButtonSignExpandOneCharacterDown": {
+        "message": "⤵",
+        "description": "A button caption that can be used generically by JShelter, it should contain a single character that intuitively tells the user that by clicking the button, more information will be shown"
+    },
+    "jssgroupWASMDisabled": {
+        "message": "Wyłączono"
+    },
+    "FPDSeverityModerate": {
+        "message": "Umiarkowany",
+        "description": "The level of the number of detected APIs misusable for fingerprinting"
+    },
+    "descriptionLess": {
+        "message": "(mniej…)",
+        "description": "Used for example in the popup in the description text of the currently applied level when JShelter gives user the option to get less information about the level."
+    },
+    "nbsBlocking": {
+        "message": "Blokowanie",
+        "description": "Displayed during NBS configuration, label for a configuration option"
+    },
+    "JSSBuiltinExceptionsChanges": {
+        "message": "Zmiany",
+        "description": "Displayed in expert settings, heading in the table of built-in tweaks"
+    },
+    "FPDSeverityNone": {
+        "message": "Brak",
+        "description": "The level of the number of detected APIs misusable for fingerprinting"
+    },
+    "javascriptShield": {
+        "message": "Ochrona JavaScript",
+        "description": "The name of the JavaScript Shield displayed at multiple places"
+    },
+    "ButtonRemove": {
+        "message": "Usuń",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "FPDSeverityHigh": {
+        "message": "Wysoki",
+        "description": "The level of the number of detected APIs misusable for fingerprinting"
+    },
+    "jssgroupWASMEnabled": {
+        "message": "Włączono"
+    },
+    "fpdDetection": {
+        "message": "Wykrywanie",
+        "description": "A label shown in options during configuaration of the parameters of FPD"
+    },
+    "jssgroupAsk": {
+        "message": "Pytaj",
+        "description": "Displayed during JSS level tweaking for XHR and possibly more (in the future)"
+    },
+    "formlabelDescription": {
+        "message": "Opis:",
+        "description": "Used in forms whenever a description should be enered (atm new level description)"
+    },
+    "LevelAndDescription###placeholders###levelName": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ###  ###EXAMPLE### Name of the level"
+    },
+    "LevelAndDescription###placeholders###levelShortDescription": {
+        "message": "$2",
+        "description": "If in doubt, keep as is ###  ###EXAMPLE### Short description of the level"
+    },
+    "LevelAndDescription": {
+        "message": "$LEVELNAME$: $LEVELSHORTDESCRIPTION$",
+        "description": "Displayed in options pages in select elements to give the user an idea what level to apply by listing both its name and a short description"
+    },
+    "formlabelName": {
+        "message": "Nazwa:",
+        "description": "Used in forms whenever a name should be enered (atm new level name)"
+    },
+    "JSSBuiltinExceptionsReason": {
+        "message": "Powód",
+        "description": "Displayed in expert settings, heading in the table of built-in tweaks"
+    },
+    "credits": {
+        "message": "Twórcy",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "ButtonAddNewLevel": {
+        "message": "Dodaj nowy poziom",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "jssgroupHardwareBatteryRemoveDescription": {
+        "message": "Usuń API"
+    },
+    "jssgroupInstalledBrowserPlugins": {
+        "message": "Zainstalowane wtyczki do przeglądarki",
+        "description": "plugins group"
+    },
+    "ButtonRestoreLevel###placeholders###levelName": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ###  ###EXAMPLE### Level name of the level to be restored, for example, Default"
+    },
+    "ButtonRestoreLevel": {
+        "message": "Przywróć poziom $LEVELNAME$",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "jssgroupLocallyRenderedImages": {
+        "message": "Lokalnie renderowane obrazy",
+        "description": "htmlcanvaselement group"
+    },
+    "JShelterOptionsAdvanced": {
+        "message": "Zaawansowane ustawienia JShelter",
+        "description": "Title of the expert options page"
+    },
+    "jssgroupVirtualAndAugmentedRealityDevicesStrictDescription": {
+        "message": "Ukryj wszystkie urządzenia."
+    },
+    "jssgroupPhysicalLocationGeolocation": {
+        "message": "Fizyczna lokalizacja (geolokalizacja)"
+    },
+    "jssgroupSharedArraysBufferStrictDescription": {
+        "message": "Blokuj SharedArrayBuffer"
+    },
+    "jssgroupGamepadsStrictDescription": {
+        "message": "Ukryj wszystkie kontrolery do gier."
+    },
+    "jssgroupInstalledBrowserPluginsStrictDescription": {
+        "message": "Ukryj wszystkie wtyczki."
+    },
+    "jssgroupUserIdleRemoveDescription": {
+        "message": "Usuń API."
+    },
+    "fpdBehaviorFullBlocking": {
+        "message": "Pełne blokowanie",
+        "description": "A label shown in options during configuaration of the parameters of FPD"
+    },
+    "saveAll": {
+        "message": "Zapisz wszystko",
+        "description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
+    },
+    "jssgroupGraphicCardInformation": {
+        "message": "Informacje o karcie graficznej",
+        "description": "webgl group"
+    },
+    "JShelterOptions": {
+        "message": "Główne ustawienia JShelter",
+        "description": "Title of the main options page"
+    },
+    "issueTracker": {
+        "message": "Śledzenie zgłoszeń",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "externalLinks": {
+        "message": "Linki zewnętrzne",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "jssgroupLocallyRenderedImagesDescription2###placeholders###apis": {
+        "message": "canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() i WebGLRenderingContext.readPixels",
+        "description": "This string defines a substring of jssgroupLocallyRenderedImagesDescription2 ### Keep the names of the APIs but translate the punctuation and conjunctions"
+    },
+    "jssgroupLocallyRenderedImagesDescription2": {
+        "message": "Funkcje $apis$ zwracają zmodyfikowane dane obrazów.",
+        "description": "Displayed at various places"
+    },
+    "jssgroupGeolocationLongDistance": {
+        "message": "Duży dystans",
+        "description": "Displayed during level tweaks"
+    },
+    "deleteAll": {
+        "message": "Usuń wszystko",
+        "description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
+    },
+    "jssgroupLocallyGeneratedAudio": {
+        "message": "Lokalnie generowane audio",
+        "description": "audiobuffer group"
+    },
+    "defaultLevelSelection###placeholders###levelName": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Translated name of the default level used by the user ###EXAMPLE### Recommended, see the keys JSSL*Name like JSSL2Name"
+    },
+    "defaultLevelSelection": {
+        "message": "Domyślny poziom ($levelName$)",
+        "description": "This text is displayed as the default level in the popup"
+    },
+    "jssgroupUserIdleDetection": {
+        "message": "Wykrywanie bezczynności",
+        "description": "useridle group"
+    },
+    "jSSShieldDetails": {
+        "message": "Szczegóły ochrony JS",
+        "description": "Displayed in options in the navigation bar, try to keep JS shield abbreviated to keep the text short"
+    },
+    "jssgroupWebWorker": {
+        "message": "API WebWorker",
+        "description": "webworker group, keep the name of the API in English"
+    },
+    "JSSaddLevelHeading": {
+        "message": "Dodaj nowy poziom",
+        "description": "Form heading during creation of a new level. You likely want to use the same or very similar value as ButtonAddNewLevel translation string."
+    },
+    "testPage": {
+        "message": "Strona testowa",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "FPDReportShowDetails": {
+        "message": "Pokaż szczegóły",
+        "description": "Button caption"
+    },
+    "FPDReportHideDetails": {
+        "message": "Ukryj szczegóły",
+        "description": "Button caption"
+    },
+    "JSSeditLevelHeading###placeholders###levelName": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### The level name that is about to be overwritten, do not translate ###EXAMPLE### User provided value, any text"
+    },
+    "JSSeditLevelHeading": {
+        "message": "Edytuj poziom $LEVELNAME$",
+        "description": "Heading shown during JSS tweaking (edit level form)"
+    },
+    "advancedOptions": {
+        "message": "Ustawienia zaawansowane",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "sourceCode": {
+        "message": "Kod źródłowy",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "jssgroupNetworkConditionsRemoveDescription": {
+        "message": "Wyłącz API NetworkInformation",
+        "description": "Keep the name of the API in English"
+    },
+    "addToList": {
+        "message": "Dodaj do listy",
+        "description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
+    },
+    "jssgroupMultimediaPlayback": {
+        "message": "Odtwarzanie multimediów",
+        "description": "playback group"
+    },
+    "ButtonSaveCustomLevel": {
+        "message": "Zapisz własny poziom",
+        "description": "A button caption that can be used generically by JShelter"
+    },
+    "ExampleDomainsText": {
+        "message": "example.com lub en.example.com",
+        "description": "Displayed in text inputs that expect a domain"
+    },
+    "FPDSeverityVeryHigh": {
+        "message": "Bardzo wysoki",
+        "description": "The level of the number of detected APIs misusable for fingerprinting"
+    },
+    "jssgroupHardwareBattery": {
+        "message": "API stanu baterii",
+        "description": "battery group"
+    },
+    "jssgroupNFCRemoveDescription": {
+        "message": "Usuń API"
+    },
+    "FPDReportRefresh": {
+        "message": "Odśwież zgłoszenie",
+        "description": "Button caption"
+    },
+    "mainSettings": {
+        "message": "Główne ustawienia",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "addCustomLevel": {
+        "message": "Dodaj własny poziom",
+        "description": "A button caption, the button creates a custom JSS level."
+    },
+    "fpdBehaviorLimitedBlocking": {
+        "message": "Ograniczone blokowanie",
+        "description": "A label shown in options during configuaration of the parameters of FPD"
+    },
+    "JSSL1Name": {
+        "message": "Wyłącz ochronę przed fingerprintingiem",
+        "description": "The name of JSS L1 that is used at various places in the UI"
+    },
+    "ManageWhitelist": {
+        "message": "Zarządzaj listą wyjątków ⤵",
+        "description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list would appear below (the arrow at the end)."
+    },
+    "jssgroupXMLHttpRequestRequests": {
+        "message": "Przesyłanie danych XMLHttpRequest (XHR)",
+        "description": "Keep the name of the API in English"
+    },
+    "jssgroupMultimediaPlaybackStrictDescription": {
+        "message": "Zgłaszaj wszystkie kodeki i mechanizmy szyfrowania jako niewspierane."
+    },
+    "jssgroupXMLHttpRequestRequestsBlockDescription": {
+        "message": "Blokuj wszystkie zapytania XHR",
+        "description": "Keep the name of the API in English"
+    },
+    "NBSBlockedHost###placeholders###host": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Domain name or IP address, do not translate ###EXAMPLE### domainname.example.com"
+    },
+    "NBSBlockedHost": {
+        "message": "Wszystkie przyszłe zapytania HTTP z $HOST$ zostaną zablokowane.",
+        "description": "The message shown in Chromium-based browsers when NBS starts blocking a host."
+    },
+    "jssgroupSharedArraysBuffer": {
+        "message": "API SharedArrayBuffer",
+        "description": "shared_array group"
+    },
+    "jssgroupWASMEnabledDescription": {
+        "message": "Twórz małe zakłócenia w WebAssembly."
+    },
+    "nbsBlockingOnDescription": {
+        "message": "Włączono blokowanie zapytań.",
+        "description": "Displayed during NBS configuration, further explanation of the selected configuration level"
+    },
+    "NBSNotificationsOffDescription": {
+        "message": "Wyłączono blokowanie powiadomień.",
+        "description": "Displayed in NBS options, notifications about blocked requests are globally disabled"
+    },
+    "javaScriptShieldPerWebsiteConfiguration": {
+        "message": "Ustawienia ochrony JavaScript dla poszczególnych stron",
+        "description": "Displayed in JSS advanced options page"
+    },
+    "jssgroupConnectedCamerasAndMicrophonesStrictDescription": {
+        "message": "Zwraca pustą listę urządzeń."
+    },
+    "fpdNotificationsOffDescription": {
+        "message": "Wyłączono wykrywanie/blokowanie powiadomień.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "NBSDetectedHost###placeholders###host": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Domain name or IP address, do not translate ###EXAMPLE### domainname.example.com"
+    },
+    "NBSDetectedHost": {
+        "message": "Aby zablokować żądania HTTP z $HOST$ włącz blokowanie.",
+        "description": "The message shown in Chromium-based browsers when NBS detects a suspicious host."
+    },
+    "jssgroupArrays": {
+        "message": "API ArrayBuffer",
+        "description": "arrays group"
+    },
+    "jssgroupXMLHttpRequestRequestsAskDescription": {
+        "message": "Zapytaj przed wykonaniem zapytania XHR",
+        "description": "Keep the name of the API in English"
+    },
+    "ExpertUndoConfiguration": {
+        "message": "Cofnij (przywraca poprzednie ustawienia)",
+        "description": "Displayed in expert settings, button that restores the configuration to the previous (back button)"
+    },
+    "jssgroupUnreliableTransfersToServerBeaconsDescription3": {
+        "message": "Zapobiegaj wysyłaniu danych przez API Beacon.",
+        "description": "Keep the name of the API"
+    },
+    "setJavaScriptShieldForWebsite": {
+        "message": "Ustaw ochronę JavaScript dla strony:",
+        "description": "Displayed in JSS advanced options page"
+    },
+    "NBSNotificationsOnDescription": {
+        "message": "Włączono blokowanie powiadomień.",
+        "description": "Displayed in NBS options, notifications about blocked requests are globally enabled"
+    },
+    "HideWhitelist": {
+        "message": "Ukryj listę wyjątków ⤵",
+        "description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list is located below (the arrow at the end)."
+    },
+    "fpdDetectionDefaultDescription": {
+        "message": "Zalecane ustawienia dla większości użytkowników.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "JSSL0Name": {
+        "message": "Wyłącz ochronę JavaScript",
+        "description": "The name of JSS L0 that is used at various places in the UI"
+    },
+    "jssgroupVirtualAndAugmentedRealityDevices": {
+        "message": "Urządzenia wirtualnej i rozszerzonej rzeczywistości",
+        "description": "vr group (also includes XR API)"
+    },
+    "jssgroupTimeHighDescription": {
+        "message": "Losuj cyfry dziesiętne z szumem (1.451)",
+        "description": "Explains the protection to the user"
+    },
+    "JSSBuiltinExceptions": {
+        "message": "Wbudowane ustawienia ochrony JavaScript",
+        "description": "Displayed in expert settings, heading for the table of built-in tweaks"
+    },
+    "ExpertLoadCurrentlyStoredConfiguration": {
+        "message": "Załaduj obecnie przechowywaną konfigurację",
+        "description": "Displayed in expert settings, button that loads current configuration to the textarea"
+    },
+    "jssgroupLocallyGeneratedAudioDescription2###placeholders###apis": {
+        "message": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData(), and AnalyserNode.getFloatFrequencyData()",
+        "description": "This string defines a substring of jssgroupLocallyGeneratedAudioDescription2 ### Keep the names of the APIs but translate the punctuation and conjunctions"
+    },
+    "jssgroupLocallyGeneratedAudioDescription2": {
+        "message": "Funkcje $apis$ zwracają zmienione dane."
+    },
+    "fpdNotificationsOnDescription": {
+        "message": "Włączono wykrywanie/blokowanie powiadomień.",
+        "description": "Text shown in options during configuaration of the parameters of FPD"
+    },
+    "jssgroupWebWorkerDescription": {
+        "message": "Ochrona przed wykorzystywaniem WebWorker",
+        "description": "Keep the name of the API in English"
+    },
+    "fpdNotificationMessage###placeholders###message": {
+        "message": "$1",
+        "description": "If in doubt, keep as is ### Translated fpdBlockingSubsequent or fpdClickNotificationDetails ###EXAMPLE### Blocking all subsequent requests."
+    },
+    "fpdNotificationMessage###placeholders###pagetitle": {
+        "message": "$2",
+        "description": "If in doubt, keep as is ### The content of the title element of the fingerprinting page (in case it is long, only the start of the string) ###EXAMPLE### JShelter test page"
+    },
+    "fpdNotificationMessage###placeholders###domain": {
+        "message": "$3",
+        "description": "If in doubt, keep as is ### The domain of the visited page or IP address (taken from the URL bar) ###EXAMPLE### example.com"
+    },
+    "fpdNotificationMessage": {
+        "message": "$MESSAGE$\n\nStrona: $PAGETITLE$\nHost: $DOMAIN$",
+        "description": "Constructs the full message for the notification when FPD detects suspicious activity"
+    },
+    "nbsBlockingOffDescription": {
+        "message": "Wyłączono blokowanie zapytań.",
+        "description": "Displayed during NBS configuration, further explanation of the selected configuration level"
+    },
+    "networkBoundaryShield": {
+        "message": "Ochrona sieci",
+        "description": "The name of the Network Boundary Shield displayed at multiple places"
+    },
+    "jssgroupLittleLies": {
+        "message": "Drobne podmiany",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupConfuse": {
+        "message": "Podmienianie",
+        "description": "Displayed during JSS level tweaking for several API groups"
+    },
+    "jssgroupFake": {
+        "message": "Fałszowanie",
+        "description": "Displayed during JSS level tweaking for InstalledBrowserPlugins and possibly more (in the future)"
+    },
+    "jssgroupGraphicCardInformationDescription3###placeholders###apis": {
+        "message": "WebGLRenderingContext functions .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions(), and .getExtension()",
+        "description": "This string defines a substring of jssgroupGraphicCardInformationDescription3 ### Keep the names of the API but translate the punctuation and conjunctions"
+    },
+    "jssgroupGraphicCardInformationDescription3": {
+        "message": "$apis$ zwraca zmodyfikowane wartości."
+    },
+    "jssgroupInstalledBrowserPluginsFakeDescription": {
+        "message": "Zwróć dwie fałszywe wtyczki."
+    },
+    "jssgroupConnectedCamerasAndMicrophones": {
+        "message": "Podłączone kamery i mikrofony"
+    },
+    "jssgroupHardware": {
+        "message": "Pamięć urządzenia i procesor",
+        "description": "hardware group"
+    },
+    "jssgroupNetworkConditions": {
+        "message": "Warunek sieci",
+        "description": "net group"
+    },
+    "jssgroupPhysicalEnvironmentSensors": {
+        "message": "Czujniki środowiska fizycznego",
+        "description": "physical_environment group"
+    },
+    "jssgroupGeolocationRemoveDescription": {
+        "message": "Całkowicie usuń usługi geolokalizacji.",
+        "description": "Explains the protection to the user"
+    },
+    "jssgroupNFC": {
+        "message": "Near Field Communication (NFC)",
+        "description": "nfc group"
+    },
+    "jssgroupWASM": {
+        "message": "Przyspieszenie WebAssembly",
+        "description": "webassembly group"
+    },
+    "fpdNotificationTitle": {
+        "message": "Wykryto próby fingerprintingu!",
+        "description": "Title of a notification"
+    },
+    "jssgroupTimePrecision": {
+        "message": "Precyzja czasu"
+    },
+    "threatModel": {
+        "message": "Model zagrożenia",
+        "description": "Displayed in options in the navigation bar"
+    },
+    "FPDReportTitle": {
+        "message": "Raport o próbach fingerprintingu",
+        "description": "Title of a fingeprint report"
+    },
+    "jssgroupGeolocationTownDescription": {
+        "message": "Użyj dokładności co do kilometrów.",
+        "description": "Explains the protection to the user"
+    },
+    "jssgroupInstalledBrowserPluginsLittleLiesDescription": {
+        "message": "Edytuj aktualne wtyczki i dodaj dwie fałszywe wtyczki."
+    },
+    "jssgroupCoopscheduleConfuseDescription": {
+        "message": "Modyfikuj dostępne informacje w celu zmylenia adwersarzy."
+    },
+    "doNotModifyThisConfiguration": {
+        "message": "UWAGA! Nie modyfikuj tej konfiguracji chyba że ty wiesz co robisz.",
+        "description": "Displayed in expert settings"
+    },
+    "JShelterFullConfiguration": {
+        "message": "Pełna konfiguracja JShelter w tekście",
+        "description": "Displayed in expert settings, label for the full extension configuration in textarea"
+    },
+    "ExpertResetConfiguration": {
+        "message": "Zresetuj konfiguracje (skasuje wszystkie niestandardowe zmiany)",
+        "description": "Displayed in expert settings, button that reset to the configuration that we ship (factory reset)"
+    },
+    "NBSDetectedTitle": {
+        "message": "Ochrona Sieci wykryto podejrzane żądania!",
+        "description": "Title of the notifications that is displayed when NBS detects a suspicious requests but does not block them because blocking is disabled"
+    }
 }
