@@ -1322,7 +1322,7 @@
 	},
 
 	"MV3DevmodeRequired": {
-		"message": "Kvůli omezením způsobených <a href=\"$MV3URL$\" target=\"_blank\">Googlím Manifestem V3</a> namůže JShelter a další rozšíření prohlížeče pracovat správně v prohlížečích založených na Chromiu (včetně vašeho prohlížeče) než zapnete <em>režim pro vývojáře</em> na stránce <strong>chrome://extensions</strong> (<a href=\"$INFOURL$\" target=\"_blank\">více informací o tomto režimu na stránkách Google pro vývojáře</a>).",
+		"message": "Kvůli omezením způsobených <a href=\"$MV3URL$\" target=\"_blank\">Googlím Manifestem V3</a> nemůže JShelter a další rozšíření prohlížeče pracovat správně v prohlížečích založených na Chromiu (včetně vašeho prohlížeče) než zapnete <em>režim pro vývojáře</em> na stránce <strong>chrome://extensions</strong> (<a href=\"$INFOURL$\" target=\"_blank\">více informací o tomto režimu na stránkách Google pro vývojáře</a>).",
 		"placeholders": {
 			"mv3url": {
 				"content": "https://jshelter.org/mv3/"
