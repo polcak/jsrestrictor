@@ -1,337 +1,356 @@
 {
-    "extensionName": {
-        "message": "JShelter",
-        "description": "Name of the extension. Please, do not translate unless properly justified."
-    },
-    "extensionDescription": {
-        "message": "Laajennus käyttäjän turvallisuuden ja yksityisyyden tason lisäämiseksi.",
-        "description": "Description of the extension."
-    },
-    "javascriptShield": {
-        "message": "JavaScript Shield -kilpi",
-        "description": "The name of the JavaScript Shield displayed at multiple places"
-    },
-    "networkBoundaryShield": {
-        "message": "Verkkorajakilpi"
-    },
-    "NBSgloballyOff": {
-        "message": "Verkkorajakilpi on laajamittaisesti poistettu käytöstä"
-    },
-    "fingerprintDetector": {
-        "message": "Sormenjälkitunnistin"
-    },
-    "FPDgloballyOff": {
-        "message": "Sormenjälkitunnistin on laajamittaisesti poistettu käytöstä"
-    },
-    "JSSLexperimentalDescription": {
-        "message": "Tiukat suojaukset lisäkääreillä (mukaan lukien API:t, joiden tiedetään rikkovan säännöllisesti verkkosivuja, ja API:t, jotka eivät toimi täydellisesti). Käytä tätä tasoa, jos haluat kokeilla JShelteriä. Käytä Suositeltu- tai Tiukka-tasoa aktiivisen Sormenjälkitunnistimen kanssa säännöllisiin toimintoihisi."
-    },
-    "NBSBlockedTitle": {
-        "message": "Verkkorajakilpi esti epäilyttävät pyynnöt!"
-    },
-    "NBSDetectedTitle": {
-        "message": "Verkkorajakilpi havaitsi epäilyttäviä pyyntöjä!"
-    },
-    "NBSBlockedHostTitle": {
-        "message": "Verkkorajakilpi esti isännän!"
-    },
-    "NBSDetectedHostTitle": {
-        "message": "Verkkorajakilpi havaitsi epäilyttävän isännän!"
-    },
-    "FPDReportTitle": {
-        "message": "Sormenjälkitunnistimen raportti"
-    },
-    "FPDReportDescriptionPara1": {
-        "message": "Tämä raportti luettelee kaikki JavaScript API -päätepisteet, joihin verkkosivu on päässyt ja joita pidetään selaimen sormenjälkien määrittämisen kannalta olennaisina. Sormenjälkitunnistin käyttää näitä tietoja päättääkseen, kerääkö sivu selaimen sormenjälkeä."
-    },
-    "NBSHttpProxyDNSAPINote": {
-        "message": "Jos käytät HTTP-välityspalvelinta, Verkkorajakilpi suojaa välityspalvelimen paikallista verkkoa verkkosi sijaan, koska välityspalvelin suorittaa HTTP-pyynnöt kohteisiin. Estääkseen tästä tietokoneesta aloitettujen kyselyjesi DNS-vuodot Verkkorajakilpi ei ratkaise DNS-alueita havaitakseen mahdollisia verkkojen välisiä rajoja koskevia pyyntöjä. Verkkorajakilpi kuitenkin suojaa välityspalvelimen paikallista verkkoa suoraan upotetuille IP-osoitteille. Näin ollen Verkkorajakilpi suojaa välityspalvelimen paikallista verkkoa vain osittain."
-    },
-    "jssgroupXMLHttpRequestRequestsDescription2###placeholders###apis": {
-        "message": "Fetch-, SSE-, WebRTC- ja WebSockets-sovellusliittymät"
-    },
-    "jssgroupXMLHttpRequestRequestsDescription2": {
-        "message": "Huomaa, että XHR-pyyntöjä käytetään laajalti hyvänlaatuisiin tarkoituksiin ja että $apis$ ei ole estetty. Kaikki tarjoavat samanlaisia ja jotkut jopa parempia viestintätapoja palvelimien kanssa. Käytännön käyttöä varten suosittelemme aktivoimaan Sormenjälkitunnistimen XHR-kääreiden sijaan. JShelter säilyttää kääreen, koska se on hyödyllinen joillekin käyttäjille lähinnä kokeellisissa toimissa."
-    },
-    "JSSL3Description": {
-        "message": "Ota koko ei-kokeellinen suojaus käyttöön. Käärityt API:t palauttavat vääriä arvoja. Jotkut sovellusliittymät on estetty kokonaan, kun taas toiset tarjoavat merkityksellisiä mutta harvinaisia arvoja. Jotkut palauttavat merkityksettömiä arvoja. Tämä taso tekee sinusta sormenjäljen ottamisen altis koska API-kutsujen tuloksia muutetaan yleensä samalla tavalla kaikilla verkkosivustoilla ja jokaisessa istunnossa. Käytä tätä tasoa, jos haluat rajoittaa selaimesi tarjoamia tietoja. Jos olet huolissasi sormenjäljeistä, varmista, että Sormenjälkitunnistin on aktivoitu."
-    },
-    "JSSL1Description": {
-        "message": "Käytä turvatoimia, jotka eivät todennäköisesti riko verkkosivuja, mutta eivät suojaa sormenjälkiä vastaan. Poista käytöstä API:t, joita ei käytetä yleisesti. Käytä tätä tasoa, jos Sormenjälkitunnistin ilmoittaa, että sivu kutsui vähän sovellusliittymiä, joita on käytetty väärin sormenjälkien ottamiseen, luotat vierailltuun palveluun ja/tai uskot, että suojaus hidastaa tai rikkoo sivua ja kiusaus käyttää palvelua on niin suuri, että et halua tulla suojatuksi."
-    },
-    "globalSettings": {
-        "message": "Yleisesti pätevät asetukset"
-    },
-    "settingsForDomain": {
-        "message": "Asetukset toimialueelle"
-    },
-    "refreshPage": {
-        "message": "Virkistä sivu"
-    },
-    "modifyJSSPopup": {
-        "message": "Muokkaa"
-    },
-    "descriptionMore": {
-        "message": "(enemmän…)"
-    },
-    "descriptionLess": {
-        "message": "(vähemmän…)"
-    },
-    "wrappers": {
-        "message": "API-ryhmät"
-    },
-    "levelOfDefense": {
-        "message": "Puolustustason"
-    },
-    "numberOfCalls": {
-        "message": "Kutsuiden määrä"
-    },
-    "FingerprintQualityLabel": {
-        "message": "⤷ Sivun kutsumien sormenjälkien ottamiseen väärin käytettyjen sovellusliittymien määrä: "
-    },
-    "popupDefaultLevelHelpText": {
-        "message": "Aseta yleisesti pätevä oletustaso JavaScript Shield -tasoksi tälle sivulle."
-    },
-    "defaultLevelSelection###placeholders###levelName": {
-        "message": "$1",
-        "description": "If in doubt, keep as is ### "
-    },
-    "defaultLevelSelection": {
-        "message": "Oletustaso ($levelName$)",
-        "description": "This text is displayed as the default level in the popup"
-    },
-    "ShieldOffSlider": {
-        "message": "Pois päältä"
-    },
-    "ShieldOnSlider": {
-        "message": "Päälle"
-    },
-    "jssgroupUnprotected": {
-        "message": "Suojaamaton"
-    },
-    "jssgroupPoor": {
-        "message": "Heikko"
-    },
-    "jssgroupLow": {
-        "message": "Matala"
-    },
-    "jssgroupMedium": {
-        "message": "Keskitaso"
-    },
-    "jssgroupHigh": {
-        "message": "Korkea"
-    },
-    "jssgroupLittleLies": {
-        "message": "Pieniä valheita"
-    },
-    "jssgroupStrict": {
-        "message": "Tiukka"
-    },
-    "jssgroupConfuse": {
-        "message": "Sekava"
-    },
-    "jssgroupAddFake": {
-        "message": "Lisää väärennös"
-    },
-    "jssgroupAsk": {
-        "message": "Kysy"
-    },
-    "jssgroupFake": {
-        "message": "Väärennetty"
-    },
-    "jssgroupBlock": {
-        "message": "Estä"
-    },
-    "jssgroupRemove": {
-        "message": "Poista"
-    },
-    "jssgroupTimePrecision": {
-        "message": "Ajan tarkkuus"
-    },
-    "jssgroupTimePrecisionDescription": {
-        "message": "Estä hyökkäykset ja sormenjälkien ottotekniikat tarkan ajanmittauksen avulla (tai vaikeuta niitä)."
-    },
-    "jssgroupLocallyRenderedImagesLittleLiesDescription": {
-        "message": "Tee pieniä muutoksia kuvatietojen lukemiseen, jotta kuvat näyttävät samalta, mutta tarkat arvot vaihtelevat vieraillun verkkotunnuksen ja istuntojen mukaan. Tavoitteena on estää Canvas-sormenjälkien otto tai ainakin vaikeuttaa sitä."
-    },
-    "nameDescriptionSeparator": {
-        "message": " — "
-    },
-    "detailTweaksOfJSShieldForThisSite": {
-        "message": "JS-suojan yksityiskohtaiset säädöt tälle sivustolle"
-    },
-    "jssgroupTimePrecisionDescription2###placeholders###apis": {
-        "message": "(Päivämäärä, suorituskyky, tapahtumat, Gamepad API ja Web VR API)"
-    },
-    "jssgroupTimePrecisionDescription2###placeholders###jssgroupPhysicalLocationGeolocation": {
-        "message": "$1",
-        "description": "If in doubt, keep as is ### Translated version of the jssgroupPhysicalLocationGeolocation string"
-    },
-    "jssgroupTimePrecisionDescription2": {
-        "message": "Rajoita korkearesoluutioisten aikaleimojen tarkkuutta $apis$. Geolocation API:n tarjoamat aikaleimat myös kääritään, jos otat \"$jssgroupPhysicalLocationGeolocation$\" -suojauksen käyttöön."
-    },
-    "jssgroupTimePoorDescription": {
-        "message": "Pyöristysaika sekunnin sadasosaan (1,230)"
-    },
-    "jssgroupTimeLowDescription": {
-        "message": "Pyöröaika sekunnin kymmenesosaan (1,200)"
-    },
-    "jssgroupTimeHighDescription": {
-        "message": "Satunnaista desimaaliluvut kohinalla (1,451)"
-    },
-    "jssgroupLocallyRenderedImages": {
-        "message": "Paikallisesti hahmonnetut kuvat"
-    },
-    "jssgroupLocallyRenderedImagesDescription": {
-        "message": "Suojaa kankaan sormenjälkien ottamista tai näytönohjaimen hahmonnointi-kykyjen tietojen vuotamista vastaan."
-    },
-    "jssgroupLocallyRenderedImagesDescription2###placeholders###apis": {
-        "message": "canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() ja WebGLRenderingContext.readPixels"
-    },
-    "jssgroupLocallyRenderedImagesDescription2": {
-        "message": "Funktiot $apis$ palauttavat muokattuja kuvatietoja."
-    },
-    "jssgroupLocallyRenderedImagesDescription3###placeholders###apis": {
-        "message": "CanvasRenderingContext2D.isPointInStroke() ja CanvasRenderingContext2D.isPointInPath()"
-    },
-    "jssgroupLocallyRenderedImagesDescription3": {
-        "message": "$apis$ on muokattu valehtelemaan todennäköisyydellä."
-    },
-    "jssgroupLocallyRenderedImagesStrictDescription": {
-        "message": "Lue valkoisia kuvia (WebGL-kankaalta lue tyhjä taulukko). Tämä vaihtoehto ei suojaa Canvas-sormenjälkien otolta."
-    },
-    "jssgroupLocallyGeneratedAudio": {
-        "message": "Paikallisesti luotu ääni"
-    },
-    "jssgroupLocallyGeneratedAudioDescription": {
-        "message": "Suojaa tietovuodosta vastaan äänikortin hahmonnointikyvyksistä, joita voidaan käyttää, esimerkiksi äänen sormenjälkien ottamiseen."
-    },
-    "jssgroupLocallyGeneratedAudioDescription2###placeholders###apis": {
-        "message": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() ja AnalyserNode.getFloat()FrequencyData"
-    },
-    "jssgroupLocallyGeneratedAudioDescription2": {
-        "message": "Funktiot $apis$ palauttavat muokattuja tietoja."
-    },
-    "jssgroupLocallyGeneratedAudioLittleLiesDescription": {
-        "message": "Lisää pieni amplitudikohina niin, että ääni on samanlainen kuin ihmisen alkuperäinen ääni. Tarkat arvot vaihtelevat vieraillun verkkotunnuksen ja istuntojen mukaan. Tavoitteena on estää äänen sormenjälkien otto tai ainakin vaikeuttaa sitä."
-    },
-    "jssgroupLocallyGeneratedAudioStrictDescription": {
-        "message": "Äänitiedot korvataan valkoisella kohinalla, joka vaihtelee vieraillun verkkotunnuksen mukaan ja istuntojen välillä. Tavoitteena on rajoittaa äänilaitteiston vuotoja ja samalla tehdä äänen sormenjälkien ottamisesta vaikeampaa."
-    },
-    "jssgroupGraphicCardInformation": {
-        "message": "Grafiikkakortin tiedot"
-    },
-    "jssgroupGraphicCardInformationDescription": {
-        "message": "Huijaa näytönohjaimesi yksityistiedot, joita voidaan käyttää, esimerkiksi sormenjälkien ottamisen vaikeuttamiseksi."
-    },
-    "jssgroupGraphicCardInformationDescription2###placeholders###api": {
-        "message": "WebGLRenderingContext.getParameter()"
-    },
-    "jssgroupGraphicCardInformationDescription2": {
-        "message": "Funktio $api$ palauttaa tietyille parametreille muokattuja tai alimpia arvoja."
-    },
-    "jssgroupGraphicCardInformationDescription3###placeholders###apis": {
-        "message": "WebGLRenderingContext-funktiot .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getRenderbufferParameter(), .getActiveAttrib(),PrecisionPargetShader. .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() ja .getExtension()"
-    },
-    "jssgroupGraphicCardInformationDescription3": {
-        "message": "$apis$ palauttaa muokattuja arvoja."
-    },
-    "jssgroupGraphicCardInformationLittleLiesDescription": {
-        "message": "Luo kohtuullisia lukuja tai satunnaisia merkkijonoja, jotka eroavat vieraillun verkkotunnuksen mukaan ja istuntojen välillä. Tavoitteena on rajoittaa näytönohjainten vuotoja ja samalla vaikeuttaa sormenjälkien ottamista."
-    },
-    "jssgroupGraphicCardInformationStrictDescription": {
-        "message": "Palauttaa alimpia arvoja (nolla, tyhjät merkkijonot). Huomaa, että tämä asetus ei estä sormenjälkien ottoa."
-    },
-    "jssgroupInstalledBrowserPlugins": {
-        "message": "Asennetut selain-liitännäiset"
-    },
-    "jssgroupInstalledBrowserPluginsDescription": {
-        "message": "Suojaa liitännäissormenjälkien ottoa vastaan."
-    },
-    "jssgroupInstalledBrowserPluginsDescription2": {
-        "message": "Suojausta ei sovelleta, jos selaimesi palauttaa tyhjän luettelon tai elävän HTML-standardin määrittämät viisi PDF-liitännäisten katseluohjelmaa. Siksi suojausta ei sovelleta nykyaikaisissa selaimissa."
-    },
-    "jssgroupInstalledBrowserPluginsLittleLiesDescription": {
-        "message": "Muokkaa nykyisiä liitännäisiä ja lisää kaksi väärennettyä liitännäistä."
-    },
-    "jssgroupInstalledBrowserPluginsFakeDescription": {
-        "message": "Palauta kaksi väärennettyä liitännäistä."
-    },
-    "jssgroupInstalledBrowserPluginsStrictDescription": {
-        "message": "Piilota kaikki liitännäiset."
-    },
-    "jssgroupConnectedCamerasAndMicrophones": {
-        "message": "Kytketyt kamerat ja mikrofonit"
-    },
-    "jssgroupConnectedCamerasAndMicrophonesDescription": {
-        "message": "Estä sormenjälkien otto tietokoneeseen kytkettyjen multimedialaitteiden perusteella."
-    },
-    "jssgroupConnectedCamerasAndMicrophonesDescription2###placeholders###api": {
-        "message": "MediaDevices.enumerateDevices()",
-        "description": "This string defines a substring of jssgroupConnectedCamerasAndMicrophonesDescription2 ### Keep the names of the API"
-    },
-    "jssgroupConnectedCamerasAndMicrophonesDescription2": {
-        "message": "Funktiota $api$ on muokattu palauttamaan tyhjä tai muokattu tulos."
-    },
-    "jssgroupConnectedCamerasAndMicrophonesLittleLiesDescription": {
-        "message": "Satunnaistetaan laitteiden järjestys. Nykyiset laitteet eivät ole linkitettävissä eri verkkotunnuksissa ja istuntojen välillä."
-    },
-    "jssgroupConnectedCamerasAndMicrophonesAddFakeDescription": {
-        "message": "Lisää 0–4 väärennettyä laittetta aseta niiden järjestys satunnaisesti. Nykyiset laitteet eivät ole linkitettävissä eri verkkotunnuksissa ja istuntojen välillä."
-    },
-    "jssgroupConnectedCamerasAndMicrophonesStrictDescription": {
-        "message": "Palauta tyhjä laiteluettelo."
-    },
-    "jssgroupHardware": {
-        "message": "Laitteen muisti ja keskusyksikkö"
-    },
-    "jssgroupHardwareDescription": {
-        "message": "Huijaa laitteistotiedot RAM-muistin määrästä ja suorittimen lukumäärästä."
-    },
-    "jssgroupHardwareDescription2###placeholders###apis": {
-        "message": "navigator.deviceMemory and navigator.hardwareConcurrency",
-        "description": "This string defines a substring of jssgroupHardwareDescription2 ### Keep the names of the APIs but translate the punctuation and conjunctions"
-    },
-    "jssgroupHardwareDescription2": {
-        "message": "Getterit $apis$ palauttavat muokattuja arvoja."
-    },
-    "jssgroupHardwareLowDescription": {
-        "message": "Palauta satunnainen kelvollinen arvo vähimmäisarvon ja todellisen arvon välillä. Palautettu arvo vaihtelee vierailtujen verkkotunnusten mukaan ja istuntojen välillä."
-    },
-    "jssgroupHardwareMediumDescription": {
-        "message": "Palauta satunnainen kelvollinen arvo vähimmäisarvon ja 8:n välillä. Palautettu arvo vaihtelee vierailtujen verkkotunnusten mukaan ja istuntojen välillä."
-    },
-    "jssgroupHardwareHighDescription": {
-        "message": "Palauta \"4\" navigator.deviceMemory:lle ja \"2\" navigator.hardwareConcurrency:lle."
-    },
-    "jssgroupNetworkConditions": {
-        "message": "Verkko-ehdot"
-    },
-    "jssgroupNetworkConditionsDescription": {
-        "message": "Poista pääsy verkkotietoihin käytöstä rajoittaaksesi sormenjälkien ottoa ja poistaaksesi mahdollisuuden havainnoida kuvioita verkoissa, joihin on päästy, saadaksesi selville, onko käyttäjä kotona, töissä vai matkalla."
-    },
-    "jssgroupNetworkConditionsRemoveDescription": {
-        "message": "Poista NetworkInformation API käytöstä"
-    },
-    "jssgroupXMLHttpRequestRequests": {
-        "message": "XMLHttpRequest (XHR) -tiedonsiirrot"
-    },
-    "jssgroupXMLHttpRequestRequestsDescription": {
-        "message": "Suodata luotettavat XHR-pyynnöt palvelimelle."
-    },
-    "jssgroupXMLHttpRequestRequestsBlockDescription": {
-        "message": "Estä kaikki XHR-pyynnöt"
-    },
-    "jssgroupArraysDescription": {
-        "message": "Suojaa ArrayBufferin hyödyntämistä vastaan, esimerkiksi estääksesi sivukanavahyökkäykset muistiasetteluun (tai vaikeuttavat niitä)."
-    },
-    "jssgroupXMLHttpRequestRequestsAskDescription": {
-        "message": "Kysy ennen XHR-pyynnön suorittamista"
-    },
-    "jssgroupSharedArraysBufferDescription": {
-        "message": "Suojaa SharedArrayBufferin hyödyntämistä vastaan, esimerkiksi estämään sivukanavahyökkäykset muistiasetteluun (tai vaikeuttamaan niitä)."
-    },
-    "jssgroupWebWorkerDescription": {
-        "message": "Suojaa WebWorkerin hyödyntämistä vastaan"
-    }
+	"extensionName": {
+		"message": "JShelter",
+		"description": "Name of the extension. Please, do not translate unless properly justified."
+	},
+	"extensionDescription": {
+		"message": "Laajennus käyttäjän turvallisuuden ja yksityisyyden tason lisäämiseksi.",
+		"description": "Description of the extension."
+	},
+	"javascriptShield": {
+		"message": "JavaScript Shield -kilpi",
+		"description": "The name of the JavaScript Shield displayed at multiple places"
+	},
+	"networkBoundaryShield": {
+		"message": "Verkkorajakilpi"
+	},
+	"NBSgloballyOff": {
+		"message": "Verkkorajakilpi on laajamittaisesti poistettu käytöstä"
+	},
+	"fingerprintDetector": {
+		"message": "Sormenjälkitunnistin"
+	},
+	"FPDgloballyOff": {
+		"message": "Sormenjälkitunnistin on laajamittaisesti poistettu käytöstä"
+	},
+	"JSSLexperimentalDescription": {
+		"message": "Tiukat suojaukset lisäkääreillä (mukaan lukien API:t, joiden tiedetään rikkovan säännöllisesti verkkosivuja, ja API:t, jotka eivät toimi täydellisesti). Käytä tätä tasoa, jos haluat kokeilla JShelteriä. Käytä Suositeltu- tai Tiukka-tasoa aktiivisen Sormenjälkitunnistimen kanssa säännöllisiin toimintoihisi."
+	},
+	"NBSBlockedTitle": {
+		"message": "Verkkorajakilpi esti epäilyttävät pyynnöt!"
+	},
+	"NBSDetectedTitle": {
+		"message": "Verkkorajakilpi havaitsi epäilyttäviä pyyntöjä!"
+	},
+	"NBSBlockedHostTitle": {
+		"message": "Verkkorajakilpi esti isännän!"
+	},
+	"NBSDetectedHostTitle": {
+		"message": "Verkkorajakilpi havaitsi epäilyttävän isännän!"
+	},
+	"FPDReportTitle": {
+		"message": "Sormenjälkitunnistimen raportti"
+	},
+	"FPDReportDescriptionPara1": {
+		"message": "Tämä raportti luettelee kaikki JavaScript API -päätepisteet, joihin verkkosivu on päässyt ja joita pidetään selaimen sormenjälkien määrittämisen kannalta olennaisina. Sormenjälkitunnistin käyttää näitä tietoja päättääkseen, kerääkö sivu selaimen sormenjälkeä."
+	},
+	"NBSHttpProxyDNSAPINote": {
+		"message": "Jos käytät HTTP-välityspalvelinta, Verkkorajakilpi suojaa välityspalvelimen paikallista verkkoa verkkosi sijaan, koska välityspalvelin suorittaa HTTP-pyynnöt kohteisiin. Estääkseen tästä tietokoneesta aloitettujen kyselyjesi DNS-vuodot Verkkorajakilpi ei ratkaise DNS-alueita havaitakseen mahdollisia verkkojen välisiä rajoja koskevia pyyntöjä. Verkkorajakilpi kuitenkin suojaa välityspalvelimen paikallista verkkoa suoraan upotetuille IP-osoitteille. Näin ollen Verkkorajakilpi suojaa välityspalvelimen paikallista verkkoa vain osittain."
+	},
+	"jssgroupXMLHttpRequestRequestsDescription2": {
+		"message": "Huomaa, että XHR-pyyntöjä käytetään laajalti hyvänlaatuisiin tarkoituksiin ja että $apis$ ei ole estetty. Kaikki tarjoavat samanlaisia ja jotkut jopa parempia viestintätapoja palvelimien kanssa. Käytännön käyttöä varten suosittelemme aktivoimaan Sormenjälkitunnistimen XHR-kääreiden sijaan. JShelter säilyttää kääreen, koska se on hyödyllinen joillekin käyttäjille lähinnä kokeellisissa toimissa.",
+		"placeholders": {
+			"apis": {
+				"content": "Fetch-, SSE-, WebRTC- ja WebSockets-sovellusliittymät"
+			}
+		}
+	},
+	"JSSL3Description": {
+		"message": "Ota koko ei-kokeellinen suojaus käyttöön. Käärityt API:t palauttavat vääriä arvoja. Jotkut sovellusliittymät on estetty kokonaan, kun taas toiset tarjoavat merkityksellisiä mutta harvinaisia arvoja. Jotkut palauttavat merkityksettömiä arvoja. Tämä taso tekee sinusta sormenjäljen ottamisen altis koska API-kutsujen tuloksia muutetaan yleensä samalla tavalla kaikilla verkkosivustoilla ja jokaisessa istunnossa. Käytä tätä tasoa, jos haluat rajoittaa selaimesi tarjoamia tietoja. Jos olet huolissasi sormenjäljeistä, varmista, että Sormenjälkitunnistin on aktivoitu."
+	},
+	"JSSL1Description": {
+		"message": "Käytä turvatoimia, jotka eivät todennäköisesti riko verkkosivuja, mutta eivät suojaa sormenjälkiä vastaan. Poista käytöstä API:t, joita ei käytetä yleisesti. Käytä tätä tasoa, jos Sormenjälkitunnistin ilmoittaa, että sivu kutsui vähän sovellusliittymiä, joita on käytetty väärin sormenjälkien ottamiseen, luotat vierailltuun palveluun ja/tai uskot, että suojaus hidastaa tai rikkoo sivua ja kiusaus käyttää palvelua on niin suuri, että et halua tulla suojatuksi."
+	},
+	"globalSettings": {
+		"message": "Yleisesti pätevät asetukset"
+	},
+	"settingsForDomain": {
+		"message": "Asetukset toimialueelle"
+	},
+	"refreshPage": {
+		"message": "Virkistä sivu"
+	},
+	"modifyJSSPopup": {
+		"message": "Muokkaa"
+	},
+	"descriptionMore": {
+		"message": "(enemmän…)"
+	},
+	"descriptionLess": {
+		"message": "(vähemmän…)"
+	},
+	"wrappers": {
+		"message": "API-ryhmät"
+	},
+	"levelOfDefense": {
+		"message": "Puolustustason"
+	},
+	"numberOfCalls": {
+		"message": "Kutsuiden määrä"
+	},
+	"FingerprintQualityLabel": {
+		"message": "⤷ Sivun kutsumien sormenjälkien ottamiseen väärin käytettyjen sovellusliittymien määrä: "
+	},
+	"popupDefaultLevelHelpText": {
+		"message": "Aseta yleisesti pätevä oletustaso JavaScript Shield -tasoksi tälle sivulle."
+	},
+	"defaultLevelSelection": {
+		"message": "Oletustaso ($levelName$)",
+		"description": "This text is displayed as the default level in the popup",
+		"placeholders": {
+			"levelName": {
+				"content": "$1"
+			}
+		}
+	},
+	"ShieldOffSlider": {
+		"message": "Pois päältä"
+	},
+	"ShieldOnSlider": {
+		"message": "Päälle"
+	},
+	"jssgroupUnprotected": {
+		"message": "Suojaamaton"
+	},
+	"jssgroupPoor": {
+		"message": "Heikko"
+	},
+	"jssgroupLow": {
+		"message": "Matala"
+	},
+	"jssgroupMedium": {
+		"message": "Keskitaso"
+	},
+	"jssgroupHigh": {
+		"message": "Korkea"
+	},
+	"jssgroupLittleLies": {
+		"message": "Pieniä valheita"
+	},
+	"jssgroupStrict": {
+		"message": "Tiukka"
+	},
+	"jssgroupConfuse": {
+		"message": "Sekava"
+	},
+	"jssgroupAddFake": {
+		"message": "Lisää väärennös"
+	},
+	"jssgroupAsk": {
+		"message": "Kysy"
+	},
+	"jssgroupFake": {
+		"message": "Väärennetty"
+	},
+	"jssgroupBlock": {
+		"message": "Estä"
+	},
+	"jssgroupRemove": {
+		"message": "Poista"
+	},
+	"jssgroupTimePrecision": {
+		"message": "Ajan tarkkuus"
+	},
+	"jssgroupTimePrecisionDescription": {
+		"message": "Estä hyökkäykset ja sormenjälkien ottotekniikat tarkan ajanmittauksen avulla (tai vaikeuta niitä)."
+	},
+	"jssgroupLocallyRenderedImagesLittleLiesDescription": {
+		"message": "Tee pieniä muutoksia kuvatietojen lukemiseen, jotta kuvat näyttävät samalta, mutta tarkat arvot vaihtelevat vieraillun verkkotunnuksen ja istuntojen mukaan. Tavoitteena on estää Canvas-sormenjälkien otto tai ainakin vaikeuttaa sitä."
+	},
+	"nameDescriptionSeparator": {
+		"message": " — "
+	},
+	"detailTweaksOfJSShieldForThisSite": {
+		"message": "JS-suojan yksityiskohtaiset säädöt tälle sivustolle"
+	},
+	"jssgroupTimePrecisionDescription2": {
+		"message": "Rajoita korkearesoluutioisten aikaleimojen tarkkuutta $apis$. Geolocation API:n tarjoamat aikaleimat myös kääritään, jos otat \"$jssgroupPhysicalLocationGeolocation$\" -suojauksen käyttöön.",
+		"placeholders": {
+			"apis": {
+				"content": "(Päivämäärä, suorituskyky, tapahtumat, Gamepad API ja Web VR API)"
+			},
+			"jssgroupPhysicalLocationGeolocation": {
+				"content": "$1",
+				"description": "Translated version of the jssgroupPhysicalLocationGeolocation string"
+			}
+		}
+	},
+	"jssgroupTimePoorDescription": {
+		"message": "Pyöristysaika sekunnin sadasosaan (1,230)"
+	},
+	"jssgroupTimeLowDescription": {
+		"message": "Pyöröaika sekunnin kymmenesosaan (1,200)"
+	},
+	"jssgroupTimeHighDescription": {
+		"message": "Satunnaista desimaaliluvut kohinalla (1,451)"
+	},
+	"jssgroupLocallyRenderedImages": {
+		"message": "Paikallisesti hahmonnetut kuvat"
+	},
+	"jssgroupLocallyRenderedImagesDescription": {
+		"message": "Suojaa kankaan sormenjälkien ottamista tai näytönohjaimen hahmonnointi-kykyjen tietojen vuotamista vastaan."
+	},
+	"jssgroupLocallyRenderedImagesDescription2": {
+		"message": "Funktiot $apis$ palauttavat muokattuja kuvatietoja.",
+		"placeholders": {
+			"apis": {
+				"content": "canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob() ja WebGLRenderingContext.readPixels"
+			}
+		}
+	},
+	"jssgroupLocallyRenderedImagesDescription3": {
+		"message": "$apis$ on muokattu valehtelemaan todennäköisyydellä.",
+		"placeholders": {
+			"apis": {
+				"content": "CanvasRenderingContext2D.isPointInStroke() ja CanvasRenderingContext2D.isPointInPath()"
+			}
+		}
+	},
+	"jssgroupLocallyRenderedImagesStrictDescription": {
+		"message": "Lue valkoisia kuvia (WebGL-kankaalta lue tyhjä taulukko). Tämä vaihtoehto ei suojaa Canvas-sormenjälkien otolta."
+	},
+	"jssgroupLocallyGeneratedAudio": {
+		"message": "Paikallisesti luotu ääni"
+	},
+	"jssgroupLocallyGeneratedAudioDescription": {
+		"message": "Suojaa tietovuodosta vastaan äänikortin hahmonnointikyvyksistä, joita voidaan käyttää, esimerkiksi äänen sormenjälkien ottamiseen."
+	},
+	"jssgroupLocallyGeneratedAudioDescription2": {
+		"message": "Funktiot $apis$ palauttavat muokattuja tietoja.",
+		"placeholders": {
+			"apis": {
+				"content": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() ja AnalyserNode.getFloat()FrequencyData"
+			}
+		}
+	},
+	"jssgroupLocallyGeneratedAudioLittleLiesDescription": {
+		"message": "Lisää pieni amplitudikohina niin, että ääni on samanlainen kuin ihmisen alkuperäinen ääni. Tarkat arvot vaihtelevat vieraillun verkkotunnuksen ja istuntojen mukaan. Tavoitteena on estää äänen sormenjälkien otto tai ainakin vaikeuttaa sitä."
+	},
+	"jssgroupLocallyGeneratedAudioStrictDescription": {
+		"message": "Äänitiedot korvataan valkoisella kohinalla, joka vaihtelee vieraillun verkkotunnuksen mukaan ja istuntojen välillä. Tavoitteena on rajoittaa äänilaitteiston vuotoja ja samalla tehdä äänen sormenjälkien ottamisesta vaikeampaa."
+	},
+	"jssgroupGraphicCardInformation": {
+		"message": "Grafiikkakortin tiedot"
+	},
+	"jssgroupGraphicCardInformationDescription": {
+		"message": "Huijaa näytönohjaimesi yksityistiedot, joita voidaan käyttää, esimerkiksi sormenjälkien ottamisen vaikeuttamiseksi."
+	},
+	"jssgroupGraphicCardInformationDescription2": {
+		"message": "Funktio $api$ palauttaa tietyille parametreille muokattuja tai alimpia arvoja.",
+		"placeholders": {
+			"api": {
+				"content": "WebGLRenderingContext.getParameter()"
+			}
+		}
+	},
+	"jssgroupGraphicCardInformationDescription3": {
+		"message": "$apis$ palauttaa muokattuja arvoja.",
+		"placeholders": {
+			"apis": {
+				"content": "WebGLRenderingContext-funktiot .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getRenderbufferParameter(), .getActiveAttrib(),PrecisionPargetShader. .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions() ja .getExtension()"
+			}
+		}
+	},
+	"jssgroupGraphicCardInformationLittleLiesDescription": {
+		"message": "Luo kohtuullisia lukuja tai satunnaisia merkkijonoja, jotka eroavat vieraillun verkkotunnuksen mukaan ja istuntojen välillä. Tavoitteena on rajoittaa näytönohjainten vuotoja ja samalla vaikeuttaa sormenjälkien ottamista."
+	},
+	"jssgroupGraphicCardInformationStrictDescription": {
+		"message": "Palauttaa alimpia arvoja (nolla, tyhjät merkkijonot). Huomaa, että tämä asetus ei estä sormenjälkien ottoa."
+	},
+	"jssgroupInstalledBrowserPlugins": {
+		"message": "Asennetut selain-liitännäiset"
+	},
+	"jssgroupInstalledBrowserPluginsDescription": {
+		"message": "Suojaa liitännäissormenjälkien ottoa vastaan."
+	},
+	"jssgroupInstalledBrowserPluginsDescription2": {
+		"message": "Suojausta ei sovelleta, jos selaimesi palauttaa tyhjän luettelon tai elävän HTML-standardin määrittämät viisi PDF-liitännäisten katseluohjelmaa. Siksi suojausta ei sovelleta nykyaikaisissa selaimissa."
+	},
+	"jssgroupInstalledBrowserPluginsLittleLiesDescription": {
+		"message": "Muokkaa nykyisiä liitännäisiä ja lisää kaksi väärennettyä liitännäistä."
+	},
+	"jssgroupInstalledBrowserPluginsFakeDescription": {
+		"message": "Palauta kaksi väärennettyä liitännäistä."
+	},
+	"jssgroupInstalledBrowserPluginsStrictDescription": {
+		"message": "Piilota kaikki liitännäiset."
+	},
+	"jssgroupConnectedCamerasAndMicrophones": {
+		"message": "Kytketyt kamerat ja mikrofonit"
+	},
+	"jssgroupConnectedCamerasAndMicrophonesDescription": {
+		"message": "Estä sormenjälkien otto tietokoneeseen kytkettyjen multimedialaitteiden perusteella."
+	},
+	"jssgroupConnectedCamerasAndMicrophonesDescription2": {
+		"message": "Funktiota $api$ on muokattu palauttamaan tyhjä tai muokattu tulos.",
+		"placeholders": {
+			"api": {
+				"content": "MediaDevices.enumerateDevices()",
+				"description": "Keep the names of the API"
+			}
+		}
+	},
+	"jssgroupConnectedCamerasAndMicrophonesLittleLiesDescription": {
+		"message": "Satunnaistetaan laitteiden järjestys. Nykyiset laitteet eivät ole linkitettävissä eri verkkotunnuksissa ja istuntojen välillä."
+	},
+	"jssgroupConnectedCamerasAndMicrophonesAddFakeDescription": {
+		"message": "Lisää 0–4 väärennettyä laittetta aseta niiden järjestys satunnaisesti. Nykyiset laitteet eivät ole linkitettävissä eri verkkotunnuksissa ja istuntojen välillä."
+	},
+	"jssgroupConnectedCamerasAndMicrophonesStrictDescription": {
+		"message": "Palauta tyhjä laiteluettelo."
+	},
+	"jssgroupHardware": {
+		"message": "Laitteen muisti ja keskusyksikkö"
+	},
+	"jssgroupHardwareDescription": {
+		"message": "Huijaa laitteistotiedot RAM-muistin määrästä ja suorittimen lukumäärästä."
+	},
+	"jssgroupHardwareDescription2": {
+		"message": "Getterit $apis$ palauttavat muokattuja arvoja.",
+		"placeholders": {
+			"apis": {
+				"content": "navigator.deviceMemory and navigator.hardwareConcurrency",
+				"description": "Keep the names of the APIs but translate the punctuation and conjunctions"
+			}
+		}
+	},
+	"jssgroupHardwareLowDescription": {
+		"message": "Palauta satunnainen kelvollinen arvo vähimmäisarvon ja todellisen arvon välillä. Palautettu arvo vaihtelee vierailtujen verkkotunnusten mukaan ja istuntojen välillä."
+	},
+	"jssgroupHardwareMediumDescription": {
+		"message": "Palauta satunnainen kelvollinen arvo vähimmäisarvon ja 8:n välillä. Palautettu arvo vaihtelee vierailtujen verkkotunnusten mukaan ja istuntojen välillä."
+	},
+	"jssgroupHardwareHighDescription": {
+		"message": "Palauta \"4\" navigator.deviceMemory:lle ja \"2\" navigator.hardwareConcurrency:lle."
+	},
+	"jssgroupNetworkConditions": {
+		"message": "Verkko-ehdot"
+	},
+	"jssgroupNetworkConditionsDescription": {
+		"message": "Poista pääsy verkkotietoihin käytöstä rajoittaaksesi sormenjälkien ottoa ja poistaaksesi mahdollisuuden havainnoida kuvioita verkoissa, joihin on päästy, saadaksesi selville, onko käyttäjä kotona, töissä vai matkalla."
+	},
+	"jssgroupNetworkConditionsRemoveDescription": {
+		"message": "Poista NetworkInformation API käytöstä"
+	},
+	"jssgroupXMLHttpRequestRequests": {
+		"message": "XMLHttpRequest (XHR) -tiedonsiirrot"
+	},
+	"jssgroupXMLHttpRequestRequestsDescription": {
+		"message": "Suodata luotettavat XHR-pyynnöt palvelimelle."
+	},
+	"jssgroupXMLHttpRequestRequestsBlockDescription": {
+		"message": "Estä kaikki XHR-pyynnöt"
+	},
+	"jssgroupArraysDescription": {
+		"message": "Suojaa ArrayBufferin hyödyntämistä vastaan, esimerkiksi estääksesi sivukanavahyökkäykset muistiasetteluun (tai vaikeuttavat niitä)."
+	},
+	"jssgroupXMLHttpRequestRequestsAskDescription": {
+		"message": "Kysy ennen XHR-pyynnön suorittamista"
+	},
+	"jssgroupSharedArraysBufferDescription": {
+		"message": "Suojaa SharedArrayBufferin hyödyntämistä vastaan, esimerkiksi estämään sivukanavahyökkäykset muistiasetteluun (tai vaikeuttamaan niitä)."
+	},
+	"jssgroupWebWorkerDescription": {
+		"message": "Suojaa WebWorkerin hyödyntämistä vastaan"
+	}
 }
