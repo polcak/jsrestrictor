@@ -1541,5 +1541,16 @@
 	},
 	"FPDReportForgetTraces": {
 		"message": "Скрыть текущих абонентов"
+	},
+	"MV3AllowUserScriptsRequired": {
+		"message": "Из-за строгих ограничений, налагаемых <a href=\"$MV3URL$\" target=\"_blank\">манифестом Google V3</a>, JShelter и другие расширения браузера больше не могут работать в браузерах на базе Chromium (включая ваш), если вы не включите переключатель <em>Разрешить пользовательские скрипты</em> на странице JShelter, доступной по адресу <strong>chrome://extensions</strong> (<a href=\"$INFOURL$\" target=\"_blank\">дополнительная информация на сайте разработчиков Google</a>).",
+		"placeholders": {
+			"mv3url": {
+				"content": "https://jshelter.org/mv3/"
+			},
+			"infourl": {
+				"content": "https://developer.chrome.com/docs/extensions/reference/api/userScripts#chrome_versions_138_and_newer_allow_user_scripts_toggle"
+			}
+		}
 	}
 }
