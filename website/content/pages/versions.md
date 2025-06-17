@@ -1,5 +1,10 @@
 Title: Release history
 
+## 0.21
+
+* Add support for `Temporal.Now.instant()` that provides precise timestamps
+* Refactor code for modifications of timestamps to be more readable as well faster
+
 ## 0.20.4
 
 * Fix issues with translation strings introduced in 0.20.3
