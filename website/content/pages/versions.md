@@ -1,5 +1,10 @@
 Title: Release history
 
+## 0.20.4
+
+* Fix issues with translation strings introduced in 0.20.3
+* ru translation at 100% again
+
 ## 0.20.3
 
 * Chromium-based browsers: Handle [userScripts API permissions change](https://pagure.io/JShelter/webextension/issue/166)

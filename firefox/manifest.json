@@ -94,7 +94,7 @@
   ],
   "optional_permissions": ["browsingData"],
   "short_name": "JShelter",
-  "version": "0.20.3",
+  "version": "0.20.4",
   "browser_specific_settings": {
     "gecko": {
         "id": "jsr@javascriptrestrictor",
