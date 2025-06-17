@@ -57,7 +57,7 @@ function add_wrappers(wrappers) {
  * Function to be used by wrapped code used for rounding
  */
 var rounding_function = `function rounding_function(numberToRound, precision) {
-	return numberToRound - (numberToRound % Math.pow(10, 3 - precision));
+	return numberToRound - (numberToRound % precision);
 }`;
 
 /**
@@ -65,7 +65,7 @@ var rounding_function = `function rounding_function(numberToRound, precision) {
  */
 var noise_function = `let lastValue = 0;
 	function noise_function(numberToChange, precision) {
-    const noise = Math.floor(Math.random() * Math.pow(10, 3 - precision));
+    const noise = Math.floor(Math.random() * precision);
     const arr = (numberToChange + '').split('.');
     const number = parseInt(arr[0]);
     const decimal = parseInt(arr[1]);

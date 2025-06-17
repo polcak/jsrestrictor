@@ -58,17 +58,17 @@ var wrapping_groups = {
 				{
 					short: browser.i18n.getMessage("jssgroupPoor"),
 					description: browser.i18n.getMessage("jssgroupTimePoorDescription"),
-					config: [2, false],
+					config: [10, false],
 				},
 				{
 					short: browser.i18n.getMessage("jssgroupLow"),
 					description: browser.i18n.getMessage("jssgroupTimeLowDescription"),
-					config: [1, false],
+					config: [100, false],
 				},
 				{
 					short: browser.i18n.getMessage("jssgroupHigh"),
 					description: browser.i18n.getMessage("jssgroupTimeHighDescription"),
-					config: [0, true],
+					config: [1000, true],
 				},
 			],
 			wrappers: [
