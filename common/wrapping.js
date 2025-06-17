@@ -57,7 +57,7 @@ function add_wrappers(wrappers) {
  * Function to be used by wrapped code used for rounding
  */
 var rounding_function = `function rounding_function(numberToRound, precision) {
-	return numberToRound - (numberToRound % Math.pow(10, Math.max(3 - precision)));
+	return numberToRound - (numberToRound % Math.pow(10, 3 - precision));
 }`;
 
 /**
