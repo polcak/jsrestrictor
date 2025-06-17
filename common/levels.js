@@ -78,6 +78,8 @@ var wrapping_groups = {
 				"PerformanceEntry.prototype",
 				// ECMA
 				"window.Date",
+				// TEMPORAL
+				"Temporal.Now.instant",
 				// DOM
 				"Event.prototype.timeStamp",
 				// GP
