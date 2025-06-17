@@ -66,10 +66,7 @@ var rounding_function = `function rounding_function(numberToRound, precision) {
 var noise_function = `let lastValue = 0;
 	function noise_function(numberToChange, precision) {
     const noise = Math.floor(Math.random() * precision);
-    const arr = (numberToChange + '').split('.');
-    const number = parseInt(arr[0]);
-    const decimal = parseInt(arr[1]);
-    var value = number - (number % noise) + parseFloat('0.' + (decimal - (decimal % noise)));
+    var value = numberToChange + noise;
     if (lastValue < value) {
         lastValue = value;
     }
