@@ -210,7 +210,7 @@ ol:not(:last-child) {
   display: grid;
   grid-gap: var(--mg-medium) var(--mg-medium);
   grid-template-columns: auto 1fr;
-  padding-top: calc(2 * var(--mg-xlarge));
+  padding-top: var(--mg-xlarge);
   width: 100%;
 }
 
@@ -391,6 +391,17 @@ section > header {
 /* Helper classes
 */
 
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute !important;
+  width: 1px;
+}
+
 .has-text-centered {
   text-align: center !important;
 }
@@ -406,6 +417,106 @@ section > header {
 .has-text-right {
   text-align: right !important;
 }
+
+/* Language selector
+*/
+
+.language-menu {
+  width: 100%;
+  max-width: 1344px;
+  margin: 0 auto;
+  padding: var(--mg-medium) var(--mg-medium) 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+}
+
+#select-language {
+  font-size: 0.85rem;
+  font-family: var(--main-font);
+  font-weight: 400;
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+}
+
+#select-language legend {
+  margin-top: 1px; /*to align with text in select */
+}
+
+.select {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+  position: relative;
+  vertical-align: top;
+}
+
+.select::after {
+  content: " ";
+  display: block;
+  height: .625em;
+  border: 0;
+  border-bottom: 3px solid var(--link-color);
+  border-left: 3px solid var(--link-color);
+  border-radius: 2px;
+  right: 0.25em;
+  z-index: 4;
+  pointer-events: none;
+  position: absolute;
+  top: 25%;
+  transform: rotate(-45deg);
+  transform-origin: center;
+  width: .625em;
+  margin-left: var(--mg-tiny);
+}
+
+.select select {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-color);
+  background-color: white;
+  border: 1px solid transparent;
+  border-radius: 0;
+  border-bottom: 1px solid var(--link-color);
+  cursor: pointer;
+  display: block;
+  max-width: 100%;
+  outline: 0;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  align-items: center;
+  box-shadow: none;
+  display: inline-flex;
+  height: auto;
+  justify-content: flex-start;
+  line-height: 1.5;
+  padding: 0 0.75em 0 0;
+  position: relative;
+  vertical-align: top;
+  transition: all 0.3s ease-in;
+  margin-top: -1px;
+}
+
+.select:hover::after {
+  border-color: var(--light-link-color);
+}
+
+.select select:hover {
+  color: var(--light-text-color);
+  border-bottom-color: var(--light-link-color);
+}
+
+.select select:active  {
+  color: var(--light-link-color);
+  border-bottom: 1px dotted var(--light-link-color);
+}
+
+.select select:focus {
+  border: 1px dotted var(--light-link-color);
+}
+
 
 /* Sidebar navigation
 */
@@ -568,7 +679,7 @@ a.button {
 */
 
 .hero {
-  background: rgba(var(--hero-background-color), 0.5) url('../images/crumbled-paper.png') no-repeat 0 0 / cover;
+  background: rgba(var(--hero-background-color), 0.5) url('../images/crumpled-paper.jpg') no-repeat 0 0 / cover;
   padding: calc(2 * var(--mg-xlarge)) var(--mg-medium);
 }
 

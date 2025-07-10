@@ -27,10 +27,105 @@
 {% endblock %}
 
 {% block content %}
+<!-- HELLO WORLD -->
+<section class="hero block has-text-centered">
+    <header>
+      <h2 class="logo">
+        <img src="/theme/images/jshelter-hero.svg" alt="JShelter logo">
+        <span>JShelter</span>
+      </h2>
+      <p>{{ LONGDESCRIPTION }}</p>
+    </header>
+    <div>
+      <p class="download-buttons">
+        <a id="download-firefox" class="button is-medium" href="https://addons.mozilla.org/firefox/addon/javascript-restrictor/">
+          <i class="fa fa-firefox" aria-hidden="true"></i> {{ INSTALL_IN }} Firefox
+        </a>
+        <a id="download-chrome" class="button is-medium" href="https://chrome.google.com/webstore/detail/javascript-restrictor/ammoloihpcbognfddfjcljgembpibcmb">
+          <i class="fa fa-chrome" aria-hidden="true"></i> {{ INSTALL_IN }} Chrome
+        </a>
+        <a id="download-opera" class="button is-medium" href="https://addons.opera.com/extensions/details/javascript-restrictor/">
+          <i class="fa fa-opera" aria-hidden="true"></i> {{ INSTALL_IN }} Opera
+        </a>
+      </p>
+      <p class="small">{{ INSTALL_OTHER }}</p>
+    </div>
+</section><!-- /.hero -->
 
-  {{ page.content }}
 
-  {# source link #}
-  {# <p><a href="{{ page.relPath }}{{ compound.sourceFileName }}{{ config.HTML_FILE_EXTENSION }}">{{ tr.gotoSourceCode }}</a></p> #}
+<section id="about" class="block">
+  <header class="has-text-centered">
+    <h3>{{ TITLE_ABOUT }}</h3>
+  </header>
+  <div class="grid">
+    <article>
+      <header>
+        <h4>{{ SECTION_WHAT_TITLE }}</h4>
+      </header>
+      <div>
+        <p>{{ SECTION_WHAT }}</p>
+      </div>
+    </article>
+    <article>
+      <header>
+        <h4>{{ SECTION_HOW_TITLE }}</h4>
+      </header>
+      <div>
+        <p>{{ SECTION_HOW }}</p>
+      </div>
+    </article>
+    <article>
+      <header>
+        <h4>{{ SECTION_GETSTARTED_TITLE }}</h4>
+      </header>
+      <div>
+        {{ SECTION_GETSTARTED }}
+      </div>
+    </article>
+    <article>
+      <header>
+        <h4>{{ SECTION_WHO_TITLE }}</h4>
+      </header>
+      <div>
+        <p>{{ SECTION_WHO }}</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="contribute" class="block">
+  <header class="has-text-centered">
+    <h3>{{ TITLE_CONTRIBUTE }}</h3>
+  </header>
+  <div class="grid">
+    <article>
+      <header>
+        <h4>{{ SECTION_BUG_TITLE }}</h4>
+      </header>
+      <div>
+        <p>{{ SECTION_BUG }}</p>
+
+      </div>
+    </article>
+
+    <article>
+      <header>
+        <h4>{{ SECTION_HELP_TITLE }}</h4>
+      </header>
+      <div>
+        <p>{{ SECTION_HELP }}</p>
+      </div>
+    </article>
+
+    <article>
+      <header>
+        <h4>{{ SECTION_LICENSE_TITLE }}</h4>
+      </header>
+      <div>
+        <p>{{ SECTION_LICENSE }}</p>
+      </div>
+    </article>
+  </div>
+</section>
 
 {% endblock %}

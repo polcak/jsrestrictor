@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 
-AUTHOR = "The JShelter team"
-SITENAME = "JShelter"
-DESCRIPTION = "Your browser extension to keep you safe"
-LONGDESCRIPTION = "An anti-malware Web browser extension to mitigate potential threats from JavaScript, including fingerprinting, tracking, and data collection!"
+import sys, os
+sys.path.append(os.curdir)
+from home_i18n import *
+
 SITEURL = "https://jshelter.org"
 RELATIVE_URLS = True
 
@@ -49,12 +49,6 @@ STATIC_LANG_SAVE_AS = "drafts/pages/{slug}-{lang}.html"
 PLUGIN_PATHS = ["plugins"]
 PLUGINS = ["i18n_subsites", "series"]
 I18N_UNTRANSLATED_PAGES = "remove"  # needed to avoid index overwrites
-I18N_SUBSITES = {
-    "pt": {
-        "DESCRIPTION": "A extensão para navegar em segurança",
-        "LONGDESCRIPTION": "Uma extensão anti-malware para o teu navegador web que vai pôr sob controlo ameaças de JavaScript, incluindo a recolha de impressões digitais, rastreamento e recolha de dados",
-    }
-}
 
 # custom Jinja2 filter
 # https://siongui.github.io/2017/01/08/pelican-get-single-page-or-article-by-slug-metadata-in-theme/

@@ -52,8 +52,14 @@ install:
 extract:
 	$(ACTIVATE); python extract_comments.py
 
+translate-extract:
+	$(ACTIVATE); cd i18n; ./build_po_files.sh
+
+translate-pull:
+	$(ACTIVATE); cd i18n; ./download.sh; 
+
 translate:
-	$(ACTIVATE); cd i18n; ./download.sh; ./translate_content.sh; for f in `ls ../content/posts/pt/*.md`; do ./postprocess.py $$f; done; for f in `ls ../content/pages/pt/*.md`; do ./postprocess.py $$f; done; for f in `ls ../content/wrappers/*.md`; do ./postprocess.py $$f; done
+	$(ACTIVATE); cd i18n; ./translate_content.sh
 
 html: extract 
 	cp ../tests/integration_tests/README.md content/pages/integration_tests.md
@@ -63,20 +69,16 @@ html: extract
 	cp -r theme/security.txt output/.well-known/
 	$(ACTIVATE); python extract_comments.py
 	$(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
-	# fix translated indexes to address a Pelican bug
-	# cd content/pages; for lang in */; do mv ../../output/$$lang/$$lang/index.html ../../output/$$lang; rm -f ../../output/$$lang/$$lang/index.html; done
 
 doxygen:
 	cd ..; make docs
+	mkdir -p output
 	cp -r ../doxygen/html output/doxygen
 
-build: doxygen html
+build: doxygen translate html
 
 clean:
 	[ ! -d "$(OUTPUTDIR)" ] || rm -rf "$(OUTPUTDIR)"
-	rm -fr content/pages/pt
-	rm -fr content/posts/pt
-	rm -fr content/wrappers/pt
 
 regenerate:
 	$(PELICAN) -r "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(CONFFILE)" $(PELICANOPTS)
@@ -95,6 +97,12 @@ devserver-global:
 
 publish:
 	$(PELICAN) "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(PUBLISHCONF)" $(PELICANOPTS)
+
+staging-deploy: html
+	rsync -e "ssh -p 22" -P -rvzc output/ manufactura@opal5.opalstack.com:/home/manufactura/apps/js-shield/ --cvs-exclude
+
+staging-dry-deploy: html
+	rsync -n -e "ssh -p 22" -P -rvzc output/ manufactura@opal5.opalstack.com:/home/manufactura/apps/js-shield/ --cvs-exclude
 
 deploy: html
 	rsync -e "ssh -p 22" -P -rvzc output/ root@jshelter.org:/var/www/html/ --cvs-exclude
