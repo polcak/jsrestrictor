@@ -1,8 +1,8 @@
 #
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-24 23:45+0000\n"
-"Last-Translator: gfbdrgng <hnaofegnp@hldrive.com>\n"
+"PO-Revision-Date: 2025-09-03 13:48+0000\n"
+"Last-Translator: Ricardo Lafuente <r@manufacturaindependente.org>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/jshelter/"
 "website-wrappers/ru/>\n"
 "Language: ru\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.13.1-rc\n"
 
 #: ../content/wrappers/ajax.md:block 1 (paragraph)
 msgid "Title: Ajax Filename: ../common/wrappingS-AJAX.js"
@@ -590,7 +590,7 @@ msgstr ""
 
 #: ../content/wrappers/h-c.md:block 1 (paragraph)
 msgid "Title: HTML Canvas Filename: ../common/wrappingS-H-C.js"
-msgstr "Название: HTML Canvas Имя файла: ../common/wrappingS-H-C.js"
+msgstr "Title: HTML Canvas Filename: ../common/wrappingS-H-C.js"
 
 #: ../content/wrappers/h-c.md:block 2 (paragraph)
 msgid ""
@@ -686,7 +686,7 @@ msgstr ""
 
 #: ../content/wrappers/hrt.md:block 1 (paragraph)
 msgid "Title: HTML Performance Filename: ../common/wrappingS-HRT.js"
-msgstr "Название: HTML Производительность Имя файла: ../common/wrappingS-HRT.js"
+msgstr "Title: HTML Производительность Filename: ../common/wrappingS-HRT.js"
 
 #: ../content/wrappers/hrt.md:block 2 (paragraph)
 msgid ""
@@ -720,7 +720,7 @@ msgstr ""
 
 #: ../content/wrappers/html5.md:block 1 (paragraph)
 msgid "Title: HTML multimedia Filename: ../common/wrappingS-HTML5.js"
-msgstr "Название: HTML-мультимедиа Имя файла: ../common/wrappingS-HTML5.js"
+msgstr "Title: HTML-мультимедиа Filename: ../common/wrappingS-HTML5.js"
 
 #: ../content/wrappers/html5.md:block 2 (paragraph)
 msgid ""
@@ -746,7 +746,7 @@ msgstr "Изменяет вывод вероятно/возможно подде
 
 #: ../content/wrappers/html-ls.md:block 1 (paragraph)
 msgid "Title: HTML Workers Filename: ../common/wrappingS-HTML-LS.js"
-msgstr "Название: HTML Рабочие файлы Filename: ../common/wrappingS-HTML-LS.js"
+msgstr "Title: HTML Рабочие файлы Filename: ../common/wrappingS-HTML-LS.js"
 
 #: ../content/wrappers/html-ls.md:block 2 (paragraph)
 msgid ""
@@ -788,7 +788,7 @@ msgstr ""
 
 #: ../content/wrappers/html.md:block 1 (paragraph)
 msgid "Title: HTML window name Filename: ../common/wrappingS-HTML.js"
-msgstr "Заголовок: Имя окна HTML Имя файла: ../common/wrappingS-HTML.js"
+msgstr "Title: Имя окна HTML Filename: ../common/wrappingS-HTML.js"
 
 #: ../content/wrappers/html.md:block 2 (paragraph)
 msgid ""
