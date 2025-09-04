@@ -1489,7 +1489,8 @@
 		"message": "Невозможно отслеживать вызывающие сценарии из-за ошибки. $errorFromBrowser$",
 		"placeholders": {
 			"errorFromBrowser": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},

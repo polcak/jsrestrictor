@@ -99,7 +99,8 @@
 		"description": "This text is displayed as the default level in the popup",
 		"placeholders": {
 			"levelName": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
