@@ -504,6 +504,8 @@ users, we suggest that you use Tor Browser.
 You cannot tweak Firefox Fingerprinting Protection. You must activate all or nothing. JShelter
 provides options to modify behavior per domain.
 
+For more information, you might want to have a look at the [bachelor thesis of Juraj Filip Kramec](https://dspace.vut.cz/server/api/core/bitstreams/a4bb937f-58da-482d-9540-9087f5ddb0cd/content) ([backup link](https://lists.nongnu.org/archive/html/js-shield/2025-09/pdfdiDMrM33ia.pdf)). Currently, we do not plan any change in JShelter related to resistFingerprinting (see section 5.4 of the thesis for the reasoning).
+
 #### Should I install JShelter if I am using Brave browser?
 
 Many JShelter protections come from Brave. While JShelter offers some additional protections, the
