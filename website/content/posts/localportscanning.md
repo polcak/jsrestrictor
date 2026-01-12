@@ -77,7 +77,10 @@ NBS just works and cannot be fooled by changes in the URL path, DNS cloaking or 
 
 ![JShelter blocks the scan]({attach}/images/portscan-2_request_blocked.png)
 
-Firefox contains DNS API, so NBS works flawlessly. In Chromium-based browsers, the exact blocking
+Firefox contains DNS API, so NBS works flawlessly. <del>In Chromium-based browsers, the exact blocking
 behaviour depends on how quickly a scanning script can fire the requests and the precise
 destination (IP address or a domain name). Depending on the interaction with DNS, NBS can be side-stepped on Chrome. In this case, ThreatMetrix does not try any evasion technique, so
-NBS just works in the case of eBay and ThreatMetrix.
+NBS just works in the case of eBay and ThreatMetrix.</del>
+
+Update: In 2025, JShelter was forced to migrate to [Manifest v3](/mv3/) and NBS no longer works in
+Chromium-based browsers as they lack the blocking web request API that is crucial to NBS.
