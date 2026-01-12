@@ -27,6 +27,9 @@ supported. The CSV files are downloaded during the JShelter building process.
 The NBS has a small performance footprint, which differs for each browser
 implementation.
 
+Since JShelter moved to Manifest v3, NBS no longer works in Chromium-based browsers as it relied on
+the blocking web request API that was removed by Manifest v3.
+
 More information about the Network Boundary Shield can be obtained from the
 [master thesis by Pavel
 Pohner](https://www.vutbr.cz/studenti/zav-prace/detail/129272) (in Czech).
