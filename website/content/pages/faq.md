@@ -638,14 +638,6 @@ We tested JShelter in Firefox for Android in the past and it worked as expected.
 JShelter in Firefox for Android regularly but a volunteer that tracks the status of JShelter in
 Firefox for Android is welcomed.
 
-##### I cannot see JShelter listed in the addons supported by Firefox for Android.
-
-For whatever reason, Mozilla decided to only present [a small number of curated extensions](https://support.mozilla.org/en-US/kb/find-and-install-add-ons-firefox-android) in their mobile application by default. There are some great extensions there like uBlock Origin, NoScript, and DarkReader, but JShelter was not one of them.
-
-You should be able to workaround the limitations by creating a [collection with JShelter](https://www.androidpolice.com/install-add-on-extension-mozilla-firefox-android/).
-
-A change in the policy of the default extensions listed by Addons Mozilla.org is out of our control.
-
 ### Other questions
 
 #### What is a wrapper?
