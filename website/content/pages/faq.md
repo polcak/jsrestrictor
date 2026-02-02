@@ -614,23 +614,11 @@ Additionally [ff00::]
 
 Some tools can see such a request, but it will never leave your browser.
 
-#### Does NBS work the same way in Firefox and Chromium-based browsers?
+#### What are the limitations of Manifest v3 in Chromium-based browsers?
 
-No. Firefox allows webextensions to perform DNS resolution of the domain name that the browser is
-about to get information from. The resolution of the DNS name to an IP address is crucial for
-FPD. As Firefox allows to perform the resolution before any request leaves the browser, JShelter can
-prevent each attempt to cross the network boundary.
+JShelter depends on the [blocking Web Request API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest) that is supported by Firefox and was supported in Chromium-based browsers. However, Chromium-based browsers [no longer support](/mv3/) the blocking Web Request API. Consequently, NBS and blocking behavior of FPD is not available in all Chromium-based browsers.
 
-Chromium-based browsers do not offer the DNS resolution APIs. JShelter collects resolution results in
-a cache that is filled during the processing of each request (after the browser makes the request).
-That means that the first request for each domain name goes through. JShleter blocks all subsequent
-requests only.
-
-Keep in mind that an adversary can change the domain with each request. For example, the attacker
-can use a.attacker.com, b.a.attacker.com, c.b.a.attacker.com in sequence for its requests to go
-through. So it is easy for an attacker to bypass NBS. In practice, we know about attackers that do
-not change domain names (for example, see [our blog](/localportscanning/)). So we keep the NBS in
-Chromium-based browsers, even though it is not perfect.
+JShelter creates [wrappers](#what-is-a-wrapper) to modify JavaScript environment. The code that is injected to a page is generated based on the user preferences. So the behavior can be changed according to user preferences. The injection of a code generated on the fly had not need any additional permission. However, [Google's Manifest V3](/mv3/) added a new, hard-to-obtain, permission that enables web extensions to inject a custom code to the webpages. Consequently, JShelter and other browser extensions cannot work anymore on Chromium-based browsers unless the user switches on the <em>Developer mode</em> in <strong>chrome://extensions</strong> (more information on [Google's developers site](https://developer.chrome.com/docs/extensions/reference/api/userScripts#chrome_versions_prior_to_138_developer_mode_toggle]). We are exploring other possibilities how to inject site-specific code.
 
 #### Do you support Firefox for Android?
 
