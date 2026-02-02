@@ -164,6 +164,18 @@ calls. See the highlighted column:
 ![Tweaking JSS mode](/images/faq/jss_tweaking.png)
 
 
+#### JShelter breakes pages hosted by Cloudflare
+
+Yes, this is not intended and we want to fix this but that will likely take us some time. In the meantime consider the following change of the configuration:
+
+1. Globally set challenges.cloudflare.com to Strict JSS protection with Strict Worker protection.
+2. Disable FPD for the affected domain (even if it is in passive mode).
+3. Set Worker protection to Strict for the domain.
+
+Please report to [our issue tracker](https://pagure.io/JShelter/webextension/issue/148#comment-986182) any web page that does not work with the configuration steps above. Please, be specific with the URL and explain your configuration.
+
+(For further information have a look at [our issue tracker](https://pagure.io/JShelter/webextension/issue/148#comment-986182).
+
 #### How can I fix videos if they fail to play or retrieve data in time?
 
 JShelter reimplements more than 100 JavaScript APIs. However, pages can use several ways to access the
