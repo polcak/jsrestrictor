@@ -87,7 +87,8 @@
 		"message": "Nível padrão ($levelName$)",
 		"placeholders": {
 			"levelName": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -137,7 +138,8 @@
 				"content": "(Data, desempenho, eventos, API do Gamepad e API de VR da Web)"
 			},
 			"jssgroupPhysicalLocationGeolocation": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},

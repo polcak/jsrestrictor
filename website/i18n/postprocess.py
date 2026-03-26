@@ -8,7 +8,7 @@
 
 import sys
 
-FIELDNAMES = ["Series", "series_index", "Date", "Modified"]
+FIELDNAMES = ["Series", "series_index", "Date", "Modified", "Filename", "Title", "Template", "save_as", "URL"]
 
 with open(sys.argv[1], 'r') as f:
     lines = f.readlines()
@@ -19,6 +19,9 @@ for line in lines:
     if not line.strip():
         break
     raw_frontmatter += line.strip() + ' '
+
+# fix translated tags
+raw_frontmatter = raw_frontmatter.replace('Название: ', 'Title: ')
 
 # remove header markup if present
 if raw_frontmatter.startswith('# '):
@@ -46,4 +49,4 @@ for line in lines:
     output += line
 
 with open(sys.argv[1], 'w') as f:
-    f.write(output)
+    f.write(output.strip() + '\n')

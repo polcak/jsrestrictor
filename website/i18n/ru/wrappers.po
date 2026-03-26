@@ -1,0 +1,2117 @@
+#
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2025-09-03 13:48+0000\n"
+"Last-Translator: Ricardo Lafuente <r@manufacturaindependente.org>\n"
+"Language-Team: Russian <https://hosted.weblate.org/projects/jshelter/"
+"website-wrappers/ru/>\n"
+"Language: ru\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.13.1-rc\n"
+
+#: ../content/wrappers/ajax.md:block 1 (paragraph)
+msgid "Title: Ajax Filename: ../common/wrappingS-AJAX.js"
+msgstr "Название: Ajax Filename: ../common/wrappingS-AJAX.js"
+
+#: ../content/wrappers/ajax.md:block 2 (paragraph)
+msgid ""
+"XHR may be misused to exfiltrate data from the browser to the server. We "
+"provide a wrapper that either blocks all XHR requests or lets the user "
+"decide."
+msgstr ""
+"XHR может быть использован для утечки данных из браузера на сервер. Мы "
+"предлагаем обертку, которая либо блокирует все запросы XHR, либо позволяет "
+"пользователю самому решать."
+
+#: ../content/wrappers/ajax.md:block 3 (paragraph)
+msgid "**Known bug**: There are two flaws in the current implementation:"
+msgstr "**Известная ошибка**: В текущей реализации есть два недостатка:"
+
+#: ../content/wrappers/ajax.md:block 4 (unordered list)
+msgid ""
+"There are many ways (see e.g. https://github.com/cure53/HTTPLeaks) to "
+"replace XHR and consequently evade the wrapper. This can be mitigating by "
+"monitoring the requests using Web Request API."
+msgstr ""
+"Существует множество способов (см., например, https://github.com/cure53/"
+"HTTPLeaks) заменить XHR и, следовательно, обойти обертку. Это можно "
+"предотвратить, отслеживая запросы с помощью Web Request API."
+
+#: ../content/wrappers/ajax.md:block 4 (unordered list)
+msgid ""
+"The confirm method puts a lot of responsibility on the user who needs to "
+"have a good knowledge about the requests on each visited page."
+msgstr ""
+"Метод подтверждения возлагает большую ответственность на пользователя, "
+"который должен хорошо разбираться в запросах на каждой посещаемой странице."
+
+#: ../content/wrappers/ajax.md:block 5 (paragraph)
+msgid ""
+"**Note**: We expect to remove the wrapper once we release JShelter with "
+"Fingerprint Detector (FPD). FPD should solve both issues above."
+msgstr ""
+"**Примечание**: Мы планируем удалить обертку, как только выпустим JShelter с "
+"детектором отпечатков пальцев (FPD). FPD должен решить обе вышеуказанные "
+"проблемы."
+
+#: ../content/wrappers/battery-cr.md:block 1 (paragraph)
+msgid "Title: Battery level Filename: ../common/wrappingS-BATTERY-CR.js"
+msgstr ""
+"Название: Уровень заряда батареи Filename: ../common/wrappingS-BATTERY-CR.js"
+
+#: ../content/wrappers/battery-cr.md:block 2 (paragraph)
+msgid ""
+"The `navigator.getBattery()` reports the state of the battery and can be "
+"misused to fingerprint users for a short term. The API was removed from "
+"Firefox, but is still supported in browsers derived from Chromium. The "
+"wrapper mimics Firefox behaviour."
+msgstr ""
+"Функция `navigator.getBattery()` сообщает о состоянии батареи и может быть "
+"использована для кратковременного снятия отпечатков пальцев. Этот API был "
+"удален из Firefox, но все еще поддерживается в браузерах, созданных на "
+"основе Chromium. Обертка имитирует поведение Firefox."
+
+#: ../content/wrappers/battery-cr.md:block 3 (paragraph)
+msgid "\\see <https://lukaszolejnik.com/battery>"
+msgstr "\\Смотрите <https://lukaszolejnik.com/battery>"
+
+#: ../content/wrappers/battery-cr.md:block 4 (paragraph)
+msgid ""
+"**Known bug**: Because we mimic Firefox behaviour, a Chromium derived "
+"browser becomes more easily fingerprintable. This can be fixed by properly "
+"wrapping `BatteryManager.prototype` getters and setters."
+msgstr ""
+"**Известная ошибка**: Поскольку мы имитируем поведение Firefox, браузер, "
+"созданный на основе Chromium, становится более легко отпечатываемым. Это "
+"можно исправить, правильно обернув геттеры и сеттеры "
+"`BatteryManager.prototype`."
+
+#: ../content/wrappers/be.md:block 1 (paragraph)
+msgid "Title: Beacon API Filename: ../common/wrappingS-BE.js"
+msgstr "Название: Beacon API Filename: ../common/wrappingS-BE.js"
+
+#: ../content/wrappers/be.md:block 2 (paragraph)
+msgid ""
+"The `navigator.sendBeacon()` method asynchronously sends a small amount of "
+"data over HTTP to a web server. It is intended to be used for sending "
+"analytics data to a web server. For more details see the MDN docs on the "
+"[Beacon API](https://developer.mozilla.org/en-US/docs/Web/API/Beacon_API) "
+"and [sendBeacon](https://developer.mozilla.org/en-"
+"US/docs/Web/API/Navigator/sendBeacon)."
+msgstr ""
+"Метод `navigator.sendBeacon()` асинхронно отправляет небольшой объем данных "
+"по HTTP на веб-сервер. Он предназначен для отправки аналитических данных на "
+"веб-сервер. Более подробную информацию можно найти в документах MDN по "
+"[Beacon API](https://developer.mozilla.org/en-US/docs/Web/API/Beacon_API) и "
+"[sendBeacon](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/"
+"sendBeacon)."
+
+#: ../content/wrappers/be.md:block 3 (paragraph)
+msgid ""
+"`navigator.sendBeacon` is the only method currently defined for the Beacon "
+"API."
+msgstr ""
+"`navigator.sendBeacon` - это единственный метод, который в настоящее время "
+"определен для Beacon API."
+
+#: ../content/wrappers/coop-scheduling.md:block 1 (paragraph)
+msgid ""
+"Title: Cooperative Scheduling Filename: ../common/wrappingS-COOP-"
+"SCHEDULING.js"
+msgstr ""
+"Название: Cooperative Scheduling Filename: ../common/wrappingS-COOP-"
+"SCHEDULING.js"
+
+#: ../content/wrappers/coop-scheduling.md:block 2 (paragraph)
+msgid ""
+"The `window.requestIdleCallback()` API can schedule background tasks such "
+"that they do not introduce delays to other high priority tasks that share "
+"the same event loop, such as input processing, animations and frame "
+"compositing."
+msgstr ""
+"API `window.requestIdleCallback()` позволяет планировать фоновые задачи "
+"таким образом, чтобы они не вызывали задержек у других высокоприоритетных "
+"задач, работающих в одном цикле событий, таких как обработка ввода, анимация "
+"и компоновка кадров."
+
+#: ../content/wrappers/coop-scheduling.md:block 3 (paragraph)
+msgid ""
+"But the API leaks information about the other tasks running in the browser "
+"as it leaks information on currently scheduled tasks, vsync deadlines, user-"
+"interaction and so on."
+msgstr ""
+"Но API передает информацию о других задачах, запущенных в браузере, а также "
+"информацию о текущих запланированных задачах, сроках выполнения vsync, "
+"взаимодействии с пользователем и т. д."
+
+#: ../content/wrappers/coop-scheduling.md:block 4 (paragraph)
+msgid "JShelter modifies the return call to:"
+msgstr "JShelter изменяет обратный вызов на:"
+
+#: ../content/wrappers/coop-scheduling.md:block 5 (ordered list)
+msgid ""
+"Never leak the information that the call was triggered by an expired "
+"timeout."
+msgstr ""
+"Никогда не передавайте информацию о том, что вызов был вызван истечением "
+"таймаута."
+
+#: ../content/wrappers/coop-scheduling.md:block 5 (ordered list)
+msgid ""
+"Fake the information on remaining time in synchronization with the "
+"`Date.now()` wrapper. Returns up to 50% more time compared to the original "
+"value."
+msgstr ""
+"Подделывает информацию об оставшемся времени в синхронизации с оберткой "
+"`Date.now()`. Возвращает до 50 % больше времени по сравнению с исходным "
+"значением."
+
+#: ../content/wrappers/dm.md:block 1 (paragraph)
+msgid "Title: Device memory Filename: ../common/wrappingS-DM.js"
+msgstr "Название: Память устройства Имя файла: ../common/wrappingS-DM.js"
+
+#: ../content/wrappers/dm.md:block 2 (paragraph)
+msgid ""
+"This file contains a wrapper for "
+"[navigator.deviceMemory](https://developer.mozilla.org/en-"
+"US/docs/Web/API/Navigator/deviceMemory)."
+msgstr ""
+"Этот файл содержит обертку для [navigator.deviceMemory](https://"
+"developer.mozilla.org/en-US/docs/Web/API/Navigator/deviceMemory)."
+
+#: ../content/wrappers/dm.md:block 3 (paragraph)
+msgid ""
+"The goal is to prevent fingerprinting by modifying the return value of the "
+"`navigator.deviceMemory` parameter."
+msgstr ""
+"Цель - предотвратить отпечатки пальцев, изменив возвращаемое значение "
+"параметра `navigator.deviceMemory`."
+
+#: ../content/wrappers/dm.md:block 4 (paragraph)
+msgid "This wrapper operates with three levels of protection:"
+msgstr "Эта обертка работает с тремя уровнями защиты:"
+
+#: ../content/wrappers/dm.md:block 5 (unordered list)
+msgid "(0) - return random valid value from range [0.25 - real value]"
+msgstr ""
+"(0) - возврат случайного действительного значения из диапазона "
+"[0,25 - реальное значение]"
+
+#: ../content/wrappers/dm.md:block 5 (unordered list)
+msgid "(1) - return random valid value from range [0.25 - 8]"
+msgstr "(1) - возвращает случайное допустимое значение из диапазона [0,25 - 8]"
+
+#: ../content/wrappers/dm.md:block 5 (unordered list)
+msgid "(2) - return 4"
+msgstr "(2) - возврат 4"
+
+#: ../content/wrappers/dm.md:block 6 (paragraph)
+msgid ""
+"These approaches are inspired by the algorithms created by [Brave "
+"Software](https://brave.com) available "
+"[here](https://github.com/brave/brave-"
+"core/blob/master/chromium_src/third_party/blink/renderer/core/frame/navigator_device_memory.cc)."
+msgstr ""
+"Эти подходы вдохновлены алгоритмами, созданными компанией [Brave Software]"
+"(https://brave.com), доступными [здесь](https://github.com/brave/brave-core/"
+"blob/master/chromium_src/third_party/blink/renderer/core/frame/"
+"navigator_device_memory.cc)."
+
+#: ../content/wrappers/dom.md:block 1 (paragraph)
+msgid "Title: DOM API Filename: ../common/wrappingS-DOM.js"
+msgstr "Название: DOM API Filename: ../common/wrappingS-DOM.js"
+
+#: ../content/wrappers/dom.md:block 2 (paragraph)
+msgid ""
+"The events carry timestamp of their creation. As we allow wrapping of "
+"several ways to obtain timestamps, we need to provide the same precision for"
+" the Event API."
+msgstr ""
+"События несут в себе временную метку их создания. Поскольку мы позволяем "
+"использовать несколько способов получения временных меток, нам необходимо "
+"обеспечить такую же точность для Event API."
+
+#: ../content/wrappers/ecma-array.md:block 1 (paragraph)
+msgid "Title: ECMAscript arrays Filename: ../common/wrappingS-ECMA-ARRAY.js"
+msgstr ""
+"Название: Массивы ECMAscript Filename: ../common/wrappingS-ECMA-ARRAY.js"
+
+#: ../content/wrappers/ecma-array.md:block 2 (paragraph)
+msgid ""
+"This wrapper aims on prevention of microarchitectural attacks like Meltdown "
+"and Spectre. This code was originally a part of "
+"[ChromeZero](https://github.com/IAIK/ChromeZero)."
+msgstr ""
+"Эта обертка направлена на предотвращение микроархитектурных атак типа "
+"Meltdown и Spectre. Изначально этот код был частью [ChromeZero](https://"
+"github.com/IAIK/ChromeZero)."
+
+#: ../content/wrappers/ecma-array.md:block 3 (paragraph)
+msgid "**Known bug**: The `subarray()` method always ruturns the full array."
+msgstr ""
+"**Известная ошибка**: Метод `subarray()` всегда возвращает полный массив."
+
+#: ../content/wrappers/ecma-array.md:block 4 (paragraph)
+msgid "The wrappers support the following behaviour:"
+msgstr "Обертки поддерживают следующее поведение:"
+
+#: ../content/wrappers/ecma-array.md:block 5 (unordered list)
+msgid ""
+"Offset: The content of the buffer is shifted by a fix offset. This is a "
+"faster method but can be removed."
+msgstr ""
+"Смещение: Содержимое буфера сдвигается на фиксированное смещение. Это более "
+"быстрый метод, но он может быть удален."
+
+#: ../content/wrappers/ecma-array.md:block 5 (unordered list)
+msgid ""
+"Random mapping: All items are mapped randomly. This is a slower method but "
+"more reliable."
+msgstr ""
+"Случайное отображение: Все предметы наносятся на карту случайным образом. "
+"Это более медленный метод, но более надежный."
+
+#: ../content/wrappers/ecma-array.md:block 6 (paragraph)
+msgid ""
+"\\see "
+"<https://www.fit.vut.cz/study/thesis/22374/?year=0&sup=Pol%C4%8D%C3%A1k>, "
+"especially Sect. 5.1"
+msgstr ""
+"\\ смотрите <https://www.fit.vut.cz/study/thesis/22374/"
+"?year=0&sup=Pol%C4%8D%C3%A1k>, особенно раздел 5.1"
+
+#: ../content/wrappers/ecma-date.md:block 1 (paragraph)
+msgid "Title: ECMAscript date Filename: ../common/wrappingS-ECMA-DATE.js"
+msgstr "Название: ECMAscript дата Filename: ../common/wrappingS-ECMA-DATE.js"
+
+#: ../content/wrappers/ecma-date.md:block 2 (paragraph)
+msgid ""
+"This wrapper aims on prevention of microarchitectural attacks, clock-skew "
+"attacks, and other time related attacks. The goal is to limit the precision "
+"of the time returned by the Date object."
+msgstr ""
+"Эта обертка направлена на предотвращение микроархитектурных атак, атак, "
+"связанных с перекосом часов, и других атак, связанных со временем. Цель - "
+"ограничить точность времени, возвращаемого объектом Date."
+
+#: ../content/wrappers/ecma-date.md:block 3 (paragraph)
+msgid ""
+"\\see "
+"<https://www.fit.vut.cz/study/thesis/22308/?year=0&sup=Pol%C4%8D%C3%A1k>, "
+"especially Sect. 7.2."
+msgstr ""
+"\\ смотрите <https://www.fit.vut.cz/study/thesis/22308/"
+"?year=0&sup=Pol%C4%8D%C3%A1k>, особенно раздел 7.2."
+
+#: ../content/wrappers/ecma-date.md:block 4 (paragraph)
+msgid ""
+"\\see Tom Van Goethem, Wouter Joosen, Nick Nikiforakis. The Clock is Still "
+"Ticking: Timing Attacks in the Modern Web. CCS'15. "
+"[Link](https://lirias.kuleuven.be/retrieve/389086), "
+"[DOI](http://dx.doi.org/10.1145/2810103.2813632)"
+msgstr ""
+"\\Смотрите: Том Ван Гетем, Ваутер Йосен, Ник Никифоракис. Часы все еще "
+"тикают: Атаки на время в современном вебе. CCS'15. [Link](https://"
+"lirias.kuleuven.be/retrieve/389086), [DOI](http://dx.doi.org/10.1145/"
+"2810103.2813632)"
+
+#: ../content/wrappers/ecma-date.md:block 5 (paragraph)
+msgid ""
+"\\see Schwarz, M., Lipp, M. a Gruss, D. JavaScript Zero: Real JavaScript and"
+" Zero Side-Channel Attacks. NDSS'18."
+msgstr ""
+"\\see Шварц, М., Липп, М. a Грусс, Д. JavaScript Zero: Реальный JavaScript и "
+"атаки с нулевым побочным каналом. NDSS'18."
+
+#: ../content/wrappers/ecma-date.md:block 6 (paragraph)
+msgid ""
+"\\see Schwarz M., Maurice C., Gruss D., Mangard S. (2017) Fantastic Timers "
+"and Where to Find Them: High-Resolution Microarchitectural Attacks in "
+"JavaScript. In: Kiayias A. (eds) Financial Cryptography and Data Security. "
+"FC 2017. Lecture Notes in Computer Science, vol 10322. Springer, Cham. "
+"https://doi.org/10.1007/978-3-319-70972-7_13"
+msgstr ""
+"\\Здесь Шварц М., Морис К., Грусс Д., Мангард С. (2017) Фантастические "
+"таймеры и где их найти: микроархитектурные атаки высокого разрешения в "
+"JavaScript. In: Kiayias A. (eds) Financial Cryptography and Data Security. "
+"FC 2017. Lecture Notes in Computer Science, vol 10322. Springer, Cham. "
+"https://doi.org/10.1007/978-3-319-70972-7_13"
+
+#: ../content/wrappers/ecma-date.md:block 8 (unordered list)
+msgid ""
+"Round timestamp: Limit the precision by removing (a part of) the decimal "
+"part of the timestamp."
+msgstr ""
+"Округлить временную метку: Ограничение точности путем удаления (части) "
+"десятичной части временной метки."
+
+#: ../content/wrappers/ecma-date.md:block 8 (unordered list)
+msgid ""
+"Randomize after rounding: Create a fake decimal part to confuse attackers "
+"and to create timestamps that look similar to expected timestamps."
+msgstr ""
+"Рандомизация после округления: Создайте фальшивую десятичную часть, чтобы "
+"запутать злоумышленников и создать временные метки, похожие на ожидаемые "
+"временные метки."
+
+#: ../content/wrappers/ecma-shared.md:block 1 (paragraph)
+msgid ""
+"Title: ECMA shared buffers Filename: ../common/wrappingS-ECMA-SHARED.js"
+msgstr ""
+"Название: Общие буферы ECMA Filename: ../common/wrappingS-ECMA-SHARED.js"
+
+#: ../content/wrappers/ecma-shared.md:block 2 (paragraph)
+msgid ""
+"This wrapper aims on prevention of misusing `SharedArrayBuffer` to create "
+"perfect timers and to perfrom microarchitectural attacks. This code was "
+"originally a part of [ChromeZero](https://github.com/IAIK/ChromeZero)."
+msgstr ""
+"Эта обертка направлена на предотвращение использования `SharedArrayBuffer` "
+"для создания идеальных таймеров и защиты от микроархитектурных атак. "
+"Изначально этот код был частью [ChromeZero](https://github.com/IAIK/"
+"ChromeZero)."
+
+#: ../content/wrappers/ecma-shared.md:block 3 (paragraph)
+msgid ""
+"\\see "
+"https://www.fit.vut.cz/study/thesis/22374/?year=0&sup=Pol%C4%8D%C3%A1k, "
+"especially Sect. 5.1"
+msgstr ""
+"\\ см. https://www.fit.vut.cz/study/thesis/22374/"
+"?year=0&sup=Pol%C4%8D%C3%A1k, особенно раздел 5.1"
+
+#: ../content/wrappers/eme.md:block 1 (paragraph)
+msgid "Title: Encrypted Media Extensions Filename: ../common/wrappingS-EME.js"
+msgstr ""
+"Название: Encrypted Media Extensions Filename: ../common/wrappingS-EME.js"
+
+#: ../content/wrappers/eme.md:block 2 (paragraph)
+msgid ""
+"`Navigator.requestMediaKeySystemAccess()` provides access to "
+"`MediaKeySystemAccess` object that allows to query supported encryption "
+"mechanisms and other information about the system."
+msgstr ""
+"`Navigator.requestMediaKeySystemAccess()` предоставляет доступ к объекту "
+"`MediaKeySystemAccess`, который позволяет запрашивать поддерживаемые "
+"механизмы шифрования и другую информацию о системе."
+
+#: ../content/wrappers/eme.md:block 3 (paragraph)
+msgid ""
+"For example, visit https://www.fit.vutbr.cz/~polcak/jsr/hdcp/ and try a "
+"different browser or computer."
+msgstr ""
+"Например, посетите сайт https://www.fit.vutbr.cz/~polcak/jsr/hdcp/ и "
+"попробуйте использовать другой браузер или компьютер."
+
+#: ../content/wrappers/eme.md:block 4 (paragraph)
+#, fuzzy
+msgid ""
+"\\see https://w3c.github.io/encrypted-media/ \\see "
+"https://developer.mozilla.org/en-"
+"US/docs/Web/API/Navigator/requestMediaKeySystemAccess \\see "
+"https://developer.mozilla.org/en-US/docs/Web/API/MediaKeySystemAccess \\see "
+"https://developer.mozilla.org/en-"
+"US/docs/Web/API/MediaKeySystemAccess/getConfiguration"
+msgstr ""
+"\\see https://w3c.github.io/encrypted-media/ \\see https://"
+"developer.mozilla.org/en-US/docs/Web/API/Navigator/"
+"requestMediaKeySystemAccess \\see https://developer.mozilla.org/en-US/docs/"
+"Web/API/MediaKeySystemAccess \\see https://developer.mozilla.org/en-US/docs/"
+"Web/API/MediaKeySystemAccess/getConfiguration"
+
+#: ../content/wrappers/eme.md:block 5 (paragraph)
+msgid "We provide two modes of protection:"
+msgstr "Мы предоставляем два режима защиты:"
+
+#: ../content/wrappers/eme.md:block 6 (ordered list)
+msgid "Strict approach prevents accessing the API."
+msgstr "Строгий подход не позволяет получить доступ к API."
+
+#: ../content/wrappers/eme.md:block 6 (ordered list)
+msgid ""
+"Farbling approach changes the output to a non-existing key system with 12.5%"
+" probability."
+msgstr ""
+"Подход Фарблинга меняет выход на несуществующую ключевую систему с "
+"вероятностью 12,5%."
+
+#: ../content/wrappers/geo.md:block 1 (paragraph)
+msgid "Title: Geolocation Filename: ../common/wrappingS-GEO.js"
+msgstr "Название: Геолокация Filename: ../common/wrappingS-GEO.js"
+
+#: ../content/wrappers/geo.md:block 2 (paragraph)
+msgid ""
+"The goal is to prevent leaks of user current position. The Geolocation API "
+"also provides access to high precision timestamps which can be used to "
+"various web attacks (see for example, "
+"http://www.jucs.org/jucs_21_9/clock_skew_based_computer, "
+"https://lirias.kuleuven.be/retrieve/389086)."
+msgstr ""
+"Цель - предотвратить утечку информации о текущем положении пользователя. "
+"Geolocation API также предоставляет доступ к высокоточным временным меткам, "
+"которые могут быть использованы для различных веб-атак (см., например, "
+"http://www.jucs.org/jucs_21_9/clock_skew_based_computer, https://"
+"lirias.kuleuven.be/retrieve/389086)."
+
+#: ../content/wrappers/geo.md:block 3 (paragraph)
+msgid ""
+"Although it is true that the user needs to specificaly approve access to "
+"location facilities, these wrappers aim on improving the control of the "
+"precision of the geolocation."
+msgstr ""
+"Несмотря на то, что пользователю необходимо специально разрешать доступ к "
+"средствам определения местоположения, эти обертки направлены на улучшение "
+"контроля точности геолокации."
+
+#: ../content/wrappers/geo.md:block 4 (paragraph)
+msgid "The wrappers support the following controls:"
+msgstr "Обертки поддерживают следующие элементы управления:"
+
+#: ../content/wrappers/geo.md:block 5 (unordered list)
+msgid ""
+"Accurate data: the extension provides precise geolocation position but "
+"modifies the time precision in conformance with the Date and Performance "
+"wrappers."
+msgstr ""
+"Точные данные: расширение обеспечивает точное геолокационное положение, но "
+"изменяет точность времени в соответствии с обертками Date и Performance."
+
+#: ../content/wrappers/geo.md:block 5 (unordered list)
+msgid ""
+"Modified position: the extension modifies the time precision of the time "
+"stamps in conformance with the Date and Performance wrappers, and "
+"additionally, allows to limit the precision of the current position to "
+"hundered of meters, kilometers, tens, or hundereds of kilometers."
+msgstr ""
+"Измененная позиция: расширение изменяет точность временных меток в "
+"соответствии с обертками Date и Performance, а также позволяет ограничить "
+"точность текущей позиции до сотен метров, километров, десятков или сотен "
+"километров."
+
+#: ../content/wrappers/geo.md:block 6 (paragraph)
+msgid "When modifying position:"
+msgstr "При изменении положения:"
+
+#: ../content/wrappers/geo.md:block 7 (unordered list)
+msgid ""
+"Repeated calls of `navigator.geolocation.getCurrentPosition()` return the "
+"same position without page load and typically return another position after "
+"page reload."
+msgstr ""
+"Повторные вызовы `navigator.geolocation.getCurrentPosition()` возвращают "
+"одну и ту же позицию без загрузки страницы и, как правило, возвращают другую "
+"позицию после перезагрузки страницы."
+
+#: ../content/wrappers/geo.md:block 7 (unordered list)
+msgid "`navigator.geolocation.watchPosition()` does not change position."
+msgstr "`navigator.geolocation.watchPosition()` не меняет позицию."
+
+#: ../content/wrappers/gp.md:block 1 (paragraph)
+msgid "Title: Gamepad Filename: ../common/wrappingS-GP.js"
+msgstr "Название: Геймпад Filename: ../common/wrappingS-GP.js"
+
+#: ../content/wrappers/gp.md:block 2 (paragraph)
+msgid ""
+"navigator.getGamepads() allows any page script to learn the gamepads "
+"connected to the computer if the feature is not blocked by the Feature-"
+"Policy."
+msgstr ""
+"navigator.getGamepads() позволяет любому сценарию страницы узнать о "
+"подключенных к компьютеру геймпадах, если эта функция не заблокирована "
+"Feature-Policy."
+
+#: ../content/wrappers/gp.md:block 3 (paragraph)
+msgid ""
+"The \"Fingerprinting the Fingerprinters\" paper (see reference below) "
+"observed that the interface is used in the wild to fingerprint users. As it "
+"is likely that only a minority of users have a gamepad connected and the API"
+" provides additional information on the HW, it is likely that users with a "
+"gamepad connected are easily fingerprintable."
+msgstr ""
+"В статье \"Fingerprinting the Fingerprinters\" (см. ссылку ниже) отмечается, "
+"что интерфейс используется в дикой природе для отпечатков пальцев "
+"пользователей. Поскольку, скорее всего, только у меньшинства пользователей "
+"подключен геймпад, а API предоставляет дополнительную информацию о HW, "
+"вероятно, что пользователи с подключенным геймпадом легко поддаются "
+"дактилоскопии."
+
+#: ../content/wrappers/gp.md:block 4 (paragraph)
+msgid ""
+"As we expect that the majority of the users does not have a gamepad "
+"connected, we provide only a single mitigation - the wrapped APIs return an "
+"empty list."
+msgstr ""
+"Поскольку мы ожидаем, что у большинства пользователей нет подключенного "
+"геймпада, мы предоставляем только одно смягчение - обернутые API возвращают "
+"пустой список."
+
+#: ../content/wrappers/gp.md:block 5 (paragraph)
+msgid ""
+"**Known bug**: The standard provides an event `gamepadconnected` and "
+"`gamepaddisconnected` that fires at least on the window object. We do not "
+"mitigate the event to fire and consequently, it is possible that an "
+"adversary can learn that a gamepad was (dis)connected but there was no "
+"change in the result of the `navigator.getGamepads()` API."
+msgstr ""
+"**Известная ошибка**: В стандарте предусмотрено событие `gamepadconnected` и "
+"`gamepaddisconnected`, которое срабатывает как минимум на оконном объекте. "
+"Мы не смягчаем это событие, и, следовательно, злоумышленник может узнать, "
+"что геймпад был (отключен) подключен, но результат работы API "
+"`navigator.getGamepads()` не изменился."
+
+#: ../content/wrappers/gp.md:block 6 (paragraph)
+msgid ""
+"The gamepad representing object carries a timestamp of the last change of "
+"the gamepad. As we allow wrapping of several ways to obtain timestamps, we "
+"need to provide the same precision for the Gamepad object."
+msgstr ""
+"Объект, представляющий геймпад, содержит временную метку последнего "
+"изменения геймпада. Поскольку мы позволяем использовать несколько способов "
+"получения временных меток, нам необходимо обеспечить такую же точность для "
+"объекта геймпада."
+
+#: ../content/wrappers/gp.md:block 7 (paragraph)
+msgid ""
+"\\see U. Iqbal, S. Englehardt and Z. Shafiq, [Fingerprinting the "
+"Fingerprinters: Learning to Detect Browser Fingerprinting "
+"Behaviors](https://github.com/uiowa-irl/FP-"
+"Inspector/blob/master/Data/potential_fingerprinting_APIs.md) in 2021 2021 "
+"IEEE Symposium on Security and Privacy (SP), San Francisco, CA, US, 2021 pp."
+" 283-301"
+msgstr ""
+"\\see У. Икбал, С. Энглехардт и З. Шафик, "
+"[[Отпечатки пальцев: Обучение обнаружению отпечатков браузеров](https://"
+"github.com/uiowa-irl/FP-Inspector/blob/master/Data/"
+"potential_fingerprinting_APIs.md) в 2021 г. Симпозиум IEEE по безопасности и "
+"конфиденциальности (SP), Сан-Франциско, Калифорния, США, 2021 г. стр. 283-301"
+
+#: ../content/wrappers/h-c.md:block 1 (paragraph)
+msgid "Title: HTML Canvas Filename: ../common/wrappingS-H-C.js"
+msgstr "Title: HTML Canvas Filename: ../common/wrappingS-H-C.js"
+
+#: ../content/wrappers/h-c.md:block 2 (paragraph)
+msgid ""
+"This file contains wrappers for calls related to the Canvas API, about which"
+" you can read more at MDN:"
+msgstr ""
+"Этот файл содержит обертки для вызовов, связанных с API Canvas, о которых вы "
+"можете прочитать на MDN:"
+
+#: ../content/wrappers/h-c.md:block 3 (unordered list)
+#, fuzzy
+msgid ""
+"[Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)"
+msgstr ""
+"[Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)"
+
+#: ../content/wrappers/h-c.md:block 3 (unordered list)
+#, fuzzy
+msgid ""
+"[CanvasRenderingContext2D](https://developer.mozilla.org/en-"
+"US/docs/Web/API/CanvasRenderingContext2D)"
+msgstr ""
+"[CanvasRenderingContext2D](https://developer.mozilla.org/en-US/docs/Web/API/"
+"CanvasRenderingContext2D)"
+
+#: ../content/wrappers/h-c.md:block 3 (unordered list)
+#, fuzzy
+msgid ""
+"[OffscreenCanvas](https://developer.mozilla.org/en-"
+"US/docs/Web/API/OffscreenCanvas)"
+msgstr ""
+"[OffscreenCanvas](https://developer.mozilla.org/en-US/docs/Web/API/"
+"OffscreenCanvas)"
+
+#: ../content/wrappers/h-c.md:block 4 (paragraph)
+msgid ""
+"The goal is to prevent fingerprinting by modifying the values that can be "
+"read from the canvas. So the visual content of wrapped canvases as displayed"
+" on the screen is the same as intended."
+msgstr ""
+"Цель - предотвратить отпечатки пальцев, изменив значения, которые можно "
+"считать с холста. Таким образом, визуальное содержимое обернутых холстов, "
+"отображаемое на экране, совпадает с тем, что было задумано."
+
+#: ../content/wrappers/h-c.md:block 5 (paragraph)
+msgid ""
+"The modified content can be either an empty image or a fake image that is "
+"modified according to session and domain keys to be different than the "
+"original albeit very similar (i.e. the approach inspired by the algorithms "
+"created by [Brave Software](https://brave.com) available "
+"[here](https://github.com/brave/brave-"
+"core/blob/master/chromium_src/third_party/blink/renderer/core/execution_context/execution_context.cc)."
+msgstr ""
+"Модифицированное содержимое может быть либо пустым изображением, либо "
+"поддельным изображением, которое модифицируется в соответствии с ключами "
+"сессии и домена, чтобы отличаться от оригинала, хотя и быть очень похожим ("
+"т. е. подход, вдохновленный алгоритмами, созданными [Brave Software]"
+"(https://brave.com), доступными [здесь](https://github.com/brave/brave-core/"
+"blob/master/chromium_src/third_party/blink/renderer/core/execution_context/"
+"execution_context.cc)."
+
+#: ../content/wrappers/h-c.md:block 6 (paragraph)
+msgid ""
+"Note that both approaches are detectable by a fingerprinter that checks if a"
+" predetermined image inserted to the canvas is the same as the read one, see"
+" [here](https://arkenfox.github.io/TZP/tests/canvasnoise.html) for an "
+"example, Nevertheless, the aim of the wrappers is to limit the "
+"finerprintability."
+msgstr ""
+"Заметим, что оба подхода обнаруживаются с помощью дактилоскопического "
+"принтера, который проверяет, совпадает ли заранее определенное изображение, "
+"вставленное на холст, с прочитанным, пример см. в [здесь] (https://"
+"arkenfox.github.io/TZP/tests/canvasnoise.html). Тем не менее, цель оберток - "
+"ограничить возможность тонкой печати."
+
+#: ../content/wrappers/h-c.md:block 7 (paragraph)
+msgid ""
+"Also note that a determined fingerprinter can reveal the modifications and "
+"consequently uncover the original image. This can be avoided with the "
+"approach that completely clears the data stored in the canvas. Use the "
+"modifications based on session and domain keys if you want to provide an "
+"image that is similar to the original or if you want to produce a fake image"
+" that is not obviously spoofed to a naked eye. Otherwise, use the clearing "
+"approach."
+msgstr ""
+"Также следует учесть, что целеустремленный дактилоскопист может обнаружить "
+"модификации и, как следствие, раскрыть исходное изображение. Этого можно "
+"избежать с помощью подхода, который полностью очищает данные, хранящиеся в "
+"холсте. Используйте модификации на основе сеансовых и доменных ключей, если "
+"вам нужно получить изображение, похожее на оригинал, или если вы хотите "
+"создать поддельное изображение, которое не будет очевидно невооруженным "
+"глазом. В противном случае используйте подход с очисткой."
+
+#: ../content/wrappers/hrt.md:block 1 (paragraph)
+msgid "Title: HTML Performance Filename: ../common/wrappingS-HRT.js"
+msgstr "Title: HTML Производительность Filename: ../common/wrappingS-HRT.js"
+
+#: ../content/wrappers/hrt.md:block 2 (paragraph)
+msgid ""
+"This wrapper aims on prevention of microarchitectural attacks, clock-skew "
+"attacks, and other time related attacks. The goal is to limit the precision "
+"of the time returned by the Performance API."
+msgstr ""
+"Эта обертка направлена на предотвращение микроархитектурных атак, атак с "
+"перекосом часов и других атак, связанных с временем. Цель состоит в том, "
+"чтобы ограничить точность времени, возвращаемого API Производительности."
+
+#: ../content/wrappers/hrt.md:block 3 (paragraph)
+msgid ""
+"\\see "
+"https://www.fit.vut.cz/study/thesis/22308/?year=0&sup=Pol%C4%8D%C3%A1k, "
+"especially Sect. 7.2."
+msgstr ""
+"\\ см. https://www.fit.vut.cz/study/thesis/22308/"
+"?year=0&sup=Pol%C4%8D%C3%A1k, особенно раздел 7.2."
+
+#: ../content/wrappers/hrt.md:block 4 (paragraph)
+msgid ""
+"\\see Tom Van Goethem, Wouter Joosen, Nick Nikiforakis. The Clock is Still "
+"Ticking: Timing Attacks in the Modern Web. CCS'15. DOI: "
+"http://dx.doi.org/10.1145/2810103.2813632. "
+"https://lirias.kuleuven.be/retrieve/389086"
+msgstr ""
+"\\Смотреть Том Ван Гетем, Воутер Йосен, Ник Никифоракис. Часы все еще тикают:"
+" Атаки на время в современном вебе. CCS'15. DOI: http://dx.doi.org/10.1145/"
+"2810103.2813632. https://lirias.kuleuven.be/retrieve/389086"
+
+#: ../content/wrappers/html5.md:block 1 (paragraph)
+msgid "Title: HTML multimedia Filename: ../common/wrappingS-HTML5.js"
+msgstr "Title: HTML-мультимедиа Filename: ../common/wrappingS-HTML5.js"
+
+#: ../content/wrappers/html5.md:block 2 (paragraph)
+msgid ""
+"Supported codecs (multimedia media types) can be misued for fingerprinting, "
+"see for example the [FPMon paper](https://fpmon.github.io/fingerprinting-"
+"monitor/files/FPMON.pdf)."
+msgstr ""
+"Поддерживаемые кодеки (типы мультимедийных носителей) могут быть неправильно "
+"определены для отпечатков пальцев, см., например, [FPMon paper](https://"
+"fpmon.github.io/fingerprinting-monitor/files/FPMON.pdf)."
+
+#: ../content/wrappers/html5.md:block 3 (paragraph)
+msgid "JShelter provides two modes of protection:"
+msgstr "JShelter обеспечивает два режима защиты:"
+
+#: ../content/wrappers/html5.md:block 4 (ordered list)
+msgid "Strict approach returns all media types as not supported."
+msgstr "Строгий подход возвращает все типы носителей как неподдерживаемые."
+
+#: ../content/wrappers/html5.md:block 4 (ordered list)
+msgid "Modifies the output of probably/maybe supported codecs."
+msgstr "Изменяет вывод вероятно/возможно поддерживаемых кодеков."
+
+#: ../content/wrappers/html-ls.md:block 1 (paragraph)
+msgid "Title: HTML Workers Filename: ../common/wrappingS-HTML-LS.js"
+msgstr "Title: HTML Рабочие файлы Filename: ../common/wrappingS-HTML-LS.js"
+
+#: ../content/wrappers/html-ls.md:block 2 (paragraph)
+msgid ""
+"This wrapper aims on prevention of microarchitectural attacks. This code was"
+" originally a part of [ChromeZero](https://github.com/IAIK/ChromeZero)."
+msgstr ""
+"Эта обертка направлена на предотвращение микроархитектурных атак. Изначально "
+"этот код был частью [ChromeZero](https://github.com/IAIK/ChromeZero)."
+
+#: ../content/wrappers/html-ls.md:block 4 (unordered list)
+msgid "Polyfill: Completely eliminates the paralelism."
+msgstr "Полифилл: Полностью исключает паралелизм."
+
+#: ../content/wrappers/html-ls.md:block 4 (unordered list)
+msgid ""
+"Randomly slow messages: Add noise to the `postMessage` method execution."
+msgstr ""
+"Случайное замедление сообщений: Добавьте шум в выполнение метода "
+"`postMessage`."
+
+#: ../content/wrappers/html-ls.md:block 5 (paragraph)
+msgid ""
+"\\see Lipp, M., Gruss, D., Schwarz, M., Bidner, D., Maurice, C. et al. "
+"Practical Keystroke Timing Attacks in Sandboxed JavaScript. In:. August "
+"2017, s. 191–209. ISBN 978-3-319-66398-2."
+msgstr ""
+"\\see Lipp, M., Грусс, Д., Шварц, М., Биднер, Д., Морис, К. и др. "
+"Практические атаки на время нажатия клавиш в \"песочнице\" JavaScript. В "
+"сборнике:. Август 2017, с. 191-209. ISBN 978-3-319-66398-2."
+
+#: ../content/wrappers/html-ls.md:block 7 (paragraph)
+#, fuzzy
+msgid ""
+"\\see "
+"<https://www.fit.vut.cz/study/thesis/22374/?year=0&sup=Pol%C4%8D%C3%A1k>"
+msgstr ""
+"\\see <https://www.fit.vut.cz/study/thesis/22374/"
+"?year=0&sup=Pol%C4%8D%C3%A1k>"
+
+#: ../content/wrappers/html.md:block 1 (paragraph)
+msgid "Title: HTML window name Filename: ../common/wrappingS-HTML.js"
+msgstr "Title: Имя окна HTML Filename: ../common/wrappingS-HTML.js"
+
+#: ../content/wrappers/html.md:block 2 (paragraph)
+msgid ""
+"`window.name` provides a simple cross-origin tracking method of the same "
+"tab:"
+msgstr ""
+"`window.name` обеспечивает простой метод кросс-оригинального отслеживания "
+"одной и той же вкладки:"
+
+#: ../content/wrappers/html.md:block 4 (paragraph)
+msgid "Go to completely different web site and window.name stays the same."
+msgstr ""
+"Перейдите на совершенно другой веб-сайт, а window.name останется прежним."
+
+#: ../content/wrappers/html.md:block 5 (paragraph)
+msgid ""
+"\\see https://2019.www.torproject.org/projects/torbrowser/design/ provides a"
+" library build on top of `window.name`: "
+"https://www.thomasfrank.se/sessionvars.html."
+msgstr ""
+"\\see https://2019.www.torproject.org/projects/torbrowser/design/ "
+"предоставляет библиотеку, построенную на основе `window.name`: https://"
+"www.thomasfrank.se/sessionvars.html."
+
+#: ../content/wrappers/html.md:block 6 (paragraph)
+msgid ""
+"\\see https://html.spec.whatwg.org/#history-traversal; this feature should "
+"not be ncessary for Firefox 86 or newer "
+"https://bugzilla.mozilla.org/show_bug.cgi?id=444222."
+msgstr ""
+"\\См. https://html.spec.whatwg.org/#history-traversal; эта функция не должна "
+"быть необходимой для Firefox 86 или более новых версий https://"
+"bugzilla.mozilla.org/show_bug.cgi?id=444222."
+
+#: ../content/wrappers/idle.md:block 1 (paragraph)
+msgid "Title: Idle detection Filename: ../common/wrappingS-IDLE.js"
+msgstr "Название: Обнаружение простоя Filename: ../common/wrappingS-IDLE.js"
+
+#: ../content/wrappers/idle.md:block 2 (paragraph)
+#, fuzzy
+msgid ""
+"\\see https://web.dev/idle-detection/ \\see "
+"https://developer.mozilla.org/en-US/docs/Web/API/IdleDetector"
+msgstr ""
+"\\see https://web.dev/idle-detection/ \\see https://developer.mozilla.org/"
+"en-US/docs/Web/API/IdleDetector"
+
+#: ../content/wrappers/idle.md:block 3 (paragraph)
+msgid ""
+"The Idle Detection API can detect inactive users and locked screens. "
+"JShelter either removes the API (IdleDetector), or disables permission "
+"requests and returns user activity and unlocked screen (for previously "
+"granted permissions), or just always report user activity and unlocked "
+"screen."
+msgstr ""
+"API Idle Detection может обнаруживать неактивных пользователей и "
+"заблокированные экраны. JShelter либо удаляет API (IdleDetector), либо "
+"отключает запросы разрешений и возвращает активность пользователя и "
+"разблокированный экран (для ранее предоставленных разрешений), либо просто "
+"всегда сообщает об активности пользователя и разблокированном экране."
+
+#: ../content/wrappers/idle.md:block 4 (paragraph)
+msgid ""
+"**Known bug**: JShelter does not block events, so the page is notified that "
+"something changed but it cannot read what changed."
+msgstr ""
+"**Известная ошибка**: JShelter не блокирует события, поэтому страница "
+"получает уведомление о том, что что-то изменилось, но не может прочитать, "
+"что именно."
+
+#: ../content/wrappers/mcs.md:block 1 (paragraph)
+msgid "Title: Media devices Filename: ../common/wrappingS-MCS.js"
+msgstr "Название: Медиаустройства Filename: ../common/wrappingS-MCS.js"
+
+#: ../content/wrappers/mcs.md:block 2 (paragraph)
+msgid ""
+"This file contains wrapper for MediaDevices.enumerateDevices "
+"https://developer.mozilla.org/en-"
+"US/docs/Web/API/MediaDevices/enumerateDevices"
+msgstr ""
+"Этот файл содержит обертку для MediaDevices.enumerateDevices https://"
+"developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices"
+
+#: ../content/wrappers/mcs.md:block 3 (paragraph)
+msgid ""
+"The goal is to prevent fingerprinting by modifying return value of "
+"enumerateDevices."
+msgstr ""
+"Цель - предотвратить отпечатки пальцев, изменив возвращаемое значение "
+"enumerateDevices."
+
+#: ../content/wrappers/mcs.md:block 5 (unordered list)
+msgid "(0) - return promise with shuffled array"
+msgstr "(0) - вернуть обещание с перетасованным массивом"
+
+#: ../content/wrappers/mcs.md:block 5 (unordered list)
+msgid ""
+"(1) - return promise with shuffled array with additional 0-4 fake devices"
+msgstr ""
+"(1) - вернуть обещание с перетасованным массивом с дополнительными 0-4 "
+"поддельными устройствами"
+
+#: ../content/wrappers/mcs.md:block 5 (unordered list)
+msgid "(2) - return empty promise"
+msgstr "(2) - вернуть пустое обещание"
+
+#: ../content/wrappers/mcs.md:block 6 (paragraph)
+msgid ""
+"The shuffling approach is inspired by the algorithms created by [Brave "
+"Software](https://brave.com) available "
+"[here](https://github.com/brave/brave-"
+"core/blob/master/chromium_src/third_party/blink/renderer/modules/mediastream/media_devices.cc)."
+msgstr ""
+"Подход к перетасовке вдохновлен алгоритмами, созданными [Brave Software]"
+"(https://brave.com), доступными [здесь](https://github.com/brave/brave-core/"
+"blob/master/chromium_src/third_party/blink/renderer/modules/mediastream/"
+"media_devices.cc)."
+
+#: ../content/wrappers/media-capabilities.md:block 1 (paragraph)
+msgid ""
+"Title: Media capabilities Filename: ../common/wrappingS-MEDIA-"
+"CAPABILITIES.js"
+msgstr ""
+"Название: Возможности мультимедиа Имя файла: ../common/wrappingS-MEDIA-"
+"CAPABILITIES.js"
+
+#: ../content/wrappers/media-capabilities.md:block 2 (paragraph)
+msgid ""
+"`` provides access to `MediaKeySystemAccess` object that allows to query "
+"supported codecs and other informations about the system."
+msgstr ""
+"``предоставляет доступ к объекту `MediaKeySystemAccess``, который позволяет "
+"запрашивать поддерживаемые кодеки и другую информацию о системе."
+
+#: ../content/wrappers/media-capabilities.md:block 4 (paragraph)
+msgid "\\see https://w3c.github.io/media-capabilities/"
+msgstr "\\смотреть https://w3c.github.io/media-capabilities/"
+
+#: ../content/wrappers/media-capabilities.md:block 6 (ordered list)
+msgid ""
+"Farbling approach changes the output to a non-existing codec with 12.5% "
+"probability."
+msgstr ""
+"Подход Farbling меняет выход на несуществующий кодек с вероятностью 12,5 %."
+
+#: ../content/wrappers/net.md:block 1 (paragraph)
+msgid "Title: Network information Filename: ../common/wrappingS-NET.js"
+msgstr "Название: Информация о сети Filename: ../common/wrappingS-NET.js"
+
+#: ../content/wrappers/net.md:block 2 (paragraph)
+msgid ""
+"This file contains a wrapper for "
+"[NetworkInformation](https://developer.mozilla.org/en-"
+"US/docs/Web/API/NetworkInformation#specifications)."
+msgstr ""
+"Этот файл содержит обертку для [NetworkInformation](https://"
+"developer.mozilla.org/en-US/docs/Web/API/NetworkInformation#specifications)."
+
+#: ../content/wrappers/net.md:block 3 (paragraph)
+msgid ""
+"NetworkInformation allows sites to learn about local network conditions by "
+"querying `navigator.connection`. Fingerprinters can misuse the feature. "
+"Long-term observers may learn about traveling patterns through observation "
+"of repeated values (for example a network at work, home, travel, etc.)."
+msgstr ""
+"NetworkInformation позволяет сайтам узнавать о состоянии локальной сети, "
+"запрашивая `navigator.connection`. Специалисты по отпечаткам пальцев могут "
+"злоупотреблять этой функцией. Долгосрочные наблюдатели могут узнать о "
+"шаблонах путешествий, наблюдая за повторяющимися значениями (например, сеть "
+"на работе, дома, в путешествии и т. д.)."
+
+#: ../content/wrappers/net.md:block 4 (paragraph)
+msgid ""
+"We implement the same protection as Brave: https://github.com/brave/brave-"
+"browser/issues/20122."
+msgstr ""
+"Мы используем ту же защиту, что и Brave: https://github.com/brave/"
+"brave-browser/issues/20122."
+
+#: ../content/wrappers/nfc.md:block 1 (paragraph)
+msgid "Title: Web NFC Filename: ../common/wrappingS-NFC.js"
+msgstr "Название: Web NFC Filename: ../common/wrappingS-NFC.js"
+
+#: ../content/wrappers/nfc.md:block 2 (paragraph)
+msgid ""
+"This file contains a wrapper for [Web NFC "
+"API](https://developer.mozilla.org/en-US/docs/Web/API/Web_NFC_API)."
+msgstr ""
+"Этот файл содержит обертку для [Web NFC API](https://developer.mozilla.org/"
+"en-US/docs/Web/API/Web_NFC_API)."
+
+#: ../content/wrappers/nfc.md:block 3 (paragraph)
+msgid "This API is not broadly supported and we just disable all objects."
+msgstr "Этот API не имеет широкой поддержки, и мы просто отключаем все объекты."
+
+#: ../content/wrappers/np.md:block 1 (paragraph)
+msgid "Title: Navigator Plugins Filename: ../common/wrappingS-NP.js"
+msgstr "Название: Плагины для навигатора Имя файла: ../common/wrappingS-NP.js"
+
+#: ../content/wrappers/np.md:block 2 (paragraph)
+msgid ""
+"This file contains wrappers for NavigatorPlugins. See the MDN docs on the "
+"[plugins](https://developer.mozilla.org/en-"
+"US/docs/Web/API/NavigatorPlugins/plugins) and [MIME "
+"types](https://developer.mozilla.org/en-"
+"US/docs/Web/API/NavigatorPlugins/mimeTypes)."
+msgstr ""
+"Этот файл содержит обертки для NavigatorPlugins. См. документацию MDN по "
+"[плагинам](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/"
+"plugins) и [типам MIME](https://developer.mozilla.org/en-US/docs/Web/API/"
+"NavigatorPlugins/mimeTypes)."
+
+#: ../content/wrappers/np.md:block 3 (paragraph)
+msgid ""
+"The goal is to prevent fingerprinting by modifying value returned by getters"
+" navigator.plugins and navigator.mimeTypes"
+msgstr ""
+"Цель - предотвратить отпечатки пальцев путем изменения значений, "
+"возвращаемых геттерами navigator.plugins и navigator.mimeTypes"
+
+#: ../content/wrappers/np.md:block 5 (unordered list)
+msgid ""
+"(0) - replace by shuffled edited PluginArray with two added fake plugins, "
+"edited MimeTypeArray"
+msgstr ""
+"(0) - заменен на перетасованный отредактированный PluginArray с двумя "
+"добавленными фальшивыми плагинами, отредактирован MimeTypeArray"
+
+#: ../content/wrappers/np.md:block 5 (unordered list)
+msgid ""
+"(1) - replace by shuffled PluginArray with two fake plugins, empty "
+"MimeTypeArray"
+msgstr ""
+"(1) - заменить на перетасованный PluginArray с двумя фальшивыми плагинами, "
+"пустой MimeTypeArray"
+
+#: ../content/wrappers/np.md:block 5 (unordered list)
+msgid "(2) - replace by empty PluginArray and MimeTypeArray"
+msgstr "(2) - заменить на пустые PluginArray и MimeTypeArray"
+
+#: ../content/wrappers/np.md:block 6 (paragraph)
+msgid ""
+"These approaches are inspired by the algorithms created by [Brave "
+"Software](https://brave.com) available "
+"[here](https://github.com/brave/brave-"
+"core/blob/master/chromium_src/third_party/blink/renderer/modules/plugins/dom_plugin_array.cc)."
+msgstr ""
+"Эти подходы вдохновлены алгоритмами, созданными компанией [Brave Software]"
+"(https://brave.com), доступными [здесь](https://github.com/brave/brave-core/"
+"blob/master/chromium_src/third_party/blink/renderer/modules/plugins/"
+"dom_plugin_array.cc)."
+
+#: ../content/wrappers/np.md:block 7 (paragraph)
+msgid ""
+"The purpose of the wrappers is solely to prevent fingerprinting. However, "
+"browsers modyfing the array stand out of the crowd, which makes them more "
+"fingerprintable. Consequently, JShelter does not modify an empty list. So no"
+" matter the configuration, an empty list is not populated by the wrappers."
+msgstr ""
+"Обертки предназначены исключительно для предотвращения отпечатков пальцев. "
+"Однако браузеры, модифицирующие массив, выделяются из толпы, что делает их "
+"более уязвимыми для отпечатков пальцев. Следовательно, JShelter не "
+"модифицирует пустой список. Таким образом, независимо от конфигурации, "
+"пустой список не будет заполнен обертками."
+
+#: ../content/wrappers/np.md:block 8 (paragraph)
+msgid "If PDF inline viewing is supported, Firefox returns 5 plugins:"
+msgstr ""
+"Если встроенный просмотр PDF поддерживается, Firefox возвращает 5 плагинов:"
+
+#: ../content/wrappers/np.md:block 9 (unordered list)
+msgid "\"PDF Viewer\""
+msgstr "\"Просмотрщик PDF\""
+
+#: ../content/wrappers/np.md:block 9 (unordered list)
+msgid "\"Chrome PDF Viewer\""
+msgstr "\"Просмотрщик PDF в Chrome\""
+
+#: ../content/wrappers/np.md:block 9 (unordered list)
+msgid "\"Chromium PDF Viewer\""
+msgstr "\"Хромированный просмотрщик PDF\""
+
+#: ../content/wrappers/np.md:block 9 (unordered list)
+#, fuzzy
+msgid "\"Microsoft Edge PDF Viewer\""
+msgstr "\"Microsoft Edge PDF Viewer\""
+
+#: ../content/wrappers/np.md:block 9 (unordered list)
+msgid "\"WebKit built-in PDF\""
+msgstr "\"WebKit, встроенный в PDF\""
+
+#: ../content/wrappers/np.md:block 10 (paragraph)
+msgid ""
+"A list containing exactly these plugins is treated as the empty list and it "
+"is not modified."
+msgstr ""
+"Список, содержащий именно эти плагины, рассматривается как пустой и не "
+"изменяется."
+
+#: ../content/wrappers/pt2.md:block 1 (paragraph)
+msgid "Title: Performance Timeline (L2) Filename: ../common/wrappingS-PT2.js"
+msgstr ""
+"Название: Временная шкала производительности (L2) Filename: ../common/"
+"wrappingS-PT2.js"
+
+#: ../content/wrappers/pt2.md:block 2 (paragraph)
+msgid ""
+"This wrapper aims on prevention of microarchitectural attacks, clock-skew "
+"attacks, and other time related attacks. The goal is to limit the precision "
+"of the time returned by the Performance Timeline API."
+msgstr ""
+"Эта обертка направлена на предотвращение микроархитектурных атак, атак с "
+"перекосом часов и других атак, связанных с временем. Цель состоит в том, "
+"чтобы ограничить точность времени, возвращаемого API Performance Timeline."
+
+#: ../content/wrappers/sensor-accelerometer.md:block 1 (paragraph)
+msgid ""
+"Title: Accelerometer Filename: ../common/wrappingS-SENSOR-ACCELEROMETER.js"
+msgstr ""
+"Название: Акселерометр Filename: ../common/wrappingS-SENSOR-ACCELEROMETER.js"
+
+#: ../content/wrappers/sensor-accelerometer.md:block 2 (paragraph)
+msgid ""
+"MOTIVATION Readings from the Accelerometer, LinearAccelerationSensor, and "
+"GravitySensor of the Generic Sensor API should be secured as they provide a "
+"potentially valuable data for creating fingerprints. There are multiple "
+"options. A unique fingerprint can be obtained by describing the device's "
+"vibrations (See "
+"https://link.springer.com/chapter/10.1007/978-3-319-30806-7_7). Using "
+"trajectory inference and matching of the model to map data, one may use the "
+"readings from the Accelerometer to determing the device's position (See "
+"https://www.researchgate.net/publication/220990763_ACComplice_Location_ "
+"inference_using_accelerometers_on_smartphones)."
+msgstr ""
+"МОТИВАЦИЯ Показания акселерометра, датчика линейного ускорения и датчика "
+"силы тяжести из Generic Sensor API должны быть защищены, поскольку они "
+"предоставляют потенциально ценные данные для создания отпечатков пальцев. "
+"Существует несколько вариантов. Уникальный отпечаток пальца можно получить, "
+"описав вибрации устройства (см. https://link.springer.com/chapter/10.1007/"
+"978-3-319-30806-7_7). Используя вывод траектории и сопоставление модели с "
+"данными карты, можно использовать показания акселерометра для определения "
+"положения устройства (см. https://www.researchgate.net/publication/"
+"220990763_ACComplice_Location_ "
+"inference_using_accelerometers_on_smartphones)."
+
+#: ../content/wrappers/sensor-accelerometer.md:block 3 (paragraph)
+msgid ""
+"WRAPPING The wrapper replaces the \"XYZ\" getters of the Accelerometer "
+"sensor, LinearAccelerationSensor, and GravitySensor. The wrapping's goal is "
+"to simulate a stationary device that is lying bottom down on a flat surface,"
+" e.g., a cell phone on the table. In such a case, only the `z` axis is "
+"affected by gravity. The `x` and `y` axes values should be set to zero. Yet,"
+" there could be vibrations that may change values a little bit, e.g., to "
+"spin around -0.1 to +0.1. This usually does not happed with every reading "
+"but only in intervals of seconds. And thus, after a few seconds we pseudo-"
+"randomly change these values. For the LinearAccelerationSensor, the returned"
+" values should represent the acceleration without the conribution of "
+"gravity. For stationary devices, the `x` and `y` are zeroes, while the 'z' "
+"portion fluctuates between 0 and 0.1 on the examined devices. The wrapper "
+"simulates the same behavior. Lastly, the GravitySensor's readings are "
+"calculated as the difference between the previous two."
+msgstr ""
+"WRAPPING Обертка заменяет геттеры \"XYZ\" датчиков Accelerometer, "
+"LinearAccelerationSensor и GravitySensor. Цель обертки - имитировать "
+"стационарное устройство, которое лежит дном вниз на плоской поверхности, "
+"например, мобильный телефон на столе. В этом случае гравитация воздействует "
+"только на ось `z`. Значения осей `x` и `y` должны быть равны нулю. Тем не "
+"менее, возможны вибрации, которые могут немного изменить значения, например, "
+"от -0,1 до +0,1. Обычно это происходит не при каждом считывании, а только с "
+"интервалом в несколько секунд. Таким образом, через несколько секунд мы "
+"псевдослучайно меняем эти значения. Для LinearAccelerationSensor "
+"возвращаемые значения должны представлять ускорение без учета силы тяжести. "
+"Для стационарных устройств значения `x` и `y` равны нулю, а часть `z` "
+"колеблется между 0 и 0.1 на исследуемых устройствах. Обертка имитирует такое "
+"же поведение. Наконец, показания GravitySensor вычисляются как разница между "
+"двумя предыдущими."
+
+#: ../content/wrappers/sensor-accelerometer.md:block 4 (paragraph)
+msgid ""
+"POSSIBLE IMPROVEMENTS Currently, we assume te device is lying on a flat "
+"surface bottom down, and thus only the `z` is affected by gravity. As "
+"improvement, we can also assume the device is in an oblique position. In "
+"this case, the gravitational acceleration would affect two or three axes. "
+"Those will have to be updated properly to create a realistic behavior."
+msgstr ""
+"ВОЗМОЖНЫЕ УЛУЧШЕНИЯ В настоящее время мы предполагаем, что устройство лежит "
+"на плоской поверхности дном вниз, и, таким образом, гравитация влияет только "
+"на `z`. В качестве улучшения можно также предположить, что устройство "
+"находится в наклонном положении. В этом случае гравитационное ускорение "
+"будет влиять на две или три оси. Для создания реалистичного поведения их "
+"нужно будет правильно обновить."
+
+#: ../content/wrappers/sensor-accel.md:block 1 (paragraph)
+msgid "Title: Accelerometer Filename: ../common/wrappingS-SENSOR-ACCEL.js"
+msgstr "Название: Акселерометр Filename: ../common/wrappingS-SENSOR-ACCEL.js"
+
+#: ../content/wrappers/sensor-accel.md:block 2 (paragraph)
+msgid ""
+"MOTIVATION Readings from the Accelerometer, LinearAccelerationSensor, and "
+"GravitySensor of the Generic Sensor API should be secured as they provide a "
+"potentially valuable data for creating fingerprints. There are multiple "
+"options. A unique fingerprint can be obtained by describing the device's "
+"vibrations (See "
+"https://link.springer.com/chapter/10.1007/978-3-319-30806-7_7). Using "
+"trajectory inference and matching of the model to map data, one may use the "
+"readings from the Accelerometer to determing the device's position (See "
+"https://www.researchgate.net/publication/220990763_ACComplice_Location_ "
+"inference_using_accelerometers_on_smartphones). Accelerometer readings can "
+"also be used for determining human walking patterns (See "
+"https://www.researchgate.net/publication/322835708_Classifying_Human_ "
+"Walking_Patterns_using_Accelerometer_Data_from_Smartphone)."
+msgstr ""
+"МОТИВАЦИЯ Показания акселерометра, датчика линейного ускорения и датчика "
+"силы тяжести из Generic Sensor API должны быть защищены, поскольку они "
+"предоставляют потенциально ценные данные для создания отпечатков пальцев. "
+"Существует несколько вариантов. Уникальный отпечаток пальца можно получить, "
+"описав вибрации устройства (см. https://link.springer.com/chapter/10.1007/"
+"978-3-319-30806-7_7). Используя вывод траектории и сопоставление модели с "
+"данными карты, можно использовать показания акселерометра для определения "
+"положения устройства (см. https://www.researchgate.net/publication/"
+"220990763_ACComplice_Location_ inference_using_accelerometers_on_smartphones)"
+". Показания акселерометра также можно использовать для определения модели "
+"ходьбы человека (см. https://www.researchgate.net/publication/"
+"322835708_Classifying_Human_ "
+"Walking_Patterns_using_Accelerometer_Data_from_Smartphone)."
+
+#: ../content/wrappers/sensor-accel.md:block 3 (paragraph)
+msgid ""
+"WRAPPING The wrapper replaces the \"XYZ\" getters of the Accelerometer "
+"sensor, LinearAccelerationSensor, and GravitySensor. The wrapping's goal is "
+"to simulate a stationary device that can be possibly rotated. The rotation "
+"of the device is represented by the fake rotation matrix \"orient.rotMat\"."
+msgstr ""
+"Обертка заменяет геттеры \"XYZ\" датчиков Accelerometer, "
+"LinearAccelerationSensor и GravitySensor. Цель обертки - смоделировать "
+"неподвижное устройство, которое можно вращать. Вращение устройства "
+"представлено поддельной матрицей вращения \"orient.rotMat\"."
+
+#: ../content/wrappers/sensor-accel.md:block 4 (paragraph)
+msgid ""
+"The GravitySensor should provide readings of gravity acceleration applied to"
+" the device. This is represented by a vector made of x, y, z portions. To "
+"get this faked gravity vector for the device, the reference vector [0, 0, "
+"9.8] is multipled with the rotation matrix. Wrappers for the GravitySensor's"
+" getters return x, y, z portions of the fake gravity vector."
+msgstr ""
+"GravitySensor должен предоставлять показания ускорения силы тяжести, "
+"действующей на устройство. Оно представлено вектором, состоящим из частей x, "
+"y, z. Чтобы получить этот поддельный вектор гравитации для устройства, "
+"опорный вектор [0, 0, 9.8] умножается на матрицу вращения. Обертки для "
+"геттеров GravitySensor возвращают части x, y, z поддельного вектора "
+"гравитации."
+
+#: ../content/wrappers/sensor-accel.md:block 5 (paragraph)
+msgid ""
+"Next, the LinearAccelerationSensor should return acceleration values without"
+" the contribution of gravity. For a stationary device, it should be all "
+"zeroes. Yet, there could be vibrations that may change values a little bit, "
+"e.g., spin around -0.1 to +0.1, as seen on the examined devices. This "
+"usually does not happed with every reading but only in intervals of seconds."
+" And thus, after a few seconds we pseudo-randomly change these values."
+msgstr ""
+"Далее LinearAccelerationSensor должен возвращать значения ускорения без "
+"учета силы тяжести. Для неподвижного устройства это должны быть все нули. "
+"Тем не менее, возможны вибрации, которые могут немного изменить значения, "
+"например, от -0,1 до +0,1, как это видно на рассмотренных устройствах. "
+"Обычно это происходит не при каждом показании, а лишь с интервалом в "
+"несколько секунд. И, таким образом, через несколько секунд мы псевдослучайно "
+"меняем эти значения."
+
+#: ../content/wrappers/sensor-accel.md:block 6 (paragraph)
+msgid ""
+"Finally, the Accelerometer sensor combines the previous two. Our wrappers "
+"thus return tha values from the LinearAccelerationSensor with the fake "
+"gravity vector portions added."
+msgstr ""
+"Наконец, датчик акселерометра объединяет два предыдущих. Таким образом, наши "
+"обертки возвращают значения tha от LinearAccelerationSensor с добавленными "
+"порциями фальшивого вектора гравитации."
+
+#: ../content/wrappers/sensor-accel.md:block 7 (paragraph)
+msgid ""
+"POSSIBLE IMPROVEMENTS Support for simulation of a non-stationary device "
+"where the rotation can change. Currently, the calculation of the gravity "
+"vector is done only once by the initDataGenerator() where the reference "
+"vector is multiplied with the rotation matrix. If orient.rotMat could "
+"change, the dataGen would have to be updated periodically. Moreover, such a "
+"change should also be taken into account in wrappers for other movement-"
+"related sensors (Gyroscope, etc.)."
+msgstr ""
+"ВОЗМОЖНЫЕ УЛУЧШЕНИЯ Поддержка моделирования нестационарного устройства, "
+"вращение которого может меняться. В настоящее время расчет вектора "
+"гравитации выполняется только один раз в initDataGenerator(), где опорный "
+"вектор умножается на матрицу вращения. Если orient.rotMat может меняться, то "
+"dataGen придется периодически обновлять. Кроме того, такое изменение должно "
+"учитываться и в обертках для других датчиков движения (гироскоп и т. д.)."
+
+#: ../content/wrappers/sensor-gyro.md:block 1 (paragraph)
+msgid "Title: Gyroscope Filename: ../common/wrappingS-SENSOR-GYRO.js"
+msgstr "Название: Гироскоп Filename: ../common/wrappingS-SENSOR-GYRO.js"
+
+#: ../content/wrappers/sensor-gyro.md:block 2 (paragraph)
+msgid ""
+"MOTIVATION Gyroscope readings can be used for speech recognition: "
+"https://crypto.stanford.edu/gyrophone/ and various fingerprinting "
+"operations. For stationary devices, the resonance of the unique internal or "
+"external sounds affects angular velocities affect the Gyroscope and allow to"
+" create a fingerprint: "
+"https://www.researchgate.net/publication/356678825_Mobile_Device_Fingerprint_Identification_Using_Gyroscope_Resonance"
+" For moving devices, one of the options is using the Gyroscope analyze human"
+" walking patterns: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7071017/"
+msgstr ""
+"МОТИВАЦИЯ Показания гироскопа могут быть использованы для распознавания речи:"
+" https://crypto.stanford.edu/gyrophone/ и различных операций по снятию "
+"отпечатков пальцев. Для стационарных устройств резонанс уникальных "
+"внутренних или внешних звуков влияет на угловые скорости, воздействующие на "
+"гироскоп, и позволяет создать отпечаток пальца: https://www.researchgate.net/"
+"publication/"
+"356678825_Mobile_Device_Fingerprint_Identification_Using_Gyroscope_Resonance "
+"Для движущихся устройств одним из вариантов использования гироскопа является "
+"анализ моделей ходьбы человека: https://www.ncbi.nlm.nih.gov/pmc/articles/"
+"PMC7071017/"
+
+#: ../content/wrappers/sensor-gyro.md:block 3 (paragraph)
+msgid ""
+"WRAPPING The Gyroscope sensor provides readings of the angular velocity of "
+"the device alongthe x/y/z axes. For a stationary device, all velocities "
+"should be zero in an ideal state. As we observed on the examined devices, "
+"device sensor imperfections andlittle vibrations cause the `x`, `y` and `z` "
+"to oscillate between -0.002 and 0.002 on the examined devices. The wrapper "
+"simulates the same behavior."
+msgstr ""
+"Датчик гироскопа обеспечивает измерение угловой скорости устройства по осям "
+"x/y/z. Для неподвижного устройства в идеальном состоянии все скорости должны "
+"быть равны нулю. Как мы наблюдали на исследованных устройствах, "
+"несовершенство датчиков устройства и небольшие вибрации приводят к тому, что "
+"значения `x`, `y` и `z` на исследованных устройствах колеблются между -0,002 "
+"и 0,002. Обертка имитирует такое же поведение."
+
+#: ../content/wrappers/sensor-gyro.md:block 4 (paragraph)
+msgid ""
+"POSSIBLE IMPROVEMENTS Support for simulation of a non-stationary device. "
+"This would require modifications to other movement-related sensors "
+"(Accelerometer, etc.)"
+msgstr ""
+"ВОЗМОЖНЫЕ УЛУЧШЕНИЯ Поддержка моделирования нестационарного устройства. Это "
+"потребует модификации других датчиков, связанных с движением (акселерометр и "
+"т. д.)"
+
+#: ../content/wrappers/sensor-light.md:block 1 (paragraph)
+msgid ""
+"Title: Ambient light sensor Filename: ../common/wrappingS-SENSOR-LIGHT.js"
+msgstr ""
+"Название: Датчик рассеянного света Filename: ../common/wrappingS-SENSOR-"
+"LIGHT.js"
+
+#: ../content/wrappers/sensor-light.md:block 2 (paragraph)
+msgid ""
+"MOTIVATION The AmbientLightSensor returns illuminance of the device's "
+"environment. This is another value that describes the nearby physical "
+"surrounding of the device, and can thus be used together with other readings"
+" for creating a unique fingerprint."
+msgstr ""
+"МОТИВАЦИЯ Датчик AmbientLightSensor возвращает освещенность окружающей среды "
+"устройства. Это еще одно значение, которое описывает физическое окружение "
+"устройства и может быть использовано вместе с другими показаниями для "
+"создания уникального отпечатка пальца."
+
+#: ../content/wrappers/sensor-light.md:block 3 (paragraph)
+msgid ""
+"WRAPPING On examined stationary devices inside an office, the illuminance "
+"measured was between 500 and 900, depending on the concrete position's light"
+" conditions. All measured values were rounded to nearest 50 illuminance "
+"value. The wrapper silumlates the same behavior. At start, a pseudorandom "
+"illuminance value is drawn. As we simulate a stationary device, this value "
+"remains constant for all AmbientLightSensor.prototype.illuminance calls."
+msgstr ""
+"На исследованных стационарных устройствах в офисе измеренная освещенность "
+"составляла от 500 до 900, в зависимости от условий освещенности в конкретном "
+"месте. Все измеренные значения были округлены до ближайшего 50-го значения "
+"освещенности. Обертка симулирует такое же поведение. При запуске рисуется "
+"псевдослучайное значение освещенности. Поскольку мы моделируем стационарное "
+"устройство, это значение остается постоянным для всех вызовов "
+"AmbientLightSensor.prototype.illuminance."
+
+#: ../content/wrappers/sensor-light.md:block 4 (paragraph)
+msgid "POSSIBLE IMPROVEMENTS Simulation of changes in the illuminance."
+msgstr "ВОЗМОЖНЫЕ УЛУЧШЕНИЯ Моделирование изменений освещенности."
+
+#: ../content/wrappers/sensor-magnet.md:block 1 (paragraph)
+msgid "Title: Magnet Filename: ../common/wrappingS-SENSOR-MAGNET.js"
+msgstr "Название: Magnet Filename: ../common/wrappingS-SENSOR-MAGNET.js"
+
+#: ../content/wrappers/sensor-magnet.md:block 2 (paragraph)
+msgid "MOTIVATION"
+msgstr "МОТИВАЦИЯ"
+
+#: ../content/wrappers/sensor-magnet.md:block 3 (paragraph)
+msgid ""
+"Magnetometer is a platform sensor available under the Generic Sensor API. "
+"Magnetometer measures strength and direction of the magnetic field at "
+"device's location. The interface offers sensor readings using three "
+"properties: x, y, and z. Each returns a number that describes the magnetic "
+"field aroud the particular axis. The numbers have a double precision and can"
+" be positive or negative, depending on the orientation of the field. The "
+"total strength of the magnetic field (M) can be calculated as M = sqrt(x^2 +"
+" z^2 + y^2). The unit is in microtesla (µT)."
+msgstr ""
+"Магнитометр - это платформенный датчик, доступный в рамках Generic Sensor "
+"API. Магнитометр измеряет силу и направление магнитного поля в месте "
+"расположения устройства. Интерфейс предлагает показания датчика, используя "
+"три свойства: x, y и z. Каждое из них возвращает число, описывающее "
+"магнитное поле вокруг определенной оси. Числа имеют двойную точность и могут "
+"быть положительными или отрицательными, в зависимости от ориентации поля. "
+"Общая напряженность магнитного поля (M) может быть рассчитана как M = sqrt(x^"
+"2 + z^2 + y^2). Единица измерения - микротесла (мкТл)."
+
+#: ../content/wrappers/sensor-magnet.md:block 4 (paragraph)
+msgid ""
+"The Earth's magnetic field ranges between approximately 25 and 65 µT. "
+"Concrete values depend on location, altitude, weather, interference made by "
+"other electric. devices, etc. While we consider it is unlikely that someone "
+"determines the precise location of the device from the Mangetometer values, "
+"its data can be used for fingerprinting. For instance, it can be determined "
+"wheter the device is moving or not. In case of a stationary device, we can "
+"make a fingerprint from the device's orientation. Another fingerprintable "
+"value is the average total strength of the field, which should remain stable"
+" if the device is at the same position and in the same environment."
+msgstr ""
+"Магнитное поле Земли колеблется в диапазоне примерно от 25 до 65 мкТл. "
+"Конкретные значения зависят от местоположения, высоты над уровнем моря, "
+"погоды, помех, создаваемых другими электрическими устройствами, и т. д. Хотя "
+"мы считаем маловероятным, что кто-то определит точное местоположение "
+"устройства по значениям мангетометра, его данные можно использовать для "
+"снятия отпечатков пальцев. Например, можно определить, движется устройство "
+"или нет. В случае неподвижного устройства отпечаток пальца можно получить по "
+"его ориентации. Еще одно значение, которое можно определить по отпечатку "
+"пальца, - это средняя общая напряженность поля, которая должна оставаться "
+"стабильной, если устройство находится в одном и том же положении и в одной и "
+"той же среде."
+
+#: ../content/wrappers/sensor-magnet.md:block 5 (paragraph)
+msgid "WRAPPING"
+msgstr "УПАКОВКА"
+
+#: ../content/wrappers/sensor-magnet.md:block 6 (paragraph)
+msgid ""
+"To protect the device, we are wrapping the x, y, z getters of the "
+"`Magnetometer.prototype` object. Instead of using the original data, we use "
+"artificially generated values that look like actual sensor readings."
+msgstr ""
+"Чтобы защитить устройство, мы оборачиваем геттеры x, y, z объекта "
+"`Magnetometer.prototype`. Вместо оригинальных данных мы используем "
+"искусственно сгенерированные значения, которые выглядят как реальные "
+"показания датчика."
+
+#: ../content/wrappers/sensor-magnet.md:block 7 (paragraph)
+msgid ""
+"At every moment, our wrapper stores information about the previous reading. "
+"Each rewrapped getter first checks the `timestamp` value of the sensor "
+"object. If there is no difference from the previous reading's timestamp, the"
+" wrapper returns the last measured value. Otherwise, it provides a new fake "
+"reading."
+msgstr ""
+"В каждый момент времени наша обертка хранит информацию о предыдущем "
+"показании. Каждый геттер обертки сначала проверяет значение `timestamp` "
+"объекта датчика. Если временная метка предыдущего показания не отличается, "
+"обертка возвращает последнее измеренное значение. В противном случае она "
+"предоставляет новое фальшивое показание."
+
+#: ../content/wrappers/sensor-magnet.md:block 8 (paragraph)
+msgid ""
+"We designed our fake field generator to fulfill the following properties:"
+msgstr ""
+"Мы разработали наш генератор фальшивого поля, который должен обладать "
+"следующими свойствами:"
+
+#: ../content/wrappers/sensor-magnet.md:block 9 (unordered list)
+msgid ""
+"The randomness of the generator should be high enough to prevent attackers "
+"from deducing the sensor values."
+msgstr ""
+"Степень случайности генератора должна быть достаточно высокой, чтобы "
+"злоумышленники не смогли вычислить значения датчиков."
+
+#: ../content/wrappers/sensor-magnet.md:block 9 (unordered list)
+msgid ""
+"Multiple scripts from the same website that access readings with the same "
+"timestamp must get the same results. And thus:"
+msgstr ""
+"Несколько скриптов одного и того же сайта, обращающихся к показаниям с одной "
+"и той же временной меткой, должны получать одинаковые результаты. И таким "
+"образом:"
+
+#: ../content/wrappers/sensor-magnet.md:block 9 (unordered list)
+msgid ""
+"The readings are deterministic - e.g., for a given website and time, we must"
+" be able to say what values to return."
+msgstr ""
+"Показания детерминированы - например, для заданного сайта и времени мы "
+"должны быть в состоянии сказать, какие значения будут возвращены."
+
+#: ../content/wrappers/sensor-magnet.md:block 10 (paragraph)
+msgid ""
+"For every \"random\" draw, we use the Mulberry32 sen_prng that is seeded "
+"with a value generated from the `domainHash` which ensures deterministic "
+"behavior for the given website. First, we choose the desired total strength "
+"`M` of the magnetic field at our simulated location. This is a pseudo-random"
+" number from 25 to 60 uT, like on the Earth."
+msgstr ""
+"Для каждого \"случайного\" розыгрыша мы используем Mulberry32 sen_prng, "
+"который засевается значением, сгенерированным из `domainHash`, что "
+"обеспечивает детерминированное поведение для данного сайта. Сначала мы "
+"выбираем желаемую общую силу `M` магнитного поля в нашем моделируемом месте. "
+"Это псевдослучайное число от 25 до 60 мкТл, как на Земле."
+
+#: ../content/wrappers/sensor-magnet.md:block 11 (paragraph)
+msgid "We support two variants of settings the initial axes orientaton:"
+msgstr "Мы поддерживаем два варианта настройки начальной ориентации осей:"
+
+#: ../content/wrappers/sensor-magnet.md:block 12 (unordered list)
+msgid ""
+"A pseudorandom draw (RANDOM_AXES_ORIENTATION = true) - the original "
+"implementation"
+msgstr ""
+"Псевдослучайная жеребьевка (RANDOM_AXES_ORIENTATION = true) - оригинальная "
+"реализация"
+
+#: ../content/wrappers/sensor-magnet.md:block 12 (unordered list)
+msgid ""
+"Calculation from the faked device rotation (shared by other wrappers) - "
+"improved version"
+msgstr ""
+"Вычисление по фальшивому вращению устройства (используется другими "
+"оберточными программами) - улучшенная версия"
+
+#: ../content/wrappers/sensor-magnet.md:block 13 (paragraph)
+msgid ""
+"For both methods, the orientation is defined by a number from -1 to 1 for "
+"each axis: `baseX`, `baseY`, and `baseZ`. By modifying the above-shown "
+"formula, we calculate the `multiplier` that needs to be applied to the base "
+"values to get the desired field. The calculation is done as follows:"
+msgstr ""
+"Для обоих методов ориентация определяется числом от -1 до 1 для каждой оси: "
+"`базаX`, `базаY` и `базаZ`. Изменив приведенную выше формулу, мы вычисляем "
+"`умножитель`, который нужно применить к базовым значениям, чтобы получить "
+"желаемое поле. Расчет производится следующим образом:"
+
+#: ../content/wrappers/sensor-magnet.md:block 14 (unordered list)
+msgid ""
+"mult = (M * sqrt(baseX^2 + baseY^2 + baseZ^2) / (baseX^2 + baseY^2 + "
+"baseZ^2)) Now, we know that for axis `x`, the value should fluctuate around "
+"`baseX * mult`, etc."
+msgstr ""
+"mult = (M * sqrt(baseX^2 + baseY^2 + baseZ^2) / (baseX^2 + baseY^2 + "
+"baseZ^2)) Теперь мы знаем, что для оси `x` значение должно колебаться вокруг "
+"`baseX * mult`, и т.д."
+
+#: ../content/wrappers/sensor-magnet.md:block 15 (paragraph)
+msgid ""
+"How much the field changes over time is specified by the fluctuation factor "
+"(0;1] that can also be configured. For instance, 0.2 means that the magnetic"
+" field on the axis may change from the base value by 20% in both positive "
+"and negative way."
+msgstr ""
+"Насколько сильно меняется поле с течением времени, определяется "
+"коэффициентом флуктуации (0;1], который также можно настроить. Например, 0,2 "
+"означает, что магнитное поле на оси может изменяться от базового значения на "
+"20% как в положительную, так и в отрицательную сторону."
+
+#: ../content/wrappers/sensor-magnet.md:block 16 (paragraph)
+msgid ""
+"The fluctuation is simulated by using a series of **sine** functions for "
+"each axis. Each sine has a unique amplitude, phase shift, and period. The "
+"number of sines per axis is chosen pseudorandomly based on the wrapper "
+"settings. For initial experiments, we used around 20 to 30 sines for each "
+"axis. The optimal configuration is in question. More sines give less "
+"predictable results, but also increase the computing complexity that could "
+"have a negative impact on the browser's performance."
+msgstr ""
+"Колебания моделируются с помощью серии **синусоидальных** функций для каждой "
+"оси. Каждый синус имеет уникальную амплитуду, фазовый сдвиг и период. "
+"Количество синусов для каждой оси выбирается псевдослучайно, исходя из "
+"настроек обертки. В первых экспериментах мы использовали от 20 до 30 синусов "
+"для каждой оси. Оптимальная конфигурация находится под вопросом. Большее "
+"количество синусов дает менее предсказуемые результаты, но также увеличивает "
+"сложность вычислений, что может негативно сказаться на производительности "
+"браузера."
+
+#: ../content/wrappers/sensor-magnet.md:block 17 (paragraph)
+msgid ""
+"For the given timestamp `t`, we make the sum of all sine values at the point"
+" `x=t`. The result is then shifted over the y-axis by adding `base[X|Y|Z] * "
+"multiplier` to the sum. The initial configuration of the fake field "
+"generator was chosen intuitively to resemble the results of the real "
+"measurements. Currently, the generator uses at least one sine with the "
+"period around 100 us (with 10% tolerance), which seems to be the minimum "
+"sampling rate obtainable using the API on mobile devices. Then, at least one"
+" sine around 1 s, around 10 s, 1 minute, and 1 hour. When more than 5 sines "
+"are used, the cycle repeats using `modulo 5` and creates a new sine with the"
+" period around 100 us, but this time the tolerance is 20%. The same follows "
+"for seconds, tens of seconds, minutes, hours. The tolerance grows every 5 "
+"sines. For 11+ sines, the tolerance is 30% up to the maximum (currently "
+"50%). The amplitude of each sine is chosen pseudo- randomly based on the "
+"**fluctuation factor** described above. The phase shift of each sine is also"
+" pseudo-random number from [0;2PI)."
+msgstr ""
+"Для заданной временной метки `t` находим сумму всех значений синуса в точке "
+"`x=t`. Затем результат сдвигается по оси y, добавляя к сумме `base[X|Y|Z] * "
+"multiplier`. Начальная конфигурация генератора фальшивого поля была выбрана "
+"интуитивно, чтобы напоминать результаты реальных измерений. В настоящее "
+"время генератор использует по крайней мере один синус с периодом около 100 "
+"us (с 10-процентным допуском), что, по-видимому, является минимальной "
+"частотой дискретизации, которую можно получить с помощью API на мобильных "
+"устройствах. Затем, по крайней мере, один синус с периодом около 1 с, около "
+"10 с, 1 минуты и 1 часа. Если используется более 5 синусов, цикл повторяется "
+"с использованием `modulo 5` и создается новый синус с периодом около 100 us, "
+"но на этот раз допуск составляет 20 %. То же самое происходит для секунд, "
+"десятков секунд, минут, часов. Допуск увеличивается каждые 5 синусов. Для 11+"
+" синусов допуск составляет 30 % до максимума (сейчас 50 %). Амплитуда "
+"каждого синуса выбирается псевдослучайно на основе **коэффициента "
+"флуктуации**, описанного выше. Фазовый сдвиг каждого синуса также выбирается "
+"псевдослучайно из [0;2PI)."
+
+#: ../content/wrappers/sensor-magnet.md:block 18 (paragraph)
+msgid ""
+"Based on the results, this heuristic returns belivable values that look like"
+" actual sensor readings. Nevertheless, the generator uses a series of "
+"constants, whose optimal values should be a subject of future research and "
+"improvements. Perphaps, a correlation analysis with real mesurements could "
+"help in the future."
+msgstr ""
+"Судя по результатам, эта эвристика возвращает правдоподобные значения, "
+"похожие на реальные показания датчиков. Тем не менее, генератор использует "
+"ряд констант, оптимальные значения которых должны стать предметом будущих "
+"исследований и улучшений. Возможно, в будущем поможет корреляционный анализ "
+"с реальными измерениями."
+
+#: ../content/wrappers/sensor-magnet.md:block 19 (paragraph)
+msgid ""
+"POSSIBLE IMPROVEMENTS Non-stationary devices can be supported if the "
+"baseX,Y,Z is updated with each movement. Do more experiments in real "
+"environments and possibly update the reference magnetic field vector, or the"
+" sine generator, e.g. by simulating temporary pseudorandom electromagnetic "
+"interferences, etc."
+msgstr ""
+"ВОЗМОЖНЫЕ УЛУЧШЕНИЯ Нестационарные устройства могут быть поддержаны, если "
+"базаX,Y,Z обновляется при каждом движении. Проводите больше экспериментов в "
+"реальных условиях и, возможно, обновляйте вектор опорного магнитного поля "
+"или генератор синуса, например, моделируя временные псевдослучайные "
+"электромагнитные помехи и т. д."
+
+#: ../content/wrappers/sensor.md:block 1 (paragraph)
+msgid "Title: Generic sensor Filename: ../common/wrappingS-SENSOR.js"
+msgstr "Название: Общий датчик Filename: ../common/wrappingS-SENSOR.js"
+
+#: ../content/wrappers/sensor.md:block 2 (paragraph)
+msgid ""
+"MOTIVATION The risk of using Generic Sensor API calls for device "
+"fingerprinting is mentioned within the W3C Candidate Recommendation Draft, "
+"29 July 2021 (https://www.w3.org/TR/2021/CRD-generic-"
+"sensor-20210729/#device-fingerprinting) Documented threats include "
+"manufacturing imperfections and differences that are unique to the concrete "
+"model of the device and can be used for fingerprinting."
+msgstr ""
+"МОТИВАЦИЯ Риск использования вызовов Generic Sensor API для снятия "
+"отпечатков пальцев с устройств упоминается в проекте рекомендаций W3C, 29 "
+"июля 2021 года (https://www.w3.org/TR/2021/CRD-generic-sensor-20210729/"
+"#device-fingerprinting) Документированные угрозы включают производственные "
+"дефекты и различия, которые уникальны для конкретной модели устройства и "
+"могут быть использованы для снятия отпечатков пальцев."
+
+#: ../content/wrappers/sensor.md:block 3 (paragraph)
+msgid ""
+"We discovered another loophole in the `Sensor.timestamp` attribute. The "
+"value describes when the last `Sensor.onreading` event occurred, in "
+"millisecond precision. We observed the time origin is not the time of "
+"browsing context creation but the last boot time of the device. Exposing "
+"such information is dangerous as it allows to fingerprint the user easily. "
+"It is unlikely that two different devices will boot at exactly the same "
+"time."
+msgstr ""
+"Мы обнаружили еще одну лазейку в атрибуте `Sensor.timestamp`. Это значение "
+"описывает, когда произошло последнее событие `Sensor.onreading` с точностью "
+"до миллисекунды. Мы заметили, что источником времени является не время "
+"создания контекста просмотра, а время последней загрузки устройства. "
+"Раскрытие такой информации опасно, так как позволяет легко снять отпечатки "
+"пальцев с пользователя. Маловероятно, что два разных устройства будут "
+"загружаться в одно и то же время."
+
+#: ../content/wrappers/sensor.md:block 4 (paragraph)
+msgid "Tested with the Magnetometer sensor on the following devices:"
+msgstr ""
+"Проверено с помощью магнитометрического датчика на следующих устройствах:"
+
+#: ../content/wrappers/sensor.md:block 5 (unordered list)
+msgid ""
+"Samsung Galaxy S21 Ultra; Android 11, kernel 5.4.6-215566388-abG99BXXU3AUE1,"
+" Build/RP1A.200720.012.G998BXXU3AUE1 Chrome 94.0.4606.71 and Kiwi (Chromium)"
+" 94.0.4606.56"
+msgstr ""
+"Samsung Galaxy S21 Ultra; Android 11, ядро 5.4.6-215566388-abG99BXXU3AUE1, "
+"Build/RP1A.200720.012.G998BXXU3AUE1 Chrome 94.0.4606.71 и Kiwi (Chromium) "
+"94.0.4606.56"
+
+#: ../content/wrappers/sensor.md:block 5 (unordered list)
+msgid ""
+"Xiaomi Redmi Note 5; Android 9, kernel 4.4.156-perf+, Build/9 "
+"PKQ1.180901.001 Chrome 94.0.4606.71"
+msgstr ""
+"Xiaomi Redmi Note 5; Android 9, ядро 4.4.156-perf+, Build/9 PKQ1.180901.001 "
+"Chrome 94.0.4606.71"
+
+#: ../content/wrappers/sensor.md:block 7 (paragraph)
+msgid ""
+"The wrapper thus protects device by changing the time origin to the browsing"
+" context creation time, whereas the timestamp should still uniquely identify"
+" the reading. This is achieved in the following way:"
+msgstr ""
+"Таким образом, обертка защищает устройство, меняя время происхождения на "
+"время создания контекста просмотра, в то время как временная метка должна по-"
+"прежнему однозначно идентифицировать чтение. Это достигается следующим "
+"образом:"
+
+#: ../content/wrappers/sensor.md:block 8 (unordered list)
+msgid ""
+"At the first reading, we calculate the difference between the original value"
+" and performance.now(). This gives us the offset between 1) the device boot "
+"and 2) the page context initialization."
+msgstr ""
+"При первом чтении мы вычисляем разницу между исходным значением и "
+"performance.now(). Это дает нам смещение между 1) загрузкой устройства и 2) "
+"инициализацией контекста страницы."
+
+#: ../content/wrappers/sensor.md:block 8 (unordered list)
+msgid ""
+"On every reading, the offset is subtracted from the original value. The "
+"resulting value then uniquely identifies the reading sample without exposing"
+" the boot time."
+msgstr ""
+"При каждом считывании смещение вычитается из исходного значения. Полученное "
+"значение однозначно идентифицирует образец чтения, не раскрывая времени "
+"загрузки."
+
+#: ../content/wrappers/sensor.md:block 8 (unordered list)
+msgid ""
+"Like in the other time precision wrappers, the resulting timestamp is "
+"processed by the mitigation function before return. The mitigation may round"
+" and (optionally) add noise to the resulting timestamp."
+msgstr ""
+"Как и в других обертках для определения точности времени, полученная "
+"временная метка обрабатывается функцией смягчения перед возвратом. Функция "
+"смягчения может округлять и (опционально) добавлять шум к результирующей "
+"временной метке."
+
+#: ../content/wrappers/sensor.md:block 9 (paragraph)
+msgid ""
+"POSSIBLE IMPROVEMENTS in protection level 2, the timestamp origin may be set"
+" to a random value based on the session hash. This can serve as a \"fake "
+"boot time.\""
+msgstr ""
+"ВОЗМОЖНЫЕ УЛУЧШЕНИЯ На уровне защиты 2 в качестве источника временной метки "
+"может быть установлено случайное значение, основанное на хэше сессии. Это "
+"может служить \"фальшивым временем загрузки\""
+
+#: ../content/wrappers/sensor-orient.md:block 1 (paragraph)
+msgid ""
+"Title: Orientation sensor Filename: ../common/wrappingS-SENSOR-ORIENT.js"
+msgstr ""
+"Название: Датчик ориентации Filename: ../common/wrappingS-SENSOR-ORIENT.js"
+
+#: ../content/wrappers/sensor-orient.md:block 2 (paragraph)
+msgid ""
+"MOTIVATION Device orientation sensors can be easily used for fingerprinting."
+" As it highly unlikely that two devices visiting the same site will be "
+"oriented exactly the same, the orientation itself can serve as a "
+"fingerprint."
+msgstr ""
+"МОТИВАЦИЯ Датчики ориентации устройств можно легко использовать для снятия "
+"отпечатков пальцев. Поскольку крайне маловероятно, что два устройства, "
+"посещающие один и тот же сайт, будут ориентированы абсолютно одинаково, сама "
+"ориентация может служить отпечатком пальца."
+
+#: ../content/wrappers/sensor-orient.md:block 3 (paragraph)
+msgid ""
+"WRAPPING AbsoluteOrientationSensor returns a quaterion decribing the "
+"physical orientation of the device in relation to the Earth's reference "
+"coordinate system. The faked orientation of the device is saved inside the "
+"\"orient\" global variable that is accessible to all wrappers. The value is "
+"chosen pseudorandomly from the domain hash. The wrappper supports possible "
+"change of orientation. With each reading, it loads the \"orient\"'s "
+"contents, converts the rotation matrix to a quaternion that is returned by "
+"the wrapped getter."
+msgstr ""
+"ОБРАБОТКА AbsoluteOrientationSensor возвращает кватерион, описывающий "
+"физическую ориентацию устройства по отношению к опорной системе координат "
+"Земли. Имитация ориентации устройства сохраняется в глобальной переменной "
+"\"orient\", доступной всем оберткам. Значение выбирается псевдослучайным "
+"образом из хэша домена. Обертка поддерживает возможность изменения "
+"ориентации. При каждом чтении он загружает содержимое \"orient\", "
+"преобразует матрицу вращения в кватернион, который возвращается геттером "
+"обертки."
+
+#: ../content/wrappers/sensor-orient.md:block 4 (paragraph)
+msgid ""
+"RelativeOrientationSensor also describes the orientation, but without regard"
+" to the Earth's reference coordinate system. We suppose the coordinate "
+"system is chosen at the beginning of the sensor instance creation. As we "
+"observed, no matter how the device is oriented, there is always a slight "
+"difference from the AbsoluteOrientationSensor's in at least one axis. When "
+"the device moves, both sensors' readings change. But their difference should"
+" be always constant. And thus, we pseudorandomly generate a deviation from "
+"the Earth's reference coordinate system. And for each reading, we take the "
+"values from the fake AbsoluteOrientationSensor and modify them by the "
+"constant deviation."
+msgstr ""
+"RelativeOrientationSensor также описывает ориентацию, но без учета опорной "
+"системы координат Земли. Мы предполагаем, что система координат выбирается в "
+"начале создания экземпляра датчика. Как мы заметили, независимо от того, как "
+"ориентировано устройство, его положение всегда немного отличается от "
+"положения AbsoluteOrientationSensor хотя бы по одной оси. Когда устройство "
+"перемещается, показания обоих датчиков меняются. Но их разница должна быть "
+"всегда постоянной. Поэтому мы псевдослучайным образом генерируем отклонение "
+"от опорной системы координат Земли. И для каждого показания мы берем "
+"значения с поддельного AbsoluteOrientationSensor и изменяем их на постоянное "
+"отклонение."
+
+#: ../content/wrappers/sensor-orient.md:block 5 (paragraph)
+msgid ""
+"POSSIBLE IMPROVEMENTS Study the supported coordinate systems of the "
+"RelativeOrientationSensor and modify the wrapper behavior if needed."
+msgstr ""
+"ВОЗМОЖНЫЕ УЛУЧШЕНИЯ Изучите поддерживаемые системы координат "
+"RelativeOrientationSensor и при необходимости измените поведение обертки."
+
+#: ../content/wrappers/vr.md:block 1 (paragraph)
+msgid "Title: Virtual Reality 1.1 Filename: ../common/wrappingS-VR.js"
+msgstr ""
+"Название: Виртуальная реальность 1.1 Filename: ../common/wrappingS-VR.js"
+
+#: ../content/wrappers/vr.md:block 2 (paragraph)
+msgid ""
+"navigator.activeVRDisplays() allows any page script to learn the VR displays"
+" attached to the computer."
+msgstr ""
+"navigator.activeVRDisplays() позволяет любому сценарию страницы узнать, "
+"какие VR-дисплеи подключены к компьютеру."
+
+#: ../content/wrappers/vr.md:block 3 (paragraph)
+msgid ""
+"U. Iqbal, S. Englehardt and Z. Shafiq, \"Fingerprinting the Fingerprinters: "
+"Learning to Detect Browser Fingerprinting Behaviors,\" in 2021 2021 IEEE "
+"Symposium on Security and Privacy (SP), San Francisco, CA, US, 2021 pp. "
+"283-301 observed (https://github.com/uiowa-irl/FP-"
+"Inspector/blob/master/Data/potential_fingerprinting_APIs.md) that the "
+"interface is used in the wild to fingerprint users. As it is likely that "
+"only a minority of users have a VR display connected and the API provides "
+"additional information on the HW, it is likely that users with a VR display "
+"connected are easily fingerprintable."
+msgstr ""
+"U. Икбал, С. Энглехардт и З. Шафик, \"\"Отпечатки пальцев\": Обучение "
+"обнаружению отпечатков пальцев в браузере\", 2021 2021 IEEE Симпозиум по "
+"безопасности и конфиденциальности (SP), Сан-Франциско, Калифорния, США, 2021 "
+"стр. 283-301 заметили (https://github.com/uiowa-irl/FP-Inspector/blob/master/"
+"Data/potential_fingerprinting_APIs.md), что интерфейс используется в дикой "
+"природе для отпечатков пальцев пользователей. Поскольку, скорее всего, "
+"только у меньшинства пользователей подключен VR-дисплей, а API предоставляет "
+"дополнительную информацию о HW, вполне вероятно, что пользователи с "
+"подключенным VR-дисплеем легко поддаются дактилоскопии."
+
+#: ../content/wrappers/vr.md:block 4 (paragraph)
+msgid ""
+"As we expect that the majority of the users does not have a VR display "
+"connected, we provide only a single mitigation - the wrapped APIs returns an"
+" empty list."
+msgstr ""
+"Поскольку мы ожидаем, что у большинства пользователей нет подключенного VR-"
+"дисплея, мы предоставляем только одно смягчение - обернутый API возвращает "
+"пустой список."
+
+#: ../content/wrappers/vr.md:block 5 (paragraph)
+msgid ""
+"**Known bug**: The standard provides events *vrdisplayconnect*, "
+"*vrdisplaydisconnect* *vrdisplayactivate* and *vrdisplaydeactivate* that "
+"fires at least on the window object. We do not mitigate the event to fire "
+"and consequently, it is possible that an adversary can learn that a VR "
+"display was (dis)connected but there was no change in the result of the "
+"navigator.activeVRDisplays() API."
+msgstr ""
+"**Известная ошибка**: В стандарте предусмотрены события *vrdisplayconnect*, "
+"*vrdisplaydisconnect* *vrdisplayactivate* и *vrdisplaydeactivate*, которые "
+"срабатывают как минимум на оконном объекте. Мы не смягчаем это событие, и, "
+"следовательно, злоумышленник может узнать, что VR-дисплей был (отключен), но "
+"результат работы API navigator.activeVRDisplays() не изменился."
+
+#: ../content/wrappers/vr.md:block 6 (paragraph)
+msgid ""
+"The VRFrameData object carries a timestamp. As we allow wrapping of several "
+"ways to obtain timestamps, we need to provide the same precision for the "
+"VRFrameData object."
+msgstr ""
+"Объект VRFrameData содержит временную метку. Поскольку мы позволяем "
+"использовать несколько способов получения временных меток, нам необходимо "
+"обеспечить такую же точность для объекта VRFrameData."
+
+#: ../content/wrappers/weba.md:block 1 (paragraph)
+msgid "Title: WebAudio Filename: ../common/wrappingS-WEBA.js"
+msgstr "Название: WebAudio Filename: ../common/wrappingS-WEBA.js"
+
+#: ../content/wrappers/weba.md:block 2 (paragraph)
+msgid ""
+"This file contains wrappers for AudioBuffer and AnalyserNode related calls"
+msgstr ""
+"Этот файл содержит обертки для вызовов, связанных с AudioBuffer и "
+"AnalyserNode"
+
+#: ../content/wrappers/weba.md:block 3 (unordered list)
+#, fuzzy
+msgid "https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer"
+msgstr "https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer"
+
+#: ../content/wrappers/weba.md:block 3 (unordered list)
+#, fuzzy
+msgid "https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode"
+msgstr "https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode"
+
+#: ../content/wrappers/weba.md:block 4 (paragraph)
+msgid ""
+"The goal is to prevent fingerprinting by modifying the values from functions"
+" which are reading/copying from AudioBuffer and AnalyserNode. So the audio "
+"content of wrapped objects is the same as intended."
+msgstr ""
+"Цель - предотвратить отпечатки пальцев, изменяя значения функций, которые "
+"читают/копируют из AudioBuffer и AnalyserNode. Таким образом, "
+"аудиосодержимое обернутых объектов будет таким, как и предполагалось."
+
+#: ../content/wrappers/weba.md:block 5 (paragraph)
+msgid ""
+"The modified content can be either a white noise based on domain key or a "
+"fake audio data that is modified according to domain key to be different "
+"than the original albeit very similar (i.e. the approach inspired by the "
+"algorithms created by Brave Software <https://brave.com> available at "
+"https://github.com/brave/brave-"
+"core/blob/master/chromium_src/third_party/blink/renderer/core/execution_context/execution_context.cc.)"
+msgstr ""
+"Модифицированный контент может быть либо белым шумом, основанным на доменном "
+"ключе, либо фальшивыми аудиоданными, которые модифицируются в соответствии с "
+"доменным ключом, чтобы отличаться от оригинала, хотя и быть очень похожими ("
+"т. е. подход, вдохновленный алгоритмами, созданными Brave Software <https://"
+"brave.com>, доступными на сайте https://github.com/brave/brave-core/blob/"
+"master/chromium_src/third_party/blink/renderer/core/execution_context/"
+"execution_context.cc)"
+
+#: ../content/wrappers/weba.md:block 6 (paragraph)
+msgid ""
+"**Note**: Both approaches are detectable by a fingerprinter that checks if a"
+" predetermined audio is the same as the read one. Nevertheless, the aim of "
+"the wrappers is to limit the finerprintability."
+msgstr ""
+"**Примечание**: Оба подхода можно обнаружить с помощью принтера, который "
+"проверяет, совпадает ли заданный звук с прочитанным. Тем не менее, цель "
+"обёрток - ограничить возможность тонкого отпечатка."
+
+#: ../content/wrappers/weba.md:block 7 (paragraph)
+msgid ""
+"**Known bug**: Possibly inconsistant data between AudioBuffer and "
+"AnalyserNode wrappers."
+msgstr ""
+"**Известная ошибка**: Возможное несоответствие данных между обертками "
+"AudioBuffer и AnalyserNode."
+
+#: ../content/wrappers/weba.md:block 8 (paragraph)
+msgid ""
+"**Known bug**: Inconsistency between AudioBuffer.prototype.copyFromChannel "
+"and AudioBuffer.prototype.getChannelData. "
+"AudioBuffer.prototype.copyFromChannel should call "
+"AudioBuffer.prototype.getChannelData wrapper and then return result of the "
+"original call."
+msgstr ""
+"**Известная ошибка**: Несоответствие между "
+"AudioBuffer.prototype.copyFromChannel и "
+"AudioBuffer.prototype.getChannelData. AudioBuffer.prototype.copyFromChannel "
+"должен вызывать обертку AudioBuffer.prototype.getChannelData, а затем "
+"возвращать результат исходного вызова."
+
+#: ../content/wrappers/webgl.md:block 1 (paragraph)
+msgid "Title: WebGL Filename: ../common/wrappingS-WEBGL.js"
+msgstr "Название: WebGL Filename: ../common/wrappingS-WEBGL.js"
+
+#: ../content/wrappers/webgl.md:block 2 (paragraph)
+msgid "This file contains wrappers for WebGL related calls"
+msgstr "Этот файл содержит обертки для вызовов, связанных с WebGL"
+
+#: ../content/wrappers/webgl.md:block 3 (unordered list)
+#, fuzzy
+msgid "https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext"
+msgstr "https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext"
+
+#: ../content/wrappers/webgl.md:block 3 (unordered list)
+#, fuzzy
+msgid ""
+"https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext"
+msgstr "https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext"
+
+#: ../content/wrappers/webgl.md:block 4 (paragraph)
+msgid ""
+"The goal is to prevent fingerprinting by modifying the values from certain "
+"WebGLRenderingContext API functions. This includes return values of various "
+"functions which can be hardware/software specific and image data reading."
+msgstr ""
+"Цель состоит в том, чтобы предотвратить отпечатки пальцев путем изменения "
+"значений определенных функций API WebGLRenderingContext. Сюда входят "
+"возвращаемые значения различных функций, которые могут быть аппаратно/"
+"программно специфичными, и чтение данных изображения."
+
+#: ../content/wrappers/webgl.md:block 5 (paragraph)
+msgid ""
+"Content is either modified according to domain and session keys to be "
+"different than the original albeit very similar or replaced by bottom value "
+"which is consistent every time. Both approaches are inspired by the "
+"algorithms created by [Brave Software](https://brave.com) available "
+"[here](https://github.com/brave/brave-"
+"core/$blob/master/chromium_src/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc)"
+" and [here](https://github.com/brave/brave-"
+"core/blob/master/chromium_src/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc)."
+msgstr ""
+"Содержимое либо изменяется в соответствии с ключами домена и сессии, чтобы "
+"отличаться от оригинала, хотя и быть очень похожим, либо заменяется нижним "
+"значением, которое каждый раз совпадает. Оба подхода вдохновлены "
+"алгоритмами, созданными [Brave Software](https://brave.com), доступными "
+"[здесь](https://github.com/brave/brave-core/$blob/master/chromium_src/"
+"third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc) и "
+"[здесь](https://github.com/brave/brave-core/blob/master/chromium_src/"
+"third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc)."
+
+#: ../content/wrappers/webgl.md:block 6 (paragraph)
+msgid "This wrapper operates with two levels of protection:"
+msgstr "Эта обертка работает с двумя уровнями защиты:"
+
+#: ../content/wrappers/webgl.md:block 7 (unordered list)
+msgid ""
+"(0) - return modified results, such as slightly changed image, slightly "
+"changed number or random string"
+msgstr ""
+"(0) - возвращает измененные результаты, например, слегка измененное "
+"изображение, слегка измененное число или случайную строку"
+
+#: ../content/wrappers/webgl.md:block 7 (unordered list)
+msgid ""
+"(1) - return bottom values - such as zero, empty string, empty image, null, "
+"etc."
+msgstr ""
+"(1) - возвращает нижние значения - например, ноль, пустую строку, пустое "
+"изображение, null и т. д."
+
+#: ../content/wrappers/webgl.md:block 8 (paragraph)
+msgid ""
+"Level 0 is trying to force WebGL fingeprint to be unique on every domain and"
+" every session. This can be effective when used with other wrappers with "
+"same options. This level causes breakage of websites using WebGL only "
+"rarely. Level 1 is trying to return as little information as possible while "
+"being consistent across domains and sessions. This level can cause breakage "
+"on majority of websites using WebGL."
+msgstr ""
+"Level 0 пытается заставить WebGL fingereprint быть уникальным для каждого "
+"домена и каждой сессии. Это может быть эффективно при использовании других "
+"оберток с теми же параметрами. Этот уровень лишь изредка приводит к поломке "
+"сайтов, использующих WebGL. Уровень 1 - попытка вернуть как можно меньше "
+"информации, оставаясь при этом последовательной на всех доменах и сессиях. "
+"Этот уровень может привести к поломке большинства сайтов, использующих WebGL."
+
+#: ../content/wrappers/webgl.md:block 9 (paragraph)
+msgid ""
+"**Note**: Both approaches are detectable by a fingerprinter that checks if a"
+" predetermined image is the same as the read one or if specific function "
+"returns expected value. Nevertheless, the aim of the wrappers is to limit "
+"the finerprintability."
+msgstr ""
+"**Примечание**: Оба подхода можно обнаружить с помощью фингерпринтера, "
+"который проверяет, совпадает ли заданное изображение с прочитанным или "
+"возвращает ли определенная функция ожидаемое значение. Тем не менее, цель "
+"обёрток - ограничить возможность тонкого отпечатка."
+
+#: ../content/wrappers/xr.md:block 1 (paragraph)
+msgid "Title: Web XR Filename: ../common/wrappingS-XR.js"
+msgstr "Название: Web XR Filename: ../common/wrappingS-XR.js"
+
+#: ../content/wrappers/xr.md:block 2 (paragraph)
+msgid ""
+"navigator.xr allows any page script to learn the VR displays attached to the"
+" computer and more."
+msgstr ""
+"navigator.xr позволяет любому скрипту страницы изучать VR-дисплеи, "
+"подключенные к компьютеру, и многое другое."
+
+#: ../content/wrappers/xr.md:block 3 (paragraph)
+msgid ""
+"U. Iqbal, S. Englehardt and Z. Shafiq, \"Fingerprinting the Fingerprinters: "
+"Learning to Detect Browser Fingerprinting Behaviors,\" in 2021 2021 IEEE "
+"Symposium on Security and Privacy (SP), San Francisco, CA, US, 2021 pp. "
+"283-301 observed (https://github.com/uiowa-irl/FP-"
+"Inspector/blob/master/Data/potential_fingerprinting_APIs.md) that the "
+"orginal WebVR API is used in the wild to fingerprint users. As it is likely "
+"that only a minority of users have a VR display connected and the API "
+"provides additional information on the HW, it is likely that users with a VR"
+" display connected are easily fingerprintable."
+msgstr ""
+"U. Икбал, С. Энглехардт и З. Шафик, \"\"Отпечатки пальцев\": Обучение "
+"обнаружению отпечатков браузеров\", 2021 2021 IEEE Симпозиум по безопасности "
+"и конфиденциальности (SP), Сан-Франциско, Калифорния, США, 2021 стр. 283-301 "
+"заметили (https://github.com/uiowa-irl/FP-Inspector/blob/master/Data/"
+"potential_fingerprinting_APIs.md), что оригинальный WebVR API используется в "
+"дикой природе для отпечатков пользователей. Поскольку, скорее всего, только "
+"у меньшинства пользователей подключен VR-дисплей, а API предоставляет "
+"дополнительную информацию о HW, вполне вероятно, что пользователи с "
+"подключенным VR-дисплеем легко поддаются дактилоскопии."
+
+#: ../content/wrappers/xr.md:block 4 (paragraph)
+msgid ""
+"As all the API calls are accessible through the navigator.xr API, we provide"
+" a single mitigation. We disable the API completely. This might need to be "
+"revised once this API is commonly enabled in browsers."
+msgstr ""
+"Поскольку все вызовы API доступны через API navigator.xr, мы предлагаем одно "
+"смягчение. Мы полностью отключаем API. Возможно, потребуется пересмотреть "
+"это решение, когда этот API будет обычно включен в браузерах."

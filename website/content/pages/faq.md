@@ -164,6 +164,18 @@ calls. See the highlighted column:
 ![Tweaking JSS mode](/images/faq/jss_tweaking.png)
 
 
+#### JShelter breakes pages hosted by Cloudflare
+
+Yes, this is not intended and we want to fix this but that will likely take us some time. In the meantime consider the following change of the configuration:
+
+1. Globally set challenges.cloudflare.com to Strict JSS protection with Strict Worker protection.
+2. Disable FPD for the affected domain (even if it is in passive mode).
+3. Set Worker protection to Strict for the domain.
+
+Please report to [our issue tracker](https://pagure.io/JShelter/webextension/issue/148#comment-986182) any web page that does not work with the configuration steps above. Please, be specific with the URL and explain your configuration.
+
+(For further information have a look at [our issue tracker](https://pagure.io/JShelter/webextension/issue/148#comment-986182).
+
 #### How can I fix videos if they fail to play or retrieve data in time?
 
 JShelter reimplements more than 100 JavaScript APIs. However, pages can use several ways to access the
@@ -504,6 +516,8 @@ users, we suggest that you use Tor Browser.
 You cannot tweak Firefox Fingerprinting Protection. You must activate all or nothing. JShelter
 provides options to modify behavior per domain.
 
+For more information, you might want to have a look at the [bachelor thesis of Juraj Filip Kramec](https://dspace.vut.cz/server/api/core/bitstreams/a4bb937f-58da-482d-9540-9087f5ddb0cd/content) ([backup link](https://lists.nongnu.org/archive/html/js-shield/2025-09/pdfdiDMrM33ia.pdf)). Currently, we do not plan any change in JShelter related to resistFingerprinting (see section 5.4 of the thesis for the reasoning).
+
 #### Should I install JShelter if I am using Brave browser?
 
 Many JShelter protections come from Brave. While JShelter offers some additional protections, the
@@ -612,37 +626,17 @@ Additionally [ff00::]
 
 Some tools can see such a request, but it will never leave your browser.
 
-#### Does NBS work the same way in Firefox and Chromium-based browsers?
+#### What are the limitations of Manifest v3 in Chromium-based browsers?
 
-No. Firefox allows webextensions to perform DNS resolution of the domain name that the browser is
-about to get information from. The resolution of the DNS name to an IP address is crucial for
-FPD. As Firefox allows to perform the resolution before any request leaves the browser, JShelter can
-prevent each attempt to cross the network boundary.
+JShelter depends on the [blocking Web Request API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest) that is supported by Firefox and was supported in Chromium-based browsers. However, Chromium-based browsers [no longer support](/mv3/) the blocking Web Request API. Consequently, NBS and blocking behavior of FPD is not available in all Chromium-based browsers.
 
-Chromium-based browsers do not offer the DNS resolution APIs. JShelter collects resolution results in
-a cache that is filled during the processing of each request (after the browser makes the request).
-That means that the first request for each domain name goes through. JShleter blocks all subsequent
-requests only.
-
-Keep in mind that an adversary can change the domain with each request. For example, the attacker
-can use a.attacker.com, b.a.attacker.com, c.b.a.attacker.com in sequence for its requests to go
-through. So it is easy for an attacker to bypass NBS. In practice, we know about attackers that do
-not change domain names (for example, see [our blog](/localportscanning/)). So we keep the NBS in
-Chromium-based browsers, even though it is not perfect.
+JShelter creates [wrappers](#what-is-a-wrapper) to modify JavaScript environment. The code that is injected to a page is generated based on the user preferences. So the behavior can be changed according to user preferences. The injection of a code generated on the fly had not need any additional permission. However, [Google's Manifest V3](/mv3/) added a new, hard-to-obtain, permission that enables web extensions to inject a custom code to the webpages. Consequently, JShelter and other browser extensions cannot work anymore on Chromium-based browsers unless the user switches on the <em>Developer mode</em> in <strong>chrome://extensions</strong> (more information on [Google's developers site](https://developer.chrome.com/docs/extensions/reference/api/userScripts#chrome_versions_prior_to_138_developer_mode_toggle]). We are exploring other possibilities how to inject site-specific code.
 
 #### Do you support Firefox for Android?
 
 We tested JShelter in Firefox for Android in the past and it worked as expected. We do not test
 JShelter in Firefox for Android regularly but a volunteer that tracks the status of JShelter in
 Firefox for Android is welcomed.
-
-##### I cannot see JShelter listed in the addons supported by Firefox for Android.
-
-For whatever reason, Mozilla decided to only present [a small number of curated extensions](https://support.mozilla.org/en-US/kb/find-and-install-add-ons-firefox-android) in their mobile application by default. There are some great extensions there like uBlock Origin, NoScript, and DarkReader, but JShelter was not one of them.
-
-You should be able to workaround the limitations by creating a [collection with JShelter](https://www.androidpolice.com/install-add-on-extension-mozilla-firefox-android/).
-
-A change in the policy of the default extensions listed by Addons Mozilla.org is out of our control.
 
 ### Other questions
 

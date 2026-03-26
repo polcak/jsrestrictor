@@ -93,8 +93,22 @@
   </nav>
 
   <div {% if title == "Home" %} id="home" {% endif %} class="wrapper">
-    <div class="content-wrapper container">
 
+    <aside class="language-menu">
+      <div id="select-language">
+        <legend><i class="fa fa-globe" aria-hidden="true"></i> Switch to </legend>
+        <label for="language-selector" class="visually-hidden">Select your preferred language</label>
+        <div class="select">
+          <select id="language-selector" name="language">
+            <option value="en">English (US)</option>
+            <option value="pt">Português</option>
+            <option value="ru">Русский</option>
+          </select>
+        </div>
+      </div>
+    </aside>
+
+    <div class="content-wrapper container">
       {% block sidebar %}
       <div class="sidebar-overlay"></div>
       <div class="sidebar">
@@ -107,7 +121,7 @@
               </a>
               {% set slug = output_file.split('/')[0] %}
               <ul>
-                <li><a href="{{ SITEURL }}/">Home</a></li>
+                <li><a href="{{ SITEURL }}/">{{ HOME }}</a></li>
                 <li {% if slug == 'blog' %} class="active" {% endif %}><a href="{{ SITEURL }}/blog/">Blog</a></li>
                 {% for pagename in ['faq', 'threatmodel', 'install', 'permissions', 'versions', 'credits', 'license'] %}
                 {% set p = (pages|get_by_slug(pagename)) %}
@@ -123,33 +137,58 @@
                 {% endfor %}
               </ul>
             <li class="menu-heading">
-              <strong>Key protection</strong>
+              <strong>{{ KEY_PROTECTION }}</strong>
               <ul>
+                {% for pagename in ['levels', 'nbs', 'fpd'] %}
+                {% set p = (pages|get_by_slug(pagename)) %}
+                {% if p %}
+                {% if pagename == slug %}
+                <li class="active">
+                  {% else %}
+                <li>
+                  {% endif %}
+                  <a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {# 
                 <li {% if slug == 'levels' %} class="active" {% endif %}><a href="{{ SITEURL }}/levels">JavaScript Shield</a></li>
                 <li {% if slug == 'nbs' %} class="active" {% endif %}><a href="{{ SITEURL }}/nbs">Network Boundary Shield</a></li>
                 <li {% if slug == 'fpd' %} class="active" {% endif %}><a href="{{ SITEURL }}/fpd">Fingerprint Detector</a></li>
+                #}
               </ul>
             </li>
             <li class="menu-heading">
-              <strong>Developer notes</strong>
+              <strong>{{ DEVELOPER_NOTES }}</strong>
               <ul>
-                {% for pagename in ['build', 'new-wrapper', 'coding-style'] %}
-                {% set p = (pages|get_by_slug(pagename)) %}
+                {% for pagename in ['build', 'new-wrapper', 'coding-style', 'i18n_developers', 'unit_tests', 'integration_tests'] %}
+                {% set p = (pages|get_by_slug(pagename)) or (articles|get_by_slug(pagename))%}
                 {% if p %}
-                <li {% if pagename == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/{{ pagename }}/">{{ p.title }}</a></li>
+                <li {% if pagename == slug %} class="active" {% endif %}>
+                  <a href="{{ SITEURL }}/{{ pagename }}/">
+                    {% if 'i18n_developers' == pagename %}
+                    i18n
+                    {% else %}
+                    {{ p.title }}
+                    {% endif %}
+                  </a>
+                </li>
                 {% endif %}
                 {% endfor %}
-                <li {% if 'i18n_developers' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/i18n_developers/">I18n</a></li>
-                <li {% if 'unit_tests' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/unit_tests/">Unit tests</a></li>
-                <li {% if 'integration_tests' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/integration_tests/">Integration tests</a></li>
-                <li><a href="https://pagure.io/JShelter/webextension">View source code</a></li>
+                <li><a href="https://pagure.io/JShelter/webextension">{{ VIEW_SOURCE_CODE }}</a></li>
               </ul>
             </li>
             <li class="menu-heading">
-              <strong>Notes for translators</strong>
+              <strong>{{ NOTES_FOR_TRANSLATORS }}</strong>
               <ul>
-                <li {% if 'i18n' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/i18n/">Instructions</a></li>
-                <li><a href="https://hosted.weblate.org/projects/jshelter/">Translate at Weblate</a></li>
+                <li {% if 'i18n' == slug %} class="active" {% endif %}><a href="{{ SITEURL }}/i18n/">{{ TRANSLATION_INSTRUCTIONS }}</a></li>
+                <li><a href="https://hosted.weblate.org/projects/jshelter/">{{ TRANSLATION_WEBLATE }}</a></li>
+                {% set ptw = articles|get_by_slug('i18n_website') %}
+                <li {% if 'i18n_website' == slug %} class="active" {% endif %}>
+                  <a href="{{ SITEURL }}/i18n_website/">
+                    {{ ptw.title }}
+                  </a>
+                </li>
               </ul>
             </li>
           </ul>
@@ -237,18 +276,7 @@
   </div><!-- /.content-wrapper.container -->
 
   {% block extrascripts %}{% endblock %}
-  <script>
-    // mobile navigation
-    var navBurguer = document.getElementsByClassName('navbar-burger')[0];
-    var sidebarNav = document.getElementsByClassName('sidebar')[0];
-    var sidebarOverlay = document.getElementsByClassName('sidebar-overlay')[0];
-
-    navBurguer.onclick = function() {
-      navBurguer.classList.toggle('is-active');
-      sidebarNav.classList.toggle('is-shown');
-      sidebarOverlay.classList.toggle('is-shown');
-    }
-  </script>
+  <script src="/theme/js/nav-lang.js"></script>
 
 </body>
 

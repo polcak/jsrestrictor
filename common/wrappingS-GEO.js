@@ -30,8 +30,8 @@
  *
  * The goal is to prevent leaks of user current position. The Geolocation API also provides access
  * to high precision timestamps which can be used to various web attacks (see for example,
- * http://www.jucs.org/jucs_21_9/clock_skew_based_computer,
- * https://lirias.kuleuven.be/retrieve/389086).
+ * <http://www.jucs.org/jucs_21_9/clock_skew_based_computer>,
+ * <https://lirias.kuleuven.be/retrieve/389086>).
  *
  * Although it is true that the user needs to specificaly approve access to location facilities,
  * these wrappers aim on improving the control of the precision of the geolocation.

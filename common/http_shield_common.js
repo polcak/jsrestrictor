@@ -28,7 +28,6 @@
  * \brief The Network Boundary Shield (NBS) is a protection against attacks from an external network (the Internet)
  * to an internal network - especially against a reconnaissance attacks when a web browser is abused as a proxy.
  * See, for example, the ForcePoint report https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf,
- * https://www.forcepoint.com/blog/x-labs/attacking-internal-network-public-internet-using-browser-proxy.
  * Another example is the detection of applications running on the localhost, see
  * https://jshelter.org/localportscanning/.
  *
