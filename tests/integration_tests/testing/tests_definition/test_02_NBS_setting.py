@@ -25,6 +25,7 @@ import pytest
 from selenium.webdriver.common.by import By
 from time import sleep
 from web_browser_type import BrowserType
+from web_browser_shared import get_shared_browser
 
 
 def switch_NBS_setting(browser):
@@ -42,6 +43,7 @@ def get_NBS_setting(browser):
 
 ## Test turnning NBS off in popup.
 ## Sleep 0.5 second to changes take effect.
+@pytest.mark.xfail(get_shared_browser().type == BrowserType.CHROME, reason="MV3 does not allow to implement NBS")
 def test_switching_NBS(browser):
     if browser.type == BrowserType.CHROME:
         # Not able to test NBS switch in Google Chrome.
