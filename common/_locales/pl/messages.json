@@ -236,7 +236,7 @@
 		"description": "gamepads group"
 	},
 	"ButtonSignExpandOneCharacterDown": {
-		"message": "⤵",
+		"message": "▼",
 		"description": "A button caption that can be used generically by JShelter, it should contain a single character that intuitively tells the user that by clicking the button, more information will be shown"
 	},
 	"jssgroupWASMDisabled": {
@@ -518,7 +518,7 @@
 		"description": "The name of JSS L1 that is used at various places in the UI"
 	},
 	"ManageWhitelist": {
-		"message": "Zarządzaj listą wyjątków ⤵",
+		"message": "Zarządzaj listą wyjątków ▼",
 		"description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list would appear below (the arrow at the end)."
 	},
 	"jssgroupXMLHttpRequestRequests": {
@@ -605,7 +605,7 @@
 		"description": "Displayed in NBS options, notifications about blocked requests are globally enabled"
 	},
 	"HideWhitelist": {
-		"message": "Ukryj listę wyjątków ⤵",
+		"message": "Ukryj listę wyjątków ▲",
 		"description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list is located below (the arrow at the end)."
 	},
 	"fpdDetectionDefaultDescription": {

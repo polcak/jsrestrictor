@@ -816,7 +816,7 @@
 		"description": "Displayed in text inputs that expect a domain"
 	},
 	"ButtonSignExpandOneCharacterDown": {
-		"message": "⤵",
+		"message": "▼",
 		"description": "A button caption that can be used generically by JShelter, it should contain a single character that intuitively tells the user that by clicking the button, more information will be shown"
 	},
 	"ButtonSave": {
@@ -870,11 +870,11 @@
 		"description": "A button caption that can be used generically by JShelter, atm it is displayed in JSS advanced options page"
 	},
 	"ManageWhitelist": {
-		"message": "Spravuj seznam domén s výjimkou ⤵",
+		"message": "Spravuj seznam domén s výjimkou ▼",
 		"description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list would appear below (the arrow at the end)."
 	},
 	"HideWhitelist": {
-		"message": "Skrýj seznam domén s výjimkou ⤵",
+		"message": "Skrýj seznam domén s výjimkou ▲",
 		"description": "A button caption that can be used generically by JShelter, e.g. to fine-tune NBS and FPD; Please indicate that the list is located below (the arrow at the end)."
 	},
 	"ButtonDisableForDomain": {

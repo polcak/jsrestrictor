@@ -367,10 +367,13 @@ async function getCurrentSite() {
 }
 
 
-document.getElementById("severity_value").addEventListener("click", async function () {
+const openSeverityDetail = async () => {
 	let [tab] = await browser.tabs.query({currentWindow: true, active: true});
 	browser.runtime.sendMessage({purpose: "fpd-create-report", tabId: tab.id});
-});
+};
+
+document.getElementById("severity-detail").addEventListener("click", openSeverityDetail);
+document.getElementById("severity_value").addEventListener("click", openSeverityDetail);
 
 /// Get fingerprinting severity from FPD and show it in a popup
 async function fpdGetSeverity() {
@@ -383,7 +386,7 @@ async function fpdGetSeverity() {
 			document.getElementById("severity_container").classList.remove("hidden");
 		}
 		if (response[2]) {
-			element.style.backgroundColor = response[2];
+			element.style.color = response[2];
 		}
 	}
 	setTimeout(fpdGetSeverity, 2000);
@@ -447,4 +450,50 @@ addEventListener("DOMContentLoaded", async () => {
 	}
 	load_on_off_switch("nbs");
 	load_on_off_switch("fpd");
+});
+
+/// Reusing detail buttons from options.js
+function setupHelpButtons() {
+	const helpConfig = [
+		{
+			labelSelector: 'label[for="jss-switch"]', // JavaScript Shield label
+			helpSelector: '#js-help-text'
+		},
+		{
+			labelSelector: 'label[for="nbs-switch"]', // Network Boundary Shield label
+			helpSelector: '#nbs-help-text'
+		},
+		{
+			labelSelector: 'label[for="fpd-switch"]', // Fingerprint Detector label
+			helpSelector: '#fpd-help-text'
+		}
+	];
+
+	helpConfig.forEach(({ labelSelector, helpSelector }) => {
+		const label = document.querySelector(labelSelector);
+		const helpText = document.querySelector(helpSelector);
+
+		if (!label || !helpText) return;
+
+		// Hide help text initially
+		helpText.classList.add("hidden_descr");
+
+		// Create the ? button
+		const btn = document.createElement("button");
+		btn.textContent = "?";
+		btn.classList.add("help");
+
+		// Toggle behavior
+		btn.addEventListener("click", ev => {
+		    helpText.classList.toggle("hidden_descr");
+		    ev.preventDefault();
+		});
+
+		// Insert ? button after the label
+		label.insertAdjacentElement("afterend", btn);
+	});
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+	setupHelpButtons();
 });

@@ -233,6 +233,8 @@ fieldset {
 
 #current-level-tweaks input[type=range], #builtin-jss-tweaks input[type=range] {
 	pointer-events:none; /* do not allow modifications, https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events */
+	accent-color: #000;
+	opacity: 0.5;
 }
 
 .protection-title {
@@ -273,4 +275,8 @@ form {
 
 #builtin-jss-tweaks .tweak_domain {
 	color: var(--title-color);
+}
+
+input.tlev[type=range] {
+	accent-color: var(--tlev-color);
 }

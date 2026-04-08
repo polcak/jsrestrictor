@@ -81,7 +81,7 @@ function createReport(data) {
 			if (groups.all[group].description) {
 				html += "<div id=\"" + group + "\" class=\"fpd-group access\">";
 				html += "<h2>" + group + "</h2>";
-				html += `<button class="help" id="expand${group}" >⤵</button>`;
+				html += `<button class="help" id="expand${group}" >▼</button>`;
 				html += "<section>";
 				html += "<p>" + groups.all[group].description + "</p>";
 			}

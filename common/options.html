@@ -88,7 +88,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<h2 class="shield-onoff-label" for="nbs-switch" data-localize="NetworkBoundaryShield">Network Boundary Shield</h2>
 			<label class="switch">
 				<input id="nbs-switch" type="checkbox" checked>
-				<span class="slider"></span>
+				<span class="slider">
+					<span>OFF</span>
+					<span>ON</span>
+				</span>
 			</label>
 		</div>
 		<div class="nbs_description" data-localize="NBSDescription" htmltranslation></div>
@@ -98,8 +101,8 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			</div>
 		</fieldset>
 		<fieldset>
-			<button id="nbs-whitelist-show" class="jsr-button" data-localize="ManageWhitelist">Manage whitelist ⤵</button>
-			<button id="nbs-whitelist-hide" class="jsr-button hidden" data-localize="HideWhitelist">Hide whitelist ⤵</button>
+			<button id="nbs-whitelist-show" class="jsr-button" data-localize="ManageWhitelist">Manage whitelist ▼</button>
+			<button id="nbs-whitelist-hide" class="jsr-button hidden" data-localize="HideWhitelist">Hide whitelist ▲</button>
 		</fieldset>
 		<fieldset id="nbs-whitelist-container" class="hidden">
 			<div>
@@ -126,7 +129,10 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<h2 class="shield-onoff-label" for="fpd-switch" data-localize="FingerprintDetector">Fingerprint Detector</h2>
 			<label class="switch">
 				<input id="fpd-switch" type="checkbox" checked>
-				<span class="slider"></span>
+				<span class="slider">
+					<span>OFF</span>
+					<span>ON</span>
+				</span>
 			</label>
 		</div>
 		<div class="fpd_description" data-localize="FPDDescription" htmltranslation></div>
@@ -136,8 +142,8 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			</div>
 		</fieldset>
 		<fieldset>
-			<button id="fpd-whitelist-show" class="jsr-button" data-localize="ManageWhitelist">Manage whitelist ⤵</button>
-			<button id="fpd-whitelist-hide" class="jsr-button hidden" data-localize="HideWhitelist">Hide whitelist ⤵</button>
+			<button id="fpd-whitelist-show" class="jsr-button" data-localize="ManageWhitelist">Manage whitelist ▼</button>
+			<button id="fpd-whitelist-hide" class="jsr-button hidden" data-localize="HideWhitelist">Hide whitelist ▲</button>
 		</fieldset>
 		<fieldset id="fpd-whitelist-container" class="hidden">
 			<div>
@@ -169,7 +175,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<div class="tweak">
 				<input class="tlev" type="range" min="0" max="3" /><output></output>
 			</div>
-			<button class="help">⤵</button>
+			<button class="help">▼</button>
 			<div class="tweakfill"></div>
 			<div class="explainer hidden_descr">
 				<span class="description"></span>

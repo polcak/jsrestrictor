@@ -41,12 +41,17 @@ SPDX-License-Identifier: GPL-3.0-or-later
 
 		<section id="level_controls">
 			<div class="section-header toggle">
-				<label for="jss-switch" data-localize="javascriptShield">JavaScript Shield</label>
+				<div class="align-left">
+					<label for="jss-switch" data-localize="javascriptShield"> JavaScript Shield </label>
+				</div>
 				<input type="checkbox" id="js-toggle" name="js-toggle" title="Edit JavaScript Shield settings" />
 				<label for="js-toggle" id="js-toggle-btn" class="js-toggle" data-localize="modifyJSSPopup">Modify</label>
 				<label class="switch">
 					<input id="jss-switch" type="checkbox" checked>
-					<label for="jss-switch" class="slider"></label>
+					<label for="jss-switch" class="slider">
+						<span>OFF</span>
+						<span>ON</span>
+					</label>
 				</label>
 			</div>
 			<div id="js-settings" class="section-body">
@@ -64,7 +69,6 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			</div>
 		</section>
 
-
 		<template id="tweak-head">
 			<span class="head" data-localize="wrappers">Group of APIs</span>
 			<span class="head" data-localize="levelOfDefense">Level of defense</span></span><span></span>
@@ -75,7 +79,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			<div class="tweak">
 				<input class="tlev" type="range" min="0" max="3" /><output></output>
 			</div>
-			<button class="help">⤵</button>
+			<button class="help">▼</button>
 			<div class="hits"></div>
 			<div class="explainer hidden_descr">
 				<span class="description"></span>
@@ -86,34 +90,52 @@ SPDX-License-Identifier: GPL-3.0-or-later
 			</div>
 		</template>
 
+		<div id="js-help-text" class="hidden_help_text" data-localize="JavascriptShieldDescription" htmltranslation></div>
 
 			<section id="nbs_whitelist" class="mv2">
 				<p class="off_message" data-localize="NBSgloballyOff">Network Boundary Shield is globally off.</p>
 				<div class="switch_wrapper">
+					<div class="align-left switch_wrapper">
 						<label for="nbs-switch" data-localize="networkBoundaryShield">Network Boundary Shield</label>
-						<label class="switch">
-							<input id="nbs-switch" type="checkbox" checked>
-							<label for="nbs-switch" class="slider"></label>
+						<div class="hidden_help_text"></div>
+					</div>
+					<label class="switch">
+						<input id="nbs-switch" type="checkbox" checked>
+						<label for="nbs-switch" class="slider">
+							<span>OFF</span>
+							<span>ON</span>
+					</label>
 					</label>
 				</div>
 			</div>
 	   </section>
 
+			<div id="nbs-help-text" class="hidden_help_text" data-localize="NBSDescription" htmltranslation></div>
+
 		 <section id="fpd_whitelist">
 				<p class="off_message" data-localize="FPDgloballyOff">Fingerprint Detector is globally off.</p>
 				<div class="switch_wrapper">
-					<label for="fpd-switch" data-localize="fingerprintDetector">Fingerprint Detector</label>
+					<div class="align-left switch_wrapper">
+						<label for="fpd-switch" data-localize="fingerprintDetector">Fingerprint Detector</label>
+						<div class="hidden_help_text"></div>
+					</div>
 					<label class="switch">
 						<input id="fpd-switch" type="checkbox" checked>
-						<label for="fpd-switch" class="slider"></label>
+						<label for="fpd-switch" class="slider">
+							<span>OFF</span>
+							<span>ON</span>
+						</label>
 					</label>
 				</div>
 			</section>
 
+			<div id="fpd-help-text" class="hidden_help_text" data-localize="FPDDescription" htmltranslation></div>
+
 			<div id="severity_container" class="hidden">
 				<label for="severity_value" data-localize="FingerprintQualityLabel">⤷
 					Likelihood that the page fingerprinted you: </label>
-					<button id="severity_value"></button>
+					<span id="severity_value" aria-live="polite"></span>
+					<button id="severity-detail" type="button">Detail</button>
 			</div>
 
 	</content>

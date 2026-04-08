@@ -7,8 +7,8 @@
 
 :root {
 	--text-color: #333333; /* Very dark grey */
-	--background-color: white;
-	--background-color-input: white;
+	--color-background: white;
+	--color-background-input: white;
 	--light-logo: #f5ab8d; /* Logo light red */
 	--light-logo-contrast: #333333; /* Very dark grey */
 	--dark-logo: #e76f51; /* Logo dark red */
@@ -16,72 +16,108 @@
 	--help-icon-color: white;
 	--help-icon-background: blue;
 	--title-color: var(--dark-logo);
-	--good-news: darkgreen; /* Combine with background color */
+	--good-news: green; /* Combine with background color */
 	--separator-color: grey; /* Combine with background color */
-	--button-background-color: #dddddd; /* Light grey */
-	--button-text-color: black;
-	--button-background-active-color: var(--light-logo);
-	--button-text-active-color: black;
-	--button-text-disabled-color: #888;
-	--button-background-hover-color: #c9c9c9; /* low dark grey */
-	--button-text-hover-color: black;
+	--button-color-background: var(--dark-logo);
+	--button-color-foreground: white;
+	--button-active-color-foreground: white;
+	--button-active-color-background: var(--dark-logo);
+	--button-active-color-border: black;
+	--button-disabled-color-background: #888;
+	--button-disabled-color-foreground: lightgray;
+	--button-hover-color-background: var(--light-logo);
+	--button-hover-color-foreground: black;
+	--button-level-color-background: lightgray;
+	--button-level-color-foreground: black;
+	--tlev-color: var(--dark-logo);
 	--menu-color: blue;
 	--menu-background: white;
 	--attention-color: var(--dark-logo-contrast);
 	--attention-background: var(--dark-logo);
-	--slider-bg-color: white;
-	--slider-text-color: black;
-	--slider-off-color: gray;
-	--slider-on-color: var(--light-logo);
-	--slider-text-color: black;
+	--slider-color-background: white;
+	--slider-color-foreground: black;
+	--slider-on-color-background: var(--light-logo);
+	--slider-off-color-background: gray;
+	--slider-secondary-text-on-color: white;
+	--slider-secondary-text-off-color: black;
+	--slider-on-hover-color-background: var(--dark-logo);
+	--slider-on-hover-color-foreground: white;
+	--slider-off-hover-color-background: rgb(69, 69, 69);
+	--slider-off-hover-color-foreground: white;
 }
 
 @media screen and (prefers-color-scheme: dark) {
 	:root {
 		--text-color: #e8e6e3; /* Almost white */
-		--background-color: #181a1b; /* Very very dark grey */
-		--background-color-input: var(--background-color);
+		--color-background: #333333; /* Very very dark grey */
+		--color-background-input: var(--color-background);
 		--help-icon-color: blue;
 		--help-icon-background: white;
 		--title-color: var(--light-logo);
 		--good-news: lightgreen;
 		--separator-color: lightgrey;
-		--button-background-color:	#c9c9c9; /* low dark grey */
-		--button-text-color: black;
-		--button-background-active-color: var(--dark-logo);
-		--button-text-active-color: var(--dark-logo-contrast);
-		--button-background-hover-color: darkgrey; /* Light grey */
-		--button-text-hover-color: white;
 		--menu-color: lightblue;
-		--menu-background: var(--background-color);
+		--menu-background: var(--color-background);
 		--attention-color: var(--light-logo-contrast);
 		--attention-background: var(--light-logo);
+		--button-active-color-border: white;
 	}
+
+.level {
+	background-color: var(--button-level-color-background);
+	color: var(--button-level-color-foreground);
+}
+
+.level:hover {
+	background-color: var(--button-hover-color-background);
+	color: var(--button-hover-color-foreground);
+}
+
+.level.active {
+	background-color: var(--button-active-color-background);
+	color: var(--button-active-color-foreground);
+}
 }
 
 body {
 	color: var(--text-color);
-	background-color: var(--background-color);
+	background-color: var(--color-background);
 }
 
 input[type=text], select, textarea {
 	color: var(--text-color);
-	background-color: var(--background-color-input);
+	background-color: var(--color-background-input);
 }
 
-button {
-	background-color: var(--button-background-color);
-	color: var(--button-text-color);
+button, .js-toggle {
+	background: var(--button-color-background);
+	border-radius: 5px;
+	box-shadow: var(--button-color-background)s 0 10px 20px -10px;
+	cursor: pointer;
+	font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
+	width: fit-content;
+	padding: 5px;
+	margin: 2px 2px 2px 2px;
+	outline: 0 solid transparent;
+	border: 0 none;
+	color: var(--button-color-foreground);
+	font-weight: bold;
 }
 
 button:disabled {
-	color: var(--button-text-disabled-color);
+	background-color: var(--button-disabled-color-background);
+	color: var(--button-disabled-color-foreground);
+	visibility: hidden;
+}
+
+button:hover:disabled {
+	cursor: not-allowed;
 }
 
 button:hover:not(:disabled) {
 	cursor: pointer;
-	background-color: var(--button-background-hover-color);
-	color: var(--button-text-hover-color);
+	background-color: var(--button-hover-color-background);
+	color: var(--button-hover-color-foreground);
 }
 
 #levels-list button {
@@ -94,22 +130,21 @@ h1, h2, h3, h4, h5, h6 {
 
 .level {
 	font-weight: bold;
-	border: 2px solid var(--separator-color);
 	border-radius: 0.5ex;
-	background-color: var(--button-background-color);
-	color: var(--button-text-color);
+	background-color: var(--button-level-color-background);
+	color: var(--button-level-color-foreground);
 }
 
 .level:hover {
 	cursor: pointer;
-	background-color: var(--button-background-hover-color);
-	color: var(--button-text-hover-color);
+	background-color: var(--button-hover-color-background);
+	color: var(--button-hover-color-foreground);
 }
 
 .active {
-	border: 2px solid var(--button-text-active-color);
-	background-color: var(--button-background-active-color);
-	color: var(--button-text-active-color);
+	background-color: var(--button-active-color-background);
+    color: var(--button-active-color-foreground);
+	border: 2px solid var(--button-active-color-border);
 }
 
 .help {
@@ -146,9 +181,11 @@ a:hover, a:active {
 .switch {
 	position: relative;
 	display: inline-block;
-	width: 64px;
-	height: 34px;
+	width: 100px;
+	height: 30px;
 	margin-left: 3px;
+	background: var(--slider-off-color-background);
+	border-radius: 100px;
 }
 
 /* Hide default HTML checkbox */
@@ -156,7 +193,6 @@ a:hover, a:active {
 	opacity: 0;
 	width: 0;
 	height: 0;
-
 }
 
 /* ON/OFF slider */
@@ -167,46 +203,63 @@ a:hover, a:active {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: var(--slider-off-color);
-	-webkit-transition: .4s;
-	transition: .4s;
+	background-color: var(--slider-off-color-background);
+	transition: 0.4s;
+	-webkit-transition: 0.4s;
+	color: var(--slider-color-foreground);
 	font-size: 14px;
 	font-weight: bold;
-	text-align: center;
-	vertical-align: middle;
-	line-height: 25px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	border-radius: 100px;
 }
 
 .slider:before {
 	position: absolute;
-	content: "";
-	height: 26px;
-	width: 30px;
-	left: 4px;
-	bottom: 4px;
-	background-color: var(--slider-bg-color);
-	-webkit-transition: .4s;
-	transition: .4s;
-	color: var(--slider-text-color);
-	content:"__MSG_ShieldOffSlider__";
+	content: "OFF";
+	height: 70%;
+	width: 40%;
+	left: 5%;
+	background-color: var(--slider-color-background);
+	display: grid;
+	align-content: center;
+	justify-content: center;
+	transition: 0.4s;
+	border-radius: 10px;
 }
 
-input:checked + .slider {
-	background-color:  var(--slider-on-color);
+.switch:hover .slider {
+	background-color: var(--slider-off-hover-color-background);
 }
 
-input:focus + .slider {
-	box-shadow: 0 0 1px var(--slider-on-color);
+.switch:hover .slider span:nth-child(2) { /* ON text (inactive when OFF) */
+	color: var(--slider-off-hover-color-foreground);
 }
 
-input:checked + .slider:before {
-	-webkit-transform: translateX(26px);
-	-ms-transform: translateX(26px);
-	transform: translateX(26px);
-	content:"__MSG_ShieldOnSlider__";
-	color: var(--slider-text-color);
+.switch:hover input:checked + .slider {
+	background-color: var(--slider-on-hover-color-background);
 }
 
+.switch:hover input:checked + .slider span:nth-child(1) { /* OFF text (inactive when ON) */
+	color: var(--slider-on-hover-color-foreground);
+}
+
+
+.switch input:checked + .slider {
+	background-color: var(--slider-on-color-background);
+	color: var(--slider-secondary-text-off-color);
+}
+
+.slider span:nth-child(2) {
+	color: var(--slider-secondary-text-on-color);
+}
+
+.switch input:checked + .slider:before {
+	content: "ON";
+	left: 55%;
+	color: var(--slider-color-foreground);
+}
 
 .flex {
 	display: flex;

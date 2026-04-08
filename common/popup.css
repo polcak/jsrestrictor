@@ -106,27 +106,26 @@ label.js-toggle {
 	max-height: 34px;
 	padding: 3.5px;
 	cursor: pointer;
-	border: 1px var(--separator-color) solid;
-	background-color: var(--button-background-color);
-	color: var(--button-text-color);
+	background-color: var(--button-color-background);
+	color: var(--button-color-foreground);
 }
 
 label.js-toggle:hover {
-	background-color: var(--button-background-hover-color);
-	color: var(--button-text-hover-color);
+	background-color: var(--button-hover-color-background);
+	color: var(--button-hover-color-foreground);
 }
 
 input#js-toggle:checked + label {
-	background-color: var(--button-background-active-color);
-	color: var(--button-text-active-color);
+	background-color: var(--button-active-color-background);
+	color: var(--button-active-color-foreground);
 }
 
 input#js-toggle:checked + label:after {
-	content: " -";
+	content: " ▲";
 }
 
 label.js-toggle:after {
-	content: " ⤵"
+	content: " ▼"
 }
 
 .toggle:not(.toggled) ~ .section-body {
@@ -183,6 +182,9 @@ label.js-toggle:after {
 
 .head {
 	font-weight: bold;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .hidden {
@@ -190,13 +192,15 @@ label.js-toggle:after {
 }
 
 #severity_value {
-	color: #e8e6e3;
+	background: transparent;
+	color: inherit;
 	cursor: pointer;
+	font-weight: 700;
+	padding: 0;
 }
 
-#severity_value:hover {
-	color: #e8e6e3;
-	filter: brightness(110%);
+#severity-detail {
+	margin-left: 0.5em;
 }
 
 #level_controls, #nbs_whitelist, #fpd_whitelist {
@@ -205,4 +209,20 @@ label.js-toggle:after {
 
 label[for=severity_value], #severity_value {
 	display: inline !important;
+}
+
+.align-left {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.hits {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+input.tlev[type=range] {
+	accent-color: var(--tlev-color);
 }
