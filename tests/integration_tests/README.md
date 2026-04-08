@@ -36,7 +36,7 @@ You can follow [official Mozilla support](https://support.mozilla.org/en-US/kb/a
 
 Open [testing page](https://polcak.github.io/jsrestrictor/test/test.html) and click the button *Show GPS data*. Firefox will ask you if you want to enable the page to access the location. Check the option *Remember this decision* and then click *Allow*.
 
-The default configuration of Google Chrome is sufficient for integration tests, so the Chrome settings do not need to be changed.
+The default configuration of Google Chrome is sufficient for integration tests, so the Chrome settings do not need to be changed. Nevertheless, one needs to enable userScripts during each test run.
 
 #### <a name="webdrivers">Download web browser drivers</a>
 
