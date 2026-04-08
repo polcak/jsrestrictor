@@ -519,10 +519,9 @@
 		"description": "Explains the protection to the user"
 	},
 	"jssgroupGeolocationRemoveDescription": {
-		"message": "Deaktivuj API.",
+		"message": "Zcela odebrat geolokační služby.",
 		"description": "Explains the protection to the user"
 	},
-
 	"jssgroupPhysicalEnvironmentSensors": {
 		"message": "Senzory okolního prostředí",
 		"description": "physical_environment group"
@@ -1504,7 +1503,7 @@
 		"description": "The level of the number of detected APIs misusable for fingerprinting"
 	},
 	"fpdBlockingSubsequent": {
-		"message": "Budu blokovat další požadavky HTTP.",
+		"message": "Budou blokovány veškeré další požadavky.",
 		"description": "Shown in a notification when FPD starts blocking HTTP requests"
 	},
 	"fpdClickNotificationDetails": {
