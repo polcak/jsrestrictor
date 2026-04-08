@@ -26,6 +26,7 @@ from time import sleep
 from selenium import webdriver
 from selenium.common import exceptions
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -124,23 +125,26 @@ class Browser:
         self._jsr_options_page = ""
         if type == BrowserType.FIREFOX:
             from selenium.webdriver.firefox.options import Options as FirefoxOptions
+            from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
             options = FirefoxOptions()
             firefox_binary_location = get_config("firefox_binary_location")
             if firefox_binary_location:
                 options.binary_location = firefox_binary_location
-            self.driver = webdriver.Firefox(options=options, firefox_profile=webdriver.FirefoxProfile(get_config("firefox_profile")),
-                                            executable_path=get_config("firefox_driver"))
+            options.profile = FirefoxProfile(get_config("firefox_profile"))
+            service = Service(executable_path=get_config("firefox_driver"), log_path='geckodriver.log')
+            self.driver = webdriver.Firefox(service=service, options=options)
             self.real = values_real.init(self.driver)
             self.driver.install_addon(get_config("firefox_jsr_extension"), temporary=True)
             self.find_options_jsr_page_url()
         elif type == BrowserType.CHROME:
-            driver_tmp = webdriver.Chrome(executable_path=get_config("chrome_driver"))
+            service = Service(get_config("chrome_driver"))
+            driver_tmp = webdriver.Chrome(service=service)
             self.real = values_real.init(driver_tmp)
             sleep(1)
             driver_tmp.quit()
             options = Options()
             options.add_extension(get_config("chrome_jsr_extension"))
-            self.driver = webdriver.Chrome(executable_path=get_config("chrome_driver"), options=options)
+            self.driver = webdriver.Chrome(service=service, options=options)
             self.find_options_jsr_page_url()
 
     ## Get current level of JShelter in browser.
