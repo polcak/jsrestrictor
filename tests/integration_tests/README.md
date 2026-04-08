@@ -11,7 +11,7 @@ The integration tests depend on the following packages:
 * [Python 3.5+](https://www.python.org/downloads/)
 * [Python package `pytest`](https://pypi.org/project/pytest/)
 * [Python package `selenium`](https://pypi.org/project/selenium/)
-* [Google Chrome](https://www.google.com/chrome/) - Chromium also work.
+* [Google Chrome](https://www.google.com/chrome/) - Chromium also works.
 * Mozilla Firefox - Be careful, [ESR](https://www.mozilla.org/en-US/firefox/all/#product-desktop-esr), [Developer](https://www.mozilla.org/en-US/firefox/developer/), or [Nightly](https://www.mozilla.org/en-US/firefox/channel/desktop/#nightly) edition are required. The standard edition is not supported.
 * [Web browser drivers](#webdrivers), see below
 
@@ -36,7 +36,7 @@ You can follow [official Mozilla support](https://support.mozilla.org/en-US/kb/a
 
 Open [testing page](https://polcak.github.io/jsrestrictor/test/test.html) and click the button *Show GPS data*. Firefox will ask you if you want to enable the page to access the location. Check the option *Remember this decision* and then click *Allow*.
 
-The default configuration of Google Chrome is sufficient for integration tests, so the Chrome settings do not need to be changed.
+The default configuration of Google Chrome is sufficient for integration tests, so the Chrome settings do not need to be changed. Nevertheless, one needs to enable userScripts during each test run.
 
 #### <a name="webdrivers">Download web browser drivers</a>
 
