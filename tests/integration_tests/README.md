@@ -11,7 +11,7 @@ The integration tests depend on the following packages:
 * [Python 3.5+](https://www.python.org/downloads/)
 * [Python package `pytest`](https://pypi.org/project/pytest/)
 * [Python package `selenium`](https://pypi.org/project/selenium/)
-* [Google Chrome](https://www.google.com/chrome/) - Chromium also work.
+* [Google Chrome](https://www.google.com/chrome/) - Chromium also works.
 * Mozilla Firefox - Be careful, [ESR](https://www.mozilla.org/en-US/firefox/all/#product-desktop-esr), [Developer](https://www.mozilla.org/en-US/firefox/developer/), or [Nightly](https://www.mozilla.org/en-US/firefox/channel/desktop/#nightly) edition are required. The standard edition is not supported.
 * [Web browser drivers](#webdrivers), see below
 
