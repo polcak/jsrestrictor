@@ -49,15 +49,18 @@ def test_switching_NBS(browser):
         # Not able to test NBS switch in Google Chrome.
         # Can not show popup.html in Chrome. Popup.html is not accesible and testable.
         return
-    NBS_setting_values = ['"ON"', '"OFF"']
+    NBS_setting_values = [['"ON"', '"Zap."'], ['"OFF"', '"Vyp."']]
     
     original_setting = get_NBS_setting(browser)
-    original_setting_index = NBS_setting_values.index(original_setting)
+    if original_setting in NBS_setting_values[0]:
+        original_setting_index = 0
+    else:
+        original_setting_index = 1
     
     # Range is saing how many times should NBS be switched.
     for i in range(4):
         switch_NBS_setting(browser)
-        assert get_NBS_setting(browser) == NBS_setting_values[(i + 1 + original_setting_index) % 2]
+        assert get_NBS_setting(browser) in NBS_setting_values[(i + 1 + original_setting_index) % 2]
     
     # Return original value
     if get_NBS_setting(browser) != original_setting:
