@@ -203,27 +203,44 @@
 			original_function: "parent.AudioBuffer.prototype.getChannelData",
 			wrapping_function_args: "channel",
 			/** \fn fake AudioBuffer.prototype.getChannelData
-			 * \brief Returns modified channel data.
+			 * \brief Returns modified channel data while preserving the original buffer.
 			 *
-			 * Calls original function, which returns array with result, then calls function
-			 * audioFarble with returned array as argument - which changes array values according to chosen level.
+			 * Calls the original function to obtain the underlying Float32Array
+			 * representing the requested channel. The original array must not be
+			 * modified because it is part of the internal AudioBuffer state.
+			 *
+			 * Instead, a copy of the array is created and modified according to the
+			 * selected protection level (farbling or white noise).
+			 *
+			 * The modified copy is stored in a WeakMap cache keyed by the original
+			 * array reference. Subsequent calls for the same underlying buffer return
+			 * the cached modified array to preserve object identity expected from the
+			 * native API (i.e. repeated calls should return the same object instance).
 			 */
 			wrapping_function_body: `
-				var floatArr = origGetChannelData.call(this, channel);
-				if (WrapHelper.shared['WEBA_gcd_pool'].has(floatArr)) {
-					return floatArr;
+				var orig = origGetChannelData.call(this, channel);
+				var cache = WrapHelper.shared['WEBA_gcd_cache'];
+			
+				if (!cache) {
+					cache = new WeakMap();
+					WrapHelper.shared['WEBA_gcd_cache'] = cache;
 				}
-				if (behaviour == 0) {
-					audioFarble(floatArr);
+			
+				if (!cache.has(orig)) {
+			
+					var copy = new Float32Array(orig);
+			
+					if (behaviour == 0) {
+						audioFarble(copy);
+					}
+					else if (behaviour == 1) {
+						whiteNoiseFloat(copy);
+					}
+			
+					cache.set(orig, copy);
 				}
-				else if (behaviour == 1) {
-					whiteNoiseFloat(floatArr);
-				}
-				WrapHelper.shared['WEBA_gcd_pool'].add(floatArr);
-				setTimeout(function() {
-						WrapHelper.shared['WEBA_gcd_pool'].delete(floatArr);
-					}, 300000); // Remove the information after 5 minutes, this might need tweaking
-				return floatArr;
+			
+				return cache.get(orig);
 			`,
 		},
 		{
