@@ -1523,17 +1523,6 @@
 	"FPDReportTrackCallersWaiting": {
 		"message": "Обнаружение вызова скрипта в процессе. Подождите, пожалуйста."
 	},
-	"MV3DevmodeRequired": {
-		"message": "Из-за жестких ограничений, введенных <a href=\"$MV3URL$\" target=\"_blank\">Google's Manifest V3</a>, JShelter и другие расширения браузера не могут больше работать на Chromium-основанные браузеры (включая ваш) если вы не включите <em>Developer mode</em> в <strong>chrome://extensions</strong> (<a href=\"$INFOURL$\" target=\"_blank\">больше информации на сайте разработчиков Google</a>).",
-		"placeholders": {
-			"mv3url": {
-				"content": "https://jshelter.org/mv3/"
-			},
-			"infourl": {
-				"content": "https://developer.chrome.com/docs/extensions/reference/api/userScripts#chrome_versions_prior_to_138_developer_mode_toggle"
-			}
-		}
-	},
 	"FPDReportRefresh": {
 		"message": "Обновить отчет"
 	},
