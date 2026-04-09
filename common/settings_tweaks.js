@@ -22,7 +22,7 @@
 /// Tweaks for specific domains that are built-in for all users
 var tweak_domains_builtin = {
 	"docs.google.com": {
-		"explanation": "https://pagure.io/JShelter/webextension/issue/122",
+		"explanation": "https://codeberg.org/JShelter/webextension/issues/122",
 		"level_id": ["1", "2"],
 		"tweaks": {
 			"webworker": 2
@@ -36,14 +36,14 @@ var tweak_domains_builtin = {
 		}
 	},
 	"pad.riseup.net": {
-		"explanation": "https://pagure.io/JShelter/webextension/issue/152",
+		"explanation": "https://codeberg.org/JShelter/webextension/issues/152",
 		"level_id": ["1", "2"],
 		"tweaks": {
 			"webworker": 2
 		}
 	},
 	"kiwi.com": {
-		"explanation": "https://pagure.io/JShelter/webextension/issue/153",
+		"explanation": "https://codeberg.org/JShelter/webextension/issues/153",
 		"level_id": ["1", "2"],
 		"tweaks": {
 			"webworker": 2
@@ -52,7 +52,7 @@ var tweak_domains_builtin = {
 };
 
 // TODO: implement the possibility of community-currated lists of exceptions
-// See https://pagure.io/JShelter/webextension/issue/20
+// See https://codeberg.org/JShelter/webextension/issues/20
 
 // Merge built-in and community-currated exceptions
 /// All domain tweaks that are not created by the local user. Usually, you should

@@ -86,13 +86,13 @@ holds the key in the `message.json`. For example, JShelter defines:
 <label for="nbs-switch" data-localize="networkBoundaryShield">Network Boundary Shield</label>
 ```
 
-We added a [translation file](https://pagure.io/JShelter/webextension/blob/bff8ce9c69ca28c1952898125983429c1f7f8a32/f/common/i18n_translate_dom.js)
+We added a [translation file](https://codeberg.org/JShelter/webextension/src/commit/bff8ce9c69ca28c1952898125983429c1f7f8a32/common/i18n_translate_dom.js#L43)
 `i18n_translate_dom.js` to all HTML pages with translatable elements. The script is
 simple. It finds elements with the correct attributes and forwards the strings to the
 `browser.i18n.getMessage`
 [API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/i18n/getMessage).
 
-Still, one needs to take care of special sections in the pages, like [templates](https://pagure.io/JShelter/webextension/blob/bff8ce9c69ca28c1952898125983429c1f7f8a32/f/common/i18n_translate_dom.js#_43).
+Still, one needs to take care of special sections in the pages, like [templates](https://codeberg.org/JShelter/webextension/src/commit/bff8ce9c69ca28c1952898125983429c1f7f8a32/common/i18n_translate_dom.js#L43).
 
 The lack of a standard way to cope with HTML translations means that if you go to different
 webextension, they will likely have a similar script, but the details would be different. That is not optimal.
@@ -205,7 +205,7 @@ In this case, we could change the definition to something like:
 
 However, we have other complex cases where dividing the message into placeholders makes sense. For
 example, we suggest different rules for translating a part of the message, like API names.
-Hence, we created [scripts](https://pagure.io/JShelter/webextension/blob/main/f/tools/i18n) to help synchronize the strings between the repository and Weblate so that all strings can be translated in Weblate.
+Hence, we created [scripts](https://codeberg.org/JShelter/webextension/src/branch/main/tools/i18n) to help synchronize the strings between the repository and Weblate so that all strings can be translated in Weblate.
 A developer needs to run the synchronization scripts manually. The expected order is to first
 propagate changes from Grammarly to main (or other branch), and after that, propagate the changes from
 that branch in the repository to Weblate.

@@ -25,9 +25,9 @@ SECTION_WHO_TITLE = 'Who\'s behind this project?'
 SECTION_WHO = 'See the <a href="/credits/">credits page</a>.'
 TITLE_CONTRIBUTE = 'Contribute'
 SECTION_BUG_TITLE = 'I found a bug!'
-SECTION_BUG = 'If you have any questions or you spotted a bug, the project\'s <a href="https://pagure.io/JShelter/webextension/issues">issue tracker</a> is the place for posting those. We especially appreciate feedback, so feel free to use the issue tracker for chiming in.'
+SECTION_BUG = 'If you have any questions or you spotted a bug, the project\'s <a href="https://codeberg.org/JShelter/webextension/issues">issue tracker</a> is the place for posting those. We especially appreciate feedback, so feel free to use the issue tracker for chiming in.'
 SECTION_HELP_TITLE = 'How can I help?'
-SECTION_HELP = 'Using JShelter and reporting any problems you find in our <a href="https://pagure.io/JShelter/webextension/issues">issue tracker</a> is a huge help. If you want to contribute to the project itself, post your ideas on the issue tracker or just go ahead and make a pull request.'
+SECTION_HELP = 'Using JShelter and reporting any problems you find in our <a href="https://codeberg.org/JShelter/webextension/issues">issue tracker</a> is a huge help. If you want to contribute to the project itself, post your ideas on the issue tracker or just go ahead and make a pull request.'
 SECTION_LICENSE_TITLE = 'What is the license?'
 SECTION_LICENSE = 'JShelter is copylefted software, available under the <a href="/license/">GNU General Public License</a>.'
 
@@ -55,9 +55,9 @@ I18N_SUBSITES = {
         "SECTION_WHO": 'Há uma lista detalhada dos autores envolvidos na <a href="/pt/credits/">página de créditos</a>.',
         "TITLE_CONTRIBUTE": 'Contribui',
         "SECTION_BUG_TITLE": 'Encontrei um bug!',
-        "SECTION_BUG": 'Temos um sítio para colocar dúvidas e registar bugs. Encontraste um? Deixa-nos mais detalhes no <a href="https://pagure.io/JShelter/webextension/">issue tracker</a> do JShelter. Sugestões e testemunhos sobre a tua experiência com o JShelter são valiosos, deixa-os no issue tracker também.',
+        "SECTION_BUG": 'Temos um sítio para colocar dúvidas e registar bugs. Encontraste um? Deixa-nos mais detalhes no <a href="https://codeberg.org/JShelter/webextension/">issue tracker</a> do JShelter. Sugestões e testemunhos sobre a tua experiência com o JShelter são valiosos, deixa-os no issue tracker também.',
         "SECTION_HELP_TITLE": 'Como posso ajudar?',
-        "SECTION_HELP": 'Usar o JShelter e colocar no <a href="https://pagure.io/JShelter/webextension/issues">issue tracker</a> o registo dos problemas que encontrares é uma ajuda enorme. Se quiseres contribuir para o código do projecto publica as tuas ideias no issue tracker ou avança para a implementação e envia-nos um pull request.',
+        "SECTION_HELP": 'Usar o JShelter e colocar no <a href="https://codeberg.org/JShelter/webextension/issues">issue tracker</a> o registo dos problemas que encontrares é uma ajuda enorme. Se quiseres contribuir para o código do projecto publica as tuas ideias no issue tracker ou avança para a implementação e envia-nos um pull request.',
         "SECTION_LICENSE_TITLE": 'Qual é a licença?',
         "SECTION_LICENSE": 'O JShelter é software copyleft, disponível segundo a <a href="/pt/license">Licença Pública Geral GNU.',
     },

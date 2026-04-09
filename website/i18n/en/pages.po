@@ -12,7 +12,7 @@ msgstr ""
 
 #: ../content/pages/build.md:block 3 (ordered list)
 msgid ""
-"Go to the project repository: <https://pagure.io/JShelter/webextension>."
+"Go to the project repository: <https://codeberg.org/JShelter/webextension>."
 msgstr ""
 
 #: ../content/pages/build.md:block 3 (ordered list)
@@ -267,7 +267,7 @@ msgstr ""
 #: ../content/pages/credits.md:block 7 (paragraph)
 msgid ""
 "**Martin Timko** developed the first public versions up to "
-"[0.2.1](https://pagure.io/JShelter/webextension/archive/0.2.1/webextension-0.2.1.zip)"
+"[0.2.1](https://codeberg.org/JShelter/webextension/archive/0.2.1/webextension-0.2.1.zip)"
 " as a part of his [master's "
 "thesis](https://www.fit.vut.cz/study/thesis/21824/). He also ported the "
 "extension to Chrome and Opera."
@@ -405,10 +405,10 @@ msgstr ""
 #: ../content/pages/faq.md:block 5 (paragraph)
 msgid ""
 "Start using JShelter and tell your friends. You can fill an issue on our "
-"[bug tracker](https://pagure.io/JShelter/webextension/issues) "
+"[bug tracker](https://codeberg.org/JShelter/webextension/issues) "
 "([alternative](https://github.com/polcak/jsrestrictor/issues)) or pick up an"
 " issue and start working on JShelter. You can track the development in our "
-"[repository](https://pagure.io/JShelter/webextension) "
+"[repository](https://codeberg.org/JShelter/webextension) "
 "([alternative](https://github.com/polcak/jsrestrictor)). Please let us know "
 "before you start implementing, preferably directly in the issue. You can "
 "contact us by [e-mail](mailto:jshelter@gnu.org) to privately report issues "
@@ -427,10 +427,10 @@ msgid ""
 "[Weblate](https://hosted.weblate.org/projects/jshelter/), or translate the "
 "extension in the JSON files. If you want to start translating a new "
 "language, let us know. For example, you can open an issue in the [issue "
-"tracker](https://pagure.io/JShelter/webextension/issues) or send us "
+"tracker](https://codeberg.org/JShelter/webextension/issues) or send us "
 "[e-mail](mailto:jshelter@gnu.org). If you are in doubt about how to "
 "translate a string or do not understand its meaning, let us know in an "
-"[issue](https://pagure.io/JShelter/webextension/issues) or send us "
+"[issue](https://codeberg.org/JShelter/webextension/issues) or send us "
 "[e-mail](mailto:jshelter@gnu.org)."
 msgstr ""
 
@@ -497,7 +497,7 @@ msgstr ""
 #: ../content/pages/faq.md:block 13 (paragraph)
 msgid ""
 "At the same time, we are aware of several JShelter [bugs and "
-"issues](https://pagure.io/JShelter/webextension/issues/). We are working on "
+"issues](https://codeberg.org/JShelter/webextension/issues/). We are working on "
 "making JShelter bug-free. We do not want to break benign pages. Fixing some "
 "issues takes time. Other issues need balancing between several options. "
 "JShelter is meant to be used with (ad)blockers like [uBlock "
@@ -752,8 +752,8 @@ msgstr ""
 
 #: ../content/pages/faq.md:block 55 (paragraph)
 msgid ""
-"We are [working](https://pagure.io/JShelter/webextension/issue/43) on "
-"[improvements](https://pagure.io/JShelter/webextension/issue/80). Currently,"
+"We are [working](https://codeberg.org/JShelter/webextension/issues/43) on "
+"[improvements](https://codeberg.org/JShelter/webextension/issues/80). Currently,"
 " we patch Web Workers in the `Recommended` level (`Remove` policy). "
 "Nevertheless, the method breaks Web Workers, and they cannot be used for "
 "benign purposes. The page also cannot detect breakage to limit the "
@@ -778,7 +778,7 @@ msgid ""
 "Workers to access original APIs and [other ways](#what-are-web-workers-and-"
 "what-are-the-threats-that-i-face), or if you do not mind, change the "
 "`WebWorker` policy from `Remove` to `Low` (in Chrome) or deactivate it "
-"completely ([in Firefox](https://pagure.io/JShelter/webextension/issue/80))."
+"completely ([in Firefox](https://codeberg.org/JShelter/webextension/issues/80))."
 " Videos and other functionality requiring Web Workers should work. To change"
 " the policy, follow these steps:"
 msgstr ""
@@ -839,7 +839,7 @@ msgstr ""
 msgid ""
 "If you find a website that needs WebWorker protection set to `Strict` and "
 "does not work with `Remove` or vice-versa, please let us know in the [issue "
-"tracker](https://pagure.io/JShelter/webextension/issues) or send us "
+"tracker](https://codeberg.org/JShelter/webextension/issues) or send us "
 "[e-mail](mailto:jshelter@gnu.org)."
 msgstr ""
 
@@ -1051,13 +1051,13 @@ msgstr ""
 
 #: ../content/pages/faq.md:block 92 (paragraph)
 msgid ""
-"We are [considering](https://pagure.io/JShelter/webextension/issue/68) "
+"We are [considering](https://codeberg.org/JShelter/webextension/issues/68) "
 "adding better control for the little lies approach."
 msgstr ""
 
 #: ../content/pages/faq.md:block 93 (paragraph)
 msgid ""
-"We are also [considering](https://pagure.io/JShelter/webextension/issue/69) "
+"We are also [considering](https://codeberg.org/JShelter/webextension/issues/69) "
 "replacing the random strings of the Web GL API with real-world strings. "
 "However, we do not have such a database. We are also worried about creating "
 "inconsistencies if we apply invalid combinations of real-world strings. As "
@@ -1191,7 +1191,7 @@ msgstr ""
 msgid ""
 "No. We currently do not have a consistent method that spoofs fonts reliably."
 " If you are concerned about font enumeration, you can track the relevant "
-"JShelter [issue](https://pagure.io/JShelter/webextension/issue/60)."
+"JShelter [issue](https://codeberg.org/JShelter/webextension/issues/60)."
 msgstr ""
 
 #: ../content/pages/faq.md:block 112 (paragraph)
@@ -1654,8 +1654,8 @@ msgid ""
 "NBS in Firefox employs the DNS API that initiates DNS requests. Contextual "
 "identities allow users to go through a proxy in some tabs and not in others."
 " We decided not to perform DNS resolution in NBS for proxied requests. See "
-"<a href=\"https://pagure.io/JShelter/webextension/issue/41\">issue 41</a> "
-"and <a href=\"https://pagure.io/JShelter/webextension/issue/85\">issue "
+"<a href=\"https://codeberg.org/JShelter/webextension/issues/41\">issue 41</a> "
+"and <a href=\"https://codeberg.org/JShelter/webextension/issues/85\">issue "
 "85</a> for more details. We might decide to reimplement NBS in Firefox "
 "similarly to the Chromium version in the future for proxied requests. "
 "Another possible option, we might consider in the future, is adding a "
@@ -4214,16 +4214,16 @@ msgstr ""
 #: ../content/pages/versions.md:block 5 (unordered list)
 msgid ""
 "Remove Workers in Recommended JSS level to make JShelter compatible with "
-"some pages. This change might be reverted when [Pagure issue "
-"80](https://pagure.io/JShelter/webextension/issue/80#comment-852202) is "
+"some pages. This change might be reverted when [the issue "
+"80](https://codeberg.org/JShelter/webextension/issues/80#comment-852202) is "
 "solved."
 msgstr ""
 
 #: ../content/pages/versions.md:block 5 (unordered list)
 msgid ""
 "FPD: Add possibility to learn the calling stack of functions that lead to "
-"the tracked APIs ([Pagure issue "
-"52](https://pagure.io/JShelter/webextension/issue/52)). This information can"
+"the tracked APIs ([the issue "
+"52](https://codeberg.org/JShelter/webextension/issues/52)). This information can"
 " be used to create block list or to study the calling code and its effects."
 msgstr ""
 
@@ -4245,7 +4245,7 @@ msgstr ""
 #: ../content/pages/versions.md:block 7 (unordered list)
 msgid ""
 "Fix `window.name` protection, do not clear the property in the first visited"
-" page see https://pagure.io/JShelter/webextension/issue/116#comment-875070 "
+" page see https://codeberg.org/JShelter/webextension/issues/116#comment-875070 "
 "for more details. The fix affects all Chromium-based browsers and Firefox "
 "installs with the protection active (by default it is off in Firefox as "
 "Firefox contains the protection since Firefox 88). This fixes, for example, "
@@ -4408,7 +4408,7 @@ msgid ""
 msgstr ""
 
 #: ../content/pages/versions.md:block 23 (paragraph)
-msgid "Reconsider and rewrite Web Worker wrappers (pagure issue 80)"
+msgid "Reconsider and rewrite Web Worker wrappers (issue 80)"
 msgstr ""
 
 #: ../content/pages/versions.md:block 24 (unordered list)
@@ -4444,12 +4444,12 @@ msgstr ""
 
 #: ../content/pages/versions.md:block 28 (unordered list)
 msgid ""
-"bugfix: allow tweaking all levels except L0 in the popup (pagure issue 89)"
+"bugfix: allow tweaking all levels except L0 in the popup (issue 89)"
 msgstr ""
 
 #: ../content/pages/versions.md:block 28 (unordered list)
 msgid ""
-"bugfix: clarify and fix the description of changes to NBS in 0.11.3 (pagure "
+"bugfix: clarify and fix the description of changes to NBS in 0.11.3 ("
 "issue 41)"
 msgstr ""
 
@@ -4467,7 +4467,7 @@ msgstr ""
 #: ../content/pages/versions.md:block 30 (unordered list)
 msgid ""
 "bugfix: Prevent DNS leaks in NBS in the presence of HTTP proxy in Firefox, "
-"see pagure issues #41 and #85 and FAQ for more details on the interaction of"
+"see issues #41 and #85 and FAQ for more details on the interaction of"
 " NBS and proxies."
 msgstr ""
 
@@ -4643,7 +4643,7 @@ msgid ""
 msgstr ""
 
 #: ../content/pages/versions.md:block 39 (unordered list)
-msgid "Fix Web Audio wrappers (Pagure issue #16)"
+msgid "Fix Web Audio wrappers (issue #16)"
 msgstr ""
 
 #: ../content/pages/versions.md:block 39 (unordered list)
@@ -4695,7 +4695,7 @@ msgstr ""
 #: ../content/pages/versions.md:block 39 (unordered list)
 msgid ""
 "Fix some issues with invalid domains in advanced JavaScript Shield "
-"configuration (Pagure issue 45)"
+"configuration (issue 45)"
 msgstr ""
 
 #: ../content/pages/versions.md:block 40 (header)
@@ -4829,7 +4829,7 @@ msgstr ""
 
 #: ../content/pages/versions.md:block 45 (unordered list)
 msgid ""
-"Fix Pagure #18 Optional permissions for AFPD - it is not necessary to give "
+"Fix #18 Optional permissions for AFPD - it is not necessary to give "
 "browsingData"
 msgstr ""
 
@@ -5182,7 +5182,7 @@ msgstr ""
 #: ../content/pages/versions.md:block 71 (unordered list)
 msgid ""
 "Set minimal pop up width so that the pop up is usable in Chrome (Github "
-"issue #112, Pagure issue #7)"
+"issue #112, issue #7)"
 msgstr ""
 
 #: ../content/pages/versions.md:block 71 (unordered list)
@@ -5248,7 +5248,7 @@ msgstr ""
 #: ../content/pages/versions.md:block 73 (unordered list)
 msgid ""
 "It is no longer possible to access unwrapped functions from iframes and "
-"workers (Pagure issue #2, Github issue #56)"
+"workers (issue #2, Github issue #56)"
 msgstr ""
 
 #: ../content/pages/versions.md:block 73 (unordered list)
@@ -5672,8 +5672,8 @@ msgstr ""
 #: ../content/pages/home-tmp.md:block 19 (paragraph)
 msgid ""
 "If you have any questions or you spotted a bug, the project's [issue "
-"tracker](https://pagure.io/JShelter/webextension/issues "
-"\"https://pagure.io/JShelter/webextension/issues\") is the place for posting"
+"tracker](https://codeberg.org/JShelter/webextension/issues "
+"\"https://codeberg.org/JShelter/webextension/issues\") is the place for posting"
 " those. We especially appreciate feedback, so feel free to use the issue "
 "tracker for chiming in."
 msgstr ""
@@ -5685,8 +5685,8 @@ msgstr ""
 #: ../content/pages/home-tmp.md:block 21 (paragraph)
 msgid ""
 "Using JShelter and reporting any problems you find in our [issue "
-"tracker](https://pagure.io/JShelter/webextension/issues "
-"\"https://pagure.io/JShelter/webextension/issues\") is a huge help. If you "
+"tracker](https://codeberg.org/JShelter/webextension/issues "
+"\"https://codeberg.org/JShelter/webextension/issues\") is a huge help. If you "
 "want to contribute to the project itself, post your ideas on the issue "
 "tracker or just go ahead and make a pull request."
 msgstr ""

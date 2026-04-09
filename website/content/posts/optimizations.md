@@ -20,7 +20,7 @@ script detects that the configuration is not available during the `document_star
 synchronous request to retrieve the configuration before page scripts start running.
 
 However, Martin realized that a synchronous request takes a long time. Moreover, he confirmed [our
-old observations](https://pagure.io/JShelter/webextension/issue/46#comment-793783) that the
+old observations](https://codeberg.org/JShelter/webextension/issues/46#comment-793783) that the
 synchronous request is needed very often. The time needed to process the configuration increases
 linearly with the size of the configuration. JShelter used to inject 572kB of code in the default
 configuration. By shifting the code generation process back to content scripts, we decreased the configuration size to 21.2kB.
@@ -78,7 +78,7 @@ Firefox implementation of `getChannelData` has a negligible running time (almost
 ![Performance of getChannelData in Firefox]({attach}/images/optimizations/firefox_audio_recommended.png)
 
 Martin also developed [performance
-tests](https://pagure.io/JShelter/webextension/blob/1c86c45f565a36a6234c210392a89e3e20f32027/f/tests/performance_tests)
+tests](https://codeberg.org/JShelter/webextension/src/commit/1c86c45f565a36a6234c210392a89e3e20f32027/tests/performance_tests)
 based on [Google Lighthouse](https://developer.chrome.com/docs/lighthouse/) that run in Chrome. We
 tested on 46 pages from the 100 of [Tranco](https://tranco-list.eu/) and give the [performance
 score](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/) below. The

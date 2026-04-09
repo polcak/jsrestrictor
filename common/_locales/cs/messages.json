@@ -1168,7 +1168,7 @@
 	},
 	"NBSHttpProxyDNSAPINote": {
 		"message": "Pokud používáte HTTP proxy, Štít pro ochranu hranice sítě chrání síť této proxy, protože proxy provádí HTTP dotazy. JShelter zamezuje úniku DNS dotazů tak, že v případě využití HTTP proxy neresolvuje DNS domény pro detekci možných dotazů do místní sítě. I tak v takovém případě bere Štít v úvahu IP adresy přímo vložené v URL. Takže Štít pro ochranu hranice sítě chrání síť použité proxy, ale jen částečně.",
-		"description": "This note is appended to NBS description in Firefox, see https://pagure.io/JShelter/webextension/issue/41 for the context of the issue"
+		"description": "This note is appended to NBS description in Firefox, see https://codeberg.org/JShelter/webextension/issues/41 for the context of the issue"
 	},
 
 	"nbsBlocking": {

@@ -1101,7 +1101,7 @@
 	},
 	"NBSHttpProxyDNSAPINote": {
 		"message": "Если вы используете HTTP-прокси, NBS защитит локальную сеть прокси вместо вашей сети, поскольку прокси выполняет HTTP-запросы к назначенному адресу. Для предотвращения утечек DNS ваших запросов, инициированных с данного компьютера, щит границ сети не разрешает доменам DNS обнаруживать возможные межсетевые запросы. Однако щит границ сети защищает локальную сеть прокси для напрямую встроенных IP-адресов. Следовательно, щит границ сети защищает локальную сеть прокси только частично.",
-		"description": "This note is appended to NBS description in Firefox, see https://pagure.io/JShelter/webextension/issue/41 for the context of the issue"
+		"description": "This note is appended to NBS description in Firefox, see https://codeberg.org/JShelter/webextension/issues/41 for the context of the issue"
 	},
 	"nbsBlocking": {
 		"message": "Блокировка",

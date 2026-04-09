@@ -88,7 +88,7 @@ let tweaks_gui = {
 			updateLevelInfo();
 			tlevUI.addEventListener("input", updateLevelInfo.bind(this, false));
 			tlevUI.addEventListener("change", updateLevelInfo.bind(this, true));
-			tlevUI.addEventListener("input", function() { // See https://pagure.io/JShelter/webextension/issue/95
+			tlevUI.addEventListener("input", function() { // See https://codeberg.org/JShelter/webextension/issues/95
 				explainer.classList.remove("hidden_descr");
 			});
 

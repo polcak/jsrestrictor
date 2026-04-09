@@ -84,11 +84,11 @@ default. The protection disables WebWorkers and replaces them with a polyfill.
 ### Issues
 
 During the final stages of the NGI0 PET Fund project JSR project, we investigated the consistency of the
-mechanisms and their real-world deployment. We closed [6 issues on Pagure](https://pagure.io/JShelter/webextension/issues?status=Closed&milestone=NLNet+evaluation) and [13 issues on Github](https://github.com/polcak/jsrestrictor/issues?q=is%3Aissue+label%3A%22NLNet+project+evaluation+phase%22+is%3Aclosed).
+mechanisms and their real-world deployment. We closed [6 issues on Pagure](https://codeberg.org/JShelter/webextension/issues?q=&type=all&sort=relevance&state=closed&labels=&milestone=75282&project=0&assignee=0&poster=0) and [13 issues on Github](https://github.com/polcak/jsrestrictor/issues?q=is%3Aissue+label%3A%22NLNet+project+evaluation+phase%22+is%3Aclosed).
 
 5 investigated issues remain open on [Github](https://github.com/polcak/jsrestrictor/issues?q=is%3Aissue+label%3A%22NLNet+project+evaluation+phase%22+is%3Aopen). For three we need more details or cannot reproduce the issue, two refer to bugs that we are trying to fix (the issues were delegated to other JShelter developer outside the JSR project).
 
-We opened [8 issues](https://pagure.io/JShelter/webextension/issues?status=Open&tags=enhancement&milestone=NLNet+evaluation&close_status=) that cover possible enhancement of the JShelter, future directions, and possible ideas for future projects. We have additional [5 opened issues on Pagure](https://pagure.io/JShelter/webextension/issues?status=Open&milestone=NLNet+evaluation&close_status=) that we investigated during the evaluation phase. [One](https://pagure.io/JShelter/webextension/issue/55) is a duplicate of the issue opened at Github, [another](https://pagure.io/JShelter/webextension/issue/37) is almost closed. We are working on all 5 issues outside the JSR project.
+We opened [8 issues](https://codeberg.org/JShelter/webextension/issues?q=&type=all&sort=relevance&state=open&labels=&milestone=75282&project=0&assignee=0&poster=0&archived=false) that cover possible enhancement of the JShelter, future directions, and possible ideas for future projects. We have additional [5 opened issues on Pagure](https://pagure.io/JShelter/webextension/issues?status=Open&milestone=NLNet+evaluation&close_status=) that we investigated during the evaluation phase. [One](https://codeberg.org/JShelter/webextension/issues/55) is a duplicate of the issue opened at Github, [another](https://codeberg.org/JShelter/webextension/issues/37) is almost closed. We are working on all 5 issues outside the JSR project.
 
 ### Conclusion
 

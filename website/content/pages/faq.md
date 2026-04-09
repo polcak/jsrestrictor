@@ -7,10 +7,10 @@ Title: Frequently Asked Questions
 #### How can I get active and participate?
 
 Start using JShelter and tell your friends. You can fill an issue on our
-[bug tracker](https://pagure.io/JShelter/webextension/issues)
+[bug tracker](https://codeberg.org/JShelter/webextension/issues)
 ([alternative](https://github.com/polcak/jsrestrictor/issues)) or pick up an
 issue and start working on JShelter. You can track the development in our
-[repository](https://pagure.io/JShelter/webextension)
+[repository](https://codeberg.org/JShelter/webextension)
 ([alternative](https://github.com/polcak/jsrestrictor)). Please let us know
 before you start implementing, preferably directly in the issue. You can
 contact us by [e-mail](mailto:jshelter@gnu.org) to privately report issues or
@@ -24,10 +24,10 @@ Yes. Please see [instructions](/i18n/), go to
 [Weblate](https://hosted.weblate.org/projects/jshelter/), or translate the
 extension in the JSON files. If you want to start translating a new language,
 let us know. For example, you can open an issue in the
-[issue tracker](https://pagure.io/JShelter/webextension/issues) or send us
+[issue tracker](https://codeberg.org/JShelter/webextension/issues) or send us
 [e-mail](mailto:jshelter@gnu.org). If you are in doubt about how to translate a
 string or do not understand its meaning, let us know in an
-[issue](https://pagure.io/JShelter/webextension/issues) or send us
+[issue](https://codeberg.org/JShelter/webextension/issues) or send us
 [e-mail](mailto:jshelter@gnu.org).
 
 #### What is the current JShelter status? Is it ready, or is it still a work in progress?
@@ -52,7 +52,7 @@ and test again to see that it considerably lowers the information about your com
 * [JShelter test page](https://polcak.github.io/jsrestrictor/test/test.html)
 
 At the same time, we are aware of several JShelter
-[bugs and issues](https://pagure.io/JShelter/webextension/issues/).
+[bugs and issues](https://codeberg.org/JShelter/webextension/issues/).
 We are working on making JShelter bug-free. We do not want to break benign
 pages. Fixing some issues takes time. Other issues need balancing between several options. JShelter is meant to be used with (ad)blockers like [uBlock
 Origin](https://github.com/gorhill/uBlock#ublock-origin). Using a blocker will make your online
@@ -172,16 +172,16 @@ Yes, this is not intended and we want to fix this but that will likely take us s
 2. Disable FPD for the affected domain (even if it is in passive mode).
 3. Set Worker protection to Strict for the domain.
 
-Please report to [our issue tracker](https://pagure.io/JShelter/webextension/issue/148#comment-986182) any web page that does not work with the configuration steps above. Please, be specific with the URL and explain your configuration.
+Please report to [our issue tracker](https://codeberg.org/JShelter/webextension/issues/148#comment-986182) any web page that does not work with the configuration steps above. Please, be specific with the URL and explain your configuration.
 
-(For further information have a look at [our issue tracker](https://pagure.io/JShelter/webextension/issue/148#comment-986182).
+(For further information have a look at [our issue tracker](https://codeberg.org/JShelter/webextension/issues/148#comment-986182).
 
 #### How can I fix videos if they fail to play or retrieve data in time?
 
 JShelter reimplements more than 100 JavaScript APIs. However, pages can use several ways to access the
 same API. Unfortunately, browsers do not allow patching every possibility consistently through a simple call. Web Workers are one of the possibilities to access the APIs (see further [threats](#what-are-web-workers-and-what-are-the-threats-that-i-face)). Our ultimate goal is to patch APIs consistently. However, patching Web Worker is tricky, and we have yet to find a way to patch Workers seamlessly. Our ultimate goal was to replace Workers with synchronous code. However, so far, we offer only policies that either disable Workers or make them inoperable.
 
-We are [working](https://pagure.io/JShelter/webextension/issue/43) on [improvements](https://pagure.io/JShelter/webextension/issue/80). Currently, we patch Web Workers in the `Recommended` level (`Remove` policy). Nevertheless, the method breaks Web Workers, and they cannot be used for benign purposes. The page also cannot detect breakage to limit the fingerprintability of the browsers.
+We are [working](https://codeberg.org/JShelter/webextension/issues/43) on [improvements](https://codeberg.org/JShelter/webextension/issues/80). Currently, we patch Web Workers in the `Recommended` level (`Remove` policy). Nevertheless, the method breaks Web Workers, and they cannot be used for benign purposes. The page also cannot detect breakage to limit the fingerprintability of the browsers.
 
 JShelter users reported that video streaming servers are often affected. We encountered pages that
 detect the presence of Web Worker support in browsers and provide polyfills if they do not detect
@@ -193,7 +193,7 @@ fingerprintability. Use FPD to evaluate that threat.
 If you believe the server
 operator and their partners not to misuse Web Workers to access original APIs and [other ways](#what-are-web-workers-and-what-are-the-threats-that-i-face), or if you
 do not mind, change the `WebWorker` policy from `Remove` to `Low` (in Chrome) or deactivate it completely
-([in Firefox](https://pagure.io/JShelter/webextension/issue/80)). Videos and other functionality
+([in Firefox](https://codeberg.org/JShelter/webextension/issues/80)). Videos and other functionality
 requiring Web Workers should
 work. To change the policy, follow these steps:
 
@@ -213,7 +213,7 @@ First, see the explanation of [Web Workers](#what-are-web-workers-and-what-are-t
 
 See the [answer to the video question](#how-can-i-fix-videos-if-they-fail-to-play-or-retrieve-data-in-time).
 
-If you find a website that needs WebWorker protection set to `Strict` and does not work with `Remove` or vice-versa, please let us know in the [issue tracker](https://pagure.io/JShelter/webextension/issues) or send us
+If you find a website that needs WebWorker protection set to `Strict` and does not work with `Remove` or vice-versa, please let us know in the [issue tracker](https://codeberg.org/JShelter/webextension/issues) or send us
 [e-mail](mailto:jshelter@gnu.org).
 
 ### User interface issues
@@ -320,9 +320,9 @@ JShelter provides different lies on different domains, so cross-domain linking i
 But remember that a single domain can link all your activities during a browser session.
 If you do not want JShelter to generate the random strings, use `Strict` protection (but see [other FAQ entries](#browser-fingerprinting)).
 
-We are [considering](https://pagure.io/JShelter/webextension/issue/68) adding better control for the little lies approach.
+We are [considering](https://codeberg.org/JShelter/webextension/issues/68) adding better control for the little lies approach.
 
-We are also [considering](https://pagure.io/JShelter/webextension/issue/69) replacing the random strings of the Web GL API with real-world strings. However, we do not have such a database. We are also worried about creating inconsistencies if we apply invalid combinations of real-world strings. As creating the real-world database would take a lot of time, and a dedicated fingerprinter might reveal the inconsistencies anyway, we do not actively work on the issue.
+We are also [considering](https://codeberg.org/JShelter/webextension/issues/69) replacing the random strings of the Web GL API with real-world strings. However, we do not have such a database. We are also worried about creating inconsistencies if we apply invalid combinations of real-world strings. As creating the real-world database would take a lot of time, and a dedicated fingerprinter might reveal the inconsistencies anyway, we do not actively work on the issue.
 
 #### Is browser fingerprinting a real threat?
 
@@ -379,7 +379,7 @@ linkable), or you want to create your own level.
 
 #### Do you protect against font enumeration fingerprinting?
 
-No. We currently do not have a consistent method that spoofs fonts reliably. If you are concerned about font enumeration, you can track the relevant JShelter [issue](https://pagure.io/JShelter/webextension/issue/60).
+No. We currently do not have a consistent method that spoofs fonts reliably. If you are concerned about font enumeration, you can track the relevant JShelter [issue](https://codeberg.org/JShelter/webextension/issues/60).
 
 If you are using Firefox and want your fonts hidden consistently, activate resistFingerprinting.
 However, cosider [the interaction between JShelter and resistFingerprinting](#i-am-using-firefox-fingerprinting-protection-resistfingerprinting-should-i-continue-should-i-turn-firefox-fingerprinting-protection-on).
@@ -600,8 +600,8 @@ configuration, it may also protect your local network.
 NBS in Firefox employs the DNS API that initiates DNS requests. Contextual identities allow users
 to go through a proxy in some tabs and not in others. We decided not to perform DNS resolution in
 NBS for proxied
-requests. See <a href="https://pagure.io/JShelter/webextension/issue/41">issue 41</a> and <a
-href="https://pagure.io/JShelter/webextension/issue/85">issue 85</a> for more details. We might
+requests. See <a href="https://codeberg.org/JShelter/webextension/issues/41">issue 41</a> and <a
+href="https://codeberg.org/JShelter/webextension/issues/85">issue 85</a> for more details. We might
 decide to reimplement NBS in Firefox similarly to the Chromium version in the future for proxied requests.
 Another possible option, we might consider in the future, is adding a configuration option to
 allow users to opt-in to perform DNS resolution in NBS, which would be useful for users running
