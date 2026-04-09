@@ -1,5 +1,11 @@
 Title: Release history
 
+## 0.22
+
+* Unify the look of widgets in JShelter windows
+* Avoid playback of very loud white noise when page scripts dynamically acquire audio data and JShelter operates in Strict mode
+* Update cs localization strings
+
 ## 0.21
 
 * Add support for `Temporal.Now.instant()` that provides precise timestamps
