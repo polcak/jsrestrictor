@@ -116,7 +116,7 @@ if (typeof browser_polyfill_used !== "undefined" && browser_polyfill_used) {
 /**
  * Create a port to popup window
  *
- * The communication cannels are mostly used  because
+ * The communication channels are mostly used  because
  * browser.runtime.getBackgroundPage() does not work as expected. See
  * also https://bugzilla.mozilla.org/show_bug.cgi?id=1329304.
  */
