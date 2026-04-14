@@ -232,6 +232,9 @@
 			"name": "background",
 			"remove_custom_namespace": false,
 			"let_to_var": false,
+			"inject_code_to_src": {
+				"begin": "var fpdObservable = new Observable();"
+			},
 			"src_script_requirements": [
 				{
 					"type": "const",
@@ -240,6 +243,12 @@
 							"from": "./levels.js",
 							"objects": [
 								"getCurrentLevelJSON"
+							]
+						},
+						{
+							"from": "./helpers.js",
+							"objects": [
+								"Observable"
 							]
 						},
 						{
