@@ -242,7 +242,8 @@
 						{
 							"from": "./levels.js",
 							"objects": [
-								"getCurrentLevelJSON"
+								"getCurrentLevelJSON",
+								"wrapping_groups"
 							]
 						},
 						{
