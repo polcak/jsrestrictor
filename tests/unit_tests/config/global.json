@@ -233,7 +233,8 @@
 			"remove_custom_namespace": false,
 			"let_to_var": false,
 			"inject_code_to_src": {
-				"begin": "var fpdObservable = new Observable();"
+				"begin": "var fpdObservable = new Observable();",
+				"end": "function reset_tab_urls() {tab_urls={}}"
 			},
 			"src_script_requirements": [
 				{
@@ -275,7 +276,8 @@
 								"build_wrapping_code",
 								"add_wrappers",
 								"rounding_function",
-								"noise_function"
+								"noise_function",
+								"reset_tab_urls"
 							]
 						}
 					]
