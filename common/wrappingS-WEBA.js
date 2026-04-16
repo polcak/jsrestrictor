@@ -99,7 +99,7 @@
 			console.debug(); /* Intentionally one the same line */let start_time = Date.now();
 			// PRNG function needs to depend on the original audio, so that the same
 			// audio is farbled the same way but different audio is farbled differently
-			// See https://pagure.io/JShelter/webextension/issue/23
+			// See https://codeberg.org/JShelter/webextension/issues/23
 			const ARRAY_LEN = array.length;
 			const MAXUINT32 = 4294967295;
 			let crc = new CRC16();
@@ -148,7 +148,7 @@
 			console.debug(); /* Intentionally one the same line */let start_time = Date.now();
 			// PRNG function needs to depend on the original audio, so that the same
 			// audio is farbled the same way but different audio is farbled differently
-			// See https://pagure.io/JShelter/webextension/issue/23
+			// See https://codeberg.org/JShelter/webextension/issues/23
 			let crc = new CRC16();
 			for (let i = 0; i < ARRAY_LEN; i++) {
 				crc.single(array[i]);

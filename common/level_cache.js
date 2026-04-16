@@ -127,8 +127,8 @@ DocStartInjection.register(async ({url, frameId, tabId}) => {
 
 /**
  * We need to process both previous and the next URL. See
- * https://pagure.io/JShelter/webextension/issue/46 and
- * https://pagure.io/JShelter/webextension/issue/58 for more details.
+ * https://codeberg.org/JShelter/webextension/issues/46 and
+ * https://codeberg.org/JShelter/webextension/issues/58 for more details.
  * So far only window.name wrapper needs such information so we did not created any general
  * mechanism.
  * Beware that this mechanism is triggered even when the user clicks the back button while content
@@ -136,7 +136,7 @@ DocStartInjection.register(async ({url, frameId, tabId}) => {
  */
 NavCache.onUrlChanged.addListener(({tabId, frameId, previousUrl, url}) => {
 	if (getSiteForURL(previousUrl) === getSiteForURL(url)) return;
-	if (previousUrl === undefined) return; // First page in this window, see https://pagure.io/JShelter/webextension/issue/116#comment-875070
+	if (previousUrl === undefined) return; // First page in this window, see https://codeberg.org/JShelter/webextension/issues/116#comment-875070
 	(async () => {
 		let configuration = await getContentConfiguration(url, frameId, tabId);
 		if (configuration.currentLevel.windowname) {

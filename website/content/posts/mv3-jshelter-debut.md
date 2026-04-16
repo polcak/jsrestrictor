@@ -39,7 +39,7 @@ Once the Developer Mode is enabled, almost everything should work as expected, e
 the blocking mode of the [Fingerprinting Detector](/fpd/) (more details below).
 
 However, since the code changes both in JShelter itself and in the NoScript Commons Library have been many and pretty
-dramatic, we certainly expect bugs. [Please report your issues here](https://pagure.io/JShelter/webextension/issues) as usual. Thanks!
+dramatic, we certainly expect bugs. [Please report your issues here](https://codeberg.org/JShelter/webextension/issues) as usual. Thanks!
 
 ### What does not work yet
 

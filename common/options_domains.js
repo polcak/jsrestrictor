@@ -171,7 +171,7 @@ function insert_domain_levels() {
 	var allDomainsElement = document.getElementById("domain-level-list");
 	for (let domain in domains) {
 		if (domain === escape(domain)) {
-			// Do not display invalid domains inserted before https://pagure.io/JShelter/webextension/issue/45 fix
+			// Do not display invalid domains inserted before https://codeberg.org/JShelter/webextension/issues/45 fix
 			// Note that an invalid domain can be inserted through advanced options
 			show_domain_level(allDomainsElement, domain);
 		}

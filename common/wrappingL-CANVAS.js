@@ -40,7 +40,7 @@
 function farbleCanvasDataBrave(rowIterator, width) {
 	// PRNG function needs to depend on the original canvas, so that the same
 	// image is farbled the same way but different images are farbled differently
-	// See https://pagure.io/JShelter/webextension/issue/23
+	// See https://codeberg.org/JShelter/webextension/issues/23
 	console.debug(); /* Intentionally one the same line */let start_time = Date.now();
 	let crc = new CRC16();
 	console.debug("Timing farbleCanvasDataBrave CRC init", Date.now() - start_time);

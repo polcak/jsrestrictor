@@ -1172,7 +1172,7 @@
 	},
 	"NBSHttpProxyDNSAPINote": {
 		"message": "If you are using an HTTP proxy, NBS would protect the local network of the proxy instead of your network as the proxy performs the HTTP requests to the destinations. To prevent DNS leaks of your queries initiated from this computer, Network Boundary Shield does not resolve the DNS domains to detect possible cross-network boundary requests. However, the Network Boundary Shield protects the local network of the proxy for directly embedded IP addresses. Hence, Network Boundary Shield protects the local network of the proxy only partially.",
-		"description": "This note is appended to NBS description in Firefox, see https://pagure.io/JShelter/webextension/issue/41 for the context of the issue"
+		"description": "This note is appended to NBS description in Firefox, see https://codeberg.org/JShelter/webextension/issues/41 for the context of the issue"
 	},
 
 	"nbsBlocking": {
