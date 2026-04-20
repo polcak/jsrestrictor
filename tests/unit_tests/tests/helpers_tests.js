@@ -93,55 +93,6 @@ describe("Helpers", function() {
 	});
 
 
-	describe("Function getEffectiveDomain", function() {
-		it("should be defined.",function() {
-			expect(getEffectiveDomain).toBeDefined();
-		});
-		it("should remove www. from the beginning of the string.",function() {
-			expect(getEffectiveDomain("https://www.fit.vutbr.cz")).toBe("fit.vutbr.cz");
-			expect(getEffectiveDomain("http://www.fit.vutbr.cz")).toBe("fit.vutbr.cz");
-		});
-		it("should do nothing if there is not www. at the beginning of the string.",function() {
-			expect(getEffectiveDomain("https://merlin.fit.vutbr.cz")).toBe("merlin.fit.vutbr.cz");
-			expect(getEffectiveDomain("http://merlin.fit.vutbr.cz")).toBe("merlin.fit.vutbr.cz");
-			expect(getEffectiveDomain("https://example.co.uk")).toBe("example.co.uk");
-			expect(getEffectiveDomain("http://example.co.uk")).toBe("example.co.uk");
-			expect(getEffectiveDomain("http://192.168.1.1")).toBe("192.168.1.1");
-			expect(getEffectiveDomain("http://[2001:db8::]")).toBe("[2001:db8::]");
-		});
-		it("should support file: protocol.",function() {
-			expect(getEffectiveDomain("file:///test")).toBe("file:");
-		});
-		it("should receive a valid URL.",function() {
-			expect(() => getEffectiveDomain("merlin.fit.vutbr.cz")).toThrowError();
-		});
-	});
-
-
-	describe("Function getSiteForURL", function() {
-		it("should be defined.",function() {
-			expect(getSiteForURL).toBeDefined();
-		});
-		it("propagate to TLD module.",function() {
-			// See the config file for the tld mock function
-			// The results below are not the results that the function should return in a correctly
-			// built webextension
-			expect(getSiteForURL("https://www.fit.vutbr.cz")).toBe("TLD#www.fit.vutbr.cz");
-			expect(getSiteForURL("http://www.fit.vutbr.cz")).toBe("TLD#www.fit.vutbr.cz");
-			expect(getSiteForURL("https://merlin.fit.vutbr.cz")).toBe("TLD#merlin.fit.vutbr.cz");
-			expect(getSiteForURL("http://merlin.fit.vutbr.cz")).toBe("TLD#merlin.fit.vutbr.cz");
-			expect(getSiteForURL("https://polcak.github.io")).toBe("TLD#polcak.github.io");
-			expect(getSiteForURL("http://example.co.uk")).toBe("TLD#example.co.uk");
-		});
-		it("should support file: protocol.",function() {
-			expect(getSiteForURL("file:///test")).toBe("file:");
-		});
-		it("should receive a valid URL.",function() {
-			expect(getSiteForURL("merlin.fit.vutbr.cz")).toBe("");
-		});
-	});
-
-
 	describe("Function create_short_text", function() {
 		it("should be defined.",function() {
 			expect(create_short_text).toBeDefined();

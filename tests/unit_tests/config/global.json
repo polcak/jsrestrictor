@@ -6,9 +6,6 @@
 			"let_to_var": false,
 			"src_script_requirements": [
 			],
-			"inject_code_to_src": {
-				"begin": "var tld = {getDomain: (d) => 'TLD#' + d};"
-			},
 			"test_script_requirements": [
 				{
 					"type": "const",
@@ -20,8 +17,6 @@
 								"byteToHex",
 								"gen_random32",
 								"gen_random64",
-								"getEffectiveDomain",
-								"getSiteForURL",
 								"create_short_text"
 							]
 						}
@@ -35,6 +30,9 @@
 			"let_to_var": false,
 			"src_script_requirements": [
 			],
+			"inject_code_to_src": {
+				"begin": "var tld = {getDomain: (d) => 'TLD#' + d};"
+			},
 			"test_script_requirements": [
 				{
 					"type": "const",
@@ -42,7 +40,9 @@
 						{
 							"from": "./url.js",
 							"objects": [
-								"extractSubDomains"
+								"extractSubDomains",
+								"getEffectiveDomain",
+								"getSiteForURL"
 							]
 						}
 					]
@@ -68,7 +68,7 @@
 							]
 						},
 						{
-							"from": "./helpers.js",
+							"from": "./url.js",
 							"objects": [
 								"getEffectiveDomain"
 							]
