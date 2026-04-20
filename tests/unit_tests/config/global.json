@@ -58,16 +58,8 @@
 					"type": "const",
 					"requirements": [
 						{
-							"import": "sinon-chrome",
-							"as": "browser"
-						},
-						{
 							"import": "navigator",
 							"as": "navigator"
-						},
-						{
-							"import": "window",
-							"as": "window"
 						},
 						{
 							"from": "./url.js",
@@ -146,10 +138,6 @@
 							]
 						},
 						{
-							"import": "sinon-chrome",
-							"as": "sinon_browser"
-						},
-						{
 							"import": "fs",
 							"as": "fs"
 						},
@@ -162,7 +150,7 @@
 				}
 			],
 			"inject_code_to_src": {
-				"begin": "var browser = JSON.parse(JSON.stringify(sinon_browser)); browser.runtime.getURL = function(){return 'tmp/release.wasm';}; fetch = fs.readFileSync; WebAssembly.instantiateStreaming = WebAssembly.instantiate;"
+				"begin": "browser.runtime.getURL = function(){return 'tmp/release.wasm';}; fetch = fs.readFileSync; WebAssembly.instantiateStreaming = WebAssembly.instantiate;"
 			},
 			"replace_in_src": [
 				{
@@ -258,10 +246,6 @@
 							"objects": [
 								"fpDb"
 							]
-						},
-						{
-							"import": "sinon-chrome",
-							"as": "browser"
 						}
 					]
 				}
@@ -297,10 +281,6 @@
 							"objects": [
 								"Observable"
 							]
-						},
-						{
-							"import": "sinon-chrome",
-							"as": "browser"
 						}
 					]
 				}
@@ -420,24 +400,14 @@
 			"name": "http_shield_common",
 			"remove_custom_namespace": false,
 			"let_to_var": true,
-			"src_script_requirements": [
-				{
-					"type": "const",
-					"requirements": [
-						{
-							"import": "sinon-chrome",
-							"as": "sinon_browser"
-						}
-					]
-				}
-			],
+			"src_script_requirements": [],
 			"extra_exports": [
 			],
 			"test_script_requirements": [
 			],
 			"inject_code_to_src":
 			{
-				"begin": "var browser = JSON.parse(JSON.stringify(sinon_browser)); browser.storage.sync.get = function(param) { return Promise.resolve(param); }; browser.runtime.onMessage.addListener = function(){return;}; browser.runtime.getURL = function(){return;};"
+				"begin": "browser.storage.sync.get = function(param) { return Promise.resolve(param); }; browser.runtime.onMessage.addListener = function(){return;}; browser.runtime.getURL = function(){return;};"
 			}
 		},
 		{

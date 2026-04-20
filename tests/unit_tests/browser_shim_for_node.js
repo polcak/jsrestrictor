@@ -8,10 +8,35 @@
 // unify global scope (WebExtension / Worker style)
 global.self = global;
 
-// minimal browser mock
+// minimal browser mock (minimum needed for tests)
 global.browser = {
-	tabs: {},
-	runtime: {},
+	tabs: {
+		onUpdated: {
+			addListener: () => undefined,
+		},
+		onRemoved: {
+			addListener: () => undefined,
+		},
+	},
+	runtime: {
+		onConnect: {
+			addListener: () => undefined,
+		},
+	},
+	i18n: {
+		getMessage: () => "mockup",
+	},
+	browserAction: {
+		setBadgeBackgroundColor: () => undefined,
+	},
+	storage: {
+		sync: {
+			get: (param) => Promise.resolve(param),
+		},
+		onChanged: {
+			addListener: () => undefined,
+		},
+	},
 };
 
 // Node 20 already provides:
@@ -34,3 +59,4 @@ global.document = {
 		}
 	}
 };
+
