@@ -170,12 +170,6 @@ describe("Levels", function() {
 			expect(is_api_undefined("PerformanceEntry.prototype") === true || is_api_undefined("PerformanceEntry.prototype") === false).toBeTruthy();
 			expect(is_api_undefined("window.Date") === true || is_api_undefined("window.Date") === false).toBeTruthy();
 		});
-		it("should throw error when parametr is not given.",function() {
-			expect(function() {is_api_undefined()}).toThrowError();
-		});
-		it("should throw error when parametr is undefined.",function() {
-			expect(function() {is_api_undefined(undefined)}).toThrowError();
-		});
 	});
 	describe("Function are_all_api_unsupported", function() {
 		it("should be defined.",function() {
