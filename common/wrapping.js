@@ -70,47 +70,25 @@ var rounding_function = `function rounding_function(numberToRound, precision) {
  * numbers in Chromium-based browsers, e.g. 92348.90000000224,
  * 281.70000000298023, or 24702.69999999553.
  */
-let CONSECUTIVE_DIGITS_ROUNDING_ERROR = 2;
+let ROUNDING_ERROR = 0.0001;
 var noise_function = `let lastValue = 0;
 	function factorHeuristics(n) {
 		if (Number.isInteger(n)) {
 			return 1;
 		}
 		
-		const n_str = n.toString();
-		const dot_pos = n_str.indexOf('.');
 		let factor = 1;
-		let factor_possible_rounding_error = 1;
-		let zero_group_length = 0;
-		let nine_group_length = 0;
 		
-		for (let i = dot_pos+1;
-				i < n_str.length;
-				i++) {
-			factor_possible_rounding_error *= 10;
-			const c = n_str[i];
-			if (c === '0') {
-				zero_group_length++;
-				nine_group_length = 0;
-				if (zero_group_length >= ${CONSECUTIVE_DIGITS_ROUNDING_ERROR}) {
-					return factor;
-				}
-			}
-			else if (c === '9') {
-				zero_group_length = 0;
-				nine_group_length++;
-				if (nine_group_length >= ${CONSECUTIVE_DIGITS_ROUNDING_ERROR}) {
-					return factor;
-				}
-			}
-			else {
-				zero_group_length = 0;
-				nine_group_length = 0;
-				factor = factor_possible_rounding_error;
+		for (let i = 0; i < 10; i++) {
+			factor *= 10;
+			n *= 10;
+			let rounded = Math.round(n);
+			if (Math.abs(n - rounded) < ${ROUNDING_ERROR}) {
+				return factor;
 			}
 		}
 		
-		return factor_possible_rounding_error;
+		return factor;
 	}
 	function decimal_part(n) {
 		let n_str = n.toString();
