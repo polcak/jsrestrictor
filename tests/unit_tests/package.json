@@ -11,8 +11,6 @@
   "license": "GNU General Public License 3 or later",
   "dependencies": {
     "jasmine": "^3.6.4",
-    "navigator": "^1.0.1",
-    "sinon-chrome": "^3.0.1",
-    "window": "^4.2.7"
+    "navigator": "^1.0.1"
   }
 }

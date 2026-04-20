@@ -40,8 +40,16 @@ describe("Background", function() {
 		it("should return default level.",function() {
 			expect(tabUpdate(5,{'url':'https://www.jshelter.org/'})).toBe(default_level);
 		});
-		it("should not throw error when argument changeInfo['url'] is undefined.",function() {
-			expect(function() {tabUpdate(5,{'url':undefined})}).not.toThrowError();
+		it("should return empty level and not throw error when argument changeInfo['url'] is undefined.",function() {
+			reset_tab_urls(); // Delete possible artifacts of other tests
+			let error;
+			try {
+				expect(tabUpdate(5,{'url':undefined}).level_id).toBe("");
+			}
+			catch (e) {
+				error = e;
+			}
+			expect(error).withContext(error && error.stack).toBeUndefined();
 		});
 		it("should throw error when parametr changeInfo is undefined.",function() {
 			expect(function() {tabUpdate(5,undefined)}).toThrowError();

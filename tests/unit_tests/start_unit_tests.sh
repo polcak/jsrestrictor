@@ -275,6 +275,7 @@ echo Preparation for testing FINISHED.
 echo Testing STARTED.
 
 # Run unit tests in framework Jasmine for NodeJS.
+export NODE_OPTIONS="--require $(pwd)/nscl_shim_for_node.js --require $(pwd)/browser_shim_for_node.js"
 npx jasmine --config=./tmp/jasmine.json
 
 echo Testing FINISHED.
