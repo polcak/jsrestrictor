@@ -29,10 +29,18 @@
 			"remove_custom_namespace": false,
 			"let_to_var": false,
 			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./tld.js",
+							"objects": [
+								"tld"
+							]
+						}
+					]
+				}
 			],
-			"inject_code_to_src": {
-				"begin": "var tld = {getDomain: (d) => 'TLD#' + d};"
-			},
 			"test_script_requirements": [
 				{
 					"type": "const",

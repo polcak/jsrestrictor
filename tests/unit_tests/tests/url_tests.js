@@ -107,16 +107,13 @@ describe("URL", function() {
 		it("should be defined.",function() {
 			expect(getSiteForURL).toBeDefined();
 		});
-		it("propagate to TLD module.",function() {
-			// See the config file for the tld mock function
-			// The results below are not the results that the function should return in a correctly
-			// built webextension
-			expect(getSiteForURL("https://www.fit.vutbr.cz")).toBe("TLD#www.fit.vutbr.cz");
-			expect(getSiteForURL("http://www.fit.vutbr.cz")).toBe("TLD#www.fit.vutbr.cz");
-			expect(getSiteForURL("https://merlin.fit.vutbr.cz")).toBe("TLD#merlin.fit.vutbr.cz");
-			expect(getSiteForURL("http://merlin.fit.vutbr.cz")).toBe("TLD#merlin.fit.vutbr.cz");
-			expect(getSiteForURL("https://polcak.github.io")).toBe("TLD#polcak.github.io");
-			expect(getSiteForURL("http://example.co.uk")).toBe("TLD#example.co.uk");
+		it("propagate get eTLD+1 from NSCL TLD module.",function() {
+			expect(getSiteForURL("https://www.fit.vutbr.cz")).toBe("vutbr.cz");
+			expect(getSiteForURL("http://www.fit.vutbr.cz")).toBe("vutbr.cz");
+			expect(getSiteForURL("https://merlin.fit.vutbr.cz")).toBe("vutbr.cz");
+			expect(getSiteForURL("http://merlin.fit.vutbr.cz")).toBe("vutbr.cz");
+			expect(getSiteForURL("https://polcak.github.io")).toBe("polcak.github.io");
+			expect(getSiteForURL("http://example.co.uk")).toBe("example.co.uk");
 		});
 		it("should support file: protocol.",function() {
 			expect(getSiteForURL("file:///test")).toBe("file:");
