@@ -3,7 +3,7 @@
 //  of security, anonymity and privacy of the user while browsing the
 //  internet.
 //
-//  Copyright (C) 2020 Martin Bednar
+//  Copyright (C) 2026 Libor Polčák
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 //
