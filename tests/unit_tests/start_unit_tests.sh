@@ -6,7 +6,7 @@
 #
 #  Copyright (C) 2022 Martin Bednar
 #  Copyright (C) 2023 Martin Zmitko
-#  Copyright (C) 2023 Libor Polčák
+#  Copyright (C) 2023-2026 Libor Polčák
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -109,6 +109,14 @@ for k in $(jq '.scripts | keys | .[]' ./config/global.json); do
 	name=$(jq -r '.name' <<< "$script")
 	test_script_name="${name}_tests.js"
 	source_script_name="${name}.js"
+	# Check if the source script is not in a different location
+	source_script_path=$(jq -r '.source_script_path' <<< "$script")
+	if [ "$source_script_path" != "null" ]
+	then
+		source_script_path="../../$source_script_path"
+	else
+		source_script_path="../../common/$source_script_name"
+	fi
 	# Add current test script name to list of all testing scripts that will run.
 	if [ $k -eq 0 ]
 	then
@@ -141,13 +149,13 @@ for k in $(jq '.scripts | keys | .[]' ./config/global.json); do
 	fi
 	
 	########################   MODIFY SOURCE SCRIPT   ########################
-	if [ ! -f "../../common/$source_script_name" ]
+	if [ ! -f "$source_script_path" ]
 	then
-		echo "Source script ${source_script_name} does not exist. Skipping."
+		echo "Source script ${source_script_path} does not exist. Skipping."
 		continue
 	fi
 
-	cp ../../common/$source_script_name ./tmp/$source_script_name
+	cp "$source_script_path" ./tmp/$source_script_name
 	
 	# Modify source script - remove custom namespace if necessary.
 	remove_custom_namespace=$(jq -r '.remove_custom_namespace' <<< "$script")
