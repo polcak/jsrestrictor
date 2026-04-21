@@ -19,6 +19,9 @@ global.browser = {
 		},
 	},
 	runtime: {
+		onInstalled: {
+			addListener: () => undefined,
+		},
 		onConnect: {
 			addListener: () => undefined,
 		},
@@ -31,7 +34,15 @@ global.browser = {
 	},
 	storage: {
 		sync: {
-			get: (param) => Promise.resolve(param),
+			get: function (param) {
+				let ret = {};
+				if (param != null) {
+					ret = param;
+				};
+				return Promise.resolve(ret);
+			},
+			set: () => Promise.resolve(),
+			clear: () => undefined
 		},
 		onChanged: {
 			addListener: () => undefined,

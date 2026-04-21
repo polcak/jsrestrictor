@@ -741,6 +741,39 @@
 			]
 		},
 		{
+			"name": "update",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [
+			],
+			"inject_code_to_src": {
+				"begin": "function set_global_variable(name, value) { globalThis[name] = value; }"
+			},
+			"replace_in_src": [
+				{
+					"origin": "checkAndSaveConfig(item, false);",
+					"new": ""
+				}
+			],
+			"extra_exports": [
+				"set_global_variable"
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./update.js",
+							"objects": [
+								"make_configuration_compatible_with_update",
+								"set_global_variable"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "tld",
 			"source_script_path": "nscl/common/tld.js",
 			"remove_custom_namespace": false,

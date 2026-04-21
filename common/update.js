@@ -55,6 +55,28 @@ async function installUpdate() {
 				domains: {},
 			};
 		}
+		let original_version = item.version;
+		make_configuration_compatible_with_update(item);
+		if (original_version < 6.7 && item.version >= 6.7) {
+			await browser.storage.sync.remove("whitelistedHosts"); // Renamed in 6.2 but not removed, removed in version 6.7
+		}
+		await browser.storage.sync.set(item);
+		// origin of update.js must be recognized (background script vs. options page)
+		if (typeof fpdLoadConfiguration === "function") {
+			fpdLoadConfiguration();
+		}
+		else {
+			browser.runtime.sendMessage({purpose: "fpd-load-config"});
+		}
+		if (typeof nbsLoadConfiguration === "function") {
+			nbsLoadConfiguration();
+		}
+		else {
+			browser.runtime.sendMessage({purpose: "nbs-load-config"})
+		}
+}
+
+function make_configuration_compatible_with_update(item) {
 		if (item.version == 2.1) {
 			// No Geolocation below 2.2
 			for (level in item["custom_levels"]) {
@@ -435,7 +457,6 @@ async function installUpdate() {
 			item.version = 6.6;
 		}
 		if (item.version < 6.7) {
-			await browser.storage.sync.remove("whitelistedHosts"); // Renamed in 6.2 but not removed
 			item.version = 6.7;
 		}
 		if (item.version < 6.8) {
@@ -479,23 +500,6 @@ async function installUpdate() {
 				}
 			}
 			item.version = 7;
-		}
-
-
-
-		await browser.storage.sync.set(item);
-		// origin of update.js must be recognized (background script vs. options page)
-		if (typeof fpdLoadConfiguration === "function") {
-			fpdLoadConfiguration();
-		}
-		else {
-			browser.runtime.sendMessage({purpose: "fpd-load-config"});
-		}
-		if (typeof nbsLoadConfiguration === "function") {
-			nbsLoadConfiguration();
-		}
-		else {
-			browser.runtime.sendMessage({purpose: "nbs-load-config"})
 		}
 }
 browser.runtime.onInstalled.addListener(installUpdate);
