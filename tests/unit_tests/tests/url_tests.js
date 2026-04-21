@@ -82,14 +82,17 @@ describe("URL", function() {
 		it("should be defined.",function() {
 			expect(getEffectiveDomain).toBeDefined();
 		});
-		it("should remove www. from the beginning of the string.",function() {
+		it("should remove www. from the beginning of the string and the dot at the end.",function() {
 			expect(getEffectiveDomain("https://www.fit.vutbr.cz")).toBe("fit.vutbr.cz");
 			expect(getEffectiveDomain("http://www.fit.vutbr.cz")).toBe("fit.vutbr.cz");
+			expect(getEffectiveDomain("https://www.fit.vut.cz.")).toBe("fit.vut.cz");
 		});
 		it("should do nothing if there is not www. at the beginning of the string.",function() {
 			expect(getEffectiveDomain("https://merlin.fit.vutbr.cz")).toBe("merlin.fit.vutbr.cz");
 			expect(getEffectiveDomain("http://merlin.fit.vutbr.cz")).toBe("merlin.fit.vutbr.cz");
+			expect(getEffectiveDomain("http://merlin.fit.vut.cz.")).toBe("merlin.fit.vut.cz");
 			expect(getEffectiveDomain("https://example.co.uk")).toBe("example.co.uk");
+			expect(getEffectiveDomain("https://example.co.uk.")).toBe("example.co.uk");
 			expect(getEffectiveDomain("http://example.co.uk")).toBe("example.co.uk");
 			expect(getEffectiveDomain("http://192.168.1.1")).toBe("192.168.1.1");
 			expect(getEffectiveDomain("http://[2001:db8::]")).toBe("[2001:db8::]");

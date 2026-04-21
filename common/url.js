@@ -82,13 +82,14 @@ function extractSubDomains(thisDomain) {
  * www.fit.vutbr.cz -> fit.vutbr.cz
  * merlin.fit.vutbr.cz -> merlin.fit.vutbr.cz
  * example.co.uk -> example.co.uk
+ * example.co.uk. -> example.co.uk
  */
 function getEffectiveDomain(url) {
 	let u = new URL(url);
 	if (u.protocol === "file:") {
 		return u.protocol;
 	}
-	return String(u.hostname).replace(/^www\./,'');
+	return String(tld.normalize(u.hostname)).replace(/^www\./,'');
 }
 
 /**
