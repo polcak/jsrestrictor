@@ -114,6 +114,9 @@ describe("URL", function() {
 			expect(getSiteForURL("http://merlin.fit.vutbr.cz")).toBe("vutbr.cz");
 			expect(getSiteForURL("https://polcak.github.io")).toBe("polcak.github.io");
 			expect(getSiteForURL("http://example.co.uk")).toBe("example.co.uk");
+			expect(getSiteForURL("http://192.168.1.1")).toBe("192.168.1.1");
+			expect(getSiteForURL("http://[2001:db8::]")).toBe("[2001:db8::]");
+			expect(getSiteForURL("http://[::]")).toBe("[::]");
 		});
 		it("should support file: protocol.",function() {
 			expect(getSiteForURL("file:///test")).toBe("file:");
