@@ -731,6 +731,27 @@
 			"extra_exports": [
 				"wrappers"
 			]
+		},
+		{
+			"name": "tld",
+			"source_script_path": "nscl/common/tld.js",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./tld.js",
+							"objects": [
+								"tld"
+							]
+						}
+					]
+				}
+			]
 		}
 	]
 }
