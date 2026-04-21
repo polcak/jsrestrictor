@@ -126,13 +126,22 @@ DocStartInjection.register(async ({url, frameId, tabId}) => {
 });
 
 /**
- * We need to process both previous and the next URL. See
+ * Allow JS environment change during page load
+ *
+ * Currently, this is only useful for window.name wrapper that resets the
+ * content of window.name when eTLD+1 changes and the new domain is configured to
+ * protect window.name. See the original reasoning behind this behaviour in
  * https://codeberg.org/JShelter/webextension/issues/46 and
- * https://codeberg.org/JShelter/webextension/issues/58 for more details.
- * So far only window.name wrapper needs such information so we did not created any general
- * mechanism.
- * Beware that this mechanism is triggered even when the user clicks the back button while content
- * scripts do not run again.
+ * https://codeberg.org/JShelter/webextension/issues/58 including proposals for
+ * the generalization of this mechanism.
+ *
+ * The implementation mimics the Firefox behaviour. However,  
+ * https://codeberg.org/JShelter/webextension/issues/71#issuecomment-13497561 
+ * lists potential problems as the code does not check and reasonably cannot check
+ * for the configuration of the domain that actually set the content of window.name.
+ *
+ * Beware that this mechanism is triggered even when the user clicks the back
+ * button while content scripts do not run again.
  */
 NavCache.onUrlChanged.addListener(({tabId, frameId, previousUrl, url}) => {
 	if (getSiteForURL(previousUrl) === getSiteForURL(url)) return;
