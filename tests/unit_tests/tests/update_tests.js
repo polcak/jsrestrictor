@@ -49,6 +49,57 @@ describe("update", function() {
 			make_configuration_compatible_with_update(item);
 			expect(item.version).toBeGreaterThanOrEqual(7);
 		});
+		it("should normalize domain names to reflect changes in 6633973.",function() {
+			set_global_variable("level_2", {}); // Firefox
+			let item = {
+				"__default__": "2",
+				"custom_levels": {},
+				"domains": {
+					"jshelter.org.": {
+						"level_id": "2",
+						"tweaks": {
+							"time_precision": 2
+						}
+					},
+					"vut.cz": {
+						"level_id": "3"
+					},
+					"fit.vut.cz": {
+						"level_id": "1"
+					},
+					"fit.vut.cz.": {
+						"level_id": "0"
+					}
+				},
+				"fpDetectionOn": true,
+				"fpdSettings": {
+					"behavior": 0,
+					"detection": 0,
+					"notifications": 1
+				},
+				"fpdWhitelist": {},
+				"nbsSettings": {
+					"blocking": 1,
+					"notifications": 1
+				},
+				"nbsWhitelist": {},
+				"requestShieldOn": true,
+				"version": 7
+			}
+			make_configuration_compatible_with_update(item);
+			expect(item.version).toBeGreaterThanOrEqual(7.1);
+			expect(item.domains.hasOwnProperty("jshelter.org.")).toBeFalse();
+			expect(item.domains.hasOwnProperty("jshelter.org")).toBeTrue();
+			expect(item.domains["jshelter.org"].level_id).toBe("2");
+			expect(item.domains["jshelter.org"].hasOwnProperty("tweaks")).toBeTrue();
+			expect(item.domains["jshelter.org"].tweaks.time_precision).toBe(2);
+			expect(item.domains.hasOwnProperty("vut.cz")).toBeTrue();
+			expect(item.domains["vut.cz"].level_id).toBe("3");
+			expect(item.domains.hasOwnProperty("fit.vut.cz")).toBeTrue();
+			expect(item.domains["fit.vut.cz"].level_id).toBe("1");
+			expect(item.domains.hasOwnProperty("fit.vut.cz.")).toBeTrue();
+			expect(item.domains["fit.vut.cz."].level_id).toBe("0");
+		});
 	});
 
 });

@@ -501,6 +501,18 @@ function make_configuration_compatible_with_update(item) {
 			}
 			item.version = 7;
 		}
+		if (item.version < 7.1) {
+			for (domain in item.domains) {
+				let normalized_domain = tld.normalize(domain);
+				if (normalized_domain !== domain) {
+					if (!(normalized_domain in item.domains)) {
+						item.domains[normalized_domain] = item.domains[domain];
+						delete item.domains[domain];
+					}
+				}
+			}
+			item.version = 7.1;
+		}
 }
 browser.runtime.onInstalled.addListener(installUpdate);
 // fallback - populate storage with valid data (if onInstalled won't fire)

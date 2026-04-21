@@ -745,6 +745,17 @@
 			"remove_custom_namespace": false,
 			"let_to_var": false,
 			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./tld.js",
+							"objects": [
+								"tld"
+							]
+						}
+					]
+				}
 			],
 			"inject_code_to_src": {
 				"begin": "function set_global_variable(name, value) { globalThis[name] = value; }"
