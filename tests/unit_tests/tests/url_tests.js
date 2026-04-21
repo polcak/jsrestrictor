@@ -77,4 +77,57 @@ describe("URL", function() {
 			expect(extractSubDomains("255.255.255.256")).toEqual(["256", "255.256", "255.255.256", "255.255.255.256"]);
 		});
 	});
+
+	describe("Function getEffectiveDomain", function() {
+		it("should be defined.",function() {
+			expect(getEffectiveDomain).toBeDefined();
+		});
+		it("should remove www. from the beginning of the string and the dot at the end.",function() {
+			expect(getEffectiveDomain("https://www.fit.vutbr.cz")).toBe("fit.vutbr.cz");
+			expect(getEffectiveDomain("http://www.fit.vutbr.cz")).toBe("fit.vutbr.cz");
+			expect(getEffectiveDomain("https://www.fit.vut.cz.")).toBe("fit.vut.cz");
+		});
+		it("should do nothing if there is not www. at the beginning of the string.",function() {
+			expect(getEffectiveDomain("https://merlin.fit.vutbr.cz")).toBe("merlin.fit.vutbr.cz");
+			expect(getEffectiveDomain("http://merlin.fit.vutbr.cz")).toBe("merlin.fit.vutbr.cz");
+			expect(getEffectiveDomain("http://merlin.fit.vut.cz.")).toBe("merlin.fit.vut.cz");
+			expect(getEffectiveDomain("https://example.co.uk")).toBe("example.co.uk");
+			expect(getEffectiveDomain("https://example.co.uk.")).toBe("example.co.uk");
+			expect(getEffectiveDomain("http://example.co.uk")).toBe("example.co.uk");
+			expect(getEffectiveDomain("http://192.168.1.1")).toBe("192.168.1.1");
+			expect(getEffectiveDomain("http://[2001:db8::]")).toBe("[2001:db8::]");
+		});
+		it("should support file: protocol.",function() {
+			expect(getEffectiveDomain("file:///test")).toBe("file:");
+		});
+		it("should receive a valid URL.",function() {
+			expect(() => getEffectiveDomain("merlin.fit.vutbr.cz")).toThrowError();
+		});
+	});
+
+
+	describe("Function getSiteForURL", function() {
+		it("should be defined.",function() {
+			expect(getSiteForURL).toBeDefined();
+		});
+		it("propagate get eTLD+1 from NSCL TLD module.",function() {
+			expect(getSiteForURL("https://www.fit.vutbr.cz")).toBe("vutbr.cz");
+			expect(getSiteForURL("http://www.fit.vutbr.cz")).toBe("vutbr.cz");
+			expect(getSiteForURL("https://merlin.fit.vutbr.cz")).toBe("vutbr.cz");
+			expect(getSiteForURL("http://merlin.fit.vutbr.cz")).toBe("vutbr.cz");
+			expect(getSiteForURL("https://polcak.github.io")).toBe("polcak.github.io");
+			expect(getSiteForURL("http://example.co.uk")).toBe("example.co.uk");
+			expect(getSiteForURL("http://192.168.1.1")).toBe("192.168.1.1");
+			expect(getSiteForURL("http://[2001:db8::]")).toBe("[2001:db8::]");
+			expect(getSiteForURL("http://[::]")).toBe("[::]");
+		});
+		it("should support file: protocol.",function() {
+			expect(getSiteForURL("file:///test")).toBe("file:");
+		});
+		it("should receive a valid URL.",function() {
+			expect(getSiteForURL("merlin.fit.vutbr.cz")).toBe("");
+		});
+	});
+
+
 });

@@ -6,9 +6,6 @@
 			"let_to_var": false,
 			"src_script_requirements": [
 			],
-			"inject_code_to_src": {
-				"begin": "var tld = {getDomain: (d) => 'TLD#' + d};"
-			},
 			"test_script_requirements": [
 				{
 					"type": "const",
@@ -20,8 +17,6 @@
 								"byteToHex",
 								"gen_random32",
 								"gen_random64",
-								"getEffectiveDomain",
-								"getSiteForURL",
 								"create_short_text"
 							]
 						}
@@ -34,6 +29,17 @@
 			"remove_custom_namespace": false,
 			"let_to_var": false,
 			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./tld.js",
+							"objects": [
+								"tld"
+							]
+						}
+					]
+				}
 			],
 			"test_script_requirements": [
 				{
@@ -42,7 +48,9 @@
 						{
 							"from": "./url.js",
 							"objects": [
-								"extractSubDomains"
+								"extractSubDomains",
+								"getEffectiveDomain",
+								"getSiteForURL"
 							]
 						}
 					]
@@ -68,7 +76,7 @@
 							]
 						},
 						{
-							"from": "./helpers.js",
+							"from": "./url.js",
 							"objects": [
 								"getEffectiveDomain"
 							]
@@ -730,6 +738,71 @@
 			],
 			"extra_exports": [
 				"wrappers"
+			]
+		},
+		{
+			"name": "update",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./tld.js",
+							"objects": [
+								"tld"
+							]
+						}
+					]
+				}
+			],
+			"inject_code_to_src": {
+				"begin": "function set_global_variable(name, value) { globalThis[name] = value; }"
+			},
+			"replace_in_src": [
+				{
+					"origin": "checkAndSaveConfig(item, false);",
+					"new": ""
+				}
+			],
+			"extra_exports": [
+				"set_global_variable"
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./update.js",
+							"objects": [
+								"make_configuration_compatible_with_update",
+								"set_global_variable"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "tld",
+			"source_script_path": "nscl/common/tld.js",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./tld.js",
+							"objects": [
+								"tld"
+							]
+						}
+					]
+				}
 			]
 		}
 	]
