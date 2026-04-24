@@ -337,6 +337,8 @@ var build_code = function(wrapper, ...args) {
 
 /**
  * Transform wrapping arrays into injectable code.
+ *
+ * @param wrappers list of lists [API to be wrapped, ...list of parameters of the wrapper
  */
 function wrap_code(wrappers) {
 	if (wrappers.length === 0) {
