@@ -304,7 +304,7 @@ function fp_assemble_injection(currentLevel, fpdWrappers, initializer = '') {
 	// Generate wrapping code
 	let code = wrap_code(currentLevel.wrappers);
 	// Generate FPD wrapping code
-	if (fpdWrappers) {
+	if (fpdWrappers.length > 0) {
 		if (!code) {
 			code = fp_generate_wrapping_code(fpdWrappers);
 		}
