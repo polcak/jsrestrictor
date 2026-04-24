@@ -312,6 +312,10 @@ function fp_assemble_injection(currentLevel, fpdWrappers, initializer = '') {
 			code = fp_update_wrapping_code(code, currentLevel.wrappers, fpdWrappers);
 		}
 	}
+	// Both JSS and FPD are deactivated, do not inject any code
+	if (!code) {
+		return "";
+	}
 	// Insert farbling WASM module into wrapped code if enabled, only when farbling is actually used
 	if (currentLevel.wasm && (currentLevel.audiobuffer === 1 || currentLevel.htmlcanvaselement === 1)) {
 		code = insert_wasm_code(code);

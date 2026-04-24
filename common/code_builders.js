@@ -446,6 +446,9 @@ function insert_wasm_code(code) {
  * Append wrapped codes to NSCL helpers and create injectable code.
  */
 function generate_code(wrapped_code) {
+	if (wrapped_code === "") {
+		return "";
+	}
 	let code = (w => {
 
 		// cross-wrapper globals
