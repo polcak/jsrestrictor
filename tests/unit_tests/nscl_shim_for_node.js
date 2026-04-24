@@ -39,3 +39,7 @@ global.CachedStorage = {
 		return Promise.resolve(true);
 	}
 };
+
+global.patchWindow = function(s) {
+	return s;
+}

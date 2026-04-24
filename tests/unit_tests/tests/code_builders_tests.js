@@ -74,6 +74,40 @@ describe("Code builders", function() {
 		});
 	});
 
+	describe("Function wrap_code", function() {
+		it("should return undefined when no wrappers defined.",function() {
+			expect(wrap_code([])).toBe(undefined);
+		});
+		it("should return patching code when a wrapper is defined.",function() {
+			let code = wrap_code([["window.Geolocation", 3]]);
+			expect(typeof code).toBe("string");
+			expect(code.length).toBeGreaterThanOrEqual(100);
+			expect(code.includes("Geolocation")).toBe(true);
+			expect(code.includes("XRAY")).toBe(true);
+			expect(code.includes("WrapHelper")).toBe(true);
+			expect(code.includes("unX")).toBe(true);
+			//expect(code.includes("domainHash")).toBe(true);
+			expect(code.includes("// FPD_S")).toBe(true);
+			expect(code.includes("// FPD_E")).toBe(true);
+			expect(code.includes("fpd")).toBe(false);
+		});
+	});
+	describe("Function generate_code", function() {
+		it("should return empty string when no code passed.",function() {
+			expect(generate_code("")).toBe("");
+		});
+		it("should return patching code when a code to wrap is defined.",function() {
+			let code = generate_code("var test = 1;");
+			expect(typeof code).toBe("string");
+			expect(code.length).toBeGreaterThanOrEqual(100);
+			expect(code.includes("var test = 1;")).toBe(true);
+			expect(code.includes("XRAY")).toBe(true);
+			expect(code.includes("WrapHelper")).toBe(true);
+			expect(code.includes("unX")).toBe(true);
+			//expect(code.includes("domainHash")).toBe(true);
+			expect(code.includes("fp_call_count")).toBe(false);
+		});
+	});
 	describe("Function insert_wasm_code", function() {
 		it("should be defined.",function() {
 			expect(insert_wasm_code).toBeDefined();

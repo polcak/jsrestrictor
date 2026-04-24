@@ -25,6 +25,9 @@ global.browser = {
 		onConnect: {
 			addListener: () => undefined,
 		},
+		onMessage: {
+			addListener: () => undefined,
+		},
 	},
 	i18n: {
 		getMessage: () => "mockup",
