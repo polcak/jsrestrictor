@@ -745,12 +745,13 @@ function generate_code(wrapped_code) {
 
 			(function () {
 				let {port} = env;
-				function updateCount(wrapperName, wrapperType, wrapperArgs, stack) {
+				function updateCount(wrapperName, wrapperType, wrapperArgs, stack, count = 1) {
 					port.postMessage({
 						wrapperName,
 						wrapperType,
 						wrapperArgs,
-						stack
+						stack,
+						count
 					});
 				}
 				try {

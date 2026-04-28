@@ -41,7 +41,8 @@ describe("fp_detect_background", function() {
 					resource: RESOURCE,
 					type: TYPE,
 					args: [],
-					stack: undefined
+					stack: undefined,
+					count: 1
 				}
 				,
 				{
@@ -70,7 +71,8 @@ describe("fp_detect_background", function() {
 						resource: RESOURCE,
 						type: TYPE,
 						args: [],
-						stack: undefined
+						stack: undefined,
+						count: 1
 					}
 					,
 					{
@@ -102,7 +104,8 @@ describe("fp_detect_background", function() {
 							resource: RESOURCE,
 							type: TYPE,
 							args: args,
-							stack: undefined
+							stack: undefined,
+							count: 1
 						}
 						,
 						{
@@ -136,7 +139,8 @@ describe("fp_detect_background", function() {
 							resource: RESOURCE,
 							type: type,
 							args: [],
-							stack: undefined
+							stack: undefined,
+							count: 1
 						}
 						,
 						{
@@ -171,7 +175,8 @@ describe("fp_detect_background", function() {
 								resource: resource,
 								type: type,
 								args: [],
-								stack: undefined
+								stack: undefined,
+								count: 1
 							}
 							,
 							{

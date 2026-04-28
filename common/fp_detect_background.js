@@ -788,11 +788,11 @@ async function fpdCommonMessageListener(record, sender) {
 				
 				// increase counter for accessed arguments
 				fpCounterObj["args"][argsStr] = fpCounterObj["args"][argsStr] || 0;
-				fpCounterObj["args"][argsStr] += 1;
+				fpCounterObj["args"][argsStr] += record.count;
 				
 				// increase counter for total accesses
 				fpCounterObj["total"] = fpCounterObj["total"] || 0;
-				fpCounterObj["total"] += 1;
+				fpCounterObj["total"] += record.count;
 				fpdObservable.update(record.resource, sender.tab.id, record.type, fpCounterObj["total"]);
 
 				// Track callers

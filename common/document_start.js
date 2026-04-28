@@ -54,7 +54,7 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 
 		wrappersPort.onMessage = msg => {
 			if (msg.wrapperName) {
-				let {wrapperName, wrapperType, wrapperArgs, stack} = msg;
+				let {wrapperName, wrapperType, wrapperArgs, stack, count} = msg;
 				// pass access logs to FPD background script
 				browser.runtime.sendMessage({
 					purpose: "fp-detection",
@@ -62,6 +62,7 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 					type: wrapperType,
 					args: wrapperArgs,
 					stack: stack,
+					count: count,
 				});
 			}
 			if (msg.init) {
