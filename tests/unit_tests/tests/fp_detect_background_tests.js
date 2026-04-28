@@ -64,7 +64,8 @@ describe("fp_detect_background", function() {
 			const RESOURCE = "test.api.multicall";
 			const TYPE = "get";
 			const REPEAT = 10;
-			for (let i = 0; i < REPEAT; i++) {
+			let sum = 0;
+			for (let i = 1; i <= REPEAT; i++) {
 				await fpdCommonMessageListener(
 					{
 						purpose: "fp-detection",
@@ -72,7 +73,43 @@ describe("fp_detect_background", function() {
 						type: TYPE,
 						args: [],
 						stack: undefined,
-						count: 1
+						count: i
+					}
+					,
+					{
+						tab: {id: TAB_ID},
+					}
+				);
+				sum += i;
+			}
+			expect(fpDb).toBeDefined();
+			expect(fpDb[TAB_ID]).toBeDefined();
+			expect(fpDb[TAB_ID][RESOURCE]).toBeDefined(fpDb[TAB_ID]);
+			expect(fpDb[TAB_ID][RESOURCE][TYPE]).toBeDefined(fpDb[TAB_ID][RESOURCE]);
+			expect(fpDb[TAB_ID][RESOURCE][TYPE]["args"]).toBeDefined();
+			let keys = Object.keys(fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
+			expect(keys.length).toBe(1);
+			expect(fpDb[TAB_ID][RESOURCE][TYPE]["args"][keys[0]]).toBe(sum, fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
+			expect(fpDb[TAB_ID][RESOURCE][TYPE]["total"]).toBe(sum, fpDb[TAB_ID][RESOURCE][TYPE]);
+		});
+		it("should register multiple calls of the same API - different arguments.", async function() {
+			const TAB_ID = 2;
+			const RESOURCE = "test.api.multicall";
+			const TYPE = "get";
+			const REPEAT = 10;
+			const CALLED1 = 5;
+			const CALLED2 = 3;
+			const CALLED3 = 18;
+			const ARGS = [[[0], 5], [["a", "b"], 3], [["a", "b", "c"], 18]]
+			for (let [args, count] of ARGS) {
+				await fpdCommonMessageListener(
+					{
+						purpose: "fp-detection",
+						resource: RESOURCE,
+						type: TYPE,
+						args: args,
+						stack: undefined,
+						count: count
 					}
 					,
 					{
@@ -86,45 +123,14 @@ describe("fp_detect_background", function() {
 			expect(fpDb[TAB_ID][RESOURCE][TYPE]).toBeDefined(fpDb[TAB_ID][RESOURCE]);
 			expect(fpDb[TAB_ID][RESOURCE][TYPE]["args"]).toBeDefined();
 			let keys = Object.keys(fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
-			expect(keys.length).toBe(1);
-			expect(fpDb[TAB_ID][RESOURCE][TYPE]["args"][keys[0]]).toBe(REPEAT, fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
-			expect(fpDb[TAB_ID][RESOURCE][TYPE]["total"]).toBe(REPEAT, fpDb[TAB_ID][RESOURCE][TYPE]);
-		});
-		it("should register multiple calls of the same API - different arguments.", async function() {
-			const TAB_ID = 2;
-			const RESOURCE = "test.api.multicall";
-			const TYPE = "get";
-			const REPEAT = 10;
-			const ARGS = [[0], ["a", "b"], ["a", "b", "c"]]
-			for (let i = 0; i < REPEAT; i++) {
-				for (let args of ARGS) {
-					await fpdCommonMessageListener(
-						{
-							purpose: "fp-detection",
-							resource: RESOURCE,
-							type: TYPE,
-							args: args,
-							stack: undefined,
-							count: 1
-						}
-						,
-						{
-							tab: {id: TAB_ID},
-						}
-					);
-				}
-			}
-			expect(fpDb).toBeDefined();
-			expect(fpDb[TAB_ID]).toBeDefined();
-			expect(fpDb[TAB_ID][RESOURCE]).toBeDefined(fpDb[TAB_ID]);
-			expect(fpDb[TAB_ID][RESOURCE][TYPE]).toBeDefined(fpDb[TAB_ID][RESOURCE]);
-			expect(fpDb[TAB_ID][RESOURCE][TYPE]["args"]).toBeDefined();
-			let keys = Object.keys(fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
 			expect(keys.length).toBe(ARGS.length);
+			called = []
 			for (key of keys) {
-				expect(fpDb[TAB_ID][RESOURCE][TYPE]["args"][key]).toBe(REPEAT, fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
+				called.push(fpDb[TAB_ID][RESOURCE][TYPE]["args"][key]);
 			}
-			expect(fpDb[TAB_ID][RESOURCE][TYPE]["total"]).toBe(REPEAT*ARGS.length, fpDb[TAB_ID][RESOURCE][TYPE]);
+			expect(called.length).toBe(ARGS.length, fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
+			expect(called).toEqual(jasmine.arrayContaining([CALLED1, CALLED2, CALLED3]), fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
+			expect(fpDb[TAB_ID][RESOURCE][TYPE]["total"]).toBe(CALLED1 + CALLED2 + CALLED3, fpDb[TAB_ID][RESOURCE][TYPE]);
 		});
 		it("should differentiate between get and set.", async function() {
 			const TAB_ID = 3;
