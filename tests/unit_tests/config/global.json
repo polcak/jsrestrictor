@@ -457,7 +457,24 @@
 					]
 				}
 			],
-			"test_script_requirements": []
+			"test_script_requirements": [
+				{
+					"type": "let",
+					"requirements": [
+						{
+							"from": "./fp_detect_background.js",
+							"objects": [
+								"fpDb",
+								"fpdCommonMessageListener"
+							]
+						}
+					]
+				}
+			],
+			"extra_exports": [
+				"fpdCommonMessageListener",
+				"fpDb"
+			]
 		},
 		{
 			"name": "alea",
