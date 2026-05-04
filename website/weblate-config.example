@@ -1,0 +1,5 @@
+[weblate]
+url = https://hosted.weblate.org/api/
+
+[keys]
+https://hosted.weblate.org/api/ = <your-weblate-key>
