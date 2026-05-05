@@ -37,3 +37,29 @@ If you want to translate JShelter to a new language or improve an existing trans
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU
 General Public License as published by the Free Software Foundation, either [version
 3](https://www.gnu.org/licenses/gpl-3.0) of the License, or (at your option) any later version.
+
+## Funding
+
+This project is funded through the NGI Zero Commons fund established with
+financial support from the European Commission's Next Generation Internet
+programme, under the aegis of DG Communications Networks, Content and Technology
+under grant agreement No 101092990, under the aegis of DG Communications
+Networks, Content and Technology as <a
+href="https://nlnet.nl/project/JShelter-UX/">JShelter UX</a>.
+
+This project was <a href="https://nlnet.nl/project/JShelter-Manifest-V3/">funded
+through the NGI0 Entrust Fund</a>, a fund established by NLnet with financial
+support from the European Commission's Next Generation Internet programme, under
+the aegis of DG Communications Networks, Content and Technology under grant
+agreement No 101069594.
+
+This project was funded through the NGI0 PET Fund, a fund established by NLnet
+with financial support from the European Commission's Next Generation Internet
+programme, under the aegis of DG Communications Networks, Content and Technology
+under grant agreement No 825310 as <a
+href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a
+href="https://nlnet.nl/project/JShelter">JShelter</a> projects. 
+
+This project was supported by the <a
+href="https://www.fit.vut.cz/research/project/1063/.en">MV CR VI20172020062
+project</a>.
