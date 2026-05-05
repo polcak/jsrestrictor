@@ -90,6 +90,7 @@ describe("Code builders", function() {
 			expect(code.includes("// FPD_S")).toBe(true);
 			expect(code.includes("// FPD_E")).toBe(true);
 			expect(code.includes("fpd")).toBe(false);
+			expect(code.includes("updateCount")).toBe(true);
 		});
 	});
 	describe("Function generate_code", function() {
@@ -106,6 +107,7 @@ describe("Code builders", function() {
 			expect(code.includes("unX")).toBe(true);
 			//expect(code.includes("domainHash")).toBe(true);
 			expect(code.includes("fp_call_count")).toBe(false);
+			expect(code.includes("updateCount")).toBe(true);
 		});
 	});
 	describe("Function insert_wasm_code", function() {
