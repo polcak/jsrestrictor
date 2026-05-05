@@ -110,6 +110,37 @@ describe("Code builders", function() {
 			expect(code.includes("updateCount")).toBe(true);
 		});
 	});
+	describe("FPD code the register the APIs called", function() {
+		it("should define updateCount function.",function() {
+			expect(updateCount).toBeDefined();
+		});
+		it("updateCount function should propagate information on the called APIs through the port.",function() {
+			let updateCount_calls = [];
+			let port = {
+				postMessage: function(msg) {
+												updateCount_calls.push(msg);
+											}
+			};
+			set_global_variable("port", port);
+			const test_data = {
+				wrapperName: "wrapper name",
+				wrapperType: "wrapper type",
+				wrapperArgs: [1,2,3],
+				stack: "the stack",
+				count: 5
+			};
+			updateCount(
+				test_data.wrapperName,
+				test_data.wrapperType,
+				test_data.wrapperArgs,
+				test_data.stack,
+				test_data.count
+			);
+			let received_data = updateCount_calls.pop();
+			expect(updateCount_calls.length).toBe(0);
+			expect(received_data).toEqual(test_data);
+		});
+	});
 	describe("Function insert_wasm_code", function() {
 		it("should be defined.",function() {
 			expect(insert_wasm_code).toBeDefined();

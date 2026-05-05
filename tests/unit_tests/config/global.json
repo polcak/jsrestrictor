@@ -158,7 +158,7 @@
 				}
 			],
 			"inject_code_to_src": {
-				"begin": "browser.runtime.getURL = function(){return 'tmp/release.wasm';}; fetch = fs.readFileSync; WebAssembly.instantiateStreaming = WebAssembly.instantiate;"
+				"begin": "browser.runtime.getURL = function(){return 'tmp/release.wasm';}; fetch = fs.readFileSync; WebAssembly.instantiateStreaming = WebAssembly.instantiate;function set_global_variable(name, value) { globalThis[name] = value; }"
 			},
 			"replace_in_src": [
 				{
@@ -182,6 +182,8 @@
 								"build_code",
 								"wrap_code",
 								"generate_code",
+								"updateCount",
+								"set_global_variable",
 								"insert_wasm_code"
 							]
 						},
@@ -202,7 +204,8 @@
 				}
 			],
 			"extra_exports": [
-				"joinWrappingCode"
+				"joinWrappingCode",
+				"set_global_variable"
 			]
 		},
 		{
