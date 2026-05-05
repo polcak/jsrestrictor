@@ -1,4 +1,4 @@
-> **Disclaimer**: This is a research project under development, see the [issue page](https://pagure.io/JShelter/webextension/issues) and the [webextension home page](https://JShelter.org/) for more details about the current status.
+> **Disclaimer**: This is a research project under development, see the [issue page](https://codeberg.org/JShelter/webextension/issues/) and the [webextension home page](https://JShelter.org/) for more details about the current status.
 
 ## What is JShelter?
 
@@ -11,16 +11,16 @@ Like a firewall that controls network connections, JShelter controls the APIs pr
 
 ## How can I get started?
 
-JShelter is a browser extension with support for multiple browsers: [Firefox](https://addons.mozilla.org/firefox/addon/javascript-restrictor/), [Google Chrome](https://chrome.google.com/webstore/detail/jshelter/ammoloihpcbognfddfjcljgembpibcmb), and [Opera](https://addons.opera.com/extensions/details/javascript-restrictor/). The extension also works with Brave, Microsoft Edge, and most likely any Chromium-based browser. [Let us know](https://pagure.io/JShelter/webextension/issues) if you want to add the extension to additional stores.
+JShelter is a browser extension with support for multiple browsers: [Firefox](https://addons.mozilla.org/firefox/addon/javascript-restrictor/), [Google Chrome](https://chrome.google.com/webstore/detail/jshelter/ammoloihpcbognfddfjcljgembpibcmb), and [Opera](https://addons.opera.com/extensions/details/javascript-restrictor/). The extension also works with Brave, Microsoft Edge, and most likely any Chromium-based browser. [Let us know](https://codeberg.org/JShelter/webextension/issues/) if you want to add the extension to additional stores.
 
 See our [website](https://JShelter.org/) for additional information and documentation. We recommend
 reading [our paper](https://arxiv.org/abs/2204.01392) to get a better idea about the project.
 
 ## Contributing
 
-If you have any questions or you have spotted a bug, please [let us know](https://pagure.io/JShelter/webextension/issues). If you found a security bug that you do not want to share publicly, please, send a report to [jshelter@gnu.org](mailto:jshelter@gnu.org).
+If you have any questions or you have spotted a bug, please [let us know](https://codeberg.org/JShelter/webextension/issues/). If you found a security bug that you do not want to share publicly, please, send a report to [jshelter@gnu.org](mailto:jshelter@gnu.org).
 
-If you would like to give us [feedback](https://pagure.io/JShelter/webextension/issues), we would really appreciate it.
+If you would like to give us [feedback](https://codeberg.org/JShelter/webextension/issues/), we would really appreciate it.
 
 If you want to add a new wrapper, please, follow the [guide](https://jshelter.org/new-wrapper/). If
 you have an image/artwork that you want to push to the project, we suggest stripping exif data:
@@ -37,3 +37,29 @@ If you want to translate JShelter to a new language or improve an existing trans
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU
 General Public License as published by the Free Software Foundation, either [version
 3](https://www.gnu.org/licenses/gpl-3.0) of the License, or (at your option) any later version.
+
+## Funding
+
+This project is funded through the NGI Zero Commons fund established with
+financial support from the European Commission's Next Generation Internet
+programme, under the aegis of DG Communications Networks, Content and Technology
+under grant agreement No 101092990, under the aegis of DG Communications
+Networks, Content and Technology as <a
+href="https://nlnet.nl/project/JShelter-UX/">JShelter UX</a>.
+
+This project was <a href="https://nlnet.nl/project/JShelter-Manifest-V3/">funded
+through the NGI0 Entrust Fund</a>, a fund established by NLnet with financial
+support from the European Commission's Next Generation Internet programme, under
+the aegis of DG Communications Networks, Content and Technology under grant
+agreement No 101069594.
+
+This project was funded through the NGI0 PET Fund, a fund established by NLnet
+with financial support from the European Commission's Next Generation Internet
+programme, under the aegis of DG Communications Networks, Content and Technology
+under grant agreement No 825310 as <a
+href="https://nlnet.nl/project/JSRestrictor/">JavaScript Restrictor</a> and <a
+href="https://nlnet.nl/project/JShelter">JShelter</a> projects. 
+
+This project was supported by the <a
+href="https://www.fit.vut.cz/research/project/1063/.en">MV CR VI20172020062
+project</a>.
