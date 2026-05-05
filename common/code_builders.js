@@ -745,15 +745,7 @@ function generate_code(wrapped_code) {
 
 			(function () {
 				let {port} = env;
-				function updateCount(wrapperName, wrapperType, wrapperArgs, stack, count = 1) {
-					port.postMessage({
-						wrapperName,
-						wrapperType,
-						wrapperArgs,
-						stack,
-						count
-					});
-				}
+				// FPD register API calls //
 				try {
 					// WRAPPERS //
 				} finally {
@@ -764,7 +756,19 @@ function generate_code(wrapped_code) {
 			// after injection code completed, allow messages (calls from wrappers won't be counted)
 			fp_enabled = true;
 		}
-	}).toString().replace('// WRAPPERS //', wrapped_code)
+	}).toString().replace('// WRAPPERS //', wrapped_code).replace('// FPD register API calls //', fpd_updateCountCode);
 
 	return `(${code})();`;
 }
+
+function updateCount(wrapperName, wrapperType, wrapperArgs, stack, count = 1) {
+	port.postMessage({
+		wrapperName,
+		wrapperType,
+		wrapperArgs,
+		stack,
+		count
+	});
+}
+
+const fpd_updateCountCode = updateCount.toString();
