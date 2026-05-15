@@ -88,11 +88,6 @@ describe("Levels", function() {
 			expect(level_3).toBeDefined();
 		});
 	});
-	describe("Object level_3", function() {
-		it("should be defined.",function() {
-			expect(level_3).toBeDefined();
-		});
-	});
 	describe("Object default_level", function() {
 		it("should be defined.",function() {
 			expect(default_level).toBeDefined();
