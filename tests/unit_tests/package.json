@@ -10,7 +10,8 @@
   "author": "Martin Bednar, ibednar@fit.vutbr.cz",
   "license": "GNU General Public License 3 or later",
   "dependencies": {
-    "jasmine": "^3.6.4",
+    "jasmine": "^6.2.0",
+    "jasmine-core": "^6.1.0",
     "navigator": "^1.0.1"
   }
 }
