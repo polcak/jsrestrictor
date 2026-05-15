@@ -92,6 +92,8 @@ describe("Levels", function() {
 		it("should be defined.",function() {
 			expect(default_level).toBeDefined();
 		});
+	});
+	describe("Check levels to contain the correct levels", function() {
 		it("should contain level_0 definiton.",function() {
 			expect(levels[0]).toBe(level_0);
 		});
