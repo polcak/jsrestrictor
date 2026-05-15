@@ -57,7 +57,7 @@ function create_counter_call(wrapper, type) {
 				stack = e.stack.toString();
 			}
 		}
-		updateCount(${JSON.stringify(resource)}, "${type}", ${args}, stack);
+		updateCount("${resource}", "${type}", ${args}, stack);
 		fp_${type}_count += 1;
 	}`;
 }
