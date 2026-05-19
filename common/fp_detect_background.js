@@ -1077,6 +1077,8 @@ function refreshDb(tabId) {
 /**
  * The function that periodically starts fingerprinting evaluation without the need for a request. 
  * Delay is increased exponentially and doubles in every call.
+ * The periodic evaluation is done mainly to give the user the feedback about the status of FPD, for
+ * example, in the badge.
  *
  * \param tabId Integer number representing ID of browser tab.
  * \param delay Initial value of a delay in milliseconds.
