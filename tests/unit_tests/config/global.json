@@ -158,7 +158,7 @@
 				}
 			],
 			"inject_code_to_src": {
-				"begin": "browser.runtime.getURL = function(){return 'tmp/release.wasm';}; fetch = fs.readFileSync; WebAssembly.instantiateStreaming = WebAssembly.instantiate;"
+				"begin": "browser.runtime.getURL = function(){return 'tmp/release.wasm';}; fetch = fs.readFileSync; WebAssembly.instantiateStreaming = WebAssembly.instantiate;function set_global_variable(name, value) { globalThis[name] = value; }"
 			},
 			"replace_in_src": [
 				{
@@ -181,6 +181,10 @@
 								"generate_delete_properties",
 								"build_code",
 								"wrap_code",
+								"generate_code",
+								"updateCount",
+								"serializeUCA",
+								"set_global_variable",
 								"insert_wasm_code"
 							]
 						},
@@ -195,6 +199,170 @@
 							"from": "./crc16.js",
 							"objects": [
 								"crc16_table"
+							]
+						}
+					]
+				}
+			],
+			"extra_exports": [
+				"joinWrappingCode",
+				"set_global_variable"
+			]
+		},
+		{
+			"name": "document_start",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrapping.js",
+							"objects": [
+								"build_wrapping_code"
+							]
+						},
+						{
+							"from": "./code_builders.js",
+							"objects": [
+								"enclose_wrapping",
+								"enclose_wrapping2",
+								"define_page_context_function",
+								"generate_assign_function_code",
+								"generate_object_properties",
+								"generate_delete_properties",
+								"build_code",
+								"wrap_code",
+								"insert_wasm_code"
+							]
+						},
+						{
+							"from": "./levels.js",
+							"objects": [
+								"levels",
+								"wrapping_groups"
+							]
+						},
+						{
+							"from": "./fp_code_builders.js",
+							"objects": [
+								"fp_assemble_injection",
+								"joinWrappingCode"
+							]
+						},
+						{
+							"from": "./crc16.js",
+							"objects": [
+								"crc16_table"
+							]
+						}
+					]
+				}
+			],
+			"inject_code_to_src": {
+				"begin": "window = {};function set_global_variable(name, value) { globalThis[name] = value; }"
+			},
+			"replace_in_src": [
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./document_start.js",
+							"objects": [
+								"wrapWindow"
+							]
+						},
+						{
+							"from": "./levels.js",
+							"objects": [
+								"level_0",
+								"level_1"
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "fp_code_builders",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./wrapping.js",
+							"objects": [
+								"build_wrapping_code"
+							]
+						},
+						{
+							"from": "./code_builders.js",
+							"objects": [
+								"enclose_wrapping",
+								"enclose_wrapping2",
+								"define_page_context_function",
+								"generate_assign_function_code",
+								"generate_object_properties",
+								"generate_delete_properties",
+								"build_code",
+								"wrap_code",
+								"generate_code",
+								"insert_wasm_code",
+								"joinWrappingCode"
+							]
+						},
+						{
+							"from": "./levels.js",
+							"objects": [
+								"levels",
+								"wrapping_groups"
+							]
+						},
+						{
+							"from": "./crc16.js",
+							"objects": [
+								"crc16_table",
+								"crc16"
+							]
+						},
+						{
+							"from": "./alea.js",
+							"objects": [
+								"alea"
+							]
+						}
+					]
+				}
+			],
+			"inject_code_to_src": {
+				"begin": "window = {};function set_global_variable(name, value) { globalThis[name] = value; }"
+			},
+			"replace_in_src": [
+				{
+					"origin": "console.debug",
+					"new": ""
+				}
+			],
+			"test_script_requirements": [
+				{
+					"type": "const",
+					"requirements": [
+						{
+							"from": "./fp_code_builders.js",
+							"objects": [
+								"fp_assemble_injection"
+							]
+						},
+						{
+							"from": "./levels.js",
+							"objects": [
+								"level_0",
+								"level_1"
 							]
 						}
 					]
@@ -293,7 +461,24 @@
 					]
 				}
 			],
-			"test_script_requirements": []
+			"test_script_requirements": [
+				{
+					"type": "let",
+					"requirements": [
+						{
+							"from": "./fp_detect_background.js",
+							"objects": [
+								"fpDb",
+								"fpdCommonMessageListener"
+							]
+						}
+					]
+				}
+			],
+			"extra_exports": [
+				"fpdCommonMessageListener",
+				"fpDb"
+			]
 		},
 		{
 			"name": "alea",

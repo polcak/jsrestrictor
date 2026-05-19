@@ -57,8 +57,8 @@ function create_counter_call(wrapper, type) {
 				stack = e.stack.toString();
 			}
 		}
-		updateCount(${JSON.stringify(resource)}, "${type}", ${args}, stack);
 		fp_${type}_count += 1;
+		updateCount("${resource}", "${type}", ${args}, stack, fp_${type}_count);
 	}`;
 }
 
@@ -337,6 +337,8 @@ var build_code = function(wrapper, ...args) {
 
 /**
  * Transform wrapping arrays into injectable code.
+ *
+ * @param wrappers list of lists [API to be wrapped, ...list of parameters of the wrapper
  */
 function wrap_code(wrappers) {
 	if (wrappers.length === 0) {
@@ -444,6 +446,9 @@ function insert_wasm_code(code) {
  * Append wrapped codes to NSCL helpers and create injectable code.
  */
 function generate_code(wrapped_code) {
+	if (wrapped_code === "") {
+		return "";
+	}
 	let code = (w => {
 
 		// cross-wrapper globals
@@ -740,14 +745,7 @@ function generate_code(wrapped_code) {
 
 			(function () {
 				let {port} = env;
-				function updateCount(wrapperName, wrapperType, wrapperArgs, stack) {
-					port.postMessage({
-						wrapperName,
-						wrapperType,
-						wrapperArgs,
-						stack
-					});
-				}
+				// FPD register API calls //
 				try {
 					// WRAPPERS //
 				} finally {
@@ -758,7 +756,67 @@ function generate_code(wrapped_code) {
 			// after injection code completed, allow messages (calls from wrappers won't be counted)
 			fp_enabled = true;
 		}
-	}).toString().replace('// WRAPPERS //', wrapped_code)
+	}).toString().replace('// WRAPPERS //', wrapped_code).replace('// FPD register API calls //', fpd_updateCountCode);
 
 	return `(${code})();`;
 }
+
+function updateCount(wrapperName, wrapperType, wrapperArgs, stack, totalCount) {
+	// Update the storage that aggregates the calls to limit messages to background
+	updateCountAggregateCurrentCalls += 1;
+	let wrapperKey = `${wrapperName}#${wrapperType}`;
+	let wrapperStore;
+	if (updateCountAggregate.has(wrapperKey)) {
+		wrapperStore = updateCountAggregate.get(wrapperKey);
+	}
+	else {
+		wrapperStore = {args: new Map(), stack: new Set()};
+		updateCountAggregate.set(wrapperKey, wrapperStore);
+	}
+	const argsStr = wrapperArgs.join(); // .join() is about 20% faster than .join("\u0000")
+	if (wrapperStore.args.has(argsStr)) {
+		wrapperStore.args.set(argsStr, wrapperStore.args.get(argsStr)+1);
+	}
+	else {
+		wrapperStore.args.set(argsStr, 1);
+	}
+	wrapperStore.stack.add(stack);
+	// Check if we should immediately propagate the storage
+	let propagate = false;
+	if (totalCount === 1 ||
+			((updateCountAggregate.size + wrapperStore.args.size - 1) >= UPDATE_COUNT_IMMEDIATE_WRAPPERS) ||
+			((updateCountAggregateCurrentCalls >= UPDATE_COUNT_IMMEDIATE_CALLS) && ((totalCount < 100) || (updateCountAggregate.size > 1)))) {
+		propagateFPDAggregate();
+	}
+	// Check if we should register the timer to propagate storage later
+	else if (updateCountAggregateCurrentCalls === 1) {
+		setTimeout(propagateFPDAggregate, UPDATE_COUNT_FLUSH_INTERVAL);
+	}
+}
+/**
+ * A helper function to stringify the Map including Maps and Sets carried by updateCountAggregate
+ */
+function serializeUCA() {
+	let res = {};
+	for ([apiNameTypeStr, apiDetails] of this) {
+		var {args, stack} = apiDetails;
+		argsObj = {};
+		for ([argsStr, argsCalls] of args) {
+			argsObj[argsStr] = argsCalls;
+		}
+		res[apiNameTypeStr] = {
+			args: argsObj,
+			stack: [...stack] // converts to Array
+		};
+	}
+	return res;
+}
+function propagateFPDAggregate() {
+	if (updateCountAggregate.size > 0) { // Check that we are not trying to send an empty storage
+		port.postMessage(JSON.stringify(updateCountAggregate));
+		updateCountAggregate.clear();
+		updateCountAggregateCurrentCalls = 0;
+	}
+}
+
+const fpd_updateCountCode = "const UPDATE_COUNT_IMMEDIATE_WRAPPERS=5; const UPDATE_COUNT_IMMEDIATE_CALLS = 10; const UPDATE_COUNT_FLUSH_INTERVAL=100;/*ms*/ let updateCountAggregate = new Map(); updateCountAggregate.toJSON = serializeUCA; let updateCountAggregateCurrentCalls = 0;" + updateCount.toString() + serializeUCA.toString() + propagateFPDAggregate.toString();
