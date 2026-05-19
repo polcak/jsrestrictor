@@ -1,5 +1,14 @@
 Title: Release history
 
+## 0.22.1
+
+* Redesign of the mechanism to obtain information about the API calls by page scripts used by FPD and popup to improve the performance, mainly in Firefox
+* Ensure that by disabling JSS and FPD, the extension does not interfere with the page scripts ([issue 176](https://codeberg.org/JShelter/webextension/issues/176))
+* Improve performance of timestamps spoofing
+* Chromium-based browsers: Improve spoofing of decimal parts of floats (related to timestamps spoofing)
+* Normalize domain names (treat domains name with trailing dot the same as without the dot)
+* Change references to Pagure to Codeberg as we swithed the git repository provider
+
 ## 0.22
 
 * Unify the look of widgets in JShelter windows
