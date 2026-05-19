@@ -183,6 +183,7 @@
 								"wrap_code",
 								"generate_code",
 								"updateCount",
+								"serializeUCA",
 								"set_global_variable",
 								"insert_wasm_code"
 							]

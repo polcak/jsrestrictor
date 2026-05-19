@@ -776,29 +776,44 @@ async function fpdCommonMessageListener(record, sender) {
 	try {
 		switch (record.purpose) {
 			case "fp-detection":
+				/* msg.content
+				'{
+					"wrapper name#wrapper type":
+								{
+									"args": {
+										"1,2,3,just-string": 1
+										},
+									"stack": ["the stack"]
+								}
+				}'
+				*/
+				// parse the message
+				const msg = JSON.parse(record.content);
 				// check objects existance => if do not exist, create new one
-				fpDb[sender.tab.id] = fpDb[sender.tab.id] || {};
-				fpDb[sender.tab.id][record.resource] = fpDb[sender.tab.id][record.resource] || {};
-				fpDb[sender.tab.id][record.resource][record.type] = fpDb[sender.tab.id][record.resource][record.type] || {};
-				
-				// object that contains access counters
-				const fpCounterObj = fpDb[sender.tab.id][record.resource][record.type];
-				const argsStr = record.args.join();
-				fpCounterObj["args"] = fpCounterObj["args"] || {};
-				
-				// increase counter for accessed arguments
-				fpCounterObj["args"][argsStr] = fpCounterObj["args"][argsStr] || 0;
-				fpCounterObj["args"][argsStr] += record.count;
-				
-				// increase counter for total accesses
-				fpCounterObj["total"] = fpCounterObj["total"] || 0;
-				fpCounterObj["total"] += record.count;
-				fpdObservable.update(record.resource, sender.tab.id, record.type, fpCounterObj["total"]);
-
-				// Track callers
-				fpCounterObj["callers"] = fpCounterObj["callers"] || {};
-				if (record.stack !== undefined) {
-					fpCounterObj["callers"][record.stack] = true;
+				fpDb[sender.tab.id] ??= {};
+				for (let resource_pair of Object.keys(msg)) {
+					const splitted = resource_pair.split("#");
+					let record_resource = splitted[0];
+					let record_type = splitted[1];
+					fpDb[sender.tab.id][record_resource] ??= {};
+					fpDb[sender.tab.id][record_resource][record_type] ??= {};
+					// create shortcut name to the object that contains the counters of the API calls
+					const fpCounterObj = fpDb[sender.tab.id][record_resource][record_type];
+					fpCounterObj["args"] ??= {};
+					fpCounterObj["total"] ??= 0;
+					for (let argsStr of Object.keys(msg[resource_pair].args)) {
+						// increase counter for accessed arguments
+						fpCounterObj["args"][argsStr] ??= 0;
+						fpCounterObj["args"][argsStr] += msg[resource_pair].args[argsStr];
+						// increase counter for total accesses
+						fpCounterObj["total"] += msg[resource_pair].args[argsStr];
+						fpdObservable.update(record_resource, sender.tab.id, record_type, fpCounterObj["total"]);
+					}
+					// Track the stack traces of the API
+					fpCounterObj["callers"] ??= {};
+					for (let record_stack of msg[resource_pair].stack) {
+						fpCounterObj["callers"][record_stack] = true;
+					}
 				}
 				break;
 			case "fpd-state-change":

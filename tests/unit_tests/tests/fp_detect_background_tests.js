@@ -35,14 +35,19 @@ describe("fp_detect_background", function() {
 			const TAB_ID = 1;
 			const RESOURCE = "test.api";
 			const TYPE = "get";
+			var test_obj = {
+					[RESOURCE + "#" + TYPE]:
+								{
+									"args": {
+										"": 1
+										},
+									"stack": []
+								}
+				};
 			await fpdCommonMessageListener(
 				{
 					purpose: "fp-detection",
-					resource: RESOURCE,
-					type: TYPE,
-					args: [],
-					stack: undefined,
-					count: 1
+					content: JSON.stringify(test_obj)
 				}
 				,
 				{
@@ -66,14 +71,19 @@ describe("fp_detect_background", function() {
 			const REPEAT = 10;
 			let sum = 0;
 			for (let i = 1; i <= REPEAT; i++) {
+				var test_obj = {
+					[RESOURCE + "#" + TYPE]:
+								{
+									"args": {
+										"": i
+										},
+									"stack": []
+								}
+				};
 				await fpdCommonMessageListener(
 					{
 						purpose: "fp-detection",
-						resource: RESOURCE,
-						type: TYPE,
-						args: [],
-						stack: undefined,
-						count: i
+						content: JSON.stringify(test_obj)
 					}
 					,
 					{
@@ -92,7 +102,7 @@ describe("fp_detect_background", function() {
 			expect(fpDb[TAB_ID][RESOURCE][TYPE]["args"][keys[0]]).toBe(sum, fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
 			expect(fpDb[TAB_ID][RESOURCE][TYPE]["total"]).toBe(sum, fpDb[TAB_ID][RESOURCE][TYPE]);
 		});
-		it("should register multiple calls of the same API - different arguments.", async function() {
+		it("should register multiple calls of the same API - different arguments, multiple messages.", async function() {
 			const TAB_ID = 2;
 			const RESOURCE = "test.api.multicall";
 			const TYPE = "get";
@@ -100,16 +110,21 @@ describe("fp_detect_background", function() {
 			const CALLED1 = 5;
 			const CALLED2 = 3;
 			const CALLED3 = 18;
-			const ARGS = [[[0], 5], [["a", "b"], 3], [["a", "b", "c"], 18]]
+			const ARGS = [["0", 5], ["a-b", 3], ["a-b-c", 18]];
 			for (let [args, count] of ARGS) {
+				var test_obj = {
+					[RESOURCE + "#" + TYPE]:
+								{
+									"args": {
+										[args]: count
+										},
+									"stack": []
+								}
+				};
 				await fpdCommonMessageListener(
 					{
 						purpose: "fp-detection",
-						resource: RESOURCE,
-						type: TYPE,
-						args: args,
-						stack: undefined,
-						count: count
+						content: JSON.stringify(test_obj)
 					}
 					,
 					{
@@ -132,6 +147,51 @@ describe("fp_detect_background", function() {
 			expect(called).toEqual(jasmine.arrayContaining([CALLED1, CALLED2, CALLED3]), fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
 			expect(fpDb[TAB_ID][RESOURCE][TYPE]["total"]).toBe(CALLED1 + CALLED2 + CALLED3, fpDb[TAB_ID][RESOURCE][TYPE]);
 		});
+		it("should register multiple calls of the same API - different arguments, one message.", async function() {
+			const TAB_ID = 2;
+			const RESOURCE = "test.api.multicall";
+			const TYPE = "get";
+			const REPEAT = 10;
+			const CALLED1 = 5;
+			const CALLED2 = 3;
+			const CALLED3 = 18;
+			const ARGS = [["0", 5], ["a-b", 3], ["a-b-c", 18]];
+			let args_obj = {};
+			for (let [args, count] of ARGS) {
+				args_obj[args] = count;
+			};
+			var test_obj = {
+				[RESOURCE + "#" + TYPE]:
+							{
+								"args": args_obj,
+								"stack": []
+							}
+			};
+			await fpdCommonMessageListener(
+				{
+					purpose: "fp-detection",
+					content: JSON.stringify(test_obj)
+				}
+				,
+				{
+					tab: {id: TAB_ID},
+				}
+			);
+			expect(fpDb).toBeDefined();
+			expect(fpDb[TAB_ID]).toBeDefined();
+			expect(fpDb[TAB_ID][RESOURCE]).toBeDefined(fpDb[TAB_ID]);
+			expect(fpDb[TAB_ID][RESOURCE][TYPE]).toBeDefined(fpDb[TAB_ID][RESOURCE]);
+			expect(fpDb[TAB_ID][RESOURCE][TYPE]["args"]).toBeDefined();
+			let keys = Object.keys(fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
+			expect(keys.length).toBe(ARGS.length);
+			called = []
+			for (key of keys) {
+				called.push(fpDb[TAB_ID][RESOURCE][TYPE]["args"][key]);
+			}
+			expect(called.length).toBe(ARGS.length, fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
+			expect(called).toEqual(jasmine.arrayContaining([CALLED1, CALLED2, CALLED3]), fpDb[TAB_ID][RESOURCE][TYPE]["args"]);
+			expect(fpDb[TAB_ID][RESOURCE][TYPE]["total"]).toBe(CALLED1 + CALLED2 + CALLED3, fpDb[TAB_ID][RESOURCE][TYPE]);
+		});
 		it("should differentiate between get and set.", async function() {
 			const TAB_ID = 3;
 			const RESOURCE = "test.api.multicall";
@@ -139,14 +199,19 @@ describe("fp_detect_background", function() {
 			const REPEAT = 10;
 			for (let i = 0; i < REPEAT; i++) {
 				for (const type of TYPES) {
+					var test_obj = {
+						[RESOURCE + "#" + type]:
+									{
+										"args": {
+											"": 1
+											},
+										"stack": []
+									}
+					};
 					await fpdCommonMessageListener(
 						{
 							purpose: "fp-detection",
-							resource: RESOURCE,
-							type: type,
-							args: [],
-							stack: undefined,
-							count: 1
+							content: JSON.stringify(test_obj)
 						}
 						,
 						{
@@ -175,14 +240,19 @@ describe("fp_detect_background", function() {
 			for (let i = 0; i < REPEAT; i++) {
 				for (const resource of RESOURCES) {
 					for (const type of TYPES) {
+						var test_obj = {
+							[resource + "#" + type]:
+										{
+											"args": {
+												"": 1
+												},
+											"stack": []
+										}
+						};
 						await fpdCommonMessageListener(
 							{
 								purpose: "fp-detection",
-								resource: resource,
-								type: type,
-								args: [],
-								stack: undefined,
-								count: 1
+								content: JSON.stringify(test_obj)
 							}
 							,
 							{
@@ -205,6 +275,44 @@ describe("fp_detect_background", function() {
 					expect(fpDb[TAB_ID][resource][type]["total"]).toBe(REPEAT, fpDb[TAB_ID][resource][type]);
 				}
 			}
+		});
+		it("should collect information on stacks - single message.", async function() {
+			const TAB_ID = 5;
+			const RESOURCE = "test.api";
+			const TYPE = "get";
+			const STACK_COUNT = 5;
+			let stacks = [];
+			for (let i = 0; i < STACK_COUNT; i++) {
+				stacks.push("stack" + i.toString());
+			}
+			var test_obj = {
+					[RESOURCE + "#" + TYPE]:
+								{
+									"args": {
+										"": 1
+										},
+									"stack": stacks
+								}
+				};
+			await fpdCommonMessageListener(
+				{
+					purpose: "fp-detection",
+					content: JSON.stringify(test_obj)
+				}
+				,
+				{
+					tab: {id: TAB_ID},
+				}
+			);
+			expect(fpDb).toBeDefined();
+			expect(fpDb[TAB_ID]).toBeDefined();
+			expect(fpDb[TAB_ID][RESOURCE]).toBeDefined(fpDb[TAB_ID]);
+			expect(fpDb[TAB_ID][RESOURCE][TYPE]).toBeDefined(fpDb[TAB_ID][RESOURCE]);
+			expect(fpDb[TAB_ID][RESOURCE][TYPE]["callers"]).toBeDefined();
+			for (let i = 0; i < STACK_COUNT; i++) {
+				expect(Object.keys(fpDb[TAB_ID][RESOURCE][TYPE]["callers"])).toContain("stack" + i.toString());
+			}
+			expect(Object.keys(fpDb[TAB_ID][RESOURCE][TYPE]["callers"]).length).toBe(STACK_COUNT);
 		});
 	});
 
