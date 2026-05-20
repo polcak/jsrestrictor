@@ -152,9 +152,8 @@ describe("Code builders", function() {
 			// to test the internals. This kind of duplicates the content of
 			// fpd_updateCountCode. FIXME automatically populate based on the content of
 			// fpd_updateCountCode.
-			set_global_variable("UPDATE_COUNT_IMMEDIATE_WRAPPERS", 5);
-			set_global_variable("UPDATE_COUNT_IMMEDIATE_CALLS", 10);
 			set_global_variable("UPDATE_COUNT_FLUSH_INTERVAL", 100);
+			set_global_variable("updateCountTimeoutID", null);
 			var testMap = new Map();
 			testMap.toJSON = serializeUCA;
 			set_global_variable("updateCountAggregate", testMap);
@@ -247,7 +246,7 @@ describe("Code builders", function() {
 			expect(Object.keys(argsMap).length).toBe(1); // Just one argument used
 			expect(argsMap[Object.keys(argsMap)[0]]).toBe(1); // One call of the API
 		});
-		it("updateCount function should propagate information on the called APIs through the port (UPDATE_COUNT_IMMEDIATE_WRAPPERS=1).",function() {
+		it("updateCount function should immediately propagate information on the called APIs through the port due to value of updateCountAggregateCurrentCalls.",function() {
 			let updateCount_calls = [];
 			let port = {
 				postMessage: function(msg) {
@@ -262,45 +261,7 @@ describe("Code builders", function() {
 				stack: "the stack",
 				totalCount: 2
 			};
-			set_global_variable("UPDATE_COUNT_IMMEDIATE_WRAPPERS", 1);
-			updateCount(
-				test_data.wrapperName,
-				test_data.wrapperType,
-				test_data.wrapperArgs,
-				test_data.stack,
-				test_data.totalCount
-			);
-			let received_data = updateCount_calls.pop();
-			expect(updateCount_calls.length).toBe(0); // Check that only a single value was propagated
-			let parsed = JSON.parse(received_data);
-			expect(Object.keys(parsed).length).toBe(1); // Just one wrapper name+type registered
-			let wrapper_labels = Object.keys(parsed)[0].split("#");
-			expect(wrapper_labels.length).toBe(2);
-			expect(wrapper_labels[0]).toBe(test_data.wrapperName);
-			expect(wrapper_labels[1]).toBe(test_data.wrapperType);
-			let wrapper_details = parsed[Object.keys(parsed)[0]];
-			expect(wrapper_details.stack.length).toBe(1);
-			expect(wrapper_details.stack[0]).toBe(test_data.stack);
-			let argsMap = wrapper_details.args;
-			expect(Object.keys(argsMap).length).toBe(1); // Just one argument used
-			expect(argsMap[Object.keys(argsMap)[0]]).toBe(1); // One call of the API
-		});
-		it("updateCount function should propagate information on the called APIs through the port (UPDATE_COUNT_IMMEDIATE_CALLS=1).",function() {
-			let updateCount_calls = [];
-			let port = {
-				postMessage: function(msg) {
-												updateCount_calls.push(msg);
-											}
-			};
-			set_global_variable("port", port);
-			const test_data = {
-				wrapperName: "wrapper name",
-				wrapperType: "wrapper type",
-				wrapperArgs: [1,2,3],
-				stack: "the stack",
-				totalCount: 2
-			};
-			set_global_variable("UPDATE_COUNT_IMMEDIATE_CALLS", 1);
+			set_global_variable("updateCountAggregateCurrentCalls", 99);
 			updateCount(
 				test_data.wrapperName,
 				test_data.wrapperType,

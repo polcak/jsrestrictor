@@ -1,7 +1,7 @@
 /** \file
  * \brief Functions that build code that modifies JS evironment provided to page scripts
  *
- *  \author Copyright (C) 2019  Libor Polcak
+ *  \author Copyright (C) 2019-2026  Libor Polcak
  *  \author Copyright (C) 2021  Giorgio Maone
  *  \author Copyright (C) 2022  Marek Salon
  *  \author Copyright (C) 2023  Martin Zmitko
@@ -764,9 +764,9 @@ function generate_code(wrapped_code) {
 function updateCount(wrapperName, wrapperType, wrapperArgs, stack, totalCount) {
 	try {
 		// Update the storage that aggregates the calls to limit messages to background
-		updateCountAggregateCurrentCalls += 1;
 		let wrapperKey = `${wrapperName}#${wrapperType}`;
 		let wrapperStore;
+		let updateScore = 20; // Base value, possibly changed below
 		if (updateCountAggregate.has(wrapperKey)) {
 			wrapperStore = updateCountAggregate.get(wrapperKey);
 		}
@@ -777,21 +777,30 @@ function updateCount(wrapperName, wrapperType, wrapperArgs, stack, totalCount) {
 		const argsStr = wrapperArgs.join(); // .join() is about 20% faster than .join("\u0000")
 		if (wrapperStore.args.has(argsStr)) {
 			wrapperStore.args.set(argsStr, wrapperStore.args.get(argsStr)+1);
+		updateScore -= 10; // 10 in total, penalize that the call was already registered
 		}
 		else {
 			wrapperStore.args.set(argsStr, 1);
 		}
 		wrapperStore.stack.add(stack);
-		// Check if we should immediately propagate the storage
-		let propagate = false;
-		if (totalCount === 1 ||
-				((updateCountAggregate.size + wrapperStore.args.size - 1) >= UPDATE_COUNT_IMMEDIATE_WRAPPERS) ||
-				((updateCountAggregateCurrentCalls >= UPDATE_COUNT_IMMEDIATE_CALLS) && ((totalCount < 100) || (updateCountAggregate.size > 1)))) {
-			propagateFPDAggregate();
+		// Potentially reasses the updateScore with regard to the totalCount
+		if (totalCount === 1) {
+			updateScore = 100; // Force sending, new API
+		}
+		else if (totalCount >= 100) {
+			updateScore = 1;
 		}
 		// Check if we should register the timer to propagate storage later
-		else if (updateCountAggregateCurrentCalls === 1) {
-			setTimeout(propagateFPDAggregate, UPDATE_COUNT_FLUSH_INTERVAL);
+		updateCountAggregateCurrentCalls += updateScore;
+		if (updateCountAggregateCurrentCalls >= 100) {
+			propagateFPDAggregate();
+			if (updateCountTimeoutID !== null) {
+				clearTimeout(updateCountTimeoutID);
+				updateCountTimeoutID = null;
+			}
+		}
+		else if (updateCountTimeoutID === null) {
+			updateCountTimeoutID = setTimeout(propagateFPDAggregate, UPDATE_COUNT_FLUSH_INTERVAL);
 		}
 	} catch(e) {
 		// Do not propagate any error outside this call, FIXME such call is ignored, is it possible
@@ -825,4 +834,4 @@ function propagateFPDAggregate() {
 	}
 }
 
-var fpd_updateCountCode = "const UPDATE_COUNT_IMMEDIATE_WRAPPERS=5; const UPDATE_COUNT_IMMEDIATE_CALLS = 10; const UPDATE_COUNT_FLUSH_INTERVAL=100;/*ms*/ let updateCountAggregate = new Map(); updateCountAggregate.toJSON = serializeUCA; let updateCountAggregateCurrentCalls = 0;" + updateCount.toString() + serializeUCA.toString() + propagateFPDAggregate.toString();
+var fpd_updateCountCode = "const UPDATE_COUNT_FLUSH_INTERVAL=100;/*ms*/ let updateCountAggregate = new Map(); updateCountAggregate.toJSON = serializeUCA; let updateCountTimeoutID = null; let updateCountAggregateCurrentCalls = 0;" + updateCount.toString() + serializeUCA.toString() + propagateFPDAggregate.toString();
