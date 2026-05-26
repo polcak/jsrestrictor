@@ -6,6 +6,7 @@
  *  \author Copyright (C) 2021  Giorgio Maone
  *  \author Copyright (C) 2021  Marek Salon
  *  \author Copyright (C) 2023  Martin Zmitko
+ *  \author Copyright (C) 2026  Dzianis Pilipenka
  *
  *  \license SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -24,8 +25,9 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-var wrappersPort;
+var wrappersPort = null;
 var pageConfiguration = null;
+var pendingConfig = null;
 
 function wrapWindow(currentLevel, fpdWrappers, wrappersConf) {
 	const code = fp_assemble_injection(currentLevel, fpdWrappers, `
@@ -34,22 +36,90 @@ function wrapWindow(currentLevel, fpdWrappers, wrappersConf) {
 	return patchWindow(code);
 }
 
-function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash, incognitoHash, portId}) {
+// ── Bootstrap listener ───────────────────────────────────────────
+// MAIN world (wrappers_generated.js) sends us a random portId
+// via this one-time event. Both scripts run at document_start,
+// so no page script can intercept this.
+ 
+window.addEventListener("jshelter-bootstrap", function (e) {
+    var portId = e.detail.portId;
+
+    // Port matching wrappers_generated.js protocol
+    // ISOLATED side: listen on "page", send on "extension"
+    var retStack = [];
+    function fire(ev, detail) {
+        window.dispatchEvent(new CustomEvent(portId + ":" + ev, {
+            detail: detail, composed: true
+        }));
+    }
+
+    wrappersPort = {
+        postMessage: function(msg) {
+            retStack.push({});
+            fire("extension", {msg: msg});
+            var ret = retStack.pop();
+            if (ret.error) throw ret.error;
+            return ret.value;
+        },
+        onMessage: null
+    };
+
+    window.addEventListener(portId + ":page", function(event) {
+        if (typeof wrappersPort.onMessage === "function" && event.detail) {
+            var ret = {};
+            try {
+                ret.value = wrappersPort.onMessage(event.detail.msg, event);
+            } catch (error) {
+                ret.error = error;
+            }
+            fire("return:extension", ret);
+        }
+    }, true);
+
+    window.addEventListener(portId + ":return:page", function(event) {
+        if (event.detail && retStack.length) {
+            retStack[retStack.length - 1] = event.detail;
+        }
+    }, true);
+
+    wrappersPort.onMessage = function (msg) {
+		if (msg.wrapperName) {
+			browser.runtime.sendMessage({
+				purpose: "fp-detection",
+				resource: msg.wrapperName,
+				type: msg.wrapperType,
+				args: msg.wrapperArgs,
+				stack: msg.stack,
+			});
+			return;
+		}
+		if (msg.init) {
+			return JSON.parse(JSON.stringify(pendingConfig));
+		}
+	};
+
+    if (pendingConfig) {
+        wrappersPort.postMessage(pendingConfig);
+    }
+}, true);
+
+function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash, incognitoHash}) {
 	if (pageConfiguration) return; // one shot
-	pageConfiguration = {currentLevel};
+	pageConfiguration = {currentLevel, fpdWrappers, fpdTrackCallers, domainHash, incognitoHash};
 	console.debug(`Configuration injected: ${document.readyState}\n${document.title} ${document.documentElement.outerHTML}`);
 	if (browser.extension.inIncognitoContext) {
 		domainHash = incognitoHash;
 	}
-	try {
-		const wrappersConf = {
+
+	var wrappersConf = {
 			fpdTrackCallers,
 			domainHash,
-		};
-		wrappersPort = portId ? patchWindow({portId}) : wrapWindow(currentLevel, fpdWrappers, wrappersConf);
+	};
+	function patchWindowPath() {
+		wrappersPort = wrapWindow(currentLevel, fpdWrappers, wrappersConf);
 
 		// initialize in case the userScript API already injected
-		console.debug(portId, wrappersPort, wrappersConf);
+		console.debug(wrappersPort, wrappersConf);
 		wrappersPort.postMessage(wrappersConf);
 
 		wrappersPort.onMessage = msg => {
@@ -68,6 +138,24 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 				// initialize on late demand
 				return wrappersConf;
 			}
+		};
+	}
+	try {
+		if (typeof exportFunction === "function") {
+			// ── Firefox path ──
+			// Native exportFunction + Xray wrappers available.
+			// Inject code string via patchWindow.
+			patchWindowPath();
+		} else {
+			// ── Chrome path ──
+			// wrappers_generated.js handles MAIN world.
+			// Just store config; bootstrap listener will deliver it.
+			pendingConfig = wrappersConf;
+			pendingConfig.currentLevel = currentLevel;
+			pendingConfig.fpdWrappers = fpdWrappers;
+			if (wrappersPort) {
+				wrappersPort.postMessage(pendingConfig);
+			}
 		}
 		return true;
 	} catch (e) {
@@ -85,8 +173,8 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 if ("configuration" in window) {
 	console.debug("Early configuration found!", configuration);
 	configureInjection(configuration);
-} else if ("sendSyncMessage" in browser.runtime) { // not in mv3 chrome
-	/// Get current level configuration from the background script
+} else if ("sendSyncMessage" in browser.runtime) { 
+	// Get configuration snapshot from the service worker via SyncMessage (nscl/common/SyncMessage.js)
 	configureInjection(browser.runtime.sendSyncMessage({
 			message: "get wrapping for URL",
 			url: window.location.href

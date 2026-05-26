@@ -183,9 +183,13 @@ cat << EOF >> $fpd_background_name
 //FPD_TESTING_S
 browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 	if (changeInfo.status == "complete") {
+		// MV3: skip non-http(s) tabs (chrome://, about:blank, extension pages)
+		// where scripting.executeScript would fail.
+		if (!tab.url || !tab.url.startsWith("http")) return;
 		console.log("FPD-TEST: BS> Injecting content script.");
-		browser.tabs.executeScript({
-			file: "/fpd_test.js"
+		browser.scripting.executeScript({
+			target: {tabId: tabId},
+			files: ["/fpd_test.js"]
 		});
 	}
 });

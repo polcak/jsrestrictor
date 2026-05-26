@@ -19,6 +19,7 @@ wasm: wasm/build/debug.wasm wasm/build/release.wasm
 COMMON_FILES = $(shell find common/) \
 			   LICENSES/ \
 			   Makefile \
+			   generate_wrappers.js \
 			   $(shell find firefox/) \
 			   $(shell find chrome/)
 
@@ -49,6 +50,9 @@ jshelter_%.zip: $(COMMON_FILES) get_csv submodules wasm
 	@cp -r LICENSES build/$*/
 	@./generate_fpd.sh build/$*/
 	@nscl/include.sh build/$*
+	@if [ "$*" = "chrome" ]; then \
+		node generate_wrappers.js common/ build/$*/wrappers_generated.js ; \
+	fi
 	@if [ $(DEBUG) -eq 0 ]; \
 	then \
 		find build/$*/ -type f -name "*.js" -exec sed -i '/console\.debug(.*);/d' {} + ; \

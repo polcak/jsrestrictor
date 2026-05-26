@@ -33,6 +33,19 @@
         "document_start.js"
       ],
       "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "all_frames": true,
+      "match_about_blank": true,
+      "match_origin_as_fallback": true,
+      "js": [
+        "wrappers_generated.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
     }
   ],
   "default_locale": "en",
@@ -62,8 +75,7 @@
     "declarativeNetRequest",
     "webNavigation",
     "notifications",
-    "scripting",
-    "userScripts"
+    "scripting"
   ],
   "host_permissions": ["<all_urls>"],
   "optional_permissions": ["browsingData"],

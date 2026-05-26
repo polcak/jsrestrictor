@@ -31,7 +31,6 @@
 function getContentConfiguration(url, frameId, tabId) {
 	return new Promise(resolve => {
 		async function resolve_promise() {
-			await updateUserScripts();
 			let level = getCurrentLevelJSON(url);
 			if (level.is_default && frameId !== 0) {
 				/**
@@ -68,7 +67,6 @@ function getContentConfiguration(url, frameId, tabId) {
 				fpdTrackCallers: fpd_track_callers_tab === tabId,
 				domainHash,
 				incognitoHash,
-				portId: wrappersPortId,
 			});
 		}
 		if (levels_initialised && fp_levels_initialised) {
