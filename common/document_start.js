@@ -42,47 +42,47 @@ function wrapWindow(currentLevel, fpdWrappers, wrappersConf) {
 // so no page script can intercept this.
  
 window.addEventListener("jshelter-bootstrap", function (e) {
-    var portId = e.detail.portId;
+	var portId = e.detail.portId;
 
-    // Port matching wrappers_generated.js protocol
-    // ISOLATED side: listen on "page", send on "extension"
-    var retStack = [];
-    function fire(ev, detail) {
-        window.dispatchEvent(new CustomEvent(portId + ":" + ev, {
-            detail: detail, composed: true
-        }));
-    }
+	// Port matching wrappers_generated.js protocol
+	// ISOLATED side: listen on "page", send on "extension"
+	var retStack = [];
+	function fire(ev, detail) {
+		window.dispatchEvent(new CustomEvent(portId + ":" + ev, {
+		    detail: detail, composed: true
+		}));
+	}
 
-    wrappersPort = {
-        postMessage: function(msg) {
-            retStack.push({});
-            fire("extension", {msg: msg});
-            var ret = retStack.pop();
-            if (ret.error) throw ret.error;
-            return ret.value;
-        },
-        onMessage: null
-    };
+	wrappersPort = {
+		postMessage: function(msg) {
+			retStack.push({});
+			fire("extension", {msg: msg});
+			var ret = retStack.pop();
+			if (ret.error) throw ret.error;
+			return ret.value;
+		},
+		onMessage: null
+	};
 
-    window.addEventListener(portId + ":page", function(event) {
-        if (typeof wrappersPort.onMessage === "function" && event.detail) {
-            var ret = {};
-            try {
-                ret.value = wrappersPort.onMessage(event.detail.msg, event);
-            } catch (error) {
-                ret.error = error;
-            }
-            fire("return:extension", ret);
-        }
-    }, true);
+	window.addEventListener(portId + ":page", function(event) {
+		if (typeof wrappersPort.onMessage === "function" && event.detail) {
+			var ret = {};
+			try {
+				ret.value = wrappersPort.onMessage(event.detail.msg, event);
+			} catch (error) {
+				ret.error = error;
+			}
+			fire("return:extension", ret);
+		}
+	}, true);
 
-    window.addEventListener(portId + ":return:page", function(event) {
-        if (event.detail && retStack.length) {
-            retStack[retStack.length - 1] = event.detail;
-        }
-    }, true);
+	window.addEventListener(portId + ":return:page", function(event) {
+		if (event.detail && retStack.length) {
+			retStack[retStack.length - 1] = event.detail;
+		}
+	}, true);
 
-    wrappersPort.onMessage = function (msg) {
+	wrappersPort.onMessage = function (msg) {
 		if (msg.wrapperName) {
 			browser.runtime.sendMessage({
 				purpose: "fp-detection",
@@ -98,9 +98,9 @@ window.addEventListener("jshelter-bootstrap", function (e) {
 		}
 	};
 
-    if (pendingConfig) {
-        wrappersPort.postMessage(pendingConfig);
-    }
+	if (pendingConfig) {
+		wrappersPort.postMessage(pendingConfig);
+	}
 }, true);
 
 function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash, incognitoHash}) {
