@@ -88,15 +88,12 @@ describe("Levels", function() {
 			expect(level_3).toBeDefined();
 		});
 	});
-	describe("Object level_3", function() {
-		it("should be defined.",function() {
-			expect(level_3).toBeDefined();
-		});
-	});
 	describe("Object default_level", function() {
 		it("should be defined.",function() {
 			expect(default_level).toBeDefined();
 		});
+	});
+	describe("Check levels to contain the correct levels", function() {
 		it("should contain level_0 definiton.",function() {
 			expect(levels[0]).toBe(level_0);
 		});

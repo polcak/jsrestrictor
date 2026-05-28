@@ -43,10 +43,7 @@ function createHandleWrappersPortMessage(getConf) {
 				// pass access logs to FPD background script
 				browser.runtime.sendMessage({
 					purpose: "fp-detection",
-					resource: wrapperName,
-					type: wrapperType,
-					args: wrapperArgs,
-					stack: stack,
+					content: msg,
 				});
 			}
 			if (msg.init) {
@@ -145,6 +142,13 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 			pendingConfig.fpdWrappers = fpdWrappers;
 			if (wrappersPort) {
 				wrappersPort.postMessage(pendingConfig);
+			}
+			else {
+				// pass access logs to FPD background script
+				browser.runtime.sendMessage({
+					purpose: "fp-detection",
+					content: msg,
+				});
 			}
 		}
 		return true;

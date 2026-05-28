@@ -118,7 +118,7 @@ describe("Wrapping", function() {
 			eval(noise_function);
 			expect(noise_function(123456789,undefined)).toBe(0);
 		});
-		it("should return a number in a monotonous sequence.",function() {
+		it("should return a number in a monotonous sequence (lets test predefined numbers).",function() {
 			eval(noise_function);
 			const input_nums = [1009.1013, 1019.1021, 1031.1033, 1039.1049, 1051.1061];
 			const precs = [10, 100, 1000];
@@ -131,7 +131,7 @@ describe("Wrapping", function() {
 				}
 			}
 		});
-		it("should return a number in a monotonous sequence.",function() {
+		it("should return a number in a monotonous sequence (lets test an array of 1000 numbers).",function() {
 			eval(noise_function);
 			const input_nums = Array.from({ length: 1000 }, (_, i) => i + 1);
 			const precs = [10, 100, 1000];
