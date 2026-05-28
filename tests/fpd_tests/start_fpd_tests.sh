@@ -187,10 +187,15 @@ browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 		// where scripting.executeScript would fail.
 		if (!tab.url || !tab.url.startsWith("http")) return;
 		console.log("FPD-TEST: BS> Injecting content script.");
-		browser.scripting.executeScript({
-			target: {tabId: tabId},
-			files: ["/fpd_test.js"]
-		});
+		try {
+			browser.scripting.executeScript({
+				target: {tabId: tabId},
+				files: ["/fpd_test.js"]
+			});
+		}
+		catch {
+			browser.tabs.executeScript({file: "/fpd_test.js"});
+		}
 	}
 });
 
