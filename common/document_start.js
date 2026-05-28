@@ -36,6 +36,26 @@ function wrapWindow(currentLevel, fpdWrappers, wrappersConf) {
 	return patchWindow(code);
 }
 
+function createHandleWrappersPortMessage(getConf) {
+	return function(msg) {
+			if (msg.wrapperName) {
+				let {wrapperName, wrapperType, wrapperArgs, stack} = msg;
+				// pass access logs to FPD background script
+				browser.runtime.sendMessage({
+					purpose: "fp-detection",
+					resource: wrapperName,
+					type: wrapperType,
+					args: wrapperArgs,
+					stack: stack,
+				});
+			}
+			if (msg.init) {
+				// initialize on late demand
+				return getConf();
+			}
+	}
+}
+
 // ── Bootstrap listener ───────────────────────────────────────────
 // MAIN world (wrappers_generated.js) sends us a random portId
 // via this one-time event. Both scripts run at document_start,
@@ -82,21 +102,7 @@ window.addEventListener("jshelter-bootstrap", function (e) {
 		}
 	}, true);
 
-	wrappersPort.onMessage = function (msg) {
-		if (msg.wrapperName) {
-			browser.runtime.sendMessage({
-				purpose: "fp-detection",
-				resource: msg.wrapperName,
-				type: msg.wrapperType,
-				args: msg.wrapperArgs,
-				stack: msg.stack,
-			});
-			return;
-		}
-		if (msg.init) {
-			return JSON.parse(JSON.stringify(pendingConfig));
-		}
-	};
+	wrappersPort.onMessage = createHandleWrappersPortMessage(() => pendingConfig);
 
 	if (pendingConfig) {
 		wrappersPort.postMessage(pendingConfig);
@@ -122,23 +128,7 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 		console.debug(wrappersPort, wrappersConf);
 		wrappersPort.postMessage(wrappersConf);
 
-		wrappersPort.onMessage = msg => {
-			if (msg.wrapperName) {
-				let {wrapperName, wrapperType, wrapperArgs, stack} = msg;
-				// pass access logs to FPD background script
-				browser.runtime.sendMessage({
-					purpose: "fp-detection",
-					resource: wrapperName,
-					type: wrapperType,
-					args: wrapperArgs,
-					stack: stack,
-				});
-			}
-			if (msg.init) {
-				// initialize on late demand
-				return wrappersConf;
-			}
-		};
+		wrappersPort.onMessage = createHandleWrappersPortMessage(() => wrappersConf);
 	}
 	try {
 		if (typeof exportFunction === "function") {
