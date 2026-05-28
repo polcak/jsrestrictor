@@ -53,6 +53,11 @@ global.browser = {
 	},
 };
 
+// window mock (minimum needed for tests)
+window = {
+	addEventListener: () => undefined
+};
+
 // Node 20 already provides:
 // - globalThis.crypto (Web Crypto)
 // - globalThis.fetch
