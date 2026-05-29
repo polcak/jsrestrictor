@@ -164,7 +164,7 @@ function genCounterCall(resource, type) {
             try { throw new Error("FPDCallerTracker"); }
             catch (e) { stack = e.stack.toString(); }
           }
-          updateCount(${JSON.stringify(resource)}, "${type}", ${args}, stack);
+          updateCount("${resource}", "${type}", ${args}, stack);
           fp_${type}_count += 1;
         }`;
 }
