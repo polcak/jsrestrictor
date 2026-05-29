@@ -143,13 +143,6 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 			if (wrappersPort) {
 				wrappersPort.postMessage(pendingConfig);
 			}
-			else {
-				// pass access logs to FPD background script
-				browser.runtime.sendMessage({
-					purpose: "fp-detection",
-					content: msg,
-				});
-			}
 		}
 		return true;
 	} catch (e) {
