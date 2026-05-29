@@ -164,8 +164,8 @@ function genCounterCall(resource, type) {
             try { throw new Error("FPDCallerTracker"); }
             catch (e) { stack = e.stack.toString(); }
           }
-          updateCount("${resource}", "${type}", ${args}, stack);
           fp_${type}_count += 1;
+          updateCount("${resource}", "${type}", ${args}, stack, fp_${type}_count);
         }`;
 }
 
@@ -499,8 +499,8 @@ const fpdAdditionalWrappers = [
             property_value: `function() {
               let font = this.style.fontFamily;
               if (WrapHelper.shared["fpd_offsetHeight_set_cnt"] < 1000) {
-                updateCount("CSSStyleDeclaration.prototype.fontFamily", "set", [font]);
                 WrapHelper.shared["fpd_offsetHeight_set_cnt"] += 1;
+                updateCount("CSSStyleDeclaration.prototype.fontFamily", "set", [font], undefined, WrapHelper.shared["fpd_offsetHeight_set_cnt"]);
               }
               return originalD_get.call(this);
             }`,
@@ -534,8 +534,8 @@ const fpdAdditionalWrappers = [
             property_value: `function() {
               let font = this.style.fontFamily;
               if (WrapHelper.shared["fpd_offsetWidth_set_cnt"] < 1000) {
-                updateCount("CSSStyleDeclaration.prototype.fontFamily", "set", [font]);
                 WrapHelper.shared["fpd_offsetWidth_set_cnt"] += 1;
+                updateCount("CSSStyleDeclaration.prototype.fontFamily", "set", [font], undefined, WrapHelper.shared["fpd_offsetWidth_set_cnt"]);
               }
               return originalD_get.call(this);
             }`,
@@ -591,7 +591,7 @@ if (require.main === module) {
 
   // Support files that define string helpers referenced by wrappers
   // (e.g. shuffleArray, randomString, crc16, alea)
-  const supportFiles = ["helpers.js", "crc16.js", "alea.js"];
+  const supportFiles = ["helpers.js", "crc16.js", "alea.js", "code_builders.js"];
   for (const file of supportFiles) {
     const filePath = path.join(wrappersDir, file);
     if (fs.existsSync(filePath)) {
@@ -781,18 +781,7 @@ if (require.main === module) {
     // until init() finishes, so wrappers applied early do not try to
     // postMessage to a port that is not connected yet.
     var fp_enabled = false;
-    function updateCount(resource, type, args, stack) {
-      try {
-        port.postMessage({
-          wrapperName: resource,
-          wrapperType: type,
-          wrapperArgs: args,
-          stack: stack
-        });
-      } catch(e) {
-        // Port may be torn down during page unload, etc. Swallow.
-      }
-    }
+    ${sandbox.fpd_updateCountCode || "// fpd_updateCountCode not available"}
 
     // WASM farbling module placeholder (JS fallback used when not ready)
     var wasm = Object.freeze({ready: false});

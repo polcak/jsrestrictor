@@ -819,4 +819,4 @@ function propagateFPDAggregate() {
 	}
 }
 
-const fpd_updateCountCode = "const UPDATE_COUNT_IMMEDIATE_WRAPPERS=5; const UPDATE_COUNT_IMMEDIATE_CALLS = 10; const UPDATE_COUNT_FLUSH_INTERVAL=100;/*ms*/ let updateCountAggregate = new Map(); updateCountAggregate.toJSON = serializeUCA; let updateCountAggregateCurrentCalls = 0;" + updateCount.toString() + serializeUCA.toString() + propagateFPDAggregate.toString();
+var fpd_updateCountCode = "const UPDATE_COUNT_IMMEDIATE_WRAPPERS=5; const UPDATE_COUNT_IMMEDIATE_CALLS = 10; const UPDATE_COUNT_FLUSH_INTERVAL=100;/*ms*/ let updateCountAggregate = new Map(); updateCountAggregate.toJSON = serializeUCA; let updateCountAggregateCurrentCalls = 0;" + updateCount.toString() + serializeUCA.toString() + propagateFPDAggregate.toString();
