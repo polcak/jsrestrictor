@@ -168,6 +168,9 @@ describe("Code builders", function() {
 		it("should define updateCount function.",function() {
 			expect(updateCount).toBeDefined();
 		});
+		it("updateCount function should not propagate exceptions.",function() {
+			expect(function() {updateCount("a", "b", 1)}).not.toThrow();
+		});
 		it("updateCount function should propagate information on the called APIs through the port when total count is 1.",function() {
 			let updateCount_calls = [];
 			let port = {
