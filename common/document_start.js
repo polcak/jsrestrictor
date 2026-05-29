@@ -38,17 +38,16 @@ function wrapWindow(currentLevel, fpdWrappers, wrappersConf) {
 
 function createHandleWrappersPortMessage(getConf) {
 	return function(msg) {
-			if (msg.wrapperName) {
-				let {wrapperName, wrapperType, wrapperArgs, stack} = msg;
+			if (msg.init) {
+				// initialize on late demand
+				return getConf();
+			}
+			else {
 				// pass access logs to FPD background script
 				browser.runtime.sendMessage({
 					purpose: "fp-detection",
 					content: msg,
 				});
-			}
-			if (msg.init) {
-				// initialize on late demand
-				return getConf();
 			}
 	}
 }
