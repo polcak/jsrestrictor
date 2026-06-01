@@ -50,6 +50,9 @@ detector.
 **Martin Zmitko** improved performance of the extension as a part of his
 bachelor thesis. He fixed some bugs during the process.
 
+**Dzianis Pilipenka** provided the code to avoid userScript permissions in
+Chromium-based browsers as a part of his bachelor thesis.
+
 We thank all other minor contributors of the project that are not listed in
 this section.
 

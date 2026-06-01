@@ -1,5 +1,12 @@
 Title: Release history
 
+## 0.23
+
+* Avoid userScript permission in Chromium-based browsers (this is a major redesing of the mechanism to inject modifications to JavaScript APIs visible to page scripts - main world). Note that the code was not provided by a member of the core team and does not contain some changes made in the last 5 years, see [the related issue](https://codeberg.org/JShelter/webextension/issues/181). The code for Firefox is almost the same and functionally equivalent to 0.22.1.
+* Quietly discard possible exceptions that were thrown in 0.22.1, which [fixes the interaction with AdGuard](https://codeberg.org/JShelter/webextension/issues/179).
+* Update NSCL to 13.6.20 (latest version). It should provide several changes to JShelter, including avoiding contentScript.register() (see [issue #175](https://codeberg.org/JShelter/webextension/issues/175)).
+* Refactor mechanism to determine when to propagate detected API calls to background introduced in 0.22.1. The mechanism should be essentially the same but behave better on some pages.
+
 ## 0.22.1
 
 * Redesign of the mechanism to obtain information about the API calls by page scripts used by FPD and popup to improve the performance, mainly in Firefox
