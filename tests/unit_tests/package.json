@@ -5,7 +5,8 @@
   "main": "",
   "scripts": {
     "test": "./start_unit_tests.sh",
-    "start": "./start_unit_tests.sh"
+    "start": "./start_unit_tests.sh",
+    "test:generate": "jasmine tests/generate_wrappers_tests.js"
   },
   "author": "Martin Bednar, ibednar@fit.vutbr.cz",
   "license": "GNU General Public License 3 or later",

@@ -762,35 +762,41 @@ function generate_code(wrapped_code) {
 }
 
 function updateCount(wrapperName, wrapperType, wrapperArgs, stack, totalCount) {
-	// Update the storage that aggregates the calls to limit messages to background
-	updateCountAggregateCurrentCalls += 1;
-	let wrapperKey = `${wrapperName}#${wrapperType}`;
-	let wrapperStore;
-	if (updateCountAggregate.has(wrapperKey)) {
-		wrapperStore = updateCountAggregate.get(wrapperKey);
-	}
-	else {
-		wrapperStore = {args: new Map(), stack: new Set()};
-		updateCountAggregate.set(wrapperKey, wrapperStore);
-	}
-	const argsStr = wrapperArgs.join(); // .join() is about 20% faster than .join("\u0000")
-	if (wrapperStore.args.has(argsStr)) {
-		wrapperStore.args.set(argsStr, wrapperStore.args.get(argsStr)+1);
-	}
-	else {
-		wrapperStore.args.set(argsStr, 1);
-	}
-	wrapperStore.stack.add(stack);
-	// Check if we should immediately propagate the storage
-	let propagate = false;
-	if (totalCount === 1 ||
-			((updateCountAggregate.size + wrapperStore.args.size - 1) >= UPDATE_COUNT_IMMEDIATE_WRAPPERS) ||
-			((updateCountAggregateCurrentCalls >= UPDATE_COUNT_IMMEDIATE_CALLS) && ((totalCount < 100) || (updateCountAggregate.size > 1)))) {
-		propagateFPDAggregate();
-	}
-	// Check if we should register the timer to propagate storage later
-	else if (updateCountAggregateCurrentCalls === 1) {
-		setTimeout(propagateFPDAggregate, UPDATE_COUNT_FLUSH_INTERVAL);
+	try {
+		// Update the storage that aggregates the calls to limit messages to background
+		updateCountAggregateCurrentCalls += 1;
+		let wrapperKey = `${wrapperName}#${wrapperType}`;
+		let wrapperStore;
+		if (updateCountAggregate.has(wrapperKey)) {
+			wrapperStore = updateCountAggregate.get(wrapperKey);
+		}
+		else {
+			wrapperStore = {args: new Map(), stack: new Set()};
+			updateCountAggregate.set(wrapperKey, wrapperStore);
+		}
+		const argsStr = wrapperArgs.join(); // .join() is about 20% faster than .join("\u0000")
+		if (wrapperStore.args.has(argsStr)) {
+			wrapperStore.args.set(argsStr, wrapperStore.args.get(argsStr)+1);
+		}
+		else {
+			wrapperStore.args.set(argsStr, 1);
+		}
+		wrapperStore.stack.add(stack);
+		// Check if we should immediately propagate the storage
+		let propagate = false;
+		if (totalCount === 1 ||
+				((updateCountAggregate.size + wrapperStore.args.size - 1) >= UPDATE_COUNT_IMMEDIATE_WRAPPERS) ||
+				((updateCountAggregateCurrentCalls >= UPDATE_COUNT_IMMEDIATE_CALLS) && ((totalCount < 100) || (updateCountAggregate.size > 1)))) {
+			propagateFPDAggregate();
+		}
+		// Check if we should register the timer to propagate storage later
+		else if (updateCountAggregateCurrentCalls === 1) {
+			setTimeout(propagateFPDAggregate, UPDATE_COUNT_FLUSH_INTERVAL);
+		}
+	} catch(e) {
+		// Do not propagate any error outside this call, FIXME such call is ignored, is it possible
+		// to use the totalCount argument to detect such situation and sync the counters with
+		// background later?
 	}
 }
 /**
@@ -819,4 +825,4 @@ function propagateFPDAggregate() {
 	}
 }
 
-const fpd_updateCountCode = "const UPDATE_COUNT_IMMEDIATE_WRAPPERS=5; const UPDATE_COUNT_IMMEDIATE_CALLS = 10; const UPDATE_COUNT_FLUSH_INTERVAL=100;/*ms*/ let updateCountAggregate = new Map(); updateCountAggregate.toJSON = serializeUCA; let updateCountAggregateCurrentCalls = 0;" + updateCount.toString() + serializeUCA.toString() + propagateFPDAggregate.toString();
+var fpd_updateCountCode = "const UPDATE_COUNT_IMMEDIATE_WRAPPERS=5; const UPDATE_COUNT_IMMEDIATE_CALLS = 10; const UPDATE_COUNT_FLUSH_INTERVAL=100;/*ms*/ let updateCountAggregate = new Map(); updateCountAggregate.toJSON = serializeUCA; let updateCountAggregateCurrentCalls = 0;" + updateCount.toString() + serializeUCA.toString() + propagateFPDAggregate.toString();

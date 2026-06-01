@@ -261,7 +261,7 @@
 				}
 			],
 			"inject_code_to_src": {
-				"begin": "window = {};function set_global_variable(name, value) { globalThis[name] = value; }"
+				"begin": "function set_global_variable(name, value) { globalThis[name] = value; }"
 			},
 			"replace_in_src": [
 			],
@@ -340,7 +340,7 @@
 				}
 			],
 			"inject_code_to_src": {
-				"begin": "window = {};function set_global_variable(name, value) { globalThis[name] = value; }"
+				"begin": "function set_global_variable(name, value) { globalThis[name] = value; }"
 			},
 			"replace_in_src": [
 				{
