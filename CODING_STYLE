@@ -1,4 +1,4 @@
-Indentation: tabulators
+Indentation: Tabulators for JavaScript and other languages; 4 spaces for Python.
 Avoid spaces/tabs at the end of the line
 
 Functions, methods, classes, ifs, cycles etc. have opening braces at the same line.
