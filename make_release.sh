@@ -24,7 +24,7 @@
 
 
 # This file deals with the issue raised in:
-# https://pagure.io/JShelter/webextension/issue/82
+# https://codeberg.org/JShelter/webextension/issues/82
 # and further discussed in https://pagure.io/pagure/issue/5378
 #
 # This file expects a single parameter - the tag
@@ -37,7 +37,7 @@ fi
 
 DIR=jshelter-$1
 
-git clone https://pagure.io/JShelter/webextension.git --branch $1 --depth 1 --recurse-submodules --shallow-submodules "$DIR"
+git clone https://codeberg.org/JShelter/webextension.git --branch $1 --depth 1 --recurse-submodules --shallow-submodules "$DIR"
 rm -rf $DIR/.git* $DIR/*/.git*
 zip -r jshelter-$1.zip $DIR
 tar czf jshelter-$1.tar.gz $DIR
