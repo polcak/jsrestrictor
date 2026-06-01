@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: CC0-1.0
+#
+# This file is released into the public domain (CC0 1.0).
+# You may use, modify, and distribute it without any restrictions.
+root = true
+
+# The basis for all text files
+[*]
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# JavaScript and other languages (see CODING_STYLE: tabs)
+[*.{js,jsx,ts,tsx,json,css,scss,sh,bash,html,md,xml,yaml,yml}]
+indent_style = tab
+
+# For Python respect https://peps.python.org/pep-0008/
+[*.py]
+indent_style = space
+indent_size = 4

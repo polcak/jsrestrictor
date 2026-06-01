@@ -1,6 +1,7 @@
 .*
 !.gitignore
 !.reuse
+!.editorconfig
 *.zip
 build/
 ipv4.csv
