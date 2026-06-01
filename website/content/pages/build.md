@@ -2,7 +2,7 @@ Title: Building from scratch
 
 ### GNU/Linux and Mac OS
 
-1. Go to the project repository: [https://pagure.io/JShelter/webextension](https://pagure.io/JShelter/webextension).
+1. Go to the project repository: [https://codeberg.org/JShelter/webextension](https://codeberg.org/JShelter/webextension).
 2. Download the desired branch, e.g. as zip archive.
 3. Unpack the zip archive.
 4. Run `make`.
@@ -24,7 +24,7 @@ Title: Building from scratch
 ### Windows
 
 1. Install Windows Subsystem for Linux (WSL): [https://docs.microsoft.com/en-us/windows/wsl/install-win10](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
-2. Go to the project repository: [https://pagure.io/JShelter/webextension](https://pagure.io/JShelter/webextension).
+2. Go to the project repository: [https://codeberg.org/JShelter/webextension](https://codeberg.org/JShelter/webextension).
 3. Download the desired branch, e.g. as zip archive.
 4. Unpack the zip archive.
 5. Open the JShelter project folder in WSL, run `make`.
