@@ -762,7 +762,6 @@ function generate_code(wrapped_code) {
 }
 
 function updateCount(wrapperName, wrapperType, wrapperArgs, stack, totalCount) {
-	console.log("updateCount", wrapperName, wrapperType, totalCount);
 	try {
 		// Update the storage that aggregates the calls to limit messages to background
 		updateCountAggregateCurrentCalls += 1;
