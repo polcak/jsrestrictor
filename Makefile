@@ -56,6 +56,7 @@ jshelter_%.zip: $(COMMON_FILES) get_csv submodules wasm
 	@if [ $(DEBUG) -eq 0 ]; \
 	then \
 		find build/$*/ -type f -name "*.js" -exec sed -i '/console\.debug(.*);/d' {} + ; \
+		find build/$*/nscl/ -type f -name "*.js" -exec sed -i '/console\.log(.*);/d' {} + ; \
 	fi
 	@./fix_wasm_farbling.sh $(DEBUG) $*
 	@rm -f build/$*/.*.sw[pno]
