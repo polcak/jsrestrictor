@@ -1,5 +1,9 @@
 Title: Release history
 
+## 0.23.1
+
+* Update NSCL that improves handling of script injections, especially failure management, transition handling and performance.
+
 ## 0.23
 
 * Avoid userScript permission in Chromium-based browsers (this is a major redesing of the mechanism to inject modifications to JavaScript APIs visible to page scripts - main world). Note that the code was not provided by a member of the core team and does not contain some changes made in the last 5 years, see [the related issue](https://codeberg.org/JShelter/webextension/issues/181). The code for Firefox is almost the same and functionally equivalent to 0.22.1.
