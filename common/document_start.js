@@ -33,7 +33,12 @@ function wrapWindow(currentLevel, fpdWrappers, wrappersConf) {
 	const code = fp_assemble_injection(currentLevel, fpdWrappers, `
 		init(${JSON.stringify(wrappersConf)});
 	`);
-	return patchWindow(code);
+	if (code) {
+		return patchWindow(code);
+	}
+	else {
+		return null; // No patching desired by the webextension configuration
+	}
 }
 
 function createHandleWrappersPortMessage(getConf) {
@@ -119,8 +124,9 @@ function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainH
 	};
 	function patchWindowPath() {
 		wrappersPort = wrapWindow(currentLevel, fpdWrappers, wrappersConf);
-
-		// initialize in case the userScript API already injected
+		if (wrappersPort === null) {
+			return; // wrapWindow has not patched anything, likely due to empty configuration for the page
+		}
 		console.debug(wrappersPort, wrappersConf);
 		wrappersPort.postMessage(wrappersConf);
 
