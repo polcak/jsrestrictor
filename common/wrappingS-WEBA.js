@@ -168,18 +168,63 @@
 			console.debug("Timing audioFarbleInt farbled", Date.now() - start_time);
 		}
 	}
+	/**
+	 * Generates a silent parameters for a signal.
+	 *
+	 * @param array The array to which generate the silent signal.
+	 *
+	 * This function is appropriate to be called for arrays of int. It
+	 * completely destroys the original information and replaces that with
+	 * 0s and 1s. On the time and amplitude domain, it produces a very silent
+	 * noise: according to
+	 * https://www.britannica.com/science/sound-physics/The-decibel-scale, or,
+	 * https://www.open.edu/openlearn/science-maths-technology/engineering-technology/sound-music-technology-an-introduction/content-section-10.3
+	 * 0db is absolute silence (threshold of hearing).
+	 *
+	 * On the frequency domain, it produces a signal with wide-range
+	 * frequencies with a very small amplitude. Meaning that the signal should
+	 * be barely audible. Essentially a silence.
+	 *
+	 * The same content is replaced by different data with each call, if that
+	 * is a problem, consider passing the array argument. The current
+	 * implementation is faster and good enough as this function should not be
+	 * called from levels that aim to prevent fingerprinting but rather from
+	 * levels that hide the real values.
+	 *
+	 * Note that the PRNG function in repeated calls to whiteNoiseInt and/or
+	 * whiteNoiseFloat might be initialized to the same values and consequently
+	 * generates the same pseudo-random sequence. We do not consider that as
+	 * a bug as the content of the generated data is not important.
+	 */
 	function whiteNoiseInt(array) {
 		noise_prng = alea(Date.now(), prng());
 		const ARRAY_LEN = array.length;
 		for (let i = 0; i < ARRAY_LEN; i++) {
-			array[i] = (noise_prng() * 256) | 0;
+			array[i] = noise_prng.get_bits(1);
 		}
 	}
+	/**
+	 * Generates silent white noise.
+	 *
+	 * @param array The array to which generate the silent white noise.
+	 *
+	 * This function is appropriate to be called for arrays of float. It
+	 * completely destroys the original information and replaces that with
+	 * amplitude values of changing intensity but very silent. We base our
+	 * numbers on https://blog.demofox.org/2015/04/14/decibels-db-and-amplitude/:
+	 * -96db is considered as silence.
+	 * amplitude = 10^(db/20) = 10^(-96/20) = 10^-4.8 = 1.585e-5
+	 *
+	 * Note that the PRNG function in repeated calls to whiteNoiseInt and/or
+	 * whiteNoiseFloat might be initialized to the same values and consequently
+	 * generates the same pseudo-random sequence. We do not consider that as
+	 * a bug as the content of the generated data is not important.
+	 */
 	function whiteNoiseFloat(array) {
 		const ARRAY_LEN = array.length;
 		noise_prng = alea(Date.now(), prng());
 		for (let i = 0; i < ARRAY_LEN; i++) {
-			array[i] = (noise_prng() * 2) -1;
+			array[i] = ((noise_prng() * 2) -1) * 1.585e-5;
 		}
 	}
 	/** @var String audioFarbleBody.
