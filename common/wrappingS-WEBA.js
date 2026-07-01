@@ -113,7 +113,13 @@
 			for (let i = 0; i < ARRAY_LEN; i++) {
 				// Possible improvements:
 				// Copy neighbor data (possibly with modifications)
-				array[i] *= 0.99 + thisaudio_prng() / 100;
+				array[i] += (thisaudio_prng() * 0.01) - 0.005;
+				if (array[i] > 1.0) {
+					array[i] = 1.0;
+				}
+				else if (array[i] < -1.0) {
+					array[i] = -1.0;
+				}
 			}
 			console.debug("Timing audioFarble farbled", Date.now() - start_time);
 		}
