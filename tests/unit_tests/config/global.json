@@ -834,7 +834,9 @@
 							"from": "./wrappingS-WEBA.js",
 							"objects": [
 								"audioFarble",
-								"audioFarbleInt"
+								"audioFarbleInt",
+								"whiteNoiseFloat",
+								"whiteNoiseInt"
 							]
 						},
 						{
@@ -856,7 +858,9 @@
 			],
 			"extra_exports": [
 				"audioFarble",
-				"audioFarbleInt"
+				"audioFarbleInt",
+				"whiteNoiseFloat",
+				"whiteNoiseInt"
 			]
 		},
 		{
