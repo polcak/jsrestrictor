@@ -1,5 +1,17 @@
 Title: Release history
 
+## 0.24
+
+* NSCL update:
+ * Improved corner-cases in script injection in both Firefox and Chromium-based
+    browsers.
+ * Avoid issues related to MutationObservers, see [https://lists.nongnu.org/archive/html/js-shield/2026-06/msg00003.html](the mailing list) and the related thread
+* Set Workers to Strict by default, see https://codeberg.org/JShelter/webextension/issues/156 and https://codeberg.org/JShelter/webextension/issues/177 for the reasoning.
+* Reconsider the approach to modify Web Audio that was reimplemented in 0.22. The farbling (recommended level) essentially returns to the original concept but the memory footprint of JShelter improves as it uses WeakMaps to store farbled Web Audio buffers for the duration of their existance. The approach to farble floats in the Web Audio API changed slightly to avoid revealing the lower bound of the readings and to farble 0s. This approach should brake less page scripts. The white noise has very limited amplitudes close to a silence.
+  page scripts.
+* Allow users to configure JShelter not to interfer with pages where their disable both JSS and FPD.
+* Do not show NSCL log messages as they may confuse users
+
 ## 0.23.1
 
 * Update NSCL that improves handling of script injections, especially failure management, transition handling and performance.
