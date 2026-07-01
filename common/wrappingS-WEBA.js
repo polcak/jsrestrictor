@@ -220,6 +220,7 @@
 	 * numbers on https://blog.demofox.org/2015/04/14/decibels-db-and-amplitude/:
 	 * -96db is considered as silence.
 	 * amplitude = 10^(db/20) = 10^(-96/20) = 10^-4.8 = 1.585e-5
+	 * Also see, https://en.wikipedia.org/wiki/DBFS (decibels relative to full scale)
 	 *
 	 * Note that the PRNG function in repeated calls to whiteNoiseInt and/or
 	 * whiteNoiseFloat might be initialized to the same values and consequently
