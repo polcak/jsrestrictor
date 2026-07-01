@@ -21,38 +21,17 @@
 
 /// Tweaks for specific domains that are built-in for all users
 var tweak_domains_builtin = {
-	"docs.google.com": {
-		"explanation": "https://codeberg.org/JShelter/webextension/issues/122",
-		"level_id": ["1", "2"],
+	"www.mkdocs.org": {
+		"explanation": "https://codeberg.org/JShelter/webextension/issues/80#issuecomment-12913179",
+		"level_id": ["1", "2", "3"],
 		"tweaks": {
-			"webworker": 2
-		}
-	},
-	"app.mediafire.com": {
-		"explanation": "https://github.com/polcak/jsrestrictor/issues/207",
-		"level_id": ["1", "2"],
-		"tweaks": {
-			"webworker": 2
-		}
-	},
-	"pad.riseup.net": {
-		"explanation": "https://codeberg.org/JShelter/webextension/issues/152",
-		"level_id": ["1", "2"],
-		"tweaks": {
-			"webworker": 2
-		}
-	},
-	"kiwi.com": {
-		"explanation": "https://codeberg.org/JShelter/webextension/issues/153",
-		"level_id": ["1", "2"],
-		"tweaks": {
-			"webworker": 2
+			"webworker": 3
 		}
 	},
 };
 
 // TODO: implement the possibility of community-currated lists of exceptions
-// See https://codeberg.org/JShelter/webextension/issues/20
+// See https://codeberg.org/JShelter/webextension/issues/20, https://codeberg.org/JShelter/webextension/issues/182
 
 // Merge built-in and community-currated exceptions
 /// All domain tweaks that are not created by the local user. Usually, you should

@@ -113,7 +113,13 @@
 			for (let i = 0; i < ARRAY_LEN; i++) {
 				// Possible improvements:
 				// Copy neighbor data (possibly with modifications)
-				array[i] *= 0.99 + thisaudio_prng() / 100;
+				array[i] += (thisaudio_prng() * 0.01) - 0.005;
+				if (array[i] > 1.0) {
+					array[i] = 1.0;
+				}
+				else if (array[i] < -1.0) {
+					array[i] = -1.0;
+				}
 			}
 			console.debug("Timing audioFarble farbled", Date.now() - start_time);
 		}
@@ -168,18 +174,64 @@
 			console.debug("Timing audioFarbleInt farbled", Date.now() - start_time);
 		}
 	}
+	/**
+	 * Generates a silent parameters for a signal.
+	 *
+	 * @param array The array to which generate the silent signal.
+	 *
+	 * This function is appropriate to be called for arrays of int. It
+	 * completely destroys the original information and replaces that with
+	 * 0s and 1s. On the time and amplitude domain, it produces a very silent
+	 * noise: according to
+	 * https://www.britannica.com/science/sound-physics/The-decibel-scale, or,
+	 * https://www.open.edu/openlearn/science-maths-technology/engineering-technology/sound-music-technology-an-introduction/content-section-10.3
+	 * 0db is absolute silence (threshold of hearing).
+	 *
+	 * On the frequency domain, it produces a signal with wide-range
+	 * frequencies with a very small amplitude. Meaning that the signal should
+	 * be barely audible. Essentially a silence.
+	 *
+	 * The same content is replaced by different data with each call, if that
+	 * is a problem, consider passing the array argument. The current
+	 * implementation is faster and good enough as this function should not be
+	 * called from levels that aim to prevent fingerprinting but rather from
+	 * levels that hide the real values.
+	 *
+	 * Note that the PRNG function in repeated calls to whiteNoiseInt and/or
+	 * whiteNoiseFloat might be initialized to the same values and consequently
+	 * generates the same pseudo-random sequence. We do not consider that as
+	 * a bug as the content of the generated data is not important.
+	 */
 	function whiteNoiseInt(array) {
-		noise_prng = alea(Date.now(), prng());
+		noise_prng = alea(Date.now(), "whiteNoiseInt");
 		const ARRAY_LEN = array.length;
 		for (let i = 0; i < ARRAY_LEN; i++) {
-			array[i] = (noise_prng() * 256) | 0;
+			array[i] = noise_prng.get_bits(1);
 		}
 	}
+	/**
+	 * Generates silent white noise.
+	 *
+	 * @param array The array to which generate the silent white noise.
+	 *
+	 * This function is appropriate to be called for arrays of float. It
+	 * completely destroys the original information and replaces that with
+	 * amplitude values of changing intensity but very silent. We base our
+	 * numbers on https://blog.demofox.org/2015/04/14/decibels-db-and-amplitude/:
+	 * -96db is considered as silence.
+	 * amplitude = 10^(db/20) = 10^(-96/20) = 10^-4.8 = 1.585e-5
+	 * Also see, https://en.wikipedia.org/wiki/DBFS (decibels relative to full scale)
+	 *
+	 * Note that the PRNG function in repeated calls to whiteNoiseInt and/or
+	 * whiteNoiseFloat might be initialized to the same values and consequently
+	 * generates the same pseudo-random sequence. We do not consider that as
+	 * a bug as the content of the generated data is not important.
+	 */
 	function whiteNoiseFloat(array) {
 		const ARRAY_LEN = array.length;
-		noise_prng = alea(Date.now(), prng());
+		noise_prng = alea(Date.now(), "whiteNoiseFloat");
 		for (let i = 0; i < ARRAY_LEN; i++) {
-			array[i] = (noise_prng() * 2) -1;
+			array[i] = ((noise_prng() * 2) -1) * 1.585e-5;
 		}
 	}
 	/** @var String audioFarbleBody.
@@ -199,48 +251,28 @@
 					wrapped_name: "origGetChannelData",
 				}
 			],
-			helping_code: "var behaviour = args[0]; WrapHelper.shared['WEBA_gcd_pool'] = new Set(); WrapHelper.shared['WEBA_origGetChannelData'] = origGetChannelData;" + audioFarbleBody + whiteNoiseFloat,
+			helping_code: "var behaviour = args[0]; WrapHelper.shared['WEBA_gcd_pool'] = new WeakSet(); WrapHelper.shared['WEBA_origGetChannelData'] = origGetChannelData;" + audioFarbleBody + whiteNoiseFloat,
 			original_function: "parent.AudioBuffer.prototype.getChannelData",
 			wrapping_function_args: "channel",
 			/** \fn fake AudioBuffer.prototype.getChannelData
-			 * \brief Returns modified channel data while preserving the original buffer.
+			 * \brief Returns modified channel data.
 			 *
-			 * Calls the original function to obtain the underlying Float32Array
-			 * representing the requested channel. The original array must not be
-			 * modified because it is part of the internal AudioBuffer state.
-			 *
-			 * Instead, a copy of the array is created and modified according to the
-			 * selected protection level (farbling or white noise).
-			 *
-			 * The modified copy is stored in a WeakMap cache keyed by the original
-			 * array reference. Subsequent calls for the same underlying buffer return
-			 * the cached modified array to preserve object identity expected from the
-			 * native API (i.e. repeated calls should return the same object instance).
+			 * Calls original function, which returns array with result, then calls function
+			 * audioFarble with returned array as argument - which changes array values according to chosen level.
 			 */
 			wrapping_function_body: `
-				var orig = origGetChannelData.call(this, channel);
-				var cache = WrapHelper.shared['WEBA_gcd_cache'];
-			
-				if (!cache) {
-					cache = new WeakMap();
-					WrapHelper.shared['WEBA_gcd_cache'] = cache;
+				var floatArr = origGetChannelData.call(this, channel);
+				if (WrapHelper.shared['WEBA_gcd_pool'].has(floatArr)) {
+					return floatArr;
 				}
-			
-				if (!cache.has(orig)) {
-			
-					var copy = new Float32Array(orig);
-			
-					if (behaviour == 0) {
-						audioFarble(copy);
-					}
-					else if (behaviour == 1) {
-						whiteNoiseFloat(copy);
-					}
-			
-					cache.set(orig, copy);
+				if (behaviour == 0) {
+					audioFarble(floatArr);
 				}
-			
-				return cache.get(orig);
+				else if (behaviour == 1) {
+					whiteNoiseFloat(floatArr);
+				}
+				WrapHelper.shared['WEBA_gcd_pool'].add(floatArr);
+				return floatArr;
 			`,
 		},
 		{
@@ -252,7 +284,7 @@
 					wrapped_name: "origCopyFromChannel",
 				}
 			],
-			helping_code: "var behaviour = args[0]; WrapHelper.shared['WEBA_gcd_pool'] = new Set();" +  audioFarbleBody + whiteNoiseFloat,
+			helping_code: "var behaviour = args[0]; WrapHelper.shared['WEBA_gcd_pool'] = new WeakSet();" +  audioFarbleBody + whiteNoiseFloat,
 			original_function: "parent.AudioBuffer.prototype.copyFromChannel",
 			wrapping_function_args: "destination, channel, start",
 			/** \fn fake AudioBuffer.prototype.copyFromChannel

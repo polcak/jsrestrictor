@@ -100,7 +100,14 @@ export function farbleFloats(size: usize, alea_seed: u32): void {
 	init(alea_seed);
 	for (let i: usize = 0; i < size; i += 4) {
 		next();
-		store<f32>(i, f32(load<f32>(i, data_offset) as f64 * (0.99 + (stored_random as f64 / 429496729600))), data_offset);
+		let farbled: f32 = f32(load<f32>(i, data_offset) as f64 + (((stored_random as f64 / 4294967296) * 0.01) - 0.005 as f64));
+		if (farbled > 1.0) {
+			farbled = 1.0;
+		}
+		else if (farbled < -1.0) {
+			farbled = -1.0;
+		}
+		store<f32>(i, farbled, data_offset);
 	}
 }
 

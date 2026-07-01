@@ -28,9 +28,9 @@ describe("document_start.js", function() {
 		it("should be defined.",function() {
 			expect(wrapWindow).toBeDefined();
 		});
-		it("should return empty string for L0 and deactivated FPD.",function() {
+		it("should return null for L0 and deactivated FPD.",function() {
 			level_0.wrappers = []; // Otherwise initialized dynamically
-			expect(wrapWindow(level_0, [], {fpdTrackCallers: false, domainHash: "abc"})).toBe("");
+			expect(wrapWindow(level_0, [], {fpdTrackCallers: false, domainHash: "abc"})).toBe(null);
 		});
 		it("should return patching code for L1 and deactivated FPD.",function() {
 			level_1.wrappers = [["window.Geolocation", 3]]; // Fake, in production populated dynamically
