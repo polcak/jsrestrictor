@@ -203,7 +203,7 @@
 	 * a bug as the content of the generated data is not important.
 	 */
 	function whiteNoiseInt(array) {
-		noise_prng = alea(Date.now(), prng());
+		noise_prng = alea(Date.now(), "whiteNoiseInt");
 		const ARRAY_LEN = array.length;
 		for (let i = 0; i < ARRAY_LEN; i++) {
 			array[i] = noise_prng.get_bits(1);
@@ -228,7 +228,7 @@
 	 */
 	function whiteNoiseFloat(array) {
 		const ARRAY_LEN = array.length;
-		noise_prng = alea(Date.now(), prng());
+		noise_prng = alea(Date.now(), "whiteNoiseFloat");
 		for (let i = 0; i < ARRAY_LEN; i++) {
 			array[i] = ((noise_prng() * 2) -1) * 1.585e-5;
 		}
