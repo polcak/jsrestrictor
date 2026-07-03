@@ -1,0 +1,1224 @@
+{
+	"extensionName": {
+		"message": "JShelter"
+	},
+	"extensionDescription": {
+		"message": "Розширення для підвищення рівня безпеки та приватності користувача."
+	},
+	"javascriptShield": {
+		"message": "JavaScript Shield"
+	},
+	"networkBoundaryShield": {
+		"message": "Щит Мережевих Границь"
+	},
+	"NBSgloballyOff": {
+		"message": "Щит Мережевих Границь є глобально вимкнено"
+	},
+	"fingerprintDetector": {
+		"message": "Детектор Відбитків Пальців"
+	},
+	"FPDgloballyOff": {
+		"message": "Детектор Відбитків Пальців є глобально вимкнено"
+	},
+	"globalSettings": {
+		"message": "Глобальні налаштування"
+	},
+	"settingsForDomain": {
+		"message": "Налаштування для домену"
+	},
+	"refreshPage": {
+		"message": "Перезавантажити сторінку"
+	},
+	"modifyJSSPopup": {
+		"message": "Змінити"
+	},
+	"descriptionMore": {
+		"message": "(більше…)"
+	},
+	"descriptionLess": {
+		"message": "(менше…)"
+	},
+	"nameDescriptionSeparator": {
+		"message": " — "
+	},
+	"detailTweaksOfJSShieldForThisSite": {
+		"message": "Подробиці налаштувань JS щита для цього сайту"
+	},
+	"wrappers": {
+		"message": "Групи APIs"
+	},
+	"levelOfDefense": {
+		"message": "Рівень захисту"
+	},
+	"numberOfCalls": {
+		"message": "Число викликів"
+	},
+	"FingerprintQualityLabel": {
+		"message": "⤷ Число APIs неправильного вживаних для відбитків покликаних цією сторінкою: "
+	},
+	"popupDefaultLevelHelpText": {
+		"message": "Встановити глобальний типовий рівень, як рівень JavaScript Щита для цієї сторінки."
+	},
+	"defaultLevelSelection": {
+		"message": "Типовий рівень ($levelName$)",
+		"placeholders": {
+			"levelName": {
+				"content": "$1"
+			}
+		}
+	},
+	"ShieldOffSlider": {
+		"message": "ВИМК"
+	},
+	"ShieldOnSlider": {
+		"message": "УВІМК"
+	},
+	"jssgroupUnprotected": {
+		"message": "Незахищено"
+	},
+	"jssgroupPoor": {
+		"message": "Слабкий"
+	},
+	"jssgroupLow": {
+		"message": "Низький"
+	},
+	"jssgroupMedium": {
+		"message": "Середній"
+	},
+	"jssgroupHigh": {
+		"message": "Високий"
+	},
+	"jssgroupLittleLies": {
+		"message": "Маленька брехня"
+	},
+	"jssgroupStrict": {
+		"message": "Суворий"
+	},
+	"jssgroupConfuse": {
+		"message": "Сплутувати"
+	},
+	"jssgroupFake": {
+		"message": "Фальшивка"
+	},
+	"jssgroupAddFake": {
+		"message": "Додати фальшивку"
+	},
+	"jssgroupAsk": {
+		"message": "Запитати"
+	},
+	"jssgroupBlock": {
+		"message": "Заблокувати"
+	},
+	"jssgroupRemove": {
+		"message": "Вилучити"
+	},
+	"jssgroupTimePrecision": {
+		"message": "Точність часу"
+	},
+	"jssgroupTimePrecisionDescription": {
+		"message": "Запобігти атакам та технікам цифрового відбитка спираючись на точний вимір часу (чи зробити їх важкими)."
+	},
+	"jssgroupTimePrecisionDescription2": {
+		"message": "Лімітувати точність високо-роздільних часових міток $apis$. Часові мітки надані із Geolocation API є обгорнутими, а також якщо ви увімкнете \"$jssgroupPhysicalLocationGeolocation$\" захист.",
+		"placeholders": {
+			"apis": {
+				"content": "(Дата, Продуктивність, події, Gamepad API, та Web VR API)"
+			},
+			"jssgroupPhysicalLocationGeolocation": {
+				"content": "$1"
+			}
+		}
+	},
+	"jssgroupTimePoorDescription": {
+		"message": "Округлення часу до сотих в секундах (1.230)"
+	},
+	"jssgroupTimeLowDescription": {
+		"message": "Округлення часу до десятих в секундах (1.200)"
+	},
+	"jssgroupTimeHighDescription": {
+		"message": "Проставити десяткові цифри навмання з шумом (1.451)"
+	},
+	"jssgroupLocallyRenderedImages": {
+		"message": "Локально рендеровані зображення"
+	},
+	"jssgroupLocallyRenderedImagesDescription": {
+		"message": "Захищати проти цифрового відбитку із використанням Canvas або витоку інформації на можливостях рендерування графічної карти."
+	},
+	"jssgroupLocallyRenderedImagesDescription2": {
+		"message": "Функції $apis$ повертають модифіковані дані зображення.",
+		"placeholders": {
+			"apis": {
+				"content": "canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob(), та WebGLRenderingContext.readPixels"
+			}
+		}
+	},
+	"jssgroupLocallyRenderedImagesDescription3": {
+		"message": "$apis$ є модифіковано щоб брехати з ймовірністю.",
+		"placeholders": {
+			"apis": {
+				"content": "CanvasRenderingContext2D.isPointInStroke() та CanvasRenderingContext2D.isPointInPath()"
+			}
+		}
+	},
+	"jssgroupLocallyRenderedImagesLittleLiesDescription": {
+		"message": "Застосувати маленькі модифікації щоб читати дані зображення так, що зображення будуть виглядати так само, але точні значення будуть вирізнятися в залежності від відвіданого домену та на протязі сесії. Мета є тим щоб запобігти отримання цифрового відбитку Canvas або зробити це важчим."
+	},
+	"jssgroupLocallyRenderedImagesStrictDescription": {
+		"message": "Зчитувати білі зображення (з WebGL canvas зчитувати пустий масив). Ця опція не захищає від цифрового відбитку Canvas."
+	},
+	"jssgroupLocallyGeneratedAudio": {
+		"message": "Локально згенероване аудіо"
+	},
+	"jssgroupLocallyGeneratedAudioDescription": {
+		"message": "Захищати проти витоку інформації на можливостях рендерингу аудіо карти, яка може бути використана для, наприклад, аудіо цифрового відбитку."
+	},
+	"jssgroupLocallyGeneratedAudioDescription2": {
+		"message": "Функції $apis$ повертають модифіковані дані.",
+		"placeholders": {
+			"apis": {
+				"content": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData(), та AnalyserNode.getFloatFrequencyData()"
+			}
+		}
+	},
+	"jssgroupLocallyGeneratedAudioLittleLiesDescription": {
+		"message": "Додатки маленький амплітудний шум, щоб звук звучав так само як і оригінал для людини. Точне значення буде відрізнятись в залежності від відвідного домену та на протязі сесії. Метою є запобігти Аудіо цифровому відбитку або хоча б зробити його важчим."
+	},
+	"jssgroupLocallyGeneratedAudioStrictDescription": {
+		"message": "Дані звуку замінені але білий шум який відрізняється в залежності від домену та на протязі сесії. Метою є зменшити виток на аудіо апаратному забезпечені та в той же самий час зробити Аудіо цифровий відбиток важче."
+	},
+	"jssgroupGraphicCardInformation": {
+		"message": "Інформація графічної карти"
+	},
+	"jssgroupGraphicCardInformationDescription": {
+		"message": "Замінити подробиці вашої графічної карти так щоб наприклад, зробити важче зняття цифрового відбитку."
+	},
+	"jssgroupGraphicCardInformationDescription2": {
+		"message": "Функція $api$ повертає модифіковане або з нижнє значення для певних параметрів.",
+		"placeholders": {
+			"api": {
+				"content": "WebGLRenderingContext.getParameter()"
+			}
+		}
+	},
+	"jssgroupGraphicCardInformationDescription3": {
+		"message": "$apis$ повертає модифіковані значення.",
+		"placeholders": {
+			"apis": {
+				"content": "WebGLRenderingContext функції .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions(), та .getExtension()"
+			}
+		}
+	},
+	"jssgroupGraphicCardInformationLittleLiesDescription": {
+		"message": "Генерувати розумні номери або строки навмання які відрізняються на відвіданому домені та на протязі сесії. Метою є зменшити витоки на графічних картах та в той самий час зробити важчим зняття цифрового відбитку."
+	},
+	"jssgroupGraphicCardInformationStrictDescription": {
+		"message": "Повертати нижні значення (null, пусті строки). Зауважте, що ця опція не запобігає зняттю цифрового відбитку."
+	},
+	"jssgroupInstalledBrowserPlugins": {
+		"message": "Встановлені плагіни браузера"
+	},
+	"jssgroupInstalledBrowserPluginsDescription": {
+		"message": "Захищати проти цифрового відбитку плагінів."
+	},
+	"jssgroupInstalledBrowserPluginsDescription2": {
+		"message": "Захист на застосовується якщо ваш браузер повертає пустий список або п'ять PDF переглядачів плагінів від живого HTML стандарту. Отже захист на застосовується в сучасних браузерах."
+	},
+	"jssgroupInstalledBrowserPluginsLittleLiesDescription": {
+		"message": "Редагувати наявні плагіни та додати два фейкових плагіни."
+	},
+	"jssgroupInstalledBrowserPluginsFakeDescription": {
+		"message": "Повертає два фейкових плагіни."
+	},
+	"jssgroupInstalledBrowserPluginsStrictDescription": {
+		"message": "Сховати всі плагіни."
+	},
+	"jssgroupConnectedCamerasAndMicrophones": {
+		"message": "Приєднані камери та мікрофони"
+	},
+	"jssgroupConnectedCamerasAndMicrophonesDescription": {
+		"message": "Запобігти цифровому відбитку засновуючись на мультимедіа пристроях з'єднаних з комп'ютером."
+	},
+	"jssgroupConnectedCamerasAndMicrophonesDescription2": {
+		"message": "Функція $api$ є модифікованою, щоб повертати пустий чи модифікований результат.",
+		"placeholders": {
+			"api": {
+				"content": "MediaDevices.enumerateDevices()"
+			}
+		}
+	},
+	"jssgroupConnectedCamerasAndMicrophonesLittleLiesDescription": {
+		"message": "Проставити порядок пристроїв навмання. Наявні пристрої не підлягають зв'язку на різних доменах та на протязі сесій."
+	},
+	"jssgroupConnectedCamerasAndMicrophonesAddFakeDescription": {
+		"message": "Додати 0-4 фейкових пристроїв, щоб проставити порядок навмання. Наявні пристрої не підлягають зв'язку на різних доменах та на протязі сесій."
+	},
+	"jssgroupConnectedCamerasAndMicrophonesStrictDescription": {
+		"message": "Повертає пустий список пристроїв."
+	},
+	"jssgroupHardware": {
+		"message": "Пам'ять пристрою та CPU"
+	},
+	"jssgroupHardwareDescription": {
+		"message": "Підмінити інформацію апаратного забезпечення по ємності оперативної пам'яті та кількості CPU."
+	},
+	"jssgroupHardwareDescription2": {
+		"message": "Здобувачі $apis$ повертають модифіковані значення.",
+		"placeholders": {
+			"apis": {
+				"content": "navigator.deviceMemory та navigator.hardwareConcurrency"
+			}
+		}
+	},
+	"jssgroupHardwareLowDescription": {
+		"message": "Повертає правильне навмання значення між мінімумом та реальним значенням. Повернене значення відрізняється засновуючись на відвіданих доменах та на протязі сесій."
+	},
+	"jssgroupHardwareMediumDescription": {
+		"message": "Повертає правильне навмання значення між мінімумом та 8. Повернене значення відрізнятиметься засновуючись на відвіданих доменах та на протязі сесії."
+	},
+	"jssgroupHardwareHighDescription": {
+		"message": "Повернути 4 для navigator.deviceMemory та 2 для navigator.hardwareConcurrency."
+	},
+	"jssgroupNetworkConditions": {
+		"message": "Умови мережі"
+	},
+	"jssgroupNetworkConditionsDescription": {
+		"message": "Вимкнути доступ до мережевої інформації, щоб зменшити цифровий відбиток та вилучити можливість перегляду шаблонів в доступних мережах, щоб вивчати чи користувач дома, на роботі, або подорожує."
+	},
+	"jssgroupNetworkConditionsRemoveDescription": {
+		"message": "Вимкнути NetworkInformation API"
+	},
+	"jssgroupXMLHttpRequestRequests": {
+		"message": "XMLHttpRequest (XHR) передачі даних"
+	},
+	"jssgroupXMLHttpRequestRequestsDescription": {
+		"message": "Фільтрувати надійний XHR запит до серверу."
+	},
+	"jssgroupXMLHttpRequestRequestsDescription2": {
+		"message": "Зауважте, що XHR запит широко використовуються для доброякісних цілей та, що $apis$ не заблоковано. Все надає схоже та навіть краще розуміння в комунікації із сервером. Ми рекомендуємо активувати Детектор Відбитків Пальців натомість від XHR обгорток для певних використань. JShelter зберігає обгортку так як вона є корисною для деяких користувачів, в основному з експериментальних причин.",
+		"placeholders": {
+			"apis": {
+				"content": "Fetch, SSE, WebRTC, та WebSockets APIs"
+			}
+		}
+	},
+	"jssgroupXMLHttpRequestRequestsAskDescription": {
+		"message": "Запитувати перед тим як виконувати XHR запит"
+	},
+	"jssgroupXMLHttpRequestRequestsBlockDescription": {
+		"message": "Блокувати всі XHR запити"
+	},
+	"jssgroupArrays": {
+		"message": "ArrayBuffer API"
+	},
+	"jssgroupArraysDescription": {
+		"message": "Захищати проти ArrayBuffer експлуатації, наприклад, щоб запобігти атаці побічних-каналів на структуру пам'яті (або зробити їх важчими)."
+	},
+	"jssgroupArraysShift": {
+		"message": "Здвиг"
+	},
+	"jssgroupArraysShiftDescription": {
+		"message": "Здвинути індекси, щоб зробити знаходження межі сторінки пам'яті важчим."
+	},
+	"jssgroupArraysRandomize": {
+		"message": "Навмання"
+	},
+	"jssgroupArraysRandomizeDescription": {
+		"message": "Використовувати відображення масиву індексування пам'яті навмання. Ця опція є більш ефективною але повільна в порівнянні зі здвигом."
+	},
+	"jssgroupSharedArraysBuffer": {
+		"message": "SharedArrayBuffer API"
+	},
+	"jssgroupSharedArraysBufferDescription": {
+		"message": "Захищати проти експлуатації SharedArrayBuffer, наприклад, щоб запобігти атаці побічних-каналів на структуру пам'яті (чи зробити їх важчими)."
+	},
+	"jssgroupSharedArraysBufferMediumDescription": {
+		"message": "Навмання сповільнювати повідомлення щоб запобігти високо-роздільним таймерам"
+	},
+	"jssgroupSharedArraysBufferStrictDescription": {
+		"message": "Блокувати SharedArrayBuffer"
+	},
+	"jssgroupWebWorker": {
+		"message": "WebWorker API"
+	},
+	"jssgroupWebWorkerDescription": {
+		"message": "Захищати проти експлуатації WebWorker"
+	},
+	"jssgroupWebWorkerDescription2": {
+		"message": "Workers надають потужні APIs які, наприклад, дозволяють встановити невидимий проксі на браузер. Високі рівні вилучають цю можливість. Зауважте, що доброякісні сайти використовують workers, щоб надати можливості офлайн роботи, пошуку, кешування під час програвання медіа, і т.д."
+	},
+	"jssgroupWebWorkerLowDescription": {
+		"message": "Навмання сповільнюють повідомлення, щоб запобігти високо-роздільним таймерам але зберігати підтримку WebWorker. Ця опція не запобігає Worker'ів від доступу до оригінальних APIs. Використовуйте з увагою."
+	},
+	"jssgroupWebWorkerStrictDescription": {
+		"message": "Зробити WebWorkers непрацездатними. Використовуйте це, щоб запобігти тому, щоб сайти вивчали що браузер не підтримує WebWorkers. Однак, це запобігає сайтам розгортати тимчасові рішення(обходи) для підтримки відсутніх WebWorker, що надають деякі сайти."
+	},
+	"jssgroupWebWorkerRemoveDescription": {
+		"message": "Вилучити підтримку WebWorkers з браузера. Це легко знаходиться веб-сторінками та покращує процес цифрового відбитку браузера, але в той самий час надає сторінці можливість розгорнути код який компенсує відсутню підтримку WebWorker."
+	},
+	"jssgroupPhysicalLocationGeolocation": {
+		"message": "Фізичне знаходження (геолокація)"
+	},
+	"jssgroupPhysicalLocationGeolocationDescription": {
+		"message": "Лімітувати інформацію на реальне-світове знаходження від Geolocation API."
+	},
+	"jssgroupPhysicalLocationGeolocationDescription2": {
+		"message": "Використовувати хеш домену для підробки знаходження, то знаходження буде таки самим на одному домені на протязі всієї сесії."
+	},
+	"jssgroupGeolocationTimestampOnly": {
+		"message": "Тільки часова мітка"
+	},
+	"jssgroupGeolocationTimestampOnlyDescription": {
+		"message": "Надати точні дані (використовуйте тільки тоді коли треба надати точне знаходження і ви бажаєте захистити часові мітки геолокації, за допомогою захисту \"$jssgroupTimePrecision$\")",
+		"placeholders": {
+			"jssgroupTimePrecision": {
+				"content": "$1"
+			}
+		}
+	},
+	"jssgroupGeolocationVillage": {
+		"message": "Село"
+	},
+	"jssgroupGeolocationVillageDescription": {
+		"message": "Використовувати точність до сотень метрів."
+	},
+	"jssgroupGeolocationTown": {
+		"message": "Місто"
+	},
+	"jssgroupGeolocationTownDescription": {
+		"message": "Використовувати точність кілометрів."
+	},
+	"jssgroupGeolocationRegion": {
+		"message": "Область"
+	},
+	"jssgroupGeolocationRegionDescription": {
+		"message": "Використовувати точність до десятків кілометрів."
+	},
+	"jssgroupGeolocationLongDistance": {
+		"message": "Довга дистанція"
+	},
+	"jssgroupGeolocationLongDistanceDescription": {
+		"message": "Використовувати точність до сотень кілометрів."
+	},
+	"jssgroupGeolocationRemoveDescription": {
+		"message": "Повністю вилучити сервіси геолокації."
+	},
+	"jssgroupPhysicalEnvironmentSensors": {
+		"message": "Сенсори фізичного середовища"
+	},
+	"jssgroupPhysicalEnvironmentSensorsDescription": {
+		"message": "Лімітувати інформацію яка надається сенсорами фізичного середовища такими як Магнетометр та Акселерометр."
+	},
+	"jssgroupPhysicalEnvironmentSensorsDescription2": {
+		"message": "Така інформація може бути неправильно використана для багатьох цілей, включаючи цифровий відбиток середовища, слідкування за знаходженням користувача, знаходження пристроїв поряд, оцінки дії користувача яку від робить з пристроєм, та багато іншого. Однак, читання може бути корисним для таких застосунків як навігація, ігри, та інші. Наприклад, деякі застосунки можуть використовувати орієнтацію пристрою, щоб контролювати дії в середині застосунку."
+	},
+	"jssgroupPhysicalEnvironmentSensorsHighDescription": {
+		"message": "Емулювати стаціонарний пристрій, що надає різні зчитування сенсору на різних доменах та на протязі сесій."
+	},
+	"jssgroupUserIdleDetection": {
+		"message": "Знаходження простою користувача"
+	},
+	"jssgroupUserIdleDetectionDescription": {
+		"message": "Idle Detection API може знаходити не активних користувачів та заблокований екран."
+	},
+	"jssgroupUserIdleDetectionDescription2": {
+		"message": "Намір цього API надати веб-застосунку інформацію про не активність користувача, наприклад, не показувати сповіщення коли користувач не активний. Однак, така інформація може неправильно використовуватись, щоб слідкувати за активністю користувача та для корелювання змін в стані між доменами."
+	},
+	"jssgroupUserIdleConfuseDescription": {
+		"message": "Завжди повертати активного користувача з розблокованим екраном."
+	},
+	"jssgroupUserIdleBlockDescription": {
+		"message": "Не відображати підказки та автоматично відхиляти."
+	},
+	"jssgroupUserIdleRemoveDescription": {
+		"message": "Вилучити API."
+	},
+	"jssgroupCoopschedule": {
+		"message": "Планування завдань на період простою"
+	},
+	"jssgroupCoopscheduleDescription": {
+		"message": "Кооперативне Планування API Фонових Завдань може планувати фонові завдання так, щоб вони не стикались з затримками до інших високо-пріоритетних завдань які поширюють те саме коло події."
+	},
+	"jssgroupCoopscheduleDescription2": {
+		"message": "API робить витік інформації про інші завдання які виконуються у браузері, так як воно проливає інформацію про тільки що сплановані завдання, vsync дедлайни, взаємодії-користувача і так далі."
+	},
+	"jssgroupCoopscheduleConfuseDescription": {
+		"message": "Модифікувати доступну інформацію, щоб спантеличити супротивників."
+	},
+	"jssgroupGamepads": {
+		"message": "Геймпади"
+	},
+	"jssgroupGamepadsDescription": {
+		"message": "Запобігти вебсайти від доступу та вивчення інформації на локальних геймпадах."
+	},
+	"jssgroupGamepadsDescription2": {
+		"message": "Інформація може бути неправильно використана для цифрового відбитку браузера. В той самий час, користувачу потрібен доступ до геймпаду тільки на спеціалізованих вебсайтах."
+	},
+	"jssgroupGamepadsStrictDescription": {
+		"message": "Сховати всі геймпади."
+	},
+	"jssgroupVirtualAndAugmentedRealityDevices": {
+		"message": "Пристрої віртуальної та доповненої реальності"
+	},
+	"jssgroupVirtualAndAugmentedRealityDevicesDescription": {
+		"message": "Запобігти від доступу та вивчення інформації вебсайтами на локальних пристроях віртуальної та доповненої реальності."
+	},
+	"jssgroupVirtualAndAugmentedRealityDevicesDescription2": {
+		"message": "Інформація може бути використана не правильно, для цифрового відбитку браузера. В той самий час, користувачу потрібен доступ до пристроїв віртуальної та доповненої реальності тільки на спеціалізованих сайтах."
+	},
+	"jssgroupVirtualAndAugmentedRealityDevicesStrictDescription": {
+		"message": "Сховати всі пристрої."
+	},
+	"jssgroupMultimediaPlayback": {
+		"message": "Відтворення мультимедіа"
+	},
+	"jssgroupMultimediaPlaybackDescription": {
+		"message": "Запобігти вебсайти від доступу та вивчення інформації про локально встановлені кодеки та можливості кодування/декодування та продуктивності."
+	},
+	"jssgroupMultimediaPlaybackDescription2": {
+		"message": "Інформація яка надається цим API може бути неправильно використана для цифрового відбитку браузера. Ви повинні увімкнути захист для сайтів які не обробляють аудіо та відео. Захист може зламати сайти які обробляють відео та аудіо."
+	},
+	"jssgroupMultimediaPlaybackLittleLiesDescription": {
+		"message": "Звітувати про кодек/механізм шифрування як про не підтримуваний з ймовірністю 12.5%."
+	},
+	"jssgroupMultimediaPlaybackStrictDescription": {
+		"message": "Звітувати про всі кодеки/механізми шифрування як про не підтримувані."
+	},
+	"jssgroupMultimediaPlaybackBlockDescription": {
+		"message": "Взагалі не повертати ніякої інформації."
+	},
+	"jssgroupUnreliableTransfersToServerBeacons": {
+		"message": "Ненадійні переходи до серверу (маяки)"
+	},
+	"jssgroupUnreliableTransfersToServerBeaconsDescription": {
+		"message": "Запобігти ненадійним переходам на сервери (маяки)."
+	},
+	"jssgroupUnreliableTransfersToServerBeaconsDescription2": {
+		"message": "Такі переходи зазвичай неправильно використовуються для аналітики але іноді можуть бути використані онлайн торговцями та іншими сторінками."
+	},
+	"jssgroupUnreliableTransfersToServerBeaconsDescription3": {
+		"message": "Запобігти посиланню інформації через Beacon API."
+	},
+	"jssgroupUnreliableTransfersToServerBeaconsBlockDescription": {
+		"message": "Блокувати передачу даних через це API. Не робити нічого."
+	},
+	"jssgroupHardwareBattery": {
+		"message": "Battery Status API"
+	},
+	"jssgroupHardwareBatteryDescription": {
+		"message": "Вилучити підтримку Battery Status API яка була неправильно використана для цифрового відбитку."
+	},
+	"jssgroupHardwareBatteryRemoveDescription": {
+		"message": "Вилучити API"
+	},
+	"jssgroupPersistentIdentifierOfTheBrowserTab": {
+		"message": "Постійний ідентифікатор вкладки браузера"
+	},
+	"jssgroupPersistentIdentifierOfTheBrowserTabDescription": {
+		"message": "На відміну від інших частин середовища, властивість window.name не скидається під час завантаження сторінки. Отже, сторінка може зберігати унікальний ідентифікатор вкладки для властивості або інших доброякісних даних."
+	},
+	"jssgroupPersistentIdentifierOfTheBrowserTabDescription2": {
+		"message": "API дозволяє між-сайтову ідентифікацію на одній вкладці та сесії браузера."
+	},
+	"jssgroupPersistentIdentifierOfTheBrowserTabStrictDescription": {
+		"message": "Почистити значення window.name під час переходу на інший сервіс (eTLD+1 зміна домену) на протязі завантаження сторінки. Це не заважає більшості доброякісних цілей під час запобігання атаці між-сайтової ре-ідентифікації."
+	},
+	"jssgroupPersistentIdentifierOfTheBrowserTabFirefox88": {
+		"message": "$BROWSER$ та вище вже захищає вас.",
+		"placeholders": {
+			"browser": {
+				"content": "Firefox 88"
+			}
+		}
+	},
+	"jssgroupNFC": {
+		"message": "Near Field Communication (NFC)"
+	},
+	"jssgroupNFCDescription": {
+		"message": "Near Field Communication (NFC) вмикає бездротову комунікацію між двома пристроями на близькій дистанції, зазвичай менше ніж пару сантиметрів. NFC є міжнародним стандартом (ISO/IEC 18092) визначаючи інтерфейс та протокол для простого бездротового взаємозв'язку між двома близько розташованими пристроями працюючи на 13.56 МГц."
+	},
+	"jssgroupNFCDescription2": {
+		"message": "API може бути неправильно використане щоб вивчити інформацію про інший пристрій поблизу."
+	},
+	"jssgroupNFCRemoveDescription": {
+		"message": "Вилучити API"
+	},
+	"jssgroupWASM": {
+		"message": "WebAssembly прискорення"
+	},
+	"jssgroupWASMDescription": {
+		"message": "Прискорити модифікації маленьких брехень локально згенерованих зображень та аудіо від WebAssembly."
+	},
+	"jssgroupWASMDescription2": {
+		"message": "Ця опція почне діяти коли рівень \"$canvas$\" або \"$audio$\" встановлений тільки на \"$littlelies$\".",
+		"placeholders": {
+			"canvas": {
+				"content": "$1"
+			},
+			"audio": {
+				"content": "$2"
+			},
+			"littlelies": {
+				"content": "$3"
+			}
+		}
+	},
+	"jssgroupWASMDescription3": {
+		"message": "WebAssembly код генерує ті самі модифікації як не прискорена версія, то це є безпечною опцією для активації, якщо стурбовані про зняття цифрового відбитку."
+	},
+	"jssgroupWASMDisabled": {
+		"message": "Вимкнено"
+	},
+	"jssgroupWASMDisabledDescription": {
+		"message": "Не створювати маленькі брехні в WebAssembly, використовувати повільний JavaScript."
+	},
+	"jssgroupWASMPassive": {
+		"message": "Пасивний"
+	},
+	"jssgroupWASMPassiveDescription": {
+		"message": "Увімкнути WebAssembly, щоб створити маленькі брехні але відступити до типової повільної імплементації якщо режим WebAssembly не може бути вставлений."
+	},
+	"jssgroupWASMActive": {
+		"message": "Активний"
+	},
+	"jssgroupWASMActiveDescription": {
+		"message": "Послабити 'wasm-unsafe-eval' Content Security Policy (CSP) директиву, щоб дозволити виконання WebAssembly там де CSP відвіданої сторінки буде навпаки запобігати цьому."
+	},
+	"jssgroupWASMActiveDescription2": {
+		"message": "Ініціалізація модулів WebAssembly є предметом до CSP відвіданої сторінки в браузерах які засновані на Chromium."
+	},
+	"jssgroupWASMActiveDescription3": {
+		"message": "Перевага цієї опції є те що модифікації виконуються швидше на всіх сторінках."
+	},
+	"jssgroupWASMActiveDescription4": {
+		"message": "Однак, вмикаючи цю опцію, ви збільшуєте ризик стати жертвою вразливості, якою інакше можна було б запобігти за допомогою CSP, такі як між-сайтові скриптові вразливості. Більше того, ця опція може втручатися в інші встановлені розширення які модифікують заголовки CSP."
+	},
+	"jssgroupWASMEnabled": {
+		"message": "Увімкнено"
+	},
+	"jssgroupWASMEnabledDescription": {
+		"message": "Створити маленькі брехні в WebAssembly."
+	},
+	"JShelterOptions": {
+		"message": "Головні налаштування JShelter"
+	},
+	"mainSettings": {
+		"message": "Головні налаштування"
+	},
+	"JShelterOptionsJSSFineTune": {
+		"message": "Javascript Shield подробиці: захисти на домен"
+	},
+	"jSSShieldDetails": {
+		"message": "JS Shield подробиці"
+	},
+	"JShelterOptionsAdvanced": {
+		"message": "JShelter експертні опції"
+	},
+	"advancedOptions": {
+		"message": "Експертні опції"
+	},
+	"externalLinks": {
+		"message": "Зовнішні посилання"
+	},
+	"ExternalLinksSeparator": {
+		"message": " »"
+	},
+	"threatModel": {
+		"message": "Модель загрози"
+	},
+	"fAQ": {
+		"message": "FAQ"
+	},
+	"testPage": {
+		"message": "Тестова сторінка"
+	},
+	"permissions": {
+		"message": "Дозволи"
+	},
+	"sourceCode": {
+		"message": "Код джерела"
+	},
+	"issueTracker": {
+		"message": "Трекер помилок"
+	},
+	"credits": {
+		"message": "Автори"
+	},
+	"ExampleDomainsText": {
+		"message": "example.com або en.example.com"
+	},
+	"ButtonSignExpandOneCharacterDown": {
+		"message": "▼"
+	},
+	"ButtonSave": {
+		"message": "Зберегти"
+	},
+	"ButtonRestore": {
+		"message": "Відновити"
+	},
+	"ButtonRestoreLevel": {
+		"message": "Відновити рівень $LEVELNAME$",
+		"placeholders": {
+			"levelName": {
+				"content": "$1"
+			}
+		}
+	},
+	"ButtonEdit": {
+		"message": "Редагувати"
+	},
+	"ButtonSaveCustomLevel": {
+		"message": "Зберегти кастомізований рівень"
+	},
+	"ButtonAddNewLevel": {
+		"message": "Додати новий рівень"
+	},
+	"ButtonCancel": {
+		"message": "Скасувати"
+	},
+	"ButtonRemove": {
+		"message": "Вилучити"
+	},
+	"addToList": {
+		"message": "Додати до списку"
+	},
+	"saveAll": {
+		"message": "Зберегти все"
+	},
+	"deleteAll": {
+		"message": "Видалити все"
+	},
+	"ManageWhitelist": {
+		"message": "Керувати списком винятків ▼"
+	},
+	"HideWhitelist": {
+		"message": "Сховати список винятків ▲"
+	},
+	"ButtonDisableForDomain": {
+		"message": "<strong>$DISABLE$</strong> $FORTHEDOMAIN$",
+		"placeholders": {
+			"disable": {
+				"content": "Вимкнути"
+			},
+			"forTheDomain": {
+				"content": "для домену"
+			}
+		}
+	},
+	"ButtonEnableForSelectedDomains": {
+		"message": "<strong>$ENABLE$</strong> $FORTHEDOMAIN$",
+		"placeholders": {
+			"enable": {
+				"content": "Увімкнути"
+			},
+			"forTheDomain": {
+				"content": "для обраних доменів"
+			}
+		}
+	},
+	"ManageWhitelistDescription": {
+		"message": "Будь-ласка зауважте, що ці назви доменів перевіряються за ієрархією доменів, тому надаючи виняток до <strong>example.com</strong> також дозволяє <strong>news.example.com</strong> обійти щит."
+	},
+	"javascriptShieldDescription": {
+		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><ul><li>$REDUCTION$</li><li>$FAKE$</li><li>$HIDE$</li></ul><p>$BLOGS$</p>",
+		"placeholders": {
+			"paragraph1": {
+				"content": "JavaScript Shield модифікує поведінку JavaScript середовища доступного до відвіданих сторінок. JShelter надає фейкову інформацію щоб спантеличити зняття цифрового відбитку або зробити спровоковані атаки неможливими або важчими."
+			},
+			"paragraph2": {
+				"content": "JavaScript Shield внутрішньо складається з обгорток, маленьких шматочків коду які модифікують оригінальну поведінку JavaScript API (функцію або властивість) визначену за стандартом. Поведінку більшості обгорток можна розділити на кілька категорій:"
+			},
+			"reduction": {
+				"content": "Зменшення точності: Оригінальне значення дуже точне до більшості використовуваних випадків. JavaScript Shield модифікує значення тому це не впливає на типові та доброякісні випадки."
+			},
+			"fake": {
+				"content": "Надає фейкову інформацію: Деякі обгортки надають фейкову інформацію, найбільше для того щоб спантеличити знімачів цифрового відбитку. Деякі обгортки надають правдоподібні вичитування які не базуються на оригінальних значеннях. Інші обгортки модифікують вичитування з маленькими девіаціями які не помітні для людини але є значними для знімача цифрового відбитку. JShelter застосовує такі девіації по різному на кожну сесію та для кожного домену, щоб оглядач який працює на різних доменах не зміг використати інформацію щоб поєднати браузер. Наприклад, обгортка canvas модифікує зображення так, що ця сама інструкція створює різні результати на різних доменах та на різних сесіях."
+			},
+			"hide": {
+				"content": "Сховати інформацію: Деякі APIs надають інформацію, яка не зовсім потрібна та може бути схована з багатьох сторінок. В залежності від API, JavaScript Shield може повернути помилку, або пусте значення, або заблокувати API повністю."
+			},
+			"blogs": {
+				"content": "Дивіться наші пости в блозі для більшої інформації по <a href='https://jshelter.org/fingerprinting/'>контра-заходи для цифрового відбитку браузера</a> та <a href='https://jshelter.org/farbling/'>маленькі брехні</a>."
+			}
+		}
+	},
+	"JavascriptShieldLevelsMainLevelOptionHeading": {
+		"message": "Створити кастомізовані рівні та встановити типовий рівень"
+	},
+	"addCustomLevel": {
+		"message": "Додати кастомізований рівень"
+	},
+	"JSSL0Name": {
+		"message": "Вимкнути JavaScript Shield"
+	},
+	"JSSL0Description": {
+		"message": "JavaScript APIs не обгорнуті. Використовуйте цей рівень, якщо ви (1) довіряєте оператору відвіданої сторінки(сторінок) та ви хочете надати їм повний доступ до APIs підтримуваних браузером, так само як супротивники які могли вже вставити код то довірених сторінок, або (2) якщо вам не подобається JavaScript Shield але ви хочете застосувати інші механізми захисту."
+	},
+	"JSSL1Name": {
+		"message": "Вимкнути захист від цифрового відбитку"
+	},
+	"JSSL1Description": {
+		"message": "Застосувати безпекові контро-заходи які можливо не зламають веб сторінки але не захистять від цифрового відбитку. Вимкнути APIs які зазвичай не використовуються. Використовуйте цей рівень, якщо Детектор Відбитків Пальців звітує, що сторінка викликається маленьким числом APIs які неправильно використовуються для цифрового відбитку, ви довіряєте відвіданому сервісу, та/або ви думаєте, що захист сповільняє сторінку або робить її не працездатною, і ваша спокуса використовувати сервіс на стільки висока, що ви не бажаєте бути захищеним."
+	},
+	"JSSL2Name": {
+		"message": "Рекомендовано"
+	},
+	"JSSL2Description": {
+		"message": "Зробити браузер так, щоб він з'являвся по різному на відмінних доменах. Застосувати контро-заходи які зазвичай не зламають веб сторінки. Трохи модифікувати результат API викликів по різному на різних доменах, щоб між-сайтовий цифровий відбиток був не стабільний. Значення неправильно використовуються, щоб генерувати цифровий відбиток, що також відрізняється з кожним перезапуском браузера. Спробуйте режим інкогніто, якщо вам потрібен інший цифровий відбиток для цього самого вебсайту без перезапуску браузера. Запам'ятайте, навіть якщо ви вийдете з облікового запису на сайті, почистите ваші кукі, та змінити IP адресу, модифіковані APIs нададуть шлях щоб обчислити той самий цифровий відбиток. Перезапустіть ваш браузер, якщо ви бажаєте змінити ваш цифровий відбиток. Якщо сумніваєтесь, використовуйте цей рівень."
+	},
+	"JSSL3Name": {
+		"message": "Суворий"
+	},
+	"JSSL3Description": {
+		"message": "Увімкнути весь не експериментальний захист. Обгорнуті APIs повертають фейкові значення. Деякі APIs заблоковані повністю, поки інші надають значущі, але рідкісні значення. Деякі повертають безглузді значення. Цей рівень зробить вас бути здатним до цифрового відбитку тому, що результати API викликів, загально модифіковано в той самий спосіб на всіх вебсайтах на кожній сесії. Використовуйте цей рівень, якщо ви хочете лімітувати інформацію яку надає ваш веб браузер. Якщо ви хвилюєтесь про цифрові відбитки, переконайтеся, що Детектор Відбитків Пальців активований."
+	},
+	"JSSLexperimentalName": {
+		"message": "Експериментальний"
+	},
+	"JSSLexperimentalDescription": {
+		"message": "Суворий рівень захистів з увімкненими додатковими обгортками (включаючи APIs які відомі що регулярно зламають вебсторінки та APIs які не працюють ідеально). Використовуйте цей рівень, якщо хочете поекспериментувати з JShelter. Використовуйте Рекомендований та Суворий рівень з активним Детектором Відбитків Пальців для ваших регулярних активностей."
+	},
+	"omittedAPIsHeading": {
+		"message": "Зауважте, що запобігання зняттю цифрового відбитку, JShelter не обгортає об'єкти які не визначені. Ваш браузер не підтримує:"
+	},
+	"newLevelsNotRecommended": {
+		"message": "Ми не рекомендуємо створення ваших власних рівнів та зміну конфігурації, якщо ви хвилюєтесь про цифровий відбиток браузера . Будь-ласка прочитайте <a href=\"$FAQURL$\">FAQ</a> та наш <a href=\"$PAPERURL$\">документ</a>. За розбіжністю від конфігурації від інших користувачів, ви робите вашу ре-ідентифікацію легше.",
+		"placeholders": {
+			"faqurl": {
+				"content": "https://jshelter.org/faq/"
+			},
+			"paperurl": {
+				"content": "https://arxiv.org/abs/2204.01392"
+			}
+		}
+	},
+	"formlabelName": {
+		"message": "Назва:"
+	},
+	"formlabelDescription": {
+		"message": "Опис:"
+	},
+	"customLevelAlreadyExistsItWillBeOverridden": {
+		"message": "Кастомізований рівень $CUSTOMNAME$ вже існує. Він буде перезаписаний.",
+		"placeholders": {
+			"customName": {
+				"content": "$1"
+			}
+		}
+	},
+	"customLevelWereNotUpdated": {
+		"message": "Кастомізований рівень не був оновлений. Будь-ласка спробуйте пізніше."
+	},
+	"NewLevelMissingNameOrDescription": {
+		"message": "Обидва, Назва та Опис є обов'язковими. Будь-ласка надайте обидва."
+	},
+	"JSSeditLevelHeading": {
+		"message": "Редагувати рівень $LEVELNAME$",
+		"placeholders": {
+			"levelName": {
+				"content": "$1"
+			}
+		}
+	},
+	"JSSaddLevelHeading": {
+		"message": "Додати новий рівень"
+	},
+	"javaScriptShieldPerWebsiteConfiguration": {
+		"message": "JavaScript Shield конфігурація під кожний вебсайт"
+	},
+	"setJavaScriptShieldForWebsite": {
+		"message": "Встановити JavaScript Shield для вебсайту:"
+	},
+	"aListOfWebsiteWithRedefinedJavaScriptShield": {
+		"message": "Список вебсайтів з перевизначеним JavaScript Shield:"
+	},
+	"JSSAdvancedConfirmOverwrite": {
+		"message": "Налаштування для домену $DOMAIN$ вже існує та буде перезаписано.",
+		"placeholders": {
+			"domain": {
+				"content": "$1"
+			}
+		}
+	},
+	"LevelAndDescription": {
+		"message": "$LEVELNAME$: $LEVELSHORTDESCRIPTION$",
+		"placeholders": {
+			"levelName": {
+				"content": "$1"
+			},
+			"levelShortDescription": {
+				"content": "$2"
+			}
+		}
+	},
+	"doNotModifyThisConfiguration": {
+		"message": "ОБЕРЕЖНО! Не модифікуйте цю конфігурація, тільки якщо знаєте, що робите."
+	},
+	"JShelterFullConfiguration": {
+		"message": "Повна JShelter конфігурація в текстовому вигляді"
+	},
+	"ExpertLoadCurrentlyStoredConfiguration": {
+		"message": "Завантажити тільки, що збережену конфігурацію"
+	},
+	"ExpertOverwriteConfiguration": {
+		"message": "Перезаписати конфігурацію (зберігає відображену конфігурацію на постійно)"
+	},
+	"ExpertResetConfiguration": {
+		"message": "Скинути конфігурацію (вилучає всі кастомізовані зміни)"
+	},
+	"ExpertUndoConfiguration": {
+		"message": "Скасувати (відміняє всі перевизначені зміни)"
+	},
+	"JSSBuiltinExceptions": {
+		"message": "Вбудовані підлаштування для JavaScript Shield"
+	},
+	"JSSBuiltinExceptionsDomain": {
+		"message": "Домен"
+	},
+	"JSSBuiltinExceptionsLevels": {
+		"message": "Рівні"
+	},
+	"JSSBuiltinExceptionsLevelsSeparator": {
+		"message": ", "
+	},
+	"JSSBuiltinExceptionsChanges": {
+		"message": "Зміни"
+	},
+	"JSSBuiltinExceptionsReason": {
+		"message": "Причина"
+	},
+	"protectionConfigurationOptionActivatedOn": {
+		"message": "Увімкнено"
+	},
+	"protectionConfigurationOptionActivatedOff": {
+		"message": "Вимкнено"
+	},
+	"shieldNotifications": {
+		"message": "Сповіщення"
+	},
+	"NBSDescription": {
+		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
+		"placeholders": {
+			"paragraph1": {
+				"content": "Network Boundary Shield запобігає відвіданим веб сторінкам використовувати браузер як проксі між публічним інтернетом та локальною мережею. Дивіться <a href='https://jshelter.org/localportscanning/'>наш блог пост</a> та <a href='https://www.forcepoint.com/sites/default/files/resources/files/report-attacking-internal-network-en_0.pdf'>Force Point звіт</a> для прикладів атак які утримуються за допомогою Network Boundary Shield. Захист інкапсулює WebRequest API, так, що він ловить всі вихідні запити."
+			},
+			"paragraph2": {
+				"content": "Загально, ви бажаєте щоб Щит Мережевої Границі блокував всі підозрілі запити. Однак, деякі сторінки можуть бути поломані тому, що вони потребують взаємозв'язку між публічним Інтернетом та локальною мережею. Наприклад, Щит Мережевої Границі може зламати деякі Інтранет інформаційні системи. JShelter користувачі також звітували про збільшені хибнопозитивні результати коли використовували програми засновані на DNS фільтруванні. Якщо ви використовуєте одну, переконайтесь, що DNS повертає 0.0.0.0 для заблокованих доменів."
+			},
+			"paragraph3": {
+				"content": "Типова поведінка Щита Мережевої Границі може бути глобально підлаштована налаштуваннями нижче. Щит Мережевої Границі також може бути повністю вимкнений під кожний домен за допомогою списку винятків. Доменам може бути дозволено робити між-мережевий запити за допомогою <i>Network Boundary Shield перемикача</i> в спливному вікні або в ручному режимі за допомогою опції <i>Список керування винятками</i>. Запам'ятайте, що додавання домену до списку винятків також дозволяє їх під-доменам робити між-мережеві запити. Щоб вибірково деактивувати Щит Мережевої Границі, вставте домени в список винятків (виключаючи \"www\" але включаючи всі інші домени, наприклад, \".com\")."
+			}
+		}
+	},
+	"NBSHttpProxyDNSAPINote": {
+		"message": "Якщо ви використовуєте HTTP proxy, NBS захистить локальну мережу проксі, замість вашої мережі, так як проксі робить HTTP запит до самого напрямку. Щоб запобігти DNS витокам ваших запитів ініціалізованими цим комп'ютером, Щит Мережевої Границі не розкладає (resolve) DNS домени, щоб знайти можливі між-мережеві граничні запити. Однак, Щит Мережевої Границі захищає локальну мережу проксі для безпосередньо вбудованих IP адрес. Отже, Щит Мережевої Границі захищає локальну мережу проксі тільки частково."
+	},
+	"nbsBlocking": {
+		"message": "Блокування"
+	},
+	"nbsBlockingDescription": {
+		"message": "Блокувати запити які пробують отримати доступ до вашої локальної мережі."
+	},
+	"nbsBlockingDescription2": {
+		"message": "ЗАУВАЖТЕ: Ми рекомендуємо мати блокування запитів увімкненим в більшості випадків."
+	},
+	"nbsBlockingOffDescription": {
+		"message": "Блокування запитів вимкнено."
+	},
+	"nbsBlockingOnDescription": {
+		"message": "Блокування запитів увімкнено."
+	},
+	"NBSNotificationsDescription": {
+		"message": "Увімкнути/вимкнути сповіщення про підозрілі запити або запити які було заблоковано."
+	},
+	"NBSNotificationsDescription2": {
+		"message": "У випадку якщо увімкненні сповіщення: якщо блокування увімкнене, ви отримаєте сповіщення про заблоковані запити; якщо блокування вимкнене, ви отримаєте сповіщення про підозрілі запити без спроби запобігти їм."
+	},
+	"NBSNotificationsOffDescription": {
+		"message": "Сповіщення про блокування запитів вимкнено."
+	},
+	"NBSNotificationsOnDescription": {
+		"message": "Сповіщення про блокування запитів увімкнено."
+	},
+	"NBSBlockedTitle": {
+		"message": "Щит Мережевої Границі заблокував підозрілий запит!"
+	},
+	"NBSDetectedTitle": {
+		"message": "Щит Мережевої Границі знайшов підозрілий запит!"
+	},
+	"NBSBlockedMessageMultipleTargets": {
+		"message": "Число заблокованих запитів\nвід $ORIGIN$\nякі спробували отримати доступ\nдо локальної мережі: $COUNT$.",
+		"placeholders": {
+			"origin": {
+				"content": "$1"
+			},
+			"count": {
+				"content": "$2"
+			}
+		}
+	},
+	"NBSDetectedMessageMultipleTargets": {
+		"message": "Число знайдених запитів\nвід $ORIGIN$\nякі отримали доступ до\nлокальної мережі: $COUNT$.",
+		"placeholders": {
+			"origin": {
+				"content": "$1"
+			},
+			"count": {
+				"content": "$2"
+			}
+		}
+	},
+	"NBSBlockedMessageWithTarget": {
+		"message": "Заблокованих запитів: $COUNT$\nвід $ORIGIN$\nдо $TARGET$.",
+		"placeholders": {
+			"origin": {
+				"content": "$1"
+			},
+			"target": {
+				"content": "$2"
+			},
+			"count": {
+				"content": "$3"
+			}
+		}
+	},
+	"NBSDetectedMessageWithTarget": {
+		"message": "Знайдені запити: $COUNT$\nвід $ORIGIN$\nдо $TARGET$.",
+		"placeholders": {
+			"origin": {
+				"content": "$1"
+			},
+			"target": {
+				"content": "$2"
+			},
+			"count": {
+				"content": "$3"
+			}
+		}
+	},
+	"NBSBlockedHostTitle": {
+		"message": "Щит Мережевої Границі заблокував хост!"
+	},
+	"NBSDetectedHostTitle": {
+		"message": "Щит Мережевої Границі знайшов підозрілий хост!"
+	},
+	"NBSBlockedHost": {
+		"message": "Всі майбутні HTTP запити $HOST$ будуть заблоковані.",
+		"placeholders": {
+			"host": {
+				"content": "$1"
+			}
+		}
+	},
+	"NBSDetectedHost": {
+		"message": "Щоб заблокувати HTTP запит від $HOST$ увімкніть блокування.",
+		"placeholders": {
+			"host": {
+				"content": "$1"
+			}
+		}
+	},
+	"MV3BrokenFeatures": {
+		"message": "Через введені суворі обмеження від <a href=\"$MV3URL$\" target=\"_blank\">Google's Manifest V3</a>, деякі функції JShelter (наприклад Щит Мережевої Границі та Знаходження Зняття Цифрового Відбитку знаходяться в Заблокованому Режимі) не будуть працювати на останніх браузерах заснованих на Chromium (включаючи ваш), та і інші будуть менш надійними чим вони були у минулому але все ще є на Firefox.",
+		"placeholders": {
+			"mv3url": {
+				"content": "https://jshelter.org/mv3/"
+			}
+		}
+	},
+	"FPDDescription": {
+		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>",
+		"placeholders": {
+			"paragraph1": {
+				"content": "Детектор Цифрового Відбитку надає механізм, що інформує користувача про активність зняття цифрового відбитку на відвіданій сторінці. Детектор також може запобігти веб сторінки від зняття цифрового відбитку браузера, якщо користувач обере таку дію. Дивіться <a href='https://jshelter.org/fpdetection/'>наш блог пост</a> або <a href='https://arxiv.org/pdf/1905.01051.pdf'>Цифровий Відбиток Браузера: Огляд</a> для близького опису цифрового відбитку браузера."
+			},
+			"paragraph2": {
+				"content": "Вмикаючи детектор, вам буде приходити сповіщення коли він знаходить, що сторінка яку ви відвідали покликала велику кількість APIs яка може бути неправильно використана для цифрового відбитку. Детектор рахує та оцінює викликані APIs для кожної відвіданої сторінки згідно з нашою евристикою. Число покликаних APIs які можуть не правильно використовуватись для цифрового відбитку є представлено вам за кольором значка JShelter піктограми та в спливному вікні. Ви можете отримати сповіщення, якщо сторінка викликає дуже велике число APIs цифрового відбитку. Ви можете подивитись подробиці про активність цифрового відбитку згенерувавши відповідний звіт по цифровому відбитку. Ви можете дістатись його через спливне вікно або клацнувши напряму по сповіщенню."
+			},
+			"paragraph3": {
+				"content": "Типова поведінка Детектора Цифрового Відбитку може бути підлаштована як ви бажаєте. Ви можете обрати поведінку \"блокування\", яка є контро-заходом проти витоку вашого цифрового відбитку. В такому випаду, Детектор Цифрового Відбитку блокує всі HTTP запити та чистить сховище браузера, коли він обчислює що сторінка викликає велику кількість APIs цифрового відбитку. Оскільки <strong>ця дія в загальному ламає веб сторінки</strong>, ми рекомендуємо створити список винятків для довірених доменів. Вимикаючи детектор для домену в спливному вікні, додасть цей домен до списку винятків. Домен не буде оцінюватись та блокуватись в майбутньому. Нижче ви можете керувати всіма винятками."
+			}
+		}
+	},
+	"fpdBehavior": {
+		"message": "Поведінка"
+	},
+	"fpdBehaviorDescription": {
+		"message": "Вкажіть бажану поведінку модуля."
+	},
+	"fpdBehaviorPassive": {
+		"message": "Пасивний"
+	},
+	"fpdBehaviorPassiveDescription": {
+		"message": "Використовувати колір піктограми значка, щоб сигналізувати число покликаних APIs відвіданою сторінкою які можуть бути неправильно використані для цифрового відбитку."
+	},
+	"fpdBehaviorLimitedBlocking": {
+		"message": "Лімітоване Блокування"
+	},
+	"fpdBehaviorBlockingDescription": {
+		"message": "Дозволити розширенню реагувати коли сторінка викликає велике число APIs, які можуть бути неправильно використані для цифрового відбитку."
+	},
+	"fpdBehaviorBlockingDescription2": {
+		"message": "• Зупиняти інтернет трафік для сторінок, щоб запобігти можливому витоку цифрового відбитку."
+	},
+	"fpdBehaviorLimitedBlockingDescription3": {
+		"message": "• Почистити <strong>деяке</strong> сховище браузера сторінки, щоб вилучити можливий закешований цифровий відбиток. (Ніяких додаткових дозволів не потрібно.)"
+	},
+	"fpdBehaviorLimitedBlockingDescription4": {
+		"message": "• Очищення: <strong>localStorage, sessionStorage, JS cookies, IndexedDB, caches, window.name</strong>"
+	},
+	"fpdBehaviorBlockingDescriptionWarning": {
+		"message": "ЗАУВАЖТЕ: Поведінка блокування може зламати деяку функціональність на сайтах цифрового відбитку."
+	},
+	"fpdBehaviorFullBlocking": {
+		"message": "Повне Блокування"
+	},
+	"fpdBehaviorFullBlockingDescription3": {
+		"message": "• Очистити <strong>всі</strong> всі доступні механізми сховища сторінки де цифровий відбиток може бути закешований. (Потребує BrowsingData дозволу.)"
+	},
+	"fpdBehaviorFullBlockingDescription4": {
+		"message": "• Очищення: <strong>localStorage, sessionStorage, cookies, IndexedDB, caches, window.name, fileSystems, WebSQL, serviceWorkers</strong>"
+	},
+	"fpdNotificationsDescription": {
+		"message": "Увімкнути/вимкнути сповіщення про знаходження цифрового відбитку та блокування HTTP запитів."
+	},
+	"fpdNotificationsDescription2": {
+		"message": "ЗАУВАЖТЕ: Ми рекомендуємо мати сповіщення увімкненими для поведінки блокування."
+	},
+	"fpdNotificationsOffDescription": {
+		"message": "Сповіщення про Знаходження/Блокування вимкнено."
+	},
+	"fpdNotificationsOnDescription": {
+		"message": "Сповіщення про Знаходження/Блокування увімкнено."
+	},
+	"fpdDetection": {
+		"message": "Знаходження"
+	},
+	"fpdDetectionDescription": {
+		"message": "Налаштувати евристичні пороги, які визначають серйозність числа викликаних APIs які можуть бути неправильно використані для зняття цифрового відбитку."
+	},
+	"fpdDetectionDefault": {
+		"message": "Типово"
+	},
+	"fpdDetectionDefaultDescription": {
+		"message": "Рекомендовані налаштування для більшості користувачів."
+	},
+	"fpdDetectionDefaultDescription2": {
+		"message": "• Дуже маленьке число хибнопозитивних результатів знаходження (фокусуватись на чистих випадках цифрового відбитку, дуже низьке число безпричинно заблокованих сайтів)."
+	},
+	"fpdDetectionDefaultDescription3": {
+		"message": "• Прийнятна кількість хибнонегативних знаходжень (деякі вебсайти, що збирають цифрові відбитки можуть знайти обхід знаходженню)."
+	},
+	"fpdStrict": {
+		"message": "Суворий"
+	},
+	"fpdStrictDescription": {
+		"message": "Опціональне налаштування для більш обережних користувачів."
+	},
+	"fpdStrictDescription2": {
+		"message": "• Низьке число хибнонегативних знаходжень (також знаходить вебсайти з менш надмірним зняттям цифрового відбитку)"
+	},
+	"fpdStrictDescription3": {
+		"message": "• Велика ймовірність хибнопозитивних знаходжень (у граничних випадках доброякісні вебсайти можуть бути хибно заблоковані)"
+	},
+	"FPDSeverityNone": {
+		"message": "Відсутній або незначний"
+	},
+	"FPDSeverityLow": {
+		"message": "Низький"
+	},
+	"FPDSeverityModerate": {
+		"message": "Помірний"
+	},
+	"FPDSeverityHigh": {
+		"message": "Високий"
+	},
+	"FPDSeverityVeryHigh": {
+		"message": "Дуже Високий"
+	},
+	"fpdBlockingSubsequent": {
+		"message": "Блокує всі наступні запити."
+	},
+	"fpdClickNotificationDetails": {
+		"message": "Клацніть по сповіщенню для більших подробиць."
+	},
+	"fpdNotificationMessage": {
+		"message": "$MESSAGE$\n\nСторінка: $PAGETITLE$\nХост: $DOMAIN$",
+		"placeholders": {
+			"message": {
+				"content": "$1"
+			},
+			"pagetitle": {
+				"content": "$2"
+			},
+			"domain": {
+				"content": "$3"
+			}
+		}
+	},
+	"fpdNotificationTitle": {
+		"message": "Знайдено активність цифрового відбитку!"
+	},
+	"FPDReportTitle": {
+		"message": "Звіт Детектора Цифрового Відбитку"
+	},
+	"FPDReportDescriptionPara1": {
+		"message": "Цей репорт робить список всі JavaScript API кінцевих напрямків (endpoints) до яких отримала доступ веб сторінка і були визначені відносними до цифрового відбитку браузера. Детектор Цифрового Відбитку (FPD) використовує ці дані, щоб вирішити чи сторінка може збирає цифровий відбиток."
+	},
+	"FPDReportDescriptionPara2": {
+		"message": "FPD опрацьовує API виклики в групи засновуючись на їх семантичних властивостях. Вікно відображає знайдене число API викликів на відвіданій сторінці. Типовий огляд відображає тільки групи які отримали доступ щонайменше один раз. В такий спосіб, звіт може бути пустий якщо сторінка не викликала будь-які API цифрового відбитку. Якщо ви хочете подивитись, всі APIs запити які моніторяться за допомогою FPD, клацніть $STARTTAG$ тут $ENDTAG$",
+		"placeholders": {
+			"starttag": {
+				"content": "<span id='unhideAll'>"
+			},
+			"endtag": {
+				"content": "</span>"
+			}
+		}
+	},
+	"FPDReportDescriptionPara3": {
+		"message": "Ви можете експортувати повний FPD Звіт який містить всі дані зібрані та використані FPD, щоб оцінити сторінку. Цей всебічний звіт відображає ваги присвоєні групам/кінцевим точкам ($NOTE1$). Він також має список всіх API запитів кінцевих точок які робили запит з відповідними аргументами ($NOTE2$).",
+		"placeholders": {
+			"note1": {
+				"content": "<i>fpd_evaluation_statistics</i>"
+			},
+			"note2": {
+				"content": "<i>fpd_access_logs</i>"
+			}
+		}
+	},
+	"FPDReportShowDetails": {
+		"message": "Відобразити подробиці"
+	},
+	"FPDReportHideDetails": {
+		"message": "Сховати подробиці"
+	},
+	"FPDReportTrackCallers": {
+		"message": "Слідкувати за викликаними скриптами"
+	},
+	"FPDReportTrackCallersRestart": {
+		"message": "Перезапустити слідкування за викликаними скриптами"
+	},
+	"FPDReportTrackCallersWaiting": {
+		"message": "Знаходження викликаних скриптів в процесі. Будь-ласка, зачекайте трохи."
+	},
+	"FPDReportTrackCallersFailed": {
+		"message": "Неможливо слідкувати за викликаними скриптами через помилку. $errorFromBrowser$",
+		"placeholders": {
+			"errorFromBrowser": {
+				"content": "$1"
+			}
+		}
+	},
+	"FPDReportForgetTraces": {
+		"message": "Сховати тих, що викликають поточні виклики"
+	},
+	"FPDReportRefresh": {
+		"message": "Оновити звіт"
+	},
+	"FPDReportExportJSON": {
+		"message": "Експортувати повний FPD Звіт як JSON"
+	},
+	"FPDReportMissingData": {
+		"message": "ПОМИЛКА: Відсутність даних, неможливо створити звіт! Спробуйте перезавантажити сторінку та заново відкрити звіт."
+	}
+}
