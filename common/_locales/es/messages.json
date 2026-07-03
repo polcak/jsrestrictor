@@ -1,0 +1,394 @@
+{
+	"extensionName": {
+		"message": "JShelter"
+	},
+	"extensionDescription": {
+		"message": "Extensión para incrementar nivel de seguridad y privacidad del usuario."
+	},
+	"javascriptShield": {
+		"message": "Escudo JavaScript"
+	},
+	"networkBoundaryShield": {
+		"message": "Network Boundary Shield"
+	},
+	"NBSgloballyOff": {
+		"message": "Network Boundary Shield está deshabilitado globalmente"
+	},
+	"refreshPage": {
+		"message": "Refrescar página"
+	},
+	"modifyJSSPopup": {
+		"message": "Modificar"
+	},
+	"descriptionMore": {
+		"message": "(más…)"
+	},
+	"descriptionLess": {
+		"message": "(menos…)"
+	},
+	"nameDescriptionSeparator": {
+		"message": " — "
+	},
+	"detailTweaksOfJSShieldForThisSite": {
+		"message": "Ajustes detallados del escudo JS para este sitio"
+	},
+	"wrappers": {
+		"message": "Grupos de las API"
+	},
+	"levelOfDefense": {
+		"message": "Nivel de defensa"
+	},
+	"numberOfCalls": {
+		"message": "Número de invocaciones"
+	},
+	"FingerprintQualityLabel": {
+		"message": "⤷ El número de las API indebidamente utilizado para la toma de huellas dactilares llamado por la página: "
+	},
+	"popupDefaultLevelHelpText": {
+		"message": "Establezca el nivel predeterminado global como el nivel de JavaScript Shield para esta página."
+	},
+	"globalSettings": {
+		"message": "Ajustes globales"
+	},
+	"settingsForDomain": {
+		"message": "Ajustes para dominio"
+	},
+	"ShieldOffSlider": {
+		"message": "OFF"
+	},
+	"ShieldOnSlider": {
+		"message": "ON"
+	},
+	"jssgroupUnprotected": {
+		"message": "Desprotegido"
+	},
+	"jssgroupPoor": {
+		"message": "Pobre"
+	},
+	"jssgroupLow": {
+		"message": "Bajo"
+	},
+	"jssgroupMedium": {
+		"message": "Medio"
+	},
+	"jssgroupHigh": {
+		"message": "Alto"
+	},
+	"jssgroupGraphicCardInformation": {
+		"message": "Información de tarjeta gráfica"
+	},
+	"jssgroupHardware": {
+		"message": "Dispositivo de memoria y CPU"
+	},
+	"jssgroupHardwareDescription": {
+		"message": "Falsificar la información del hardware, como la cantidad de RAM y el número de núcleos de CPU."
+	},
+	"jssgroupGeolocationVillage": {
+		"message": "Villa"
+	},
+	"jssgroupUserIdleRemoveDescription": {
+		"message": "Retirar el API."
+	},
+	"jssgroupMultimediaPlaybackBlockDescription": {
+		"message": "No devolver cualquier información en absoluto."
+	},
+	"jssgroupVirtualAndAugmentedRealityDevicesStrictDescription": {
+		"message": "Oculta todos los dispositivos."
+	},
+	"jssgroupMultimediaPlayback": {
+		"message": "Códecs multimedia"
+	},
+	"jssgroupPersistentIdentifierOfTheBrowserTabFirefox88": {
+		"message": "$BROWSER$ y posterior ya le protege.",
+		"placeholders": {
+			"browser": {
+				"content": "Firefox 88"
+			}
+		}
+	},
+	"jssgroupWASMActive": {
+		"message": "Activo"
+	},
+	"jssgroupWASMEnabled": {
+		"message": "Habilitado"
+	},
+	"fAQ": {
+		"message": "P+F"
+	},
+	"testPage": {
+		"message": "Página de prueba"
+	},
+	"permissions": {
+		"message": "Permisos"
+	},
+	"sourceCode": {
+		"message": "Código fuente"
+	},
+	"issueTracker": {
+		"message": "Seguimiento de incidencia"
+	},
+	"credits": {
+		"message": "Reconocimientos"
+	},
+	"ExampleDomainsText": {
+		"message": "ejemplo.com o es.ejemplo.com"
+	},
+	"ButtonSignExpandOneCharacterDown": {
+		"message": "▼"
+	},
+	"ButtonSave": {
+		"message": "Guardar"
+	},
+	"ButtonRestore": {
+		"message": "Restaurar"
+	},
+	"ButtonRestoreLevel": {
+		"message": "Restaurar nivel $LEVELNAME$",
+		"placeholders": {
+			"levelName": {
+				"content": "$1"
+			}
+		}
+	},
+	"ButtonEdit": {
+		"message": "Editar"
+	},
+	"ButtonSaveCustomLevel": {
+		"message": "Guardar nivel personal"
+	},
+	"ButtonAddNewLevel": {
+		"message": "Añade nivel nuevo"
+	},
+	"ButtonCancel": {
+		"message": "Cancelar"
+	},
+	"ButtonRemove": {
+		"message": "Quitar"
+	},
+	"addToList": {
+		"message": "Añadir a listado"
+	},
+	"saveAll": {
+		"message": "Guardar todo"
+	},
+	"deleteAll": {
+		"message": "Eliminar todo"
+	},
+	"ManageWhitelist": {
+		"message": "Gestionar listado de excepción ▼"
+	},
+	"HideWhitelist": {
+		"message": "Ocultar listado de excepción ▲"
+	},
+	"ButtonDisableForDomain": {
+		"message": "<strong>$DISABLE$</strong> $FORTHEDOMAIN$",
+		"placeholders": {
+			"disable": {
+				"content": "Deshabilitar"
+			},
+			"forTheDomain": {
+				"content": "para el dominio"
+			}
+		}
+	},
+	"ButtonEnableForSelectedDomains": {
+		"message": "<strong>$ENABLE$</strong> $FORTHEDOMAIN$",
+		"placeholders": {
+			"enable": {
+				"content": "Habilitar"
+			},
+			"forTheDomain": {
+				"content": "para los dominios seleccionados"
+			}
+		}
+	},
+	"formlabelName": {
+		"message": "Nombre:"
+	},
+	"formlabelDescription": {
+		"message": "Descripción:"
+	},
+	"JSSeditLevelHeading": {
+		"message": "Editar nivel $LEVELNAME$",
+		"placeholders": {
+			"levelName": {
+				"content": "$1"
+			}
+		}
+	},
+	"JSSaddLevelHeading": {
+		"message": "Añade nivel nuevo"
+	},
+	"setJavaScriptShieldForWebsite": {
+		"message": "Establecer JavaScript para sitio web:"
+	},
+	"aListOfWebsiteWithRedefinedJavaScriptShield": {
+		"message": "Un listado de sitios web con JavaScript Shield redefinido:"
+	},
+	"LevelAndDescription": {
+		"message": "$LEVELNAME$: $LEVELSHORTDESCRIPTION$",
+		"placeholders": {
+			"levelName": {
+				"content": "$1"
+			},
+			"levelShortDescription": {
+				"content": "$2"
+			}
+		}
+	},
+	"JShelterFullConfiguration": {
+		"message": "Configuración completa de JShelter en el texto"
+	},
+	"ExpertLoadCurrentlyStoredConfiguration": {
+		"message": "Carga la configuración almacenada actualmente"
+	},
+	"ExpertOverwriteConfiguration": {
+		"message": "Sobrescribe configuración (almacena la configuración exhibida permanentemente)"
+	},
+	"ExpertResetConfiguration": {
+		"message": "Restablece la configuración (retira todos los cambios personales)"
+	},
+	"ExpertUndoConfiguration": {
+		"message": "Deshacer (descarta la última configuración sobrescrita)"
+	},
+	"JSSBuiltinExceptionsDomain": {
+		"message": "Dominio"
+	},
+	"JSSBuiltinExceptionsLevels": {
+		"message": "Niveles"
+	},
+	"JSSBuiltinExceptionsLevelsSeparator": {
+		"message": ", "
+	},
+	"JSSBuiltinExceptionsChanges": {
+		"message": "Cambios"
+	},
+	"JSSBuiltinExceptionsReason": {
+		"message": "Razón"
+	},
+	"protectionConfigurationOptionActivatedOn": {
+		"message": "Encendido"
+	},
+	"protectionConfigurationOptionActivatedOff": {
+		"message": "Apagado"
+	},
+	"shieldNotifications": {
+		"message": "Notificaciones"
+	},
+	"NBSDescription": {
+		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>"
+	},
+	"nbsBlocking": {
+		"message": "Bloquear"
+	},
+	"nbsBlockingDescription": {
+		"message": "Bloquea solicitudes que están solicitando acceder a su red local."
+	},
+	"nbsBlockingOffDescription": {
+		"message": "Las solicitudes de bloqueo se apagaron."
+	},
+	"nbsBlockingOnDescription": {
+		"message": "Solicitudes de bloqueo encendido."
+	},
+	"NBSNotificationsDescription": {
+		"message": "Activa notificaciones sobre solicitudes sospechosas o bloqueadas."
+	},
+	"NBSNotificationsDescription2": {
+		"message": "Si activas las notificaciones: cuando el bloqueo está activado, serás notificado de las peticiones bloqueadas; cuando el bloqueo está desactivado, se te notificará solo la actividad sospechosa sin bloquearla."
+	},
+	"NBSNotificationsOffDescription": {
+		"message": "Notificaciones de bloqueo desactivadas."
+	},
+	"NBSNotificationsOnDescription": {
+		"message": "Notificaciones de bloqueo activadas."
+	},
+	"NBSBlockedTitle": {
+		"message": "¡Escudo de Frontera de Red bloqueó solicitudes sospechosas!"
+	},
+	"NBSDetectedTitle": {
+		"message": "Escudo de Frontera de la red detectó peticiones sospechosas!"
+	},
+	"FPDDescription": {
+		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>"
+	},
+	"fpdBehavior": {
+		"message": "Comportamiento"
+	},
+	"fpdBehaviorPassive": {
+		"message": "Pasivo"
+	},
+	"fpdBehaviorFullBlocking": {
+		"message": "Bloqueo Completo"
+	},
+	"fpdNotificationsDescription": {
+		"message": "Encender/apagar notificaciones sobre declaración de detección de huellas y bloqueo de solicitudes HTTP."
+	},
+	"fpdDetection": {
+		"message": "Detección"
+	},
+	"fpdDetectionDefault": {
+		"message": "Predeterminado"
+	},
+	"fpdDetectionDefaultDescription": {
+		"message": "Ajustes recomendados para muchos usuarios."
+	},
+	"fpdStrict": {
+		"message": "Estricto"
+	},
+	"fpdStrictDescription": {
+		"message": "Ajustes opcionales para más precavido de usuarios."
+	},
+	"FPDSeverityNone": {
+		"message": "Ninguno o negligible"
+	},
+	"FPDSeverityLow": {
+		"message": "Bajo"
+	},
+	"FPDSeverityModerate": {
+		"message": "Moderado"
+	},
+	"FPDSeverityHigh": {
+		"message": "Alto"
+	},
+	"FPDSeverityVeryHigh": {
+		"message": "Muy Alto"
+	},
+	"fpdBlockingSubsequent": {
+		"message": "Bloqueando todas las subsecuentes solicitudes."
+	},
+	"fpdClickNotificationDetails": {
+		"message": "Pulse la notificación para más detalles."
+	},
+	"fpdNotificationTitle": {
+		"message": "¡Detectada actividad de huella!"
+	},
+	"FPDReportTitle": {
+		"message": "Informe de Detector de Huella"
+	},
+	"FPDReportShowDetails": {
+		"message": "Mostrar detalles"
+	},
+	"FPDReportHideDetails": {
+		"message": "Ocultar detalles"
+	},
+	"FPDReportTrackCallers": {
+		"message": "Rastrear scripts que hacen llamadas"
+	},
+	"FPDReportTrackCallersWaiting": {
+		"message": "Detección de scripts que hacen llamadas en progreso. Por favor, espere un momento."
+	},
+	"FPDReportTrackCallersFailed": {
+		"message": "No se puede rastrear los scripts que hacen llamadas debido a un error. $errorFromBrowser$",
+		"placeholders": {
+			"errorFromBrowser": {
+				"content": "$1"
+			}
+		}
+	},
+	"FPDReportForgetTraces": {
+		"message": "Ocultar invocadores actuales"
+	},
+	"FPDReportRefresh": {
+		"message": "Actualizar informe"
+	}
+}
