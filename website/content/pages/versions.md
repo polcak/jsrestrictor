@@ -1,5 +1,12 @@
 Title: Release history
 
+## 0.24.1
+
+* NSCL Update related to a bug in script injection to Firefox where 0.24 hid
+  MutationObserver.prototype from page scripts (that might break pages requiring the prototype and/or reveal that JShelter or similar webextension is installed). See https://github.com/hackademix/noscript/issues/572 and https://github.com/hackademix/nscl/commit/e0849aa9df8d47d36b9beb3b21f4c92a5f06792a for the context.
+* Added translation languages: es, pt, uk
+
+
 ## 0.24
 
 * NSCL update:
