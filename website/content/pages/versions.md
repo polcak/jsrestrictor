@@ -1,5 +1,13 @@
 Title: Release history
 
+## 0.24.3
+
+* Firefox-only: [Update NSCL to 13.6.27.901](https://lists.nongnu.org/archive/html/js-shield/2026-07/msg00007.html), Fix TypeError: newTarget is not a function  (SyncMessage.js:710:26)
+
+## 0.24.2
+
+* addons.mozilla.org-only: The same as 0.24
+
 ## 0.24.1
 
 * NSCL Update related to a bug in script injection to Firefox where 0.24 hid
