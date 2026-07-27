@@ -397,7 +397,15 @@
 		"message": "Detector de Huella esta inhabilitado globalmente"
 	},
 	"defaultLevelSelection": {
-		"message": "Nivel por defecto ($levelName$)"
+		"message": "Nivel por defecto ($levelName$)",
+		"description": "This text is displayed as the default level in the popup",
+		"placeholders": {
+			"levelName": {
+				"content": "$1",
+				"description": "Translated name of the default level used by the user",
+				"example": "Recommended, see the keys JSSL*Name like JSSL2Name"
+			}
+		}
 	},
 	"jssgroupLittleLies": {
 		"message": "Pequeñas mentiras"
@@ -434,6 +442,10 @@
 		"placeholders": {
 			"apis": {
 				"content": "(Fecha, rendimiento, eventos, API de Gamepad y API de realidad virtual web)"
+			},
+			"jssgroupPhysicalLocationGeolocation": {
+				"content": "$1",
+				"description": "Translated version of the jssgroupPhysicalLocationGeolocation string"
 			}
 		}
 	},
