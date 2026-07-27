@@ -275,9 +275,6 @@
 	"shieldNotifications": {
 		"message": "Notificaciones"
 	},
-	"NBSDescription": {
-		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>"
-	},
 	"nbsBlocking": {
 		"message": "Bloquear"
 	},
@@ -307,9 +304,6 @@
 	},
 	"NBSDetectedTitle": {
 		"message": "Escudo de Frontera de la red detectó peticiones sospechosas!"
-	},
-	"FPDDescription": {
-		"message": "<p>$PARAGRAPH1$</p><p>$PARAGRAPH2$</p><p>$PARAGRAPH3$</p>"
 	},
 	"fpdBehavior": {
 		"message": "Comportamiento"
