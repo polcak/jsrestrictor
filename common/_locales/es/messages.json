@@ -9,7 +9,7 @@
 		"message": "Escudo JavaScript"
 	},
 	"networkBoundaryShield": {
-		"message": "Network Boundary Shield"
+		"message": "Escudo de Red Acotada"
 	},
 	"NBSgloballyOff": {
 		"message": "Network Boundary Shield está deshabilitado globalmente"
@@ -146,7 +146,8 @@
 		"message": "Restaurar nivel $LEVELNAME$",
 		"placeholders": {
 			"levelName": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -212,7 +213,8 @@
 		"message": "Editar nivel $LEVELNAME$",
 		"placeholders": {
 			"levelName": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -229,10 +231,12 @@
 		"message": "$LEVELNAME$: $LEVELSHORTDESCRIPTION$",
 		"placeholders": {
 			"levelName": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			},
 			"levelShortDescription": {
-				"content": "$2"
+				"content": "$2",
+				"description": ""
 			}
 		}
 	},
@@ -375,7 +379,8 @@
 		"message": "No se puede rastrear los scripts que hacen llamadas debido a un error. $errorFromBrowser$",
 		"placeholders": {
 			"errorFromBrowser": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -384,5 +389,206 @@
 	},
 	"FPDReportRefresh": {
 		"message": "Actualizar informe"
+	},
+	"fingerprintDetector": {
+		"message": "Detector de Huella"
+	},
+	"FPDgloballyOff": {
+		"message": "Detector de Huella esta inhabilitado globalmente"
+	},
+	"defaultLevelSelection": {
+		"message": "Nivel por defecto ($levelName$)"
+	},
+	"jssgroupLittleLies": {
+		"message": "Pequeñas mentiras"
+	},
+	"jssgroupStrict": {
+		"message": "Estricto"
+	},
+	"jssgroupConfuse": {
+		"message": "Confuso"
+	},
+	"jssgroupFake": {
+		"message": "Falso"
+	},
+	"jssgroupAddFake": {
+		"message": "Añadir falso"
+	},
+	"jssgroupAsk": {
+		"message": "Preguntar"
+	},
+	"jssgroupBlock": {
+		"message": "Bloqueo"
+	},
+	"jssgroupRemove": {
+		"message": "Retirar"
+	},
+	"jssgroupTimePrecision": {
+		"message": "Precisión de tiempo"
+	},
+	"jssgroupTimePrecisionDescription": {
+		"message": "Prevenga los ataques y las técnicas de identificación que se basan en la medición precisa del tiempo (o dificulte su aplicación)."
+	},
+	"jssgroupTimePrecisionDescription2": {
+		"message": "Limita la precisión de las marcas de tiempo de alta resolución de $apis$. Las marcas de tiempo proporcionadas por el API de geolocalización también se encapsulan si habilitas la protección \"$jssgroupPhysicalLocationGeolocation$\".",
+		"placeholders": {
+			"apis": {
+				"content": "(Fecha, rendimiento, eventos, API de Gamepad y API de realidad virtual web)"
+			}
+		}
+	},
+	"jssgroupTimePoorDescription": {
+		"message": "Tiempo de redondeo a centésimas de segundo (1,230)"
+	},
+	"jssgroupTimeLowDescription": {
+		"message": "Tiempo de redondeo a décimas de segundo (1'200)"
+	},
+	"jssgroupTimeHighDescription": {
+		"message": "Aleatorizar dígitos decimales con ruido (1'451)"
+	},
+	"jssgroupLocallyRenderedImages": {
+		"message": "Imágenes representada localmente"
+	},
+	"jssgroupLocallyRenderedImagesDescription": {
+		"message": "Protege contra la filtración de información sobre las capacidades de representado de la tarjeta gráfica o el registro de datos en el lienzo."
+	},
+	"jssgroupLocallyRenderedImagesDescription2": {
+		"message": "Las funciones $apis$ devuelven datos de imagen modificados.",
+		"placeholders": {
+			"apis": {
+				"content": "canvas.toDataURL(), canvas.toBlob(), CanvasRenderingContext2D.getImageData(), OffscreenCanvas.convertToBlob(), y WebGLRenderingContext.readPixels"
+			}
+		}
+	},
+	"jssgroupLocallyRenderedImagesDescription3": {
+		"message": "Los $apis$ se modifican para que mientan con probabilidad.",
+		"placeholders": {
+			"apis": {
+				"content": "CanvasRenderingContext2D.isPointInStroke() y CanvasRenderingContext2D.isPointInPath()"
+			}
+		}
+	},
+	"jssgroupLocallyRenderedImagesLittleLiesDescription": {
+		"message": "Se aplican pequeñas modificaciones a los datos de lectura de imágenes para que estas se vean iguales, pero los valores precisos varíen según el dominio visitado y entre sesiones. El objetivo es evitar la identificación de Canvas mediante huellas digitales o, al menos, dificultarla."
+	},
+	"jssgroupLocallyRenderedImagesStrictDescription": {
+		"message": "Lee imágenes blancas (desde el lienzo WebGL lee una matriz vacía). Esta opción no protege contra la identificación del lienzo."
+	},
+	"jssgroupLocallyGeneratedAudio": {
+		"message": "Audio generado localmente"
+	},
+	"jssgroupLocallyGeneratedAudioDescription": {
+		"message": "Proteger contra la filtración de información sobre las capacidades de procesamiento de la tarjeta de audio que puede utilizarse, por ejemplo, para la identificación de la señal de audio."
+	},
+	"jssgroupLocallyGeneratedAudioDescription2": {
+		"message": "Las funciones $apis$ devuelven datos modificados.",
+		"placeholders": {
+			"apis": {
+				"content": "AudioBuffer.getChannelData(), AudioBuffer.copyFromChannel(), AnalyserNode.getByteTimeDomainData(), AnalyserNode.getFloatTimeDomainData(), AnalyserNode.getByteFrequencyData() y AnalyserNode.getFloatFrequencyData()"
+			}
+		}
+	},
+	"jssgroupLocallyGeneratedAudioLittleLiesDescription": {
+		"message": "Añade ruido de baja amplitud para que el sonido sea similar al original para un humano. Los valores exactos varían según el dominio visitado y entre sesiones. El objetivo es evitar la identificación del audio mediante huellas digitales o, al menos, dificultarla."
+	},
+	"jssgroupLocallyGeneratedAudioStrictDescription": {
+		"message": "Los datos de audio se reemplazan por ruido blanco que varía según el dominio visitado y entre sesiones. El objetivo es limitar las fugas de audio en el hardware y, al mismo tiempo, dificultar la identificación del audio."
+	},
+	"jssgroupGraphicCardInformationDescription": {
+		"message": "Falsifique los datos de su tarjeta gráfica, por ejemplo, para dificultar la identificación mediante huella digital."
+	},
+	"jssgroupGraphicCardInformationDescription2": {
+		"message": "La función $api$ devuelve valores modificados o mínimos para ciertos parámetros.",
+		"placeholders": {
+			"api": {
+				"content": "WebGLRenderingContext.getParameter()"
+			}
+		}
+	},
+	"jssgroupGraphicCardInformationDescription3": {
+		"message": "$apis$ devuelve valores modificados.",
+		"placeholders": {
+			"apis": {
+				"content": "WebGLRenderingContext funciona en .getFramebufferAttachmentParameter(), .getActiveAttrib(), .getActiveUniform(), .getAttribLocation(), .getBufferParameter(), .getProgramParameter(), .getRenderbufferParameter(), .getShaderParameter(), .getShaderPrecisionFormat(), .getTexParameter(), .getUniformLocation(), .getVertexAttribOffset(), .getSupportedExtensions(), y .getExtension()"
+			}
+		}
+	},
+	"jssgroupGraphicCardInformationLittleLiesDescription": {
+		"message": "Genera números razonables o cadenas aleatorias que varíen según el dominio visitado y entre sesiones. El objetivo es limitar las fugas de memoria en las tarjetas gráficas y, al mismo tiempo, dificultar la identificación del sistema."
+	},
+	"jssgroupGraphicCardInformationStrictDescription": {
+		"message": "Devuelve los valores mínimos (nulos, cadenas vacías). Ten en cuenta que esta opción no impide la identificación mediante huella digital."
+	},
+	"jssgroupInstalledBrowserPlugins": {
+		"message": "Complementos del navegador instalados"
+	},
+	"jssgroupInstalledBrowserPluginsDescription": {
+		"message": "Protéjase contra la identificación de complementos."
+	},
+	"jssgroupInstalledBrowserPluginsDescription2": {
+		"message": "La protección no se aplica si el navegador devuelve una lista vacía o los cinco visores de complementos PDF especificados por el estándar HTML. Por lo tanto, la protección no se aplica en los navegadores modernos."
+	},
+	"jssgroupInstalledBrowserPluginsLittleLiesDescription": {
+		"message": "Edita los complementos actuales y añade dos complementos ficticios."
+	},
+	"jssgroupInstalledBrowserPluginsFakeDescription": {
+		"message": "Devuelve dos complementos falsos."
+	},
+	"jssgroupInstalledBrowserPluginsStrictDescription": {
+		"message": "Oculta todos los complementos."
+	},
+	"jssgroupConnectedCamerasAndMicrophones": {
+		"message": "Cámaras y micrófonos conectados"
+	},
+	"jssgroupConnectedCamerasAndMicrophonesDescription": {
+		"message": "Evitar la identificación mediante huellas digitales en función de los dispositivos multimedia conectados al equipo."
+	},
+	"jssgroupUserIdleDetection": {
+		"message": "Detección de inactividad del usuario"
+	},
+	"jssgroupUserIdleDetectionDescription": {
+		"message": "El API de detección de inactividad puede detectar usuarios inactivos y pantallas bloqueadas."
+	},
+	"jssgroupUserIdleDetectionDescription2": {
+		"message": "La finalidad de la API es proporcionar a las aplicaciones web información sobre la inactividad del usuario; por ejemplo, para no mostrar notificaciones mientras el usuario esté inactivo. Sin embargo, esta información puede utilizarse indebidamente para rastrear la actividad del usuario y correlacionar cambios de estado entre diferentes dominios."
+	},
+	"jssgroupUserIdleConfuseDescription": {
+		"message": "Siempre devuelva el usuario activo con la pantalla desbloqueada."
+	},
+	"jssgroupUserIdleBlockDescription": {
+		"message": "No mostrar mensajes y rechazar automáticamente."
+	},
+	"jssgroupCoopschedule": {
+		"message": "Planificación de tareas durante el período de inactividad"
+	},
+	"jssgroupCoopscheduleDescription": {
+		"message": "El API de programación cooperativa de tareas en segundo plano permite programar tareas en segundo plano de forma que no introduzcan retrasos en otras tareas de alta prioridad que comparten el mismo bucle de eventos."
+	},
+	"jssgroupCoopscheduleDescription2": {
+		"message": "El API filtra información sobre las demás tareas que se ejecutan en el navegador, ya que también filtra información sobre las tareas programadas, los plazos de sincronización vertical, la interacción del usuario, etc."
+	},
+	"jssgroupCoopscheduleConfuseDescription": {
+		"message": "Modificar la información disponible para confundir a los adversarios."
+	},
+	"jssgroupGamepads": {
+		"message": "Mandos"
+	},
+	"jssgroupGamepadsDescription": {
+		"message": "Impide que los sitios web accedan a la información almacenada en los mandos de juego locales y la obtengan."
+	},
+	"jssgroupGamepadsDescription2": {
+		"message": "La información puede utilizarse indebidamente para la identificación del navegador. Al mismo tiempo, el usuario solo necesita acceso a los mandos de juego en sitios web especializados."
+	},
+	"jssgroupGamepadsStrictDescription": {
+		"message": "Oculta todos los mandos de juego."
+	},
+	"jssgroupVirtualAndAugmentedRealityDevices": {
+		"message": "Dispositivos de realidad virtual y aumentada"
+	},
+	"jssgroupVirtualAndAugmentedRealityDevicesDescription": {
+		"message": "Evite que los sitios web accedan y obtengan información en pantallas locales de realidad virtual y aumentada."
+	},
+	"jssgroupVirtualAndAugmentedRealityDevicesDescription2": {
+		"message": "La información puede utilizarse indebidamente para la identificación del navegador. Asimismo, el usuario solo necesita acceder a dispositivos de realidad virtual y aumentada en sitios web especializados."
 	}
 }

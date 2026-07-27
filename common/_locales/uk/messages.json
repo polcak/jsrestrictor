@@ -63,7 +63,8 @@
 		"message": "Типовий рівень ($levelName$)",
 		"placeholders": {
 			"levelName": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -125,7 +126,8 @@
 				"content": "(Дата, Продуктивність, події, Gamepad API, та Web VR API)"
 			},
 			"jssgroupPhysicalLocationGeolocation": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -371,7 +373,8 @@
 		"message": "Надати точні дані (використовуйте тільки тоді коли треба надати точне знаходження і ви бажаєте захистити часові мітки геолокації, за допомогою захисту \"$jssgroupTimePrecision$\")",
 		"placeholders": {
 			"jssgroupTimePrecision": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -552,13 +555,16 @@
 		"message": "Ця опція почне діяти коли рівень \"$canvas$\" або \"$audio$\" встановлений тільки на \"$littlelies$\".",
 		"placeholders": {
 			"canvas": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			},
 			"audio": {
-				"content": "$2"
+				"content": "$2",
+				"description": ""
 			},
 			"littlelies": {
-				"content": "$3"
+				"content": "$3",
+				"description": ""
 			}
 		}
 	},
@@ -659,7 +665,8 @@
 		"message": "Відновити рівень $LEVELNAME$",
 		"placeholders": {
 			"levelName": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -801,7 +808,8 @@
 		"message": "Кастомізований рівень $CUSTOMNAME$ вже існує. Він буде перезаписаний.",
 		"placeholders": {
 			"customName": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -815,7 +823,8 @@
 		"message": "Редагувати рівень $LEVELNAME$",
 		"placeholders": {
 			"levelName": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -835,7 +844,8 @@
 		"message": "Налаштування для домену $DOMAIN$ вже існує та буде перезаписано.",
 		"placeholders": {
 			"domain": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -843,10 +853,12 @@
 		"message": "$LEVELNAME$: $LEVELSHORTDESCRIPTION$",
 		"placeholders": {
 			"levelName": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			},
 			"levelShortDescription": {
-				"content": "$2"
+				"content": "$2",
+				"description": ""
 			}
 		}
 	},
@@ -949,10 +961,12 @@
 		"message": "Число заблокованих запитів\nвід $ORIGIN$\nякі спробували отримати доступ\nдо локальної мережі: $COUNT$.",
 		"placeholders": {
 			"origin": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			},
 			"count": {
-				"content": "$2"
+				"content": "$2",
+				"description": ""
 			}
 		}
 	},
@@ -960,10 +974,12 @@
 		"message": "Число знайдених запитів\nвід $ORIGIN$\nякі отримали доступ до\nлокальної мережі: $COUNT$.",
 		"placeholders": {
 			"origin": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			},
 			"count": {
-				"content": "$2"
+				"content": "$2",
+				"description": ""
 			}
 		}
 	},
@@ -971,13 +987,16 @@
 		"message": "Заблокованих запитів: $COUNT$\nвід $ORIGIN$\nдо $TARGET$.",
 		"placeholders": {
 			"origin": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			},
 			"target": {
-				"content": "$2"
+				"content": "$2",
+				"description": ""
 			},
 			"count": {
-				"content": "$3"
+				"content": "$3",
+				"description": ""
 			}
 		}
 	},
@@ -985,13 +1004,16 @@
 		"message": "Знайдені запити: $COUNT$\nвід $ORIGIN$\nдо $TARGET$.",
 		"placeholders": {
 			"origin": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			},
 			"target": {
-				"content": "$2"
+				"content": "$2",
+				"description": ""
 			},
 			"count": {
-				"content": "$3"
+				"content": "$3",
+				"description": ""
 			}
 		}
 	},
@@ -1005,7 +1027,8 @@
 		"message": "Всі майбутні HTTP запити $HOST$ будуть заблоковані.",
 		"placeholders": {
 			"host": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -1013,7 +1036,8 @@
 		"message": "Щоб заблокувати HTTP запит від $HOST$ увімкніть блокування.",
 		"placeholders": {
 			"host": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -1145,13 +1169,16 @@
 		"message": "$MESSAGE$\n\nСторінка: $PAGETITLE$\nХост: $DOMAIN$",
 		"placeholders": {
 			"message": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			},
 			"pagetitle": {
-				"content": "$2"
+				"content": "$2",
+				"description": ""
 			},
 			"domain": {
-				"content": "$3"
+				"content": "$3",
+				"description": ""
 			}
 		}
 	},
@@ -1205,7 +1232,8 @@
 		"message": "Неможливо слідкувати за викликаними скриптами через помилку. $errorFromBrowser$",
 		"placeholders": {
 			"errorFromBrowser": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},

@@ -60,7 +60,8 @@
 		"message": "Nível padrão ($levelName$)",
 		"placeholders": {
 			"levelName": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -122,7 +123,8 @@
 				"content": "(Data, desempenho, eventos, API do Gamepad e API de VR da Web)"
 			},
 			"jssgroupPhysicalLocationGeolocation": {
-				"content": "$1"
+				"content": "$1",
+				"description": ""
 			}
 		}
 	},
@@ -184,13 +186,7 @@
 		"message": "Informações da placa de vídeo"
 	},
 	"jssgroupGraphicCardInformationDescription2": {
-		"message": "Função $api$ retorna valores modificados ou vazios para certos parâmetros.",
-		"placeholders": {
-			"api": {
-				"content": "WebGLRenderingContext.getParameter()",
-				"description": "Keep the names of the API"
-			}
-		}
+		"message": "Função $api$ retorna valores modificados ou vazios para certos parâmetros."
 	},
 	"jssgroupGraphicCardInformationDescription3": {
 		"message": "$apis$ retornam valores modificados.",
@@ -225,13 +221,7 @@
 		"message": "Previne o rastreamento de impressões digitais baseadas nos dispositivos multimédia conectados ao computador."
 	},
 	"jssgroupConnectedCamerasAndMicrophonesDescription2": {
-		"message": "Função $api$ é modificada para retornar um resultado vazio ou modificado.",
-		"placeholders": {
-			"api": {
-				"content": "MediaDevices.enumerateDevices()",
-				"description": "Keep the names of the API"
-			}
-		}
+		"message": "Função $api$ é modificada para retornar um resultado vazio ou modificado."
 	},
 	"jssgroupConnectedCamerasAndMicrophonesLittleLiesDescription": {
 		"message": "Randomiza a ordem dos dispositivos. Os dispositivos existentes não serão vinculáveis em diferentes domínios e entre sessões."
