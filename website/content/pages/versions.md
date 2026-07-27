@@ -1,5 +1,10 @@
 Title: Release history
 
+## 0.24.4
+
+* NSCL update: various improvements of the MutationObserver patching introduced by 0.24 and later
+* Update translations (mainly es affected, minor changes in pt and uk)
+
 ## 0.24.3
 
 * Firefox-only: [Update NSCL to 13.6.27.901](https://lists.nongnu.org/archive/html/js-shield/2026-07/msg00007.html), Fix TypeError: newTarget is not a function  (SyncMessage.js:710:26)
