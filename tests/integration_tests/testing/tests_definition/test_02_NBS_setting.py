@@ -43,12 +43,9 @@ def get_NBS_setting(browser):
 
 ## Test turnning NBS off in popup.
 ## Sleep 0.5 second to changes take effect.
-@pytest.mark.xfail(get_shared_browser().type == BrowserType.CHROME, reason="MV3 does not allow to implement NBS")
 def test_switching_NBS(browser):
-    if browser.type == BrowserType.CHROME:
-        # Not able to test NBS switch in Google Chrome.
-        # Can not show popup.html in Chrome. Popup.html is not accesible and testable.
-        return
+    if get_shared_browser().type == BrowserType.CHROME:
+        pytest.skip(reason="MV3 does not allow to implement NBS, popup.html is not accessible and testable")
     NBS_setting_values = [['"ON"', '"Zap."'], ['"OFF"', '"Vyp."']]
     
     original_setting = get_NBS_setting(browser)
