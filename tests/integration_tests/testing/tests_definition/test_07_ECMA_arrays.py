@@ -126,8 +126,8 @@ def setup_jsevironment(browser):
 
 def test_ArrayBufferViews(browser):
     browser.execute_script(""" \
-        let buffer = new ArrayBuffer(56);\
-        let typedArr = new Uint32Array(buffer, 16);\
+        var buffer = new ArrayBuffer(56);\
+        var typedArr = new Uint32Array(buffer, 16);\
         typedArr.set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);\
         """)
     check(browser, "typedArr.buffer === buffer", "true")
