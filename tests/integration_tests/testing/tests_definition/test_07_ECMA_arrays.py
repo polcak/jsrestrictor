@@ -44,7 +44,8 @@ def load_test_page(browser):
 # \bug Known bug: JShelter, Firefox with activated array protections: Uncaught TypeError: Crypto.getRandomValues: Argument 1 does not implement interface ArrayBufferView.
 # Bug is caused by passing a proxy object to the function, but the actual object is expected (not the proxy).
 def test_crypto_getRandomValues(browser):
-    for array_type in ["Uint32Array", "Float32Array", "Float64Array", 'BigInt64Array', 'BigUint64Array']:
+    for array_type in ["Uint32Array", "Int32Array","Int8Array", "Uint8Array", "Uint8ClampedArray", "Int16Array",
+                       "Uint16Array", 'BigInt64Array', 'BigUint64Array']:
         browser.execute_script("""\
             var array = new %s(4);\
             window.crypto.getRandomValues(array);\
