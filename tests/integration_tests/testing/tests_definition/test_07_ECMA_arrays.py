@@ -130,12 +130,12 @@ def test_ArrayBufferViews(browser):
         let typedArr = new Uint32Array(buffer, 16);\
         typedArr.set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);\
         """)
-    check(browser, "typedArr.buffer", "buffer")
-    check(browser, "typedArr.buffer", "buffer")
+    check(browser, "typedArr.buffer === buffer", "true")
+    check(browser, "typedArr.buffer === buffer", "true")
     check(browser, "typedArr.byteOffset", 16)
     check(browser, "typedArr.byteLength", 40)
     browser.execute_script('var dataView = new DataView(buffer, 32)')
-    check(browser, "dataView.buffer", "buffer")
+    check(browser, "dataView.buffer === buffer", "true")
     check(browser, "dataView.byteOffset", 32)
     check(browser, "dataView.byteLength", 24)
 
