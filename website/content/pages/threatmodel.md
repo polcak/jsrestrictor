@@ -64,7 +64,29 @@ belongs. Hence, we try to eliminate the possibility of an attacker identifying t
 accept that the attacker can detect a JShelter user in the worst case. To do
 so reliably, the attacker should need to keep track of the code base changes.
 
-Nevertheless, we want to avoid allowing the attacker to identify JShelter users
+JShelter's countermeasures also depend on properties of the browser and on
+the environment in which JShelter runs. To deliver the per-site
+configuration to the code that modifies the visited page's JavaScript
+environment, JShelter creates a communication channel that passes through
+the page's own environment. This channel is not cryptographically
+authenticated; it is protected by the browser's guarantee that code
+registered at document start executes before any script of the visited
+page, and by answering the initial handshake only once, before any page
+script can run. Consequently, we consider the correct behavior of the
+browser to be a part of the assumptions behind our countermeasures: a
+browser bug that lets page scripts execute before or in place of
+extension-injected code would give the page access to unwrapped APIs, which
+is a problem beyond the scope of JShelter. Similarly, other installed
+extensions can inject their own code into the visited page, potentially
+earlier than JShelter. Such an extension can observe or interfere with
+JShelter's initialization, learn the per-session configuration (including
+the seed of the noise applied to the modified APIs), or prevent JShelter's
+wrappers from being applied at all. Users should be aware that installing
+multiple extensions that modify the JavaScript environment of visited pages
+can weaken the guarantees of each of them; we cannot protect users against
+other extensions running in the page.
+
+We want to avoid allowing the attacker to identify JShelter users
 easily. We are not aware of any isolated side-effect that reveals JShelter. For
 example, some similar webextensions do not modify
 `Function.prototype.toString`. A page script could detect such a webextension

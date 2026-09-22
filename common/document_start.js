@@ -41,10 +41,26 @@ function wrapWindow(currentLevel, fpdWrappers, wrappersConf) {
 	}
 }
 
+/** --- bootstrap handshake hardening --------------------------
+ * Reply only to the FIRST "jshelter-bootstrap" event. wrappers_generated.js
+ * runs at document_start in the MAIN world, i.e. before any page script can
+ * execute; any bootstrap observed later is forged by page/iframe JS and must
+ * not be allowed to bind a port.
+ */
+var bootstrapSealed = false;
+/** {init: true} is answered at most once, with the same semantics as
+ * "configuration not ready yet" (undefined) afterwards. The real wrapper
+ * pulls exactly once during document_start; later pulls are replays or
+ * forged handshakes and must not disclose the config (incl. domainHash).
+ */
+var initAnswered = false;
 function createHandleWrappersPortMessage(getConf) {
 	return function(msg) {
-			if (msg.init) {
-				// initialize on late demand
+			if (msg && msg.init) {
+				if (initAnswered) {
+					return undefined;  // do NOT disclose the config a second time
+				}
+				initAnswered = true;
 				return getConf();
 			}
 			else {
@@ -57,12 +73,25 @@ function createHandleWrappersPortMessage(getConf) {
 	}
 }
 
-// ── Bootstrap listener ───────────────────────────────────────────
-// MAIN world (wrappers_generated.js) sends us a random portId
-// via this one-time event. Both scripts run at document_start,
-// so no page script can intercept this.
- 
+/**
+ * Bootstrap listener
+ *
+ * MAIN world (wrappers_generated.js) sends us a random portId
+ * via this one-time event. Both scripts run at document_start,
+ * so no page script can intercept this.
+ */
 window.addEventListener("jshelter-bootstrap", function (e) {
+	if (bootstrapSealed) {
+		// Note that this should never successed as the listener is one-time only.
+		// Nevertheless, let us keep the code as a defensive coding-style
+		console.warn("JShelter identified a forged bootstrap after the real handshake", e);
+		return;
+	}
+	if (!e.detail || typeof e.detail.portId !== "string") {
+		console.warn("JShelter identified a malformed bootstrap event", e);
+		return;
+	}
+	bootstrapSealed = true;
 	var portId = e.detail.portId;
 
 	// Port matching wrappers_generated.js protocol
@@ -108,7 +137,7 @@ window.addEventListener("jshelter-bootstrap", function (e) {
 	if (pendingConfig) {
 		wrappersPort.postMessage(pendingConfig);
 	}
-}, true);
+}, {once: true, capture: true});
 
 function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash, incognitoHash}) {
 	if (pageConfiguration) return; // one shot
