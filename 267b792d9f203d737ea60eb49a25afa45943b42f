@@ -1,0 +1,85 @@
+AI transparency report
+
+tool: documentation indicates qwen3.8-flash-next but likely glm5.3
+used-for: fix
+human-contribution: adapted
+verified: manual copy of the code with adaptation, integration tests work
+prompt-language: cs
+prompt-summary: >
+    Given current worker code, I think that the problem is that the
+    worker does not define self that is available in the original worker
+    context. Propose ways to solve.
+output-summary: Bug identification and proposed fix
+output-code: >
+var messageListeners = [];
+var errorListeners = [];
+var workerMessageListeners = [];
+var workerErrorListeners = [];
+var postMessageListeners = [];
+var terminated = false;
+var script;
+var loaded = false;          // synchronní ready flag pro data: větev
+
+// zbývající helper funkce (executeEach, callErrorListener,
+// addEventListener, removeEventListener, postError, runPostMessage,
+// postMessage, terminate, workerPostMessage, workerAddEventListener)
+// zůstávají beze změny ...
+
+// self objekt vytvoř PŘED vyhodnocením skriptu
+var workerSelf = {
+  postMessage: workerPostMessage,
+  addEventListener: workerAddEventListener,
+  close: terminate
+};
+
+// .call(self) zpřístupní `self` ve scope, kde eval běží
+function doEval(self, __pseudoworker_script) {
+  (function () {
+    eval(__pseudoworker_script);
+  }).call(self);
+}
+
+if (path.startsWith("data:")) {
+  var split = path.split(",");
+  var t = split[0];
+  var code = split[1];
+  if (t.endsWith("base64")) {
+    code = atob(code);
+  }
+  doEval(workerSelf, code);
+  loaded = true;            // data: je synchronní → hned připraveno
+} else {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', path);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status >= 200 && xhr.status < 400) {
+        script = xhr.responseText;
+        doEval(workerSelf, script);
+        loaded = true;
+        var currentListeners = postMessageListeners;
+        postMessageListeners = [];
+        for (var i = 0; i < currentListeners.length; i++) {
+          runPostMessage(currentListeners[i].msg, currentListeners[i].transfer);
+        }
+      } else {
+        postError(new Error('cannot find script ' + path));
+      }
+    }
+  };
+  xhr.send();
+}
+...
+function postMessage(msg, transfer) {
+  if (typeof msg === 'undefined') {
+    throw new Error('postMessage() requires an argument');
+  }
+  if (terminated) {
+    return;
+  }
+  if (!loaded) {            // místo !script
+    postMessageListeners.push({msg: msg, transfer: (transfer ? transfer : undefined)});
+    return;
+  }
+  runPostMessage(msg, transfer);
+}
