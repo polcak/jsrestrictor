@@ -1,10 +1,14 @@
-AI transparency report
+AI-use: assisted
 
 tool: documentation indicates qwen3.8-flash-next but likely glm5.3
 used-for: fix
+disclosure-level: small
+date: 2026-06-16
 human-contribution: adapted
 verified: manual copy of the code with adaptation, integration tests work
 prompt-language: cs
+prompt-verbatim: false
+prompt-log: private, available under request
 prompt-summary: >
     Given current worker code, I think that the problem is that the
     worker does not define self that is available in the original worker
