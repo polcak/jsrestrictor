@@ -1,20 +1,21 @@
 ai-use: assisted
 
-tool: qwen3.8-flash-next; according to documentation but likely glm5.3
+tool: DeepSeek V4.1 Flash; unsure
 used-for: fix
 disclosure-level: small
 date: 2026-06-16
-human-contribution: adapted
-verified: manual copy of the code with adaptation, integration tests work
+human-contribution: >
+    Wrote the test, diagnosed the problem, formulated the query,
+    selected parts of the proposal and reworked them into minimal fix.
+verified: integration tests work (later work found bugs)
 prompt-language: cs
 prompt-verbatim: false
-prompt-log: private, available under request
 prompt-summary: >
     Given current worker code, I think that the problem is that the
     worker does not define self that is available in the original worker
     context. Propose ways to solve.
 output-summary: Bug identification and proposed fix
-output-code-snippet1: >
+output-code-snippet1: |
     var messageListeners = [];
     var errorListeners = [];
     var workerMessageListeners = [];
@@ -73,7 +74,7 @@ output-code-snippet1: >
       };
       xhr.send();
     }
-output-code-snippet2: >
+output-code-snippet2: |
     function postMessage(msg, transfer) {
       if (typeof msg === 'undefined') {
         throw new Error('postMessage() requires an argument');
