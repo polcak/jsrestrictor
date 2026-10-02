@@ -1,0 +1,42 @@
+ai-use: assisted
+
+tool: DeepSeek V4.1 Flash
+date: 2026-09-30 - 2026-10-02
+used-for: text-generation
+disclosure-level: large
+human-contribution: directed
+prompt-language: en
+prompt-verbatim: false
+prompt-summary: >
+    The tools received the issues that the project faces like
+    https://lists.nongnu.org/archive/html/js-shield/2026-09/msg00002.html
+    and the NLNet GenAI policy. Libor has guided the tool to produce
+    text that will be later ammended (see the policy on large artifacts
+    produced by the AI).
+
+    The tool itself generated this prompt summary: Draft a project policy
+    on generative AI: what use is acceptable, how to
+    disclose it in git without rewriting history, how to treat AI involvement
+    in analysis compared with content, how to attribute large generated
+    commits, and how to handle commits made before the policy.
+    Iterate through several rounds of review.
+verified: >
+    Libor has read the proposed texts and tweaked until it made sense to
+    use the text as a template for the JShelter policy. Nevertheless,
+    the policy should not be followed in that form, it needs refinement.
+    These follow in later commits and possible mailing list discussion.
+verified-by: Libor Polčák <ipolcak@fit.vutbr.cz>
+tool-authored: true
+redactions: None
+output-summary: >
+    We have exchanged several messages on how the policy should look
+    like, where it should reside and about the commit 267b792 which
+    served as an example commit to draft the policy. The tool also
+    propsed to amend README and CODING_STYLE and explored if
+    code_of_conduct needs to be amended.
+
+    The tool itself generated this description: Draft text of the policy,
+    the note format and field list, the disclosure
+    levels, and the companion edits to the README and the coding style.
+    Reviewed line by line. The structure and the substantive decisions were
+    rewritten or chosen by the maintainer.
