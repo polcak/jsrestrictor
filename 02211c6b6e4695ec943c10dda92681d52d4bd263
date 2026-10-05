@@ -1,0 +1,19 @@
+ai-use: assisted
+
+tool: DeepSeek V4.1 Flash
+date: 2026-10-02
+used-for: analysis,text-generation
+disclosure-level: moderate
+human-contribution: directed,adapted
+prompt-language: cs,en
+prompt-verbatim: false
+prompt-summary: >
+    Given the current state of the proposed policy (with the human
+    updates) and the git artifacts, remove overlaps in 4 and 6.3, 5
+    contains a sentence that one of its point is not a legal advice but
+    I think the scope should be the whole document.
+verified: >
+    A human reread affected parts and copied the text with care.
+verified-by: Libor Polčák <ipolcak@fit.vutbr.cz>
+output-summary: >
+    Proposals to changes in the text.
