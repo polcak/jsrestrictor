@@ -1,0 +1,35 @@
+ai-use: generated
+
+tool: DeepSeek V4.1 Flash (AI)
+date: 2026-10-05
+used-for: analysis,text-generation
+disclosure-level: none | small | moderate | large
+human-contribution: verified
+prompt-language: en
+prompt-verbatim: false
+prompt-summary: >
+    Read
+    https://blog.codeberg.org/protecting-our-floss-commons-from-llms.html
+    and
+    https://codeberg.org/Codeberg/org/commit/71149c7fc95ccfeae36109b5cddca339e4aa1473
+    (content pasted as full text),
+verified: >
+    I have read the content at both URLs and thought about the AI
+    output.
+verified-by: Libor Polčák <ipolcak@fit.vutbr.cz>
+tool-authored: true
+redactions: The tool also proposed but recommended against: If you want the
+    host mentioned at all, one sentence in §1 without any quotation:
+    "JShelter is hosted on Codeberg. Content hosted there must also comply
+    with Codeberg's terms of use; this policy is the project's own rule for
+    its contributors."
+    That is factual, needs no maintenance, and tells a contributor why the
+    aggregate-volume rule in §4 exists.
+
+    This was not added as I did not see the need for such a text
+output-summary: >
+    Analysis of the blog post and how it relates to the proposed genai
+    policy. The tool highligted: 'Resource cost of the record itself.
+    Codeberg's complaint includes overuse of storage and CI by LLM-heavy
+    projects, and your note format invites pasting whole outputs into
+    a notes ref that is stored on Codeberg.'
