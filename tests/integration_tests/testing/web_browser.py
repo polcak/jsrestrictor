@@ -167,17 +167,77 @@ class Browser:
         self.driver.quit()
         del self
 
-    def execute_script(self, code):
+    def execute_script(self, code, store_value_func_name=None):
         """ Execute script in the page context.
 
-        Note that it seems that executing script directly does not access the wrapped functions but
-        directly to the browser internals.
+        @param code Any code to execute, it may call a function with the name provided in the
+                    parameter store_value_func_name.
+        @param store_value_func_name A function name that is called inside the code. Do not define
+                                     this function. It is automatically created by execute_script.
+
+        @returns The value that is provided from the code by calling the store_value_func_name. For
+                 example 'browser.execute_script("store_value(1 === 2)", "store_value")' returns
+                 false.
+
+        Note that it seems that (at least in Chromium-based browsers) there are two scopes:
+            (1) Selenium-scope that sees unwrapped objects,
+            (2) Page-scripts scope, in which objects are wrapped by JShelter.
+        The code handles the problem by adding a DOM element with the result that is accessible to
+        both scopes.
         """
+        import random
+        import string
+        current_id = ''.join(random.choices(string.ascii_lowercase, k=10))
+        if store_value_func_name == None:
+            # We need to call a function anyway so that the Selenium callback is called
+            # otherwise it raises selenium.common.exceptions.TimeoutException
+            store_value_func_name = "JShelter" + current_id
+            code += f"; {store_value_func_name}(undefined);"
         try:
-            self.driver.execute_script(""" \
-                let s = document.createElement("script"); \
-                s.type = "text/javascript"; \
-                s.text = '%s'; \
-                document.head.appendChild(s);""" % code)
+            code = f"""
+                var r = document.getElementById('{current_id}');
+                try {{
+                    function {store_value_func_name}(value) {{
+                        var textResult = JSON.stringify(value);
+                        if (textResult === undefined) {{
+                            // Not serializable like functions, symbols, bigint, and some numberical values
+                          textResult = 'undefined';
+                        }}
+                        r.innerText = textResult;
+                    }}
+                """ + code + f"""
+                }} catch (error) {{ r.innerText = error.toString() }}"""
+            async_wrapper = f"""
+                const code_to_run = arguments[0];
+                // Called from event listener; Selenium way to asynchronously return a value
+                const selenium_callback = arguments[arguments.length - 1];
+                // DOM element accessible to both scopes to forward the result
+                var r = document.createElement("div");
+                r.id = '{current_id}';
+                document.body.appendChild(r);
+                const observer = new MutationObserver(function() {{
+                    selenium_callback(r.innerText);
+                    observer.disconnect(); // ignore future mutations
+                }});
+                observer.observe(r, {{
+                    characterData: true, // track changes in text nodes
+                    subtree: true, // the text node is a child of the div element
+                    childList: true, // node insert and removal (tested and necessary)
+                }});
+                // Inject code to the page-script scope and store the result in the div r
+                let s = document.createElement("script");
+                s.type = "text/javascript";
+                s.text = code_to_run;
+                document.head.appendChild(s);
+                """
+            res = self.driver.execute_async_script(async_wrapper, code)
+            if res != "undefined":
+                try:
+                    import json
+                    return json.loads(res)
+                except:
+                    raise RuntimeError(res + "\n\n" + code) from None
+            else:
+                return None
         except exceptions.JavascriptException as e:
             assert False, code

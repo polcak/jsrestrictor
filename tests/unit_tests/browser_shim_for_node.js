@@ -10,6 +10,9 @@ global.self = global;
 
 // minimal browser mock (minimum needed for tests)
 global.browser = {
+	extension: {
+		inIncognitoContext: false,
+	},
 	tabs: {
 		onUpdated: {
 			addListener: () => undefined,
@@ -28,6 +31,7 @@ global.browser = {
 		onMessage: {
 			addListener: () => undefined,
 		},
+		sendMessage: () => Promise.resolve(),
 	},
 	i18n: {
 		getMessage: () => "mockup",
@@ -53,10 +57,9 @@ global.browser = {
 	},
 };
 
-// window mock (minimum needed for tests)
-window = {
-	addEventListener: () => undefined
-};
+// window mock: real EventTarget (Node 20+), so tests can dispatch
+// CustomEvents and register/observe listeners like in a browser
+global.window = new EventTarget();
 
 // Node 20 already provides:
 // - globalThis.crypto (Web Crypto)

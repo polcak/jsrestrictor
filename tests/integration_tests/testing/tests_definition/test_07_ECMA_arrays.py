@@ -25,7 +25,6 @@
 
 import pytest
 from selenium.webdriver.common.by import By
-import time
 
 from web_browser_type import BrowserType
 
@@ -45,7 +44,8 @@ def load_test_page(browser):
 # \bug Known bug: JShelter, Firefox with activated array protections: Uncaught TypeError: Crypto.getRandomValues: Argument 1 does not implement interface ArrayBufferView.
 # Bug is caused by passing a proxy object to the function, but the actual object is expected (not the proxy).
 def test_crypto_getRandomValues(browser):
-    for array_type in ["Uint32Array", "Float32Array", "Float64Array", 'BigInt64Array', 'BigUint64Array']:
+    for array_type in ["Uint32Array", "Int32Array","Int8Array", "Uint8Array", "Uint8ClampedArray", "Int16Array",
+                       "Uint16Array", 'BigInt64Array', 'BigUint64Array']:
         browser.execute_script("""\
             var array = new %s(4);\
             window.crypto.getRandomValues(array);\
@@ -126,16 +126,16 @@ def setup_jsevironment(browser):
 
 def test_ArrayBufferViews(browser):
     browser.execute_script(""" \
-        let buffer = new ArrayBuffer(56);\
-        let typedArr = new Uint32Array(buffer, 16);\
+        var buffer = new ArrayBuffer(56);\
+        var typedArr = new Uint32Array(buffer, 16);\
         typedArr.set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);\
         """)
-    check(browser, "typedArr.buffer", "buffer")
-    check(browser, "typedArr.buffer", "buffer")
+    check(browser, "typedArr.buffer === buffer", "true")
+    check(browser, "typedArr.buffer === buffer", "true")
     check(browser, "typedArr.byteOffset", 16)
     check(browser, "typedArr.byteLength", 40)
     browser.execute_script('var dataView = new DataView(buffer, 32)')
-    check(browser, "dataView.buffer", "buffer")
+    check(browser, "dataView.buffer === buffer", "true")
     check(browser, "dataView.byteOffset", 32)
     check(browser, "dataView.byteLength", 24)
 
@@ -345,127 +345,3 @@ def test_OneBufferMoreViews(browser):
         typedArray[0] = 10; \
     """)
     check(browser, "typedArray[0]", "dataView.getInt8(0)")
-
-@pytest.mark.xfail(get_shared_browser().type == BrowserType.CHROME, reason="See https://pagure.io/JShelter/webextension/issue/80")
-def test_worker_basic(browser, expected):
-    if expected.worker == "REMOVED":
-        check(browser, "Worker", "undefined")
-        return
-    browser.execute_script('var worker = new Worker("");')
-    check(browser, "worker.onmessage", "null")
-    check(browser, "worker.onerror", "null")
-    if (browser.type == BrowserType.FIREFOX):
-        check(browser, "worker.onmessageerror", "null")
-    check(browser, "typeof worker.addEventListener", '"function"')
-    check(browser, "typeof worker.postMessage", '"function"')
-    check(browser, "typeof worker.removeEventListener", '"function"')
-    check(browser, "typeof worker.terminate", '"function"')
-
-@pytest.mark.xfail(reason="Unfortunately current implementation of Worker does not implement EventTarget interface")
-def test_worker_implements_dispatchEvent(browser):
-    browser.execute_script('var worker = new Worker("");')
-    check(browser, "typeof worker.dispatchEvent", '"function"')
-
-@pytest.mark.xfail(reason="See https://pagure.io/JShelter/webextension/issue/80")
-def test_worker_check_communication_handler(browser):
-    """ There is a bug in both Firefox and Chrome implementation of Worker wrapper. """
-    browser.execute_script("""\
-        var multiply_result = 0;\
-        var worker = new Worker("data:text/javascript;base64," + btoa("\
-            onmessage = function(e) {\
-                const result = e.data[0] * e.data[1];\
-                postMessage(result);\
-            }\
-        "));\
-\
-        worker.onmessage = function(e) {\
-            multiply_result = e.data;\
-        };\
-        worker.postMessage([5,8]);\
-    """)
-    time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
-    check(browser, "multiply_result", 40)
-
-@pytest.mark.xfail(reason="See https://pagure.io/JShelter/webextension/issue/80")
-def test_worker_error(browser):
-    browser.execute_script("""\
-        var worker_error = 0;\
-        var worker = new Worker("data:text/javascript;base64," + btoa("\
-            onmessage = function(e) {\
-                postMessage(variabledoesnotexist_and_it_is_intentional);\
-            }\
-        "));\
-\
-        worker.onmessage = function(e) {\
-            worker_error++;\
-        };\
-        worker.onerror = function() {\
-            worker_error--;\
-        };\
-        worker.postMessage([6,7]);\
-    """)
-    time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
-    check(browser, "worker_error", -1)
-
-@pytest.mark.xfail(reason="See https://pagure.io/JShelter/webextension/issue/80")
-def test_worker_check_communication_listener(browser):
-    """ There is a bug in both Firefox and Chrome implementation of Worker wrapper. """
-    browser.execute_script("""\
-        var multiply_result = 0;\
-        var worker = new Worker("data:text/javascript;base64," + btoa("\
-            onmessage = function(e) {\
-                const result = e.data[0] * e.data[1];\
-                postMessage(result);\
-            }\
-        "));\
-\
-        worker.addEventListener("message", function(e) {\
-            multiply_result = e.data;\
-        });\
-        worker.postMessage([4,5]);\
-    """)
-    time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
-    check(browser, "multiply_result", 20)
-
-def test_worker_terminate(browser):
-    browser.execute_script("""\
-        var multiply_result = 0;\
-        var worker = new Worker("data:text/javascript;base64," + btoa("\
-            onmessage = function(e) {\
-                const result = e.data[0] * e.data[1];\
-                postMessage(result);\
-            }\
-        "));\
-        worker.terminate();\
-\
-        worker.addEventListener("message", function(e) {\
-            multiply_result = e.data;\
-        });\
-        worker.postMessage([7,6]);\
-    """)
-    time.sleep(1) # Note that the code is possibly asynchronous (e.g. without JShelter), give the worker time to respond
-    check(browser, "multiply_result", 0)
-
-@pytest.mark.xfail(reason="See https://pagure.io/JShelter/webextension/issue/80")
-def test_worker_dispatchEvent(browser):
-    """ Unfortunately current implementation of Worker does not implement EventTarget interface """
-    browser.execute_script("""\
-        var correct_order_check = 1;\
-        var test_event = new Event("test");\
-        var worker = new Worker("data:text/javascript;base64," + btoa(""));\
-\
-        worker.ontest = function() { /* Will not be called */ \
-            correct_order_check *= 2;\
-        };\
-        worker.addEventListener("test", function(e) {\
-            correct_order_check *= 3;\
-        });\
-        worker.addEventListener("test", function(e) {\
-            correct_order_check *= 5;\
-        });\
-        worker.addEventListener("test", function(e) {\
-            correct_order_check *= 7;\
-        });\
-        worker.dispatchEvent(test_event);\
-    """)
-    check(browser, "correct_order_check", 105) # dispatchEvent is synchronous

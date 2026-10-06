@@ -1,5 +1,9 @@
 Title: Release history
 
+## 0.24.5
+
+* Chromium-only bugfix: Prevent forged jshelter-bootstrap handshakes that allowed pages to learn JShelter configuration for the page and consequently revert the forged readings (introduced in 0.23)
+
 ## 0.24.4
 
 * NSCL update: various improvements of the MutationObserver patching introduced by 0.24 and later
