@@ -39,14 +39,14 @@ prompt-summary: >
     advisory and discussed with the tool on the impact of the
     vulnerability and reasoned on some parts that I found invalid in the
     original report, such as Protection Mechanism Failure (CWE-693).
-prompt-log: optional, URL
 verified: >
-    <explain how the committed result was checked>
-verified-by: <name and e-mail of the responsible human, when required, e.g. not the same as the git commit author>
-tool-authored: true | false
-redactions: <what was left out, and why>
+    I verified manually with the PoC. I run the integration test. And I
+    logically verified the logic of the fix.
+verified-by: Libor Polčák <ipolcak@fit.vutbr.cz>
+tool-authored: false
 output-summary: >
-    <summarize the replies of the tool (in English)>
+    The model proposed the PoC and the code for the fix as well as the
+    text for the threatmodel page, the GHSA, and the commit message.
 output-code-snippet1: |
     --- a/common/document_start.js
     +++ b/common/document_start.js
