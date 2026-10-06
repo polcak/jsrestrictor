@@ -1,0 +1,19 @@
+ai-use: assisted
+
+tool: qwen3.8-flash-next
+date: 2026-10-04
+used-for: docs, text-generation
+disclosure-level: small
+human-contribution: adapted
+prompt-language: en
+prompt-verbatim: true | false
+prompt-summary: >
+    Copy of the issue text at
+    https://codeberg.org/JShelter/webextension/issues/192, the content
+    of the commit id 3e02571f.
+prompt-log: https://codeberg.org/attachments/e57aa510-acd1-4b43-878a-55db700002f9
+verified: >
+    Accepted the analysis as it matches the code,
+tool-authored: true
+output-summary: >
+    The tool rejected the bug but proposed to document the behaviour.
