@@ -1,0 +1,197 @@
+ai-use: generated
+
+tool: qwen3.8-flash-next (AI); possibly glm5.3 (client documentation outdated)
+date: 2026-09-21 - 2026-09-22
+used-for: fix, test, docs, analysis, report, text-generation
+disclosure-level: large
+human-contribution: directed
+prompt-language: cs, en>
+prompt-verbatim: false
+prompt-summary: >
+    The model received the original bug report (description of the
+    problem, affected components, suggested fixes) together with the
+    code base and the thesis that implemented the affected code.
+    Moreover, I gave the tool the information that I was not able to
+    validate the vulnerability as the PoC is not working. I gave my
+    opinions on the proposed fixes.
+
+    The model reasoned that the problem is real and fixed the PoC that I
+    validated in a real browser. Moreover the model explained the attack
+    (that I validated) and suggested a fix. The model based the fix on
+    the preferred option but explained why my worries are not real that I
+    verified.
+
+    In the next prompt, I explained to the model why we do not treat
+    extensions and browser bugs as threats and I proposed to document that
+    (the change in the threatmodel.md). The text was consulted with the
+    model and we chatted about the exact wording. I suggested the
+    placement and the model agreed.
+
+    I asked the model to provide the fix (output-code-snippet1).
+    Explained concerns with iframes and similar multi-context pages and
+    verified that my understanding about the fix is correct.
+
+    I applied the fix and asked if the code is correct. The model
+    indicated two typos.
+
+    I asked the tool to suggest the commit message that I checked,
+    validated (output-code-snippet2). I asked to generate the security
+    advisory and discussed with the tool on the impact of the
+    vulnerability and reasoned on some parts that I found invalid in the
+    original report, such as Protection Mechanism Failure (CWE-693).
+prompt-log: optional, URL
+verified: >
+    <explain how the committed result was checked>
+verified-by: <name and e-mail of the responsible human, when required, e.g. not the same as the git commit author>
+tool-authored: true | false
+redactions: <what was left out, and why>
+output-summary: >
+    <summarize the replies of the tool (in English)>
+output-code-snippet1: |
+    --- a/common/document_start.js
+    +++ b/common/document_start.js
+    @@
+    +// --- bootstrap handshake hardening (CVE fix) --------------------------
+    +// Only the FIRST "jshelter-bootstrap" event is honored. wrappers_generated.js
+    +// runs at document_start in the MAIN world, i.e. before any page script can
+    +// execute; any bootstrap observed later is forged by page/iframe JS and must
+    +// not be allowed to bind a port.
+    +var bootstrapSealed = false;
+    +// {init: true} is answered at most once, with the same semantics as
+    +// "configuration not ready yet" (undefined) afterwards. The real wrapper
+    +// pulls exactly once during document_start; later pulls are replays or
+    +// forged handshaps and must not disclose the config (incl. domainHash).
+    +var initAnswered = false;
+    +// ----------------------------------------------------------------------
+    +
+     function createHandleWrappersPortMessage(getConf) {
+    -	return function (msg) {
+    +	return function (msg) {
+             if (msg && msg.init) {
+    +			if (initAnswered) {
+    +				return undefined;  // do NOT disclose the config a second time
+    +			}
+    +			initAnswered = true;
+                 return getConf();
+             }
+             // everything else: forward to FPD (only reachable over the port
+    -		// bound by the bootstrap below)
+    +		// bound by the FIRST, pre-page-script bootstrap)
+             ...fp-detection forwarding unchanged...
+         };
+     }
+    @@
+    -window.addEventListener("jshelter-bootstrap", function (e) {
+    -	var portId = e.detail.portId;
+    +window.addEventListener("jshelter-bootstrap", function (e) {
+    +	if (bootstrapSealed) {
+    +		return;               // forged bootstrap after the real handshake
+    +	}
+    +	if (!e.detail || typeof e.detail.portId !== "string") {
+    +		return;               // malformed forged event (current code would throw)
+    +	}
+    +	bootstrapSealed = true;
+    +	var portId = e.detail.portId;
+         ...
+         wrappersPort = { ... unchanged ... };
+         window.addEventListener(portId + ":page", function (event) { ... unchanged ... }, true);
+         ...
+         wrappersPort.onMessage = createHandleWrappersPortMessage(() => pendingConfig);
+         if (pendingConfig) { wrappersPort.postMessage(pendingConfig); }
+    -}, true);
+    +}, true);
+    +// alternatively addEventListener(..., {once: true, capture: true}) instead of
+    +// the bootstrapSealed flag; keep the shape validation either way
+output-code-snippet2: |
+    Prevent forged jshelter-bootstrap handshakes
+
+    The Chrome/MV3 build passes the per-site configuration (including
+    currentLevel, fpdWrappers, and the secret domainHash that seeds the
+    Alea PRNG behind Canvas/WebGL/AudioContext farbling) to the
+    MAIN-world wrapper script (wrappers_generated.js) through a
+    CustomEvent channel on the shared page window.
+
+    The ISOLATED-world content script (common/document_start.js) accepted
+    a "jshelter-bootstrap" event from anyone, without sender validation.
+    Because MAIN-world content scripts, ISOLATED-world content scripts,
+    and page scripts share the same window as an EventTarget in Chromium,
+    any script running in the page (including third-party iframes, as the
+    content scripts match <all_urls> with all_frames: true) could:
+
+    * dispatch its own bootstrap with a self-chosen portId,
+    * send {init: true} over the forged channel, and
+    * receive the full live configuration, including domainHash.
+
+    Knowing domainHash lets the page reconstruct the Alea sequence and
+    computationally undo the farbling noise, defeating the core
+    anti-fingerprinting guarantee. It also discloses an extension-
+    detection oracle (protection level and wrapped-API list) and allows
+    forged fp-detection messages to be folded into the FPD database.
+    Firefox/MV2 is not affected: wrappers are injected via
+    nscl/content/patchWindow.js and XRay wrappers, no equivalent
+    unauthenticated handshake exists.
+
+    PoC (executes against an unpatched build after page load):
+
+        window.__jshelter_leak = {};
+        var portId = "attacker_controlled_port_id_1234";
+        window.dispatchEvent(new CustomEvent("jshelter-bootstrap",
+            {detail: {portId: portId}}));
+        window.addEventListener(portId + ":return:extension", function(e) {
+            window.__jshelter_leak.config = e.detail && e.detail.value;
+        }, true);
+        window.dispatchEvent(new CustomEvent(portId + ":page",
+            {detail: {msg: {init: true}}}));
+        // __jshelter_leak.config now contains the config incl. domainHash
+
+    Fix (common/document_start.js only, MAIN-world side unchanged):
+
+    * The bootstrap listener is registered with {once: true} and guarded
+      by a bootstrapSealed flag: only the first bootstrap binds a port.
+      wrappers_generated.js runs at document_start in the MAIN world,
+      i.e. before any page script can execute, so in a correctly working
+      browser the first bootstrap is always the genuine one.
+    * {init: true} is answered at most once (initAnswered): the pull
+      path is one-shot, later pulls behave like "configuration not ready"
+      and never disclose the config again.
+    * e.detail.portId is validated before use; malformed bootstrap
+      events no longer throw inside the listener.
+
+    Alternatives considered:
+
+    * Deliver the portId (or an HMAC secret) to both content scripts via
+      a channel the page cannot write to, e.g. dynamic
+      chrome.scripting world:"MAIN" injection. Rejected: reintroduces the
+      race with page scripts that static manifest registration was meant
+      to eliminate, and anything placed on window in the MAIN world is
+      readable by the page anyway.
+    * Apply the noise ISOLATED/background-side and hand the MAIN world
+      only opaque already-noised values. Rejected: ISOLATED-world scripts
+      cannot intercept page objects (prototypes belong to the page realm),
+      so wrapping cannot happen there in Chromium.
+    * Have the background service worker generate the portId and pass it
+      in the configuration snapshot (as the pre-MV3
+      chrome.userScripts-era code did). Rejected: the snapshot travels
+      through NSCL mechanisms into the ISOLATED world, but the MAIN-world
+      script still has to announce itself somehow, which leads back to an
+      observable bootstrap.
+
+    Known residual risks (documented in threatmodel.md):
+
+    * A browser bug allowing page scripts to execute before
+      document_start-injected code would defeat the ordering assumption;
+      such a bug exposes unwrapped APIs to the page and is a problem
+      beyond JShelter's scope.
+    * Other installed extensions can inject their own code into the
+      visited page, potentially earlier than JShelter. Such an extension
+      can forge the first bootstrap, learn the per-session configuration
+      (including the farbling seed), or prevent the wrappers from being
+      applied at all. We cannot protect users against other extensions
+      running in the page.
+
+    Tests: unit tests in document_start_tests.js cover the sealed
+    bootstrap, the one-shot init answer, malformed events, config push
+    over an established port, and FPD forwarding; an integration test
+    runs the PoC payload and fails if any configuration is disclosed.
+
+    Reported-by: <reportér, pending coordinated disclosure>
