@@ -1,0 +1,316 @@
+ai-use: assisted
+
+tool: qwen3.8-flash-next (AI); possibly glm5.3 (client documentation outdated)
+date: 2026-09-22 - 2026-10-06
+used-for: test, analysis
+disclosure-level: large
+human-contribution: directed, adapted
+prompt-language: cs
+prompt-verbatim: false
+prompt-summary: >
+    This was a part of the conversation with the commit id 21df1d83. i explained
+		my plans to write integration tests but asked for idead on unit tests.
+
+		Firstly, the tool proposed to refactor the event listener registration
+		(output-code-snippet1) that I verified, retyped, and accepted as is.
+
+    The tool suggested to change the unit_tests/config/global.json
+		(output-code-snippet2) that I needed to supplement with my configuration
+		(the tool was not good to propose correct changes to global.json).
+
+    Finally, the tool proposed the unit tests (output-code-snippet3) that did
+		not work as proposed. But the tool proposed to include resetWrappersState()
+		(output-code-snippet4) which I put into global.json where it belongs and not
+		to document_start.js where the tool insisted to put it.
+
+    The tool proposed how to mock the browser (output-code-snippet6 and
+		output-code-snippet7).
+
+		I went through each test, possibly refactored or valiated its content.
+		Sometimes I further ask the tool about the expected purpose or details of
+		the tests. I rejected the proposal to further rewrite the logic in
+		document_start.js (see bootstrapAbort, output-code-snippet11) as that brings
+		unnecessary complexity and the underlying issue was solved differently. I
+		also refused to generate unique port ID with Math.random as unnecessarily
+		complex heavy but iterated to sequence counter to prevent possible
+		copy&paste relicts.
+
+		During the writing of the tests we also decided to document that
+		bootstrapSealed should never be initialized. The tool wanted to change that
+		behaviour but I picked the imlemented behaviour with documentation.
+prompt-log: optional, URL
+verified: >
+    <explain how the committed result was checked>
+verified-by: <name and e-mail of the responsible human, when required, e.g. not the same as the git commit author>
+tool-authored: true | false
+redactions: <what was left out, and why>
+output-summary: >
+    <summarize the replies of the tool (in English)>
+output-code-snippet1: |
+    function registerBootstrapListener() {
+        window.addEventListener("jshelter-bootstrap", function (e) {
+            ...  // stávající tělo beze změny
+        }, {once: true, capture: true});
+    }
+    registerBootstrapListener();
+output-code-snippet2: |
+    {
+        "name": "document_start",
+        "remove_custom_namespace": true,
+        "src_script_requirements": [...],
+        "test_script_requirements": [...]
+    }
+output-code-snippet3: |
+    describe("bootstrap handshake hardening", function () {
+        beforeEach(function () {
+            // reset vnitřního stavu vystaveného přes remove_custom_namespace
+            initAnswered = false;
+            bootstrapSealed = false;
+            wrappersPort = null;
+            pendingConfig = null;
+            pageConfiguration = null;
+            registerBootstrapListener(); // vyžaduje výše uvedený refaktor
+        });
+
+        it("rejects a forged bootstrap after the real handshake", function () {
+            const realResponses = jasmine.createSpy();
+            window.addEventListener("real:return:extension", realResponses, true);
+
+            window.dispatchEvent(new CustomEvent("jshelter-bootstrap",
+                {detail: {portId: "real"}}));
+            // padělaný bootstrap od "stránky" se svým portId
+            window.dispatchEvent(new CustomEvent("jshelter-bootstrap",
+                {detail: {portId: "attacker"}}));
+            // útočníkův pull přes padělaný kanál
+            window.dispatchEvent(new CustomEvent("attacker:page",
+                {detail: {msg: {init: true}}}));
+
+            expect(realResponses).not.toHaveBeenCalled();
+            // a kanál útočníka nedostal žádnou odpověď: otestujeme přes listener
+            const attackerResponses = jasmine.createSpy();
+            window.addEventListener("attacker:return:extension", attackerResponses, true);
+            window.dispatchEvent(new CustomEvent("attacker:page",
+                {detail: {msg: {init: true}}}));
+            expect(attackerResponses).not.toHaveBeenCalled();
+        });
+
+        it("does not throw on malformed bootstrap events", function () {
+            expect(function () {
+                window.dispatchEvent(new CustomEvent("jshelter-bootstrap", {}));
+            }).not.toThrow();
+            expect(function () {
+                window.dispatchEvent(new CustomEvent("jshelter-bootstrap",
+                    {detail: {portId: 1234}}));
+            }).not.toThrow();
+        });
+
+        it("answers {init: true} at most once", function () {
+            const conf = {domainHash: "deadbeef", currentLevel: {level_id: "2"}};
+            pendingConfig = conf;
+            const handler = createHandleWrappersPortMessage(() => pendingConfig);
+
+            expect(handler({init: true})).toBe(conf);
+            expect(handler({init: true})).toBeUndefined(); // druhý pull neodpoví
+        });
+
+        it("keeps FPD forwarding working for non-init messages", function () {
+            spyOn(browser.runtime, "sendMessage");
+            const handler = createHandleWrappersPortMessage(() => null);
+            handler({access: "call", resource: "SomeAPI"});
+            expect(browser.runtime.sendMessage).toHaveBeenCalledWith({
+                purpose: "fp-detection",
+                content: {access: "call", resource: "SomeAPI"}
+            });
+        });
+
+        it("pushes pendingConfig over an established port", function () {
+            const pushed = jasmine.createSpy();
+            window.addEventListener("real:extension", function (e) {
+                pushed(e.detail.msg);
+            }, true);
+
+            pendingConfig = {domainHash: "x", currentLevel: {}, fpdWrappers: []};
+            window.dispatchEvent(new CustomEvent("jshelter-bootstrap",
+                {detail: {portId: "real"}}));
+            // synchronní CustomEvent kanál: postMessage v handleru už proběhl
+            expect(pushed).toHaveBeenCalledWith(
+                jasmine.objectContaining({domainHash: "x"}));
+        });
+
+        it("configureInjection stores and pushes config on the Chrome path", function () {
+            // v testovacím prostředí není exportFunction definováno,
+            // takže se přirozeně vykoná Chrome větev
+            const ok = configureInjection({
+                currentLevel: {level_id: "2"},
+                fpdWrappers: [],
+                fpdTrackCallers: false,
+                domainHash: "d",
+                incognitoHash: "i"
+            });
+            expect(ok).toBeTrue();
+            expect(pendingConfig.domainHash).toBe("d");
+            expect(pendingConfig.currentLevel).toEqual({level_id: "2"});
+            // opakované volání je one-shot
+            expect(configureInjection({currentLevel: {level_id: "3"}})).toBeUndefined();
+        });
+    });
+output-code-snippet4: |
+   function registerBootstrapListener() {
+       window.addEventListener("jshelter-bootstrap", function (e) {
+           ...  // stávající tělo listeneru beze změny
+       }, {once: true, capture: true});
+   }
+   registerBootstrapListener();
+
+   /// Reset of module state for unit tests (same pattern as reset_tab_urls in background.js)
+   function resetWrappersState() {
+       bootstrapSealed = false;
+       initAnswered = false;
+       wrappersPort = null;
+       pendingConfig = null;
+       pageConfiguration = null;
+   }
+output-code-snippet5: |
+    it("configureInjection stores and pushes config on the Chrome path", function () {
+        const got = [];
+        window.addEventListener("t:extension", function (e) { got.push(e.detail.msg); }, true);
+        window.dispatchEvent(new CustomEvent("jshelter-bootstrap", {detail: {portId: "t"}}));
+
+        const ok = configureInjection({
+            currentLevel: {level_id: "2"}, fpdWrappers: [],
+            fpdTrackCallers: false, domainHash: "d", incognitoHash: "i"
+        });
+
+        expect(ok).toBe(true);
+        expect(got.length).toBe(1);          // push do ustaveného portu
+        expect(got[0].domainHash).toBe("d");
+    });
+output-code-snippet6: |
+   // window mock: real EventTarget (Node 20+), so tests can dispatch
+   // CustomEvents and register/observe listeners like in a browser
+   global.window = new EventTarget();
+output-code-snippet7: |
+    runtime: {
+        onInstalled: { addListener: () => undefined },
+        onConnect: { addListener: () => undefined },
+        onMessage: { addListener: () => undefined },
+        sendMessage: () => Promise.resolve(),   // FPD forwarding test: spyOn(browser.runtime, "sendMessage")
+    },
+    extension: {
+        inIncognitoContext: false,              // čte configureInjection mimo try/catch
+    },
+output-code-snippet8: |
+    it("a malformed bootstrap does not consume the handshake", function () {
+        resetWrappersState();
+        registerBootstrapListener();
+
+        // malformed event: consumed the {once: true} listener but sealed nothing
+        window.dispatchEvent(new CustomEvent("jshelter-bootstrap", {}));
+
+        // genuine bootstrap still binds a port
+        const got = [];
+        window.addEventListener("real:page", function (e) {
+            got.push(e.detail.msg);
+        }, true);
+        window.dispatchEvent(new CustomEvent("jshelter-bootstrap",
+            {detail: {portId: "real"}}));
+        // …ověřit, že se kanál "real:*" skutečně zavedl
+    });
+output-code-snippet9: |
+    it("a malformed bootstrap disables the port for the document (documented behavior)", function () {
+        // malformed event: consumed the {once: true} listener, sealed nothing
+        window.dispatchEvent(new CustomEvent("jshelter-bootstrap", {}));
+
+        // genuine bootstrap arrives too late — must be ignored
+        window.dispatchEvent(new CustomEvent("jshelter-bootstrap",
+            {detail: {portId: "real"}}));
+
+        // Probe the port: if it were established, the listener would answer
+        // any message with a "real:return:extension" event (even when the
+        // value is undefined, the event itself fires).
+        const responses = [];
+        window.addEventListener("real:return:extension", function (e) {
+            responses.push(e.detail);
+        }, true);
+        window.dispatchEvent(new CustomEvent("real:page",
+            {detail: {msg: {init: true}}}));
+
+        expect(responses).toEqual([]);
+    });
+output-code-snippet10: |
+    it("a genuine bootstrap establishes a working port", function () {
+    window.dispatchEvent(new CustomEvent("jshelter-bootstrap",
+        {detail: {portId: "real"}}));
+
+    const responses = [];
+    window.addEventListener("real:return:extension", function (e) {
+        responses.push(e.detail);
+    }, true);
+    window.dispatchEvent(new CustomEvent("real:page",
+        {detail: {msg: {init: true}}}));
+
+    expect(responses.length).toBe(1);  // event fires; .value may be undefined
+});
+output-code-snippet11: |
+   var bootstrapAbort = null;
+   var portAbort = null;
+
+   function registerBootstrapListener() {
+       if (bootstrapAbort) { bootstrapAbort.abort(); }
+       bootstrapAbort = new AbortController();
+       window.addEventListener("jshelter-bootstrap", function (e) {
+           ...validace...
+           if (portAbort) { portAbort.abort(); }   // při resetu/redirectu starý port zahodit
+           portAbort = new AbortController();
+           window.addEventListener(portId + ":page", function (event) { ... },
+               {capture: true, signal: portAbort.signal});
+           window.addEventListener(portId + ":return:page", function (event) { ... },
+               {capture: true, signal: portAbort.signal});
+           ...
+       }, {once: true, capture: true, signal: bootstrapAbort.signal});
+   }
+
+   function resetDocumentStart() {
+       bootstrapSealed = false;
+       initAnswered = false;
+       wrappersPort = null;
+       pendingConfig = null;
+       pageConfiguration = null;
+       if (bootstrapAbort) { bootstrapAbort.abort(); bootstrapAbort = null; }
+       if (portAbort) { portAbort.abort(); portAbort = null; }
+       registerBootstrapListener();
+   }
+output-code-snippet12: |
+    function freshPortId() {
+        return "p_" + Math.random().toString(36).slice(2, 10);
+    }
+output-code-snippet13: |
+    it("pushes pendingConfig over an established port", function () {
+        const pid = freshPortId();
+        const pushed = [];
+        window.addEventListener(pid + ":extension", function (e) { pushed.push(e.detail.msg); }, true);
+
+        window.dispatchEvent(new CustomEvent("jshelter-bootstrap", {detail: {portId: pid}}));
+        expect(pushed.length).toBe(0);  // zatím nic
+
+        configureInjection({currentLevel: {level_id: "2"}, fpdWrappers: [],
+            fpdTrackCallers: false, domainHash: "x", incognitoHash: "i"});
+        expect(pushed.length).toBe(1);  // push do ustaveného portu
+        expect(pushed[0].domainHash).toBe("x");
+    });
+output-code-snippet14: |
+    function resetDocumentStart() {
+        bootstrapSealed = false;
+        initAnswered = false;
+        wrappersPort = null;
+        pendingConfig = null;
+        pageConfiguration = null;
+        registerBootstrapListener();
+    }
+output-code-snippet15: |
+    function freshPortId() {
+        return "p_" + Math.random().toString(36).slice(2, 10);
+    }
+output-code-snippet16: |
+    let port_seq = 0;
+    function portId(prefix) { return prefix + "_" + (port_seq++); }
