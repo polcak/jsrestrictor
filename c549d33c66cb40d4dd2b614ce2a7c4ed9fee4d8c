@@ -38,14 +38,12 @@ prompt-summary: >
 		During the writing of the tests we also decided to document that
 		bootstrapSealed should never be initialized. The tool wanted to change that
 		behaviour but I picked the imlemented behaviour with documentation.
-prompt-log: optional, URL
 verified: >
-    <explain how the committed result was checked>
-verified-by: <name and e-mail of the responsible human, when required, e.g. not the same as the git commit author>
-tool-authored: true | false
-redactions: <what was left out, and why>
+    I went line-by-line through the tests and verified that they pass.
+verified-by: Libor Polčák <ipolcak@fit.vutbr.cz>
+tool-authored: false
 output-summary: >
-    <summarize the replies of the tool (in English)>
+    All the code was mostly proposed by the tool and adapted by me.
 output-code-snippet1: |
     function registerBootstrapListener() {
         window.addEventListener("jshelter-bootstrap", function (e) {
