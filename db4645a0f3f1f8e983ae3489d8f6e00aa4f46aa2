@@ -1,0 +1,291 @@
+ai-use: assisted
+
+tool: qwen3.8-flash-next
+date: 2026-10-04
+used-for: commit text
+disclosure-level: moderate
+human-contribution: verified
+prompt-language: en
+prompt-verbatim: false
+prompt-summary: >
+    The change and human interpretation of the change
+verified: >
+    The text follows my initial interpration of the change
+tool-authored: false
+output-summary: >
+    The tool essentially agreed with the human interpratation and gave
+    the text to be used as the commit message.
+prompt-log: >
+    ### USER
+    I am going to update NSCL that contains the following patch:
+
+        More robust patch propagation hooks (tor-browser#45371).
+
+    diff --git a/content/patchWindow.js b/content/patchWindow.js
+    index e33ad16..bd38eff 100644
+    --- a/content/patchWindow.js
+    +++ b/content/patchWindow.js
+    @@ -379,7 +379,13 @@ function patchWindow(patchingCallback, env = {}) {
+           Document: [
+             "append", "prepend", "replaceChildren",
+             "write", "writeln",
+    -      ]
+    +      ],
+    +      CharacterData: [
+    +        "after", "before", "replaceWith",
+    +      ],
+    +      Range: [
+    +        "insertNode", "surroundContents",
+    +      ],
+         };
+
+         function patch(proto, method) {
+    diff --git a/main/Worlds.main.js b/main/Worlds.main.js
+    index dac0e7f..d9fc830 100644
+    --- a/main/Worlds.main.js
+    +++ b/main/Worlds.main.js
+    @@ -229,7 +229,13 @@ if (globalThis.Worlds?.main) {
+               Document: [
+                 "append", "prepend", "replaceChildren",
+                 "write", "writeln",
+    -          ]
+    +          ],
+    +          CharacterData: [
+    +            "after", "before", "replaceWith",
+    +          ],
+    +          Range: [
+    +            "insertNode", "surroundContents",
+    +          ],
+             };
+
+             function patch(proto, method) {
+
+    However, the commit message is not much informative. I am intersted on the impact on JShelter used. AFAIK patchWindow is used in the FIrefox context. So the impact is that we close some potential leaks that could have been used by an attacker to get around the protection that patchWindow guarantees. For Chromium-based browsers this only applies to dynamically-generated iframes.
+
+    ### ASSISTANT
+    Yes — your interpretation is essentially correct, but I would phrase it a bit more precisely:
+
+    **This patch closes DOM-insertion bypass paths in JShelter’s patch-propagation mechanism.**
+    It is less about a direct information “leak” and more about preventing a site from obtaining an unpatched or under-patched JavaScript/frame context by inserting DOM nodes through APIs that JShelter did not previously observe.
+
+    ---
+
+    ## What the patch does technically
+
+    `patchWindow` appears to hook DOM APIs that can insert or attach nodes into a live document, so that JShelter can propagate its patching logic into newly created/attached frames or worlds before or as soon as possible.
+
+    Before the patch, the propagation list included things like:
+
+    ```js
+    Document: [
+      "append", "prepend", "replaceChildren",
+      "write", "writeln",
+    ]
+    ```
+
+    The patch adds:
+
+    ```js
+    CharacterData: [
+      "after", "before", "replaceWith",
+    ],
+    Range: [
+      "insertNode", "surroundContents",
+    ],
+    ```
+
+    Those are additional DOM APIs that can insert nodes into a connected document.
+
+    For example:
+
+    ```js
+    const iframe = document.createElement("iframe");
+    const text = document.body.firstChild;
+
+    // May insert iframe directly into live DOM without using Document.prototype.append
+    text.before(iframe);
+    ```
+
+    Or:
+
+    ```js
+    const range = document.createRange();
+    range.selectNodeContents(document.body);
+    range.collapse(true);
+
+    const iframe = document.createElement("iframe");
+
+    // Inserts the iframe directly at the range position
+    range.insertNode(iframe);
+    ```
+
+    Before the patch, if JShelter’s propagation logic relied only on `Document.prototype` insertion hooks, these paths could potentially be used to insert an iframe or other context without invoking the propagation callback at the right time.
+
+    That could allow a malicious page to get an unpatched or less patched JS environment early.
+
+    ---
+
+    ## Impact on JShelter in Firefox
+
+    For Firefox, assuming this NSCL/JShelter implementation uses `patchWindow` as the mechanism for propagating protections into new frames/worlds, the impact is:
+
+    ### 1. Fewer attacker-controlled DOM APIs can bypass patch propagation
+
+    A website could previously choose an API that was not hooked, such as:
+
+    - `Range.insertNode`
+    - `Range.surroundContents`
+    - `Text/Comment.before`
+    - `Text/Comment.after`
+    - `Text/Comment.replaceWith`
+
+    and use it to insert a node into the live DOM in a way that did not trigger JShelter’s propagation callback.
+
+    That could lead to a frame or document being initialized before JShelter applied its expected wrappers/hooks.
+
+    ### 2. Reduces the chance of a clean unpatched JavaScript environment
+
+    If an attacker can create an unpatched iframe or frame, they can use it as a “control environment”:
+
+    - Compare patched vs unpatched prototypes.
+    - Detect JShelter’s modifications.
+    - Bypass protections that JShelter applies to the main frame.
+    - Perform fingerprinting without JShelter’s intended noise or wrappers.
+    - Execute JS in a context where JShelter protections are absent or delayed.
+
+    So the patch is a **defense-in-depth hardening change**.
+
+    ### 3. Mostly invisible to normal users
+
+    For ordinary JShelter users, I would expect little or no functional change.
+
+    Possible minor impact:
+
+    - Very small overhead on pages that heavily use `Range` or text-node insertion APIs.
+    - Possible compatibility issues only if JShelter’s wrapper behavior around those methods is not perfectly native-transparent.
+
+    But overall: **positive security impact, minimal user-visible impact.**
+
+    ---
+
+    ## Impact on Chromium-based browsers
+
+    Your statement is probably broadly correct:
+
+    > For Chromium-based browsers this only applies to dynamically-generated iframes.
+
+    More carefully:
+
+    - If Chromium JShelter does **not** use `patchWindow` as the global top-level protection mechanism, then top-level page behavior is largely unchanged.
+    - The change matters primarily in cases where JShelter still uses patch propagation for **dynamically inserted/created frames or worlds**, especially iframes.
+    - If those dynamically created frames could previously be inserted through `Range` or `CharacterData` APIs without triggering propagation, those specific paths are now covered.
+
+    So for Chromium, I would describe the effect as:
+
+    **Limited to dynamically generated/inserted frames where JShelter’s propagation hooks are relevant.**
+
+    Not a major new top-level protection.
+
+    ---
+
+    ## Important nuance: it is not “all DOM insertion APIs”
+
+    This patch closes some important gaps, but it does not automatically close every possible DOM mutation/insertion path.
+
+    Depending on the rest of the JShelter code, you may also want to check whether these are covered elsewhere:
+
+    ```js
+    Element.prototype.before
+    Element.prototype.after
+    Element.prototype.replaceWith
+
+    Element.prototype.insertAdjacentHTML
+    Element.prototype.insertAdjacentElement
+    Element.prototype.insertAdjacentText
+    ```
+
+    Also:
+
+    ```js
+    Document.prototype.appendChild
+    Document.prototype.insertBefore
+    Document.prototype.replaceChild
+    Document.prototype.insertBefore
+    ```
+
+    If some of those are intentionally not hooked because they are covered by other mechanisms, fine. But if they are not, similar bypass ideas may remain.
+
+    So I would say:
+
+    > This patch improves robustness, but it is not necessarily a complete enumeration of all possible node-insertion bypasses.
+
+    ---
+
+    ## Possible technical caveat with `CharacterData`
+
+    In DOM terms, `after`, `before`, and `replaceWith` are node-insertion APIs associated with child nodes. Implementations may expose them on `Node.prototype`, and `Text`/`Comment` inherit them through `CharacterData`.
+
+    If JShelter’s patching layer replaces methods by looking at the prototype object named in the config, patching `CharacterData.prototype` should shadow those methods for `Text` and `Comment`. But you should verify that the hooking mechanism correctly intercepts inherited methods and does not miss generic elements or nodes if those also matter.
+
+    In other words:
+
+    ```js
+    CharacterData: [
+      "after", "before", "replaceWith",
+    ],
+    ```
+
+    is meaningful if JShelter intends to intercept insertion through text/comment nodes. But if the goal is all node insertion, you may need to confirm that `Node.prototype`/`Element.prototype` paths are also handled.
+
+    ---
+
+    ## Suggested commit message
+
+    The upstream message “More robust patch propagation hooks” is not very helpful. A better commit message could be:
+
+    ```text
+    More robust patch propagation hooks for CharacterData and Range APIs
+
+    Previously, patchWindow propagation was triggered only by a subset of DOM
+    insertion APIs, mainly on Document.prototype.
+
+    However, nodes can also be inserted into a connected document through
+    CharacterData before/after/replaceWith and through Range insertNode/surroundContents.
+
+    Those APIs can be used to insert dynamically generated iframes or other
+    nodes into live DOM without going through the previously hooked Document
+    methods. If patch propagation does not run for those paths, a page may
+    obtain an unpatched or under-patched frame/world before JShelter protections
+    are applied.
+
+    Hook CharacterData and Range insertion methods as well, so the patching
+    callback is invoked for these additional DOM insertion paths.
+
+    In Firefox this closes potential bypasses of JShelter's main-world protection.
+    In Chromium-based contexts this primarily affects dynamically generated
+    iframes where patchWindow is used for propagation.
+    ```
+
+    Or shorter:
+
+    ```text
+    Propagate patchWindow through CharacterData and Range insertion APIs
+
+    Some DOM APIs can insert nodes into a connected document without using
+    the previously hooked Document.prototype methods. This allows malicious
+    pages to potentially bypass JShelter's patch propagation by inserting
+    frames or nodes via Range.insertNode/surroundContents or via
+    CharacterData before/after/replaceWith.
+
+    Hook those methods too so patch propagation is triggered consistently.
+    ```
+
+    ---
+
+    ## Bottom line
+
+    Yes: for JShelter, the practical impact is that **JShelter closes additional bypass opportunities in Firefox**, especially around dynamically inserted frames or contexts. For Chromium-based browsers, the impact is probably **limited to dynamically generated iframes or other dynamically inserted worlds**, depending on how Chromium JShelter uses `patchWindow`.
+
+    I would describe it as:
+
+    > A security hardening change that reduces the set of DOM insertion APIs an attacker can use to obtain an unpatched or delayed-patched JavaScript context.
