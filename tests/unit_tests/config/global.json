@@ -261,9 +261,22 @@
 				}
 			],
 			"inject_code_to_src": {
-				"begin": "function set_global_variable(name, value) { globalThis[name] = value; }"
+				"begin": "function set_global_variable(name, value) { globalThis[name] = value; }",
+				"end": "function resetDocumentStart() { bootstrapSealed = false; initAnswered = false; wrappersPort = null; pendingConfig = null; pageConfiguration = null; registerBootstrapListener() }"
 			},
 			"replace_in_src": [
+				{
+					"origin": "console.debug",
+					"new": ""
+				},
+				{
+					"origin": "console.warn",
+					"new": ""
+				},
+				{
+					"origin": "console.error",
+					"new": ""
+				}
 			],
 			"test_script_requirements": [
 				{
@@ -272,7 +285,11 @@
 						{
 							"from": "./document_start.js",
 							"objects": [
-								"wrapWindow"
+								"wrapWindow",
+								"registerBootstrapListener",
+								"configureInjection",
+								"createHandleWrappersPortMessage",
+								"resetDocumentStart"
 							]
 						},
 						{

@@ -80,64 +80,67 @@ function createHandleWrappersPortMessage(getConf) {
  * via this one-time event. Both scripts run at document_start,
  * so no page script can intercept this.
  */
-window.addEventListener("jshelter-bootstrap", function (e) {
-	if (bootstrapSealed) {
-		// Note that this should never successed as the listener is one-time only.
-		// Nevertheless, let us keep the code as a defensive coding-style
-		console.warn("JShelter identified a forged bootstrap after the real handshake", e);
-		return;
-	}
-	if (!e.detail || typeof e.detail.portId !== "string") {
-		console.warn("JShelter identified a malformed bootstrap event", e);
-		return;
-	}
-	bootstrapSealed = true;
-	var portId = e.detail.portId;
+function registerBootstrapListener() {
+	window.addEventListener("jshelter-bootstrap", function (e) {
+		if (bootstrapSealed) {
+			// Note that this should never successed as the listener is one-time only.
+			// Nevertheless, let us keep the code as a defensive coding-style
+			console.warn("JShelter identified a forged bootstrap after the real handshake", e);
+			return;
+		}
+		if (!e.detail || typeof e.detail.portId !== "string") {
+			console.warn("JShelter identified a malformed bootstrap event", e);
+			return;
+		}
+		bootstrapSealed = true;
+		var portId = e.detail.portId;
 
-	// Port matching wrappers_generated.js protocol
-	// ISOLATED side: listen on "page", send on "extension"
-	var retStack = [];
-	function fire(ev, detail) {
-		window.dispatchEvent(new CustomEvent(portId + ":" + ev, {
-		    detail: detail, composed: true
-		}));
-	}
+		// Port matching wrappers_generated.js protocol
+		// ISOLATED side: listen on "page", send on "extension"
+		var retStack = [];
+		function fire(ev, detail) {
+			window.dispatchEvent(new CustomEvent(portId + ":" + ev, {
+			    detail: detail, composed: true
+			}));
+		}
 
-	wrappersPort = {
-		postMessage: function(msg) {
-			retStack.push({});
-			fire("extension", {msg: msg});
-			var ret = retStack.pop();
-			if (ret.error) throw ret.error;
-			return ret.value;
-		},
-		onMessage: null
-	};
+		wrappersPort = {
+			postMessage: function(msg) {
+				retStack.push({});
+				fire("extension", {msg: msg});
+				var ret = retStack.pop();
+				if (ret.error) throw ret.error;
+				return ret.value;
+			},
+			onMessage: null
+		};
 
-	window.addEventListener(portId + ":page", function(event) {
-		if (typeof wrappersPort.onMessage === "function" && event.detail) {
-			var ret = {};
-			try {
-				ret.value = wrappersPort.onMessage(event.detail.msg, event);
-			} catch (error) {
-				ret.error = error;
+		window.addEventListener(portId + ":page", function(event) {
+			if (typeof wrappersPort.onMessage === "function" && event.detail) {
+				var ret = {};
+				try {
+					ret.value = wrappersPort.onMessage(event.detail.msg, event);
+				} catch (error) {
+					ret.error = error;
+				}
+				fire("return:extension", ret);
 			}
-			fire("return:extension", ret);
+		}, true);
+
+		window.addEventListener(portId + ":return:page", function(event) {
+			if (event.detail && retStack.length) {
+				retStack[retStack.length - 1] = event.detail;
+			}
+		}, true);
+
+		wrappersPort.onMessage = createHandleWrappersPortMessage(() => pendingConfig);
+
+		if (pendingConfig) {
+			wrappersPort.postMessage(pendingConfig);
 		}
-	}, true);
-
-	window.addEventListener(portId + ":return:page", function(event) {
-		if (event.detail && retStack.length) {
-			retStack[retStack.length - 1] = event.detail;
-		}
-	}, true);
-
-	wrappersPort.onMessage = createHandleWrappersPortMessage(() => pendingConfig);
-
-	if (pendingConfig) {
-		wrappersPort.postMessage(pendingConfig);
-	}
-}, {once: true, capture: true});
+	}, {once: true, capture: true});
+}
+registerBootstrapListener();
 
 function configureInjection({currentLevel, fpdWrappers, fpdTrackCallers, domainHash, incognitoHash}) {
 	if (pageConfiguration) return; // one shot
