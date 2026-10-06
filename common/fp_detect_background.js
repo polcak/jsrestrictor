@@ -1110,6 +1110,14 @@ function periodicEvaluation(tabId, delay) {
  * The function that starts evaluation process and if fingerprinting is detected, it reacts accordingly.
  *
  * \param tabId Integer number representing ID of evaluated browser tab.
+ *
+ * The current aggregation mechanism in content scripts does not preserve
+ * per-call temporal order, per-call stack-to-argument correlation, or
+ * fine-grained timing within a propagation window. Any future FPD redesign
+ * that requires sequence-based detection (e.g., checking that API A was
+ * accessed before API B, or that specific argument sets were paired with
+ * specific call stacks) will require changes to the
+ * page-script-to-background message model.
  * 
  * \returns Object containing key "cancel" with value true if request is blocked, otherwise with value false
  */
