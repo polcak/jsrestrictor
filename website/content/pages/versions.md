@@ -1,5 +1,9 @@
 Title: Release history
 
+## 0.24.6
+
+* Propagate changes in NSCL. A security fix is the improvement in mechanisms that we patch to   prevent a page to evade the protection mainly in the context of dynamically generated iframes by the page.
+
 ## 0.24.5
 
 * Chromium-only bugfix: Prevent forged jshelter-bootstrap handshakes that allowed pages to learn JShelter configuration for the page and consequently revert the forged readings (introduced in 0.23)
