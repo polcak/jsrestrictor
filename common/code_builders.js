@@ -260,7 +260,7 @@ var build_code = function(wrapper, ...args) {
 	for (let {original_name = target, wrapped_name, callable_name} of wrapper.wrapped_objects || []) {
 		if (original_name !== target) {
 			code += `
-				if (typeof ${original_name} === undefined) return;
+				if (typeof ${original_name} === "undefined") return;
 				`;
 		}
 		if (wrapped_name) {
