@@ -124,8 +124,19 @@ function define_page_context_function(wrapper) {
 		`;
 	}
 	code += `
-		exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
+		let exportedF = exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
 		${wrapper.post_replacement_code || ''}
+		if (exportedF !== originalF) { // This should eliminate Chromium
+			// Fail-safe not to interact with the original object
+			try {
+				let target = exportedF || {parent_object}.${parent_object_property};
+				let origPD = Object.getOwnPropertyDescriptor(originalF, "prototype");
+				Object.defineProperty(target, "prototype", origPD);
+			}
+			catch (e) {
+				console.debug("Copying 'prototype' failed", e);
+			}
+		}
 	`;
 	
 	return enclose_wrapping2(code, wrapper.wrapping_code_function_name, wrapper.wrapping_code_function_params, wrapper.wrapping_code_function_call_window);
