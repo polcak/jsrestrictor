@@ -129,12 +129,20 @@ function define_page_context_function(wrapper) {
 		if (exportedF !== originalF) { // This should eliminate Chromium
 			// Fail-safe not to interact with the original object
 			try {
-				let target = exportedF || {parent_object}.${parent_object_property};
-				let origPD = Object.getOwnPropertyDescriptor(originalF, "prototype");
-				Object.defineProperty(target, "prototype", origPD);
+				let target = exportedF || ${parent_object}.${parent_object_property};
+				let propNames = Reflect.ownKeys(originalF);
+				for (let propName of propNames) {
+					try {
+						let origPD = Object.getOwnPropertyDescriptor(originalF, propName);
+						WrapHelper.defineProperty(target, propName, origPD);
+					}
+					catch (e) {
+						console.debug("Copying property " + propName + " failed", target, e);
+					}
+				}
 			}
 			catch (e) {
-				console.debug("Copying 'prototype' failed", e);
+				console.debug("Copying properties failed", e);
 			}
 		}
 	`;
