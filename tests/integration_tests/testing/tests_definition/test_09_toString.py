@@ -40,3 +40,21 @@ def test_methods_toString(browser, methods_metadata):
     methods_toString = methods_metadata["toString"]
     for method in methods_toString:
         assert methods_toString[method] == browser.real.methods_metadata["toString"][method]
+
+## Test methods.toLocaleString(). They should be always unchanged by JShelter.
+def test_methods_toLocaleString(browser, methods_metadata):
+    current = methods_metadata["toLocaleString"]
+    for method in current:
+        assert current[method] == browser.real.methods_metadata["toLocaleString"][method]
+
+## Test methods.name. They should be always unchanged by JShelter.
+def test_methods_name(browser, methods_metadata):
+    current = methods_metadata["name"]
+    for method in current:
+        assert current[method] == browser.real.methods_metadata["name"][method]
+
+## Test methods.length. They should be always unchanged by JShelter.
+def test_methods_length(browser, methods_metadata):
+    current = methods_metadata["length"]
+    for method in current:
+        assert current[method] == browser.real.methods_metadata["length"][method]
