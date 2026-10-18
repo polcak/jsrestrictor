@@ -126,7 +126,7 @@ function define_page_context_function(wrapper) {
 	code += `
 		let exportedF = exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
 		${wrapper.post_replacement_code || ''}
-		if (exportedF !== originalF) { // This should eliminate Chromium
+		if (exportedF !== originalF) {
 			// Fail-safe not to interact with the original object
 			try {
 				let target = exportedF || ${parent_object}.${parent_object_property};
