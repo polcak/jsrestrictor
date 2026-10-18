@@ -32,11 +32,11 @@ from values_getters import get_methods_metadata
 #  this variable is provided to methods_toString test and the methods.toString() in the variable are compared with real values.
 @pytest.fixture(scope='module', autouse=True)
 def methods_metadata(browser):
-	return get_methods_metadata(browser.driver)
+    return get_methods_metadata(browser.driver)
 
 
 ## Test methods.toString(). They should be always unchanged by JShelter.
 def test_methods_toString(browser, methods_metadata):
-	methods_toString = methods_metadata["toString"]
-	for method in methods_toString:
-		assert methods_toString[method] == browser.real.methods_metadata["toString"][method]
+    methods_toString = methods_metadata["toString"]
+    for method in methods_toString:
+        assert methods_toString[method] == browser.real.methods_metadata["toString"][method]
