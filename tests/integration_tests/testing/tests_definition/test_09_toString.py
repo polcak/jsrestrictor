@@ -4,6 +4,7 @@
 #  internet.
 #
 #  Copyright (C) 2021  Martin Bednar
+#  Copyright (C) 2026  Libor Polčák
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
