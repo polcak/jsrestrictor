@@ -153,7 +153,7 @@ class TestedValues:
 
                  worker,
 
-                 methods_toString
+                 methods_metadata
                  ):
         self.navigator = Navigator(
             user_agent,
@@ -206,4 +206,4 @@ class TestedValues:
         self.webgl_pixels = webgl_pixels
         self.webgl_dataURL = webgl_dataURL
         self.worker = worker
-        self.methods_toString = methods_toString
+        self.methods_metadata = methods_metadata

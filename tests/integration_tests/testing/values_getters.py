@@ -430,4 +430,4 @@ def get_methods_metadata(driver):
             for method in APIs[API]['instance_methods']:
                 fill_metadata(driver, output, f"{API}.prototype.{method}")
                 fill_metadata(driver, output, f"(new {API}).{method}")
-    return output["toString"]
+    return output

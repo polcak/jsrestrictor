@@ -80,5 +80,5 @@ def init(driver):
         webgl_pixels=values_getters.get_webgl_pixels(driver,"webglCanvas"),
         webgl_dataURL=values_getters.get_dataURL_canvas(driver,"webglCanvas"),
         worker = driver.execute_script("return window.Worker"),
-        methods_toString=values_getters.get_methods_metadata(driver)
+        methods_metadata=values_getters.get_methods_metadata(driver)
     )

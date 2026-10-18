@@ -103,7 +103,7 @@ level0 = TestedValues(
     webgl_pixels = 'REAL VALUE',
     webgl_dataURL = 'REAL VALUE',
     worker = 'REAL VALUE',
-    methods_toString='REAL VALUE'
+    methods_metadata='REAL VALUE'
 )
 
 ## Expected values for default level 1 of JShelter.
@@ -170,7 +170,7 @@ level1 = TestedValues(
     webgl_pixels = 'REAL VALUE',
     webgl_dataURL = 'REAL VALUE',
     worker = 'STRICT',
-    methods_toString='REAL VALUE'
+    methods_metadata='REAL VALUE'
 )
 
 ## Expected values for default level 2 of JShelter.
@@ -237,7 +237,7 @@ level2 = TestedValues(
     webgl_pixels = 'SPOOF VALUE',
     webgl_dataURL = 'SPOOF VALUE',
     worker = 'STRICT',
-    methods_toString='REAL VALUE'
+    methods_metadata='REAL VALUE'
 )
 
 ## Expected values for default level 3 of JShelter.
@@ -294,5 +294,5 @@ level3 = TestedValues(
     webgl_pixels = 'SPOOF VALUE',
     webgl_dataURL = 'SPOOF VALUE',
     worker = 'STRICT',
-    methods_toString='REAL VALUE'
+    methods_metadata='REAL VALUE'
 )
