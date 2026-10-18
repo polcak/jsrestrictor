@@ -393,8 +393,8 @@ def get_methods_metadata(driver):
                 "toJSON"
             ]
         },
-        "navigator": {
-            "static_methods": [
+        "Geolocation": {
+            "instance_methods": [
                 "getCurrentPosition",
                 "watchPosition",
                 "clearWatch"
