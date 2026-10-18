@@ -23,7 +23,7 @@
 
 import pytest
 
-from values_getters import get_methods_toString
+from values_getters import get_methods_metadata
 
 
 ## Setup method - it is run before toString tests execution starts.
@@ -32,7 +32,7 @@ from values_getters import get_methods_toString
 #  this variable is provided to methods_toString test and the methods.toString() in the variable are compared with real values.
 @pytest.fixture(scope='module', autouse=True)
 def methods_toString(browser):
-	return get_methods_toString(browser.driver)
+	return get_methods_metadata(browser.driver)
 
 
 ## Test methods.toString(). They should be always unchanged by JShelter.
