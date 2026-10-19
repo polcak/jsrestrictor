@@ -90,7 +90,7 @@ function define_page_context_function(wrapper) {
 		try {
 			${create_counter_call(wrapper, "call")}
 		}
-		catch (e) { /* No action: let the wrapper continue uninterupted. TODO: let the user decide? */ }`
+		catch (e) { /* let the wrapper continue uninterupted. */ console.warn("FPD failed to propagate information to JShelter backend"); }`
 	
 	// if apply_if condition is present, we need to wrap for FPD anyhow
 	if (wrapper.apply_if !== undefined) {
