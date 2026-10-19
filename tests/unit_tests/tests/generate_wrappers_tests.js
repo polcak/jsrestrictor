@@ -26,7 +26,7 @@
  *
  * generate_wrappers.js no longer implements the wrapper-code steps itself; it
  * calls build_code() from common/code_builders.js inside a vm sandbox, exactly
- * like the Firefox injection path does [8]. The tests therefore assert on the
+ * like the Firefox injection path does. The tests therefore assert on the
  * behaviour of the emitted bodies, not on the wording of intermediate steps.
  *
  * Two deliberate conventions:
@@ -35,8 +35,13 @@
  *    minification of the generated output must not change a verdict; a change
  *    of behaviour must.
  *  - Wherever a property or a call can be executed instead of matched as text,
- *    we execute it. The MAIN-world shims are small enough to be stubbed, so a
- *    wrapper body can be run against a fake scope and observed.
+ *    we execute it, against stubs identical to the shims emitted into
+ *    wrappers_generated.js.
+ *
+ * Where the shared builder (code_builders.js) behaves differently from the
+ * old converter, the builder wins: the converter's deviations (deduplication
+ * of apply_if, omission of `freeze: false`) were drift from Firefox, not
+ * features, and the tests below document the parity.
  */
 
 const fs = require("fs");
@@ -48,6 +53,8 @@ const {
   sandbox,
   loadDescriptors,
   stripEnvelope,
+  ENVELOPE_OPEN,
+  ENVELOPE_CLOSE,
   withToStringMapping,
   buildWrapperBody,
   buildFpdBodies,
@@ -116,16 +123,23 @@ function norm(src) {
   return out;
 }
 
-/** Assert that needle occurs in body, ignoring comments and formatting. */
 function has(body, needle) {
   expect(norm(body)).toContain(norm(needle));
 }
 function hasNot(body, needle) {
   expect(norm(body)).not.toContain(norm(needle));
 }
-/** Index of needle in normalised body, or -1. */
 function at(body, needle) {
   return norm(body).indexOf(norm(needle));
+}
+function count(body, needle) {
+  const hay = norm(body), nd = norm(needle);
+  let n = 0, i = 0;
+  while ((i = hay.indexOf(nd, i)) !== -1) { n++; i += nd.length; }
+  return n;
+}
+function lastAt(body, needle) {
+  return norm(body).lastIndexOf(norm(needle));
 }
 
 // ============================================================
@@ -169,7 +183,10 @@ function makeExportFunction() {
 
 /**
  * Run a generated body with the identifiers it expects as free variables.
- * Returns the (shared) state object so tests can inspect the outcome.
+ * Note the `window` alias: build_code() emits `var X = window.<original>` for
+ * wrapped_objects [6] and the emitted guard `typeof ... === undefined` never
+ * fires, so a missing window is a hard ReferenceError, not a graceful skip.
+ * Returns the (shared) context so tests can inspect the outcome.
  */
 function runBody(body, state = {}) {
   const ctx = {
@@ -187,6 +204,7 @@ function runBody(body, state = {}) {
     ...state.globals,
   };
   vm.createContext(ctx);
+  ctx.window = ctx;
   vm.runInContext(`(function(){${body}})();`, ctx);
   return ctx;
 }
@@ -228,7 +246,6 @@ if (!WRAPPERS_DIR) {
   console.warn("generate_wrappers_tests: descriptor directory not found; " +
     "set JSSHELLER_WRAPPERS_DIR to run the descriptor-dependent suites.");
 }
-// Suites that need the shared builders in the sandbox.
 const guarded = WRAPPERS_DIR ? describe : xdescribe;
 
 // ============================================================
@@ -248,12 +265,12 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
   });
 
   describe("stripEnvelope", function () {
-    // Guards the coupling between the converter and enclose_wrapping(): if the
-    // envelope in code_builders.js ever changes shape, the build must fail loudly
-    // rather than embed a broken body.
+    // The input is assembled from the converter's own constants, so the test
+    // cannot silently diverge from enclose_wrapping() again; the guard against
+    // a real divergence lives in the guarded suite below, where we compare
+    // against sandbox.enclose_wrapping().
     it("removes the IIFE envelope emitted by enclose_wrapping()", function () {
-      const wrapped = "try{(function(...args) {BODY})(" + "});} catch (e) {console.error(e)}";
-      expect(stripEnvelope(wrapped)).toBe("BODY");
+      expect(stripEnvelope(ENVELOPE_OPEN + "BODY" + ENVELOPE_CLOSE)).toBe("BODY");
     });
 
     it("rejects a body that does not start with the envelope", function () {
@@ -261,7 +278,7 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
     });
 
     it("rejects a body with an altered closing envelope", function () {
-      expect(() => stripEnvelope("try{(function(...args) {B})(});} catch (e) {}")).toThrow();
+      expect(() => stripEnvelope(ENVELOPE_OPEN + "B" + "})).catch(()=>{})")).toThrow();
     });
 
     it("rejects non-string input", function () {
@@ -297,13 +314,13 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
       expect(items.length).toBe(2);
 
       const ua = items.find(i => i[0] === "navigator.userAgent");
-      expect(ua[1]).toBe(1);            // property
-      expect(ua[2] instanceof Set).toBe(true); // fp_build_property_wrapper checks .size [8]
+      expect(ua[1]).toBe(1);                  // property
+      expect(ua[2] instanceof Set).toBe(true); // fp_build_property_wrapper checks .size
       expect(ua[3]).toBe(0);
 
       const now = items.find(i => i[0] === "window.Date.now");
-      expect(now[1]).toBe(0);           // function
-      expect(now[3]).toBe(1);           // report_args
+      expect(now[1]).toBe(0);                  // function
+      expect(now[3]).toBe(1);                  // report_args
     });
   });
 
@@ -335,14 +352,13 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
   describe("loadDescriptors", function () {
     it("switches the shared builder to the Chromium target", function () {
       // Without this, build_code() emits the xray marshalling block referencing
-      // xrayWindow/cloneInto, which do not exist in the MAIN world [2].
+      // xrayWindow/cloneInto, which do not exist in the MAIN world.
       expect(sandbox.jshelter_target).toBe("chromium");
     });
 
     it("collects the registered wrappers via add_wrappers", function () {
       const keys = Object.keys(sandbox.build_wrapping_code);
       expect(keys.length).toBeGreaterThan(50);
-      // Keys are resource names as used by the level wrapper lists.
       expect(keys.every(k => k.includes("."))).toBe(true);
     });
 
@@ -355,11 +371,13 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       expect(typeof sandbox.additional_wrappers_init_code).toBe("string");
       expect(typeof sandbox.fpd_updateCountCode).toBe("string");
     });
+
+    it("stripEnvelope inverts the real enclose_wrapping()", function () {
+      expect(stripEnvelope(sandbox.enclose_wrapping("BODY"))).toBe("BODY");
+    });
   });
 
   describe("every registered wrapper builds into a parseable body", function () {
-    // This single loop replaces most of the old per-step text assertions: it is
-    // the check that the shared builder and the converter cannot drift apart.
     it("parses for all descriptors", function () {
       const failures = [];
       for (const [key, desc] of Object.entries(sandbox.build_wrapping_code)) {
@@ -373,19 +391,15 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
     });
 
     it("keeps the xray marshalling block out of the bodies", function () {
-      // Identity shims make forPage/pageAPI harmless; xrayWindow must not appear.
       const offenders = [];
       for (const [key, desc] of Object.entries(sandbox.build_wrapping_code)) {
         if (!desc.wrapping_function_body) continue;
-        const body = buildWrapperBody(desc);
-        if (at(body, "xrayWindow") !== -1) offenders.push(key);
+        if (at(buildWrapperBody(desc), "xrayWindow") !== -1) offenders.push(key);
       }
       expect(offenders).toEqual([]);
     });
 
     it("does not leak builder-internal names as implicit globals", function () {
-      // build_code() emits plain assignments for a few temporaries; if any of
-      // them reaches the MAIN world undeclared, it becomes a window property.
       const ctx = {
         WrapHelper: makeWrapHelper(), exportFunction: makeExportFunction(),
         updateCount: () => {}, fp_enabled: false, fpdTrackCallers: false,
@@ -393,13 +407,14 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
         Performance: Object.assign(function () {}, { prototype: { now() { return 1; } } }),
       };
       vm.createContext(ctx);
+      ctx.window = ctx;
       const before = new Set(Object.getOwnPropertyNames(ctx));
       const failures = [];
       for (const [key, desc] of Object.entries(sandbox.build_wrapping_code)) {
         if (!(desc.post_wrapping_code || []).some(s => s.code_type === "object_properties")) continue;
         try {
           vm.runInContext(`(function(){${buildWrapperBody(desc)}})();`, ctx);
-        } catch (e) { /* runtime stubs are incomplete; we only look for leaks */ }
+        } catch (e) { /* incomplete runtime stubs; we only look for leaks */ }
       }
       for (const name of ["leaf", "originalPDF", "replacementPD", "code_spec", "prop", "assign", "wrap_spec"]) {
         if (Object.getOwnPropertyNames(ctx).includes(name) && !before.has(name)) failures.push(name);
@@ -424,19 +439,16 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
     });
 
     it("copies the own properties of the original onto the replacement", function () {
-      // exportFunction() yields a new function object without own properties, so
-      // without the copy a replaced Date would lose prototype, parse and UTC.
+      // exportFunction() yields a new function object without own properties,
+      // so without the copy a replaced Date would lose prototype, parse, UTC.
       const native = makeNativeCtor();
-      const scope = { F: native };
-      const ctx = runBody(buildWrapperBody(base()), { globals: { scope } });
+      const ctx = runBody(buildWrapperBody(base()), { globals: { scope: { F: native } } });
       expect(ctx.scope.F.parse()).toBe(7);
       expect(ctx.scope.F.UTC()).toBe(8);
       expect(ctx.scope.F.prototype).toBe(native.prototype);
     });
 
     it("copies the descriptor attributes, not only the values", function () {
-      // The attributes are the fingerprintable part: an assignment would leave
-      // prototype writable/enumerable/configurable.
       const native = makeNativeCtor();
       const ctx = runBody(buildWrapperBody(base()), { globals: { scope: { F: native } } });
       const pd = Object.getOwnPropertyDescriptor(ctx.scope.F, "prototype");
@@ -444,6 +456,18 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       expect(pd.writable).toBe(false);
       expect(pd.enumerable).toBe(false);
       expect(pd.configurable).toBe(false);
+    });
+
+    it("copies nothing when the original has no own properties to copy", function () {
+      // Every function has its own default `prototype` (writable:true); a
+      // copy from a prototype-less original (Date.now-like method) must leave
+      // that default intact, i.e. must NOT swap in native attributes.
+      const now = function now() { return 1; };
+      const wrapper = { ...base(), wrapping_function_body: "return 0;" };
+      const ctx = runBody(buildWrapperBody(wrapper), { globals: { scope: { F: now } } });
+      expect(ctx.scope.F()).toBe(0);
+      const pd = Object.getOwnPropertyDescriptor(ctx.scope.F, "prototype");
+      expect(pd.writable).toBe(true); // untouched default function prototype
     });
 
     it("restores properties the same way for a replaced function elsewhere", function () {
@@ -457,7 +481,6 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       const ctx = runBody(buildWrapperBody(wrapper), { globals: { scope } });
       expect(ctx.scope.Other.m()).toBe(42);
       expect(ctx.scope.Other.m.parse()).toBe(7);
-      // The originally targeted property stays untouched.
       expect(ctx.scope.F).not.toBe(ctx.scope.Other.m);
     });
 
@@ -468,22 +491,12 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       expect(Object.getOwnPropertyDescriptor(native, "prototype")).toEqual(before);
     });
 
-    it("skips the copy when there is nothing to copy (Date.now-like functions)", function () {
-      const now = function now() { return 1; };   // native functions have no own "prototype"
-      const wrapper = { ...base(), wrapping_function_body: "return 0;" };
-      const ctx = runBody(buildWrapperBody(wrapper), { globals: { scope: { F: now } } });
-      expect(ctx.scope.F()).toBe(0);
-      // A replacement of a method without "prototype" must not gain one.
-      expect(Object.prototype.hasOwnProperty.call(ctx.scope.F, "prototype")).toBe(false);
-    });
-
     it("emits the FPD counter hook keyed by the resource name", function () {
       const calls = [];
       const ctx = runBody(buildWrapperBody(base()), {
         globals: { scope: { F: makeNativeCtor() } },
         updateCount: (...a) => calls.push(a),
       });
-      // The hook is gated by fp_enabled; enable it the way init() does.
       ctx.fp_enabled = true;
       ctx.scope.F();
       expect(calls.length).toBeGreaterThan(0);
@@ -492,7 +505,8 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
     });
 
     it("registers the toString mapping for the replacement", function () {
-      const ctx = runBody(buildWrapperBody(base()), { globals: { scope: { F: makeNativeCtor() } } });
+      const ctx = runBody(buildWrapperBody(withToStringMapping(base())),
+        { globals: { scope: { F: makeNativeCtor() } } });
       const keys = Object.keys(ctx.original_functions);
       expect(keys.some(k => k.includes("42"))).toBe(true);
     });
@@ -500,9 +514,6 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
 
   describe("ordering constraints", function () {
     it("copies own properties after the export but before post_wrapping_code", function () {
-      // After the export: the copy target must be the exported object.
-      // Before post_wrapping_code: otherwise a post-defined wrapper (e.g. the
-      // farbling Date.now) would be overwritten by the native method again.
       const wrapper = {
         parent_object: "scope", parent_object_property: "F",
         wrapping_function_body: "return 42;",
@@ -531,10 +542,18 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       expect(at(body, "Object.freeze")).toBeGreaterThan(at(body, "scope.POST_MARKER"));
     });
 
-    it("emits freeze only when requested", function () {
-      hasNot(buildWrapperBody({ parent_object: "scope", parent_object_property: "F" }), "Object.freeze");
-      has(buildWrapperBody({ parent_object: "scope", parent_object_property: "F", freeze: true }), "Object.freeze");
-      hasNot(buildWrapperBody({ parent_object: "scope", parent_object_property: "F", freeze: false }), "Object.freeze");
+    it("freezes the target only when freeze is requested", function () {
+      // build_code() keeps the `if (${wrapper.freeze})` guard in the emitted
+      // code for every non-undefined value of freeze [6] — i.e. `freeze: false`
+      // produces dead code rather than being elided like the old converter did
+      // [2]. What matters is observable behaviour, so we execute both variants.
+      const mk = () => ({ F: function () {} });
+      const frozenCtx = runBody(buildWrapperBody({ parent_object: "scope", parent_object_property: "F", freeze: true, wrapping_function_body: "return 1;" }),
+        { globals: { scope: mk() } });
+      const plainCtx = runBody(buildWrapperBody({ parent_object: "scope", parent_object_property: "F", freeze: false, wrapping_function_body: "return 1;" }),
+        { globals: { scope: mk() } });
+      expect(Object.isFrozen(frozenCtx.scope.F)).toBe(true);
+      expect(Object.isFrozen(plainCtx.scope.F)).toBe(false);
     });
 
     it("sets the prototype chain when wrapper_prototype is present", function () {
@@ -555,7 +574,11 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       has(body, "return originalF.call(this, ...rest)");
     });
 
-    it("does not double-wrap apply_if when a replacement body exists", function () {
+    it("emits apply_if both in the replacement body and around post_wrapping_code", function () {
+      // Parity with Firefox: build_code() checks apply_if at call time (inside
+      // replacementF, with the originalF fallback) AND at init time around
+      // build_post_normal()/build_post_fpd() [6]. The old converter deduplicated
+      // the second occurrence; that was drift, so the expectation is 2.
       const body = buildWrapperBody({
         parent_object: "scope", parent_object_property: "F",
         apply_if: "MARKER_COND", wrapping_function_body: "return 1;",
@@ -563,23 +586,23 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
           { code_type: "assign", parent_object: "scope", parent_object_property: "P", value: "1" },
         ],
       });
-      const occurrences = norm(body).split("MARKER_COND").length - 1;
-      expect(occurrences).toBe(1);
+      expect(count(body, "MARKER_COND")).toBe(2);
     });
 
-    it("guards post_wrapping_code when there is no replacement body", function () {
+    it("emits apply_if once when there is no replacement body", function () {
       const body = buildWrapperBody({
         parent_object: "scope", parent_object_property: "F", apply_if: "MARKER_COND",
         post_wrapping_code: [
           { code_type: "assign", parent_object: "scope", parent_object_property: "P", value: "1" },
         ],
       });
-      expect(at(body, "MARKER_COND")).toBeGreaterThanOrEqual(0);
+      expect(count(body, "MARKER_COND")).toBe(1);
     });
 
     it("still observes the property for FPD when its apply_if is false", function () {
-      // build_post_fpd(): object_properties with apply_if must get an else branch
-      // with counting wrappers, otherwise FPD sees nothing when JSS stands aside.
+      // build_post_fpd(): object_properties with apply_if must get an else
+      // branch with counting wrappers around the untouched original, otherwise
+      // FPD sees nothing when JSS stands aside [6].
       const wrapper = {
         parent_object: "scope", parent_object_property: "F",
         post_wrapping_code: [
@@ -592,9 +615,12 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
         ],
       };
       const body = buildWrapperBody(wrapper);
-      const iElse = at(body, "else");
-      expect(iElse).toBeGreaterThanOrEqual(0);
-      expect(at(body, "updateCount(\"scope.F\", \"get\"")).toBeGreaterThan(iElse);
+      // Two emitted variants of the property wrapper: the spoofing one and the
+      // fpd_only counting one...
+      expect(count(body, 'updateCount("scope.F", "get"')).toBe(2);
+      // ...the fpd_only variant reads the descriptor instead of property_value
+      // and must therefore sit in the else branch.
+      expect(lastAt(body, "originalP_get")).toBeGreaterThan(at(body, "else"));
     });
   });
 
@@ -620,7 +646,7 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
     });
 
     it("leaves an absent API untouched", function () {
-      const scope = {};   // no "v"
+      const scope = {};   // no "v" -> the guard must abort the wrapper
       const wrapper = {
         parent_object: "scope", parent_object_property: "v",
         post_wrapping_code: [{
@@ -634,8 +660,11 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
   });
 
   describe("delete_properties and function_export (executed)", function () {
+    // NOTE: the fixture carries the wrapper's target property (`x`) because
+    // build_code() starts with an existence check on `parent_object.parent_object_property`
+    // and returns early when the wrapped API is missing [6].
     it("neutralises a property without removing it", function () {
-      const scope = { getBattery() { return 1; } };
+      const scope = { x: 0, getBattery() { return 1; } };
       const wrapper = {
         parent_object: "scope", parent_object_property: "x",
         post_wrapping_code: [
@@ -650,7 +679,7 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
     });
 
     it("exports an existing function under a new name", function () {
-      const scope = { orig: function orig() { return 3; } };
+      const scope = { x: 0, orig: function orig() { return 3; } };
       const wrapper = {
         parent_object: "scope", parent_object_property: "x",
         post_wrapping_code: [{
@@ -664,8 +693,8 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
   });
 
   describe("FPD wrappers", function () {
-    // The report_args pass mutates the JSS descriptors in place [8]; run it
-    // before checking the FPD table so the order reflects the Firefox path.
+    // report_args mutate the JSS descriptors in place; running the pass before
+    // the FPD table mirrors fp_assemble_injection() on Firefox.
     it("builds bodies for property and function items", function () {
       const items = [
         ["scope.v", 1, new Set(["get"]), 0],
@@ -680,6 +709,8 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
     });
 
     it("keeps the original semantics of a monitored function", function () {
+      // The body reads the original via `window.<resource>` (build_code()
+      // prefixes wrapped_objects with window), hence runBody aliases window.
       const scope = { f: function f(a) { return a + 1; } };
       const bodies = buildFpdBodies([["scope.f", 0, new Set(["call"]), 0]]);
       const calls = [];
@@ -704,14 +735,12 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       const bodies = buildFpdBodies([[resource, 1, new Set(["get"]), 0]]);
       expect(bodies.has(resource)).toBe(true);
       // The override counts the related CSS property instead of the access itself.
-      has(bodies.get(resource), "updateCount(\"CSSStyleDeclaration.prototype.fontFamily\"");
+      has(bodies.get(resource), 'updateCount("CSSStyleDeclaration.prototype.fontFamily"');
     });
 
     it("propagates report_args from the FPD configuration", function () {
       const items = [["scope.f", 0, new Set(["call"]), 1]];
       buildFpdBodies(items);
-      // fp_append_reporting_to_jss_wrappers() set report_args on the JSS descriptor
-      // for the same resource [8]; the serialising map call must therefore appear.
       const desc = sandbox.build_wrapping_code["scope.f"];
       if (desc) expect(desc.report_args).toBe(true);
     });

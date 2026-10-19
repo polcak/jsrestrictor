@@ -569,6 +569,8 @@ if (typeof module !== "undefined") {
     sandbox,
     loadDescriptors,
     stripEnvelope,
+		ENVELOPE_OPEN,
+		ENVELOPE_CLOSE,
     withToStringMapping,
     buildWrapperBody,
     buildFpdBodies,
