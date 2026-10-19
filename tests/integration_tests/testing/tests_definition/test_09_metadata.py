@@ -42,7 +42,8 @@ def test_methods_toString(browser, methods_metadata):
     for method in methods_toString:
         if browser.jsr_level in [3, "Experiment"] and methods_toString[method] == None:
             continue # Some methods such as Geolocation are removed
-        assert methods_toString[method] == browser.real.methods_metadata["toString"][method]
+        assert methods_toString[method] == browser.real.methods_metadata["toString"][method], \
+                method + " " + methods_toString[method]
 
 ## Test methods.toLocaleString(). They should be always unchanged by JShelter.
 def test_methods_toLocaleString(browser, methods_metadata):
@@ -50,7 +51,8 @@ def test_methods_toLocaleString(browser, methods_metadata):
     for method in current:
         if browser.jsr_level in [3, "Experiment"] and current[method] == None:
             continue # Some methods such as Geolocation are removed
-        assert current[method] == browser.real.methods_metadata["toLocaleString"][method]
+        assert current[method] == browser.real.methods_metadata["toLocaleString"][method], \
+                method + " " + current[method]
 
 ## Test methods.name. They should be always unchanged by JShelter.
 def test_methods_name(browser, methods_metadata):
@@ -58,7 +60,8 @@ def test_methods_name(browser, methods_metadata):
     for method in current:
         if browser.jsr_level in [3, "Experiment"] and current[method] == None:
             continue # Some methods such as Geolocation are removed
-        assert current[method] == browser.real.methods_metadata["name"][method]
+        assert current[method] == browser.real.methods_metadata["name"][method], \
+                method + " " + current[method]
 
 ## Test methods.length. They should be always unchanged by JShelter.
 def test_methods_length(browser, methods_metadata):
@@ -66,4 +69,5 @@ def test_methods_length(browser, methods_metadata):
     for method in current:
         if browser.jsr_level in [3, "Experiment"] and current[method] == None:
             continue # Some methods such as Geolocation are removed
-        assert current[method] == browser.real.methods_metadata["length"][method]
+        assert current[method] == browser.real.methods_metadata["length"][method], \
+                method + " " + current[method]
