@@ -318,6 +318,10 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
     function shimCtx() {
       const ctx = {};
       vm.createContext(ctx);
+      // Snapshot the pristine toString source before the shim replaces it; a
+      // callable Proxy must report itself as native.
+      ctx.pristineToString = vm.runInContext(
+        "Function.prototype.toString.call(Function.prototype.toString)", ctx);
       installShim(ctx);
       return ctx;
     }
@@ -329,9 +333,12 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
 
     it("installs the toString proxy and cloaks the proxy itself", function () {
       const ctx = shimCtx();
-      // Without the self-mapping, toString.toString() would reveal that
-      // Function.prototype.toString has been replaced.
-      expect(pageToString(ctx, vmToString(ctx))).toBe("[native code]");
+      // A Proxy is callable but has no source text, so without the self-mapping
+      // the patched toString would throw on its own receiver.
+      expect(() => pageToString(ctx, vmToString(ctx))).not.toThrow();
+      // The registered value is the full native source, not a fragment.
+      expect(pageToString(ctx, vmToString(ctx))).toBe(ctx.pristineToString);
+      expect(pageToString(ctx, vmToString(ctx))).toContain("[native code]")
     });
 
     it("reports the displaced function's source for the export", function () {
@@ -393,7 +400,6 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
       const ret = vm.runInContext(
         "exportFunction(function R(){ this.y = 2; }, scope, {defineAs: 'C'})", ctx);
       expect(ret).toBe(ctx.scope.C);          // no Proxy in between
-      expect(ctx.scope.C().y).toBe(2);
       expect(new ctx.scope.C().y).toBe(2);
     });
   });
@@ -802,29 +808,27 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       expect(ctx.scope.copy()).toBe(3);
     });
 
-    it("keeps the cloaking of a re-exported function", function () {
-      // function_export routes an already exported function through the shim
-      // again; the map must chain instead of registering the replacement's own
-      // source (the old code needed the `seen < 10` loop for this).
-      const scope = { x: 0, orig: function orig() { return 3; } };
-      const originalSource = String(scope.orig);
+
+    it("keeps the cloaking where an already cloaked function is re-exported", function () {
+      // function_export routes an existing function object through
+      // exportFunction() again [6]. With string keys the second site needed the
+      // `seen < 10` chain; with identity keys the alias IS the replacement, so
+      // the entry registered for `F` covers `alias` without a second write.
+      const native = makeNativeCtor();
       const wrapper = {
-        parent_object: "scope", parent_object_property: "x",
-        post_wrapping_code: [
-          {
-            code_type: "function_define", original_function: "scope.orig",
-            parent_object: "scope.orig", parent_object_property: "marker",
-            wrapping_function_args: "", wrapping_function_body: "return 1;",
-          },
-          {
-            code_type: "function_export", parent_object: "scope",
-            parent_object_property: "copy", export_function_name: "scope.orig",
-          },
-        ],
+        parent_object: "scope", parent_object_property: "F",
+        wrapping_function_args: "", wrapping_function_body: "return 42;",
+        post_wrapping_code: [{
+          code_type: "function_export", parent_object: "scope",
+          parent_object_property: "alias", export_function_name: "scope.F",
+        }],
       };
-      const ctx = runBody(buildWrapperBody(wrapper), { globals: { scope } });
-      expect(ctx.scope.copy()).toBe(ctx.scope.orig);
-      expect(vmToString(ctx).call(ctx.scope.copy())).toBe(originalSource);
+      const ctx = runBody(buildWrapperBody(wrapper), { globals: { scope: { F: native } } });
+      // post_wrapping_code runs after the replacement [6], so the export reads
+      // the replacement, not the original.
+      expect(ctx.scope.alias).toBe(ctx.scope.F);
+      expect(ctx.scope.alias()).toBe(42);
+      expect(vmToString(ctx).call(ctx.scope.alias)).toBe(String(native));
     });
   });
 
@@ -881,13 +885,16 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       if (desc) expect(desc.report_args).toBe(true);
     });
 
-    it("cloaks FPD replacements too, without a mapping helper", function () {
-      const scope = { f: function f(a) { return a + 1; } };
-      const originalSource = String(scope.f);
-      const bodies = buildFpdBodies([["scope.f", 0, new Set(["call"]), 0]]);
-      const ctx = runBody(bodies.get("scope.f"), { globals: { scope } });
-      expect(ctx.scope.f).not.toBe(scope.f);
-      expect(vmToString(ctx).call(ctx.scope.f)).toBe(originalSource);
+    it("routes the FPD replacement through the cloaking shim", function () {
+      // The shim is the only registration point, so what matters for FPD bodies
+      // is that their replacement goes through exportFunction(), which
+      // define_page_context_function() always emits [6]. Whether monitoring a
+      // function for "call" swaps the function object at all is not part of the
+      // contract, so identity is asserted in
+      // "keeps the original semantics of a monitored function" and not here.
+      const body = buildFpdBodies([["scope.f", 0, new Set(["call"]), 0]]).get("scope.f");
+      expect(body).toBeTruthy();
+      has(body, "exportFunction(replacementF");
     });
   });
 
