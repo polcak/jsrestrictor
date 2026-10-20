@@ -1,5 +1,10 @@
 Title: Release history
 
+## 0.24.7
+
+* Keep original properties and metadata for wrapped functions. Prevent pages from detecting changes made by JShelter.
+* Chromium-based browsers: Share again all possible code to generate wrappers from Firefox which solves many regressions introduced in 0.23
+
 ## 0.24.6
 
 * Propagate changes in NSCL. A security fix is the improvement in mechanisms that we patch to   prevent a page to evade the protection mainly in the context of dynamically generated iframes by the page.
