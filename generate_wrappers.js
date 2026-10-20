@@ -24,6 +24,15 @@
  *      exportFunction and WrapHelper, an init() entry point and a Port
  *      that negotiates with the ISOLATED-world content script.
  *
+ *     The exportFunction shim additionally carries the Function.prototype
+ *     .toString cloaking adapted from the NoScript Commons Library
+ *     (nscl/common/Worlds.main.js, GPL-3.0-or-later): a WeakMap keyed by the
+ *     exported function object, consulted by a Proxy installed over
+ *     Function.prototype.toString. Registration happens inside the shim, so
+ *     every export — including the nested function_define replacements that
+ *     define_page_context_function() emits (Date.now) — is covered without
+ *     the descriptors or the generator having to know about it.
+ *
  * The sandbox sets jshelter_target = "chromium" so that build_code() omits
  * the xray marshalling block (xrayWindow/cloneInto do not exist in the MAIN
  * world). Everything else, including the post-export copy of own properties
@@ -162,24 +171,6 @@ const fpBuildFunctionWrapper = () => inCtx("(item) => fp_build_function_wrapper(
 const fpAppendReporting = () => inCtx("(items) => fp_append_reporting_to_jss_wrappers(items)");
 
 /**
- * The old converter emitted `original_functions[replacementF.toString()] =
- * originalF.toString()` directly in its step 4. With build_code() reused, the
- * equivalent is prepended to the wrapper's post_replacement_code, which is
- * emitted right after the exportFunction() call.
- *
- * NOTE: this intentionally references the builder-internal names replacementF
- * and originalF. The "never refer to code-builder names" rule applies to
- * wrappers; here we are on the builder side of the boundary. If
- * define_page_context_function() ever renames its locals, this string must be
- * updated in lockstep.
- */
-function withToStringMapping(desc) {
-  if (!desc.wrapping_function_body) return desc;
-  const map = "try { original_functions[replacementF.toString()] = originalF.toString(); } catch(e) {}";
-  return { ...desc, post_replacement_code: `${map}\n${desc.post_replacement_code || ""}` };
-}
-
-/**
  * Produce the table-function body for a single wrapper descriptor using the
  * shared pipeline: build_code() + joinWrappingCode() (the Object.create /
  * Object.defineProperty -> WrapHelper rewrite, with the MAIN-world shim being
@@ -220,16 +211,116 @@ function buildFpdBodies(fpdItems) {
     const resource = item[0];
     const desc = item[1] ? fpBuildPropertyWrapper()(item) : fpBuildFunctionWrapper()(item);
     if (!desc.parent_object) continue; // empty property set
-    bodies.set(resource, buildWrapperBody(withToStringMapping(desc)));
+    bodies.set(resource, buildWrapperBody(desc));
   }
   for (const additional of sandbox.additional_wrappers) {
     const resource = `${additional.parent_object}.${additional.parent_object_property}`;
     if (bodies.has(resource)) {
-      bodies.set(resource, buildWrapperBody(withToStringMapping(additional)));
+      bodies.set(resource, buildWrapperBody(additional));
     }
   }
   return bodies;
 }
+
+// ============================================================
+// Chromium MAIN-world export shim, emitted verbatim into the output.
+// ============================================================
+/**
+ * exportFunction + Function.prototype.toString cloaking for the MAIN world.
+ *
+ * The toString mechanism is adapted from the NoScript Commons Library
+ * (nscl/common/Worlds.main.js, Copyright (C) 2020-2024 Giorgio Maone
+ * <https://maone.net>, GPL-3.0-or-later). NSCL installs the WeakMap/Proxy pair
+ * inside its exportFunction(); we do the same, which is why every export is
+ * covered by construction.
+ *
+ * Deliberate deviations from NSCL:
+ *   - no Proxy is returned: JShelter wrappers rely on plain function identity
+ *     for property writes and `new`, and the copy-back loop emitted by
+ *     build_code() must operate on the real function object;
+ *   - the displaced original is resolved via descriptors first (reading a
+ *     native accessor off its prototype throws "Illegal invocation");
+ *   - the map is exposed as exportFunction._toStringMap for introspection and
+ *     for the tests, which evaluate this very string.
+ */
+const EXPORT_SHIM_SOURCE = `// ====== exportFunction shim + toString cloaking (Chromium MAIN world) ======
+// In Firefox, exportFunction clones functions across security boundaries and
+// hides them behind an XPC proxy; here Object.defineProperty performs the
+// export, which would leave the replacement's own source text visible to
+// Function.prototype.toString(). The cloaking below closes that hole: the
+// replacement reports the source of the function it displaced, exactly like
+// Firefox reports the source of the pristine original.
+//
+// BEGIN code adapted from NoScript Commons Library, nscl/common/Worlds.main.js
+//   Copyright (C) 2020-2024 Giorgio Maone <https://maone.net>
+//   SPDX-License-Identifier: GPL-3.0-or-later
+if (typeof exportFunction === "undefined") {
+  var _toStringMap = new WeakMap();
+  var _originalToStringF = Function.prototype.toString;
+  var _toStringProxy = new Proxy(_originalToStringF, {
+    apply: function(target, thisArg, args) {
+      return _toStringMap.has(thisArg)
+        ? _toStringMap.get(thisArg)
+        : Reflect.apply(target, thisArg, args);
+    }
+  });
+  _toStringMap.set(_toStringProxy, _originalToStringF.call(_originalToStringF));
+  Object.defineProperty(Function.prototype, "toString", {
+    value: _toStringProxy,
+    writable: true,
+    configurable: true,
+    enumerable: false
+  });
+  // END NSCL-derived toString cloaking
+
+  // Resolve the value a wrapper is about to displace. Descriptor-first: reading
+  // an accessor off its home prototype would throw Illegal invocation. The
+  // prototype walk mirrors NSCL for accessor exports ("get foo").
+  function _displacedOriginal(obj, name, accessor) {
+    try {
+      for (var o = obj; o; o = Object.getPrototypeOf(o)) {
+        var d = Object.getOwnPropertyDescriptor(o, name);
+        if (d) {
+          if (accessor) return d[accessor];
+          if ("value" in d) return d.value;
+        }
+      }
+    } catch (e) {}
+    try { return obj[name]; } catch (e) { return undefined; }
+  }
+
+  var exportFunction = function(fn, obj, opts) {
+    var defineAs = opts && opts.defineAs;
+    if (!defineAs) return fn;
+    var m = /^(get|set)\\s+(\\w+)$/.exec(defineAs);
+    var accessor = m ? m[1] : null;
+    var name = m ? m[2] : defineAs;
+
+    // Snapshot the displaced source BEFORE the export overwrites the property.
+    var original = _displacedOriginal(obj, name, accessor);
+
+    try {
+      Object.defineProperty(obj, defineAs, {
+        value: fn, configurable: true, writable: true, enumerable: true
+      });
+    } catch (e) {
+      try { obj[defineAs] = fn; } catch (e2) {}
+    }
+
+    // Report the displaced function's source for the replacement. Chain through
+    // the map so re-exporting an already cloaked function cannot unmask it.
+    if (typeof fn === "function" && typeof original === "function") {
+      try {
+        _toStringMap.set(fn, _toStringMap.has(original)
+          ? _toStringMap.get(original)
+          : _originalToStringF.call(original));
+      } catch (e) {}
+    }
+    return fn;
+  };
+  exportFunction._toStringMap = _toStringMap;
+}
+`;
 
 // ============================================================
 // MAIN-world runtime template
@@ -251,14 +342,15 @@ function assembleOutput({ jssEntries, fpdEntries, fpdInitCode }) {
 *
 * Wrapper bodies are produced by common/code_builders.js (build_code()), the
 * same pipeline Firefox uses at injection time. Only the MAIN-world envelope,
-* shims and init/Port plumbing come from generate_wrappers.js.
+* shims and init/Port plumbing come from generate_wrappers.js. The
+* Function.prototype.toString cloaking lives in the exportFunction shim and is
+* adapted from the NoScript Commons Library (see EXPORT_SHIM_SOURCE).
 */
 (() => {
   // NOTE: no "use strict" — original wrapper code uses implicit globals
   // in for-of loops without let/var/const
 
   let inited = false;
-  var original_functions = {};
 
   // ====== Runtime globals (set during init) ======
   var domainHash;
@@ -278,25 +370,7 @@ function assembleOutput({ jssEntries, fpdEntries, fpdInitCode }) {
   ${sandbox.crc16 || "// crc16 not available"}
   ${sandbox.alea || "// alea not available"}
 
-  // ====== exportFunction shim (Chromium MAIN world) ======
-  // In Firefox, exportFunction clones functions across security boundaries;
-  // the replacement therefore loses its own properties, which build_code()
-  // copies back after the export. Here Object.defineProperty suffices and the
-  // same copy-back is a no-op-safe redefinition.
-  if (typeof exportFunction === "undefined") {
-    var exportFunction = function(fn, obj, opts) {
-      if (opts && opts.defineAs) {
-        try {
-          Object.defineProperty(obj, opts.defineAs, {
-            value: fn, configurable: true, writable: true, enumerable: true
-          });
-        } catch(e) {
-          try { obj[opts.defineAs] = fn; } catch(e2) {}
-        }
-      }
-      return fn;
-    };
-  }
+  ${EXPORT_SHIM_SOURCE}
 
   // ====== WrapHelper shim (Chromium MAIN world) ======
   // Identity counterparts of the xray-aware WrapHelper from generate_code().
@@ -354,28 +428,6 @@ ${emitTable(jssEntries, "JSS wrapper")}
 ${emitTable(fpdEntries, "FPD wrapper")}
   }; // end FPD_WRAPPERS
 
-  // ====== Function.prototype.toString protection ======
-  function setupToStringProtection() {
-    var originalToStringF = Function.prototype.toString;
-    var originalToStringStr = originalToStringF.call(originalToStringF);
-    var replacement = function toString() {
-      var currentString = originalToStringF.call(this);
-      var seen = 0;
-      while (original_functions[currentString] !== undefined && seen < 10) {
-        currentString = original_functions[currentString];
-        seen++;
-      }
-      return currentString;
-    };
-    Object.defineProperty(Function.prototype, 'toString', {
-      value: replacement,
-      writable: true,
-      configurable: true,
-      enumerable: false
-    });
-    original_functions[originalToStringF.call(replacement)] = originalToStringStr;
-  }
-
   var init = function(config) {
     if (inited) return;
     inited = true;
@@ -415,7 +467,6 @@ ${emitTable(fpdEntries, "FPD wrapper")}
       }
     }
 
-    setupToStringProtection();
     fp_enabled = true;
   };
 
@@ -505,7 +556,7 @@ if (require.main === module) {
   const jssEntries = [];
   for (const key of keys) {
     try {
-      jssEntries.push({ key, body: buildWrapperBody(withToStringMapping(finalWrappingCode[key])) });
+      jssEntries.push({ key, body: buildWrapperBody(finalWrappingCode[key]) });
     } catch (e) {
       console.warn(`  \u2717 ${key}: ${e.message}`);
     }
@@ -571,7 +622,7 @@ if (typeof module !== "undefined") {
     stripEnvelope,
 		ENVELOPE_OPEN,
 		ENVELOPE_CLOSE,
-    withToStringMapping,
+    EXPORT_SHIM_SOURCE,
     buildWrapperBody,
     buildFpdBodies,
     fpdResourceMapToWrapItems,
