@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
-
 /**
  * Unit tests for generate_wrappers.js
  *
@@ -28,6 +27,12 @@
  * calls build_code() from common/code_builders.js inside a vm sandbox, exactly
  * like the Firefox injection path does. The tests therefore assert on the
  * behaviour of the emitted bodies, not on the wording of intermediate steps.
+ *
+ * Function.prototype.toString cloaking is no longer a step of the generator
+ * either: it lives in the exportFunction shim (EXPORT_SHIM_SOURCE), adapted
+ * from the NoScript Commons Library, and is registered as a side effect of
+ * every export. Tests that exercise it install that very shim into their vm
+ * context, so there is no second implementation to keep in sync.
  *
  * Two deliberate conventions:
  *  - Every textual assertion goes through norm(), which removes comments and
@@ -49,6 +54,7 @@ const path = require("path");
 const vm = require("vm");
 
 const GENERATOR_PATH = path.resolve(__dirname, "../../../generate_wrappers.js");
+
 const {
   sandbox,
   loadDescriptors,
@@ -64,7 +70,6 @@ const {
 // ============================================================
 // Whitespace-insensitive comparison
 // ============================================================
-
 const WORD = /[A-Za-z0-9_$]/;
 // A "/" starts a regex literal only in these positions; otherwise it is division.
 const REGEX_OK = new Set(["", "(", ",", "=", ":", "[", "!", "&", "|", "?", "{", "}", ";", "+", "-", "*", "%", "~", "^", "<", ">"]);
@@ -114,7 +119,7 @@ function norm(src) {
     if (/\s/.test(c)) {
       let j = i;
       while (j < n && /\s/.test(src[j])) j++;
-      if (WORD.test(prev) && WORD.test(src[j])) out += " ";
+      if (WORD.test(prev) && j < n && WORD.test(src[j])) out += " ";
       i = j;
       continue;
     }
@@ -126,18 +131,22 @@ function norm(src) {
 function has(body, needle) {
   expect(norm(body)).toContain(norm(needle));
 }
+
 function hasNot(body, needle) {
   expect(norm(body)).not.toContain(norm(needle));
 }
+
 function at(body, needle) {
   return norm(body).indexOf(norm(needle));
 }
+
 function count(body, needle) {
   const hay = norm(body), nd = norm(needle);
   let n = 0, i = 0;
   while ((i = hay.indexOf(nd, i)) !== -1) { n++; i += nd.length; }
   return n;
 }
+
 function lastAt(body, needle) {
   return norm(body).lastIndexOf(norm(needle));
 }
@@ -145,7 +154,6 @@ function lastAt(body, needle) {
 // ============================================================
 // Runtime stubs matching the shims emitted into wrappers_generated.js
 // ============================================================
-
 function makeWrapHelper() {
   return {
     XRAY: false,
@@ -166,9 +174,15 @@ function makeWrapHelper() {
 }
 
 /**
- * Install the very shim the generator emits. Doing it in a fresh vm context
- * patches that context's Function.prototype.toString only, so the test realm
- * still sees real source texts via String(fn) on test-realm functions.
+ * Install the very shim the generator emits into the given vm context.
+ *
+ * This replaces the old makeExportFunction() stub: the shim is now also the
+ * place where the toString mapping is registered, so a stub that only did
+ * defineProperty would silently disable the cloaking and make the assertions
+ * below vacuous.
+ *
+ * vm.createContext() gives the context its own realm, hence its own
+ * Function.prototype: the patch cannot leak into the test realm.
  */
 function installShim(ctx) {
   vm.runInContext(EXPORT_SHIM_SOURCE, ctx);
@@ -177,9 +191,11 @@ function installShim(ctx) {
 
 /**
  * Run a generated body with the identifiers it expects as free variables.
+ *
  * Note the `window` alias: build_code() emits `var X = window.<original>` for
  * wrapped_objects [6] and the emitted guard `typeof ... === undefined` never
  * fires, so a missing window is a hard ReferenceError, not a graceful skip.
+ *
  * Returns the (shared) context so tests can inspect the outcome.
  */
 function runBody(body, state = {}) {
@@ -196,7 +212,9 @@ function runBody(body, state = {}) {
   };
   vm.createContext(ctx);
   ctx.window = ctx;
-	installShim(ctx);
+  // NOTE: no `exportFunction` stub and no `original_functions` table anymore —
+  // the shim brings both the export primitive and the toString registry.
+  installShim(ctx);
   vm.runInContext(`(function(){${body}})();`, ctx);
   return ctx;
 }
@@ -217,10 +235,14 @@ function makeNativeCtor() {
   return ctor;
 }
 
+/** Page-visible Function.prototype.toString of a vm context (i.e. the patched one). */
+function vmToString(ctx) {
+  return vm.runInContext("Function.prototype.toString", ctx);
+}
+
 // ============================================================
 // Locate the directory with the descriptor files
 // ============================================================
-
 function findWrappersDir() {
   const here = path.dirname(GENERATOR_PATH);
   const candidates = [
@@ -253,9 +275,16 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
       })) {
         expect(typeof fn).toBe("function", `${name} is not a function`);
       }
+    });
+
+    // withToStringMapping is gone on purpose: registration moved into the shim.
+    it("exports the export shim source instead of a mapping helper", function () {
       expect(typeof EXPORT_SHIM_SOURCE).toBe("string");
       expect(EXPORT_SHIM_SOURCE).toContain("_toStringMap");
+      expect(EXPORT_SHIM_SOURCE).toContain("_toStringProxy");
       expect(EXPORT_SHIM_SOURCE).not.toContain("original_functions");
+      // The provenance of the borrowed mechanism must stay visible.
+      expect(EXPORT_SHIM_SOURCE).toContain("NoScript Commons Library");
     });
   });
 
@@ -281,64 +310,93 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
     });
   });
 
-	describe("EXPORT_SHIM_SOURCE (NSCL-derived toString cloaking)", function () {
-	  function shimCtx() {
-	    const ctx = {};
-	    vm.createContext(ctx);
-	    installShim(ctx);
-	    return ctx;
-	  }
-	  /** Page-visible toString inside the shimmed context. */
-	  function pageToString(ctx, fn) {
-	    return vm.runInContext("Function.prototype.toString", ctx).call(fn);
-	  }
+  // ============================================================
+  // The NSCL-derived toString cloaking, tested through the emitted source.
+  // ============================================================
+  describe("EXPORT_SHIM_SOURCE (NSCL-derived toString cloaking)", function () {
 
-	  it("installs the toString proxy and cloaks itself", function () {
-	    const ctx = shimCtx();
-	    const toStringF = vm.runInContext("Function.prototype.toString", ctx);
-	    has(pageToString(ctx, toStringF), "[native code]");
-	  });
+    function shimCtx() {
+      const ctx = {};
+      vm.createContext(ctx);
+      installShim(ctx);
+      return ctx;
+    }
 
-	  it("reports the displaced function's source for the export", function () {
-	    const ctx = shimCtx();
-	    const scope = { F: makeNativeCtor() };
-	    ctx.scope = scope;
-	    const before = String(scope.F);
-	    vm.runInContext("exportFunction(function(){ return 42; }, scope, {defineAs: 'F'})", ctx);
-	    expect(pageToString(ctx, ctx.scope.F)).toBe(before);
-	    expect(ctx.exportFunction._toStringMap.get(ctx.scope.F)).toBe(before);
-	  });
+    /** Source reported to the page for fn, resolved in the shimmed realm. */
+    function pageToString(ctx, fn) {
+      return vmToString(ctx).call(fn);
+    }
 
-	  it("keeps identity keying, so equal bodies cannot shadow each other", function () {
-	    const ctx = shimCtx();
-	    ctx.a = function a() { return 1; };
-	    ctx.b = function b() { return 2; };
-	    const srcA = String(ctx.a), srcB = String(ctx.b);
-	    vm.runInContext(`
-	      exportFunction(function(){ return 0; }, this, {defineAs: 'a'});
-	      exportFunction(function(){ return 0; }, this, {defineAs: 'b'});
-	    `, ctx);
-	    expect(ctx.exportFunction._toStringMap.get(ctx.a)).toBe(srcA);
-	    expect(ctx.exportFunction._toStringMap.get(ctx.b)).toBe(srcB);
-	  });
+    it("installs the toString proxy and cloaks the proxy itself", function () {
+      const ctx = shimCtx();
+      // Without the self-mapping, toString.toString() would reveal that
+      // Function.prototype.toString has been replaced.
+      expect(pageToString(ctx, vmToString(ctx))).toBe("[native code]");
+    });
 
-	  it("does not register when the slot was empty (nothing to cloak with)", function () {
-	    const ctx = shimCtx();
-	    ctx.scope = {};
-	    vm.runInContext("exportFunction(function n(){}, scope, {defineAs: 'nope'})", ctx);
-	    expect(ctx.exportFunction._toStringMap.has(ctx.scope.nope)).toBe(false);
-	  });
+    it("reports the displaced function's source for the export", function () {
+      const ctx = shimCtx();
+      const native = makeNativeCtor();
+      ctx.scope = { F: native };
+      const before = String(native);
+      vm.runInContext("exportFunction(function(){ return 42; }, scope, {defineAs: 'F'})", ctx);
+      expect(ctx.scope.F()).toBe(42);
+      expect(pageToString(ctx, ctx.scope.F)).toBe(before);
+      expect(ctx.exportFunction._toStringMap.get(ctx.scope.F)).toBe(before);
+    });
 
-	  it("still returns the plain replacement function (writes and `new`)", function () {
-	    const ctx = shimCtx();
-	    function Ctor() { this.x = 1; }
-	    ctx.scope = { C: Ctor };
-	    const ret = vm.runInContext(
-	      "exportFunction(function R(){ this.y = 2; }, scope, {defineAs: 'C'})", ctx);
-	    expect(ret).toBe(ctx.scope.C);          // no Proxy in between
-	    expect(new ctx.scope.C().y).toBe(2);
-	  });
-	});
+    it("keys on function identity, so equal bodies cannot shadow each other", function () {
+      // This is the hole the string-keyed original_functions table had: two
+      // replacements with byte-identical source would collide.
+      const ctx = shimCtx();
+      ctx.a = function a() { return 1; };
+      ctx.b = function b() { return 2; };
+      const srcA = String(ctx.a), srcB = String(ctx.b);
+      vm.runInContext(`
+        exportFunction(function(){ return 0; }, this, {defineAs: 'a'});
+        exportFunction(function(){ return 0; }, this, {defineAs: 'b'});
+      `, ctx);
+      expect(ctx.a).not.toBe(ctx.b);
+      expect(ctx.exportFunction._toStringMap.get(ctx.a)).toBe(srcA);
+      expect(ctx.exportFunction._toStringMap.get(ctx.b)).toBe(srcB);
+    });
+
+    it("does not register when the slot was empty (nothing to cloak with)", function () {
+      // A brand-new function is exported as-is; inventing a source for it is
+      // the caller's business, not the shim's.
+      const ctx = shimCtx();
+      ctx.scope = {};
+      vm.runInContext("exportFunction(function n(){}, scope, {defineAs: 'nope'})", ctx);
+      expect(ctx.exportFunction._toStringMap.has(ctx.scope.nope)).toBe(false);
+    });
+
+    it("resolves an accessor through the descriptor, not by invoking it", function () {
+      // Reading a native getter off its home prototype throws Illegal
+      // invocation, which must not abort the export bookkeeping.
+      const ctx = shimCtx();
+      const proto = {};
+      const getter = function get() { throw new Error("must not be invoked"); };
+      Object.defineProperty(proto, "v", { get: getter, configurable: true });
+      ctx.scope = Object.create(proto);
+      vm.runInContext("exportFunction(function(){ return 1; }, scope, {defineAs: 'other'})", ctx);
+      // No throw, and the export happened.
+      expect(typeof ctx.scope.other).toBe("function");
+    });
+
+    it("still returns the plain replacement function (writes and `new`)", function () {
+      // JShelter bodies rely on the exported value being the real function
+      // object: the own-property copy-back loop writes onto it and wrappers of
+      // constructors are used with `new`.
+      const ctx = shimCtx();
+      function Ctor() { this.x = 1; }
+      ctx.scope = { C: Ctor };
+      const ret = vm.runInContext(
+        "exportFunction(function R(){ this.y = 2; }, scope, {defineAs: 'C'})", ctx);
+      expect(ret).toBe(ctx.scope.C);          // no Proxy in between
+      expect(ctx.scope.C().y).toBe(2);
+      expect(new ctx.scope.C().y).toBe(2);
+    });
+  });
 
   describe("fpdResourceMapToWrapItems", function () {
     it("produces the wrap_item format consumed by fp_build_*_wrapper", function () {
@@ -363,7 +421,7 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
   describe("norm() used by the assertions above", function () {
     it("ignores indentation, newlines and comments", function () {
       expect(norm("  var a = 1; // c\n")).toBe(norm("var a = 1;"));
-      expect(norm("var /*x*/ a = 1;")).toBe(norm("var a=1;"));
+      expect(norm("var /* _x_ */ a = 1;")).toBe(norm("var a = 1;"));
     });
     it("keeps whitespace between word characters", function () {
       expect(norm("typeof x")).toBe("typeof x");
@@ -435,6 +493,17 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       expect(offenders).toEqual([]);
     });
 
+    it("emits no toString bookkeeping into the bodies", function () {
+      // The whole point of the refactor: registration is a side effect of the
+      // shim, so no body may carry a mapping line or touch a global table.
+      const offenders = [];
+      for (const [key, desc] of Object.entries(sandbox.build_wrapping_code)) {
+        const body = buildWrapperBody(desc);
+        if (at(body, "original_functions") !== -1) offenders.push(key);
+      }
+      expect(offenders).toEqual([]);
+    });
+
     it("does not leak builder-internal names as implicit globals", function () {
       const ctx = {
         WrapHelper: makeWrapHelper(),
@@ -443,8 +512,8 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
         Performance: Object.assign(function () {}, { prototype: { now() { return 1; } } }),
       };
       vm.createContext(ctx);
-			installShim(ctx)
       ctx.window = ctx;
+      installShim(ctx);
       const before = new Set(Object.getOwnPropertyNames(ctx));
       const failures = [];
       for (const [key, desc] of Object.entries(sandbox.build_wrapping_code)) {
@@ -547,9 +616,10 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       expect(ctx.scope.F()).toBe(42);
       // Registration no longer lives in the body: the export goes through the
       // shim, which maps the replacement to the source of the displaced function.
+      expect(vmToString(ctx).call(ctx.scope.F)).toBe(String(native));
+      // String() reaches the same patched toString through the realm's
+      // Function.prototype, which is what page scripts will observe.
       expect(String(ctx.scope.F)).toBe(String(native));
-      const toStringF = vm.runInContext("Function.prototype.toString", ctx);
-      expect(toStringF.call(ctx.scope.F)).toBe(String(native));
     });
   });
 
@@ -731,6 +801,31 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       const ctx = runBody(buildWrapperBody(wrapper), { globals: { scope } });
       expect(ctx.scope.copy()).toBe(3);
     });
+
+    it("keeps the cloaking of a re-exported function", function () {
+      // function_export routes an already exported function through the shim
+      // again; the map must chain instead of registering the replacement's own
+      // source (the old code needed the `seen < 10` loop for this).
+      const scope = { x: 0, orig: function orig() { return 3; } };
+      const originalSource = String(scope.orig);
+      const wrapper = {
+        parent_object: "scope", parent_object_property: "x",
+        post_wrapping_code: [
+          {
+            code_type: "function_define", original_function: "scope.orig",
+            parent_object: "scope.orig", parent_object_property: "marker",
+            wrapping_function_args: "", wrapping_function_body: "return 1;",
+          },
+          {
+            code_type: "function_export", parent_object: "scope",
+            parent_object_property: "copy", export_function_name: "scope.orig",
+          },
+        ],
+      };
+      const ctx = runBody(buildWrapperBody(wrapper), { globals: { scope } });
+      expect(ctx.scope.copy()).toBe(ctx.scope.orig);
+      expect(vmToString(ctx).call(ctx.scope.copy())).toBe(originalSource);
+    });
   });
 
   describe("FPD wrappers", function () {
@@ -785,9 +880,32 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       const desc = sandbox.build_wrapping_code["scope.f"];
       if (desc) expect(desc.report_args).toBe(true);
     });
+
+    it("cloaks FPD replacements too, without a mapping helper", function () {
+      const scope = { f: function f(a) { return a + 1; } };
+      const originalSource = String(scope.f);
+      const bodies = buildFpdBodies([["scope.f", 0, new Set(["call"]), 0]]);
+      const ctx = runBody(bodies.get("scope.f"), { globals: { scope } });
+      expect(ctx.scope.f).not.toBe(scope.f);
+      expect(vmToString(ctx).call(ctx.scope.f)).toBe(originalSource);
+    });
   });
 
-  describe("toString mapping for replacements created by post_wrapping_code", function () {
+  // ============================================================
+  // Regression suite for the hole found on Chromium: the replacement defined by
+  // a post_wrapping_code entry with code_type "function_define" — which is how
+  // wrappingS-ECMA-DATE.js reintroduces Date.now on the wrapped Date [1] — used
+  // to be registered only by the old converter, because it emitted the mapping
+  // inside its own step 4 for every replacement it generated [6].
+  //
+  // Now the registration is a side effect of exportFunction(), i.e. it happens
+  // wherever a replacement comes into existence, on both platforms.
+  // ============================================================
+  describe("toString cloaking for every export (shim-registered)", function () {
+
+    // Mirrors the ECMA-DATE shape: a constructor is replaced at the top level
+    // and its static method is redefined by post_wrapping_code, reading the
+    // pristine original through the wrapped_objects snapshot.
     function makeCtorFixture() {
       const ctor = makeNativeCtor();
       const origNow = function now() { return 1; };
@@ -815,29 +933,33 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       };
     }
 
-    function registeredFor(ctx, fn) {
-      const key = String(fn);
-      return Object.prototype.hasOwnProperty.call(ctx.original_functions, key)
-        ? ctx.original_functions[key] : undefined;
+    /** The cloaked source registered for fn, or undefined when nothing is mapped. */
+    function cloaked(ctx, fn) {
+      const map = ctx.exportFunction && ctx.exportFunction._toStringMap;
+      return map && map.has(fn) ? map.get(fn) : undefined;
     }
 
-    function reportKeys(ctx) {
-      return Object.keys(ctx.original_functions)
-        .map(k => JSON.stringify(k.slice(0, 60))).join(", ") || "<empty>";
+    function report(ctx) {
+      const map = ctx.exportFunction && ctx.exportFunction._toStringMap;
+      if (!map) return "<no map — was installShim() called?>";
+      const vals = [];
+      map.forEach(v => vals.push(JSON.stringify(String(v).slice(0, 60))));
+      return vals.join(", ") || "<empty>";
     }
 
-    it("keeps registering the top-level replacement", function () {
+    it("registers the top-level replacement", function () {
       const { ctor } = makeCtorFixture();
-      const ctx = runBody(buildWrapperBody(withToStringMapping(nestedWrapper([{ name: "now", marker: "NESTED_NOW" }]))),
+      const ctx = runBody(buildWrapperBody(nestedWrapper([{ name: "now", marker: "NESTED_NOW" }])),
         { globals: { scope: { Ctor: ctor } } });
       // Sanity: the top-level replacement really is what the page sees.
       expect(ctx.scope.Ctor).not.toBe(ctor);
-      expect(registeredFor(ctx, ctx.scope.Ctor)).toBe(String(ctor));
+      expect(cloaked(ctx, ctx.scope.Ctor)).toBe(String(ctor));
+      expect(vmToString(ctx).call(ctx.scope.Ctor)).toBe(String(ctor));
     });
 
     it("registers the replacement defined by a nested function_define entry", function () {
       const { ctor, origNow } = makeCtorFixture();
-      const ctx = runBody(buildWrapperBody(withToStringMapping(nestedWrapper([{ name: "now", marker: "NESTED_NOW" }]))),
+      const ctx = runBody(buildWrapperBody(nestedWrapper([{ name: "now", marker: "NESTED_NOW" }])),
         { globals: { scope: { Ctor: ctor } } });
 
       // Sanity first, so the registration assertion cannot pass vacuously.
@@ -845,19 +967,20 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       expect(typeof nested).toBe("function");
       expect(nested()).toBe("NESTED_NOW");
 
-      const mapped = registeredFor(ctx, nested);
+      const mapped = cloaked(ctx, nested);
       if (mapped === undefined) {
-        throw new Error(`nested replacement has no toString mapping; registered keys: ${reportKeys(ctx)}`);
+        throw new Error(`nested replacement has no toString mapping; entries: ${report(ctx)}`);
       }
       // The value must be the source of THIS method's original, i.e. a wrong
       // (e.g. outer) originalF must not be accepted.
       expect(mapped).toBe(String(origNow));
+      expect(vmToString(ctx).call(nested)).toBe(String(origNow));
     });
 
     it("registers every nested replacement against its own original", function () {
       const { ctor, origNow, origParse } = makeCtorFixture();
-      const ctx = runBody(buildWrapperBody(withToStringMapping(
-        nestedWrapper([{ name: "now", marker: "NESTED_NOW" }, { name: "parse", marker: "NESTED_PARSE" }]))),
+      const ctx = runBody(buildWrapperBody(
+        nestedWrapper([{ name: "now", marker: "NESTED_NOW" }, { name: "parse", marker: "NESTED_PARSE" }])),
         { globals: { scope: { Ctor: ctor } } });
 
       const nowFn = ctx.scope.Ctor.now;
@@ -865,15 +988,29 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       expect(nowFn()).toBe("NESTED_NOW");
       expect(parseFn()).toBe("NESTED_PARSE");
       // Distinct sources: a single registration cannot accidentally cover both.
-      expect(String(nowFn)).not.toBe(String(parseFn));
+      expect(vmToString(ctx).call(nowFn)).not.toBe(vmToString(ctx).call(parseFn));
 
-      const mapNow = registeredFor(ctx, nowFn);
-      const mapParse = registeredFor(ctx, parseFn);
+      const mapNow = cloaked(ctx, nowFn);
+      const mapParse = cloaked(ctx, parseFn);
       if (mapNow === undefined || mapParse === undefined) {
-        throw new Error(`missing nested toString mapping (now: ${mapNow === undefined}, parse: ${mapParse === undefined}); registered keys: ${reportKeys(ctx)}`);
+        throw new Error(`missing nested toString mapping (now: ${mapNow === undefined}, parse: ${mapParse === undefined}); entries: ${report(ctx)}`);
       }
       expect(mapNow).toBe(String(origNow));
       expect(mapParse).toBe(String(origParse));
+    });
+
+    it("keeps replacements apart by identity, not by source text", function () {
+      // Both replacements are textually near-identical (same marker). The old
+      // string-keyed original_functions table would have collapsed them into
+      // one entry; a WeakMap keyed by the function object cannot.
+      const { ctor, origNow, origParse } = makeCtorFixture();
+      const ctx = runBody(buildWrapperBody(
+        nestedWrapper([{ name: "now", marker: "SAME" }, { name: "parse", marker: "SAME" }])),
+        { globals: { scope: { Ctor: ctor } } });
+
+      expect(ctx.scope.Ctor.now).not.toBe(ctx.scope.Ctor.parse);
+      expect(cloaked(ctx, ctx.scope.Ctor.now)).toBe(String(origNow));
+      expect(cloaked(ctx, ctx.scope.Ctor.parse)).toBe(String(origParse));
     });
   });
 });
