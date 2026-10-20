@@ -745,4 +745,108 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       if (desc) expect(desc.report_args).toBe(true);
     });
   });
+
+  describe("toString mapping for replacements created by post_wrapping_code", function () {
+    // Regression test for the hole found on Chromium: the top-level wrapper
+    // registers its toString mapping, but the replacement defined by a
+    // post_wrapping_code entry with code_type "function_define" — which is how
+    // wrappingS-ECMA-DATE.js reintroduces Date.now on the wrapped Date [1] —
+    // was registered only by the old converter, because it emitted the mapping
+    // inside its own step 4 for every replacement it generated [6].
+    //
+    // Expected to FAIL until the registration is emitted by
+    // define_page_context_function() itself, i.e. at the place where a
+    // replacement comes into existence on both platforms.
+
+    // Mirrors the ECMA-DATE shape: a constructor is replaced at the top level
+    // and its static method is redefined by post_wrapping_code, reading the
+    // pristine original through the wrapped_objects snapshot.
+    function makeCtorFixture() {
+      const ctor = makeNativeCtor();
+      const origNow = function now() { return 1; };
+      const origParse = function parse(x) { return 2; };
+      Object.defineProperty(ctor, "now", { value: origNow, writable: true, enumerable: false, configurable: true });
+      Object.defineProperty(ctor, "parse", { value: origParse, writable: true, enumerable: false, configurable: true });
+      return { ctor, origNow, origParse };
+    }
+
+    function nestedWrapper(methods) {
+      return {
+        parent_object: "scope",
+        parent_object_property: "Ctor",
+        wrapped_objects: [{ original_name: "scope.Ctor", wrapped_name: "origCtor" }],
+        wrapping_function_args: "",
+        wrapping_function_body: "return new origCtor(...arguments);",
+        post_wrapping_code: methods.map(m => ({
+          code_type: "function_define",
+          original_function: `origCtor.${m.name}`,
+          parent_object: "scope.Ctor",
+          parent_object_property: m.name,
+          wrapping_function_args: "",
+          wrapping_function_body: `return "${m.marker}";`,
+        })),
+      };
+    }
+
+    function registeredFor(ctx, fn) {
+      const key = String(fn);
+      return Object.prototype.hasOwnProperty.call(ctx.original_functions, key)
+        ? ctx.original_functions[key] : undefined;
+    }
+
+    function reportKeys(ctx) {
+      return Object.keys(ctx.original_functions)
+        .map(k => JSON.stringify(k.slice(0, 60))).join(", ") || "<empty>";
+    }
+
+    it("keeps registering the top-level replacement", function () {
+      const { ctor } = makeCtorFixture();
+      const ctx = runBody(buildWrapperBody(withToStringMapping(nestedWrapper([{ name: "now", marker: "NESTED_NOW" }]))),
+        { globals: { scope: { Ctor: ctor } } });
+      // Sanity: the top-level replacement really is what the page sees.
+      expect(ctx.scope.Ctor).not.toBe(ctor);
+      expect(registeredFor(ctx, ctx.scope.Ctor)).toBe(String(ctor));
+    });
+
+    it("registers the replacement defined by a nested function_define entry", function () {
+      const { ctor, origNow } = makeCtorFixture();
+      const ctx = runBody(buildWrapperBody(withToStringMapping(nestedWrapper([{ name: "now", marker: "NESTED_NOW" }]))),
+        { globals: { scope: { Ctor: ctor } } });
+
+      // Sanity first, so the registration assertion cannot pass vacuously.
+      const nested = ctx.scope.Ctor.now;
+      expect(typeof nested).toBe("function");
+      expect(nested()).toBe("NESTED_NOW");
+
+      const mapped = registeredFor(ctx, nested);
+      if (mapped === undefined) {
+        throw new Error(`nested replacement has no toString mapping; registered keys: ${reportKeys(ctx)}`);
+      }
+      // The value must be the source of THIS method's original, i.e. a wrong
+      // (e.g. outer) originalF must not be accepted.
+      expect(mapped).toBe(String(origNow));
+    });
+
+    it("registers every nested replacement against its own original", function () {
+      const { ctor, origNow, origParse } = makeCtorFixture();
+      const ctx = runBody(buildWrapperBody(withToStringMapping(
+        nestedWrapper([{ name: "now", marker: "NESTED_NOW" }, { name: "parse", marker: "NESTED_PARSE" }]))),
+        { globals: { scope: { Ctor: ctor } } });
+
+      const nowFn = ctx.scope.Ctor.now;
+      const parseFn = ctx.scope.Ctor.parse;
+      expect(nowFn()).toBe("NESTED_NOW");
+      expect(parseFn()).toBe("NESTED_PARSE");
+      // Distinct sources: a single registration cannot accidentally cover both.
+      expect(String(nowFn)).not.toBe(String(parseFn));
+
+      const mapNow = registeredFor(ctx, nowFn);
+      const mapParse = registeredFor(ctx, parseFn);
+      if (mapNow === undefined || mapParse === undefined) {
+        throw new Error(`missing nested toString mapping (now: ${mapNow === undefined}, parse: ${mapParse === undefined}); registered keys: ${reportKeys(ctx)}`);
+      }
+      expect(mapNow).toBe(String(origNow));
+      expect(mapParse).toBe(String(origParse));
+    });
+  });
 });
