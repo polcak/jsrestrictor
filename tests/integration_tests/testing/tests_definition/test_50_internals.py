@@ -46,3 +46,8 @@ def test_prevent_regression_ghsa_page_steals_configuration(browser):
         window.dispatchEvent(new CustomEvent(attackerPortId + ":page", { detail: { msg: { init: true } } }));\
         propagate_outside(JSON.stringify(window.__jshelter_leak.config, null, 2));\
     """, "propagate_outside") == None
+
+def test_check_wrappers_are_not_identical(browser):
+    assert browser.execute_script("""\
+        propagate_outside(performance.now === Date.now);\
+    """, "propagate_outside") == False

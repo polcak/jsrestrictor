@@ -5,6 +5,7 @@
 #
 #  Copyright (C) 2021  Matus Svancar
 #  Copyright (C) 2022  Martin Bednar
+#  Copyright (C) 2026  Libor Polčák
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -310,142 +311,124 @@ def get_audio(driver):
             }
     return audio
 
-## Get methods.toString().
+def fill_metadata(driver, output, method):
+    """A helper function for get_methods_metadata."""
+    for md, call in [("toString", "()"), ("toLocaleString", "()"),
+                     ("name", ""), ("length", "")]:
+        try:
+            output[md][method] = driver.execute_script(f"return {method}.{md}{call}")
+        except:
+            output[md][method] = None
+
+## Get methods.toString(), methods.name, methods.length etc.
 #
 #  Only executing javascript and geting returned values. Testing page is needed.
-def get_methods_toString(driver):
-	APIs = {
-		"Date": {
-			"static_methods": [
-				"now",
-				"parse",
-				"UTC"
-			],
-			"instance_methods": {
-				"getDate",
-				"getDay",
-				"getFullYear",
-				"getHours",
-				"getMilliseconds",
-				"getMinutes",
-				"getMonth",
-				"getSeconds",
-				"getTime",
-				"getTimezoneOffset",
-				"getUTCDate",
-				"getUTCDay",
-				"getUTCFullYear",
-				"getUTCHours",
-				"getUTCMilliseconds",
-				"getUTCMinutes",
-				"getUTCMonth",
-				"getUTCSeconds",
-				"getYear",
-				"setDate",
-				"setFullYear",
-				"setHours",
-				"setMilliseconds",
-				"setMinutes",
-				"setMonth",
-				"setSeconds",
-				"setTime",
-				"setUTCDate",
-				"setUTCFullYear",
-				"setUTCHours",
-				"setUTCMilliseconds",
-				"setUTCMinutes",
-				"setUTCMonth",
-				"setUTCSeconds",
-				"setYear",
-				"toDateString",
-				"toISOString",
-				"toJSON",
-				"toGMTString",
-				"toLocaleDateString",
-				"toLocaleString",
-				"toString",
-				"toTimeString",
-				"toUTCString",
-				"valueOf"
-			}
-		},
-		"performance": {
-			"static_methods": [
-				"now",
-				"clearMarks",
-				"clearMeasures",
-				"clearResourceTimings",
-				"getEntries",
-				"getEntriesByName",
-				"getEntriesByType",
-				"mark",
-				"measure",
-				"setResourceTimingBufferSize",
-				"toJSON"
-			]
-		},
-		"navigator": {
-			"static_methods": [
-				"getCurrentPosition",
-				"watchPosition",
-				"clearWatch"
-			]
-		},
-		"canvas": {
-			"inject_code": "var canvas = document.getElementById('canvas1');",
-			"static_methods": [
-				"getContext"
-			]
-		}
-	}
+def get_methods_metadata(driver):
+    APIs = {
+        "Date": {
+            "static_methods": [
+                "now",
+                "parse",
+                "UTC"
+            ],
+            "instance_methods": {
+                "getDate",
+                "getDay",
+                "getFullYear",
+                "getHours",
+                "getMilliseconds",
+                "getMinutes",
+                "getMonth",
+                "getSeconds",
+                "getTime",
+                "getTimezoneOffset",
+                "getUTCDate",
+                "getUTCDay",
+                "getUTCFullYear",
+                "getUTCHours",
+                "getUTCMilliseconds",
+                "getUTCMinutes",
+                "getUTCMonth",
+                "getUTCSeconds",
+                "getYear",
+                "setDate",
+                "setFullYear",
+                "setHours",
+                "setMilliseconds",
+                "setMinutes",
+                "setMonth",
+                "setSeconds",
+                "setTime",
+                "setUTCDate",
+                "setUTCFullYear",
+                "setUTCHours",
+                "setUTCMilliseconds",
+                "setUTCMinutes",
+                "setUTCMonth",
+                "setUTCSeconds",
+                "setYear",
+                "toDateString",
+                "toISOString",
+                "toJSON",
+                "toGMTString",
+                "toLocaleDateString",
+                "toLocaleString",
+                "toString",
+                "toTimeString",
+                "toUTCString",
+                "valueOf"
+            }
+        },
+        "performance": {
+            "static_methods": [
+                "now",
+                "clearMarks",
+                "clearMeasures",
+                "clearResourceTimings",
+                "getEntries",
+                "getEntriesByName",
+                "getEntriesByType",
+                "mark",
+                "measure",
+                "setResourceTimingBufferSize",
+                "toJSON"
+            ]
+        },
+        "Geolocation": {
+            "instance_methods": [
+                "getCurrentPosition",
+                "watchPosition",
+                "clearWatch"
+            ]
+        },
+        "HTMLCanvasElement": {
+            "instance_methods": [
+                "getContext"
+            ]
+        }
+    }
 
-	driver.get(get_config("testing_page"))
+    driver.get(get_config("testing_page"))
 
-	output = {}
+    output = {
+        "toString": {},
+        "toLocaleString": {},
+        "name": {},
+        "length": {},
+    }
+    out_toString = output["toString"]
+    out_toString = output["toLocaleString"]
+    out_name = output["name"]
+    out_length = output["length"]
 
+    for API in APIs:
+        if 'static_methods' in APIs[API]:
+            for method in APIs[API]['static_methods']:
+                fill_metadata(driver, output, f"{API}.{method}")
 
-	for API in APIs:
-		if 'static_methods' in APIs[API]:
-			inject_code = ""
-			if 'inject_code' in APIs[API]:
-				inject_code = APIs[API]['inject_code']
-
-			for method in APIs[API]['static_methods']:
-				method_toString = ""
-				try:
-					method_toString = driver.execute_script(inject_code + "return " + API + "." + method + ".toString()")
-				except:
-					output[API + '.' + method] = None
-				else:
-					output[API + '.' + method] = method_toString
-
-
-		if 'instance_methods' in APIs[API]:
-			constructor_toString = ""
-			try:
-				constructor_toString = driver.execute_script("return " + API + ".toString()")
-			except:
-				output[API] = None
-			else:
-				output[API] = constructor_toString
-
-
-			for method in APIs[API]['instance_methods']:
-				method_toString = ""
-				try:
-					method_toString = driver.execute_script("return " + API + "." + method + ".toString()")
-				except:
-					output[API + '.prototype.' + method] = None
-				else:
-					output[API + '.prototype.' + method] = method_toString
-
-
-				method_toString = ""
-				try:
-					method_toString = driver.execute_script("return new " + API + "()." + method + ".toString()")
-				except:
-					output[API + '.' + method] = None
-				else:
-					output[API + '.' + method] = method_toString
-
-	return output
+        if 'instance_methods' in APIs[API]:
+            fill_metadata(driver, output, API) # The constructor
+            for method in APIs[API]['instance_methods']:
+                fill_metadata(driver, output, f"{API}.prototype.{method}")
+                fill_metadata(driver, output, f"(new {API}).{method}")
+    return output
