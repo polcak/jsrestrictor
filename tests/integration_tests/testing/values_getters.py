@@ -416,10 +416,6 @@ def get_methods_metadata(driver):
         "name": {},
         "length": {},
     }
-    out_toString = output["toString"]
-    out_toString = output["toLocaleString"]
-    out_name = output["name"]
-    out_length = output["length"]
 
     for API in APIs:
         if 'static_methods' in APIs[API]:
