@@ -696,6 +696,9 @@ function generate_code(wrapped_code) {
 				// Extend exportFunction to make sure the property descriptors of the
 				// exported function are the same as original.
 				exportFunction: function(funcToExport, targetObj, options) {
+					if (!options || !options.defineAs) {
+						return exportFunction(funcToExport, targetObj, options);
+					}
 					try {
 						let slotPD = Object.getOwnPropertyDescriptor(targetObj, options.defineAs);
 						let exportedF = exportFunction(funcToExport, targetObj, options);
@@ -710,12 +713,12 @@ function generate_code(wrapped_code) {
 								WrapHelper.defineProperty(targetObj, options.defineAs, newPD);
 							}
 							catch (e) {
-								console.debug("Cannot set property for ${parent_object}.${parent_object_property}", e);
+								console.debug("Cannot set property for ", targetObj, options, e);
 							}
 						}
 						else if (slotPD === undefined) {
 							// A new property
-							console.debug("A new ${parent_object}.${parent_object_property} assigned!")
+							console.debug("A new property assigned!", targetObj, options);
 						}
 						return exportedF;
 					}

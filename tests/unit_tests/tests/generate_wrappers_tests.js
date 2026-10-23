@@ -215,6 +215,8 @@ function runBody(body, state = {}) {
   // NOTE: no `exportFunction` stub and no `original_functions` table anymore —
   // the shim brings both the export primitive and the toString registry.
   installShim(ctx);
+  ctx.WrapHelper.exportFunction =
+    vm.runInContext("(f, o, opts) => exportFunction(f, o, opts)", ctx);
   vm.runInContext(`(function(){${body}})();`, ctx);
   return ctx;
 }
@@ -946,13 +948,24 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       return map && map.has(fn) ? map.get(fn) : undefined;
     }
 
-    function report(ctx) {
-      const map = ctx.exportFunction && ctx.exportFunction._toStringMap;
-      if (!map) return "<no map — was installShim() called?>";
-      const vals = [];
-      map.forEach(v => vals.push(JSON.stringify(String(v).slice(0, 60))));
-      return vals.join(", ") || "<empty>";
-    }
+		/**
+		 * Diagnostic helper for failure messages. The registry is a WeakMap, which is
+		 * deliberately non-enumerable (no forEach/keys), so it cannot be dumped.
+		 * Instead, ask it about the candidate keys the test expected to find:
+		 *   report(ctx, [fn1, fn2]) -> "now: present -> <cloaked source>; parse: absent"
+		 * Pass the exact objects the page sees (the same ones cloaked() is queried
+		 * with) — has()/get() match by identity, so any other object answers "absent".
+		 */
+		function report(ctx, candidates = []) {
+		  const map = ctx.exportFunction._toStringMap;
+		  if (!map) return "<no map — was installShim() called?>";
+		  return candidates.map(fn => {
+		    const label = (fn && fn.name) || String(fn).replace(/\s+/g, " ").slice(0, 30);
+		    return map.has(fn)
+		      ? `${label}: present -> ${JSON.stringify(String(map.get(fn)).slice(0, 60))}`
+		      : `${label}: absent`;
+		  }).join("; ") || "<no candidates given>";
+		}
 
     it("registers the top-level replacement", function () {
       const { ctor } = makeCtorFixture();
@@ -976,7 +989,7 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
 
       const mapped = cloaked(ctx, nested);
       if (mapped === undefined) {
-        throw new Error(`nested replacement has no toString mapping; entries: ${report(ctx)}`);
+        throw new Error(`nested replacement has no toString mapping; ${report(ctx, [nested])}`);
       }
       // The value must be the source of THIS method's original, i.e. a wrong
       // (e.g. outer) originalF must not be accepted.
@@ -1000,7 +1013,7 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       const mapNow = cloaked(ctx, nowFn);
       const mapParse = cloaked(ctx, parseFn);
       if (mapNow === undefined || mapParse === undefined) {
-        throw new Error(`missing nested toString mapping (now: ${mapNow === undefined}, parse: ${mapParse === undefined}); entries: ${report(ctx)}`);
+        throw new Error(`missing nested toString mapping; ${report(ctx, [nowFn, parseFn])}`);
       }
       expect(mapNow).toBe(String(origNow));
       expect(mapParse).toBe(String(origParse));

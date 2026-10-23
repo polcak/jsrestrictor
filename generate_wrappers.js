@@ -300,9 +300,21 @@ if (typeof exportFunction === "undefined") {
     var original = _displacedOriginal(obj, name, accessor);
 
     try {
-			let slotPD = Object.getOwnPropertyDescriptor(obj, name);
-			slotPD.value = fn;
-      Object.defineProperty(obj, defineAs, slotPD);
+			let slotPD = name && Object.getOwnPropertyDescriptor(obj, name);
+			if (slotPD) {
+				if (accessor) {
+					slotPD[accessor] = fn;
+				}
+				else {
+					slotPD.value = fn;
+				}
+	      Object.defineProperty(obj, name, slotPD);
+			}
+			else {
+				Object.defineProperty(obj, name, {
+					value: fn, configurable: true, writable: true, enumerable: true
+				});
+			}
     } catch (e) {
 			console.debug("Regular function assignment failed!", obj, name, e);
       try { obj[defineAs] = fn; } catch (e2) {}
@@ -384,7 +396,7 @@ function assembleOutput({ jssEntries, fpdEntries, fpdInitCode }) {
       isForPage: function() { return true; },
       unX: function(x) { return x; },
 			exportFunction: function(funcToExport, targetObj, options) {
-				exportFunction(funcToExport, targetObj, options);
+				return exportFunction(funcToExport, targetObj, options);
 			},
       defineProperty: function(obj, prop, descriptor) {
         return Object.defineProperty(obj, prop, descriptor);
