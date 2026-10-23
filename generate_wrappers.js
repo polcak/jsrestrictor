@@ -311,7 +311,7 @@ if (typeof exportFunction === "undefined") {
 	      Object.defineProperty(obj, name, slotPD);
 			}
 			else {
-				Object.defineProperty(obj, name, {
+				Object.defineProperty(obj, defineAs, {
 					value: fn, configurable: true, writable: true, enumerable: true
 				});
 			}

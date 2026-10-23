@@ -333,6 +333,40 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
       return vmToString(ctx).call(fn);
     }
 
+    /**
+     * Shared fixture: install the shim, put property "v" on a fresh scope
+     * (unless descriptor is null, i.e. the property must not exist), and
+     * export a replacement through the given defineAs phrase.
+     *
+     * The replacement is written into the vm realm so that the shim's realm
+     * sees a function of its own — the same situation as in the emitted
+     * wrappers_generated.js.
+     */
+    function exportOver(descriptor, phrase) {
+      const ctx = shimCtx();
+      const scope = {};
+      if (descriptor) Object.defineProperty(scope, "v", descriptor);
+      ctx.scope = scope;
+      const installed = vm.runInContext(
+        `exportFunction(function () { return 42; }, scope, {defineAs: ${JSON.stringify(phrase)}})`,
+        ctx);
+      return { ctx, scope, installed };
+    }
+
+    /** The contract of an accessor replacement: the replaced half is
+     * `installed`, the untouched half still holds the original accessor —
+     * an export of "get v" must NEVER wipe `set`. expectedGet/expectedSet
+     * therefore describe the FINAL descriptor, not "which half was touched". */
+    function expectAccessorSwap(ctx, scope, phrase, expectedGet, expectedSet, attrs) {
+      const pd = Object.getOwnPropertyDescriptor(scope, "v");
+      expect(pd.get).toBe(expectedGet);
+      expect(pd.set).toBe(expectedSet);
+      expect(pd.value).toBeUndefined();      // still an accessor, not a data property
+      expect(pd.enumerable).toBe(attrs.enumerable);   // inherited from the original
+      expect(pd.configurable).toBe(attrs.configurable);
+      expect(Object.prototype.hasOwnProperty.call(scope, phrase)).toBe(false);
+    }
+
     it("installs the toString proxy and cloaks the proxy itself", function () {
       const ctx = shimCtx();
       // A Proxy is callable but has no source text, so without the self-mapping
@@ -370,13 +404,23 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
       expect(ctx.exportFunction._toStringMap.get(ctx.b)).toBe(srcB);
     });
 
-    it("does not register when the slot was empty (nothing to cloak with)", function () {
-      // A brand-new function is exported as-is; inventing a source for it is
-      // the caller's business, not the shim's.
-      const ctx = shimCtx();
-      ctx.scope = {};
-      vm.runInContext("exportFunction(function n(){}, scope, {defineAs: 'nope'})", ctx);
-      expect(ctx.exportFunction._toStringMap.has(ctx.scope.nope)).toBe(false);
+    it("creates a fresh slot with explicit attributes when the property does not exist yet", function () {
+      // The else branch of the shim: there is no original descriptor to inherit
+      // from, so the attributes are fixed explicitly. This is the ONE sanctioned
+      // place for enumerable:true — a property absent from the pristine browser
+      // has no native counterpart to mismatch against, and writable/configurable
+      // must stay true for a later wrapper to be able to redefine or remove it.
+      const { ctx, scope, installed } = exportOver(null, "copy");
+
+      expect(scope.copy()).toBe(42);
+      const pd = Object.getOwnPropertyDescriptor(scope, "copy");
+      expect(pd.value).toBe(installed);
+      expect(pd.enumerable).toBe(true);
+      expect(pd.writable).toBe(true);
+      expect(pd.configurable).toBe(true);
+      // Nothing was displaced, so nothing is cloaked (supersedes the old
+      // "does not register when the slot was empty" assertion).
+      expect(ctx.exportFunction._toStringMap.has(installed)).toBe(false);
     });
 
     it("resolves an accessor through the descriptor, not by invoking it", function () {
@@ -392,38 +436,41 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
       expect(typeof ctx.scope.other).toBe("function");
     });
 
-    it("replaces an accessor under its own name, not under the defineAs phrase", function () {
-      // Regression guard for Object.defineProperty(obj, defineAs, ...) vs.
-      // Object.defineProperty(obj, name, ...) in the shim: with defineAs the
-      // export creates a data property literally named "get v" and leaves the
-      // original getter on "v" in place — the accessor twin of the slot-attribute
-      // bug this shim already went through twice.
-      const ctx = shimCtx();
+    it("replaces a getter under its own name, leaving the setter intact", function () {
+      // Pre-fix this fails on scope.v: defineProperty(obj, "get v", ...) leaves
+      // the original getter on "v" in place, so the read returns 99.
       const nativeGetter = function () { return 99; };
-      const scope = {};
-      Object.defineProperty(scope, "v", {
-        get: nativeGetter, configurable: true, enumerable: false,
-      });
-      ctx.scope = scope;
+      const nativeSetter = function () { };
+      const { ctx, scope, installed } = exportOver(
+        { get: nativeGetter, set: nativeSetter, configurable: true, enumerable: false },
+        "get v");
 
-      const installed = vm.runInContext(
-        "exportFunction(function(){ return 42; }, scope, {defineAs: 'get v'})", ctx);
+      expect(scope.v).toBe(42);              // the replacement getter is live
+      expectAccessorSwap(ctx, scope, "get v", installed, nativeSetter,
+        { enumerable: false, configurable: true });
 
-      // The export replaced the getter on the real property name...
-      expect(ctx.scope.v).toBe(42);
-      const pd = Object.getOwnPropertyDescriptor(ctx.scope, "v");
-      expect(pd.get).toBe(installed);       // the shim returns the plain fn, no Proxy
-      expect(pd.value).toBeUndefined();     // still an accessor, not a data property
-      // ...preserving the original attributes (the enumerable contract again).
-      expect(pd.enumerable).toBe(false);
-      expect(pd.configurable).toBe(true);
-      // ...and no property named after the whole defineAs phrase appeared.
-      expect(Object.prototype.hasOwnProperty.call(ctx.scope, "get v")).toBe(false);
-
-      // The displaced getter is the cloaked source of the replacement, exactly
-      // like for value exports.
+      // The displaced getter, not the untouched setter, is the cloaked source.
       expect(ctx.exportFunction._toStringMap.get(installed)).toBe(String(nativeGetter));
       expect(pageToString(ctx, installed)).toBe(String(nativeGetter));
+    });
+
+    it("replaces a setter under its own name, leaving the getter intact", function () {
+      let seen = "untouched";
+      const nativeGetter = function () { return 99; };
+      const nativeSetter = function (x) { seen = "original:" + x; };
+      const { ctx, scope, installed } = exportOver(
+        { get: nativeGetter, set: nativeSetter, configurable: true, enumerable: false },
+        "set v");
+
+      scope.v = 7;                            // assignment goes to the replacement...
+      expect(seen).toBe("untouched");         // ...and never reaches the original setter
+      expect(scope.v).toBe(99);               // reading still uses the untouched getter
+      expectAccessorSwap(ctx, scope, "set v", nativeGetter, installed,
+        { enumerable: false, configurable: true });
+
+      // Cloaking keys on the displaced setter's source.
+      expect(ctx.exportFunction._toStringMap.get(installed)).toBe(String(nativeSetter));
+      expect(pageToString(ctx, installed)).toBe(String(nativeSetter));
     });
 
     it("still returns the plain replacement function (writes and `new`)", function () {
