@@ -311,9 +311,14 @@ if (typeof exportFunction === "undefined") {
 	      Object.defineProperty(obj, name, slotPD);
 			}
 			else {
-				Object.defineProperty(obj, defineAs, {
-					value: fn, configurable: true, writable: true, enumerable: true
-				});
+        // A fresh slot has no descriptor to inherit attributes from, so they
+        // are fixed explicitly (the ONE sanctioned enumerable:true — see the
+        // "creates a fresh slot" test). The accessor phrase must be honoured:
+        // "get v" defines a getter on "v", never a data property and never a
+        // property literally named "get v".
+        Object.defineProperty(obj, name, accessor
+          ? { [accessor]: fn, configurable: true, enumerable: true }
+          : { value: fn, configurable: true, writable: true, enumerable: true });
 			}
     } catch (e) {
 			console.debug("Regular function assignment failed!", obj, name, e);

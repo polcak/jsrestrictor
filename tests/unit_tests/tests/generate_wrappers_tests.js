@@ -359,6 +359,7 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
      * therefore describe the FINAL descriptor, not "which half was touched". */
     function expectAccessorSwap(ctx, scope, phrase, expectedGet, expectedSet, attrs) {
       const pd = Object.getOwnPropertyDescriptor(scope, "v");
+			expect(pd).toBeDefined();   // clean diagnostic when the ghost-property bug strikes
       expect(pd.get).toBe(expectedGet);
       expect(pd.set).toBe(expectedSet);
       expect(pd.value).toBeUndefined();      // still an accessor, not a data property
@@ -420,6 +421,33 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
       expect(pd.configurable).toBe(true);
       // Nothing was displaced, so nothing is cloaked (supersedes the old
       // "does not register when the slot was empty" assertion).
+      expect(ctx.exportFunction._toStringMap.has(installed)).toBe(false);
+    });
+
+    it("creates a fresh getter slot for an accessor phrase on an empty property", function () {
+      // The else branch of the shim: no descriptor to inherit attributes from,
+      // but the accessor phrase must still be honoured — "get v" defines a
+      // GETTER on "v", not a data property and not a property literally named
+      // "get v". Unreachable from the wrapper bodies generated today (every
+      // emitted defineAs is a plain property name [1]); pinned here because
+      // the code path is kept ready for a future function_export use [3].
+      const { ctx, scope, installed } = exportOver(null, "get v");
+
+      expect(scope.v).toBe(42);              // reading invokes the replacement
+      expectAccessorSwap(ctx, scope, "get v", installed, undefined,
+        { enumerable: true, configurable: true });
+      // The slot was empty, so nothing was displaced and nothing is cloaked —
+      // the same contract as the plain fresh-slot case above.
+      expect(ctx.exportFunction._toStringMap.has(installed)).toBe(false);
+    });
+
+    it("creates a fresh setter slot for a setter phrase on an empty property", function () {
+      const { ctx, scope, installed } = exportOver(null, "set v");
+
+      scope.v = 7;                            // assignment routes to the replacement...
+      expect(scope.v).toBeUndefined();        // ...no getter exists, so reads stay undefined
+      expectAccessorSwap(ctx, scope, "set v", undefined, installed,
+        { enumerable: true, configurable: true });
       expect(ctx.exportFunction._toStringMap.has(installed)).toBe(false);
     });
 
