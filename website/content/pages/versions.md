@@ -1,9 +1,13 @@
 Title: Release history
 
+## 0.24.8
+
+* Keep original property descirptor flags for wrapped functions. Prevent pages from detecting changes made by JShelter.
+
 ## 0.24.7
 
-* Keep original properties and metadata for wrapped functions. Prevent pages from detecting changes made by JShelter.
-* Chromium-based browsers: Share again all possible code to generate wrappers from Firefox which solves many regressions introduced in 0.23
+* Keep original metadata for wrapped functions like name and length. Prevent pages from detecting changes made by JShelter.
+* Chromium-based browsers: Share again all possible code to generate wrappers from Firefox which solves many regressions introduced in 0.23.
 
 ## 0.24.6
 
