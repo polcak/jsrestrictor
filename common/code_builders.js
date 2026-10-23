@@ -755,7 +755,7 @@ function generate_code(wrapped_code) {
 					let descriptor = Object.getOwnPropertyDescriptor(obj, prop);
 					if (!descriptor) {
 						// let's traverse the prototype chain in search of this property
-						for (let proto = Object.getPrototypeOf(obj); proto; proto = Object.getPrototypeOf(obj)) {
+						for (let proto = Object.getPrototypeOf(obj); proto; proto = Object.getPrototypeOf(proto)) {
 							if (descriptor = Object.getOwnPropertyDescriptor(proto, prop)) {
 								obj = unX(obj);
 								break;
