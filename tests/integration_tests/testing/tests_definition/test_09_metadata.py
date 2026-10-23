@@ -71,3 +71,27 @@ def test_methods_length(browser, methods_metadata):
             continue # Some methods such as Geolocation are removed
         assert current[method] == browser.real.methods_metadata["length"][method], \
                 method + " " + current[method]
+
+def test_property_descriptors(browser, methods_metadata):
+    current = methods_metadata["desc"]
+    for parent in current:
+        for child in current[parent]:
+            for desc in current[parent][child]:
+                try:
+                    if browser.jsr_level in [3, "Experiment"] and \
+                            ("valT" not in current[parent][child] or \
+                            current[parent][child]["valT"] == "undefined") and \
+                            "valT" in browser.real.methods_metadata["desc"][parent][child] and \
+                            browser.real.methods_metadata["desc"][parent][child]["valT"] \
+                            == "function":
+                        continue # Some methods such as Geolocation are removed
+                    assert current[parent][child][desc] == \
+                        browser.real.methods_metadata["desc"][parent][child][desc], \
+                        parent + "." + child + "." + desc + " = " + \
+                        str(current[parent][child][desc]) + " vanilla: " + \
+                        str(browser.real.methods_metadata["desc"][parent][child][desc])
+                except TypeError:
+                    print("test_property_descriptors", parent, child, desc,
+                         current[parent][child][desc],
+                         browser.real.methods_metadata["desc"][parent][child][desc])
+                    raise

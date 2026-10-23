@@ -133,7 +133,26 @@ function define_page_context_function(wrapper) {
 		`;
 	}
 	code += `
+		let slotPD = Object.getOwnPropertyDescriptor(${parent_object}, '${parent_object_property}');
 		let exportedF = exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
+		if (typeof slotPD === "object" && slotPD.configurable) {
+			let newPD = {};
+			for (let prop of ["enumerable", "writable", "configurable"]) {
+				if (Object.hasOwn(slotPD, prop)) {
+					newPD[prop] = slotPD[prop];
+				}
+			}
+			try {
+				WrapHelper.defineProperty(${parent_object}, "${parent_object_property}", newPD);
+			}
+			catch (e) {
+				console.debug("Cannot set property for ${parent_object}.${parent_object_property}", e);
+			}
+		}
+		else if (slotPD === undefined) {
+			// A new property
+			console.debug("A new ${parent_object}.${parent_object_property} assigned!")
+		}
 		${wrapper.post_replacement_code || ''}
 		if (exportedF !== originalF) {
 			// Fail-safe not to interact with the original object
