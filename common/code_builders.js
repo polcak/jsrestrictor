@@ -133,7 +133,7 @@ function define_page_context_function(wrapper) {
 		`;
 	}
 	code += `
-		let exportedF = exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
+		let exportedF = WrapHelper.exportFunction(replacementF, ${parent_object}, {defineAs: '${parent_object_property}'});
 		${wrapper.post_replacement_code || ''}
 		if (exportedF !== originalF) {
 			// Fail-safe not to interact with the original object
@@ -163,7 +163,7 @@ function define_page_context_function(wrapper) {
  * This function creates code that assigns an already defined function to given property.
  */
 function generate_assign_function_code(code_spec_obj) {
-	return `exportFunction(${code_spec_obj.export_function_name},
+	return `WrapHelper.exportFunction(${code_spec_obj.export_function_name},
 		${code_spec_obj.parent_object},
 		{defineAs: '${code_spec_obj.parent_object_property}'});
 	`;
@@ -693,6 +693,39 @@ function generate_code(wrapped_code) {
 				_forPage: x => x, // dummy for easily testing out the preparation
 				isForPage: obj => pageReady.has(obj),
 				unX, // safely waives xray wrappers
+				// Extend exportFunction to make sure the property descriptors of the
+				// exported function are the same as original.
+				exportFunction: function(funcToExport, targetObj, options) {
+					if (!options || !options.defineAs) {
+						return exportFunction(funcToExport, targetObj, options);
+					}
+					try {
+						let slotPD = Object.getOwnPropertyDescriptor(targetObj, options.defineAs);
+						let exportedF = exportFunction(funcToExport, targetObj, options);
+						if (typeof slotPD === "object" && slotPD.configurable) {
+							let newPD = {};
+							for (let prop of ["enumerable", "writable", "configurable"]) {
+								if (Object.hasOwn(slotPD, prop)) {
+									newPD[prop] = slotPD[prop];
+								}
+							}
+							try {
+								WrapHelper.defineProperty(targetObj, options.defineAs, newPD);
+							}
+							catch (e) {
+								console.debug("Cannot set property for ", targetObj, options, e);
+							}
+						}
+						else if (slotPD === undefined) {
+							// A new property
+							console.debug("A new property assigned!", targetObj, options);
+						}
+						return exportedF;
+					}
+					catch (e) {
+						console.debug("Failed to export function!", e, funcToExport, targetObj, options);
+					}
+				},
 				// xray-aware Object creation helpers, mostly used transparently by the code builders
 				defineProperty(obj, prop, descriptor, ...args) {
 					obj = unX(obj);
@@ -722,7 +755,7 @@ function generate_code(wrapped_code) {
 					let descriptor = Object.getOwnPropertyDescriptor(obj, prop);
 					if (!descriptor) {
 						// let's traverse the prototype chain in search of this property
-						for (let proto = Object.getPrototypeOf(obj); proto; proto = Object.getPrototypeOf(obj)) {
+						for (let proto = Object.getPrototypeOf(obj); proto; proto = Object.getPrototypeOf(proto)) {
 							if (descriptor = Object.getOwnPropertyDescriptor(proto, prop)) {
 								obj = unX(obj);
 								break;

@@ -320,6 +320,29 @@ def fill_metadata(driver, output, method):
         except:
             output[md][method] = None
 
+def fill_descriptors(driver, output, parent, child):
+    """A helper function for get_methods_metadata."""
+    props, valT, getT, setT = driver.execute_script(f"""
+        try {{
+            let props = Object.getOwnPropertyDescriptor({parent}, '{child}');
+            return [props, typeof props.value, typeof props.get, typeof props.set];
+        }}
+        catch (e) {{
+            return [null, null, null, null];
+        }}
+    """)
+    if not props:
+        return
+    output["desc"].setdefault(parent, {})
+    output["desc"][parent].setdefault(child, {})
+    for desc in ("configurable", "enumerable", "writable"):
+        if desc in props:
+            # For example, window.Geolocation does not have writable in Firefox on L3
+            output["desc"][parent][child][desc] = props[desc]
+    output["desc"][parent][child]["valT"] = valT
+    output["desc"][parent][child]["getT"] = getT
+    output["desc"][parent][child]["setT"] = setT
+
 ## Get methods.toString(), methods.name, methods.length etc.
 #
 #  Only executing javascript and geting returned values. Testing page is needed.
@@ -377,7 +400,9 @@ def get_methods_metadata(driver):
                 "toTimeString",
                 "toUTCString",
                 "valueOf"
-            }
+            },
+            "parent": "window",
+            "static_methods_parent": "Date",
         },
         "performance": {
             "static_methods": [
@@ -392,19 +417,22 @@ def get_methods_metadata(driver):
                 "measure",
                 "setResourceTimingBufferSize",
                 "toJSON"
-            ]
+            ],
+            "static_methods_parent": "Performance.prototype",
         },
         "Geolocation": {
             "instance_methods": [
                 "getCurrentPosition",
                 "watchPosition",
                 "clearWatch"
-            ]
+            ],
+            "parent": "window",
         },
         "HTMLCanvasElement": {
             "instance_methods": [
                 "getContext"
-            ]
+            ],
+            "parent": "window",
         }
     }
 
@@ -415,20 +443,22 @@ def get_methods_metadata(driver):
         "toLocaleString": {},
         "name": {},
         "length": {},
+        "desc": {},
     }
-    out_toString = output["toString"]
-    out_toString = output["toLocaleString"]
-    out_name = output["name"]
-    out_length = output["length"]
 
     for API in APIs:
         if 'static_methods' in APIs[API]:
             for method in APIs[API]['static_methods']:
                 fill_metadata(driver, output, f"{API}.{method}")
+                fill_descriptors(driver, output, APIs[API]['static_methods_parent'], method)
 
         if 'instance_methods' in APIs[API]:
             fill_metadata(driver, output, API) # The constructor
             for method in APIs[API]['instance_methods']:
                 fill_metadata(driver, output, f"{API}.prototype.{method}")
                 fill_metadata(driver, output, f"(new {API}).{method}")
+                fill_descriptors(driver, output, f"{API}.prototype", method)
+
+        if 'parent' in APIs[API]:
+            fill_descriptors(driver, output, APIs[API]["parent"], API)
     return output

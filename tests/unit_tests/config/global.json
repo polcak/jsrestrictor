@@ -1010,6 +1010,13 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "generate_wrappers",
+			"remove_custom_namespace": false,
+			"let_to_var": false,
+			"src_script_requirements": [
+			]
 		}
 	]
 }

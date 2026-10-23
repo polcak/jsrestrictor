@@ -215,6 +215,8 @@ function runBody(body, state = {}) {
   // NOTE: no `exportFunction` stub and no `original_functions` table anymore —
   // the shim brings both the export primitive and the toString registry.
   installShim(ctx);
+  ctx.WrapHelper.exportFunction =
+    vm.runInContext("(f, o, opts) => exportFunction(f, o, opts)", ctx);
   vm.runInContext(`(function(){${body}})();`, ctx);
   return ctx;
 }
@@ -331,6 +333,41 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
       return vmToString(ctx).call(fn);
     }
 
+    /**
+     * Shared fixture: install the shim, put property "v" on a fresh scope
+     * (unless descriptor is null, i.e. the property must not exist), and
+     * export a replacement through the given defineAs phrase.
+     *
+     * The replacement is written into the vm realm so that the shim's realm
+     * sees a function of its own — the same situation as in the emitted
+     * wrappers_generated.js.
+     */
+    function exportOver(descriptor, phrase) {
+      const ctx = shimCtx();
+      const scope = {};
+      if (descriptor) Object.defineProperty(scope, "v", descriptor);
+      ctx.scope = scope;
+      const installed = vm.runInContext(
+        `exportFunction(function () { return 42; }, scope, {defineAs: ${JSON.stringify(phrase)}})`,
+        ctx);
+      return { ctx, scope, installed };
+    }
+
+    /** The contract of an accessor replacement: the replaced half is
+     * `installed`, the untouched half still holds the original accessor —
+     * an export of "get v" must NEVER wipe `set`. expectedGet/expectedSet
+     * therefore describe the FINAL descriptor, not "which half was touched". */
+    function expectAccessorSwap(ctx, scope, phrase, expectedGet, expectedSet, attrs) {
+      const pd = Object.getOwnPropertyDescriptor(scope, "v");
+			expect(pd).toBeDefined();   // clean diagnostic when the ghost-property bug strikes
+      expect(pd.get).toBe(expectedGet);
+      expect(pd.set).toBe(expectedSet);
+      expect(pd.value).toBeUndefined();      // still an accessor, not a data property
+      expect(pd.enumerable).toBe(attrs.enumerable);   // inherited from the original
+      expect(pd.configurable).toBe(attrs.configurable);
+      expect(Object.prototype.hasOwnProperty.call(scope, phrase)).toBe(false);
+    }
+
     it("installs the toString proxy and cloaks the proxy itself", function () {
       const ctx = shimCtx();
       // A Proxy is callable but has no source text, so without the self-mapping
@@ -368,13 +405,50 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
       expect(ctx.exportFunction._toStringMap.get(ctx.b)).toBe(srcB);
     });
 
-    it("does not register when the slot was empty (nothing to cloak with)", function () {
-      // A brand-new function is exported as-is; inventing a source for it is
-      // the caller's business, not the shim's.
-      const ctx = shimCtx();
-      ctx.scope = {};
-      vm.runInContext("exportFunction(function n(){}, scope, {defineAs: 'nope'})", ctx);
-      expect(ctx.exportFunction._toStringMap.has(ctx.scope.nope)).toBe(false);
+    it("creates a fresh slot with explicit attributes when the property does not exist yet", function () {
+      // The else branch of the shim: there is no original descriptor to inherit
+      // from, so the attributes are fixed explicitly. This is the ONE sanctioned
+      // place for enumerable:true — a property absent from the pristine browser
+      // has no native counterpart to mismatch against, and writable/configurable
+      // must stay true for a later wrapper to be able to redefine or remove it.
+      const { ctx, scope, installed } = exportOver(null, "copy");
+
+      expect(scope.copy()).toBe(42);
+      const pd = Object.getOwnPropertyDescriptor(scope, "copy");
+      expect(pd.value).toBe(installed);
+      expect(pd.enumerable).toBe(true);
+      expect(pd.writable).toBe(true);
+      expect(pd.configurable).toBe(true);
+      // Nothing was displaced, so nothing is cloaked (supersedes the old
+      // "does not register when the slot was empty" assertion).
+      expect(ctx.exportFunction._toStringMap.has(installed)).toBe(false);
+    });
+
+    it("creates a fresh getter slot for an accessor phrase on an empty property", function () {
+      // The else branch of the shim: no descriptor to inherit attributes from,
+      // but the accessor phrase must still be honoured — "get v" defines a
+      // GETTER on "v", not a data property and not a property literally named
+      // "get v". Unreachable from the wrapper bodies generated today (every
+      // emitted defineAs is a plain property name [1]); pinned here because
+      // the code path is kept ready for a future function_export use [3].
+      const { ctx, scope, installed } = exportOver(null, "get v");
+
+      expect(scope.v).toBe(42);              // reading invokes the replacement
+      expectAccessorSwap(ctx, scope, "get v", installed, undefined,
+        { enumerable: true, configurable: true });
+      // The slot was empty, so nothing was displaced and nothing is cloaked —
+      // the same contract as the plain fresh-slot case above.
+      expect(ctx.exportFunction._toStringMap.has(installed)).toBe(false);
+    });
+
+    it("creates a fresh setter slot for a setter phrase on an empty property", function () {
+      const { ctx, scope, installed } = exportOver(null, "set v");
+
+      scope.v = 7;                            // assignment routes to the replacement...
+      expect(scope.v).toBeUndefined();        // ...no getter exists, so reads stay undefined
+      expectAccessorSwap(ctx, scope, "set v", undefined, installed,
+        { enumerable: true, configurable: true });
+      expect(ctx.exportFunction._toStringMap.has(installed)).toBe(false);
     });
 
     it("resolves an accessor through the descriptor, not by invoking it", function () {
@@ -388,6 +462,43 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
       vm.runInContext("exportFunction(function(){ return 1; }, scope, {defineAs: 'other'})", ctx);
       // No throw, and the export happened.
       expect(typeof ctx.scope.other).toBe("function");
+    });
+
+    it("replaces a getter under its own name, leaving the setter intact", function () {
+      // Pre-fix this fails on scope.v: defineProperty(obj, "get v", ...) leaves
+      // the original getter on "v" in place, so the read returns 99.
+      const nativeGetter = function () { return 99; };
+      const nativeSetter = function () { };
+      const { ctx, scope, installed } = exportOver(
+        { get: nativeGetter, set: nativeSetter, configurable: true, enumerable: false },
+        "get v");
+
+      expect(scope.v).toBe(42);              // the replacement getter is live
+      expectAccessorSwap(ctx, scope, "get v", installed, nativeSetter,
+        { enumerable: false, configurable: true });
+
+      // The displaced getter, not the untouched setter, is the cloaked source.
+      expect(ctx.exportFunction._toStringMap.get(installed)).toBe(String(nativeGetter));
+      expect(pageToString(ctx, installed)).toBe(String(nativeGetter));
+    });
+
+    it("replaces a setter under its own name, leaving the getter intact", function () {
+      let seen = "untouched";
+      const nativeGetter = function () { return 99; };
+      const nativeSetter = function (x) { seen = "original:" + x; };
+      const { ctx, scope, installed } = exportOver(
+        { get: nativeGetter, set: nativeSetter, configurable: true, enumerable: false },
+        "set v");
+
+      scope.v = 7;                            // assignment goes to the replacement...
+      expect(seen).toBe("untouched");         // ...and never reaches the original setter
+      expect(scope.v).toBe(99);               // reading still uses the untouched getter
+      expectAccessorSwap(ctx, scope, "set v", nativeGetter, installed,
+        { enumerable: false, configurable: true });
+
+      // Cloaking keys on the displaced setter's source.
+      expect(ctx.exportFunction._toStringMap.get(installed)).toBe(String(nativeSetter));
+      expect(pageToString(ctx, installed)).toBe(String(nativeSetter));
     });
 
     it("still returns the plain replacement function (writes and `new`)", function () {
@@ -946,13 +1057,24 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       return map && map.has(fn) ? map.get(fn) : undefined;
     }
 
-    function report(ctx) {
-      const map = ctx.exportFunction && ctx.exportFunction._toStringMap;
-      if (!map) return "<no map — was installShim() called?>";
-      const vals = [];
-      map.forEach(v => vals.push(JSON.stringify(String(v).slice(0, 60))));
-      return vals.join(", ") || "<empty>";
-    }
+		/**
+		 * Diagnostic helper for failure messages. The registry is a WeakMap, which is
+		 * deliberately non-enumerable (no forEach/keys), so it cannot be dumped.
+		 * Instead, ask it about the candidate keys the test expected to find:
+		 *   report(ctx, [fn1, fn2]) -> "now: present -> <cloaked source>; parse: absent"
+		 * Pass the exact objects the page sees (the same ones cloaked() is queried
+		 * with) — has()/get() match by identity, so any other object answers "absent".
+		 */
+		function report(ctx, candidates = []) {
+		  const map = ctx.exportFunction._toStringMap;
+		  if (!map) return "<no map — was installShim() called?>";
+		  return candidates.map(fn => {
+		    const label = (fn && fn.name) || String(fn).replace(/\s+/g, " ").slice(0, 30);
+		    return map.has(fn)
+		      ? `${label}: present -> ${JSON.stringify(String(map.get(fn)).slice(0, 60))}`
+		      : `${label}: absent`;
+		  }).join("; ") || "<no candidates given>";
+		}
 
     it("registers the top-level replacement", function () {
       const { ctor } = makeCtorFixture();
@@ -976,7 +1098,7 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
 
       const mapped = cloaked(ctx, nested);
       if (mapped === undefined) {
-        throw new Error(`nested replacement has no toString mapping; entries: ${report(ctx)}`);
+        throw new Error(`nested replacement has no toString mapping; ${report(ctx, [nested])}`);
       }
       // The value must be the source of THIS method's original, i.e. a wrong
       // (e.g. outer) originalF must not be accepted.
@@ -1000,7 +1122,7 @@ guarded("generate_wrappers.js — bodies produced by build_code()", function () 
       const mapNow = cloaked(ctx, nowFn);
       const mapParse = cloaked(ctx, parseFn);
       if (mapNow === undefined || mapParse === undefined) {
-        throw new Error(`missing nested toString mapping (now: ${mapNow === undefined}, parse: ${mapParse === undefined}); entries: ${report(ctx)}`);
+        throw new Error(`missing nested toString mapping; ${report(ctx, [nowFn, parseFn])}`);
       }
       expect(mapNow).toBe(String(origNow));
       expect(mapParse).toBe(String(origParse));
