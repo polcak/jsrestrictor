@@ -392,6 +392,40 @@ describe("generate_wrappers.js — pure helpers (no sandbox)", function () {
       expect(typeof ctx.scope.other).toBe("function");
     });
 
+    it("replaces an accessor under its own name, not under the defineAs phrase", function () {
+      // Regression guard for Object.defineProperty(obj, defineAs, ...) vs.
+      // Object.defineProperty(obj, name, ...) in the shim: with defineAs the
+      // export creates a data property literally named "get v" and leaves the
+      // original getter on "v" in place — the accessor twin of the slot-attribute
+      // bug this shim already went through twice.
+      const ctx = shimCtx();
+      const nativeGetter = function () { return 99; };
+      const scope = {};
+      Object.defineProperty(scope, "v", {
+        get: nativeGetter, configurable: true, enumerable: false,
+      });
+      ctx.scope = scope;
+
+      const installed = vm.runInContext(
+        "exportFunction(function(){ return 42; }, scope, {defineAs: 'get v'})", ctx);
+
+      // The export replaced the getter on the real property name...
+      expect(ctx.scope.v).toBe(42);
+      const pd = Object.getOwnPropertyDescriptor(ctx.scope, "v");
+      expect(pd.get).toBe(installed);       // the shim returns the plain fn, no Proxy
+      expect(pd.value).toBeUndefined();     // still an accessor, not a data property
+      // ...preserving the original attributes (the enumerable contract again).
+      expect(pd.enumerable).toBe(false);
+      expect(pd.configurable).toBe(true);
+      // ...and no property named after the whole defineAs phrase appeared.
+      expect(Object.prototype.hasOwnProperty.call(ctx.scope, "get v")).toBe(false);
+
+      // The displaced getter is the cloaked source of the replacement, exactly
+      // like for value exports.
+      expect(ctx.exportFunction._toStringMap.get(installed)).toBe(String(nativeGetter));
+      expect(pageToString(ctx, installed)).toBe(String(nativeGetter));
+    });
+
     it("still returns the plain replacement function (writes and `new`)", function () {
       // JShelter bodies rely on the exported value being the real function
       // object: the own-property copy-back loop writes onto it and wrappers of
